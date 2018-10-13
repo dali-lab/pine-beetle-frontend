@@ -5,13 +5,20 @@ Find `index.html` in `src/` currently. (We may reorganize a bit later to have fr
 
 __install node, yarn, mongo__
 * for mac:
-`brew install node`
-`brew install yarn`
-`brew install mongo`
+
+	`brew install node`
+
+	`brew install yarn`
+
+	`brew install mongo`
+
 * install other dependencies:
-`yarn install`
+
+	`yarn install`
+
 * run the dev server:
-`yarn dev`
+
+	`yarn dev`
 
 ### Starter pack
 Includes express, node, and mongo dependencies (API, server, database)
