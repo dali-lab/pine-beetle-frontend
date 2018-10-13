@@ -20,5 +20,7 @@ __install node, yarn, mongo__
 
 	`yarn dev`
 
+I was able to locally import the csv file in src/data with: `mongoimport --db pb-dev --collection spot-prediction --type csv --headerline --file ./src/data/sample_import_data.csv`
+
 ### Starter pack
 Includes express, node, and mongo dependencies (API, server, database)
