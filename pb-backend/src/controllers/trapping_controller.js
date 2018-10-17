@@ -1,0 +1,1 @@
+import Trapping from '../models/trapping';

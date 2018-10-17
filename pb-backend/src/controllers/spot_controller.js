@@ -1,0 +1,1 @@
+import Spot from '../models/spot';
