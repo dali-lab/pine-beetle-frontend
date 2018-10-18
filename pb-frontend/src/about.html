@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Project Pine Beetle</title>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="styles/default.css">
+		<link rel="stylesheet" href="styles/about.css">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,300i,400i,600i,700i" rel="stylesheet">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<div id="navbar">
+            <div class="container">
+				<div id="title-area">
+					<a href="index.html"><h1>Pine Beetle Prediction Tool</h1></a>
+				</div>
+				<div id="nav-button-area">
+					<div id="nav-buttons">
+						<a href="index.html">Home</a>
+						<a href="viewdata.html" id="middle">View Data</a>
+						<a href="about.html">About</a>
+					</div>
+				</div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+		<div class="content">
+			<div class="flex-container">
+				<div class="container about-project flex-item flex-item-left">
+					<h2>About the Project</h2>
+                    <div class="line"></div>
+                    <p>After developing a model at Dartmouth College to predict outbreaks and movements of Southern Pine Beetles, Professor Ayres and Aoki approached Dartmouth’s DALI Lab to design and develop a tool to visualize the trapping data and predictions gathered annually. This project aimes to deploy a product that field researchers, USFS personel, and the general public can use to understand trends in pine beetle movements. This project is a work-in-progress with frequent updates and changes. We aim to roll out improvements and additional features as they become available.</p>
+                    <p>For information specifically about Southern Pine Beetles or various national forests, please contact the <em><a href="https://www.fs.fed.us/">US Forest Service.</a></em>
+				</div>
+
+				<div class="container meet-team flex-item flex-item-right">
+					<h2>Meet the Team</h2>
+                    <div class="line"></div>
+                    <div id="people-previews">
+                        <div class="person">
+                            <img src="images/sample_img_1.jpeg"></img>
+                            <h4>Carissa Aoki</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                        <div class="person">
+                            <img src="images/sample_img_2.jpg"></img>
+                            <h4>Matt Ayres</h4>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                    </div>
+				</div>
+			</div>
+
+            <div class="flex-container">
+                <div class="container using-product flex-item flex-item-left">
+                    <h2>Using the Product</h2>
+                    <div class="line"></div>
+                    <p>To view the data, navigate to the <strong><em>View Data</em></strong> page. Here users can see graphical representations of the data as well as outbreak predictions and rankings from the statistical model. Use the selection boxes, slicers, and filters to adjust what data you are viewing.
+Move the slider in the top menu bar to select a desired date range. You can click the “Current Year” button to view data specific to the current trapping season. In the drop down menus on the top right, select the state and region you would like to view data for. Click the “Update” button to view new graphs and predictions.
+Beneath the graphs is a geographic representation of the trapping data from ArcGIS. Adjust the top menu buttons to see data from different ranges and play around with the graph to see changes in recent years. Please see the contact information at right for feature requests.</p>
+                </div>
+
+                <div class="container contact-info flex-item flex-item-right">
+                    <h2>Contact Information</h2>
+                    <div class="line"></div>
+
+                    <div id="contact-info-area">
+                        <h4>Questions about the program</h4>
+                        <div class="info-box">
+                            <h3>Carissa Aoki</h3>
+                            <a href="mailto:caoki@bates.edu">caoki@bates.edu</a>
+                            <br>
+                            <h3 id="pad-top">Matt Ayres</h3>
+                            <a href="mailto:matthew.p.ayres@dartmouth.edu">matthew.p.ayres@dartmouth.edu</a>
+                        </div>
+
+                        <h4>Questions about local forests</h4>
+                        <div class="info-box">
+                            <h3>USDA Forest Service</h3>
+                            <a>(800) 832-1355</a>
+                        </div>
+
+                        <h4>Questions about the tool</h4>
+                        <div class="info-box">
+                            <h3>Dartmouth DALI Lab</h3>
+                            <a href="pine-beetle@dali.dartmouth.edu">pine-beetle@dali.dartmouth.edu</a>
+                        </div>
+                    </div>
+            </div>
+		</div>
+
+        <div class="footer">
+            <div class="container">
+				<p>Prototype designed and built in the Dartmouth DALI Lab. This tool is a working prototype with frequent updates and changes.</p>
+				<a href="http://dali.dartmouth.edu/" target="_blank"><img id="dali-logo" src="images/DALI_whiteLogo.png" width="102px" height="39px"></a>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+        <script src='scripts/default.js'></script>
+
+	</body>
+</html>

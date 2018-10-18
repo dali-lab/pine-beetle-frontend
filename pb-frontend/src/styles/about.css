@@ -1,0 +1,81 @@
+/* style elements for about.html */
+
+.about-project p, .using-product p {
+    text-align: left;
+    margin: 15px 50px;
+    line-height: 2;
+}
+
+.about-project {
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+}
+
+.about-project a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+}
+
+.meet-team img {
+    width: 225px;
+    height: 225px;
+    border-radius: 50%;
+}
+
+#people-previews {
+    height: auto;
+    display: block;
+}
+
+#people-previews p {
+    width: 225px;
+}
+
+#people-previews h4 {
+    margin-top: 10px;
+}
+
+.person {
+    display: inline-block;
+    margin-left: 4%;
+    margin-right: 4%;
+    margin-top: 15px;
+}
+
+.using-product {
+    flex: 1.5;
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+}
+
+.contact-info h4 {
+    font-weight: lighter;
+    font-style: italic;
+    padding-bottom: 2px;
+}
+
+.contact-info h3 {
+    padding-bottom: 5px;
+}
+
+.contact-info a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#contact-info-area {
+    margin: 10px 30px;
+    text-align: left;
+}
+
+.info-box {
+    background-color: #919191;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+#pad-top {
+    padding-top: 10px;
+}

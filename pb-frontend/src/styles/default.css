@@ -11,6 +11,15 @@ body {
     letter-spacing: -0.5px;
 }
 
+body p {
+    line-height: 1.8;
+}
+
+body h2 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
 body p, a, li {
     font-family: 'Open Sans', arial, serif;
     padding-bottom: 15px;
@@ -37,6 +46,10 @@ body img {
     border-radius: 5px;
 }
 
+.container {
+    text-align: center;
+}
+
 .content .container {
     padding: 20px;
 }
@@ -56,6 +69,14 @@ body img {
     display: flex;             /* nested flex container */
     flex-direction: column;    /* vertical alignment of flex items */
     justify-content: center;   /* center flex items vertically */
+}
+
+.flex-item-left {
+    margin-right: 15px;
+}
+
+.flex-item-right {
+    margin-left: 15px;
 }
 
 #navbar {
@@ -106,7 +127,16 @@ body img {
 
 .content {
     height: 100%;
-    min-height: calc(100vh - 270px);
+    min-height: calc(100vh - 245px);
+}
+
+.line {
+    width: 156px;
+    height: 1px;
+    margin: auto;
+    background-color: #212122;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .footer {
@@ -114,6 +144,10 @@ body img {
     margin: 15px 31px 31px 31px;
     border-radius: 5px;
     background-color: #C4C4C4;
+}
+
+.footer .container {
+    padding: 0px;
 }
 
 .footer p {
