@@ -1,0 +1,137 @@
+/* style elements for index.html */
+
+.landing-text {
+    margin-right: 15px;
+}
+
+.landing-text h2 {
+    text-align: center;
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+#line {
+    width: 156px;
+    height: 1px;
+    margin: auto;
+    background-color: #212122;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#p-tight {
+    width: 75%;
+    text-align: center;
+    padding-top: 15px;
+    line-height: 1.5;
+    margin: auto;
+    font-size: 17px;
+}
+
+#selection-buttons {
+    margin-bottom: 15px;
+    height: auto;
+    text-align: center;
+}
+
+#selection-buttons a {
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    padding: 25px 60px;
+    background-color: #212122;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+#selection-buttons a:hover {
+    background-color: #ebebeb;
+    color: #212122;
+}
+
+#button-left {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#button-right {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.data-preview {
+    margin-left: 15px;
+}
+
+#current-location {
+    text-align: center;
+    padding: 15px;
+    padding-bottom: 5px;
+}
+
+.data-preview h1 {
+    text-align: center;
+    font-size: 50px;
+    padding-bottom: 0px;
+    margin-top: 15px;
+}
+
+.data-preview h4 {
+    text-align: center;
+    font-weight: lighter;
+}
+
+#calculations {
+    height: auto;
+    text-align: center;
+}
+
+#outbreak-prob {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+#outbreak-risk {
+    display: inline-block;
+    margin-left: 15px;
+    margin-right: 25px;
+}
+
+.data-preview #selection-buttons {
+    padding-top: 25px;
+}
+
+#next-steps {
+    margin-right: 15px;
+    flex: 3;
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+}
+
+#next-steps p {
+    line-height: 1.75;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: 17px;
+}
+
+#next-steps h2 {
+    padding-top: 15px;
+    padding-bottom: 20px;
+    padding-left: 15px;
+}
+
+#img-right {
+    margin-left: 15px;
+    width: 503px;
+}
+
+#img-right img {
+    width: 483px;
+    height: 211px;
+    padding: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

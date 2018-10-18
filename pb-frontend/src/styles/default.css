@@ -1,0 +1,132 @@
+/* default css for all pages */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: white;
+    font-family: 'Open Sans', arial, serif;
+    letter-spacing: -0.5px;
+}
+
+body p, a, li {
+    font-family: 'Open Sans', arial, serif;
+    padding-bottom: 15px;
+}
+
+body h1, h2, h3, h4, h5, h6 {
+    font-family: 'Open Sans', arial, serif;
+    padding-bottom: 12px;
+}
+
+body h1 {
+    letter-spacing: -1.5px;
+}
+
+body img {
+    border-radius: 5px;
+}
+
+.container {
+    width: auto;
+    height: auto;
+    margin: 15px 31px;
+    background-color: #C4C4C4;
+    border-radius: 5px;
+}
+
+.content .container {
+    padding: 20px;
+}
+
+.flex-container {
+    display: flex;
+    width: 100%;
+    display: flex;             /* primary flex container */
+    flex-direction: row;       /* horizontal alignment of flex items */
+    align-items: stretch;      /* will apply equal heights to flex items*/
+    height: 100%;
+}
+
+.flex-item {
+    flex: 1;
+    padding: 15px;
+    display: flex;             /* nested flex container */
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: center;   /* center flex items vertically */
+}
+
+#navbar {
+    height: 82px;
+    margin: 31px 31px 15px 31px;
+    border-radius: 5px;
+    background-color: #C4C4C4;
+}
+
+#title-area {
+    float: left;
+    padding-top: 20px;
+}
+
+#title-area a {
+    text-decoration: none;
+    color: #212122;
+}
+
+#nav-button-area {
+    float: right;
+    padding-top: 18px;
+    padding-right: 20px;
+}
+
+#nav-buttons a {
+    color: white;
+    float: left;
+    background-color: #313134;
+    padding: 12px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+#nav-buttons a:hover {
+    background-color: #ebebeb;
+    color: #212122;
+}
+
+#middle {
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+.active {
+    font-weight: bold;
+}
+
+.content {
+    height: 100%;
+    min-height: calc(100vh - 270px);
+}
+
+.footer {
+    height: auto;
+    margin: 15px 31px 31px 31px;
+    border-radius: 5px;
+    background-color: #C4C4C4;
+}
+
+.footer p {
+    float: left;
+    font-style: italic;
+    margin-top: 22px;
+}
+
+.footer img {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#dali-logo {
+    float: right;
+}
