@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Project Pine Beetle</title>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="styles/default.css">
+		<link rel="stylesheet" href="styles/viewdata.css">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,300i,400i,600i,700i" rel="stylesheet">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://js.arcgis.com/4.9/"></script>
+	</head>
+
+	<body>
+		<div id="navbar">
+            <div class="container">
+				<div id="title-area">
+					<a href="index.html"><h1>Pine Beetle Prediction Tool</h1></a>
+				</div>
+				<div id="nav-button-area">
+					<div id="nav-buttons">
+						<a href="index.html">Home</a>
+						<a href="viewdata.html" id="middle">View Data</a>
+						<a href="about.html">About</a>
+					</div>
+				</div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+		<div class="content">
+			<div class="flex-container">
+				<div class="container select-date-range flex-item flex-item-left">
+					<h3>Select Date Range</h3>
+                    <p>slider bar that will allow user to adjust the start and end dates in question</p>
+				</div>
+
+                <div class="container select-location flex-item flex-item-right">
+                    <div id="selection-areas">
+                        <div class="selection">
+                            <h3>Select State</h3>
+                            <form action=""> <!-- need to set action equal to a js file -->
+                                <select name="state">
+                                    <option value="" selected disabled>Select State</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="SC">South Carolina</option>
+                              </select>
+                              <input type="submit" id="submit">
+                            </form>
+                        </div>
+                        <div class="selection">
+                            <h3>Select Region</h3>
+                            <form action=""> <!-- need to set action equal to a js file -->
+                                <select name="region" onchange="this.form.submit()">
+                                    <option value="" selected disabled>Select Region</option>
+                                    <option value="reg1">Region 1</option>
+                                    <option value="reg2">Region 2</option>
+                                    <option value="reg3">Region 3</option>
+                                    <option value="reg4">Region 4</option>
+                              </select>
+                              <input type="submit" id="submit">
+                            </form>
+                        </div>
+                    </div>
+				</div>
+			</div>
+
+            <div class="flex-container">
+				<div class="container data-insights flex-item flex-item-left">
+					<h2>Data Insights</h2>
+                    <div class="line"></div>
+                    <p>Graphs and charts and stuff here.</p>
+                </div>
+
+				<div class="container prediction-model flex-item flex-item-right">
+					<h2>Prediction Model</h2>
+                    <div class="line"></div>
+                    <p>Prediction metrics here.</p>
+				</div>
+			</div>
+
+            <div class="container map-selections">
+                <p>ArcGIS buttons and stuff here</p>
+            </div>
+
+            <div class="container map">
+                <p>ArcGIS map here</p>
+                <!--UNCOMMENT viewDiv BELOW FOR ARCGIS MAP-->
+                <!-- note: the map is currently not displaying -->
+                <!-- <div id="viewDiv"></div> -->
+            </div>
+		</div>
+
+        <div class="footer">
+            <div class="container">
+				<p>Prototype designed and built in the Dartmouth DALI Lab. This tool is a working prototype with frequent updates and changes.</p>
+				<a href="http://dali.dartmouth.edu/" target="_blank"><img id="dali-logo" src="images/dali.png" width="102px" height="39px"></a>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+        <script src='scripts/default.js'></script>
+        <script src='scripts/map.js'></script>
+
+	</body>
+</html>

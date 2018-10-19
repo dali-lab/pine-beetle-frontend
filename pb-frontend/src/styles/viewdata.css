@@ -1,0 +1,55 @@
+/* style elements for viewdata.html */
+
+.select-date-range {
+    flex: 1.2;
+    text-align: left;
+}
+
+.select-location {
+    text-align: left;
+}
+
+.select-location h3 {
+    padding-bottom: 5px;
+}
+
+#selection-areas {
+    text-align: center;
+}
+
+select {
+    width: 185px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 7px;
+}
+
+#submit {
+    width: 60px;
+    padding: 7px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+    margin-top: 5px;
+}
+
+.selection {
+    display: inline-block;
+    margin: 10px 15px;
+}
+
+.selection h3 {
+    text-align: left;
+}
+
+.data-insights {
+    flex: 2;
+}
+
+.map {
+    margin-top: 31px;
+}

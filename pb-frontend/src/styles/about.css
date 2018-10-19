@@ -17,6 +17,29 @@
     font-weight: bold;
 }
 
+.about-project img {
+    display: inline-block;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+#usfs-img {
+    width: 119px;
+    height: 129px;
+}
+
+#dart-img {
+    width: 101px;
+    height: 104px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#more-info-text {
+    text-align: center;
+    padding: 2% 5%;
+}
+
 .meet-team img {
     width: 225px;
     height: 225px;
