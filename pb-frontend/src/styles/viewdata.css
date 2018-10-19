@@ -1,7 +1,7 @@
 /* style elements for viewdata.html */
 
 .select-date-range {
-    flex: 1.2;
+    flex: 1.3;
     text-align: left;
 }
 
@@ -50,6 +50,72 @@ select {
     flex: 2;
 }
 
+#selection-buttons {
+    margin-bottom: 15px;
+    height: auto;
+}
+
+#selection-buttons a {
+    text-decoration: none;
+    color: white;
+    padding: 25px 40px;
+    background-color: #212122;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+#selection-buttons a:hover {
+    background-color: #ebebeb;
+    color: #212122;
+}
+
+#button-left {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#button-right {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.prediction-model h1 {
+    font-size: 50px;
+    padding-bottom: 0px;
+    margin-top: 15px;
+}
+
+.prediction-model h4 {
+    font-weight: lighter;
+    font-size: 22px;
+    padding-bottom: 0px;
+}
+
+h4.location {
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+#calculations {
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.data-insights {
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+}
+
 .map {
     margin-top: 31px;
+    height: 100%;
+}
+
+/* add html, body in front to get map to load */
+#viewDiv {
+  padding: 0;
+  margin: 0;
+  height: 75vh;
+  width: 100%;
 }
