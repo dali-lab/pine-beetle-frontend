@@ -10,7 +10,8 @@
     "start": "babel-node src/server.js",
     "build": "babel src -d dist",
     "prod": "yarn build; node dist/server.js",
-    "samplePopulate": "babel-node src/samplePopulate.js"
+    "samplePopulate": "babel-node src/samplePopulate.js",
+    "importHistorical": "babel-node src/importHistoricalData.js"
   },
   "license": "ISC",
   "engines": {
@@ -23,6 +24,7 @@
     "babel-preset-env": "^1.6.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
+    "csvtojson": "^2.0.8",
     "ejs": "^2.5.9",
     "express": "^4.16.3",
     "mongoose": "^5.0.17",
