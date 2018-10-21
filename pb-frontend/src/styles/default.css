@@ -122,7 +122,8 @@ body img {
 }
 
 .active {
-    font-weight: bold;
+    background-color: #ebebeb;
+    color: #212122;
 }
 
 .content {

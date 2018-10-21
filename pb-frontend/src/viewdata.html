@@ -12,6 +12,10 @@
 		<link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css">
 	    <script src="https://js.arcgis.com/4.9/"></script>
 		<script src='scripts/map.js'></script>
+
+		<script src='scripts/default.js'></script>
+		<script src="scripts/viewdata.js"></script>
+
 	</head>
 
 	<body>
@@ -41,30 +45,26 @@
                 <div class="container select-location flex-item flex-item-right">
                     <div id="selection-areas">
                         <div class="selection">
-                            <h3>Select State</h3>
-                            <form action=""> <!-- need to set action equal to a js file -->
-                                <select name="state">
-                                    <option value="" selected disabled>Select State</option>
-                                    <option value="GA">Georgia</option>
-                                    <option value="NH">New Hampshire</option>
-                                    <option value="NC">North Carolina</option>
-                                    <option value="SC">South Carolina</option>
-                              </select>
-                              <input type="submit" id="submit">
-                            </form>
+                        <h3>Select State</h3>
+                            <select id="state-select" name="state" onchange="changeStateSelection();">
+                                <option value="" selected disabled>Select State</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="New Hampshire">New Hampshire</option>
+                                <option value="North Carolina">North Carolina</option>
+                                <option value="South Carolina">South Carolina</option>
+                          </select>
+						  <button id="submit" onclick="changeStateSelection();">Submit</button>
                         </div>
                         <div class="selection">
                             <h3>Select Region</h3>
-                            <form action=""> <!-- need to set action equal to a js file -->
-                                <select name="region" onchange="this.form.submit()">
-                                    <option value="" selected disabled>Select Region</option>
-                                    <option value="reg1">Region 1</option>
-                                    <option value="reg2">Region 2</option>
-                                    <option value="reg3">Region 3</option>
-                                    <option value="reg4">Region 4</option>
-                              </select>
-                              <input type="submit" id="submit">
-                            </form>
+                            <select id="region-select" name="region" onchange="changeRegionSelection();">
+                                <option value="" selected disabled>Select Region</option>
+                                <option value="reg1">Region 1</option>
+                                <option value="reg2">Region 2</option>
+                                <option value="reg3">Region 3</option>
+                                <option value="reg4">Region 4</option>
+                          	</select>
+							<button id="submit" onclick="changeRegionSelection();">Submit</button>
                         </div>
                     </div>
 				</div>
@@ -84,23 +84,23 @@
 						<div id="region">
 							<h1 id="outbreak-prob-region">85%</h1>
 							<h4>probability of outbreak</h4>
-							<h4 class="location">Florence County</h4>
+							<h4 class="location region-text">Florence County</h4>
 							<h1 id="outbreak-risk-region">High</h1>
 							<h4>outbreak risk</h4>
-							<h4 class="location">Florence County</h4>
+							<h4 class="location region-text">Florence County</h4>
 						</div>
 						<div id="state">
 							<h1 id="outbreak-prob-state">60%</h1>
 							<h4>probability of outbreak</h4>
-							<h4 class="location">Georgia</h4>
+							<h4 class="location state-text">Georgia</h4>
 							<h1 id="outbreak-risk-state">Medium</h1>
 							<h4>outbreak risk</h4>
-							<h4 class="location">Georgia</h4>
+							<h4 class="location state-text">Georgia</h4>
 						</div>
 					</div>
 					<div id="selection-buttons">
-						<a id="button-left">United States</a>
-						<a id="button-right">Current Selection</a>
+						<a id="button-left" onclick="switchNationSelection('us');">United States</a>
+						<a id="button-right" onclick="switchNationSelection('cs');">Current Selection</a>
 					</div>
 				</div>
 			</div>
