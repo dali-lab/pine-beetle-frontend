@@ -1,5 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 
+// document design choices–how to reconcile multiple schemas
+// when to use which-historical up to 2016? 2018? then survey123
 // TODO this is a guess at types and validation
 const HistoricalSchema = new Schema({
 	yearNumber: {
@@ -34,7 +36,8 @@ const HistoricalSchema = new Schema({
 	},
 	year: {
 		type: Number,
-		min: 1900
+		min: 1900,
+		max: 2016
 	},
 	spbPerTwoWeeks: {
 		type: Number,

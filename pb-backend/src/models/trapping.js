@@ -5,21 +5,51 @@ const TrappingSchema = new Schema({
 	x: Number,
 	y: Number,
 	state: String,
-	year: Number,
+	year: {
+		type: Number,
+		min: 1900
+	},
 	lure: String,
 	country: String,
 	dateTrapSet: Date,
 	trapName: String,
 	collectorName: String,
 	bloomDate: Date,
-	weekNo: Number,
+	weekNo: {
+		type: Number,
+		min: 0,
+		max: 52
+	},
 	collectionDate: Date,
-	trappingInterval: Number,
-	spb: Number,
-	clerids: Number,
-	// totalBeetles: Number,
-	// percentSpb: Number,
-	// spbPerDay: might not need these fields TODO
+	trappingInterval: {
+		type: Number,
+		min: 0
+	},
+	spb: {
+		type: Number,
+		min: 0
+	},
+	clerids: {
+		type: Number,
+		min: 0
+	},
+	totalBeetles: {
+		type: Number,
+		min: 0
+	},
+	percentSpb: {
+		type: Number,
+		min: 0,
+		max: 100
+	},
+	spbPerDay: {
+		type: Number,
+		min: 0
+	},
+	cleridsPerDay: {
+		type: Number,
+		min: 0
+	}
 }, {
 	toJSON: {
 		virtuals: true,

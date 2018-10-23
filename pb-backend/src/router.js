@@ -1,10 +1,25 @@
 import express, {Router} from 'express';
 import { getSampleData, uploadSampleData } from './controllers/sample_controller';
+import { getHistoricalData } from './controllers/historical_controller';
+import { getSpotData } from './controllers/spot_controller';
+import { getBeetleData } from './controllers/trapping_controller';
 
 const router = express();
 
 router.get('/', (req, res) => {
-	getSampleData().then((data) => {
+	getHistoricalData().then((data) => {
+		res.send(data);
+	});
+});
+
+router.get('/getSpots', (req, res) => {
+	getSpotData().then((data) => {
+		res.send(data);
+	});
+});
+
+router.get('/getBeetles', (req, res) => {
+	getBeetleData().then((data) => {
 		res.send(data);
 	});
 });

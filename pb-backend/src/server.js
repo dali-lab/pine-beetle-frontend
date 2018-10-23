@@ -8,7 +8,8 @@ import router from './router';
 
 // DB Setup
 // NOTE this is where collection is named/which database we direct app to
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/spot-prediction';
+const localMongoConnection = 'mongodb://localhost/pine-beetle';
+const mongoURI = process.env.MONGODB_URI || localMongoConnection;
 mongoose.connect(mongoURI);
 // set mongoose promises to es6 default
 mongoose.Promise = global.Promise;
@@ -44,3 +45,4 @@ const port = process.env.PORT || 9090;
 app.listen(port);
 
 console.log(`listening on: ${port}`);
+exports.localMongoConnection = localMongoConnection;

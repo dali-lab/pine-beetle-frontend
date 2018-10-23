@@ -4,9 +4,10 @@
  */
 import HistoricalModel from './models/historical'
 import mongoose from 'mongoose'
+import { localMongoConnection } from './server'
 
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/pb-historical-data';
-mongoose.connect(mongoURI)
+const mongoURI = process.env.MONGODB_URI || localMongoConnection;
+mongoose.connect(mongoURI);
 
 // example convert csv to json command line prompt:
 //  ./node_modules/csvtojson/bin/csvtojson ./src/data/SPB2016_toDALI.csv > ./src/data/SPB2016_toDALI.json
