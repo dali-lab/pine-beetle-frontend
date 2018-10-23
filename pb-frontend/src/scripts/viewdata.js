@@ -1,28 +1,69 @@
 var state = null;
 var region = null;
-var showUS = false;
+var showUS = true;
 
 // handle selection buttons between United States and Current Selection
 function switchNationSelection(newSelect) {
+
+    // if the user wants to see only metrics for the United States
     if (newSelect === "us") {
         showUS = true;
+
+        // update button coloring
+        document.getElementById("select-buttons").children[0].setAttribute("id","active");
+        document.getElementById("select-buttons").children[1].removeAttribute("id");
+
+        // hide region area
+        document.getElementById("region").style.display = "none";
+
+        // change state to United States
+        textFields = document.getElementsByClassName("state-text");
+        for (i = 0; i < textFields.length; i++) {
+            textFields[i].innerHTML = "United States";
+        }
+
+        // change selection menus to default
+        document.getElementById('state-select').selectedIndex = "0";
+        document.getElementById('region-select').selectedIndex = "0";
+
     }
+    // if the user wants to see metrics for a specific location
     else {
         showUS = false;
-    }
 
-    console.log('selection changed to: ' + newSelect);
-    console.log('showUS is now ' + showUS);
+        // update button coloring
+        document.getElementById("select-buttons").children[0].removeAttribute("id");
+        document.getElementById("select-buttons").children[1].setAttribute("id","active");
+
+        // show region area
+        document.getElementById("region").style.display = "block";
+
+        // update selection menus and text fields
+        document.getElementById('state-select').selectedIndex = "1";
+        changeStateSelection();
+    }
 }
 
 // handle state selection
 function changeStateSelection() {
+
+    if (showUS) {
+        showUS = false;
+
+        // update button coloring
+        document.getElementById("select-buttons").children[0].removeAttribute("id");
+        document.getElementById("select-buttons").children[1].setAttribute("id","active");
+
+        // show region area
+        document.getElementById("region").style.display = "block";
+    }
+
     // hold a reference to the newly selected state
     state = document.getElementById('state-select').value
 
     // update the drop down menu of new regions then select the first region
     updateRegionOptions();
-    document.getElementById('region-select').selectedIndex = "0";
+    document.getElementById('region-select').selectedIndex = "1";
     region = document.getElementById('region-select').value
 
     // update all text fields on screen
@@ -56,8 +97,11 @@ function updateRegionTextFields() {
 
 // map of all regions for each state
 var regionMap = {
+    Alabama:["BANKHEAD RD", "FRANKLIN AL","LOWNDES AL","Monroe Co", "OAKMULGEE RD", "SHOAL CREEK RD","TALLADEGA RD","TALLAPOOSA AL"],
+    Arkansas:["CADDO RD","CLARK AR","COLUMBIA AR","DREW AR","MENA RD","NEVADA AR","ODEN RD","WOMBLE RD"],
+    Delaware:["Sussex Co."],
+    Florida:["ALACHUA FL","BAKER FL","BRADFORD FL","Clay Co.","COLUMBIA FL","DUVAL FL","Flagler-St. John's Co.","GADSDEN FL","HAMILTON FL"],
     Georgia:["GA1", "GA2", "GA3", "GA4"],
-    NewHampshire:["NH1", "NH2", "NH3", "NH4"],
     NorthCarolina:["NC1", "NC2", "NC3", "NC4"],
     SouthCarolina:["SC1", "SC2", "SC3", "SC4"]
 }
@@ -70,16 +114,16 @@ function updateRegionOptions() {
     regionSelectNode = document.getElementById('region-select');
     optionDivs = regionSelectNode.children;
 
-    // remove all children of the select menu
-    while (optionDivs.length > 0) {
-        optionDivs[0].remove();
+    // remove all children of the select menu but the default select region
+    while (optionDivs.length > 1) {
+        optionDivs[1].remove();
     }
 
     // add option elements to the select menu for each region associated with
     // the current state that the user selected
     for (i=0; i<regions.length; i++) {
         optionElement = document.createElement("OPTION");
-        optionElement.setAttribute('value',regions[i].replace(/ /g,''));
+        optionElement.setAttribute('value',regions[i]);
         textField = document.createTextNode(regions[i]);
         optionElement.appendChild(textField);
         regionSelectNode.appendChild(optionElement);

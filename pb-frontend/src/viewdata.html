@@ -13,9 +13,6 @@
 	    <script src="https://js.arcgis.com/4.9/"></script>
 		<script src='scripts/map.js'></script>
 
-		<script src='scripts/default.js'></script>
-		<script src="scripts/viewdata.js"></script>
-
 	</head>
 
 	<body>
@@ -48,23 +45,31 @@
                         <h3>Select State</h3>
                             <select id="state-select" name="state" onchange="changeStateSelection();">
                                 <option value="" selected disabled>Select State</option>
-                                <option value="Georgia">Georgia</option>
-                                <option value="New Hampshire">New Hampshire</option>
-                                <option value="North Carolina">North Carolina</option>
-                                <option value="South Carolina">South Carolina</option>
+                                <option value="Alabama">Alabama</option>
+								<option value="Arkansas">Arkansas</option>
+								<option value="Delaware">Delaware</option>
+								<option value="Florida">Florida</option>
+								<option value="Georgia">Georgia</option>
+								<option value="Kentucky">Kentucky</option>
+								<option value="Louisiana">Louisiana</option>
+								<option value="Maryland">Maryland</option>
+								<option value="Mississippi">Mississippi</option>
+								<option value="North Carolina">North Carolina</option>
+								<option value="New Jersey">New Jersey</option>
+								<option value="Oklahoma">Oklahoma</option>
+								<option value="South Carolina">South Carolina</option>
+								<option value="Tennessee">Tennessee</option>
+								<option value="Texas">Texas</option>
+								<option value="Virginia">Virginia</option>
                           </select>
-						  <button id="submit" onclick="changeStateSelection();">Submit</button>
+						  <!--<button id="submit" onclick="changeStateSelection();">Submit</button>-->
                         </div>
                         <div class="selection">
                             <h3>Select Region</h3>
                             <select id="region-select" name="region" onchange="changeRegionSelection();">
                                 <option value="" selected disabled>Select Region</option>
-                                <option value="reg1">Region 1</option>
-                                <option value="reg2">Region 2</option>
-                                <option value="reg3">Region 3</option>
-                                <option value="reg4">Region 4</option>
                           	</select>
-							<button id="submit" onclick="changeRegionSelection();">Submit</button>
+							<!--<button id="submit" onclick="changeRegionSelection();">Submit</button>-->
                         </div>
                     </div>
 				</div>
@@ -82,25 +87,25 @@
                     <div class="line"></div>
 					<div id="calculations">
 						<div id="region">
-							<h1 id="outbreak-prob-region">85%</h1>
+							<h1 id="outbreak-prob-region">74%</h1>
 							<h4>probability of outbreak</h4>
-							<h4 class="location region-text">Florence County</h4>
+							<h4 class="location region-text"></h4>
 							<h1 id="outbreak-risk-region">High</h1>
 							<h4>outbreak risk</h4>
-							<h4 class="location region-text">Florence County</h4>
+							<h4 class="location region-text"></h4>
 						</div>
 						<div id="state">
-							<h1 id="outbreak-prob-state">60%</h1>
+							<h1 id="outbreak-prob-state">57%</h1>
 							<h4>probability of outbreak</h4>
-							<h4 class="location state-text">Georgia</h4>
+							<h4 class="location state-text"></h4>
 							<h1 id="outbreak-risk-state">Medium</h1>
 							<h4>outbreak risk</h4>
-							<h4 class="location state-text">Georgia</h4>
+							<h4 class="location state-text"></h4>
 						</div>
 					</div>
-					<div id="selection-buttons">
-						<a id="button-left" onclick="switchNationSelection('us');">United States</a>
-						<a id="button-right" onclick="switchNationSelection('cs');">Current Selection</a>
+					<div class="selection-buttons" id="select-buttons">
+						<a class="button" id="active" onclick="switchNationSelection('us');">United States</a>
+						<a class="button" onclick="switchNationSelection('cs');">State Selection</a>
 					</div>
 				</div>
 			</div>
@@ -109,7 +114,7 @@
                 <p>ArcGIS buttons and stuff here</p>
             </div>
 
-			<div class="container map">
+			<div class="flex-item container map">
 				<div id="viewDiv"></div>
 			</div>
 		</div>
@@ -117,10 +122,13 @@
         <div class="footer">
             <div class="container">
 				<p>Prototype designed and built in the Dartmouth DALI Lab. This tool is a working prototype with frequent updates and changes.</p>
-				<a href="http://dali.dartmouth.edu/" target="_blank"><img id="dali-logo" src="images/dali.png" width="102px" height="39px"></a>
+				<a href="http://dali.dartmouth.edu/" target="_blank"><img id="dali-logo" src="images/dali_dark.png" width="102px" height="39px"></a>
             </div>
             <div style="clear:both;"></div>
         </div>
+
+		<script src='scripts/default.js'></script>
+		<script src="scripts/viewdata.js"></script>
 
 	</body>
 </html>
