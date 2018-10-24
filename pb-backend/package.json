@@ -11,7 +11,8 @@
     "build": "babel src -d dist",
     "prod": "yarn build; node dist/server.js",
     "samplePopulate": "babel-node src/samplePopulate.js",
-    "importHistorical": "babel-node src/importHistoricalData.js"
+    "importHistorical": "babel-node src/importHistoricalData.js",
+    "rerunModel": "babel-node src/runRModel.js"
   },
   "license": "ISC",
   "engines": {
@@ -28,7 +29,8 @@
     "ejs": "^2.5.9",
     "express": "^4.16.3",
     "mongoose": "^5.0.17",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "r-script": "git+https://git@github.com/khamurdik/r-script.git"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",
