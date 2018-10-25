@@ -10,7 +10,7 @@ const TrappingSchema = new Schema({
 		min: 1900
 	},
 	lure: String,
-	country: String,
+	county: String,
 	dateTrapSet: Date,
 	trapName: String,
 	collectorName: String,

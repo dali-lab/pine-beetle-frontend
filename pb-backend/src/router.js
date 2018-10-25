@@ -1,8 +1,7 @@
 import express, {Router} from 'express';
-import { getSampleData, uploadSampleData } from './controllers/sample_controller';
 import { getHistoricalData } from './controllers/historical_controller';
-import { getSpotData } from './controllers/spot_controller';
-import { getBeetleData } from './controllers/trapping_controller';
+import { getSpotData, getBeetleData, batchUpload } from './controllers/survey123_controller';
+
 
 const router = express();
 
@@ -23,10 +22,11 @@ router.get('/getBeetles', (req, res) => {
 		res.send(data);
 	});
 });
-	
-router.post('/upload', (req, res) => {
-	console.log("upload");
-	uploadSampleData(req.body).then((uploaded) => {
+
+router.post('survey123upload', (req, res) => {
+	dataArray = req.body;
+	console.log(dataArray);
+	batchUpload(dataArray).then((uploaded) => {
 		res.send(uploaded);
 	})
 })
