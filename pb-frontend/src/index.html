@@ -1,10 +1,87 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>project-pine-beetle</title>
+		<title>Project Pine Beetle</title>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="styles/default.css">
+		<link rel="stylesheet" href="styles/index.css">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,300i,400i,600i,700i" rel="stylesheet">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src='scripts/default.js'></script>
+		<script src="scripts/index.js"></script>
 	</head>
 
 	<body>
-		Testing testing
+
+		<div id="navbar">
+            <div class="container">
+				<div id="title-area">
+					<a href="index.html"><h1>Pine Beetle Prediction Tool</h1></a>
+				</div>
+				<div id="nav-button-area">
+					<div id="nav-buttons">
+						<a href="index.html">Home</a>
+						<a href="viewdata.html" id="middle">View Data</a>
+						<a href="about.html">About</a>
+					</div>
+				</div>
+
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+		<div class="content">
+			<div class="flex-container">
+				<div class="container landing-text flex-item flex-item-left">
+					<em><h2>Predicting Southern Pine Beetle Outbreaks</h2></em>
+					<div class="line"></div>
+					<p id="p-tight">This prototype exhibits the first steps in a months-long process to develop a fully deployed tool to visualize and predict  trends in Southern Pine Beetle movements throughout the United States.</p>
+					<div id="selection-buttons">
+						<a href="about.html" id="button-left">Learn More</a>
+						<a href="viewdata.html" id="button-right">View Data</a>
+					</div>
+				</div>
+
+				<div class="container data-preview flex-item flex-item-right">
+					<h2 id="current-location">Florence County, Georgia</h2>
+					<div id="calculations">
+						<div id="outbreak-prob">
+							<h1>64%</h1>
+							<h4>probability of outbreak</h4>
+						</div>
+						<div id="outbreak-risk">
+							<h1>High</h1>
+							<h4>outbreak risk</h4>
+						</div>
+					</div>
+					<div id="selection-buttons">
+						<a id="button-left" onclick="changeSelection('us');">United States</a>
+						<a id="button-right" onclick="changeSelection('cl');">Current Location</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="flex-container">
+				<div class="container flex-item flex-item-left" id="next-steps">
+					<h2>Next Steps</h2>
+					<p>Moving forward, this tool will show rich data visualizations that allow users to drill into data and understand pine beetle movements in their region. It will also be updated to include a more flexible and fully developed map visualization showing outbreak densities that are more intuitive and easier to understand. Furthermore, this tool will provide spreadsheet visualizations, allowing users to export .csv files to further explore the data. Additionally, the statistical model used to predict Southern Pine Beetle outbreaks will continue to be enhanced and updated to accurately predict pine beetle movements.</p>
+					<p>Check out a sneak peek of upcoming designs at the right and be sure to come back often to check up on progress being made. We look forward to deploying a fully fledged product that allows USFS researchers, government agencies, and even the general public to explore changes happening throughout the nation in the near future.</p>
+				</div>
+				<div class="container flex-item flex-item-right" id="img-right">
+					<img src="images/sample_img_1.jpeg"></img>
+					<img src="images/sample_img_2.jpg"></img>
+				</div>
+			</div>
+		</div>
+
+        <div class="footer">
+            <div class="container">
+				<p>Prototype designed and built in the Dartmouth DALI Lab. This tool is a working prototype with frequent updates and changes.</p>
+				<a href="http://dali.dartmouth.edu/" target="_blank"><img id="dali-logo" src="images/dali_dark.png" width="102px" height="39px"></a>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
 	</body>
 </html>

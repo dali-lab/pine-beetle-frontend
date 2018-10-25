@@ -1,0 +1,169 @@
+/* default css for all pages */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #5A6A72;
+    font-family: 'Open Sans', arial, serif;
+    letter-spacing: -0.5px;
+}
+
+body p {
+    line-height: 1.8;
+}
+
+body h2 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+body p, a, li {
+    font-family: 'Open Sans', arial, serif;
+    padding-bottom: 15px;
+}
+
+body h1, h2, h3, h4, h5, h6 {
+    font-family: 'Open Sans', arial, serif;
+    padding-bottom: 12px;
+}
+
+body h1 {
+    letter-spacing: -1.5px;
+}
+
+body img {
+    border-radius: 5px;
+}
+
+.container {
+    width: auto;
+    height: auto;
+    margin: 15px 31px;
+    background-color: #E5E5E5;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.content .container {
+    padding: 20px;
+}
+
+.flex-container {
+    width: 100%;
+    display: flex;             /* primary flex container */
+    flex-direction: row;       /* horizontal alignment of flex items */
+    align-items: stretch;      /* will apply equal heights to flex items*/
+    height: 100%;
+}
+
+.flex-item {
+    flex: 1;
+    padding: 15px;
+    display: flex;             /* nested flex container */
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: center;   /* center flex items vertically */
+}
+
+.flex-item-left {
+    margin-right: 15px;
+}
+
+.flex-item-right {
+    margin-left: 15px;
+}
+
+#navbar {
+    height: 82px;
+    margin: 31px 31px 15px 31px;
+    border-radius: 5px;
+    background-color: #E5E5E5;
+}
+
+#title-area {
+    float: left;
+    padding-top: 20px;
+}
+
+#title-area a {
+    text-decoration: none;
+    color: #212122;
+}
+
+#nav-button-area {
+    float: right;
+    padding-top: 18px;
+    padding-right: 20px;
+}
+
+#nav-buttons a {
+    color: white;
+    float: left;
+    background-color: #313134;
+    padding: 12px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+
+    -o-transition:.3s;
+    -ms-transition:.3s;
+    -moz-transition:.3s;
+    -webkit-transition:.3s;
+    transition:.3s;
+}
+
+#nav-buttons a:hover {
+    background-color: #B3C3B4;
+    color: #212122;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition:.5s;
+}
+
+#middle {
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+.content {
+    height: 100%;
+    min-height: calc(100vh - 245px);
+}
+
+.line {
+    width: 156px;
+    height: 1px;
+    margin: auto;
+    background-color: #212122;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.footer {
+    height: auto;
+    margin: 15px 31px 31px 31px;
+    border-radius: 5px;
+    background-color: #E5E5E5;
+}
+
+.footer .container {
+    padding: 0px;
+}
+
+.footer p {
+    float: left;
+    font-style: italic;
+    margin-top: 22px;
+}
+
+.footer img {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#dali-logo {
+    float: right;
+}

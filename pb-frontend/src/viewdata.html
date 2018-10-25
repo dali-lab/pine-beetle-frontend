@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Project Pine Beetle</title>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="styles/default.css">
+		<link rel="stylesheet" href="styles/viewdata.css">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,300i,400i,600i,700i" rel="stylesheet">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		<link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css">
+	    <script src="https://js.arcgis.com/4.9/"></script>
+		<script src='scripts/map.js'></script>
+
+	</head>
+
+	<body>
+		<div id="navbar">
+            <div class="container">
+				<div id="title-area">
+					<a href="index.html"><h1>Pine Beetle Prediction Tool</h1></a>
+				</div>
+				<div id="nav-button-area">
+					<div id="nav-buttons">
+						<a href="index.html">Home</a>
+						<a href="viewdata.html" id="middle">View Data</a>
+						<a href="about.html">About</a>
+					</div>
+				</div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+		<div class="content">
+			<div class="flex-container">
+				<div class="container select-date-range flex-item flex-item-left">
+					<h3>Select Date Range</h3>
+                    <p>slider bar that will allow user to adjust the start and end dates in question</p>
+					<p>call updateStartDate(year) or updateEndDate(year) to adjust selection</p>
+				</div>
+
+                <div class="container select-location flex-item flex-item-right">
+                    <div id="selection-areas">
+                        <div class="selection">
+                        <h3>Select State</h3>
+                            <select id="state-select" name="state" onchange="changeStateSelection();">
+                                <option value="" selected disabled>Select State</option>
+                          </select>
+						  <!--<button id="submit" onclick="changeStateSelection();">Submit</button>-->
+                        </div>
+                        <div class="selection">
+                            <h3>Select Region</h3>
+                            <select id="region-select" name="region" onchange="changeRegionSelection();">
+                                <option value="" selected disabled>Select Region</option>
+                          	</select>
+							<!--<button id="submit" onclick="changeRegionSelection();">Submit</button>-->
+                        </div>
+                    </div>
+				</div>
+			</div>
+
+            <div class="flex-container">
+				<div class="container data-insights flex-item flex-item-left">
+					<h2>Data Insights</h2>
+                    <div class="line"></div>
+                    <p>Graphs and charts and stuff here.</p>
+                </div>
+
+				<div class="container prediction-model flex-item flex-item-right">
+					<h2>Prediction Model</h2>
+                    <div class="line"></div>
+					<div id="calculations">
+						<div id="region">
+							<h1 id="outbreak-prob-region">74%</h1>
+							<h4>probability of outbreak</h4>
+							<h4 class="location region-text"></h4>
+							<h1 id="outbreak-risk-region">High</h1>
+							<h4>outbreak risk</h4>
+							<h4 class="location region-text"></h4>
+						</div>
+						<div id="state">
+							<h1 id="outbreak-prob-state">57%</h1>
+							<h4>probability of outbreak</h4>
+							<h4 class="location state-text"></h4>
+							<h1 id="outbreak-risk-state">Medium</h1>
+							<h4>outbreak risk</h4>
+							<h4 class="location state-text"></h4>
+						</div>
+					</div>
+					<div class="selection-buttons" id="select-buttons">
+						<a class="button" id="active" onclick="switchNationSelection('us');">United States</a>
+						<a class="button" onclick="switchNationSelection('cs');">State Selection</a>
+					</div>
+				</div>
+			</div>
+
+            <div class="container map-selections">
+                <p>ArcGIS buttons and stuff here</p>
+            </div>
+
+			<div class="flex-item container map">
+				<div id="viewDiv"></div>
+			</div>
+		</div>
+
+        <div class="footer">
+            <div class="container">
+				<p>Prototype designed and built in the Dartmouth DALI Lab. This tool is a working prototype with frequent updates and changes.</p>
+				<a href="http://dali.dartmouth.edu/" target="_blank"><img id="dali-logo" src="images/dali_dark.png" width="102px" height="39px"></a>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+
+		<script src='scripts/default.js'></script>
+		<script src="scripts/viewdata.js"></script>
+
+	</body>
+</html>
