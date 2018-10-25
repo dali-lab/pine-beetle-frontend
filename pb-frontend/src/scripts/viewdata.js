@@ -4,10 +4,31 @@ var state = null;
 var region = null;
 var showUS = true;
 
+var totalData; // entire dataset available to the user
+getData("historical_data.json");
+console.log(totalData);
+
+var currentData = totalData; // just the data that the user wants to look at based on current selection
+
+// fetch json data
+function getData(url) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            totalData = JSON.parse(this.responseText);
+        }
+    };
+    console.log("Done!");
+    xmlhttp.open("GET", "historical_data.json", true);
+    xmlhttp.send();
+};
+
+
+
+
 // user selection for start and end date they would like to view data on
-// TODO update this to auto grab first and last year from the data
-var startDate = 1985;
-var endDate = new Date().getFullYear();
+var startDate = 1987;
+var endDate = new Date().getFullYear(); // current year
 
 // this holds all possible states that data exists for based on the user-selected years
 // all array elements in index 1 or greater represent associated regions for that state
@@ -43,30 +64,12 @@ function refreshSelectionMenus() {
 // update the map of available states and regions based on user selected years
 // TODO this function will add/remove available states and regions based on the data that the user has selected and wishes to view
 function updateAvailableStatesAndRegions() {
-    // TODO query data here -- @MADDIE
 
     // a state will not appear as a selection option if it does not have any associated regions
     // to clear a state and indicate that it should not show up on the screen, remove all elements in it's associated array in the map except index 0 (the state name)
 
-    // this is temporary
-    stateRegionMap = {
-        AL:["Alabama", "BANKHEAD RD", "FRANKLIN AL","LOWNDES AL","Monroe Co", "OAKMULGEE RD", "SHOAL CREEK RD","TALLADEGA RD","TALLAPOOSA AL"],
-        AR:["Arkansas", "CADDO RD","CLARK AR","COLUMBIA AR","DREW AR","MENA RD","NEVADA AR","ODEN RD","WOMBLE RD"],
-        DE:["Delaware", "Sussex Co."],
-        FL:["Florida", "ALACHUA FL","BAKER FL","BRADFORD FL","Clay Co.","COLUMBIA FL","DUVAL FL","Flagler-St. John's Co.","GADSDEN FL","HAMILTON FL"],
-        GA:["Georgia", "GA1", "GA2", "GA3", "GA4"],
-        KY:["Kentucky", "KY1", "KY2"],
-        LA:["Louisiana", "LA1", "LA2"],
-        MD:["Maryland", "MD1", "MD2"],
-        MS:["Mississippi", "MS1", "MS2"],
-        NC:["North Carolina", "NC1", "NC2", "NC3", "NC4"],
-        NJ:["New Jersey", "NJ1", "NJ2"],
-        OK:["Oklahoma", "OK1", "OK2"],
-        SC:["South Carolina", "SC1", "SC2", "SC3", "SC4"],
-        TN:["Tennesse", "TN1", "TN2"],
-        TX:["Texas", "TX1", "TX2"],
-        VA:["Virginia", "VA1", "VA2"]
-    }
+
+
 }
 
 // remove all option elements that are child nodes of the selection menus
@@ -146,6 +149,8 @@ function updateRegionDropDown() {
         regionSelectNode.appendChild(optionElement);
     }
 }
+
+
 
 // handle selection buttons between United States and Current Selection
 function switchNationSelection(newSelect) {

@@ -42,7 +42,7 @@ body img {
     width: auto;
     height: auto;
     margin: 15px 31px;
-    background-color: #F2F2F2;
+    background-color: #E5E5E5;
     border-radius: 5px;
     text-align: center;
 }
@@ -79,7 +79,7 @@ body img {
     height: 82px;
     margin: 31px 31px 15px 31px;
     border-radius: 5px;
-    background-color: #F2F2F2;
+    background-color: #E5E5E5;
 }
 
 #title-area {
@@ -146,7 +146,7 @@ body img {
     height: auto;
     margin: 15px 31px 31px 31px;
     border-radius: 5px;
-    background-color: #F2F2F2;
+    background-color: #E5E5E5;
 }
 
 .footer .container {
