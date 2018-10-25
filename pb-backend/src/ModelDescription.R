@@ -25,8 +25,8 @@ library(pscl)
 
 # Read in the log+1-transformed data, make sure spots are in integers
 # logDt <- read.csv("C:\\Users\\Carissa\\Dropbox\\SPB\\AA.PREDICTION_SYSTEM\ModelForDALI\logDt.csv")
-logDt <- read.csv('/Users/isabelhurley/DALI/pine-beetle/project-pine-beetle/pb-backend/src/data/SPB2016_toDALI.csv') #TODO this is NOT log+1-transformed data
-logDt$spots <- round(logDt$spots, digits=0) # TODO error: non-numeric argument to mathematical function
+# logDt <- read.csv('/Users/isabelhurley/DALI/pine-beetle/project-pine-beetle/pb-backend/src/data/SPB2016_toDALI.csv') #TODO this is NOT log+1-transformed data
+# logDt$spots <- round(logDt$spots, digits=0) # TODO error: non-numeric argument to mathematical function
 
 
 # # Scale and center covariates; note that this code standardizes all the possible predictors,
