@@ -22,9 +22,6 @@ var currentData = []; // just the data that the user wants to look at based on c
 // getDataFromLocal('historical_data.json');
 currentData = totalData;
 
-// set the height of the map
-resizeMap()
-
 // this holds all possible states that data exists for based on the user-selected years
 // all array elements in index 1 or greater represent associated regions for that state
 var stateRegionMap = {
@@ -198,7 +195,7 @@ function switchNationSelection(newSelect) {
         document.getElementById("select-buttons").children[1].removeAttribute("id");
 
         // hide region area
-        document.getElementById("region").style.display = "none";
+        $("#region").slideUp();
 
         // change state to United States
         textFields = document.getElementsByClassName("state-text");
@@ -209,8 +206,6 @@ function switchNationSelection(newSelect) {
         // change selection menus to default selection
         document.getElementById('state-select').selectedIndex = "0";
         document.getElementById('region-select').selectedIndex = "0";
-
-        resizeMap()
     }
     // if the user wants to see metrics for a specific location
     else {
@@ -221,7 +216,7 @@ function switchNationSelection(newSelect) {
         document.getElementById("select-buttons").children[1].setAttribute("id","active");
 
         // show region area
-        document.getElementById("region").style.display = "block";
+        $("#region").slideDown();
 
         // refresh the list of available states and regions on the screen
         refreshSelectionMenus();
@@ -229,8 +224,6 @@ function switchNationSelection(newSelect) {
         // update selection menus and text fields
         document.getElementById('state-select').selectedIndex = "1";
         changeStateSelection();
-
-        resizeMap()
     }
 
     // refresh the data available for analysis
@@ -336,13 +329,3 @@ function updateRegionTextFields() {
         textFields[i].innerHTML = region;
     }
 }
-
-// adjust height of map
-function resizeMap() {
-    console.log(document.getElementById('viewDiv').style.height);
-    console.log(document.getElementById('prediction-model').style.height)
-    document.getElementById('viewDiv').style.height = document.getElementById('prediction-model').style.height;
-}
-
-// when user resizes screen
-window.onresize = resizeMap();
