@@ -9,7 +9,10 @@
     "dev": "nodemon src/server.js --exec babel-node",
     "start": "babel-node src/server.js",
     "build": "babel src -d dist",
-    "prod": "yarn build; node dist/server.js"
+    "prod": "yarn build; node dist/server.js",
+    "samplePopulate": "babel-node src/samplePopulate.js",
+    "importHistorical": "babel-node src/importHistoricalData.js",
+    "rerunModel": "babel-node src/runRModel.js"
   },
   "license": "ISC",
   "engines": {
@@ -19,16 +22,21 @@
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
+    "csvtojson": "^2.0.8",
     "ejs": "^2.5.9",
     "express": "^4.16.3",
     "mongoose": "^5.0.17",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "r-script": "git+https://git@github.com/khamurdik/r-script.git"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
+    "babel-loader": "^8.0.4",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.11.0",
