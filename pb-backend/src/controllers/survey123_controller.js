@@ -13,9 +13,9 @@ export const getBeetleData = () => {
 export const batchUpload = (dataArray) => {
 	//distinguish between data models 
 	dataArray.forEach((surveyResponse) => {
-		if ('Latitude (decimal degrees)' in surveyResponse or 'Longitude (decimal degrees)' in surveyResponse
-			or 'Spot No.' in surveyResponse or 'Initial Spot Size (acres)' in surveyResponse
-			or 'Final Spot Size (acres)' in surveyResponse or 'Status' in surveyResponse) {
+		if (('Latitude (decimal degrees)' in surveyResponse) || ('Longitude (decimal degrees)' in surveyResponse)
+			|| ('Spot No.' in surveyResponse) || ('Initial Spot Size (acres)' in surveyResponse)
+			|| ('Final Spot Size (acres)' in surveyResponse) || ('Status' in surveyResponse)) {
 			// Spot type
 			const newSpot = new Spot();
 			newSpot.county = surveyResponse['County']
@@ -44,9 +44,9 @@ export const batchUpload = (dataArray) => {
 				});
 
 		} 
-		else if ('X' in surveyResponse or 'Y' in surveyResponse
-			or 'Trap Name' in surveyResponse or 'Collector Name' in surveyResponse
-			or 'Week No' in surveyResponse or 'SPB' in surveyResponse or 'Total beetles' in surveyResponse) {
+		else if ('X' in surveyResponse || 'Y' in surveyResponse
+			|| 'Trap Name' in surveyResponse || 'Collector Name' in surveyResponse
+			|| 'Week No' in surveyResponse || 'SPB' in surveyResponse || 'Total beetles' in surveyResponse) {
 			// Trapping type
 			const newTrapping = new Trapping();
 			newTrapping.x = surveyResponse['X']
