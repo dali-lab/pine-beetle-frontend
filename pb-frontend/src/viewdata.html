@@ -23,9 +23,9 @@
 				</div>
 				<div id="nav-button-area">
 					<div id="nav-buttons">
-						<a href="index.html">Home</a>
-						<a href="viewdata.html" id="middle">View Data</a>
-						<a href="about.html">About</a>
+						<a href="index.html">HOME</a>
+						<a href="viewdata.html" class="middle" id="nav-active">VIEW DATA</a>
+						<a href="about.html">ABOUT</a>
 					</div>
 				</div>
             </div>
@@ -34,58 +34,84 @@
 
 		<div class="content">
 			<div class="flex-container">
-				<div class="container select-date-range flex-item flex-item-left">
-					<h3>Select Date Range</h3>
-                    <p>slider bar that will allow user to adjust the start and end dates in question</p>
-					<p>call updateStartDate(year) or updateEndDate(year) to adjust selection</p>
-				</div>
+				<div class="container filter-selections">
+					<div id="selection-areas">
+						<div class="selection">
+							<h3>Enter Start Year</h3>
+							<input id="start-year-input" type="text" name="fname" onclick="this.select()">
+						    <button id="start-year-submit" class="submit" onclick="updateStartDate()">Submit</button>
+						</div>
+						<div class="selection">
+							<h3>Enter End Year</h3>
+							<input id="end-year-input" type="text" name="fname" onclick="this.select()">
+						    <button id="end-year-submit" class="submit" onclick="updateEndDate()">Submit</button>
+						</div>
 
-                <div class="container select-location flex-item flex-item-right">
-                    <div id="selection-areas">
                         <div class="selection">
                         <h3>Select State</h3>
                             <select id="state-select" name="state" onchange="changeStateSelection();">
                                 <option value="" selected disabled>Select State</option>
                           </select>
-						  <!--<button id="submit" onclick="changeStateSelection();">Submit</button>-->
                         </div>
                         <div class="selection">
                             <h3>Select Region</h3>
                             <select id="region-select" name="region" onchange="changeRegionSelection();">
                                 <option value="" selected disabled>Select Region</option>
                           	</select>
-							<!--<button id="submit" onclick="changeRegionSelection();">Submit</button>-->
                         </div>
+
+						<div class="selection">
+                            <h3>Map Filter #1</h3>
+							<select id="" name="" onchange="">
+                                <option value="" selected disabled>Selection Menu</option>
+                          	</select>
+							<button id="" class="submit" onclick="">Submit</button>
+                        </div>
+						<div class="selection">
+							<h3>Map Filter #2</h3>
+							<select id="" name="" onchange="">
+								<option value="" selected disabled>Selection Menu</option>
+							</select>
+							<button id="" class="submit" onclick="">Submit</button>
+						</div>
+
                     </div>
+
 				</div>
 			</div>
 
             <div class="flex-container">
-				<div class="container data-insights flex-item flex-item-left">
-					<h2>Data Insights</h2>
-                    <div class="line"></div>
-                    <p>Graphs and charts and stuff here.</p>
-                </div>
+				<div class="container map flex-item flex-item-left">
+					<div id="viewDiv"></div>
+				</div>
 
-				<div class="container prediction-model flex-item flex-item-right">
+				<div class="container prediction-model flex-item flex-item-right" id="prediction-model">
 					<h2>Prediction Model</h2>
                     <div class="line"></div>
 					<div id="calculations">
 						<div id="region">
-							<h1 id="outbreak-prob-region">74%</h1>
-							<h4>probability of outbreak</h4>
-							<h4 class="location region-text"></h4>
-							<h1 id="outbreak-risk-region">High</h1>
-							<h4>outbreak risk</h4>
-							<h4 class="location region-text"></h4>
+							<div class="pred-area pred-area-left">
+								<h1 id="outbreak-prob-region" class="high">74%</h1>
+								<h4>outbreak probability</h4>
+								<h4 class="location region-text"></h4>
+							</div>
+							<div class="pred-area pred-area-right">
+								<h1 id="outbreak-risk-region" class="high">High</h1>
+								<h4>outbreak risk level</h4>
+								<h4 class="location region-text"></h4>
+							</div>
 						</div>
 						<div id="state">
-							<h1 id="outbreak-prob-state">57%</h1>
-							<h4>probability of outbreak</h4>
-							<h4 class="location state-text"></h4>
-							<h1 id="outbreak-risk-state">Medium</h1>
-							<h4>outbreak risk</h4>
-							<h4 class="location state-text"></h4>
+							<div class="pred-area pred-area-left">
+								<h1 id="outbreak-prob-state" class="low">32%</h1>
+								<h4>outbreak probability</h4>
+								<h4 class="location state-text">United States</h4>
+							</div>
+							<div class="pred-area pred-area-right">
+								<h1 id="outbreak-risk-state" class="low">Low</h1>
+								<h4>outbreak risk level</h4>
+								<h4 class="location state-text">United States</h4>
+							</div>
 						</div>
 					</div>
 					<div class="selection-buttons" id="select-buttons">
@@ -95,13 +121,12 @@
 				</div>
 			</div>
 
-            <div class="container map-selections">
-                <p>ArcGIS buttons and stuff here</p>
-            </div>
-
-			<div class="flex-item container map">
-				<div id="viewDiv"></div>
+			<div class="container data-insights flex-item flex-item-left">
+				<h2>Data Insights</h2>
+				<div class="line"></div>
+				<p>Graphs and charts and stuff here.</p>
 			</div>
+
 		</div>
 
         <div class="footer">
