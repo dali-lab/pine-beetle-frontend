@@ -14,9 +14,9 @@ export const makePredictions = (SPB, cleridst1, spotst1, spotst2, endobrev) => {
 		})
 		.call(function(err, d) {
 			if (err) throw err;
-			// console.log(d); // logs successfully
+			console.log(d); // logs successfully
 			return d;
 		});
 }
 
-// makePredictions(2000, 582, 1006, 400, 1);
+makePredictions(2000, 582, 1006, 400, 1);
