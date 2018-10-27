@@ -1,0 +1,25 @@
+<html>
+<body>
+
+    <input id="hello" type="text" name="fname" onclick="this.select()">
+    <button id="mybutt" type=submit onclick="myfunc()">submit</button>
+
+
+    <script>
+
+        document.getElementById('hello').onkeypress=function(e){
+        if(e.keyCode==13){
+            document.getElementById('mybutt').click();
+        }
+    }
+
+        function myfunc() {
+            var elmt = document.getElementById('hello');
+            console.log(elmt.value);
+        }
+
+    </script>
+
+
+</body>
+</html>
