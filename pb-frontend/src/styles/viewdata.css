@@ -93,7 +93,6 @@ input:hover {
     -moz-transition:.3s;
     -webkit-transition:.3s;
     transition:.3s;
-
 }
 
 .button {
@@ -130,14 +129,7 @@ input:hover {
 
 .pred-area {
     display: inline-block;
-}
-
-.pred-area-left {
-    margin-right: 20px;
-}
-
-.pred-area-right {
-    margin-left: 20px;
+    margin: 0px 20px;
 }
 
 h4.location {
@@ -153,6 +145,23 @@ h4.location {
 .data-insights {
     flex-direction: column;    /* vertical alignment of flex items */
     justify-content: flex-start;   /* center flex items vertically */
+    flex: 2;
+}
+
+#adjust-map-size-button {
+    width: 125px;
+    background-color: #E9C46A;
+    margin-left: 20px;
+    height: 50px;
+    font-size: 14px;
+}
+
+#map-area, #prediction-model {
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    transition:.5s;
 }
 
 .map {
@@ -177,6 +186,6 @@ h4.location {
 #viewDiv {
   padding: 0;
   margin: 0;
-  height: 602px;
+  height: 605px;
   width: 100%;
 }

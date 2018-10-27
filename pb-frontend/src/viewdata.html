@@ -54,9 +54,9 @@
                           </select>
                         </div>
                         <div class="selection">
-                            <h3>Select Region</h3>
+                            <h3>Select Natl Forest</h3>
                             <select id="region-select" name="region" onchange="changeRegionSelection();">
-                                <option value="" selected disabled>Select Region</option>
+                                <option value="" selected disabled>Select National Forest</option>
                           	</select>
                         </div>
 
@@ -67,21 +67,14 @@
                           	</select>
 							<button id="" class="submit" onclick="">Submit</button>
                         </div>
-						<div class="selection">
-							<h3>Map Filter #2</h3>
-							<select id="" name="" onchange="">
-								<option value="" selected disabled>Selection Menu</option>
-							</select>
-							<button id="" class="submit" onclick="">Submit</button>
-						</div>
-
+						<button id="adjust-map-size-button" class="submit" onclick="movePredictionModelDown()">Expand Map</button>
                     </div>
 
 				</div>
 			</div>
 
-            <div class="flex-container">
-				<div class="container map flex-item flex-item-left">
+            <div class="flex-container" id="map-area-container">
+				<div class="container map flex-item flex-item-left" id="map-area">
 					<div id="viewDiv"></div>
 				</div>
 
@@ -90,24 +83,24 @@
                     <div class="line"></div>
 					<div id="calculations">
 						<div id="region">
-							<div class="pred-area pred-area-left">
+							<div class="pred-area">
 								<h1 id="outbreak-prob-region" class="high">74%</h1>
 								<h4>outbreak probability</h4>
 								<h4 class="location region-text"></h4>
 							</div>
-							<div class="pred-area pred-area-right">
+							<div class="pred-area">
 								<h1 id="outbreak-risk-region" class="high">High</h1>
 								<h4>outbreak risk level</h4>
 								<h4 class="location region-text"></h4>
 							</div>
 						</div>
 						<div id="state">
-							<div class="pred-area pred-area-left">
+							<div class="pred-area">
 								<h1 id="outbreak-prob-state" class="low">32%</h1>
 								<h4>outbreak probability</h4>
 								<h4 class="location state-text">United States</h4>
 							</div>
-							<div class="pred-area pred-area-right">
+							<div class="pred-area">
 								<h1 id="outbreak-risk-state" class="low">Low</h1>
 								<h4>outbreak risk level</h4>
 								<h4 class="location state-text">United States</h4>
@@ -118,15 +111,17 @@
 						<a class="button" id="active" onclick="switchNationSelection('us');">United States</a>
 						<a class="button" onclick="switchNationSelection('cs');">State Selection</a>
 					</div>
+					<p id="click-instructions">Click <strong>State Selection</strong> to view metrics in specific states.</p>
 				</div>
 			</div>
 
-			<div class="container data-insights flex-item flex-item-left">
-				<h2>Data Insights</h2>
-				<div class="line"></div>
-				<p>Graphs and charts and stuff here.</p>
+			<div class="flex-container" id="data-insights-holder">
+				<div class="container data-insights flex-item flex-item-left">
+					<h2>Data Insights</h2>
+					<div class="line"></div>
+					<p>Graphs and charts and stuff here.</p>
+				</div>
 			</div>
-
 		</div>
 
         <div class="footer">
