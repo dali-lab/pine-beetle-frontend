@@ -367,3 +367,13 @@ function movePredictionModelUp() {
     document.getElementById('adjust-map-size-button').innerHTML = "Expand Map";
     document.getElementById('adjust-map-size-button').setAttribute( "onclick", "movePredictionModelDown();");
 }
+
+function resetCurrentData() {
+    currentData = totalData;
+    updateStartAndEndDateFromCurrentData();
+    document.getElementById('start-year-input').value = startDate;
+    document.getElementById('end-year-input').value = endDate;
+    refreshSelectionMenus();
+    switchNationSelection('us');
+    document.getElementById('region-select').selectedIndex = "0";
+}

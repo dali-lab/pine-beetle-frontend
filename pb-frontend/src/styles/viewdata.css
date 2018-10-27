@@ -148,7 +148,7 @@ h4.location {
     flex: 2;
 }
 
-#adjust-map-size-button {
+#adjust-map-size-button, #reset-current-data-button {
     width: 125px;
     background-color: #E9C46A;
     margin-left: 20px;
