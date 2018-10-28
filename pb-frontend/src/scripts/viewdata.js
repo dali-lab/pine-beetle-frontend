@@ -13,12 +13,13 @@ var showUS = true;
 var startDate = Infinity;
 var endDate = 0;
 
+var totalData = [{"_id":"5bcb7928763d69464cb8d23e","yearNumber":1,"state":"AL","nf":"BANKHEAD","classification":"RD","forest":"BANKHEAD RD","stateCode":1,"forestCode":1,"latitude":34.23306,"longitude":-87.31112,"host":20.68,"year":1986,"spbPerTwoWeeks":null,"cleridsPerTwoWeeks":null,"spots":564,"spotsPerHundredKm":273,"percentSpb":null,"__v":0,"id":"5bcb7928763d69464cb8d23e"},{"_id":"5bcb7928763d69464cb8d23f","yearNumber":2,"state":"AL","nf":"test","classification":"RD","forest":"BANKHEAD RD","stateCode":1,"forestCode":1,"latitude":34.23306,"longitude":-87.31112,"host":20.68,"year":1987,"spbPerTwoWeeks":931,"cleridsPerTwoWeeks":210,"spots":600,"spotsPerHundredKm":290,"percentSpb":null,"__v":0,"id":"5bcb7928763d69464cb8d23f"},{"_id":"5bcb7928763d69464cb8d241","yearNumber":4,"state":"AR","nf":"test2","classification":"RD","forest":"BANKHEAD RD","stateCode":1,"forestCode":1,"latitude":34.23306,"longitude":-87.31112,"host":20.68,"year":1989,"spbPerTwoWeeks":390,"cleridsPerTwoWeeks":397,"spots":45,"spotsPerHundredKm":22,"percentSpb":null,"__v":0,"id":"5bcb7928763d69464cb8d241"},];
 // entire dataset available to the user
-var totalData = [{"_id":"5bcb7928763d69464cb8d23e","yearNumber":1,"state":"AL","nf":"BANKHEAD","classification":"RD","forest":"BANKHEAD RD","stateCode":1,"forestCode":1,"latitude":34.23306,"longitude":-87.31112,"host":20.68,"year":1986,"spbPerTwoWeeks":null,"cleridsPerTwoWeeks":null,"spots":564,"spotsPerHundredKm":273,"percentSpb":null,"__v":0,"id":"5bcb7928763d69464cb8d23e"},{"_id":"5bcb7928763d69464cb8d23f","yearNumber":2,"state":"AL","nf":"BANKHEAD","classification":"RD","forest":"BANKHEAD RD","stateCode":1,"forestCode":1,"latitude":34.23306,"longitude":-87.31112,"host":20.68,"year":1987,"spbPerTwoWeeks":931,"cleridsPerTwoWeeks":210,"spots":600,"spotsPerHundredKm":290,"percentSpb":null,"__v":0,"id":"5bcb7928763d69464cb8d23f"},{"_id":"5bcb7928763d69464cb8d241","yearNumber":4,"state":"AL","nf":"BANKHEAD","classification":"RD","forest":"BANKHEAD RD","stateCode":1,"forestCode":1,"latitude":34.23306,"longitude":-87.31112,"host":20.68,"year":1989,"spbPerTwoWeeks":390,"cleridsPerTwoWeeks":397,"spots":45,"spotsPerHundredKm":22,"percentSpb":null,"__v":0,"id":"5bcb7928763d69464cb8d241"}];
-//getData("historical_data.json");
+var currentData = []; // just the data that the user wants to look at based on current selection
 
-// just the data that the user wants to look at based on current selection
-var currentData = totalData;
+// set totalData and currentData from the historical data
+// getDataFromLocal('historical_data.json');
+currentData = totalData; //temporary - will set this in the getDataFromLocal function
 
 // this holds all possible states that data exists for based on the user-selected years
 // all array elements in index 1 or greater represent associated regions for that state
@@ -41,9 +42,16 @@ var stateRegionMap = {
     VA:["Virginia"]
 }
 
-// update start and end dates initially available to user then refresh list of available states and regions
+// update start and end dates initially available to user and hold onto original dates
 updateStartAndEndDateFromCurrentData();
+const originalStartDate = startDate;
+const originalEndDate = endDate;
+document.getElementById('start-year-input').value = startDate;
+document.getElementById('end-year-input').value = endDate;
+
+// refresh list of available states and regions
 refreshSelectionMenus();
+initializeDropDownMenu();
 
 // updates currentData that will be visualized on screen
 function refreshCurrentData() {
@@ -58,17 +66,19 @@ function refreshCurrentData() {
     refreshSelectionMenus();
 }
 
-// fetch json data and put into totalData
-function getData(url) {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            totalData = JSON.parse(this.responseText);
-        }
-    };
-    console.log("Done!");
-    xmlhttp.open("GET", "historical_data.json", true);
-    xmlhttp.send();
+// source: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseXML
+function getDataFromLocal(url) {
+  var xhr = new XMLHttpRequest;
+  xhr.open('GET', url, true)
+  xhr.responseType = 'json';
+  xhr.onload = function() {
+    if (xhr.readyState === xhr.DONE) {
+      if (xhr.status === 200) {
+          totalData = [{"_id":"5bcb7928763d69464cb8d23e","yearNumber":1,"state":"AL","nf":"BANKHEAD","classification":"RD","forest":"BANKHEAD RD","stateCode":1,"forestCode":1,"latitude":34.23306,"longitude":-87.31112,"host":20.68,"year":1986,"spbPerTwoWeeks":null,"cleridsPerTwoWeeks":null,"spots":564,"spotsPerHundredKm":273,"percentSpb":null,"__v":0,"id":"5bcb7928763d69464cb8d23e"}];
+      }
+    }
+  };
+  xhr.send();
 };
 
 // updates the start and end dates for the available data
@@ -88,16 +98,48 @@ function updateStartAndEndDateFromCurrentData() {
 
 }
 
+// trigger function for when user presses enter in start date field
+document.getElementById('start-year-input').onkeypress=function(e) {
+    if(e.keyCode==13){
+        document.getElementById('start-year-submit').click();
+    }
+}
+
+// trigger function for when user presses enter in end date field
+document.getElementById('end-year-input').onkeypress=function(e) {
+    if(e.keyCode==13){
+        document.getElementById('end-year-submit').click();
+    }
+}
+
 // trigger function for when user adjusts start date
-function updateStartDate(year) {
-    startDate = year;
-    refreshCurrentData();
+function updateStartDate() {
+    userEntry = document.getElementById('start-year-input').value;
+
+    if (Number.isInteger(parseInt(userEntry, 10)) && userEntry >= originalStartDate && userEntry <= originalEndDate && userEntry<=endDate) {
+        startDate = userEntry;
+        refreshCurrentData();
+        console.log("start date is now: " + startDate);
+    }
+
+    else {
+        document.getElementById('start-year-input').value = startDate;
+    }
 }
 
 // trigger function for when user adjusts end date
-function updateEndDate(year) {
-    endDate = year;
-    refreshCurrentData();
+function updateEndDate() {
+    userEntry = document.getElementById('end-year-input').value;
+
+    if (Number.isInteger(parseInt(userEntry, 10)) && userEntry <= originalEndDate && userEntry >= originalStartDate && userEntry>=startDate) {
+        endDate = userEntry;
+        refreshCurrentData();
+        console.log("end date is now: " + endDate);
+    }
+
+    else {
+        document.getElementById('end-year-input').value = endDate;
+    }
 }
 
 // trigger function for when user adjusts state
@@ -110,7 +152,7 @@ function changeStateSelection() {
         document.getElementById("select-buttons").children[1].setAttribute("id","active");
 
         // show region area
-        document.getElementById("region").style.display = "block";
+        $("#region").slideDown();
     }
 
     // update global variable to the newly selected state and get stateName
@@ -137,6 +179,7 @@ function changeRegionSelection() {
 
     // refresh the data available for analysis
     refreshCurrentData();
+    console.log(currentData);
 }
 
 // trigger function for when user wants to switch between viewing data for all US or just a specific state
@@ -150,8 +193,9 @@ function switchNationSelection(newSelect) {
         document.getElementById("select-buttons").children[0].setAttribute("id","active");
         document.getElementById("select-buttons").children[1].removeAttribute("id");
 
-        // hide region area
-        document.getElementById("region").style.display = "none";
+        // hide region area and change user instructions
+        $("#region").slideUp();
+        document.getElementById('click-instructions').innerHTML = "Click <strong>State Selection</strong> to view metrics in specific states.";
 
         // change state to United States
         textFields = document.getElementsByClassName("state-text");
@@ -171,8 +215,9 @@ function switchNationSelection(newSelect) {
         document.getElementById("select-buttons").children[0].removeAttribute("id");
         document.getElementById("select-buttons").children[1].setAttribute("id","active");
 
-        // show region area
-        document.getElementById("region").style.display = "block";
+        // show region area and change user instructions
+        $("#region").slideDown();
+        document.getElementById('click-instructions').innerHTML = "Click <strong>United States</strong> to view metrics for the whole nation.";
 
         // refresh the list of available states and regions on the screen
         refreshSelectionMenus();
@@ -190,7 +235,7 @@ function switchNationSelection(newSelect) {
 function refreshSelectionMenus() {
     updateAvailableStatesAndRegionsInDropDown();
     clearSelectionOptionNodes();
-    populateSelectionMenus();
+    updateRegionDropDown();
 }
 
 // update the map of available states and regions to be placed in drop down menu based on current data
@@ -201,28 +246,17 @@ function updateAvailableStatesAndRegionsInDropDown() {
         stateRegionMap[stateAbbrev] = [stateRegionMap[stateAbbrev][0]];
     }
 
-    // update stateRegionMap based on current data
-    for (obj in currentData) {
+    // update stateRegionMap based on total data
+    for (obj in totalData) {
         // if the state region map doesn't include this region, add it
-        if (!stateRegionMap[currentData[obj].state].includes(currentData[obj].nf)) {
-            stateRegionMap[currentData[obj].state].push(currentData[obj].nf);
+        if (!(stateRegionMap[totalData[obj].state].includes(totalData[obj].nf)) && totalData[obj].nf != "") {
+            stateRegionMap[totalData[obj].state].push(totalData[obj].nf);
         }
     }
 }
 
-// remove all option elements that are child nodes of the selection menus
+// remove all option elements that are child nodes of the region selection menu
 function clearSelectionOptionNodes() {
-    // clear state selection menu
-    // grab a reference to DOM state select node and its children
-    stateSelectNode = document.getElementById('state-select');
-    optionDivs = stateSelectNode.children;
-
-    // remove all children of the select menu but the default select state
-    while (optionDivs.length > 1) {
-        optionDivs[1].remove();
-    }
-
-    // clear region selection menus
     // grab a reference to DOM region select node and its children
     regionSelectNode = document.getElementById('region-select');
     optionDivs = regionSelectNode.children;
@@ -233,8 +267,7 @@ function clearSelectionOptionNodes() {
     }
 }
 
-// creates option elements as children nodes to the selection menu for all available states and regions in the map
-function populateSelectionMenus() {
+function initializeDropDownMenu() {
     // grab a reference to DOM state select node and its children
     stateSelectNode = document.getElementById('state-select');
     optionDivs = stateSelectNode.children;
@@ -252,34 +285,35 @@ function populateSelectionMenus() {
             stateSelectNode.appendChild(optionElement);
         }
     }
-
-    // if the user has selected a state, update region options
-    if (state != null) {
-        updateRegionDropDown();
-    }
 }
 
 // update all region dropdown options in the DOM
 function updateRegionDropDown() {
-    regions = stateRegionMap[state];
+    if (state != null) {
+        regions = stateRegionMap[state];
 
-    // grab a reference to DOM region select node and its children
-    regionSelectNode = document.getElementById('region-select');
-    optionDivs = regionSelectNode.children;
+        // grab a reference to DOM region select node and its children
+        regionSelectNode = document.getElementById('region-select');
+        optionDivs = regionSelectNode.children;
 
-    // remove all children of the select menu but the default select region
-    while (optionDivs.length > 1) {
-        optionDivs[1].remove();
-    }
+        // remove all children of the select menu but the default select region
+        while (optionDivs.length > 1) {
+            optionDivs[1].remove();
+        }
 
-    // add option elements to the select menu for each region associated with
-    // the current state that the user selected
-    for (i=1; i<regions.length; i++) {
-        optionElement = document.createElement("OPTION");
-        optionElement.setAttribute('value',regions[i]);
-        textField = document.createTextNode(regions[i]);
-        optionElement.appendChild(textField);
-        regionSelectNode.appendChild(optionElement);
+        // add option elements to the select menu for each region associated with
+        // the current state that the user selected
+        for (i=1; i<regions.length; i++) {
+            optionElement = document.createElement("OPTION");
+            optionElement.setAttribute('value',regions[i]);
+            textField = document.createTextNode(regions[i]);
+            optionElement.appendChild(textField);
+            regionSelectNode.appendChild(optionElement);
+
+            if (region!=null && regions[i]==region) {
+                document.getElementById('region-select').selectedIndex = i;
+            }
+        }
     }
 }
 
@@ -299,4 +333,47 @@ function updateRegionTextFields() {
     for (i = 0; i < textFields.length; i++) {
         textFields[i].innerHTML = region;
     }
+}
+
+
+// moves the prediction model into the data-analytics area
+function movePredictionModelDown() {
+    // grab references
+    mapArea = document.getElementById('map-area');
+    predModel = document.getElementById('prediction-model');
+    dataInsightsHolder = document.getElementById('data-insights-holder');
+
+    // move DOM nodes and remove styling class
+    dataInsightsHolder.appendChild(predModel);
+    mapArea.classList.remove("flex-item-left");
+
+    // adjust text fields and onclick event
+    document.getElementById('adjust-map-size-button').innerHTML = "Collapse Map";
+    document.getElementById('adjust-map-size-button').setAttribute( "onclick", "movePredictionModelUp();");
+}
+
+// moves the prediction model up into the map area
+function movePredictionModelUp() {
+    // grab references
+    mapArea = document.getElementById('map-area');
+    predModel = document.getElementById('prediction-model');
+    mapAreaContainer = document.getElementById('map-area-container');
+
+    // move DOM nodes and remove styling class
+    mapAreaContainer.appendChild(predModel);
+    mapArea.classList.add("flex-item-left");
+
+    // adjust text fields and onclick event
+    document.getElementById('adjust-map-size-button').innerHTML = "Expand Map";
+    document.getElementById('adjust-map-size-button').setAttribute( "onclick", "movePredictionModelDown();");
+}
+
+function resetCurrentData() {
+    currentData = totalData;
+    updateStartAndEndDateFromCurrentData();
+    document.getElementById('start-year-input').value = startDate;
+    document.getElementById('end-year-input').value = endDate;
+    refreshSelectionMenus();
+    switchNationSelection('us');
+    document.getElementById('region-select').selectedIndex = "0";
 }

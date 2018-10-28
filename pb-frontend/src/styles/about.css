@@ -1,6 +1,6 @@
 /* style elements for about.html */
 
-.about-project p, .using-product p {
+.about-project p, .next-steps p, .using-product p {
     text-align: left;
     margin: 15px 50px;
     line-height: 2;
@@ -40,6 +40,10 @@
     padding: 2% 5%;
 }
 
+a:hover {
+    text-decoration: underline;
+}
+
 .meet-team img {
     width: 225px;
     height: 225px;
@@ -67,6 +71,11 @@
 }
 
 .using-product {
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+}
+
+.next-steps {
     flex: 1.5;
     flex-direction: column;    /* vertical alignment of flex items */
     justify-content: flex-start;   /* center flex items vertically */
