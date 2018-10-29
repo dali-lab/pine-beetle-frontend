@@ -6,3 +6,6 @@ if errors, might be caused by collection name–mongo usually generates its own 
 
 ### Starter pack
 Includes express, node, and mongo dependencies (API, server, database)
+
+
+## todo include run and setup directions
