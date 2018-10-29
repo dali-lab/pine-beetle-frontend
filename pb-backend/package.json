@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.js --exec babel-node",
     "start": "babel-node src/server.js",
-    "build": "babel src -d dist",
+    "build": "babel src -d dist; cp -f src/*.R dist/",
     "prod": "yarn build; node dist/server.js",
     "samplePopulate": "babel-node src/samplePopulate.js",
     "importHistorical": "babel-node src/importHistoricalData.js",
