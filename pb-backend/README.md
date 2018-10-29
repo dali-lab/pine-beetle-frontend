@@ -10,5 +10,4 @@ Includes express, node, and mongo dependencies (API, server, database)
 ### dev notes
 brew install heroku/brew/heroku
 
-Error: Couldn't find preset "env" relative to directory "/app"
-Error: Cannot find module '/app/dist/server.js'
+## todo include run and setup directions
