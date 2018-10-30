@@ -348,7 +348,7 @@ function movePredictionModelDown() {
 
     // move DOM nodes and remove styling class
     dataInsightsHolder.appendChild(predModel);
-    dataInsightsHolder.classList.add("flex-item-left");
+    document.getElementById('data-insights').classList.add("flex-item-left");
     mapArea.classList.remove("flex-item-left");
 
 
@@ -367,7 +367,7 @@ function movePredictionModelUp() {
     // move DOM nodes and remove styling class
     mapAreaContainer.appendChild(predModel);
     mapArea.classList.add("flex-item-left");
-    dataInsightsHolder.classList.remove("flex-item-left");
+    document.getElementById('data-insights').classList.remove("flex-item-left");
 
     // adjust text fields and onclick event
     document.getElementById('adjust-map-size-button').innerHTML = "Expand Map";
