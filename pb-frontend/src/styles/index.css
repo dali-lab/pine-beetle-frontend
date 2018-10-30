@@ -4,14 +4,14 @@
     flex: 2.4;
 }
 
-.landing-text h2 {
+.landing-text h1 {
+    margin-top: 20px;
     font-weight: 600;
 }
 
 #p-tight {
     width: 60%;
-    padding-top: 10px;
-    margin: auto;
+    margin: 20px auto;
     font-size: 17px;
 }
 
@@ -27,7 +27,8 @@
     background-color: #192D35;
     border-radius: 5px;
     display: inline-block;
-    margin-top: 15px;
+    margin-top: 7px;
+    margin-bottom: 7px;
 
     -o-transition:.5s;
     -ms-transition:.5s;
@@ -97,48 +98,46 @@
     text-decoration: underline;
 }
 
-.meet-team img {
-    width: 225px;
-    height: 225px;
-    border-radius: 50%;
+#partners-cooperators {
+    flex: 4;
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+    text-align: left;
 }
 
-#people-previews {
-    height: auto;
-    display: block;
+#text {
+    margin: 15px 4%;
 }
 
-#people-previews p {
-    width: 400px;
+#partners-cooperators h2 {
+    margin: 15px 4% 0px 4%;
 }
 
-#people-previews h4 {
-    margin-top: 10px;
+#partners-cooperators .line {
+    margin: 10px 4.1%;
+    width: 250px;
 }
 
-.person {
-    display: inline-block;
-    margin-left: 4%;
-    margin-right: 4%;
-    margin-top: 15px;
+#images {
+    text-align: center;
 }
 
-.person p {
-    margin-left: auto;
-    margin-right: auto;
+#images img {
+    margin: 15px auto;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 
-#img-right {
-    width: 503px;
+#usfs-img {
+    padding-bottom: 5px;
 }
 
-#img-right img {
-    width: 483px;
-    height: 211px;
-    padding: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+#dart-img {
+    padding-bottom: 20px;
+}
+
+#text {
+    margin: 15px 4%;
 }
 
 #selection-areas {

@@ -91,9 +91,13 @@ a:hover {
     padding-bottom: 5px;
 }
 
-.contact-info a {
+.contact-info a, .using-product a {
     text-decoration: none;
     color: inherit;
+}
+
+.using-product a:hover {
+    text-decoration: underline;
 }
 
 #contact-info-area {

@@ -61,14 +61,17 @@
                         </div>
 
 						<div class="selection">
-                            <h3>Map Filter #1</h3>
+                            <h3>Select Local Forest</h3>
 							<select id="" name="" onchange="">
-                                <option value="" selected disabled>Selection Menu</option>
+                                <option value="" selected disabled>Select Local Forest</option>
                           	</select>
 							<button id="" class="submit" onclick="">Submit</button>
                         </div>
-						<button id="adjust-map-size-button" class="submit" onclick="movePredictionModelDown()">Expand Map</button>
-						<button id="reset-current-data-button" class="submit" onclick="resetCurrentData()">Reset Data</button>
+						<button id="reset-current-data-button" class="submit static-button" onclick="resetCurrentData()">Reset Filters</button>
+						<button id="adjust-map-size-button" class="submit static-button" onclick="movePredictionModelDown()">Expand Map</button>
+						<br>
+						<button class="submit static-button" onclick="startLoadingAnimation()">Start Animation</button>
+						<button class="submit static-button" onclick="stopLoadingAnimation()">Stop Animation</button>
                     </div>
 
 				</div>
@@ -113,11 +116,12 @@
 						<a class="button" onclick="switchNationSelection('cs');">State Selection</a>
 					</div>
 					<p id="click-instructions">Click <strong>State Selection</strong> to view metrics in specific states.</p>
+					<img id="load-icon" src="images/load-icon.gif"></img>
 				</div>
 			</div>
 
 			<div class="flex-container" id="data-insights-holder">
-				<div class="container data-insights flex-item flex-item-left">
+				<div class="container data-insights flex-item">
 					<h2>Data Insights</h2>
 					<div class="line"></div>
 					<p>Graphs and charts and stuff here.</p>

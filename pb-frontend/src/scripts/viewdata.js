@@ -203,6 +203,9 @@ function switchNationSelection(newSelect) {
             textFields[i].innerHTML = "United States";
         }
 
+        // refresh the data available for analysis and reset
+        refreshCurrentData();
+
         // change selection menus to default selection
         document.getElementById('state-select').selectedIndex = "0";
         document.getElementById('region-select').selectedIndex = "0";
@@ -225,10 +228,10 @@ function switchNationSelection(newSelect) {
         // update selection menus and text fields
         document.getElementById('state-select').selectedIndex = "1";
         changeStateSelection();
-    }
 
-    // refresh the data available for analysis
-    refreshCurrentData();
+        // refresh the data available for analysis
+        refreshCurrentData();
+    }
 }
 
 // refreshes the selection menus based on the available data for the desired dates, state, and region
@@ -345,7 +348,9 @@ function movePredictionModelDown() {
 
     // move DOM nodes and remove styling class
     dataInsightsHolder.appendChild(predModel);
+    dataInsightsHolder.classList.add("flex-item-left");
     mapArea.classList.remove("flex-item-left");
+
 
     // adjust text fields and onclick event
     document.getElementById('adjust-map-size-button').innerHTML = "Collapse Map";
@@ -362,13 +367,16 @@ function movePredictionModelUp() {
     // move DOM nodes and remove styling class
     mapAreaContainer.appendChild(predModel);
     mapArea.classList.add("flex-item-left");
+    dataInsightsHolder.classList.remove("flex-item-left");
 
     // adjust text fields and onclick event
     document.getElementById('adjust-map-size-button').innerHTML = "Expand Map";
     document.getElementById('adjust-map-size-button').setAttribute( "onclick", "movePredictionModelDown();");
 }
 
+// trigger function when user presses reset data button
 function resetCurrentData() {
+    // set current to total and update menus/dropdowns
     currentData = totalData;
     updateStartAndEndDateFromCurrentData();
     document.getElementById('start-year-input').value = startDate;
@@ -376,4 +384,34 @@ function resetCurrentData() {
     refreshSelectionMenus();
     switchNationSelection('us');
     document.getElementById('region-select').selectedIndex = "0";
+}
+
+// start the loading animation for the prediction model area - call this function, then run the model
+function startLoadingAnimation() {
+    // grab children and set opacity of all elements in the div to 0.2
+    areaDivElements = document.getElementById('prediction-model').children;
+
+    for (i=0;i<areaDivElements.length-1;i++) {
+        if (areaDivElements[i].id != "load-icon") {
+            areaDivElements[i].style.opacity = 0.15;
+        }
+    }
+
+    // add load icon
+    document.getElementById('load-icon').style.opacity = 1;
+}
+
+// stop the loading animation for the predictino model area - call this function after the model finishes running
+function stopLoadingAnimation() {
+    // remove load icon
+    document.getElementById('load-icon').style.opacity = 0;
+
+    // grab children and set opacity of all elements in the div back to 1
+    areaDivElements = document.getElementById('prediction-model').children;
+
+    for (i=0;i<areaDivElements.length-1;i++) {
+        if (areaDivElements[i].id != "load-icon") {
+            areaDivElements[i].style.opacity = 1;
+        }
+    }
 }

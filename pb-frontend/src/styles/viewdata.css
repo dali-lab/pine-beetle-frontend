@@ -100,6 +100,10 @@ input:hover {
     margin-right: 10px;
 }
 
+.static-button {
+    margin-top: 10px;
+}
+
 #active {
     background-color: #ABB2B5;
     color: #212122;
@@ -109,6 +113,13 @@ input:hover {
 .prediction-model {
     flex-direction: column;    /* vertical alignment of flex items */
     justify-content: flex-start;   /* center flex items vertically */
+    position: relative;
+}
+
+.prediction-model * {
+    transition: opacity 0.5s ease;
+    backface-visibility: hidden;
+    opacity: 1;
 }
 
 .prediction-model h1 {
@@ -125,6 +136,19 @@ input:hover {
     font-weight: lighter;
     font-size: 22px;
     padding-bottom: 0px;
+}
+
+#load-icon {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100px;
+    height: 100px;
 }
 
 .pred-area {
