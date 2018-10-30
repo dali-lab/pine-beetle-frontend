@@ -35,6 +35,11 @@
     margin-bottom: 15px;
 }
 
+#sgfs-img {
+    width: 85px;
+    height: 133px;
+}
+
 #more-info-text {
     text-align: center;
     padding: 2% 5%;
