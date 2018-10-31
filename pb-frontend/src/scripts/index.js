@@ -1,22 +1,21 @@
-import '../styles/index.css';
-import '../styles/default.css';
-import '../styles/about.css';
-import '../styles/viewdata.css';
+// import '../styles/index.css';
+// import '../styles/default.css';
+// import '../styles/about.css';
+// import '../styles/viewdata.css';
 
-import './default.js';
-import './map.js';
-import './viewdata.js';
+// import './default.js';
+// // import './map.js';
+// import './viewdata.js';
+// import './importFromLocal.js';
 
-import '../images/dali.png';
-import '../images/dali_blue_green.png';
-import '../images/dali_dark.png';
-import '../images/dartmouth.png';
-import '../images/future_des_1.png';
-import '../images/future_des_2.png';
-import '../images/sample_img_1.jpeg';
-import '../images/sample_img_2.jpg';
-import '../images/sample_img_3.jpeg';
-import '../images/usfs.png';
+// import '../images/dali_dark.png';
+// import '../images/dartmouth.png';
+// import '../images/usfs.png';
+// import '../images/load-icon.gif';
+// import '../images/sgsf.png';
+
+// // require('./default.js');
+// // require('./viewdata.js');
 
 var selection = "us";
 

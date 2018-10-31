@@ -22,10 +22,10 @@ export const makePredictions = (SPB, cleridst1, spotst1, spotst2, endobrev) => {
 			return d;
 		});
 }
-try {
-	makePredictions(2000, 582, 1006, 400, 1);
-} catch(err) {
-	console.log(err);
-}
+// try {
+// 	makePredictions(2000, 582, 1006, 400, 1);
+// } catch(err) {
+// 	console.log(err);
+// }
 
 

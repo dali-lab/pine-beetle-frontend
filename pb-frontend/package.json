@@ -9,7 +9,7 @@
     "start": "NODE_ENV=development webpack-serve ./webpack.config.js",
     "build": "yarn clean; NODE_ENV=production webpack --colors",
     "clean": "rimraf dist",
-    "deploy": "yarn build; surge -p dist -d pine-beetle-prediction.surge.sh; yarn clean"
+    "deploy": "surge -p src -d pine-beetle-prediction.surge.sh"
   },
   "devDependencies": {
     "autoprefixer": "^8.2.0",
