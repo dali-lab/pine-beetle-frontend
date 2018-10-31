@@ -17,15 +17,18 @@ export const makePredictions = (SPB, cleridst1, spotst1, spotst2, endobrev) => {
 			endobrev
 		})
 		.call(function(err, d) {
-			if (err) throw err;
+			if (err) {
+				console.log(err);
+			}
+				// throw err;
 			console.log(d); // logs successfully
 			return d;
 		});
 }
-// try {
-// 	makePredictions(2000, 582, 1006, 400, 1);
-// } catch(err) {
-// 	console.log(err);
-// }
+try {
+	makePredictions(2000, 582, 1006, 400, 1);
+} catch(err) {
+	console.log(err);
+}
 
 
