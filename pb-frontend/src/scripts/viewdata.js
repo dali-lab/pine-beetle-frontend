@@ -53,6 +53,15 @@ function refreshCurrentData() {
     }
     currentData = newSet;
     refreshSelectionMenus();
+    console.log(currentData);
+
+    var sum = 0;
+
+    for (obj in currentData) {
+        sum += currentData[obj].cleridsPerTwoWeeks;
+    }
+
+    document.getElementById('total-beetles').innerHTML = "total beetles: " + sum;
 }
 
 // source: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseXML
