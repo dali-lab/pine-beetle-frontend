@@ -19,7 +19,7 @@ var currentData = []; // just the data that the user wants to look at based on c
 
 // set totalData and currentData from the historical data
 // getDataFromLocal('historical_data.json');
-currentData = totalData; //temporary - will set this in the getDataFromLocal function
+// currentData = totalData; //temporary - will set this in the getDataFromLocal function
 
 // this holds all possible states that data exists for based on the user-selected years
 // all array elements in index 1 or greater represent associated regions for that state
@@ -41,17 +41,6 @@ var stateRegionMap = {
     TX:["Texas"],
     VA:["Virginia"]
 }
-
-// update start and end dates initially available to user and hold onto original dates
-updateStartAndEndDateFromCurrentData();
-const originalStartDate = startDate;
-const originalEndDate = endDate;
-document.getElementById('start-year-input').value = startDate;
-document.getElementById('end-year-input').value = endDate;
-
-// refresh list of available states and regions
-refreshSelectionMenus();
-initializeDropDownMenu();
 
 // updates currentData that will be visualized on screen
 function refreshCurrentData() {
@@ -415,3 +404,40 @@ function stopLoadingAnimation() {
         }
     }
 }
+
+
+
+var pathName = 'historical_data.json';
+getDataFromLocal(pathName);
+
+//Source: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseXML
+function getDataFromLocal(url) {
+  // console.log("Running!!!");
+  var xhr = new XMLHttpRequest;
+  xhr.open('GET', url, true);
+  xhr.responseType = 'json';
+  xhr.onload = function() {
+    if (xhr.readyState === xhr.DONE) {
+      if (xhr.status === 200) {
+        // console.log("Completed!");
+        // console.log(xhr.response);
+        // refresh list of available states and regions
+        totalData = xhr.response;
+        currentData = totalData;
+        console.log(currentData);
+
+        // update start and end dates initially available to user and hold onto original dates
+        updateStartAndEndDateFromCurrentData();
+        const originalStartDate = startDate;
+        const originalEndDate = endDate;
+        document.getElementById('start-year-input').value = startDate;
+        document.getElementById('end-year-input').value = endDate;
+
+
+        refreshSelectionMenus();
+        initializeDropDownMenu();
+      }
+    }
+  };
+  xhr.send();
+};
