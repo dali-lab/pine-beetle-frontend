@@ -1,22 +1,3 @@
-// import '../styles/index.css';
-// import '../styles/default.css';
-// import '../styles/about.css';
-// import '../styles/viewdata.css';
-
-// import './default.js';
-// // import './map.js';
-// import './viewdata.js';
-// import './importFromLocal.js';
-
-// import '../images/dali_dark.png';
-// import '../images/dartmouth.png';
-// import '../images/usfs.png';
-// import '../images/load-icon.gif';
-// import '../images/sgsf.png';
-
-// // require('./default.js');
-// // require('./viewdata.js');
-
 var selection = "us";
 
 // show nation-wide predictions on home page
