@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 
-// TODO this is a guess at types
 const SpotSchema = new Schema({
 	county: String,
 	spotNo: String,
@@ -26,8 +25,5 @@ const SpotSchema = new Schema({
 	},
 });
 
-// PollSchema.virtual('score').get(function scoreCalc() {
-//   return this.upvotes - this.downvotes;
-// });
 const SpotModel = mongoose.model('Spot', SpotSchema);
 export default SpotModel;

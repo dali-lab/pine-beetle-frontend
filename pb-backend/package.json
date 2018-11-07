@@ -12,7 +12,8 @@
     "prod": "yarn build; node dist/server.js",
     "samplePopulate": "babel-node src/samplePopulate.js",
     "importHistorical": "babel-node src/importHistoricalData.js",
-    "rerunModel": "babel-node src/runRModel.js"
+    "rerunModel": "babel-node src/runRModel.js",
+    "testSurvey123toMongo": "node src/importSurvey123toMongo.js"
   },
   "license": "ISC",
   "engines": {

@@ -1,8 +1,9 @@
 import mongoose, { Schema } from 'mongoose';
 
-// document design choices–how to reconcile multiple schemas
-// when to use which-historical up to 2016? 2018? then survey123
-// TODO this is a guess at types and validation
+// TODO historical data is NOT the same format as Survey123 data (which is already either Trapping or Spot)
+// when fetching data to display, it could be returned in up to 3 different models
+// it may be easiest to choose to use only historical data up to some year, say 2018 (where it ends)
+// and then use Survey123 data from that point on (2019+)
 const HistoricalSchema = new Schema({
 	yearNumber: {
 		type: Number,
@@ -66,8 +67,5 @@ const HistoricalSchema = new Schema({
 	},
 });
 
-// PollSchema.virtual('score').get(function scoreCalc() {
-//   return this.upvotes - this.downvotes;
-// });
 const HistoricalModel = mongoose.model('Historical', HistoricalSchema);
 export default HistoricalModel;

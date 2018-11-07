@@ -1,6 +1,9 @@
 /*
  * import historical data
  * perform validation checking, fill in missing values
+ * this script is run to import the historical data csv once
+ * re-running will import all the historical data again, increasing the size of the db
+ * if there is an update to the historical data, delete the existing data before running this again to avoid duplication
  */
 import HistoricalModel from './models/historical'
 import mongoose from 'mongoose'
