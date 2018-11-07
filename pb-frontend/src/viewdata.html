@@ -32,11 +32,11 @@
             <div style="clear:both;"></div>
         </div>
 
-		<div class="content">
+		<div class="content" id="content">
 			<div class="flex-container">
 				<div class="container filter-selections">
 					<div id="selection-areas">
-						<div class="selection">
+						<div id="test" class="selection">
 							<h3>Enter Start Year</h3>
 							<input id="start-year-input" type="text" name="fname" onclick="this.select()">
 						    <button id="start-year-submit" class="submit" onclick="updateStartDate()">Submit</button>
@@ -49,28 +49,26 @@
 
                         <div class="selection">
                         <h3>Select State</h3>
-                            <select id="state-select" name="state" onchange="changeStateSelection();">
+                            <select class="selection-no-button" id="state-select" name="state" onchange="changeStateSelection();">
                                 <option value="" selected disabled>Select State</option>
                           </select>
                         </div>
                         <div class="selection">
                             <h3>Select Natl Forest</h3>
-                            <select id="region-select" name="region" onchange="changeRegionSelection();">
+                            <select class="selection-no-button" id="nf-select" name="nationalForest" onchange="changeNationalForestSelection();">
                                 <option value="" selected disabled>Select National Forest</option>
                           	</select>
                         </div>
 
 						<div class="selection">
                             <h3>Select Local Forest</h3>
-							<select id="" name="" onchange="">
+							<select class="selection-no-button" id="forest-select" name="forest" onchange="changeForestSelection()">
                                 <option value="" selected disabled>Select Local Forest</option>
                           	</select>
-							<button id="" class="submit" onclick="">Submit</button>
                         </div>
-						<button id="reset-current-data-button" class="submit static-button" onclick="resetCurrentData()">Reset Filters</button>
-						<button id="adjust-map-size-button" class="submit static-button" onclick="movePredictionModelDown()">Expand Map</button>
-                    </div>
-
+						<button id="reset-current-data-button" class="submit static-button" onclick="resetCurrentData()">Clear Filters</button>
+						<button id="adjust-map-size-button" class="submit static-button" onclick="movePredictionModelDown()">Toggle View</button>
+					</div>
 				</div>
 			</div>
 
@@ -83,16 +81,28 @@
 					<h2>Prediction Model</h2>
                     <div class="line"></div>
 					<div id="calculations">
-						<div id="region">
+						<div id="forest">
 							<div class="pred-area">
 								<h1 id="outbreak-prob-region" class="high">74%</h1>
 								<h4>outbreak probability</h4>
-								<h4 class="location region-text"></h4>
+								<h4 class="location forest-text"></h4>
 							</div>
 							<div class="pred-area">
 								<h1 id="outbreak-risk-region" class="high">High</h1>
 								<h4>outbreak risk level</h4>
-								<h4 class="location region-text"></h4>
+								<h4 class="location forest-text"></h4>
+							</div>
+						</div>
+						<div id="nf">
+							<div class="pred-area">
+								<h1 id="outbreak-prob-nf" class="medium">45%</h1>
+								<h4>outbreak probability</h4>
+								<h4 class="location nf-text"></h4>
+							</div>
+							<div class="pred-area">
+								<h1 id="outbreak-risk-nf" class="medium">Medium</h1>
+								<h4>outbreak risk level</h4>
+								<h4 class="location nf-text"></h4>
 							</div>
 						</div>
 						<div id="state">
@@ -122,14 +132,20 @@
 					<h2>Data Insights</h2>
 					<div class="line"></div>
 					<p>Graphs and charts and stuff here.</p>
-					<h1 id="total-beetles">total beetles: 0</p>
+					<div id="beetle-count-area">
+						<h2 id="total-clerids-per-two-weeks">Total Clerids Per Two Weeks: 0</h2>
+						<h2 id="total-spb-per-two-weeks">Total SPB Per Two Weeks: 0</h2>
+						<h2 id="avg-percent-spb">Average Percent SPB: 0%</h2>
+						<h2 id="total-spots">Total Spots: 0</h2>
+						<h2 id="total-spots-per-hundred-km">Total Spots Per Hundred KM: 0</h2>
+					</div>
 				</div>
 			</div>
 		</div>
 
         <div class="footer">
             <div class="container">
-				<p>Prototype designed and built in the Dartmouth DALI Lab. This tool is a working prototype with frequent updates and changes.</p>
+				<p>Designed and developed in the DALI Lab.</p>
 				<a href="http://dali.dartmouth.edu/" target="_blank"><img id="dali-logo" src="images/dali_dark.png" width="102px" height="39px"></a>
             </div>
             <div style="clear:both;"></div>
