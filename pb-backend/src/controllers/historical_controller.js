@@ -1,18 +1,9 @@
+/* all historical data is in src/data/SPB2016_toDALI.csv
+ * identical info as SPB2016_toDALI.json, converted for convenience
+ */
 import HistoricalData from '../models/historical';
 
 
 export const getHistoricalData = () => {
 	return HistoricalData.find({})
 };
-
-// export const getHistoricalDataByCounty = (county) => {
-// 	HistoricalData.find
-// }
-
-
-// export const editField = (sampleId, field, newValue) => {
-// 	SampleData.findOne({ _id: sampleId }).then((example) => {
-// 		example.field = newValue;
-// 		return example.save();
-// 	});
-// };

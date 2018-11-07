@@ -1,3 +1,6 @@
+/* for testing/development purposes
+ * input, edit, and get sample data (src/data/sample_import_data.csv)
+ */
 import SampleData from '../models/sample';
 
 export const getSampleData = () => {

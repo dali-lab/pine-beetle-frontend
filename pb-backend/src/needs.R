@@ -1,3 +1,6 @@
+# this may help with getting libraries for R scripts (only ModelDescription.R, SPB-Predictions.v02.R doesn't use libraries)
+# see https://github.com/joshkatz/r-script for documentation
+
 tryCatch(needs(), error = function(e) {
   while (".needs" %in% search()) detach(.needs)
   .needs <- new.env(parent = .GlobalEnv)

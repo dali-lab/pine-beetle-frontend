@@ -1,3 +1,7 @@
+/* controller conglomerating Trapping and Spot models
+ * Survey123 data is one of two types but we determine which 
+ * by searching for expected fields 
+ */
 import Trapping from '../models/trapping';
 import Spot from '../models/spot';
 

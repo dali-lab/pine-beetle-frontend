@@ -1,12 +1,13 @@
-# October 10, 2018 (MPA)
+# Carissa's script to make predictions based on hard-coded coefficients,
+# requiring these variables as input:
+#	SPB: SPB per trap per two weeks during spring trapping (year t)
+#	cleridst1: clerids per trap per two weeks during spring trapping last year (t-1)
+#	spotst1: beetle spots in forest last year (t-1)
+#	spotst2: beetle spots in forest two years ago (t-2)
+#	endobrev: 0 or 1 for endobrevicomin absent or present in SPB traps
+# originally the above were also hard-coded with SPB = 2635, cleridst1 = 582, spotst1 = 1056, spotst2 = 471, endobrev = 1
 
-# input data for predictions. Model requires five variables. These can be typed in as below or read in one row at a time from a data frame
-# SPB = 2635        # SPB per trap per two weeks during spring trapping (year t)
-attach(input[[1]])  # take parameters (SPB, clerids, spots, endobrev) as input
-# cleridst1 = 582   # clerids per trap per two weeks during spring trapping last year (t-1)
-# spotst1 = 1056    # beetle spots in forest last year (t-1)
-# spotst2 = 471     # beetle spots in forest two years ago (t-2)
-# endobrev= 1       # 0 or 1 for endobrevicomin absent or present in SPB traps
+attach(input[[1]])  # take parameters (SPB, clerids, spots, endobrev) as input (instead of hard-coding) - see ./runRModel.js
 
 # Coefficients below were estimated for a zero-inflated Poisson model fit to historical data using pscl package in R.
 # These coefficients, and means and SDs that follow, remain the same for all predictions.
@@ -72,4 +73,4 @@ ProbSpots.GT.1095 = 1-(pi+(1-pi)*ppois(6,mu,lower.tail=TRUE))    # probability o
 preds <- as.data.frame(c(pi,mu,expSpots_if_spots,ProbSpots.GT.0,ProbSpots.GT.18,ProbSpots.GT.53,ProbSpots.GT.147,ProbSpots.GT.402,ProbSpots.GT.1095))
 rownames(preds) <- c("pi","mu","Exp spots if outbreak","prob.Spots>0","prob.Spots>19","prob.Spots>53","prob.Spots>147","prob.Spots>402","prob.Spots>1095")
 colnames(preds) <- "Predictions"
-preds
+preds # returned as JSON when this script is run through package r-script (see ./runRModel.js)

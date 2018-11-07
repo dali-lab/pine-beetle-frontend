@@ -1,3 +1,6 @@
+/* for testing purposes
+ * Sample allows you to import data from partners' excel sheet on model
+ */
 import mongoose, { Schema } from 'mongoose';
 
 const SampleDataSchema = new Schema({
@@ -23,8 +26,6 @@ const SampleDataSchema = new Schema({
 
 });
 
-// PollSchema.virtual('score').get(function scoreCalc() {
-//   return this.upvotes - this.downvotes;
-// });
+
 const SampleDataModel = mongoose.model('SampleData', SampleDataSchema);
 export default SampleDataModel;

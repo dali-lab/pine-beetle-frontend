@@ -1,6 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
 
-// TODO this is a guess at types
 const TrappingSchema = new Schema({
 	x: Number,
 	y: Number,
@@ -56,8 +55,5 @@ const TrappingSchema = new Schema({
 	},
 });
 
-// PollSchema.virtual('score').get(function scoreCalc() {
-//   return this.upvotes - this.downvotes;
-// });
 const TrappingModel = mongoose.model('Trapping', TrappingSchema);
 export default TrappingModel;
