@@ -211,59 +211,99 @@ function changeStateSelection() {
         document.getElementById('click-instructions').innerHTML = "Click <strong>United States</strong> to view metrics for the whole nation.";
     }
 
-    // update global variable to the newly selected state and get stateName
-    state = document.getElementById('state-select').value
-    stateName = stateAbbrevToStateName[state];
+    // if user wants to reset state to null
+    if (document.getElementById('state-select').value == "null") {
+        resetCurrentData();
+        document.getElementById('state-select').children[0].innerHTML = "Select State";
+    }
 
-    nationalForest = null;
-    forest = null;
+    else {
+        // update global variable to the newly selected state and get stateName
+        state = document.getElementById('state-select').value
+        stateName = stateAbbrevToStateName[state];
 
-    availableNationalForests = [];
-    availableLocalForests = [];
+        nationalForest = null;
+        forest = null;
 
-    // refresh the data available for analysis
-    refreshCurrentData();
+        availableNationalForests = [];
+        availableLocalForests = [];
 
-    // update the drop down menu of new forests
-    refreshSelectionMenus();
+        // refresh the data available for analysis
+        refreshCurrentData();
 
-    // update all text fields on screen
-    updateStateTextFields(stateName);
-    updateNationalForestTextFields();
-    updateForestTextFields();
+        // update the drop down menu of new forests
+        refreshSelectionMenus();
 
-    // clear forest selection menus
-    document.getElementById('nf-select').selectedIndex = "0";
-    document.getElementById('forest-select').selectedIndex = "0";
+        // update all text fields on screen
+        updateStateTextFields(stateName);
+        updateNationalForestTextFields();
+        updateForestTextFields();
 
-    $("#forest").slideUp();
-    $("#nf").slideUp();
+        // clear forest selection menus
+        document.getElementById('nf-select').selectedIndex = "0";
+        document.getElementById('forest-select').selectedIndex = "0";
+
+        $("#forest").slideUp();
+        $("#nf").slideUp();
+
+        // change selection option text
+        document.getElementById('state-select').children[0].innerHTML = "Clear State Selection";
+    }
 }
 
 // trigger function for when user adjusts national forest
 function changeNationalForestSelection() {
-    nationalForest = document.getElementById('nf-select').value
-    updateNationalForestTextFields();
+    if (document.getElementById('nf-select').value == "null") {
+        nationalForest = null;
+        refreshCurrentData();
+        $("#nf").slideUp();
+        document.getElementById('nf-select').children[0].innerHTML = "Select National Forest";
+    }
 
-    // refresh the data available for analysis
-    refreshCurrentData();
+    else {
+        nationalForest = document.getElementById('nf-select').value
+        updateNationalForestTextFields();
 
-    // display prediction areas as necessary
-    if (forest != null) {$("#forest").slideDown();}
-    if (nationalForest != null) {$("#nf").slideDown();}
+        // refresh the data available for analysis
+        refreshCurrentData();
+
+        // display prediction areas as necessary
+        if (forest != null) {$("#forest").slideDown();}
+        if (nationalForest != null) {$("#nf").slideDown();}
+
+        // change selection option text
+        document.getElementById('nf-select').children[0].innerHTML = "Clear Natl Forest Selection";
+    }
 }
 
 // trigger function for when user adjusts local forest
 function changeForestSelection() {
-    forest = document.getElementById('forest-select').value
-    updateForestTextFields();
+    if (document.getElementById('forest-select').value == "null") {
+        forest = null;
+        refreshCurrentData();
+        $("#forest").slideUp();
 
-    // refresh the data available for analysis
-    refreshCurrentData();
+        if (nationalForest == null) {
+            $("#nf").slideUp();
+        }
 
-    // display prediction areas as necessary
-    if (forest != null) {$("#forest").slideDown();}
-    if (nationalForest != null) {$("#nf").slideDown();}
+        document.getElementById('forest-select').children[0].innerHTML = "Select Forest";
+    }
+
+    else {
+        forest = document.getElementById('forest-select').value
+        updateForestTextFields();
+
+        // refresh the data available for analysis
+        refreshCurrentData();
+
+        // display prediction areas as necessary
+        if (forest != null) {$("#forest").slideDown();}
+        if (nationalForest != null) {$("#nf").slideDown();}
+
+        // change selection option text
+        document.getElementById('forest-select').children[0].innerHTML = "Clear Forest Selection";
+    }
 }
 
 // trigger function for when user wants to switch between viewing data for all US or just a specific state
@@ -549,6 +589,10 @@ function resetCurrentData() {
 
     availableNationalForests = [];
     availableLocalForests = [];
+
+    document.getElementById('state-select').children[0].innerHTML = "Select State";
+    document.getElementById('nf-select').children[0].innerHTML = "Select National Forest";
+    document.getElementById('forest-select').children[0].innerHTML = "Select Forest";
 }
 
 // start the loading animation for the prediction model area - call this function, then run the model
