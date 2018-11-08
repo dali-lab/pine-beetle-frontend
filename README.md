@@ -34,6 +34,7 @@ Trapping data is entered in the spring. Spot data is entered in the fall and win
 	- `brew install mongo`
 	- `brew install heroku/brew/heroku`
 	- `brew install python`
+- You will also need to have R installed locally on your computer if you would like to test out the R model locally, (it isn't deployed yet!) For more information see, https://cran.r-project.org/.
 #### Project:
 - Clone repository
   git clone https://github.com/dali-lab/project-pine-beetle.git
