@@ -249,6 +249,8 @@ function changeStateSelection() {
         // change selection option text
         document.getElementById('state-select').children[0].innerHTML = "Clear State Selection";
     }
+
+    refreshSelectionMenus();
 }
 
 // trigger function for when user adjusts national forest
@@ -274,6 +276,8 @@ function changeNationalForestSelection() {
         // change selection option text
         document.getElementById('nf-select').children[0].innerHTML = "Clear Natl Forest Selection";
     }
+
+    refreshSelectionMenus();
 }
 
 // trigger function for when user adjusts local forest
@@ -304,6 +308,8 @@ function changeForestSelection() {
         // change selection option text
         document.getElementById('forest-select').children[0].innerHTML = "Clear Forest Selection";
     }
+
+    refreshSelectionMenus();
 }
 
 // trigger function for when user wants to switch between viewing data for all US or just a specific state
