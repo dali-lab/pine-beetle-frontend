@@ -23,11 +23,7 @@ app.use(morgan('dev'));
 // enable only if you want static assets from folder static
 app.use(express.static('static'));
 
-// enable json message body for posting data to API
-// bodyParser = {
-// 	json: {limit: '50mb', extended: true},
-// 	urlencoded: {limit: '50mb', extended: true}
-// };
+// enable json message body for posting data to API, extend default size limit
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json({ limit: '50mb', extended: true }));
 // app.use(bodyParser)
