@@ -11,7 +11,7 @@
     "build": "babel src -d dist; cp -f src/*.R dist/",
     "prod": "yarn build; node dist/server.js",
     "samplePopulate": "babel-node src/samplePopulate.js",
-    "importHistorical": "babel-node src/importHistoricalData.js",
+    "importHistoricalLocal": "curl -XPOST -H 'Content-type: application/json' -d @./src/data/SPB2016_toDALI.json 'http://localhost:9090/v1/uploadHistorical'",
     "rerunModel": "babel-node src/runRModel.js",
     "testSurvey123toMongo": "node src/importSurvey123toMongo.js"
   },

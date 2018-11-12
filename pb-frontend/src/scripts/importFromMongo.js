@@ -17,6 +17,7 @@ const historicalData = getHistoricalData().then((data) => {
 	console.log(err);
 })
 
+// untested
 const getSpotData = async () => {
 	try {
 		return axios.get(localURL+'getSpots')
@@ -37,13 +38,13 @@ const dataController = { getHistoricalData, getSpotData, getBeetleData }
 export default dataController;
 
 // const spotData = getSpotData().then((data) => {
-// 	console.log(data)
+// 	console.log(data.data)
 // }).catch((err) => {
 // 	console.log(err);
 // })
 
 // const beetleData = getBeetleData().then((data) => {
-// 	console.log(data)
+// 	console.log(data.data)
 // }).catch((err) => {
 // 	console.log(err);
 // })

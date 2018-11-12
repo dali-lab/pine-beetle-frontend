@@ -38,10 +38,19 @@ router.get('/getPredictions', (req, res) => {
 });
 
 router.post('/uploadSurvey123', (req, res) => {
-	dataArray = req.body;
-	console.log(dataArray);
-	controller.batchUpload(dataArray).then((uploaded) => {
+	const data = req.body;
+	controller.batchUpload(data).then((uploaded) => {
 		res.send(uploaded);
+	})
+})
+
+router.post('/uploadHistorical', (req, res) => {
+	const data = req.body;
+	console.log(data)
+	historical.uploadHistorical(data).then((uploaded) => {
+		res.send(uploaded);
+	}).catch((err) => {
+		console.log(err)
 	})
 })
 

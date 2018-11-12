@@ -24,8 +24,13 @@ app.use(morgan('dev'));
 app.use(express.static('static'));
 
 // enable json message body for posting data to API
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// bodyParser = {
+// 	json: {limit: '50mb', extended: true},
+// 	urlencoded: {limit: '50mb', extended: true}
+// };
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '50mb', extended: true }));
+// app.use(bodyParser)
 
 // prefix API endpoints
 app.use('/v1', router);
