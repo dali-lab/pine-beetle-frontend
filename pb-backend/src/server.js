@@ -8,7 +8,7 @@ import router from './router';
 
 // DB Setup
 // NOTE this is where collection is named/which database we direct app to
-const localMongoConnection = 'mongodb://localhost/pine-beetle';
+const localMongoConnection = 'mongodb://localhost/pb-dev';
 const mongoURI = process.env.MONGODB_URI || localMongoConnection;
 mongoose.connect(mongoURI);
 // set mongoose promises to es6 default
@@ -23,9 +23,10 @@ app.use(morgan('dev'));
 // enable only if you want static assets from folder static
 app.use(express.static('static'));
 
-// enable json message body for posting data to API
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// enable json message body for posting data to API, extend default size limit
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '50mb', extended: true }));
+// app.use(bodyParser)
 
 // prefix API endpoints
 app.use('/v1', router);
@@ -37,3 +38,4 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 exports.localMongoConnection = localMongoConnection;
+exports.mongoURI = mongoURI;
