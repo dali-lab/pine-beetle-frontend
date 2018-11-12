@@ -4,6 +4,9 @@
 import HistoricalData from '../models/historical';
 
 
-export const getHistoricalData = () => {
+const getHistoricalData = () => {
 	return HistoricalData.find({})
 };
+
+const historical = { getHistoricalData }
+export default historical;

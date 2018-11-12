@@ -1,24 +1,24 @@
 import express, {Router} from 'express';
-import { getHistoricalData } from './controllers/historical_controller';
-import { getSpotData, getBeetleData, batchUpload } from './controllers/survey123_controller';
+import historical from './controllers/historical_controller';
+import controller from './controllers/survey123_controller';
 import { makePredictions } from './runRModel';
 
 const router = express();
 
-router.get('/', (req, res) => {
-	getHistoricalData().then((data) => {
+router.get('/getHistoricals', (req, res) => {
+	historical.getHistoricalData().then((data) => {
 		res.send(data);
 	});
 });
 
 router.get('/getSpots', (req, res) => {
-	getSpotData().then((data) => {
+	controller.getSpotData().then((data) => {
 		res.send(data);
 	});
 });
 
 router.get('/getBeetles', (req, res) => {
-	getBeetleData().then((data) => {
+	controller.getBeetleData().then((data) => {
 		res.send(data);
 	});
 });
@@ -37,10 +37,10 @@ router.get('/getPredictions', (req, res) => {
 	});
 });
 
-router.post('survey123upload', (req, res) => {
+router.post('/uploadSurvey123', (req, res) => {
 	dataArray = req.body;
 	console.log(dataArray);
-	batchUpload(dataArray).then((uploaded) => {
+	controller.batchUpload(dataArray).then((uploaded) => {
 		res.send(uploaded);
 	})
 })

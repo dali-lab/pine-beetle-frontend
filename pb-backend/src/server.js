@@ -8,7 +8,7 @@ import router from './router';
 
 // DB Setup
 // NOTE this is where collection is named/which database we direct app to
-const localMongoConnection = 'mongodb://localhost/pine-beetle';
+const localMongoConnection = 'mongodb://localhost/pb-dev';
 const mongoURI = process.env.MONGODB_URI || localMongoConnection;
 mongoose.connect(mongoURI);
 // set mongoose promises to es6 default
@@ -37,3 +37,4 @@ app.listen(port);
 
 console.log(`listening on: ${port}`);
 exports.localMongoConnection = localMongoConnection;
+exports.mongoURI = mongoURI;

@@ -5,16 +5,15 @@
 import Trapping from '../models/trapping';
 import Spot from '../models/spot';
 
-
-export const getSpotData = () => {
+const getSpotData = () => {
 	return Spot.find({})
 };
 
-export const getBeetleData = () => {
+const getBeetleData = () => {
 	return Trapping.find({})
 };
 
-export const batchUpload = (dataArray) => {
+const batchUpload = (dataArray) => {
 	//distinguish between data models 
 	dataArray.forEach((surveyResponse) => {
 		if (('Latitude (decimal degrees)' in surveyResponse) || ('Longitude (decimal degrees)' in surveyResponse)
@@ -81,3 +80,6 @@ export const batchUpload = (dataArray) => {
 		}
 	})
 };
+
+const controller = { getSpotData, getBeetleData, batchUpload }
+export default controller;
