@@ -72,9 +72,7 @@ function getDataFromLocal(url) {
         refreshSelectionMenus();
         initializeStateDropDownMenu();
         refreshDataVisualizations();
-
-        console.log(currentData);
-
+        
         buildMap();
       }
     }
