@@ -141,6 +141,9 @@ function refreshCurrentData() {
 
     // refresh graphs and beetle counts in the data insights section
     refreshDataVisualizations();
+
+    // update the Esri map
+    updateMap();
 }
 
 // updates the start and end dates for the available data
@@ -608,30 +611,32 @@ function resetCurrentData() {
 }
 
 // start the loading animation for the prediction model area - call this function, then run the model
-function startLoadingAnimation() {
+// parameter id is prediction-model for the loading over the prediction model area and map-area for the esri map
+function startLoadingAnimation(id) {
     // grab children and set opacity of all elements in the div to 0.2
-    areaDivElements = document.getElementById('prediction-model').children;
+    areaDivElements = document.getElementById(id).children;
 
     for (i=0;i<areaDivElements.length-1;i++) {
-        if (areaDivElements[i].id != "load-icon") {
+        if (areaDivElements[i].id != (id + "-load-icon")) {
             areaDivElements[i].style.opacity = 0.15;
         }
     }
 
     // add load icon
-    document.getElementById('load-icon').style.opacity = 1;
+    document.getElementById(id + '-load-icon').style.opacity = 1;
 }
 
 // stop the loading animation for the predictino model area - call this function after the model finishes running
-function stopLoadingAnimation() {
+// parameter id is prediction-model for the loading over the prediction model area and map-area for the esri map
+function stopLoadingAnimation(id) {
     // remove load icon
-    document.getElementById('load-icon').style.opacity = 0;
+    document.getElementById(id + '-load-icon').style.opacity = 0;
 
     // grab children and set opacity of all elements in the div back to 1
-    areaDivElements = document.getElementById('prediction-model').children;
+    areaDivElements = document.getElementById(id).children;
 
     for (i=0;i<areaDivElements.length-1;i++) {
-        if (areaDivElements[i].id != "load-icon") {
+        if (areaDivElements[i].id != (id + "-load-icon")) {
             areaDivElements[i].style.opacity = 1;
         }
     }
@@ -693,7 +698,7 @@ function buildMap() {
         });
 
         // create SimpleMarkerSymbol object for drawing the point (basically a circle)
-        // defining this outside the loop for efficiency
+        // defining this outside the loop because only have to construct once
         markerSymbol = {
             type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
             color: [233,196,106],
@@ -705,34 +710,29 @@ function buildMap() {
         };
 
         // iterate through current data and add points to map
-        for (i in currentData) {
+        for (i in totalData) {
             // first check to make sure we have a place to put the point
-            if (currentData[i].latitude != null && currentData[i].longitude != null) {
+            if (totalData[i].latitude != null && totalData[i].longitude != null) {
                 // create Point object - just location on the map to store point
                 point = {
                     type: "point",  // autocasts as new Point()
-                    longitude: currentData[i].longitude,
-                    latitude: currentData[i].latitude
+                    longitude: totalData[i].longitude,
+                    latitude: totalData[i].latitude
                 };
 
-                // add attributes to the point - basically associated data
-                pointAtt = {
-                    Name: null, // this is updated below based on nf, forest, etc.
-                    Year: currentData[i].year,
-                    percentSpb: currentData[i].percentSpb,
-                    cleridsPerTwoWeeks: currentData[i].cleridsPerTwoWeeks,
-                    spbPerTwoWeeks: currentData[i].spbPerTwoWeeks
-                }
+                // clone the JSON object associated with this point and pass it as an attribute object to the Graphic object
+                // this is basically just associated data that is accessible in the menu that appears when a user clicks on a dot
+                pointAtt = Object.assign({}, totalData[i]);
 
                 // update name attribute based on if we have national forest, local, etc.
-                if (currentData[i].nf != null && currentData[i].nf != "" && currentData[i].nf != undefined) {
-                    pointAtt.Name = currentData[i].nf + " NATL FOREST";
+                if (totalData[i].nf != null && totalData[i].nf != "" && totalData[i].nf != undefined) {
+                    pointAtt.Name = totalData[i].nf + " NATL FOREST";
                 }
-                else if (currentData[i].forest != null && currentData[i].forest != "" && currentData[i].forest != undefined) {
-                    pointAtt.Name = currentData[i].forest + " STATE FOREST";
+                else if (totalData[i].forest != null && totalData[i].forest != "" && totalData[i].forest != undefined) {
+                    pointAtt.Name = totalData[i].forest + " STATE FOREST";
                 }
                 else {
-                    pointAtt.Name = "STATE: " + currentData[i].state;
+                    pointAtt.Name = "STATE: " + totalData[i].state;
                 }
 
                  // create a new graphic and add the geometry, symbol, and attributes to it
@@ -749,7 +749,7 @@ function buildMap() {
                              fieldInfos: [{
                                  fieldName: "Name"
                              }, {
-                                 fieldName: "Year"
+                                 fieldName: "year"
                              }, {
                                  fieldName: "percentSpb"
                              }, {
@@ -763,7 +763,30 @@ function buildMap() {
 
                 // Add the point graphic to the view's GraphicsLayer - basically put it on the map
                 view.graphics.add(pointGraphic);
+
+                // store this Graphic object in the JSON data in totalData
+                totalData[i].mapObject = pointGraphic;
             }
         }
+
+        // update currentData based on totalData
+        currentData = totalData;
     });
+}
+
+// only put dots on the map if that object is in currentData
+// this function is called from refreshCurrentData
+function updateMap() {
+    // clear the Graphics layer
+    for (i in totalData) {
+        // first check to make sure we have a place to put the point
+        if (totalData[i].latitude != null && totalData[i].longitude != null) {
+            view.graphics.remove(totalData[i].mapObject);
+        }
+    }
+
+    // iterate through current data and add points to map
+    for (i in currentData) {
+        view.graphics.add(totalData[i].mapObject);
+    }
 }
