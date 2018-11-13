@@ -3,10 +3,6 @@
 // state, nationalForest, forest, startDate and endDate are user selections on screen
 // helper methods are defined below
 
-// var dataController = require('./importFromMongo');
-// import { dataController } from './importFromMongo'
-// require('./importFromMongo.js');
-import './importFromMongo';
 
 // user selections for state, region, and whether or not to view data for all of the US or just a specific state-region combination
 var state = null;
@@ -48,27 +44,10 @@ var stateAbbrevToStateName = {
 var availableNationalForests = [];
 var availableLocalForests = [];
 
+
+const localURL = "http://localhost:9090/v1/getHistoricals"
 // get local data and assign total and local data arrays
-// getDataFromLocal('historical_data.json');
-
-initializeViewData()
-
-function initializeViewData() {
-    // refresh list of available states and regions
-    totalData = dataController.getHistoricalData();
-    currentData = totalData;
-
-    // update start and end dates initially available to user and hold onto original dates
-    updateStartAndEndDateFromCurrentData();
-    originalStartDate = startDate;
-    originalEndDate = endDate;
-    document.getElementById('start-year-input').value = startDate;
-    document.getElementById('end-year-input').value = endDate;
-
-    refreshSelectionMenus();
-    initializeStateDropDownMenu();
-    refreshDataVisualizations();
-}
+getDataFromLocal(localURL);
 
 //Source: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseXML
 function getDataFromLocal(url) {
