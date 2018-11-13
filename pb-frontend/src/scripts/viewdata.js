@@ -660,10 +660,18 @@ function refreshDataVisualizations() {
     document.getElementById('total-spots-per-hundred-km').innerHTML = "Total Spots Per Hundred KM: " + totalSpotsPerHundredKM.toLocaleString();
 }
 
-// THIS IS EVERYTHING FOR THE MAP - WE ARE HAVING PROBLEMS CALLING FUNCTIONS FROM OTHER JS FILES SO IT'S ALL HERE
 
+// THIS IS EVERYTHING FOR THE MAP - WE ARE HAVING PROBLEMS CALLING FUNCTIONS FROM OTHER JS FILES SO IT'S ALL HERE
+// NOTE: to adjust/change things on the map, change attributes of the variables defined below
+// if you want to redraw all of the dots on the map, don't call buildMap(), remove/add stuff in view.graphics (might be worth considering combining the Graphic objects constructed below and everything in currentData/totalData so you have one source of truth...)
+
+// variables used for the map
+// by making them global variables, we can call them in other functions and easily adjust things on the map
+// view holds the graphics layer - this is where you can access all the dots on the map
 var map, view, point, markerSymbol, pointAtt, pointGraphic;
 
+// constructs everything required for the map
+// called once in the load data function
 function buildMap() {
     require([
     "esri/Map",
@@ -684,66 +692,76 @@ function buildMap() {
           zoom: 5.5
         });
 
+        // create SimpleMarkerSymbol object for drawing the point (basically a circle)
+        // defining this outside the loop for efficiency
+        markerSymbol = {
+            type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+            color: [233,196,106],
+            size: "13px",  // pixels
+            outline: {  // autocasts as new SimpleLineSymbol()
+                color: [36,66,79],
+                width: 1  // points
+            }
+        };
+
+        // iterate through current data and add points to map
         for (i in currentData) {
+            // first check to make sure we have a place to put the point
             if (currentData[i].latitude != null && currentData[i].longitude != null) {
-                // First create a point geometry
+                // create Point object - just location on the map to store point
                 point = {
                     type: "point",  // autocasts as new Point()
                     longitude: currentData[i].longitude,
                     latitude: currentData[i].latitude
                 };
 
-                // Create a symbol for drawing the point
-                markerSymbol = {
-                    type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
-                    color: [233,196,106]
-                };
-
-                // Create an object for storing attributes related to the point
-                if (currentData[i].nf != null) {
-                    pointAtt = {
-                        Name: currentData[i].nf,
-                        cleridsPerTwoWeeks: currentData[i].cleridsPerTwoWeeks,
-                        spbPerTwoWeeks: currentData[i].spbPerTwoWeeks
-                    };
+                // add attributes to the point - basically associated data
+                pointAtt = {
+                    Name: null, // this is updated below based on nf, forest, etc.
+                    Year: currentData[i].year,
+                    percentSpb: currentData[i].percentSpb,
+                    cleridsPerTwoWeeks: currentData[i].cleridsPerTwoWeeks,
+                    spbPerTwoWeeks: currentData[i].spbPerTwoWeeks
                 }
-                else if (currentData[i].forest != null) {
-                    pointAtt = {
-                        Name: currentData[i].forest,
-                        cleridsPerTwoWeeks: currentData[i].cleridsPerTwoWeeks,
-                        spbPerTwoWeeks: currentData[i].spbPerTwoWeeks
-                    };
+
+                // update name attribute based on if we have national forest, local, etc.
+                if (currentData[i].nf != null && currentData[i].nf != "" && currentData[i].nf != undefined) {
+                    pointAtt.Name = currentData[i].nf + " NATL FOREST";
+                }
+                else if (currentData[i].forest != null && currentData[i].forest != "" && currentData[i].forest != undefined) {
+                    pointAtt.Name = currentData[i].forest + " STATE FOREST";
                 }
                 else {
-                    pointAtt = {
-                        Name: currentData[i].state,
-                        cleridsPerTwoWeeks: currentData[i].cleridsPerTwoWeeks,
-                        spbPerTwoWeeks: currentData[i].spbPerTwoWeeks
-                    };
+                    pointAtt.Name = "STATE: " + currentData[i].state;
                 }
 
                  // create a new graphic and add the geometry, symbol, and attributes to it
                  // also add simple PopupTemplate allowing users to view graphic's attributes when clicked
-                pointGraphic = new Graphic({
-                   geometry: point,
-                   symbol: markerSymbol,
-                   attributes: pointAtt,
-                   popupTemplate: {  // autocasts as new PopupTemplate()
-                     title: "{Name}",
-                     content: [{
-                       type: "fields",
-                       fieldInfos: [{
-                         fieldName: "Name"
-                       }, {
-                         fieldName: "Clerids Per Two Weeks"
-                       }, {
-                         fieldName: "SPB Per Two Weeks"
-                       }]
-                     }]
-                   }
+                 // this basically puts everything we constructed above together
+                 pointGraphic = new Graphic({
+                     geometry: point,
+                     symbol: markerSymbol,
+                     attributes: pointAtt,
+                     popupTemplate: {  // autocasts as new PopupTemplate()
+                         title: "{Name}",
+                         content: [{
+                             type: "fields",
+                             fieldInfos: [{
+                                 fieldName: "Name"
+                             }, {
+                                 fieldName: "Year"
+                             }, {
+                                 fieldName: "percentSpb"
+                             }, {
+                                 fieldName: "cleridsPerTwoWeeks"
+                             }, {
+                                 fieldName: "spbPerTwoWeeks"
+                             }]
+                         }]
+                     }
                  });
 
-                // Add the point graphic to the view's GraphicsLayer
+                // Add the point graphic to the view's GraphicsLayer - basically put it on the map
                 view.graphics.add(pointGraphic);
             }
         }
