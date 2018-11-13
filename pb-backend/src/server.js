@@ -17,6 +17,9 @@ mongoose.Promise = global.Promise;
 // initialize
 const app = express();
 
+//enable cross origin resource sharing
+app.use(cors());
+
 // enable/disable http request logging
 app.use(morgan('dev'));
 
