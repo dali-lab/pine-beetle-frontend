@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+
+  <title>Disable scroll-zooming on the view - 4.9</title>
+
+  <style>
+    html,
+    body,
+    #viewDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://js.arcgis.com/4.9/esri/css/main.css">
+  <script src="https://js.arcgis.com/4.9/"></script>
+
+  <script>
+      require([
+      "esri/Map",
+      "esri/views/MapView",
+      "esri/Graphic"
+  ], function(Map,MapView,Graphic) {
+
+      var map = new Map({
+        basemap: "streets"
+      });
+
+      var view = new MapView({
+        center: [-80, 35],
+        container: "viewDiv",
+        map: map,
+        zoom: 3
+      });
+
+      // First create a point geometry
+      var point = {
+          type: "point",  // autocasts as new Point()
+          longitude: -84.3880,
+          latitude: 33.7490
+      };
+
+      // Create a symbol for drawing the point
+      var markerSymbol = {
+          type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+          color: [255, 255, 255]
+      };
+
+      // Create an object for storing attributes related to the point
+      var pointAtt = {
+        Name: "Test Name",
+        Owner: "Test Owner",
+        Length: "Test Length"
+      };
+
+      /*******************************************
+       * Create a new graphic and add the geometry,
+       * symbol, and attributes to it. You may also
+       * add a simple PopupTemplate to the graphic.
+       * This allows users to view the graphic's
+       * attributes when it is clicked.
+       ******************************************/
+       var pointGraphic = new Graphic({
+         geometry: point,
+         symbol: markerSymbol,
+         attributes: pointAtt,
+         popupTemplate: {  // autocasts as new PopupTemplate()
+           title: "{Name}",
+           content: [{
+             type: "fields",
+             fieldInfos: [{
+               fieldName: "Name"
+             }, {
+               fieldName: "Owner"
+             }, {
+               fieldName: "Length"
+             }]
+           }]
+         }
+       });
+
+      // Add the point graphic to the view's GraphicsLayer
+      view.graphics.add(pointGraphic);
+    });
+  </script>
+</head>
+
+<body>
+  <div id="viewDiv"></div>
+</body>
+
+</html>

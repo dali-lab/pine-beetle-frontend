@@ -72,6 +72,10 @@ function getDataFromLocal(url) {
         refreshSelectionMenus();
         initializeStateDropDownMenu();
         refreshDataVisualizations();
+
+        console.log(currentData);
+
+        buildMap();
       }
     }
   };
@@ -652,4 +656,95 @@ function refreshDataVisualizations() {
     document.getElementById('avg-percent-spb').innerHTML = "Average Percent SPB: " + (totalPercentSPB / currentData.length).toFixed(2) + "%";  // toFixed is number of decimal places
     document.getElementById('total-spots').innerHTML = "Total Spots: " + totalSpots.toLocaleString();
     document.getElementById('total-spots-per-hundred-km').innerHTML = "Total Spots Per Hundred KM: " + totalSpotsPerHundredKM.toLocaleString();
+}
+
+
+// THIS IS EVERYTHING FOR THE MAP - WE ARE HAVING PROBLEMS CALLING FUNCTIONS FROM OTHER JS FILES SO IT'S ALL HERE
+
+var map, view, point, markerSymbol, pointAtt, pointGraphic;
+
+function buildMap() {
+    require([
+    "esri/Map",
+    "esri/views/MapView",
+    "esri/Graphic"
+    ], function(Map,MapView,Graphic) {
+
+        // base layer map
+        map = new Map({
+          basemap: "streets"
+        });
+
+        // map view - holds graphics, points, etc.
+        view = new MapView({
+          center: [-84.3880, 33.7490],
+          container: "viewDiv",
+          map: map,
+          zoom: 5.5
+        });
+
+        for (i in currentData) {
+            if (currentData[i].latitude != null && currentData[i].longitude != null) {
+                // First create a point geometry
+                point = {
+                    type: "point",  // autocasts as new Point()
+                    longitude: currentData[i].longitude,
+                    latitude: currentData[i].latitude
+                };
+
+                // Create a symbol for drawing the point
+                markerSymbol = {
+                    type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+                    color: [233,196,106]
+                };
+
+                // Create an object for storing attributes related to the point
+                if (currentData[i].nf != null) {
+                    pointAtt = {
+                        Name: currentData[i].nf,
+                        cleridsPerTwoWeeks: currentData[i].cleridsPerTwoWeeks,
+                        spbPerTwoWeeks: currentData[i].spbPerTwoWeeks
+                    };
+                }
+                else if (currentData[i].forest != null) {
+                    pointAtt = {
+                        Name: currentData[i].forest,
+                        cleridsPerTwoWeeks: currentData[i].cleridsPerTwoWeeks,
+                        spbPerTwoWeeks: currentData[i].spbPerTwoWeeks
+                    };
+                }
+                else {
+                    pointAtt = {
+                        Name: currentData[i].state,
+                        cleridsPerTwoWeeks: currentData[i].cleridsPerTwoWeeks,
+                        spbPerTwoWeeks: currentData[i].spbPerTwoWeeks
+                    };
+                }
+
+                 // create a new graphic and add the geometry, symbol, and attributes to it
+                 // also add simple PopupTemplate allowing users to view graphic's attributes when clicked
+                pointGraphic = new Graphic({
+                   geometry: point,
+                   symbol: markerSymbol,
+                   attributes: pointAtt,
+                   popupTemplate: {  // autocasts as new PopupTemplate()
+                     title: "{Name}",
+                     content: [{
+                       type: "fields",
+                       fieldInfos: [{
+                         fieldName: "Name"
+                       }, {
+                         fieldName: "Clerids Per Two Weeks"
+                       }, {
+                         fieldName: "SPB Per Two Weeks"
+                       }]
+                     }]
+                   }
+                 });
+
+                // Add the point graphic to the view's GraphicsLayer
+                view.graphics.add(pointGraphic);
+            }
+        }
+    });
 }
