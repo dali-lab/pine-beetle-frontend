@@ -787,6 +787,6 @@ function updateMap() {
 
     // iterate through current data and add points to map
     for (i in currentData) {
-        view.graphics.add(totalData[i].mapObject);
+        view.graphics.add(currentData[i].mapObject);
     }
 }
