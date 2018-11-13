@@ -34,8 +34,9 @@ const getBeetleData = async () => {
 	}
 }
 
-const dataController = { getHistoricalData, getSpotData, getBeetleData }
+var dataController = { getHistoricalData, getSpotData, getBeetleData }
 export default dataController;
+// module.exports = dataController;
 
 // const spotData = getSpotData().then((data) => {
 // 	console.log(data.data)
