@@ -44,10 +44,11 @@ var stateAbbrevToStateName = {
 var availableNationalForests = [];
 var availableLocalForests = [];
 
-
+const local = 'historical_data.json'
 const localURL = "http://localhost:9090/v1/getHistoricals"
+const deployedURL = "https://pine-beetle-prediction.herokuapp.com/v1/getHistoricals"
 // get local data and assign total and local data arrays
-getDataFromLocal(localURL);
+getDataFromLocal(local);
 
 //Source: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseXML
 function getDataFromLocal(url) {
