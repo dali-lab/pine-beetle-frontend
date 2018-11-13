@@ -3,6 +3,7 @@
 // state, nationalForest, forest, startDate and endDate are user selections on screen
 // helper methods are defined below
 
+
 // user selections for state, region, and whether or not to view data for all of the US or just a specific state-region combination
 var state = null;
 var nationalForest = null;
@@ -43,8 +44,10 @@ var stateAbbrevToStateName = {
 var availableNationalForests = [];
 var availableLocalForests = [];
 
+
+const localURL = "http://localhost:9090/v1/getHistoricals"
 // get local data and assign total and local data arrays
-getDataFromLocal('historical_data.json');
+getDataFromLocal(localURL);
 
 //Source: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseXML
 function getDataFromLocal(url) {
