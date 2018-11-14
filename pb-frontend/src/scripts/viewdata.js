@@ -78,6 +78,9 @@ function getDataFromLocal(url) {
         refreshDataVisualizations();
 
         buildMap();
+
+        // NOTE FOR FUTURE DEVELOPERS: probably a good idea to refactor some of this code and perform all of the actions above in one loop of currentData rather than several
+
       }
     }
   };
@@ -682,7 +685,7 @@ function buildMap() {
     "esri/Map",
     "esri/views/MapView",
     "esri/Graphic"
-    ], function(Map,MapView,Graphic) {
+    ], function(Map, MapView, Graphic) {
 
         // base layer map
         map = new Map({
@@ -705,7 +708,7 @@ function buildMap() {
             size: "13px",  // pixels
             outline: {  // autocasts as new SimpleLineSymbol()
                 color: [36,66,79],
-                width: 1  // points
+                width: 0.5  // points
             }
         };
 
