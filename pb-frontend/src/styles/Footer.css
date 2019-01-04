@@ -1,0 +1,25 @@
+#footer {
+    height: auto;
+    margin: 15px 31px 31px 31px;
+    border-radius: 5px;
+    background-color: #E5E5E5;
+}
+
+#footer .container {
+    padding: 0px;
+}
+
+#footer p {
+    float: left;
+    font-style: italic;
+    margin-top: 22px;
+}
+
+#footer img {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#dali-logo {
+    float: right;
+}
