@@ -1,0 +1,120 @@
+.about-project p, .next-steps p, .using-product p {
+    text-align: left;
+    margin: 15px 50px;
+    line-height: 2;
+}
+
+.about-project {
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+}
+
+.about-project a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+}
+
+.about-project img {
+    display: inline-block;
+    margin-left: 4%;
+    margin-right: 4%;
+}
+
+#usfs-img-about {
+    width: 119px;
+    height: 129px;
+}
+
+#dart-img-about {
+    width: 101px;
+    height: 104px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#sgfs-img-about {
+    width: 85px;
+    height: 133px;
+}
+
+#more-info-text {
+    text-align: center;
+    padding: 2% 5%;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.meet-team img {
+    width: 225px;
+    height: 225px;
+    border-radius: 50%;
+}
+
+#people-previews {
+    height: auto;
+    display: block;
+}
+
+#people-previews p {
+    width: 225px;
+}
+
+#people-previews h4 {
+    margin-top: 10px;
+}
+
+.person {
+    display: inline-block;
+    margin-left: 4%;
+    margin-right: 4%;
+    margin-top: 15px;
+}
+
+.using-product {
+    flex-direction: column !important;    /* vertical alignment of flex items */
+    justify-content: flex-start !important;   /* center flex items vertically */
+}
+
+.next-steps {
+    flex: 1.5 !important;
+    flex-direction: column !important;    /* vertical alignment of flex items */
+    justify-content: flex-start !important;   /* center flex items vertically */
+}
+
+.contact-info h4 {
+    font-weight: lighter;
+    font-style: italic;
+    padding-bottom: 2px;
+}
+
+.contact-info h3 {
+    padding-bottom: 5px;
+}
+
+.contact-info a, .using-product a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.using-product a:hover {
+    text-decoration: underline;
+}
+
+#contact-info-area {
+    margin: 10px 30px;
+    text-align: left;
+}
+
+.info-box {
+    background-color: #ABB2B5;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+#pad-top {
+    padding-top: 10px;
+}

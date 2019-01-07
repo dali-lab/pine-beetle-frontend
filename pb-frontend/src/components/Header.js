@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import '../styles/Header.css';
 
 class Header extends Component {
@@ -13,7 +13,8 @@ class Header extends Component {
     				<div id="nav-button-area">
     					<div id="nav-buttons">
     						<Link to="/"><p>HOME</p></Link>
-    						<Link to="/viewdata"><p>VIEW DATA</p></Link>
+    						<Link to="/viewdata"><p id="middle">HISTORICAL DATA</p></Link>
+                            <Link to="/predictions"><p id="middle">PREDICTIVE MODEL</p></Link>
     						<Link to="/about"><p>ABOUT</p></Link>
     					</div>
     				</div>
