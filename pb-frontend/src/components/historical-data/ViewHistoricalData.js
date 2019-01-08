@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import TextInput from './input-components/TextInput';
 import ChoiceInput from './input-components/ChoiceInput';
 import DataVisualization from './DataVisualization';
-import MapArea from './MapArea';
+import { Map } from 'react-arcgis';
+import MapContent from './MapContent';
 import '../../styles/historical-data/ViewHistoricalData.css';
 
 class ViewHistoricalData extends Component {
@@ -20,7 +21,11 @@ class ViewHistoricalData extends Component {
             currentData: this.props.data,
             availableStates: [],
             availableLocalForests: [],
-            availableNationalForests: []
+            availableNationalForests: [],
+            viewProperties: {
+                center: [-84.3880, 33.7490],
+                zoom: 5.5
+            }
         }
 
         // initialize original start and end dates
@@ -91,7 +96,9 @@ class ViewHistoricalData extends Component {
                 <div className="flex-container" id="map-area-container">
     				<div className="container map flex-item" id="map-area">
     					<div id="viewDiv">
-                            <MapArea />
+                            <Map viewProperties={this.state.viewProperties}>
+                                <MapContent data={this.state.currentData}/>
+                            </Map>
                         </div>
     				</div>
     			</div>
