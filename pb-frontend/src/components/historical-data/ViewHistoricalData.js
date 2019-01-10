@@ -3,7 +3,7 @@ import TextInput from './input-components/TextInput';
 import ChoiceInput from './input-components/ChoiceInput';
 import DataVisualization from './DataVisualization';
 import { Map } from 'react-arcgis';
-import MapContent from './MapContent';
+import MapController from './MapController';
 import '../../styles/historical-data/ViewHistoricalData.css';
 
 class ViewHistoricalData extends Component {
@@ -97,7 +97,7 @@ class ViewHistoricalData extends Component {
     				<div className="container map flex-item" id="map-area">
     					<div id="viewDiv">
                             <Map viewProperties={this.state.viewProperties}>
-                                <MapContent data={this.state.currentData}/>
+                                <MapController data={this.state.currentData} />
                             </Map>
                         </div>
     				</div>

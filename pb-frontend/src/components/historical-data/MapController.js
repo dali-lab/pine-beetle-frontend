@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { loadModules } from 'react-arcgis';
-import '../../styles/historical-data/MapContent.css';
+import '../../styles/historical-data/MapController.css';
 
-class MapContent extends Component {
+class MapController extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -10,47 +10,48 @@ class MapContent extends Component {
             graphics: [],
             layer: null
         }
-
+        // bind functions
         this.createGraphics = this.createGraphics.bind(this);
         this.createLayer = this.createLayer.bind(this);
     }
 
+    // don't render anything as this class is a controller for the map
     render() {
         return null;
     }
 
-    // on mount initialize map components then store data
+    // on mount initialize map components, store data, and build map
     componentDidMount() {
-        this.initializeMapVariables();
-        this.updateStateFromProps(this.props);
+        this.initializeMapVariables(); // define how the popup menus should appear
+        this.updateStateFromProps(this.props); // store data
+
+        // build the map
+        this.createGraphics();
+        this.createLayer();
     }
 
     // if receiving new data, update the state
     componentWillReceiveProps(nextProps) {
         this.updateStateFromProps(nextProps);
-        // remove the map
-        this.props.view.map.remove(this.state.layer);
-        // clear the graphics and layer, then remake
-        this.setState({
-            graphics: [],
-            layer: null
-        }, () => {
-            this.createGraphics();
-            this.createLayer();
-        });
     }
 
     // store new data from props
     updateStateFromProps(props) {
+        // update the state then hide necessary graphics on the map
         this.setState({
             data: props.data
-        });
-    }
+        }, () => {
+            // if a layer exists on the map, delete it and make a new one
+            if (this.props.view.map.layers.items.length > 0) {
+                // hide the current layer then delete it from the map
+                this.state.layer.visible = false;
+                this.props.view.map.remove(this.state.layer);
 
-    // before mounting create the point objects and construct a layer
-    componentWillMount() {
-        this.createGraphics();
-        this.createLayer();
+                // create a new layer from the new data
+                this.createGraphics();
+                this.createLayer();
+            }
+        });
     }
 
     // build necessary variables for the map
@@ -247,7 +248,7 @@ class MapContent extends Component {
             this.props.view.map.add(layer);
             this.setState({
                 layer: layer
-            })
+            });
         }).catch((err) => console.error(err));
     }
 
@@ -257,4 +258,4 @@ class MapContent extends Component {
     }
 }
 
-export default MapContent
+export default MapController
