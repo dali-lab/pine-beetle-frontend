@@ -21,12 +21,12 @@ class Home extends Component {
     					<h2 id="current-location">Nationwide Predictions</h2>
     					<div id="calculations">
     						<div id="outbreak-prob">
-    							<h1 className="medium">27%</h1>
-    							<h4>probability of outbreak</h4>
+    							<h1 className="medium">74%</h1>
+    							<h4>probability of over 54 spots</h4>
     						</div>
     						<div id="outbreak-risk">
-    							<h1 className="medium">Low</h1>
-    							<h4>outbreak risk</h4>
+    							<h1 className="high">175</h1>
+    							<h4>expected spots if outbreak</h4>
     						</div>
     					</div>
     					<p id="more-info-text">Navigate to the <em><Link to="/viewdata">View Data</Link></em> page for more detailed metrics.</p>
