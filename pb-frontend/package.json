@@ -1,59 +1,30 @@
 {
-  "name": "pine-beetle-prediction",
-  "version": "1.0.0",
-  "main": "src/scripts/index.js",
-  "repository": "https://github.com/dali-lab/project-pine-beetle/tree/master/pb-frontend",
-  "author": "Pine Beetle Team <pine-beetle@dali.dartmouth.edu>",
-  "license": "MIT",
-  "scripts": {
-    "start": "NODE_ENV=development webpack-serve ./webpack.config.js",
-    "build": "yarn clean; NODE_ENV=production webpack --colors",
-    "clean": "rimraf dist",
-    "deploy": "surge -p src -d pine-beetle-prediction.surge.sh"
-  },
-  "devDependencies": {
-    "autoprefixer": "^8.2.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^10.0.1",
-    "babel-loader": "7",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "connect-history-api-fallback": "^1.5.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-loader": "^2.1.1",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-react": "^7.11.1",
-    "file-loader": "^1.1.11",
-    "html-webpack-plugin": "^3.2.0",
-    "koa-connect": "^2.0.1",
-    "mini-css-extract-plugin": "^0.4.0",
-    "node-sass": "^4.8.3",
-    "postcss-loader": "^2.1.3",
-    "sass-loader": "^7.0.1",
-    "style-loader": "^0.20.3",
-    "webpack": "^4.5.0",
-    "webpack-serve": "^0.3.1"
-  },
+  "name": "pb-frontend",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "arcgis": "^1.0.2",
     "axios": "^0.18.0",
-    "babel": "^6.23.0",
-    "css-loader": "^1.0.0",
-    "eslint": "^5.7.0",
-    "esri-loader": "^2.5.0",
-    "jquery": "^3.3.1",
-    "npm": "^6.4.1",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-redux": "^5.0.7",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "redux": "^4.0.0",
-    "redux-thunk": "^2.2.0",
-    "surge": "^0.20.1",
-    "webpack-cli": "^3.1.2"
-  }
+    "chart.js": "^2.3",
+    "react": "^16.7.0",
+    "react-arcgis": "^3.3.3",
+    "react-chartjs-2": "^2.7.4",
+    "react-dom": "^16.7.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

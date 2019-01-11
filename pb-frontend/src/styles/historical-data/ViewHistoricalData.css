@@ -1,64 +1,10 @@
-/* style elements for viewdata.html */
-
-.filter-selections {
-    flex: 1.3;
+#filter-selections {
+    flex: 1.3 !important;
     text-align: left;
+    justify-content: flex-start;
 }
 
-.select-location {
-    text-align: left;
-}
 
-.select-location h3 {
-    padding-bottom: 5px;
-}
-
-select, input {
-    width: 175px;
-    border: none;
-    border-radius: 4px;
-    background-color: #ABB2B5;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 7px;
-}
-
-input {
-    width: 150px;
-}
-
-.submit {
-    width: 60px;
-    padding: 7px;
-    border: none;
-    border-radius: 4px;
-    background-color: #f1f1f1;
-}
-
-.submit:hover {
-    background-color: #E9C46A;
-    font-weight: bold;
-}
-
-select:hover {
-    background-color: #E9C46A;
-    font-weight: bold;
-}
-
-input:hover {
-    background-color: #E9C46A;
-    font-weight: bold;
-}
-
-.selection {
-    display: inline-block;
-    margin: 10px 15px;
-}
-
-.selection h3 {
-    text-align: left;
-}
 
 #forest {
     display: none;
@@ -73,7 +19,7 @@ input:hover {
     height: auto;
 }
 
-.selection-buttons a {
+.selection-buttons span {
     text-decoration: none;
     color: white;
     padding: 25px 40px;
@@ -123,9 +69,9 @@ input:hover {
 }
 
 .prediction-model {
-    flex-direction: column;    /* vertical alignment of flex items */
-    justify-content: flex-start;   /* center flex items vertically */
-    position: relative;
+    flex-direction: column !important;    /* vertical alignment of flex items */
+    justify-content: flex-start !important;   /* center flex items vertically */
+    position: relative !important;
 }
 
 .prediction-model * {
@@ -179,9 +125,9 @@ h4.location {
 }
 
 .data-insights {
-    flex-direction: column;    /* vertical alignment of flex items */
-    justify-content: flex-start;   /* center flex items vertically */
-    flex: 1.5;
+    flex-direction: column !important;    /* vertical alignment of flex items */
+    justify-content: flex-start !important;   /* center flex items vertically */
+    flex: 1.5 !important;
 }
 
 #adjust-map-size-button, #reset-current-data-button {
@@ -207,7 +153,6 @@ h4.location {
 .map {
     margin-top: 15px;
     height: 100%;
-    flex: 1.5;
 }
 
 .high {

@@ -1,7 +1,5 @@
-/* style elements for index.html */
-
 .landing-text {
-    flex: 2.4;
+    flex: 2.4 !important;
 }
 
 .landing-text h1 {
