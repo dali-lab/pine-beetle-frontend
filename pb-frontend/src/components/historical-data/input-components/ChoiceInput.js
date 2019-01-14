@@ -7,7 +7,8 @@ class ChoiceInput extends Component {
 
         this.state = {
             firstOptionText: this.props.instructions,
-            options: []
+            options: [],
+            value: "DEFAULT"
         }
         this.submit = this.submit.bind(this);
         this.resetOptionText = this.resetOptionText.bind(this);
@@ -17,11 +18,28 @@ class ChoiceInput extends Component {
         return(
             <div className="selection">
                 <h3>{this.props.instructions}</h3>
-                    <select className="selection-no-button" id={this.props.idName + "-select"} name={this.props.idName} onChange={this.submit} ref={this.selectField}>
+                    <select className="selection-no-button" id={this.props.idName + "-select"} name={this.props.idName} onChange={this.submit} ref={this.selectField} value={this.state.value}>
                         {this.state.options}
                     </select>
             </div>
         );
+    }
+
+    // select the option input in the options list
+    selectGivenInput(input) {
+        if (input === null) {
+            this.setState({
+                value: "DEFAULT"
+            })
+        }
+
+        for (var option in this.state.options) {
+            if (this.state.options[option].props.children === input) {
+                this.setState({
+                    value: input
+                })
+            }
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -31,10 +49,10 @@ class ChoiceInput extends Component {
     // update the options in the selection menu
     updateStateFromProps(props) {
         var options = [];
-        options.push(<option key={0}>{this.state.firstOptionText}</option>);
+        options.push(<option value="DEFAULT" key={0}>{this.state.firstOptionText}</option>);
 
         for (var op in props.availableOptions) {
-            options.push(<option key={op+1}>{props.availableOptions[op]}</option>);
+            options.push(<option value={props.availableOptions[op]} key={op+1}>{props.availableOptions[op]}</option>);
         }
 
         this.setState({

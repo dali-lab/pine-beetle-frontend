@@ -13,6 +13,7 @@ class MapController extends Component {
         // bind functions
         this.createGraphics = this.createGraphics.bind(this);
         this.createLayer = this.createLayer.bind(this);
+        this.handleMapClick = this.handleMapClick.bind(this);
     }
 
     // don't render anything as this class is a controller for the map
@@ -29,12 +30,57 @@ class MapController extends Component {
         this.createGraphics();
         this.createLayer();
 
-        this.props.view.map.on("click", this.handleMapClick);
-        console.log(this.props.view.map)
+        // bind event listeners
+        this.props.view.on("click", this.handleMapClick);       // handle click
+
+        this.props.view.on("mouse-wheel", function(event) {     // prevents zooming with the mouse-wheel event
+            event.stopPropagation();
+        });
     }
 
-    handleMapClick(evt) {
-        console.log(evt)
+    handleMapClick(event) {
+        var dotsClicked = this.getClickedDots(event.mapPoint.latitude,event.mapPoint.longitude)
+        if (dotsClicked.length > 0) {
+            var states = [];
+            var nationalForests = [];
+            var localForests = [];
+
+            for (var entry in dotsClicked) {
+                var dot = dotsClicked[entry];
+                if (dot.state != null && dot.state != "" && !states.includes(dot.state)) {
+                    states.push(dot.state)
+                }
+                if (dot.nf != null && dot.nf != "" && !nationalForests.includes(dot.nf)) {
+                    nationalForests.push(dot.nf)
+                }
+                if (dot.forest != null && dot.forest != "" && !localForests.includes(dot.forest)) {
+                    localForests.push(dot.forest)
+                }
+            }
+
+            if (states.length == 1) {
+                this.props.updateState(states[0])
+            }
+
+            if (nationalForests.length == 1) {
+                this.props.updateNF(nationalForests[0])
+            }
+
+            if (localForests.length == 1) {
+                this.props.updateForest(localForests[0])
+            }
+        }
+    }
+
+    // determine if user clicked a dot that exists on the map
+    getClickedDots(lat,long) {
+        var dotsClicked = []
+        for (var i in this.state.data) {
+            if (parseInt(this.state.data[i].latitude) === parseInt(lat) && parseInt(this.state.data[i].longitude) === parseInt(long)) {
+                dotsClicked.push(this.state.data[i])
+            }
+        }
+        return dotsClicked
     }
 
     // if receiving new data, update the state

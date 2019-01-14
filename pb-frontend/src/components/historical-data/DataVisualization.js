@@ -96,8 +96,8 @@ class DataVisualization extends Component {
             totalSpotsPerHundredKM += props.data[obj].spotsPerHundredKm;
         }
 
-        // sort data based on year
-        props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0));
+        // // sort data based on year
+        // props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0));
 
         // create data object for line chart
         var chartData = {

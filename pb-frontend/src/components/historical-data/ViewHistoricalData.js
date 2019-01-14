@@ -18,8 +18,8 @@ class ViewHistoricalData extends Component {
             forest: null,
             startDate: Infinity,
             endDate: 0,
-            totalData: this.props.data,
-            currentData: this.props.data,
+            totalData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
+            currentData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
             availableStates: [],
             availableLocalForests: [],
             availableNationalForests: [],
@@ -85,7 +85,7 @@ class ViewHistoricalData extends Component {
     						<button id="reset-current-data-button" className="submit static-button" onClick={this.clearCurrentData}>Clear Filters</button>
     						<button id="adjust-map-size-button" className="submit static-button" onClick={this.movePredictionModelDown}>Toggle View</button>
 
-                            <Link to="/arcgis-online">ArcGIS Online Map</Link>
+                            <Link to="/arcgis-online">ArcGIS Online</Link>
     					</div>
     				</div>
     			</div>
@@ -100,7 +100,7 @@ class ViewHistoricalData extends Component {
     				<div className="container map flex-item" id="map-area">
     					<div id="viewDiv">
                             <Map viewProperties={this.state.viewProperties}>
-                                <MapController data={this.state.currentData} />
+                                <MapController data={this.state.currentData} updateState={this.updateStateSelection} updateNF={this.updateNationalForestSelection} updateForest={this.updateForestSelection}/>
                             </Map>
                         </div>
     				</div>
@@ -225,6 +225,7 @@ class ViewHistoricalData extends Component {
                 forest: null
             }, () => {
                 this.updateCurrentData();
+                this.stateInput.current.selectGivenInput(this.state.stateName)
             });
         }
         // if we were given a state name and not the abbreviation, we need to get its abbreviation
@@ -239,6 +240,7 @@ class ViewHistoricalData extends Component {
                         forest: null
                     }, () => {
                         this.updateCurrentData();
+                        this.stateInput.current.selectGivenInput(this.state.stateName)
                     });
                 }
             }
@@ -249,12 +251,13 @@ class ViewHistoricalData extends Component {
             for (abbrev in this.stateAbbrevToStateName) {
                 if (abbrev === state) {
                     this.setState({
-                        stateName: state,
+                        stateName: this.stateAbbrevToStateName[abbrev],
                         stateAbbreviation: abbrev,
                         nationalForest: null,
                         forest: null
                     }, () => {
                         this.updateCurrentData();
+                        this.stateInput.current.selectGivenInput(this.state.stateName)
                     });
                 }
             }
@@ -269,6 +272,7 @@ class ViewHistoricalData extends Component {
                 nationalForest: nationalForest
             }, () => {
                 this.updateCurrentData();
+                this.nationalForestInput.current.selectGivenInput(this.state.nationalForest)
             });
         }
         // if we are going from a non-null selection to a new selection, clear local forest
@@ -278,6 +282,7 @@ class ViewHistoricalData extends Component {
                 forest: null
             }, () => {
                 this.updateCurrentData();
+                this.nationalForestInput.current.selectGivenInput(this.state.nationalForest)
             });
         }
     }
@@ -290,6 +295,7 @@ class ViewHistoricalData extends Component {
                 forest: forest
             }, () => {
                 this.updateCurrentData();
+                this.forestInput.current.selectGivenInput(this.state.forest)
             });
         }
         // if we are going from a non-null selection to a new selection, clear national forest
@@ -299,6 +305,7 @@ class ViewHistoricalData extends Component {
                 nationalForest: null
             }, () => {
                 this.updateCurrentData();
+                this.forestInput.current.selectGivenInput(this.state.forest)
             });
         }
     }
@@ -369,6 +376,9 @@ class ViewHistoricalData extends Component {
                 }
             }
         }
+
+        // sort data based on year
+        newSet = newSet.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0));
 
         // update the state
         this.setState({
