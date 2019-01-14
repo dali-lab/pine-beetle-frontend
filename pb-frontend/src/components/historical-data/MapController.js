@@ -28,6 +28,13 @@ class MapController extends Component {
         // build the map
         this.createGraphics();
         this.createLayer();
+
+        this.props.view.map.on("click", this.handleMapClick);
+        console.log(this.props.view.map)
+    }
+
+    handleMapClick(evt) {
+        console.log(evt)
     }
 
     // if receiving new data, update the state
