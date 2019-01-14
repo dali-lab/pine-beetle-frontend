@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import '../styles/About.css';
+import '../../styles/About.css';
 
 class About extends Component {
     render() {
@@ -12,9 +12,9 @@ class About extends Component {
                         <div className="line"></div>
                         <p>After developing a model at Dartmouth College to predict outbreaks and movements of Southern Pine Beetles, Professor Ayres and Aoki approached Dartmouth’s DALI Lab to design and develop a tool to visualize the trapping data and predictions gathered annually. This project aimes to deploy a product that field researchers, USFS personel, and the general public can use to understand trends in pine beetle movements.</p>
                         <div id="images-about">
-                            <img src={require("../assets/usfs.png")} id="usfs-img-about" alt="United States Forest Service Logo"></img>
-                            <img src={require("../assets/dartmouth.png")} id="dart-img-about" alt="Dartmouth College Logo"></img>
-    						<img src={require("../assets/sgsf.png")} id="sgfs-img-about" alt="Southern Group of State Foresters Logo"></img>
+                            <img src={require("../../assets/usfs.png")} id="usfs-img-about" alt="United States Forest Service Logo"></img>
+                            <img src={require("../../assets/dartmouth.png")} id="dart-img-about" alt="Dartmouth College Logo"></img>
+    						<img src={require("../../assets/sgsf.png")} id="sgfs-img-about" alt="Southern Group of State Foresters Logo"></img>
                         </div>
                         <p id="more-info-text">For information specifically about Southern Pine Beetles or various national forests, please contact the <em><a href="https://www.fs.fed.us/" target="_blank" rel="noopener noreferrer">US Forest Service.</a></em></p>
     				</div>

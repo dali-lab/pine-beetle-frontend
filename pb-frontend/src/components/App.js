@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import ScrollToTop from './ScrollToTop.js'
-import Header from './Header.js'
-import Footer from './Footer.js'
+import Header from './header-footer/Header.js'
+import Footer from './header-footer/Footer.js'
 import Home from './Home.js'
-import About from './About.js';
+import About from './about/About.js';
 import ViewHistoricalData from './historical-data/ViewHistoricalData.js';
 import ViewPredictions from './predictions/ViewPredictions.js';
+import ArcGISOnline from './arcgis-online/ArcGISOnline.js';
 import '../styles/App.css';
 
 class App extends Component {
@@ -27,6 +28,7 @@ class App extends Component {
                     <Route path="/about" component={About} />
                     <Route path='/viewdata'render={(props) => <ViewHistoricalData {...props} data={require('../data/historical_data.json')} />}/>
                     <Route path="/predictions" component={ViewPredictions} />
+                    <Route path="/arcgis-online" component={ArcGISOnline} />
                 </div>
                 <ScrollToTop />
                 <Footer />

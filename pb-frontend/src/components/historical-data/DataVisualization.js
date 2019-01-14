@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../../styles/historical-data/DataVisualization.css';
+import {Line} from 'react-chartjs-2';
 
 class DataVisualization extends Component {
     constructor(props) {
@@ -10,7 +11,30 @@ class DataVisualization extends Component {
             totalSPBPerTwoWeeks: 0,
             avgPercentSPB: 0,
             totalSpots: 0,
-            totalSpotsPerHundredKM: 0
+            totalSpotsPerHundredKM: 0,
+            chartData: {
+                labels: [],
+                datasets: [
+                    {
+                        data: [],
+                        label: "Total Spots",
+                        borderColor: "#1f77b4",
+                        fill: false
+                    },
+                    {
+                        data: [],
+                        label: "Total SPB Per Two Weeks",
+                        borderColor: "#ff7f0e",
+                        fill: false
+                    },
+                    {
+                        data: [],
+                        label: "Total Clerids Per Two Weeks",
+                        borderColor: "#2ca02c",
+                        fill: false
+                    }
+                ]
+            }, // used for chartjs line chart
         }
 
         this.updateStateFromProps = this.updateStateFromProps.bind(this);
@@ -18,12 +42,29 @@ class DataVisualization extends Component {
     render() {
         return(
             <div>
-                <div id="beetle-count-area">
+                <div id="beetle-count-area" className="flex-item-left">
                     <h2 id="total-clerids-per-two-weeks">{"Total Clerids Per Two Weeks: " + this.state.totalCleridsPerTwoWeeks}</h2>
                     <h2 id="total-spb-per-two-weeks">{"Total SPB Per Two Weeks: " + this.state.totalSPBPerTwoWeeks}</h2>
                     <h2 id="avg-percent-spb">{"Average Percent SPB: " + this.state.avgPercentSPB + "%"}</h2>
                     <h2 id="total-spots">{"Total Spots: " + this.state.totalSpots}</h2>
                     <h2 id="total-spots-per-hundred-km">{"Total Spots Per Hundred KM: " + this.state.totalSpotsPerHundredKM}</h2>
+                </div>
+                <div id="chartjs-container" className="flex-item-left">
+                    <Line
+                        data={this.state.chartData}
+                        height={400}
+                        options={{
+                            maintainAspectRatio: false,
+                            scales: {
+                                yAxes : [{
+                                    ticks : {
+                                        max : 1000,
+                                        min : 0
+                                    }
+                                }]
+                            }
+                        }}
+                    />
                 </div>
     		</div>
         );
@@ -56,6 +97,27 @@ class DataVisualization extends Component {
             totalSpots += props.data[obj].spots;
             totalSpotsPerHundredKM += props.data[obj].spotsPerHundredKm;
         }
+
+        // sort data based on year
+        props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0));
+
+        // construct totalSpotsData
+        var totals = [[],[],[]]
+        for (var i in props.data) {
+            if (props.data[i].spots != null) {
+                totals[0].push(props.data[i].spots)
+            }
+            if (props.data[i].spbPerTwoWeeks != null) {
+                totals[1].push(props.data[i].spbPerTwoWeeks)
+            }
+            if (props.data[i].cleridsPerTwoWeeks != null) {
+                totals[2].push(props.data[i].cleridsPerTwoWeeks)
+            }
+        }
+
+        this.state.chartData.datasets[0].data = totals[0]
+        this.state.chartData.datasets[1].data = totals[1]
+        this.state.chartData.datasets[2].data = totals[2]
 
         this.setState({
             totalCleridsPerTwoWeeks: parseInt(totalCleridsPerTwoWeeks.toLocaleString()), // toLocalString adds commas for thousands places

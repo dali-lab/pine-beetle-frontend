@@ -3,6 +3,7 @@ import TextInput from './input-components/TextInput';
 import ChoiceInput from './input-components/ChoiceInput';
 import DataVisualization from './DataVisualization';
 import { Map } from 'react-arcgis';
+import { Link } from "react-router-dom";
 import MapController from './MapController';
 import '../../styles/historical-data/ViewHistoricalData.css';
 
@@ -83,6 +84,8 @@ class ViewHistoricalData extends Component {
 
     						<button id="reset-current-data-button" className="submit static-button" onClick={this.clearCurrentData}>Clear Filters</button>
     						<button id="adjust-map-size-button" className="submit static-button" onClick={this.movePredictionModelDown}>Toggle View</button>
+
+                            <Link to="/arcgis-online">ArcGIS Online Map</Link>
     					</div>
     				</div>
     			</div>
