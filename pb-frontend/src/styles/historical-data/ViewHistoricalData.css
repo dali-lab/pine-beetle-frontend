@@ -175,6 +175,16 @@ h4.location {
   width: 100%;
 }
 
+#map-area {
+    flex: 3 !important;
+}
+
+#beetle-count-area {
+    flex-direction: column !important;    /* vertical alignment of flex items */
+    justify-content: flex-start !important;   /* center flex items vertically */
+    padding-top: 50px;
+}
+
 #selection-areas-view-data a {
     width: 60px;
     padding: 14px;

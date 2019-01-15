@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { WebMap } from 'react-arcgis';
 
 class ArcGISOnline extends Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         return(
             <div className="container">

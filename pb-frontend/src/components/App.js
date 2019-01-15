@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import ScrollToTop from './ScrollToTop.js'
 import Header from './header-footer/Header.js'
 import Footer from './header-footer/Footer.js'
@@ -24,11 +24,14 @@ class App extends Component {
               <div>
                 <Header />
                 <div className="content">
-                    <Route exact path="/" component={Home} />
-                    <Route path="/about" component={About} />
-                    <Route path='/viewdata'render={(props) => <ViewHistoricalData {...props} data={require('../data/historical_data.json')} />}/>
-                    <Route path="/predictions" component={ViewPredictions} />
-                    <Route path="/arcgis-online" component={ArcGISOnline} />
+                    <Switch>
+                        <Route exact path="/" component={Home} />
+                        <Route path="/about" component={About} />
+                        <Route path='/viewdata'render={(props) => <ViewHistoricalData {...props} data={require('../data/historical_data.json')} />}/>
+                        <Route path="/predictions" component={ViewPredictions} />
+                        <Route path="/arcgis-online" component={ArcGISOnline} />
+                        <Route path="*" component={Home} />
+                    </Switch>
                 </div>
                 <ScrollToTop />
                 <Footer />

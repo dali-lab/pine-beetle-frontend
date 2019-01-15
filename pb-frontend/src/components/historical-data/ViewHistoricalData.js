@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import TextInput from './input-components/TextInput';
-import ChoiceInput from './input-components/ChoiceInput';
-import DataVisualization from './DataVisualization';
+import SelectionBar from '../selection-bar/SelectionBar';
+import ChartArea from './ChartArea';
 import { Map } from 'react-arcgis';
-import { Link } from "react-router-dom";
 import MapController from './MapController';
+import MapSideBar from './MapSideBar';
 import '../../styles/historical-data/ViewHistoricalData.css';
 
 class ViewHistoricalData extends Component {
@@ -65,9 +64,8 @@ class ViewHistoricalData extends Component {
 
         // create refs
         this.topDivRef = React.createRef();
-        this.stateInput = React.createRef();
-        this.nationalForestInput = React.createRef();
-        this.forestInput = React.createRef();
+        this.selectionBar = React.createRef();
+
     }
     render() {
         return(
@@ -75,35 +73,45 @@ class ViewHistoricalData extends Component {
     			<div className="flex-container">
     				<div className="container" id="filter-selections">
     					<div id="selection-areas-view-data">
-                            <TextInput instructions="Enter Start Year" submitFunction={this.updateStartDate} valueToDisplay={this.state.startDate}/>
-                            <TextInput instructions="Enter End Year" submitFunction={this.updateEndDate} valueToDisplay={this.state.endDate}/>
+                            <SelectionBar ref={this.selectionBar}
+                                startDate={this.state.startDate}
+                                endDate={this.state.endDate}
+                                stateName={this.state.stateName}
+                                nationalForest={this.state.nationalForest}
+                                forest={this.state.forest}
+                                availableStates={this.state.availableStates}
+                                availableNationalForests={this.state.availableNationalForests}
+                                availableLocalForests={this.state.availableLocalForests}
 
-                            <ChoiceInput instructions="Select State" submitFunction={this.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
-                            <ChoiceInput instructions="Select Natl Forest" submitFunction={this.updateNationalForestSelection} availableOptions={this.state.availableNationalForests} idName="nationalForest" value={this.state.nationalForest} ref={this.nationalForestInput}/>
-                            <ChoiceInput instructions="Select Local Forest" submitFunction={this.updateForestSelection} availableOptions={this.state.availableLocalForests} idName="forest" value={this.state.forest} ref={this.forestInput}/>
-
-    						<button id="reset-current-data-button" className="submit static-button" onClick={this.clearCurrentData}>Clear Filters</button>
-    						<button id="adjust-map-size-button" className="submit static-button" onClick={this.movePredictionModelDown}>Toggle View</button>
-
-                            <Link to="/arcgis-online">ArcGIS Online</Link>
+                                updateStartDate={this.updateStartDate}
+                                updateEndDate={this.updateEndDate}
+                                updateStateSelection={this.updateStateSelection}
+                                updateNationalForestSelection={this.updateNationalForestSelection}
+                                updateForestSelection={this.updateForestSelection}
+                                clearCurrentData={this.clearCurrentData}
+                                movePredictionModelDown={this.movePredictionModelDown}
+                            />
     					</div>
     				</div>
     			</div>
 
                 <div className="flex-container" id="data-insights-holder">
     				<div className="container data-insights flex-item" id="data-insights">
-    					<DataVisualization data={this.state.currentData} />
+    					<ChartArea data={this.state.currentData} />
     				</div>
     			</div>
 
                 <div className="flex-container" id="map-area-container">
-    				<div className="container map flex-item" id="map-area">
+    				<div className="container map flex-item flex-item-left" id="map-area">
     					<div id="viewDiv">
-                            <Map viewProperties={this.state.viewProperties}>
+                            <Map viewProperties={this.state.viewProperties} >
                                 <MapController data={this.state.currentData} updateState={this.updateStateSelection} updateNF={this.updateNationalForestSelection} updateForest={this.updateForestSelection}/>
                             </Map>
                         </div>
     				</div>
+                    <div className="container flex-item flex-item-right" id="beetle-count-area">
+                        <MapSideBar data={this.state.currentData} stateName={this.state.stateName} nationalForest={this.state.nationalForest} forest={this.state.forest} clearFunction={this.clearCurrentData}/>
+                    </div>
     			</div>
     		</div>
         );
@@ -225,7 +233,7 @@ class ViewHistoricalData extends Component {
                 forest: null
             }, () => {
                 this.updateCurrentData();
-                this.stateInput.current.selectGivenInput(this.state.stateName)
+                this.selectionBar.current.stateInput.current.selectGivenInput(this.state.stateName)
             });
         }
         // if we were given a state name and not the abbreviation, we need to get its abbreviation
@@ -240,7 +248,7 @@ class ViewHistoricalData extends Component {
                         forest: null
                     }, () => {
                         this.updateCurrentData();
-                        this.stateInput.current.selectGivenInput(this.state.stateName)
+                        this.selectionBar.current.stateInput.current.selectGivenInput(this.state.stateName)
                     });
                 }
             }
@@ -257,7 +265,7 @@ class ViewHistoricalData extends Component {
                         forest: null
                     }, () => {
                         this.updateCurrentData();
-                        this.stateInput.current.selectGivenInput(this.state.stateName)
+                        this.selectionBar.current.stateInput.current.selectGivenInput(this.state.stateName)
                     });
                 }
             }
@@ -272,7 +280,7 @@ class ViewHistoricalData extends Component {
                 nationalForest: nationalForest
             }, () => {
                 this.updateCurrentData();
-                this.nationalForestInput.current.selectGivenInput(this.state.nationalForest)
+                this.selectionBar.current.nationalForestInput.current.selectGivenInput(this.state.nationalForest)
             });
         }
         // if we are going from a non-null selection to a new selection, clear local forest
@@ -282,7 +290,7 @@ class ViewHistoricalData extends Component {
                 forest: null
             }, () => {
                 this.updateCurrentData();
-                this.nationalForestInput.current.selectGivenInput(this.state.nationalForest)
+                this.selectionBar.current.nationalForestInput.current.selectGivenInput(this.state.nationalForest)
             });
         }
     }
@@ -295,7 +303,7 @@ class ViewHistoricalData extends Component {
                 forest: forest
             }, () => {
                 this.updateCurrentData();
-                this.forestInput.current.selectGivenInput(this.state.forest)
+                this.selectionBar.current.forestInput.current.selectGivenInput(this.state.forest)
             });
         }
         // if we are going from a non-null selection to a new selection, clear national forest
@@ -305,7 +313,7 @@ class ViewHistoricalData extends Component {
                 nationalForest: null
             }, () => {
                 this.updateCurrentData();
-                this.forestInput.current.selectGivenInput(this.state.forest)
+                this.selectionBar.current.forestInput.current.selectGivenInput(this.state.forest)
             });
         }
     }
@@ -403,10 +411,6 @@ class ViewHistoricalData extends Component {
                     availableNationalForests: availableNationalForests
                 });
             }
-            // console.log(this.state.currentData);
-            // console.log(this.state.stateName);
-            // console.log(this.state.nationalForest);
-            // console.log(this.state.forest);
         });
     }
 
@@ -425,12 +429,12 @@ class ViewHistoricalData extends Component {
             this.updateCurrentData();
 
             // clear instruction text
-            this.stateInput.current.resetOptionText();
-            this.nationalForestInput.current.resetOptionText();
-            this.forestInput.current.resetOptionText();
+            this.selectionBar.current.stateInput.current.resetOptionText();
+            this.selectionBar.current.nationalForestInput.current.resetOptionText();
+            this.selectionBar.current.forestInput.current.resetOptionText();
 
             // deselect state (does not re-render because list of states does not change)
-            this.stateInput.current.selectField.current.selectedIndex = 0;
+            this.selectionBar.current.stateInput.current.selectField.current.selectedIndex = 0;
         });
     }
 

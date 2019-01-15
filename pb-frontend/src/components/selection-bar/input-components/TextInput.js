@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../../../styles/historical-data/InputFields.css';
 
 class TextInput extends Component {
     constructor(props) {

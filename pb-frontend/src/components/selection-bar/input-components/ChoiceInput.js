@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../../../styles/historical-data/InputFields.css';
 
 class ChoiceInput extends Component {
     constructor(props) {

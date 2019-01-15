@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { loadModules } from 'react-arcgis';
 import '../../styles/historical-data/MapController.css';
 
@@ -39,34 +39,57 @@ class MapController extends Component {
     }
 
     handleMapClick(event) {
+        // figure out what dots were clicked on
         var dotsClicked = this.getClickedDots(event.mapPoint.latitude,event.mapPoint.longitude)
         if (dotsClicked.length > 0) {
+
+            // // set the desired zoom
+            // var zoom = this.props.view.zoom;
+            // if (zoom < 6) {
+            //     zoom += 1;
+            // }
+
+            // // move the map and zoom to point
+            // this.props.view.goTo({
+            //     target: [dotsClicked[0].longitude, dotsClicked[0].latitude],
+            //     zoom: zoom
+            // });
+
+            // force pop-up to appear
+            this.props.view.popup.autoOpenEnabled = false;
+            this.props.view.popup.open({
+               // Set the popup's title to the coordinates of the location
+               title: "Title",
+               location: event.mapPoint, // Set the location of the popup to the clicked location
+               content: "Content goes here"  // content displayed in the popup
+             });
+
             var states = [];
             var nationalForests = [];
             var localForests = [];
 
             for (var entry in dotsClicked) {
                 var dot = dotsClicked[entry];
-                if (dot.state != null && dot.state != "" && !states.includes(dot.state)) {
+                if (dot.state !== null && dot.state !== "" && !states.includes(dot.state)) {
                     states.push(dot.state)
                 }
-                if (dot.nf != null && dot.nf != "" && !nationalForests.includes(dot.nf)) {
+                if (dot.nf !== null && dot.nf !== "" && !nationalForests.includes(dot.nf)) {
                     nationalForests.push(dot.nf)
                 }
-                if (dot.forest != null && dot.forest != "" && !localForests.includes(dot.forest)) {
+                if (dot.forest !== null && dot.forest !== "" && !localForests.includes(dot.forest)) {
                     localForests.push(dot.forest)
                 }
             }
 
-            if (states.length == 1) {
+            if (states.length === 1) {
                 this.props.updateState(states[0])
             }
 
-            if (nationalForests.length == 1) {
+            if (nationalForests.length === 1) {
                 this.props.updateNF(nationalForests[0])
             }
 
-            if (localForests.length == 1) {
+            if (localForests.length === 1) {
                 this.props.updateForest(localForests[0])
             }
         }
@@ -90,9 +113,12 @@ class MapController extends Component {
 
     // store new data from props
     updateStateFromProps(props) {
+        // sort data based on year
+        var newSet = props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0));
+
         // update the state then hide necessary graphics on the map
         this.setState({
-            data: props.data
+            data: newSet
         }, () => {
             // if a layer exists on the map, delete it and make a new one
             if (this.props.view.map.layers.items.length > 0) {
