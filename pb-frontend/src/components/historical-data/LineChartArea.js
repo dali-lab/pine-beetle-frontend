@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import '../../styles/historical-data/ChartArea.css';
 import {Line} from 'react-chartjs-2';
+import ReactTooltip from 'react-tooltip'
+import math from 'mathjs';
+import '../../styles/historical-data/LineChartArea.css';
 
-class ChartArea extends Component {
+class LineChartArea extends Component {
     constructor(props) {
         super(props);
 
@@ -40,16 +42,33 @@ class ChartArea extends Component {
                         }
                     }]
                 }
-            }
+            },
+            spotsMean: 0,
+            spotsSD: 0,
+            spbMean: 0,
+            spbSD: 0,
+            cleridsMean: 0,
+            cleridsSD: 0
         }
 
         this.updateStateFromProps = this.updateStateFromProps.bind(this);
     }
     render() {
         return(
-            <div>
-                <div id="chartjs-container">
-                    <Line data={this.state.chartData} height={500} options={this.state.chartOptions}/>
+            <div className="flex-container" id="data-insights-holder">
+                <div className="container data-insights flex-item flex-item-left" id="data-insights">
+                        <Line data={this.state.chartData} height={500} options={this.state.chartOptions}/>
+                </div>
+                <div className="container flex-item flex-item-right" id="line-metrics-area">
+                        <p data-tip="Sample Mean of Spots"><b>Spots Mean: </b>{this.state.spotsMean.toLocaleString()}</p>
+                        <p data-tip="Standard Deviation of Spots"><b>Spots SD: </b>{this.state.spotsSD.toLocaleString().slice(0, -1)}</p>
+                        <div className="metrics-line"></div>
+                        <p data-tip="Sample Mean of SPB"><b>SPB Mean: </b>{this.state.spbMean.toLocaleString()}</p>
+                        <p data-tip="Standard Deviation of SPB"><b>SPB SD: </b>{this.state.spbSD.toLocaleString().slice(0, -1)}</p>
+                        <div className="metrics-line"></div>
+                        <p data-tip="Sample Mean of Clerids"><b>Clerids Mean: </b>{this.state.cleridsMean.toLocaleString()}</p>
+                        <p data-tip="Standard Deviation of Clerids"><b>Clerids SD: </b>{this.state.cleridsSD.toLocaleString().slice(0, -1)}</p>
+                        <ReactTooltip />
                 </div>
     		</div>
         );
@@ -177,14 +196,28 @@ class ChartArea extends Component {
             }
         }
 
+        // compute mean and standard deviations
+        var spotsMean = math.mean(chartData.datasets[0].data)
+        var spotsSD = math.std(chartData.datasets[0].data)
+        var spbMean = math.mean(chartData.datasets[1].data)
+        var spbSD = math.std(chartData.datasets[1].data)
+        var cleridsMean = math.mean(chartData.datasets[2].data)
+        var cleridsSD = math.std(chartData.datasets[2].data)
+
         // set new y-axis height
         this.state.chartOptions.scales.yAxes[0].ticks.max = max
 
         // update state
         this.setState({
-            chartData: chartData
+            chartData: chartData,
+            spotsMean: spotsMean,
+            spotsSD: spotsSD,
+            spbMean: spbMean,
+            spbSD: spbSD,
+            cleridsMean: cleridsMean,
+            cleridsSD: cleridsSD
         });
     }
 }
 
-export default ChartArea
+export default LineChartArea

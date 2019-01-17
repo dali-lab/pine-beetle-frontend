@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import ReactTooltip from 'react-tooltip'
 import TextInput from './input-components/TextInput';
 import ChoiceInput from './input-components/ChoiceInput';
 import '../../styles/selection-bar/InputFields.css';
@@ -40,7 +41,8 @@ class SelectionBar extends Component {
                 <button id="reset-current-data-button" className="submit static-button" onClick={this.props.clearCurrentData}>Clear Filters</button>
                 <button id="adjust-map-size-button" className="submit static-button" onClick={this.props.movePredictionModelDown}>Toggle View</button>
 
-                <Link to="/arcgis-online">ArcGIS Online</Link>
+                <Link to="/arcgis-online" data-tip="See ArcGIS Online Map">ArcGIS Online</Link>
+                <ReactTooltip />
     		</div>
         );
     }

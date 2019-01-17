@@ -20,7 +20,7 @@ class MapSideBar extends Component {
     }
     render() {
         return(
-            <div>
+            <div id="map-side-bar-container">
                 <div id="area-title">
                     {this.state.areaTitle}
                 </div>

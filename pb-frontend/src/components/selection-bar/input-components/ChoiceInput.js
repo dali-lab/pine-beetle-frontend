@@ -55,7 +55,10 @@ class ChoiceInput extends Component {
         }
 
         this.setState({
-            options: options
+            options: options,
+            value: props.value
+        }, () => {
+            this.selectGivenInput(this.state.value)
         });
     }
 
