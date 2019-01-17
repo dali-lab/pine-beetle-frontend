@@ -4,14 +4,36 @@ class DataController extends Component {
     constructor(props) {
         super(props);
 
-        // to implement cookies, just set and grab cookies here on construction
+        // determine initial state variables based on cookies
+        var stateName = (this.getCookie("stateName") !== null) ? this.getCookie("stateName") : null;
+        var stateAbbreviation = (this.getCookie("stateAbbreviation") !== null) ? this.getCookie("stateAbbreviation") : null;
+        var nationalForest = (this.getCookie("nationalForest") !== null) ? this.getCookie("nationalForest") : null;
+        var forest = (this.getCookie("forest") !== null) ? this.getCookie("forest") : null;
+        var startDate = (this.getCookie("startDate") !== null) ? this.getCookie("startDate") : Infinity;
+        var endDate = (this.getCookie("endDate") !== null) ? this.getCookie("endDate") : 0;
+
+        // handle empties and nulls
+        if (stateName === "null") {
+            stateName = null;
+        }
+        if (stateAbbreviation === "null") {
+            stateAbbreviation = null;
+        }
+        if (nationalForest === "null") {
+            nationalForest = null;
+        }
+        if (forest === "null") {
+            forest = null;
+        }
+
+        // set state based off cookies
         this.state = {
-            stateName: null,
-            stateAbbreviation: null,
-            nationalForest: null,
-            forest: null,
-            startDate: Infinity,
-            endDate: 0,
+            stateName: stateName,
+            stateAbbreviation: stateAbbreviation,
+            nationalForest: nationalForest,
+            forest: forest,
+            startDate: startDate,
+            endDate: endDate,
             totalData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
             currentData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
             availableStates: [],
@@ -43,6 +65,8 @@ class DataController extends Component {
             VA:"Virginia"
         }
 
+        console.log(this.state)
+
         // bind functions
         this.updateStartDate = this.updateStartDate.bind(this);
         this.updateEndDate = this.updateEndDate.bind(this);
@@ -51,6 +75,14 @@ class DataController extends Component {
         this.updateForestSelection = this.updateForestSelection.bind(this);
         this.updateCurrentData = this.updateCurrentData.bind(this);
         this.clearCurrentData = this.clearCurrentData.bind(this);
+
+        // set cookies
+        this.setCookie("stateName", this.state.stateName, 365);
+        this.setCookie("stateAbbreviation", this.state.stateAbbreviation, 365);
+        this.setCookie("nationalForest", this.state.nationalForest, 365);
+        this.setCookie("forest", this.state.forest, 365);
+        this.setCookie("startDate", this.state.startDate, 365);
+        this.setCookie("endDate", this.state.endDate, 365);
     }
     render() {
         return null;
@@ -58,7 +90,21 @@ class DataController extends Component {
 
     // update start and end dates initially available to user, hold onto original dates, initialize the state drop-down menu
     componentDidMount() {
-        this.updateStartAndEndDateFromCurrentData();
+        // if didn't have cookie for start or end date, set the start and end date
+        if (this.state.startDate === Infinity || this.state.endDate === 0) {
+            this.updateStartAndEndDateFromCurrentData();
+        }
+
+        // make forest selections and state selection
+        this.updateNationalForestSelection(this.state.nationalForest)
+        this.updateForestSelection(this.state.forest)
+        this.updateStateSelection(this.state.stateName)
+
+        // update data
+        this.updateCurrentData();
+
+        // update values
+        this.calculateOriginalStartAndEndDates();
         this.initializeAvailableStates();
     }
 
@@ -108,8 +154,11 @@ class DataController extends Component {
             startDate: startDate,
             endDate: endDate
         }, () => {
-            this.originalStartDate = this.state.startDate;
-            this.originalEndDate = this.state.endDate;
+            // set cookies
+            this.setCookie("startDate", startDate, 365);
+            this.setCookie("endDate", endDate, 365);
+
+            // update current data
             this.updateCurrentData();
 
             // set state of parent
@@ -119,6 +168,26 @@ class DataController extends Component {
         });
     }
 
+    // determine very first and very last year in dataset
+    calculateOriginalStartAndEndDates() {
+        var startDate = Infinity;
+        var endDate = 0;
+        for (var obj in this.state.totalData) {
+            // set startDate
+            if (this.state.totalData[obj].year < startDate) {
+                startDate = this.state.totalData[obj].year;
+            }
+            // set endDate
+            if (this.state.totalData[obj].year > endDate) {
+                endDate = this.state.totalData[obj].year;
+            }
+        }
+
+        // hold original start and end dates
+        this.originalStartDate = startDate;
+        this.originalEndDate = endDate;
+    }
+
     // update start date and ensure requested date is available
     updateStartDate(date) {
         // so long as the newly requested date isn't before minDate and is before end date, update state
@@ -126,6 +195,9 @@ class DataController extends Component {
             this.setState({
                 startDate: date
             }, () => {
+                // set cookies
+                this.setCookie("startDate", this.state.startDate, 365);
+
                 this.updateCurrentData();
 
                 // set state of parent
@@ -138,6 +210,9 @@ class DataController extends Component {
             this.setState({
                 startDate: this.state.startDate
             }, () => {
+                // set cookies
+                this.setCookie("startDate", this.state.startDate, 365);
+
                 // set state of parent
                 this.props.parent.setState({
                     dataControllerState: this.state
@@ -153,6 +228,10 @@ class DataController extends Component {
             this.setState({
                 endDate: date
             }, () => {
+                // set cookies
+                this.setCookie("endDate", this.state.endDate, 365);
+
+                // update current data
                 this.updateCurrentData();
 
                 // set state of parent
@@ -165,6 +244,9 @@ class DataController extends Component {
             this.setState({
                 endDate: this.state.endDate
             }, () => {
+                // set cookies
+                this.setCookie("endDate", this.state.endDate, 365);
+
                 // set state of parent
                 this.props.parent.setState({
                     dataControllerState: this.state
@@ -183,6 +265,13 @@ class DataController extends Component {
                 nationalForest: null,
                 forest: null
             }, () => {
+                // set cookies
+                this.setCookie("stateName", this.state.stateName, 365);
+                this.setCookie("stateAbbreviation", this.state.stateAbbreviation, 365);
+                this.setCookie("nationalForest", this.state.nationalForest, 365);
+                this.setCookie("forest", this.state.forest, 365);
+
+                // update current data
                 this.updateCurrentData();
 
                 // set state of parent
@@ -202,6 +291,13 @@ class DataController extends Component {
                         nationalForest: null,
                         forest: null
                     }, () => {
+                        // set cookies
+                        this.setCookie("stateName", this.state.stateName, 365);
+                        this.setCookie("stateAbbreviation", this.state.stateAbbreviation, 365);
+                        this.setCookie("nationalForest", this.state.nationalForest, 365);
+                        this.setCookie("forest", this.state.forest, 365);
+
+                        // update current data
                         this.updateCurrentData();
 
                         // set state of parent
@@ -223,6 +319,13 @@ class DataController extends Component {
                         nationalForest: null,
                         forest: null
                     }, () => {
+                        // set cookies
+                        this.setCookie("stateName", this.state.stateName, 365);
+                        this.setCookie("stateAbbreviation", this.state.stateAbbreviation, 365);
+                        this.setCookie("nationalForest", this.state.nationalForest, 365);
+                        this.setCookie("forest", this.state.forest, 365);
+
+                        // update current data
                         this.updateCurrentData();
 
                         // set state of parent
@@ -242,6 +345,10 @@ class DataController extends Component {
             this.setState({
                 nationalForest: nationalForest
             }, () => {
+                // set cookies
+                this.setCookie("nationalForest", this.state.nationalForest, 365);
+
+                // update current data
                 this.updateCurrentData();
 
                 // set state of parent
@@ -256,6 +363,11 @@ class DataController extends Component {
                 nationalForest: nationalForest,
                 forest: null
             }, () => {
+                // set cookies
+                this.setCookie("nationalForest", this.state.nationalForest, 365);
+                this.setCookie("forest", this.state.forest, 365);
+
+                // update current data
                 this.updateCurrentData();
 
                 // set state of parent
@@ -273,6 +385,10 @@ class DataController extends Component {
             this.setState({
                 forest: forest
             }, () => {
+                // set cookies
+                this.setCookie("forest", this.state.forest, 365);
+
+                // update current data
                 this.updateCurrentData();
 
                 // set state of parent
@@ -287,6 +403,11 @@ class DataController extends Component {
                 forest: forest,
                 nationalForest: null
             }, () => {
+                // set cookies
+                this.setCookie("nationalForest", this.state.nationalForest, 365);
+                this.setCookie("forest", this.state.forest, 365);
+
+                // update current data
                 this.updateCurrentData();
 
                 // set state of parent
@@ -399,6 +520,9 @@ class DataController extends Component {
                 this.setState({
                     availableNationalForests: availableNationalForests
                 }, () => {
+                    // set cookies
+                    this.setCookie("availableNationalForests", this.state.availableNationalForests, 365);
+
                     // set state of parent
                     this.props.parent.setState({
                         dataControllerState: this.state
@@ -425,6 +549,13 @@ class DataController extends Component {
             availableNationalForests: [],
             availableLocalForests: []
         }, () => {
+            // set cookies
+            this.setCookie("stateName", this.state.stateName, 365);
+            this.setCookie("stateAbbreviation", this.state.stateAbbreviation, 365);
+            this.setCookie("nationalForest", this.state.nationalForest, 365);
+            this.setCookie("forest", this.state.forest, 365);
+
+            // update data
             this.updateStartAndEndDateFromCurrentData();
             this.updateCurrentData();
 
@@ -434,6 +565,31 @@ class DataController extends Component {
             });
         });
     }
+
+    // source: https://www.w3schools.com/js/js_cookies.asp
+      setCookie(cname, cvalue, exdays) {
+          var d = new Date();
+          d.setTime(d.getTime() + (exdays*24*60*60*1000));
+          var expires = "expires="+ d.toUTCString();
+          document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      }
+
+      // source: https://www.w3schools.com/js/js_cookies.asp
+      getCookie(cname) {
+          var name = cname + "=";
+          var decodedCookie = decodeURIComponent(document.cookie);
+          var ca = decodedCookie.split(';');
+          for(var i = 0; i <ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0) === ' ') {
+                  c = c.substring(1);
+              }
+              if (c.indexOf(name) === 0) {
+                  return c.substring(name.length, c.length);
+              }
+          }
+          return null;
+      }
 }
 
 export default DataController
