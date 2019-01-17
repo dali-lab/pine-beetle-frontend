@@ -57,7 +57,7 @@ class LineChartArea extends Component {
         return(
             <div className="flex-container" id="data-insights-holder">
                 <div className="container data-insights flex-item flex-item-left" id="data-insights">
-                        <Line data={this.state.chartData} height={500} options={this.state.chartOptions}/>
+                        <Line data={this.state.chartData} height={400} options={this.state.chartOptions}/>
                 </div>
                 <div className="container flex-item flex-item-right" id="line-metrics-area">
                         <p data-tip="Sample Mean of Spots"><b>Spots Mean: </b>{this.state.spotsMean.toLocaleString()}</p>

@@ -39,8 +39,6 @@ class MapController extends Component {
     }
 
     handleMapClick(event) {
-        console.log(this.state.graphics)
-
         // figure out what dots were clicked on
         var dotsClicked = this.getClickedDots(event.mapPoint.latitude, event.mapPoint.longitude)
         if (dotsClicked.length > 0) {

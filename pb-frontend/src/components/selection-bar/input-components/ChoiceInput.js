@@ -9,6 +9,7 @@ class ChoiceInput extends Component {
             options: [],
             value: "DEFAULT"
         }
+
         this.submit = this.submit.bind(this);
         this.resetOptionText = this.resetOptionText.bind(this);
         this.selectField = React.createRef();
@@ -24,21 +25,8 @@ class ChoiceInput extends Component {
         );
     }
 
-    // select the option input in the options list
-    selectGivenInput(input) {
-        if (input === null) {
-            this.setState({
-                value: "DEFAULT"
-            })
-        }
-
-        for (var option in this.state.options) {
-            if (this.state.options[option].props.children === input) {
-                this.setState({
-                    value: input
-                })
-            }
-        }
+    componentDidMount() {
+        this.updateStateFromProps(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -60,6 +48,23 @@ class ChoiceInput extends Component {
         }, () => {
             this.selectGivenInput(this.state.value)
         });
+    }
+
+    // select the option input in the options list
+    selectGivenInput(input) {
+        if (input === null) {
+            this.setState({
+                value: "DEFAULT"
+            })
+        }
+
+        for (var option in this.state.options) {
+            if (this.state.options[option].props.children === input) {
+                this.setState({
+                    value: input
+                })
+            }
+        }
     }
 
     resetOptionText() {

@@ -5,33 +5,21 @@ class DataController extends Component {
         super(props);
 
         // determine initial state variables based on cookies
-        var stateName = (this.getCookie("stateName") !== null) ? this.getCookie("stateName") : null;
-        var stateAbbreviation = (this.getCookie("stateAbbreviation") !== null) ? this.getCookie("stateAbbreviation") : null;
-        var nationalForest = (this.getCookie("nationalForest") !== null) ? this.getCookie("nationalForest") : null;
-        var forest = (this.getCookie("forest") !== null) ? this.getCookie("forest") : null;
-        var startDate = (this.getCookie("startDate") !== null) ? this.getCookie("startDate") : Infinity;
-        var endDate = (this.getCookie("endDate") !== null) ? this.getCookie("endDate") : 0;
+        var stateName = (this.getCookie("stateName") !== null && this.getCookie("stateName") !== "null") ? this.getCookie("stateName") : null;
+        var stateAbbreviation = (this.getCookie("stateAbbreviation") !== null && this.getCookie("stateAbbreviation") !== "null") ? this.getCookie("stateAbbreviation") : null;
+        var startDate = (this.getCookie("startDate") !== null && this.getCookie("startDate") !== "null") ? this.getCookie("startDate") : Infinity;
+        var endDate = (this.getCookie("endDate") !== null && this.getCookie("endDate") !== "null") ? this.getCookie("endDate") : 0;
 
-        // handle empties and nulls
-        if (stateName === "null") {
-            stateName = null;
-        }
-        if (stateAbbreviation === "null") {
-            stateAbbreviation = null;
-        }
-        if (nationalForest === "null") {
-            nationalForest = null;
-        }
-        if (forest === "null") {
-            forest = null;
-        }
+        // set national forest and forest cookies
+        this.nationalForestCookie = (this.getCookie("nationalForest") !== null && this.getCookie("nationalForest") !== "null") ? this.getCookie("nationalForest") : null;
+        this.forestCookie = (this.getCookie("forest") !== null && this.getCookie("forest") !== "null") ? this.getCookie("forest") : null;
 
         // set state based off cookies
         this.state = {
             stateName: stateName,
             stateAbbreviation: stateAbbreviation,
-            nationalForest: nationalForest,
-            forest: forest,
+            nationalForest: null,
+            forest: null,
             startDate: startDate,
             endDate: endDate,
             totalData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
@@ -65,8 +53,6 @@ class DataController extends Component {
             VA:"Virginia"
         }
 
-        console.log(this.state)
-
         // bind functions
         this.updateStartDate = this.updateStartDate.bind(this);
         this.updateEndDate = this.updateEndDate.bind(this);
@@ -95,17 +81,25 @@ class DataController extends Component {
             this.updateStartAndEndDateFromCurrentData();
         }
 
-        // make forest selections and state selection
-        this.updateNationalForestSelection(this.state.nationalForest)
-        this.updateForestSelection(this.state.forest)
-        this.updateStateSelection(this.state.stateName)
-
-        // update data
-        this.updateCurrentData();
-
-        // update values
+        // calculate start dates for bounds on date inputs
         this.calculateOriginalStartAndEndDates();
+
+        // initialize drop-down-menu options
         this.initializeAvailableStates();
+        this.initializeAvailableNationalForests();
+        this.initializeAvailableLocalForests();
+
+        console.log(this.nationalForestCookie)
+
+        // choose national forest
+        if (this.nationalForestCookie !== null) {
+            this.updateNationalForestSelection(this.nationalForestCookie);
+        }
+
+        // choose forest
+        if (this.forestCookie !== null) {
+            this.updateForestSelection(this.forestCookie);
+        }
     }
 
     // add input option fields for state selection
@@ -127,6 +121,58 @@ class DataController extends Component {
         // update state
         this.setState({
             availableStates: stateNamesToAdd
+        }, () => {
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
+            });
+        });
+    }
+
+    // add input option fields for national forest selection
+    initializeAvailableNationalForests() {
+        var nationalForestNamesToAdd = [];
+
+        // iterate over totalData
+        for (var obj in this.state.totalData) {
+            // grab national forest name
+            var nf = this.state.totalData[obj].nf;
+
+            // check if we haven't already added this state
+            if (!nationalForestNamesToAdd.includes(nf) && !this.state.availableNationalForests.includes(nf) && this.state.totalData[obj].state === this.state.stateAbbreviation && nf !== "") {
+                nationalForestNamesToAdd.push(nf);
+            }
+        }
+
+        // update state
+        this.setState({
+            availableNationalForests: nationalForestNamesToAdd
+        }, () => {
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
+            });
+        });
+    }
+
+    // add input option fields for local forest selection
+    initializeAvailableLocalForests() {
+        var forestNamesToAdd = [];
+
+        // iterate over totalData
+        for (var obj in this.state.totalData) {
+            // grab national forest name
+            var forest = this.state.totalData[obj].forest;
+
+            // check if we haven't already added this state
+            if (!forestNamesToAdd.includes(forest) && !this.state.availableLocalForests.includes(forest) && this.state.totalData[obj].state === this.state.stateAbbreviation && forest !== "") {
+                forestNamesToAdd.push(forest);
+            }
+        }
+
+        // update state
+        this.setState({
+            availableLocalForests: forestNamesToAdd
         }, () => {
             // set state of parent
             this.props.parent.setState({
