@@ -9,7 +9,8 @@ class TextInput extends Component {
             value: this.props.valueToDisplay
         }
 
-        // bind
+        // bind functions
+        this.handleKeyPress = this.handleKeyPress.bind(this);
         this.setValue = this.setValue.bind(this);
         this.submit = this.submit.bind(this);
     }
@@ -17,7 +18,7 @@ class TextInput extends Component {
         return(
             <div className="selection">
                 <h3>{this.props.instructions}</h3>
-                <input className="input" type="text" name="fname" value={this.state.value} onChange={this.setValue} onClick={this.selectText}></input>
+                <input className="input" type="text" name="fname" value={this.state.value} onChange={this.setValue} onClick={this.selectText} onKeyPress={this.handleKeyPress}></input>
                 <button className="submit" onClick={this.submit}>Submit</button>
             </div>
         );
@@ -43,6 +44,13 @@ class TextInput extends Component {
     // highlight the text field on user click
     selectText(event) {
         event.target.select();
+    }
+
+    // if user presses enter in the input field, click the submit button for them
+    handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            this.submit();
+        }
     }
 }
 

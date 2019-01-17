@@ -121,17 +121,8 @@ class DataController extends Component {
 
     // update start date and ensure requested date is available
     updateStartDate(date) {
-        // figure out the minimum date in currentData
-        var minDate = Infinity;
-
-        for (var i in this.state.currentData) {
-            if (this.state.currentData[i].year < minDate) {
-                minDate = this.state.currentData[i].year;
-            }
-        }
-
-        // so long as the newly requested date isn't before minDate, update state
-        if (date >= minDate) {
+        // so long as the newly requested date isn't before minDate and is before end date, update state
+        if (date >= this.originalStartDate && date <= this.state.endDate) {
             this.setState({
                 startDate: date
             }, () => {
@@ -157,17 +148,8 @@ class DataController extends Component {
 
     // update end date and ensure requested date is available
     updateEndDate(date) {
-        // figure out the minimum date in currentData
-        var maxDate = 0;
-
-        for (var i in this.state.currentData) {
-            if (this.state.currentData[i].year > maxDate) {
-                maxDate = this.state.currentData[i].year;
-            }
-        }
-
-        // so long as the newly requested date isn't before minDate, update state
-        if (date <= maxDate) {
+        // so long as the newly requested date isn't after maxDate and is after start date, update state
+        if (date <= this.originalEndDate && date >= this.state.startDate) {
             this.setState({
                 endDate: date
             }, () => {
