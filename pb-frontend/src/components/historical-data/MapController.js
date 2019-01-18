@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { loadModules } from 'react-arcgis';
 import '../../styles/historical-data/MapController.css';
 
@@ -13,6 +13,7 @@ class MapController extends Component {
         // bind functions
         this.createGraphics = this.createGraphics.bind(this);
         this.createLayer = this.createLayer.bind(this);
+        this.handleMapClick = this.handleMapClick.bind(this);
     }
 
     // don't render anything as this class is a controller for the map
@@ -28,6 +29,146 @@ class MapController extends Component {
         // build the map
         this.createGraphics();
         this.createLayer();
+
+        // bind event listeners
+        this.props.view.on("click", this.handleMapClick);       // handle click
+
+        this.props.view.on("mouse-wheel", function(event) {     // prevents zooming with the mouse-wheel event
+            event.stopPropagation();
+        });
+    }
+
+    handleMapClick(event) {
+        // figure out what dots were clicked on
+        var dotsClicked = this.getClickedDots(event.mapPoint.latitude, event.mapPoint.longitude)
+        if (dotsClicked.length > 0) {
+
+            // // set the desired zoom
+            // var zoom = this.props.view.zoom;
+            // if (zoom < 6) {
+            //     zoom += 1;
+            // }
+            //
+            // // move the map and zoom to point
+            // this.props.view.goTo({
+            //     target: [dotsClicked[0].longitude, dotsClicked[0].latitude],
+            //     zoom: zoom
+            // });
+
+            // force pop-up to appear
+            this.props.view.popup.autoOpenEnabled = false;
+
+            // set title of pop-up
+            var title = "";
+            if (dotsClicked[0].nf !== null && dotsClicked[0].nf !== "") {
+                title += dotsClicked[0].nf + ", " + dotsClicked[0].state
+            }
+            else if (dotsClicked[0].forest !== null && dotsClicked[0].forest !== "") {
+                title += dotsClicked[0].forest + ", " + dotsClicked[0].state
+            }
+            else {
+                title += dotsClicked[0].state
+            }
+
+            // define variables used for pop-up content
+            var spbPerTwoWeeks = 0
+            var cleridsPerTwoWeeks = 0
+            var spots = 0
+            var spotsPerHundredKm = 0
+            var percentSPBSum = 0
+            var percentSPBCount = 0
+
+            // calculate totals/averages
+            for (var entry in dotsClicked) {
+                var dot = dotsClicked[entry];
+
+                // spb per two weeks
+                if (dot.spbPerTwoWeeks !== null && dot.spbPerTwoWeeks !== "") {
+                    spbPerTwoWeeks += dot.spbPerTwoWeeks
+                }
+
+                // clerids per two weeks
+                if (dot.cleridsPerTwoWeeks !== null && dot.cleridsPerTwoWeeks !== "") {
+                    cleridsPerTwoWeeks += dot.cleridsPerTwoWeeks
+                }
+
+                // spots
+                if (dot.spots !== null && dot.spots !== "") {
+                    spots += dot.spots
+                }
+
+                // spots per hundred km
+                if (dot.spotsPerHundredKm !== null && dot.spotsPerHundredKm !== "") {
+                    spotsPerHundredKm += dot.spotsPerHundredKm
+                }
+
+                // percentSPB
+                if (dot.percentSpb !== null && dot.percentSpb !== "") {
+                    percentSPBSum += dot.percentSpb
+                    percentSPBCount += 1
+                }
+            }
+
+            // UNCOMMENT THIS CODE TO ADD POPUP TO MAP
+
+            // // get average percent spb
+            // var averagePercentSPB = percentSPBSum / percentSPBCount
+            //
+            // var content = "<p><strong>Total SPB Per Two Weeks: </strong>" + spbPerTwoWeeks + "</p>" +
+            //               "<p><strong>Total Clerids Per Two Weeks: </strong>" + cleridsPerTwoWeeks + "</p>" +
+            //               "<p><strong>Total Spots: </strong>" + spots + "</p>" +
+            //               "<p><strong>Total Spots Per Hundred KM: </strong>" + spotsPerHundredKm + "</p>" +
+            //               "<p><strong>Average Percent SPB: </strong>" + (Math.round(averagePercentSPB * 100) / 100).toString() + "%</p>"
+            //
+            // var content = "Content would go here"
+            //
+            // this.props.view.popup.open({
+            //    // Set the popup's title to the coordinates of the location
+            //    title: title,
+            //    location: event.mapPoint, // Set the location of the popup to the clicked location
+            //    content: content  // content displayed in the popup
+            //  });
+
+            var states = [];
+            var nationalForests = [];
+            var localForests = [];
+
+            for (entry in dotsClicked) {
+                dot = dotsClicked[entry];
+                if (dot.state !== null && dot.state !== "" && !states.includes(dot.state)) {
+                    states.push(dot.state)
+                }
+                if (dot.nf !== null && dot.nf !== "" && !nationalForests.includes(dot.nf)) {
+                    nationalForests.push(dot.nf)
+                }
+                if (dot.forest !== null && dot.forest !== "" && !localForests.includes(dot.forest)) {
+                    localForests.push(dot.forest)
+                }
+            }
+
+            if (states.length === 1) {
+                this.props.updateState(states[0])
+            }
+
+            if (nationalForests.length === 1) {
+                this.props.updateNF(nationalForests[0])
+            }
+
+            if (localForests.length === 1) {
+                this.props.updateForest(localForests[0])
+            }
+        }
+    }
+
+    // determine if user clicked a dot that exists on the map
+    getClickedDots(lat,long) {
+        var dotsClicked = []
+        for (var i in this.state.data) {
+            if (parseInt(this.state.data[i].latitude) === parseInt(lat) && parseInt(this.state.data[i].longitude) === parseInt(long)) {
+                dotsClicked.push(this.state.data[i])
+            }
+        }
+        return dotsClicked
     }
 
     // if receiving new data, update the state
@@ -37,9 +178,12 @@ class MapController extends Component {
 
     // store new data from props
     updateStateFromProps(props) {
+        // sort data based on year
+        var newSet = props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0));
+
         // update the state then hide necessary graphics on the map
         this.setState({
-            data: props.data
+            data: newSet
         }, () => {
             // if a layer exists on the map, delete it and make a new one
             if (this.props.view.map.layers.items.length > 0) {
@@ -160,7 +304,7 @@ class MapController extends Component {
             type: "simple", // autocasts as new SimpleRenderer()
             symbol: {
                 type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
-                color: [233,196,106],
+                color: [255,127,14],
                 size: "13px",
                 outline: {
                     color: [36,66,79],

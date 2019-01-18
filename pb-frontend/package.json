@@ -5,12 +5,14 @@
   "dependencies": {
     "axios": "^0.18.0",
     "chart.js": "^2.3",
+    "mathjs": "^5.4.1",
     "react": "^16.7.0",
     "react-arcgis": "^3.3.3",
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.7.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.2"
+    "react-scripts": "2.1.2",
+    "react-tooltip": "^3.9.2"
   },
   "scripts": {
     "start": "react-scripts start",
