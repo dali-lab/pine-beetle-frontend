@@ -59,13 +59,13 @@ class ViewPredictions extends Component {
     }
 
     updateStateFromProps(props) {
-        if (props.dataController != undefined && props.dataController != null) {
+        if (props.dataController !== undefined && props.dataController != null) {
             this.setState({
                 dataController: props.dataController.current
             });
         }
 
-        if (props.dataControllerState != undefined && props.dataControllerState != null) {
+        if (props.dataControllerState !== undefined && props.dataControllerState != null) {
             this.setState({
                 dataControllerState: props.dataControllerState
             });

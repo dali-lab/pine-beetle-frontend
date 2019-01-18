@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { loadModules } from 'react-arcgis';
 import '../../styles/historical-data/MapController.css';
 
@@ -60,10 +60,10 @@ class MapController extends Component {
 
             // set title of pop-up
             var title = "";
-            if (dotsClicked[0].nf != null && dotsClicked[0].nf != "") {
+            if (dotsClicked[0].nf !== null && dotsClicked[0].nf !== "") {
                 title += dotsClicked[0].nf + ", " + dotsClicked[0].state
             }
-            else if (dotsClicked[0].forest != null && dotsClicked[0].forest != "") {
+            else if (dotsClicked[0].forest !== null && dotsClicked[0].forest !== "") {
                 title += dotsClicked[0].forest + ", " + dotsClicked[0].state
             }
             else {
@@ -83,27 +83,27 @@ class MapController extends Component {
                 var dot = dotsClicked[entry];
 
                 // spb per two weeks
-                if (dot.spbPerTwoWeeks != null && dot.spbPerTwoWeeks != "") {
+                if (dot.spbPerTwoWeeks !== null && dot.spbPerTwoWeeks !== "") {
                     spbPerTwoWeeks += dot.spbPerTwoWeeks
                 }
 
                 // clerids per two weeks
-                if (dot.cleridsPerTwoWeeks != null && dot.cleridsPerTwoWeeks != "") {
+                if (dot.cleridsPerTwoWeeks !== null && dot.cleridsPerTwoWeeks !== "") {
                     cleridsPerTwoWeeks += dot.cleridsPerTwoWeeks
                 }
 
                 // spots
-                if (dot.spots != null && dot.spots != "") {
+                if (dot.spots !== null && dot.spots !== "") {
                     spots += dot.spots
                 }
 
                 // spots per hundred km
-                if (dot.spotsPerHundredKm != null && dot.spotsPerHundredKm != "") {
+                if (dot.spotsPerHundredKm !== null && dot.spotsPerHundredKm !== "") {
                     spotsPerHundredKm += dot.spotsPerHundredKm
                 }
 
                 // percentSPB
-                if (dot.percentSpb != null && dot.percentSpb != "") {
+                if (dot.percentSpb !== null && dot.percentSpb !== "") {
                     percentSPBSum += dot.percentSpb
                     percentSPBCount += 1
                 }
@@ -133,8 +133,8 @@ class MapController extends Component {
             var nationalForests = [];
             var localForests = [];
 
-            for (var entry in dotsClicked) {
-                var dot = dotsClicked[entry];
+            for (entry in dotsClicked) {
+                dot = dotsClicked[entry];
                 if (dot.state !== null && dot.state !== "" && !states.includes(dot.state)) {
                     states.push(dot.state)
                 }

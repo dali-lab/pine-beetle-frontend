@@ -88,7 +88,7 @@ class LineChartArea extends Component {
 
     // recalculate values to show on page
     updateStateFromProps(props) {
-        if (props.data.length != 0) {
+        if (props.data.length !== 0) {
             // create data object for line chart
             var chartData = {
                 labels: [],

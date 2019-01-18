@@ -22,7 +22,7 @@ class About extends Component {
                         <h2>Using the Product</h2>
                         <div className="line"></div>
                         <p>To view the data, navigate to the <Link to="/viewdata"><strong><em>View Data</em></strong></Link> page. Here users can see graphical representations of the data as well as outbreak predictions and rankings from the statistical model. Use the selection boxes, slicers, and filters to adjust what data you are viewing. Users can adjust the range of years visualized as well as states, national forests, and local forests. Click the Reset Filters button to view all data.</p>
-    					<p>Above the graphs is a geographic representation of the trapping data from ArcGIS. Adjust the top menu buttons to see data from different ranges and play around with the graph to see changes in recent years. Click the Expand Map button to move the prediction model down and view the map in full screen. Please see the contact information at right for feature requests.</p>
+    					<p>Above the graphs is a geographic representation of the trapping data from ArcGIS. Adjust the top menu buttons to see data from different ranges and play around with the graph to see changes in recent years. Click the Expand Map button to move the prediction model down and view the map in full screen. Please see the contact information at right for feature requests. Please note this website uses cookies to enhance user experience. To learn more, please see the <a href="https://en.wikipedia.org/wiki/HTTP_cookie" target="_blank" rel="noopener noreferrer">following</a>.</p>
                     </div>
     			</div>
 

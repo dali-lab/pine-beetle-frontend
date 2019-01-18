@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 
 class DataController extends Component {
     constructor(props) {
@@ -7,19 +7,17 @@ class DataController extends Component {
         // determine initial state variables based on cookies
         var stateName = (this.getCookie("stateName") !== null && this.getCookie("stateName") !== "null") ? this.getCookie("stateName") : null;
         var stateAbbreviation = (this.getCookie("stateAbbreviation") !== null && this.getCookie("stateAbbreviation") !== "null") ? this.getCookie("stateAbbreviation") : null;
+        var nationalForest = (this.getCookie("nationalForest") !== null && this.getCookie("nationalForest") !== "null") ? this.getCookie("nationalForest") : null;
+        var forest = (this.getCookie("forest") !== null && this.getCookie("forest") !== "null") ? this.getCookie("forest") : null;
         var startDate = (this.getCookie("startDate") !== null && this.getCookie("startDate") !== "null") ? this.getCookie("startDate") : Infinity;
         var endDate = (this.getCookie("endDate") !== null && this.getCookie("endDate") !== "null") ? this.getCookie("endDate") : 0;
-
-        // set national forest and forest cookies
-        this.nationalForestCookie = (this.getCookie("nationalForest") !== null && this.getCookie("nationalForest") !== "null") ? this.getCookie("nationalForest") : null;
-        this.forestCookie = (this.getCookie("forest") !== null && this.getCookie("forest") !== "null") ? this.getCookie("forest") : null;
 
         // set state based off cookies
         this.state = {
             stateName: stateName,
             stateAbbreviation: stateAbbreviation,
-            nationalForest: null,
-            forest: null,
+            nationalForest: nationalForest,
+            forest: forest,
             startDate: startDate,
             endDate: endDate,
             totalData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
@@ -88,18 +86,6 @@ class DataController extends Component {
         this.initializeAvailableStates();
         this.initializeAvailableNationalForests();
         this.initializeAvailableLocalForests();
-
-        console.log(this.nationalForestCookie)
-
-        // choose national forest
-        if (this.nationalForestCookie !== null) {
-            this.updateNationalForestSelection(this.nationalForestCookie);
-        }
-
-        // choose forest
-        if (this.forestCookie !== null) {
-            this.updateForestSelection(this.forestCookie);
-        }
     }
 
     // add input option fields for state selection
