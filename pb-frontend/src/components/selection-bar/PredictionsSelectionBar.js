@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import ReactTooltip from 'react-tooltip'
 import TextInput from './input-components/TextInput';
 import ChoiceInput from './input-components/ChoiceInput';
 import '../../styles/selection-bar/InputFields.css';
 
-class SelectionBar extends Component {
+class PredictionsSelectionBar extends Component {
     constructor(props) {
         super(props);
 
@@ -24,25 +23,24 @@ class SelectionBar extends Component {
         this.updateStateFromProps = this.updateStateFromProps.bind(this);
 
         // create refs
+        this.yearInput = React.createRef();
         this.stateInput = React.createRef();
         this.nationalForestInput = React.createRef();
         this.forestInput = React.createRef();
     }
     render() {
         return(
-            <div>
-                <TextInput instructions="Enter Start Year" submitFunction={this.props.updateStartDate} valueToDisplay={this.state.startDate}/>
-                <TextInput instructions="Enter End Year" submitFunction={this.props.updateEndDate} valueToDisplay={this.state.endDate}/>
+            <div className="flex-container">
+                <div className="container" id="filter-selections">
+                    <div id="selection-areas-view-data">
+                        <ChoiceInput instructions="Select Year" submitFunction={this.props.updateYearSelection} availableOptions={this.state.availableYears} idName="year" value={this.state.startDate} ref={this.yearInput}/>
+                        <ChoiceInput instructions="Select State" submitFunction={this.props.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
+                        <ChoiceInput instructions="Select Natl Forest" submitFunction={this.props.updateNationalForestSelection} availableOptions={this.state.availableNationalForests} idName="nationalForest" value={this.state.nationalForest} ref={this.nationalForestInput}/>
+                        <ChoiceInput instructions="Select Local Forest" submitFunction={this.props.updateForestSelection} availableOptions={this.state.availableLocalForests} idName="forest" value={this.state.forest} ref={this.forestInput}/>
 
-                <ChoiceInput instructions="Select State" submitFunction={this.props.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
-                <ChoiceInput instructions="Select Natl Forest" submitFunction={this.props.updateNationalForestSelection} availableOptions={this.state.availableNationalForests} idName="nationalForest" value={this.state.nationalForest} ref={this.nationalForestInput}/>
-                <ChoiceInput instructions="Select Local Forest" submitFunction={this.props.updateForestSelection} availableOptions={this.state.availableLocalForests} idName="forest" value={this.state.forest} ref={this.forestInput}/>
-
-                <button id="reset-current-data-button" className="submit static-button" onClick={this.props.clearCurrentData}>Clear Filters</button>
-                <button id="adjust-map-size-button" className="submit static-button" onClick={this.props.movePredictionModelDown}>Toggle View</button>
-
-                <Link to="/arcgis-online" data-tip="See ArcGIS Online Map">ArcGIS Online</Link>
-                <ReactTooltip />
+                        <button id="reset-current-data-button" className="submit static-button" onClick={this.props.clearCurrentData}>Clear Filters</button>
+                    </div>
+                </div>
     		</div>
         );
     }
@@ -67,9 +65,10 @@ class SelectionBar extends Component {
             forest: props.forest,
             availableStates: props.availableStates,
             availableNationalForests: props.availableNationalForests,
-            availableLocalForests: props.availableLocalForests
+            availableLocalForests: props.availableLocalForests,
+            availableYears: props.availableYears
         });
     }
 }
 
-export default SelectionBar
+export default PredictionsSelectionBar

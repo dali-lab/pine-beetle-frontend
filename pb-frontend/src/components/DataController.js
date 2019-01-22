@@ -24,7 +24,9 @@ class DataController extends Component {
             currentData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
             availableStates: [],
             availableLocalForests: [],
-            availableNationalForests: []
+            availableNationalForests: [],
+            availableYears: [],
+            summarizedData: []
         }
 
         // initialize original start and end dates
@@ -54,6 +56,7 @@ class DataController extends Component {
         // bind functions
         this.updateStartDate = this.updateStartDate.bind(this);
         this.updateEndDate = this.updateEndDate.bind(this);
+        this.updateYearSelection = this.updateYearSelection.bind(this);
         this.updateStateSelection = this.updateStateSelection.bind(this);
         this.updateNationalForestSelection = this.updateNationalForestSelection.bind(this);
         this.updateForestSelection = this.updateForestSelection.bind(this);
@@ -72,6 +75,10 @@ class DataController extends Component {
         return null;
     }
 
+    componentWillMount() {
+        this.updateCurrentData();
+    }
+
     // update start and end dates initially available to user, hold onto original dates, initialize the state drop-down menu
     componentDidMount() {
         // if didn't have cookie for start or end date, set the start and end date
@@ -86,6 +93,7 @@ class DataController extends Component {
         this.initializeAvailableStates();
         this.initializeAvailableNationalForests();
         this.initializeAvailableLocalForests();
+        this.initializeAvailableYears();
     }
 
     // add input option fields for state selection
@@ -124,7 +132,7 @@ class DataController extends Component {
             // grab national forest name
             var nf = this.state.totalData[obj].nf;
 
-            // check if we haven't already added this state
+            // check if we haven't already added this nf
             if (!nationalForestNamesToAdd.includes(nf) && !this.state.availableNationalForests.includes(nf) && this.state.totalData[obj].state === this.state.stateAbbreviation && nf !== "") {
                 nationalForestNamesToAdd.push(nf);
             }
@@ -150,7 +158,7 @@ class DataController extends Component {
             // grab national forest name
             var forest = this.state.totalData[obj].forest;
 
-            // check if we haven't already added this state
+            // check if we haven't already added this forest
             if (!forestNamesToAdd.includes(forest) && !this.state.availableLocalForests.includes(forest) && this.state.totalData[obj].state === this.state.stateAbbreviation && forest !== "") {
                 forestNamesToAdd.push(forest);
             }
@@ -159,6 +167,32 @@ class DataController extends Component {
         // update state
         this.setState({
             availableLocalForests: forestNamesToAdd
+        }, () => {
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
+            });
+        });
+    }
+
+    // add input option fields for year selection
+    initializeAvailableYears() {
+        var yearsToAdd = [];
+
+        // iterate over totalData
+        for (var obj in this.state.totalData) {
+            // grab national forest name
+            var year = this.state.totalData[obj].year;
+
+            // check if we haven't already added this year
+            if (!yearsToAdd.includes(year) && !this.state.availableYears.includes(year) && year !== "") {
+                yearsToAdd.push(year);
+            }
+        }
+
+        // update state
+        this.setState({
+            availableYears: yearsToAdd
         }, () => {
             // set state of parent
             this.props.parent.setState({
@@ -285,6 +319,25 @@ class DataController extends Component {
                 });
             });
         }
+    }
+
+    updateYearSelection(year) {
+        this.setState({
+            startDate: year,
+            endDate: year
+        }, () => {
+            // set cookies
+            this.setCookie("startDate", this.state.startDate, 365);
+            this.setCookie("endDate", this.state.endDate, 365);
+
+            // update current data
+            this.updateCurrentData();
+
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
+            });
+        });
     }
 
     // select a new state -- control for if we are passed an abbreviation or a state name
@@ -450,6 +503,57 @@ class DataController extends Component {
         }
     }
 
+    updateSummarizedData() {
+        var summarizedData = [];
+
+        for (var entry in this.state.currentData) {
+            var dataObject = JSON.parse(JSON.stringify(this.state.currentData[entry]))
+            var lat = this.state.currentData[entry].latitude;
+            var long = this.state.currentData[entry].longitude;
+
+            if (lat !== null && long !== null && lat !== undefined && long !== undefined) {
+                var index = this.findLocationObject(summarizedData, lat, long);
+                var object = summarizedData[index];
+                if (object !== null && object !== undefined) {
+                    object.spots += dataObject.spots;
+                    object.spotsPerHundredKm += dataObject.spotsPerHundredKm;
+                    object.spbPerTwoWeeks += dataObject.spbPerTwoWeeks;
+                    object.cleridsPerTwoWeeks += dataObject.cleridsPerTwoWeeks;
+
+                    if (dataObject.year < object.startDate) {
+                        object.startDate = dataObject.year
+                    }
+
+                    if (dataObject.year > object.startDate) {
+                        object.endDate = dataObject.year
+                    }
+
+                }
+                else {
+                    var newObject = dataObject;
+                    newObject.startDate = dataObject.year;
+                    newObject.endDate = dataObject.year
+
+                    summarizedData.push(newObject)
+                }
+            }
+        }
+
+        this.setState({
+            summarizedData: summarizedData
+        });
+    }
+
+    findLocationObject(collection, lat, long) {
+        for (var i in collection) {
+            if (collection[i].latitude === lat && collection[i].longitude === long) {
+                return i
+            }
+        }
+
+        return null;
+    }
+
     // update current data based on the user selections for state, forest, date, etc.
     updateCurrentData() {
         var newSet = [];
@@ -524,6 +628,9 @@ class DataController extends Component {
         this.setState({
             currentData: newSet
         }, () => {
+            // update summarizedData
+            this.updateSummarizedData();
+
             // if neither national forest or local forest is selected, update both
             if (this.state.nationalForest === null && this.state.forest === null) {
                 this.setState({

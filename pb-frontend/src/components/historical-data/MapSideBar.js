@@ -9,7 +9,6 @@ class MapSideBar extends Component {
             beetleCounts: {
                 totalCleridsPerTwoWeeks: 0,
                 totalSPBPerTwoWeeks: 0,
-                totalPercentSPB: 0,
                 totalSpots: 0,
                 totalSpotsPerHundredKM: 0
             },
@@ -27,7 +26,6 @@ class MapSideBar extends Component {
                 <div id="beetle-counts">
                     <p id="total-clerids-per-two-weeks">{"Total Clerids Per Two Weeks: " + this.state.beetleCounts.totalCleridsPerTwoWeeks}</p>
                     <p id="total-spb-per-two-weeks">{"Total SPB Per Two Weeks: " + this.state.beetleCounts.totalSPBPerTwoWeeks}</p>
-                    <p id="avg-percent-spb">{"Average Percent SPB: " + this.state.beetleCounts.totalPercentSPB + "%"}</p>
                     <p id="total-spots">{"Total Spots: " + this.state.beetleCounts.totalSpots}</p>
                     <p id="total-spots-per-hundred-km">{"Total Spots Per Hundred KM: " + this.state.beetleCounts.totalSpotsPerHundredKM}</p>
                 </div>
@@ -55,14 +53,12 @@ class MapSideBar extends Component {
         // text fields
         var totalCleridsPerTwoWeeks = 0;
         var totalSPBPerTwoWeeks = 0;
-        var totalPercentSPB = 0;
         var totalSpots = 0;
         var totalSpotsPerHundredKM = 0;
 
         for (var obj in props.data) {
             totalCleridsPerTwoWeeks += props.data[obj].cleridsPerTwoWeeks;
             totalSPBPerTwoWeeks += props.data[obj].spbPerTwoWeeks;
-            totalPercentSPB += props.data[obj].percentSpb;
             totalSpots += props.data[obj].spots;
             totalSpotsPerHundredKM += props.data[obj].spotsPerHundredKm;
         }
@@ -70,7 +66,6 @@ class MapSideBar extends Component {
         // format nicely
         totalCleridsPerTwoWeeks = parseInt(totalCleridsPerTwoWeeks).toLocaleString(); // toLocalString adds commas for thousands places
         totalSPBPerTwoWeeks = parseInt(totalSPBPerTwoWeeks).toLocaleString();
-        totalPercentSPB = (totalPercentSPB / props.data.length).toFixed(3); // toFixed is number of decimal places
         totalSpots = parseInt(totalSpots).toLocaleString();
         totalSpotsPerHundredKM = parseInt(totalSpotsPerHundredKM).toLocaleString();
 
@@ -95,7 +90,6 @@ class MapSideBar extends Component {
             beetleCounts: {
                 totalCleridsPerTwoWeeks: totalCleridsPerTwoWeeks,
                 totalSPBPerTwoWeeks: totalSPBPerTwoWeeks,
-                totalPercentSPB: totalPercentSPB,
                 totalSpots: totalSpots,
                 totalSpotsPerHundredKM: totalSpotsPerHundredKM
             },

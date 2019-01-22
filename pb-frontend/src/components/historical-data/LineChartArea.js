@@ -197,13 +197,26 @@ class LineChartArea extends Component {
                 }
             }
 
+            var spotsMean = 0;
+            var spotsSD = 0;
+            var spbMean = 0;
+            var spbSD = 0;
+            var cleridsMean = 0;
+            var cleridsSD = 0;
+
             // compute mean and standard deviations
-            var spotsMean = math.mean(chartData.datasets[0].data)
-            var spotsSD = math.std(chartData.datasets[0].data)
-            var spbMean = math.mean(chartData.datasets[1].data)
-            var spbSD = math.std(chartData.datasets[1].data)
-            var cleridsMean = math.mean(chartData.datasets[2].data)
-            var cleridsSD = math.std(chartData.datasets[2].data)
+            if (chartData.datasets[0].data.length > 0) {
+                spotsMean = math.mean(chartData.datasets[0].data)
+                spotsSD = math.std(chartData.datasets[0].data)
+            }
+            if (chartData.datasets[1].data.length > 0) {
+                spbMean = math.mean(chartData.datasets[1].data)
+                spbSD = math.std(chartData.datasets[1].data)
+            }
+            if (chartData.datasets[2].data.length > 0) {
+                cleridsMean = math.mean(chartData.datasets[2].data)
+                cleridsSD = math.std(chartData.datasets[2].data)
+            }
 
             // set new y-axis height
             this.state.chartOptions.scales.yAxes[0].ticks.max = max

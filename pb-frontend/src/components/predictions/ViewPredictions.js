@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LoadingContainer from '../LoadingContainer';
-import SelectionBar from '../selection-bar/SelectionBar';
+import PredictionsSelectionBar from '../selection-bar/PredictionsSelectionBar';
 import '../../styles/predictions/ViewPredictions.css';
 
 class ViewPredictions extends Component {
@@ -12,35 +12,32 @@ class ViewPredictions extends Component {
             dataController: null,       // holds references to functions that are used to update the state, forest, etc.
             dataControllerState: null  // defines the user's current selection for state, national forest, etc.
         }
+
     }
 
     render() {
         if (this.state.dataController != null && this.state.dataControllerState != null) {
             return(
                 <div>
-                    <div className="flex-container">
-                        <div className="container" id="filter-selections">
-                            <div id="selection-areas-view-data">
-                                <SelectionBar
-                                    startDate={this.state.dataControllerState.startDate}
-                                    endDate={this.state.dataControllerState.endDate}
-                                    stateName={this.state.dataControllerState.stateName}
-                                    nationalForest={this.state.dataControllerState.nationalForest}
-                                    forest={this.state.dataControllerState.forest}
-                                    availableStates={this.state.dataControllerState.availableStates}
-                                    availableNationalForests={this.state.dataControllerState.availableNationalForests}
-                                    availableLocalForests={this.state.dataControllerState.availableLocalForests}
+                    <PredictionsSelectionBar
+                        startDate={this.state.dataControllerState.startDate}
+                        endDate={this.state.dataControllerState.endDate}
+                        stateName={this.state.dataControllerState.stateName}
+                        nationalForest={this.state.dataControllerState.nationalForest}
+                        forest={this.state.dataControllerState.forest}
+                        availableStates={this.state.dataControllerState.availableStates}
+                        availableNationalForests={this.state.dataControllerState.availableNationalForests}
+                        availableLocalForests={this.state.dataControllerState.availableLocalForests}
+                        availableYears={this.state.dataControllerState.availableYears}
 
-                                    updateStartDate={this.state.dataController.updateStartDate}
-                                    updateEndDate={this.state.dataController.updateEndDate}
-                                    updateStateSelection={this.state.dataController.updateStateSelection}
-                                    updateNationalForestSelection={this.state.dataController.updateNationalForestSelection}
-                                    updateForestSelection={this.state.dataController.updateForestSelection}
-                                    clearCurrentData={this.state.dataController.clearCurrentData}
-                                />
-                            </div>
-                        </div>
-                    </div>
+
+                        updateYearSelection={this.state.dataController.updateYearSelection}
+                        updateStateSelection={this.state.dataController.updateStateSelection}
+                        updateNationalForestSelection={this.state.dataController.updateNationalForestSelection}
+                        updateForestSelection={this.state.dataController.updateForestSelection}
+                        clearCurrentData={this.state.dataController.clearCurrentData}
+                    />
+
                 </div>
             );
         }
@@ -51,6 +48,11 @@ class ViewPredictions extends Component {
 
     componentDidMount() {
         this.updateStateFromProps(this.props);
+
+        // select most recent year
+        if (this.props.dataControllerState !== undefined && this.props.dataControllerState != null && this.props.dataController !== undefined && this.props.dataController != null) {
+            this.props.dataController.current.updateYearSelection(this.props.dataControllerState.availableYears[this.props.dataControllerState.availableYears.length - 1]);
+        }
     }
 
     // if receiving new data, update the state
