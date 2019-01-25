@@ -7,8 +7,8 @@ import { Map } from 'react-arcgis';
 import ArcGISMapController from './ArcGISMapController';
 import MapBoxMap from './mapbox/MapBoxMap';
 import MapSideBar from './MapSideBar';
-import '../../styles/historical-data/ViewHistoricalData.css';
-import '../../styles/historical-data/LoadingContainer.css';
+import '../../styles/historical-data-page/ViewHistoricalData.css';
+import '../../styles/historical-data-page/LoadingContainer.css';
 
 class ViewHistoricalData extends Component {
     constructor(props) {
@@ -34,24 +34,7 @@ class ViewHistoricalData extends Component {
         if (this.state.dataController != null && this.state.dataControllerState != null) {
             return(
                 <div ref={this.containerComponent}>
-                    <HistoricalDataSelectionBar
-                        startDate={this.state.dataControllerState.startDate}
-                        endDate={this.state.dataControllerState.endDate}
-                        stateName={this.state.dataControllerState.stateName}
-                        nationalForest={this.state.dataControllerState.nationalForest}
-                        forest={this.state.dataControllerState.forest}
-                        availableStates={this.state.dataControllerState.availableStates}
-                        availableNationalForests={this.state.dataControllerState.availableNationalForests}
-                        availableLocalForests={this.state.dataControllerState.availableLocalForests}
-
-                        updateStartDate={this.state.dataController.updateStartDate}
-                        updateEndDate={this.state.dataController.updateEndDate}
-                        updateStateSelection={this.state.dataController.updateStateSelection}
-                        updateNationalForestSelection={this.state.dataController.updateNationalForestSelection}
-                        updateForestSelection={this.state.dataController.updateForestSelection}
-                        clearCurrentData={this.state.dataController.clearCurrentData}
-                        movePredictionModelDown={this.movePredictionModelDown}
-                    />
+                    <HistoricalDataSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} movePredictionModelDown={this.movePredictionModelDown}/>
 
     				<LineChartArea data={this.state.dataControllerState.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.startDate} lastObservedYear={this.state.dataControllerState.endDate} />
                     <BarChartArea data={this.state.dataControllerState.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.startDate} lastObservedYear={this.state.dataControllerState.endDate} />

@@ -6,8 +6,8 @@ import Header from './header-footer/Header.js'
 import Footer from './header-footer/Footer.js'
 import Home from './Home.js'
 import About from './about/About.js';
-import ViewHistoricalData from './historical-data/ViewHistoricalData.js';
-import ViewPredictions from './predictions/ViewPredictions.js';
+import ViewHistoricalData from './historical-data-page/ViewHistoricalData.js';
+import ViewPredictions from './predictive-model-page/ViewPredictions.js';
 import ArcGISOnline from './arcgis-online/ArcGISOnline.js';
 import '../styles/App.css';
 

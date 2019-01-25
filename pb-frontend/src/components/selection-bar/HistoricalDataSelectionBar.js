@@ -33,14 +33,14 @@ class HistoricalDataSelectionBar extends Component {
             <div className="flex-container">
                 <div className="container" id="filter-selections">
                     <div id="selection-areas-view-data">
-                        <TextInput instructions="Enter Start Year" submitFunction={this.props.updateStartDate} valueToDisplay={this.state.startDate}/>
-                        <TextInput instructions="Enter End Year" submitFunction={this.props.updateEndDate} valueToDisplay={this.state.endDate}/>
+                        <TextInput instructions="Enter Start Year" submitFunction={this.props.dataController.updateStartDate} valueToDisplay={this.state.startDate}/>
+                        <TextInput instructions="Enter End Year" submitFunction={this.props.dataController.updateEndDate} valueToDisplay={this.state.endDate}/>
 
-                        <ChoiceInput instructions="Select State" submitFunction={this.props.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
-                        <ChoiceInput instructions="Select Natl Forest" submitFunction={this.props.updateNationalForestSelection} availableOptions={this.state.availableNationalForests} idName="nationalForest" value={this.state.nationalForest} ref={this.nationalForestInput}/>
-                        <ChoiceInput instructions="Select Local Forest" submitFunction={this.props.updateForestSelection} availableOptions={this.state.availableLocalForests} idName="forest" value={this.state.forest} ref={this.forestInput}/>
+                        <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
+                        <ChoiceInput instructions="Select Natl Forest" submitFunction={this.props.dataController.updateNationalForestSelection} availableOptions={this.state.availableNationalForests} idName="nationalForest" value={this.state.nationalForest} ref={this.nationalForestInput}/>
+                        <ChoiceInput instructions="Select Local Forest" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableLocalForests} idName="forest" value={this.state.forest} ref={this.forestInput}/>
 
-                        <button id="reset-current-data-button" className="submit static-button" onClick={this.props.clearCurrentData}>Clear Filters</button>
+                        <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
                         <button id="adjust-map-size-button" className="submit static-button" onClick={this.props.movePredictionModelDown} data-tip="Move the charts and map around">Toggle View</button>
 
                         <Link to="/arcgis-online" data-tip="See the ArcGIS Online Map">ArcGIS Online</Link>
@@ -64,14 +64,14 @@ class HistoricalDataSelectionBar extends Component {
     // recalculate values to show on page
     updateStateFromProps(props) {
         this.setState({
-            startDate: props.startDate,
-            endDate: props.endDate,
-            stateName: props.stateName,
-            nationalForest: props.nationalForest,
-            forest: props.forest,
-            availableStates: props.availableStates,
-            availableNationalForests: props.availableNationalForests,
-            availableLocalForests: props.availableLocalForests
+            startDate: props.dataControllerState.startDate,
+            endDate: props.dataControllerState.endDate,
+            stateName: props.dataControllerState.stateName,
+            nationalForest: props.dataControllerState.nationalForest,
+            forest: props.dataControllerState.forest,
+            availableStates: props.dataControllerState.availableStates,
+            availableNationalForests: props.dataControllerState.availableNationalForests,
+            availableLocalForests: props.dataControllerState.availableLocalForests
         });
     }
 }

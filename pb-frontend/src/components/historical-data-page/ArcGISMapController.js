@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { loadModules } from 'react-arcgis';
-import '../../styles/historical-data/ArcGISMapController.css';
+import '../../styles/historical-data-page/ArcGISMapController.css';
 
 class ArcGISMapController extends Component {
     constructor(props) {
