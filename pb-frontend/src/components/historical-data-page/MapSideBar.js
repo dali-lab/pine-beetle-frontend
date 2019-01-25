@@ -32,6 +32,9 @@ class MapSideBar extends Component {
                 <div id="sidebar-button-area">
                     <button id="reset-current-data-button" className="submit static-button" onClick={this.props.clearFunction}>Clear Filters</button>
                 </div>
+                <br />
+                <p>Dot colors represent quartiles.</p>
+                <p>Green: Q1 | Orange: Q2 and Q3 | Red: Q4</p>
     		</div>
         );
     }
