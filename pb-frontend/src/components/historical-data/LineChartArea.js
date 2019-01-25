@@ -81,9 +81,7 @@ class LineChartArea extends Component {
 
     // if we are receiving new data, update the state before rendering
     componentWillReceiveProps(nextProps) {
-        if (this.props.data !== nextProps.data) {
-            this.updateStateFromProps(nextProps);
-        }
+        this.updateStateFromProps(nextProps);
     }
 
     // recalculate values to show on page
@@ -119,29 +117,35 @@ class LineChartArea extends Component {
             var spb = []
             var clerids = []
 
-            // add array for each year
-            for (var year = 0; year < (new Date()).getFullYear(); year++) {
-                spots[year] = []
-                spb[year] = []
-                clerids[year] = []
+            // initialize start and end date
+            var startDate = props.firstObservedYear;
+            var endDate = props.lastObservedYear;
+
+            // initialize sum for each year
+            for (var yearNum = 0; yearNum <= (parseInt(endDate) - parseInt(startDate)); yearNum++) {
+                spots[yearNum] = 0
+                spb[yearNum] = 0
+                clerids[yearNum] = 0
             }
 
             // add data and labels to object
             for (var i in props.data) {
-                year = props.data[i].year
+                var year = props.data[i].year
+                var yearNum = year - startDate
+
                 // update spots count
                 if (props.data[i].spots != null) {
-                    spots[year].push(props.data[i].spots)
+                    spots[yearNum] += props.data[i].spots
                 }
 
                 // update spb per two weeks count
                 if (props.data[i].spbPerTwoWeeks != null) {
-                    spb[year].push(props.data[i].spbPerTwoWeeks)
+                    spb[yearNum] += props.data[i].spbPerTwoWeeks
                 }
 
                 // update clerids per two weeks count
                 if (props.data[i].cleridsPerTwoWeeks != null) {
-                    clerids[year].push(props.data[i].cleridsPerTwoWeeks)
+                    clerids[yearNum] += props.data[i].cleridsPerTwoWeeks
                 }
 
                 // add to the line chart's label if we haven't yet found this day
@@ -150,32 +154,10 @@ class LineChartArea extends Component {
                 }
             }
 
-            // clear out data arrays of empty years
-            for (year = 0; year < (new Date()).getFullYear(); year++) {
-                if (spots[year].length > 0) {
-                    var sum = 0;
-                    for (i in spots[year]) {
-                        sum += spots[year][i]
-                    }
-                    chartData.datasets[0].data.push(sum)
-                }
-
-                if (spb[year].length > 0) {
-                    sum = 0;
-                    for (i in spb[year]) {
-                        sum += spb[year][i]
-                    }
-                    chartData.datasets[1].data.push(sum)
-                }
-
-                if (clerids[year].length > 0) {
-                    sum = 0;
-                    for (i in clerids[year]) {
-                        sum += clerids[year][i]
-                    }
-                    chartData.datasets[2].data.push(sum)
-                }
-            }
+            // update chartData
+            chartData.datasets[0].data = spots
+            chartData.datasets[1].data = spb
+            chartData.datasets[2].data = clerids
 
             // maximum value found in the array
             var max = 0

@@ -27,7 +27,7 @@ class MapBoxMap extends Component {
                 padding: '10px'
             },
             popupInfo: null,
-            summarizedData: []
+            summarizedDataByLatLong: []
         }
 
         this.updateViewport = this.updateViewport.bind(this);
@@ -41,7 +41,7 @@ class MapBoxMap extends Component {
                     <NavigationControl onViewportChange={this.updateViewport} captureScroll={false} showCompass={false} />
                 </div>
 
-                { this.state.summarizedData.map(this.renderMarker) }
+                { this.state.summarizedDataByLatLong.map(this.renderMarker) }
                 {this.renderPopup()}
 
             </ReactMapGL>
@@ -62,10 +62,10 @@ class MapBoxMap extends Component {
     }
 
     updateStateFromProps(props) {
-        // clone the summarizedData array
+        // clone the summarizedDataByLatLong array
         var newArray = []
-        for (var entry in props.summarizedData) {
-            var dataObject = JSON.parse(JSON.stringify(props.summarizedData[entry]))
+        for (var entry in props.summarizedDataByLatLong) {
+            var dataObject = JSON.parse(JSON.stringify(props.summarizedDataByLatLong[entry]))
             newArray.push(dataObject);
         }
 
@@ -73,9 +73,9 @@ class MapBoxMap extends Component {
         newArray.sort((a,b) => (a.spots > b.spots) ? 1 : ((b.spots > a.spots) ? -1 : 0));
 
         // determine low, medium, and high
-        var low = newArray.slice(0, Math.ceil(newArray.length / 3));
-        var medium = newArray.slice(Math.ceil(newArray.length / 3), 2 * Math.ceil(newArray.length / 3));
-        var high = newArray.slice(2 * Math.ceil(newArray.length / 3));
+        var low = newArray.slice(0, Math.ceil(newArray.length / 4));
+        var medium = newArray.slice(Math.ceil(newArray.length / 4), 3 * Math.ceil(newArray.length / 4));
+        var high = newArray.slice(3 * Math.ceil(newArray.length / 4));
 
         // clear out new array
         newArray = [];
@@ -96,7 +96,7 @@ class MapBoxMap extends Component {
         }
 
         this.setState({
-            summarizedData: newArray
+            summarizedDataByLatLong: newArray
         });
     }
 
@@ -113,7 +113,7 @@ class MapBoxMap extends Component {
                 key={'marker-' + index}
                 longitude={object.longitude}
                 latitude={object.latitude} >
-                <Pin size={20} onClick={() => this.setState({popupInfo: object})} object={object} numObjects={this.state.summarizedData.length}/>
+                <Pin size={20} onClick={() => this.setState({popupInfo: object})} object={object} numObjects={this.state.summarizedDataByLatLong.length}/>
             </Marker>
         );
     }

@@ -53,15 +53,15 @@ class ViewHistoricalData extends Component {
                         movePredictionModelDown={this.movePredictionModelDown}
                     />
 
-    				<LineChartArea data={this.state.dataControllerState.currentData} />
-                    <BarChartArea data={this.state.dataControllerState.currentData} />
+    				<LineChartArea data={this.state.dataControllerState.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.startDate} lastObservedYear={this.state.dataControllerState.endDate} />
+                    <BarChartArea data={this.state.dataControllerState.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.startDate} lastObservedYear={this.state.dataControllerState.endDate} />
 
                     <div className="flex-container" id="map-area-container">
                         <div className="flex-item flex-item-left" id="mapbox-container">
-                            <MapBoxMap summarizedData={this.state.dataControllerState.summarizedData} />
+                            <MapBoxMap summarizedDataByLatLong={this.state.dataControllerState.summarizedDataByLatLong} />
                         </div>
                         <div className="flex-item flex-item-right container" id="beetle-count-area">
-                            <MapSideBar data={this.state.dataControllerState.summarizedData} stateName={this.state.dataControllerState.stateName} nationalForest={this.state.dataControllerState.nationalForest} forest={this.state.dataControllerState.forest} clearFunction={this.state.dataController.clearCurrentData}/>
+                            <MapSideBar data={this.state.dataControllerState.summarizedDataByLatLong} stateName={this.state.dataControllerState.stateName} nationalForest={this.state.dataControllerState.nationalForest} forest={this.state.dataControllerState.forest} clearFunction={this.state.dataController.clearCurrentData}/>
                         </div>
         			</div>
         		</div>

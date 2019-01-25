@@ -26,7 +26,8 @@ class DataController extends Component {
             availableLocalForests: [],
             availableNationalForests: [],
             availableYears: [],
-            summarizedData: []
+            summarizedDataByLatLong: [],
+            summarizedDataByYear: []
         }
 
         // initialize original start and end dates
@@ -503,8 +504,8 @@ class DataController extends Component {
         }
     }
 
-    updateSummarizedData() {
-        var summarizedData = [];
+    updateSummarizedDataByLatLong() {
+        var summarizedDataByLatLong = [];
 
         for (var entry in this.state.currentData) {
             var dataObject = JSON.parse(JSON.stringify(this.state.currentData[entry]))
@@ -512,35 +513,64 @@ class DataController extends Component {
             var long = this.state.currentData[entry].longitude;
 
             if (lat !== null && long !== null && lat !== undefined && long !== undefined) {
-                var index = this.findLocationObject(summarizedData, lat, long);
-                var object = summarizedData[index];
+                var index = this.findLocationObject(summarizedDataByLatLong, lat, long);
+                var object = summarizedDataByLatLong[index];
                 if (object !== null && object !== undefined) {
                     object.spots += dataObject.spots;
                     object.spotsPerHundredKm += dataObject.spotsPerHundredKm;
                     object.spbPerTwoWeeks += dataObject.spbPerTwoWeeks;
                     object.cleridsPerTwoWeeks += dataObject.cleridsPerTwoWeeks;
 
+                    // update start date
                     if (dataObject.year < object.startDate) {
                         object.startDate = dataObject.year
                     }
 
+                    // update end date
                     if (dataObject.year > object.startDate) {
                         object.endDate = dataObject.year
+                    }
+
+                    // add to year array
+                    if  (dataObject.year !== null && dataObject.year !== undefined && dataObject.year !== "" && !object.yearArray.includes(dataObject.year)) {
+                        object.yearArray.push(dataObject.year)
                     }
 
                 }
                 else {
                     var newObject = dataObject;
+
+                    // set start date and end date
                     newObject.startDate = dataObject.year;
                     newObject.endDate = dataObject.year
 
-                    summarizedData.push(newObject)
+                    // set years array
+                    var yearArray = []
+                    if  (newObject.year !== null && newObject.year !== undefined && newObject.year !== "") {
+                        yearArray.push(newObject.year)
+                    }
+                    newObject.yearArray = yearArray
+
+                    summarizedDataByLatLong.push(newObject)
                 }
             }
         }
 
+        // if all observations for a lat, long are 0, remove from dataset
+        var i = 0;
+        while (i < summarizedDataByLatLong.length) {
+            if (summarizedDataByLatLong[i].spots === 0 && summarizedDataByLatLong[i].spotsPerHundredKm === 0 && summarizedDataByLatLong[i].spbPerTwoWeeks === 0 && summarizedDataByLatLong[i].cleridsPerTwoWeeks === 0) {
+                // remove observation from dataset and year
+                summarizedDataByLatLong.splice(i,1);
+            }
+            else {
+                i += 1;
+            }
+        }
+
+        // update summarizedDataByLatLong
         this.setState({
-            summarizedData: summarizedData
+            summarizedDataByLatLong: summarizedDataByLatLong
         });
     }
 
@@ -550,7 +580,110 @@ class DataController extends Component {
                 return i
             }
         }
+        return null;
+    }
 
+    updateSummarizedDataByYear() {
+        var summarizedDataByYear = [];
+
+        for (var entry in this.state.currentData) {
+            var dataObject = JSON.parse(JSON.stringify(this.state.currentData[entry]))
+            var year = this.state.currentData[entry].year;
+
+            if (year !== null && year !== undefined && year !== "") {
+                var index = this.findYearObject(summarizedDataByYear, year);
+                var object = summarizedDataByYear[index];
+                if (object !== null && object !== undefined) {
+                    object.spots += dataObject.spots;
+                    object.spotsPerHundredKm += dataObject.spotsPerHundredKm;
+                    object.spbPerTwoWeeks += dataObject.spbPerTwoWeeks;
+                    object.cleridsPerTwoWeeks += dataObject.cleridsPerTwoWeeks;
+
+                    // add to state array
+                    if  (dataObject.state !== null && dataObject.state !== undefined && dataObject.state !== "" && !object.state.includes(dataObject.state)) {
+                        object.state.push(dataObject.state)
+                    }
+
+                    // add to nf array
+                    if  (dataObject.nf !== null && dataObject.nf !== undefined && dataObject.nf !== "" && !object.nf.includes(dataObject.nf)) {
+                        object.nf.push(dataObject.nf)
+                    }
+
+                    // add to forest array
+                    if  (dataObject.forest !== null && dataObject.forest !== undefined && dataObject.forest !== "" && !object.forest.includes(dataObject.forest)) {
+                        object.forest.push(dataObject.forest)
+                    }
+
+                }
+                else {
+                    var newObject = dataObject
+
+                    // set state to be array
+                    var stateArray = []
+                    if  (newObject.state !== null && newObject.state !== undefined && newObject.state !== "") {
+                        stateArray.push(newObject.state)
+                    }
+                    newObject.state = stateArray
+
+                    // set nf to be array
+                    var nfArray = []
+                    if  (newObject.nf !== null && newObject.nf !== undefined && newObject.nf !== "") {
+                        nfArray.push(newObject.nf)
+                    }
+                    newObject.nf = nfArray
+
+                    // set forest to be array
+                    var forestArray = []
+                    if  (newObject.forest !== null && newObject.forest !== undefined && newObject.forest !== "") {
+                        forestArray.push(newObject.forest)
+                    }
+                    newObject.forest = forestArray
+
+                    summarizedDataByYear.push(dataObject)
+                }
+            }
+        }
+
+        // if all observations for a year are 0, remove from dataset
+        var i = 0;
+        while (i < summarizedDataByYear.length) {
+            if (summarizedDataByYear[i].spots === 0 && summarizedDataByYear[i].spotsPerHundredKm === 0 && summarizedDataByYear[i].spbPerTwoWeeks === 0 && summarizedDataByYear[i].cleridsPerTwoWeeks === 0) {
+                // remove observation from dataset and year
+                summarizedDataByYear.splice(i,1);
+            }
+            else {
+                i += 1;
+            }
+        }
+
+        if (summarizedDataByYear.length > 0) {
+            // if we deleted the first date, update start date selection
+            if (this.state.startDate !== summarizedDataByYear[0].year) {
+                this.setState({
+                    startDate: summarizedDataByYear[0].year
+                });
+            }
+
+            // if we deleted the last date, update end date selection
+            if (this.state.endDate !== summarizedDataByYear[summarizedDataByYear.length - 1].year) {
+                this.setState({
+                    endDate: summarizedDataByYear[summarizedDataByYear.length - 1].year
+                });
+            }
+        }
+
+        // update summarizedDataByYear
+        this.setState({
+            summarizedDataByYear: summarizedDataByYear
+        });
+    }
+
+    findYearObject(collection, year) {
+        for (var i in collection) {
+            if (collection[i].year === year) {
+                return i
+            }
+        }
         return null;
     }
 
@@ -629,7 +762,8 @@ class DataController extends Component {
             currentData: newSet
         }, () => {
             // update summarizedData
-            this.updateSummarizedData();
+            this.updateSummarizedDataByLatLong();
+            this.updateSummarizedDataByYear();
 
             // if neither national forest or local forest is selected, update both
             if (this.state.nationalForest === null && this.state.forest === null) {
@@ -686,13 +820,17 @@ class DataController extends Component {
             nationalForest: null,
             forest: null,
             availableNationalForests: [],
-            availableLocalForests: []
+            availableLocalForests: [],
+            startDate: this.originalStartDate,
+            endDate: this.originalEndDate
         }, () => {
             // set cookies
             this.setCookie("stateName", this.state.stateName, 365);
             this.setCookie("stateAbbreviation", this.state.stateAbbreviation, 365);
             this.setCookie("nationalForest", this.state.nationalForest, 365);
             this.setCookie("forest", this.state.forest, 365);
+            this.setCookie("startDate", this.state.startDate, 365);
+            this.setCookie("endDate", this.state.endDate, 365);
 
             // update data
             this.updateStartAndEndDateFromCurrentData();
