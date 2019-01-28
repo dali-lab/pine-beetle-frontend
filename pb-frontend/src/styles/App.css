@@ -87,3 +87,11 @@ body img {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
+#mobile-landing-page {
+    margin: 10px 20px;
+}
+
+#mobile-landing-page h2, #mobile-landing-page p {
+    color: white;
+}

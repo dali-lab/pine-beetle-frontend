@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import { loadModules } from 'react-arcgis';
-import '../../styles/historical-data/MapController.css';
+import '../../styles/historical-data-page/ArcGISMapController.css';
 
-class MapController extends Component {
+class ArcGISMapController extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -402,4 +402,4 @@ class MapController extends Component {
     }
 }
 
-export default MapController
+export default ArcGISMapController

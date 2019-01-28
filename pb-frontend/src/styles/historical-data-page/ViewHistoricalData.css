@@ -181,6 +181,7 @@ h4.location {
     flex-direction: column !important;    /* vertical alignment of flex items */
     justify-content: flex-start !important;   /* center flex items vertically */
     padding-top: 50px;
+    margin-left: 0px;
 }
 
 #selection-areas-view-data a {

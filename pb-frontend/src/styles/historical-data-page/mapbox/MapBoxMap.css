@@ -1,0 +1,14 @@
+#mapbox-container {
+    margin: 15px 31px;
+    background-color: #E5E5E5;
+    border-radius: 5px;
+}
+
+.popup-content {
+    font-family: 'Open Sans', arial, serif;
+}
+
+.popup-content p {
+    padding: 0;
+    margin: 0;
+}

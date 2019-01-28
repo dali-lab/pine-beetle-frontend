@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import {Line} from 'react-chartjs-2';
-import ReactTooltip from 'react-tooltip'
+import {Bar} from 'react-chartjs-2';
 import math from 'mathjs';
-import '../../styles/historical-data/LineChartArea.css';
+import '../../styles/historical-data-page/BarChartArea.css';
 
-class LineChartArea extends Component {
+class BarChartArea extends Component {
     constructor(props) {
         super(props);
 
@@ -15,20 +14,20 @@ class LineChartArea extends Component {
                     {
                         data: [],
                         label: "Total Spots",
-                        borderColor: "#1f77b4",
-                        fill: false
+                        backgroundColor: "#1f77b4",
+                        hoverBackgroundColor: "#e9c46a"
                     },
                     {
                         data: [],
                         label: "Total SPB Per Two Weeks",
-                        borderColor: "#ff7f0e",
-                        fill: false
+                        backgroundColor: "#ff7f0e",
+                        hoverBackgroundColor: "#e9c46a"
                     },
                     {
                         data: [],
                         label: "Total Clerids Per Two Weeks",
-                        borderColor: "#2ca02c",
-                        fill: false
+                        backgroundColor: "#2ca02c",
+                        hoverBackgroundColor: "#e9c46a"
                     }
                 ]
             }, // used for chartjs line chart
@@ -56,19 +55,8 @@ class LineChartArea extends Component {
     render() {
         return(
             <div className="flex-container" id="data-insights-holder">
-                <div className="container data-insights flex-item flex-item-left" id="data-insights">
-                        <Line data={this.state.chartData} height={400} options={this.state.chartOptions}/>
-                </div>
-                <div className="container flex-item flex-item-right" id="line-metrics-area">
-                        <p data-tip="Sample Mean of Spots"><b>Spots Mean: </b>{this.state.spotsMean.toLocaleString()}</p>
-                        <p data-tip="Standard Deviation of Spots"><b>Spots SD: </b>{this.state.spotsSD.toLocaleString().slice(0, -1)}</p>
-                        <div className="metrics-line"></div>
-                        <p data-tip="Sample Mean of SPB"><b>SPB Mean: </b>{this.state.spbMean.toLocaleString()}</p>
-                        <p data-tip="Standard Deviation of SPB"><b>SPB SD: </b>{this.state.spbSD.toLocaleString().slice(0, -1)}</p>
-                        <div className="metrics-line"></div>
-                        <p data-tip="Sample Mean of Clerids"><b>Clerids Mean: </b>{this.state.cleridsMean.toLocaleString()}</p>
-                        <p data-tip="Standard Deviation of Clerids"><b>Clerids SD: </b>{this.state.cleridsSD.toLocaleString().slice(0, -1)}</p>
-                        <ReactTooltip />
+                <div className="container data-insights flex-item" id="data-insights">
+                        <Bar data={this.state.chartData} height={400} options={this.state.chartOptions}/>
                 </div>
     		</div>
         );
@@ -81,9 +69,7 @@ class LineChartArea extends Component {
 
     // if we are receiving new data, update the state before rendering
     componentWillReceiveProps(nextProps) {
-        if (this.props.data !== nextProps.data) {
-            this.updateStateFromProps(nextProps);
-        }
+        this.updateStateFromProps(nextProps);
     }
 
     // recalculate values to show on page
@@ -119,29 +105,34 @@ class LineChartArea extends Component {
             var spb = []
             var clerids = []
 
-            // add array for each year
-            for (var year = 0; year < (new Date()).getFullYear(); year++) {
-                spots[year] = []
-                spb[year] = []
-                clerids[year] = []
+            var startDate = props.firstObservedYear;
+            var endDate = props.lastObservedYear;
+
+            // initialize sum for each year
+            for (var yearNum = 0; yearNum <= (parseInt(endDate) - parseInt(startDate)); yearNum++) {
+                spots[yearNum] = 0
+                spb[yearNum] = 0
+                clerids[yearNum] = 0
             }
 
             // add data and labels to object
             for (var i in props.data) {
-                year = props.data[i].year
+                var year = props.data[i].year
+                var yearNum = year - startDate
+
                 // update spots count
                 if (props.data[i].spots != null) {
-                    spots[year].push(props.data[i].spots)
+                    spots[yearNum] += props.data[i].spots
                 }
 
                 // update spb per two weeks count
                 if (props.data[i].spbPerTwoWeeks != null) {
-                    spb[year].push(props.data[i].spbPerTwoWeeks)
+                    spb[yearNum] += props.data[i].spbPerTwoWeeks
                 }
 
                 // update clerids per two weeks count
                 if (props.data[i].cleridsPerTwoWeeks != null) {
-                    clerids[year].push(props.data[i].cleridsPerTwoWeeks)
+                    clerids[yearNum] += props.data[i].cleridsPerTwoWeeks
                 }
 
                 // add to the line chart's label if we haven't yet found this day
@@ -150,32 +141,10 @@ class LineChartArea extends Component {
                 }
             }
 
-            // clear out data arrays of empty years
-            for (year = 0; year < (new Date()).getFullYear(); year++) {
-                if (spots[year].length > 0) {
-                    var sum = 0;
-                    for (i in spots[year]) {
-                        sum += spots[year][i]
-                    }
-                    chartData.datasets[0].data.push(sum)
-                }
-
-                if (spb[year].length > 0) {
-                    sum = 0;
-                    for (i in spb[year]) {
-                        sum += spb[year][i]
-                    }
-                    chartData.datasets[1].data.push(sum)
-                }
-
-                if (clerids[year].length > 0) {
-                    sum = 0;
-                    for (i in clerids[year]) {
-                        sum += clerids[year][i]
-                    }
-                    chartData.datasets[2].data.push(sum)
-                }
-            }
+            // update chartData
+            chartData.datasets[0].data = spots
+            chartData.datasets[1].data = spb
+            chartData.datasets[2].data = clerids
 
             // maximum value found in the array
             var max = 0
@@ -197,13 +166,26 @@ class LineChartArea extends Component {
                 }
             }
 
+            var spotsMean = 0;
+            var spotsSD = 0;
+            var spbMean = 0;
+            var spbSD = 0;
+            var cleridsMean = 0;
+            var cleridsSD = 0;
+
             // compute mean and standard deviations
-            var spotsMean = math.mean(chartData.datasets[0].data)
-            var spotsSD = math.std(chartData.datasets[0].data)
-            var spbMean = math.mean(chartData.datasets[1].data)
-            var spbSD = math.std(chartData.datasets[1].data)
-            var cleridsMean = math.mean(chartData.datasets[2].data)
-            var cleridsSD = math.std(chartData.datasets[2].data)
+            if (chartData.datasets[0].data.length > 0) {
+                spotsMean = math.mean(chartData.datasets[0].data)
+                spotsSD = math.std(chartData.datasets[0].data)
+            }
+            if (chartData.datasets[1].data.length > 0) {
+                spbMean = math.mean(chartData.datasets[1].data)
+                spbSD = math.std(chartData.datasets[1].data)
+            }
+            if (chartData.datasets[2].data.length > 0) {
+                cleridsMean = math.mean(chartData.datasets[2].data)
+                cleridsSD = math.std(chartData.datasets[2].data)
+            }
 
             // set new y-axis height
             this.state.chartOptions.scales.yAxes[0].ticks.max = max
@@ -222,4 +204,4 @@ class LineChartArea extends Component {
     }
 }
 
-export default LineChartArea
+export default BarChartArea
