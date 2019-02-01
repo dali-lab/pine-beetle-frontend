@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LoadingContainer from '../LoadingContainer';
 import PredictionsSelectionBar from '../selection-bar/PredictionsSelectionBar';
-import '../../styles/predictive-model-page/ViewPredictions.css';
+import '../../styles/predictions/ViewPredictions.css';
 
 class ViewPredictions extends Component {
     constructor(props) {
@@ -19,7 +19,25 @@ class ViewPredictions extends Component {
         if (this.state.dataController != null && this.state.dataControllerState != null) {
             return(
                 <div>
-                    <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                    <PredictionsSelectionBar
+                        startDate={this.state.dataControllerState.startDate}
+                        endDate={this.state.dataControllerState.endDate}
+                        stateName={this.state.dataControllerState.stateName}
+                        nationalForest={this.state.dataControllerState.nationalForest}
+                        forest={this.state.dataControllerState.forest}
+                        availableStates={this.state.dataControllerState.availableStates}
+                        availableNationalForests={this.state.dataControllerState.availableNationalForests}
+                        availableLocalForests={this.state.dataControllerState.availableLocalForests}
+                        availableYears={this.state.dataControllerState.availableYears}
+
+
+                        updateYearSelection={this.state.dataController.updateYearSelection}
+                        updateStateSelection={this.state.dataController.updateStateSelection}
+                        updateNationalForestSelection={this.state.dataController.updateNationalForestSelection}
+                        updateForestSelection={this.state.dataController.updateForestSelection}
+                        clearCurrentData={this.state.dataController.clearCurrentData}
+                    />
+
                 </div>
             );
         }
