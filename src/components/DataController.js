@@ -1,4 +1,5 @@
 import { Component } from 'react';
+var jQuery = require("jquery");
 
 class DataController extends Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class DataController extends Component {
         var forest = (this.getCookie("forest") !== null && this.getCookie("forest") !== "null") ? this.getCookie("forest") : null;
         var startDate = (this.getCookie("startDate") !== null && this.getCookie("startDate") !== "null") ? this.getCookie("startDate") : Infinity;
         var endDate = (this.getCookie("endDate") !== null && this.getCookie("endDate") !== "null") ? this.getCookie("endDate") : 0;
+        var predictiveModelDate = (this.getCookie("predictiveModelDate") !== null && this.getCookie("predictiveModelDate") !== "null") ? this.getCookie("predictiveModelDate") : 0;
 
         // set state based off cookies
         this.state = {
@@ -20,19 +22,25 @@ class DataController extends Component {
             forest: forest,
             startDate: startDate,
             endDate: endDate,
-            totalData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
-            currentData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
+            predictiveModelDate: predictiveModelDate,
+            originalStartDate: null,
+            originalEndDate: null,
+
             availableStates: [],
             availableLocalForests: [],
             availableNationalForests: [],
             availableYears: [],
-            summarizedDataByLatLong: [],
-            summarizedDataByYear: []
-        }
 
-        // initialize original start and end dates
-        this.originalStartDate = this.state.startDate;
-        this.originalEndDate = this.state.endDate;
+            totalData: [],
+            currentData: [],
+
+            // uncomment for local json data
+            // totalData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
+            // currentData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
+
+            summarizedDataByLatLong: null,
+            summarizedDataByYear: null
+        }
 
         // map of state abbreviations to their names
         this.stateAbbrevToStateName = {
@@ -58,11 +66,14 @@ class DataController extends Component {
         this.updateStartDate = this.updateStartDate.bind(this);
         this.updateEndDate = this.updateEndDate.bind(this);
         this.updateYearSelection = this.updateYearSelection.bind(this);
+        this.updatePredictionYearSelection = this.updatePredictionYearSelection.bind(this);
         this.updateStateSelection = this.updateStateSelection.bind(this);
         this.updateNationalForestSelection = this.updateNationalForestSelection.bind(this);
         this.updateForestSelection = this.updateForestSelection.bind(this);
         this.updateCurrentData = this.updateCurrentData.bind(this);
         this.clearCurrentData = this.clearCurrentData.bind(this);
+        this.getHistoricalData = this.getHistoricalData.bind(this);
+        this.updateAvailableNationalForestsAndForests = this.updateAvailableNationalForestsAndForests.bind(this);
 
         // set cookies
         this.setCookie("stateName", this.state.stateName, 365);
@@ -77,18 +88,140 @@ class DataController extends Component {
     }
 
     componentWillMount() {
+        // send query to database
         this.updateCurrentData();
+
+        // get initial dates
+        this.getOriginalStartDate();
+        this.getOriginalEndDate();
+    }
+
+    // query data from database using given filters
+    getHistoricalData(filters) {
+        var url = this.props.url + "getHistoricalsFilter";
+        var xmlHttp = new XMLHttpRequest();
+
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                 // sort data based on year
+                 var sortedData = xmlHttp.response.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0));
+
+                 this.setState({
+                     currentData: sortedData
+                 }, () => {
+                     this.updateAvailableNationalForestsAndForests();
+                 });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 console.log("API FAILURE")
+                 this.setState({
+                     currentData: []
+                 });
+             }
+         }.bind(this);
+
+         xmlHttp.open("POST", url, true);
+         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+         xmlHttp.responseType = 'json';
+         xmlHttp.send(jQuery.param(filters));
+    }
+
+    // construct filters to be passed to API
+    setQueryFilters() {
+        // always filter on year
+        var filters = {
+            startDate: this.state.startDate,
+            endDate: this.state.endDate
+        }
+
+        // filter on state if the user has selected one
+        if (this.state.stateName !== null && this.state.stateName !== "" && this.state.stateAbbreviation !== null && this.state.stateAbbreviation !== "") {
+            filters.state = this.state.stateAbbreviation;
+        }
+
+        // fitler on national forest if the user has selected one
+        if (this.state.nationalForest !== null && this.state.nationalForest !== "") {
+            filters.nf = this.state.nationalForest;
+        }
+
+        // filter on forest if the user has selected one
+        if (this.state.forest !== null && this.state.forest !== "") {
+            filters.forest = this.state.forest;
+        }
+
+        return filters
+    }
+
+    getOriginalStartDate() {
+        var url = this.props.url + "getMinimumYear";
+        var xmlHttp = new XMLHttpRequest();
+
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                 // set the state
+                 this.setState({
+                     originalStartDate: parseInt(xmlHttp.response)
+                 });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 this.setState({
+                     originalStartDate: this.state.startDate
+                 });
+             }
+         }.bind(this);
+
+         xmlHttp.open("GET", url, true);
+         xmlHttp.responseType = 'json';
+         xmlHttp.send();
+    }
+
+    getOriginalEndDate() {
+        var url = this.props.url + "getMaximumYear";
+        var xmlHttp = new XMLHttpRequest();
+
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                 // set the state
+                 this.setState({
+                     originalEndDate: parseInt(xmlHttp.response),
+                     predictiveModelDate: parseInt(xmlHttp.response)
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 this.setState({
+                     originalEndDate: this.state.endDate,
+                     predictiveModelDate: this.state.endDate
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+         }.bind(this);
+
+         xmlHttp.open("GET", url, true);
+         xmlHttp.responseType = 'json';
+         xmlHttp.send();
     }
 
     // update start and end dates initially available to user, hold onto original dates, initialize the state drop-down menu
     componentDidMount() {
         // if didn't have cookie for start or end date, set the start and end date
         if (this.state.startDate === Infinity || this.state.endDate === 0) {
-            this.updateStartAndEndDateFromCurrentData();
+            this.resetStartAndEndDate();
         }
-
-        // calculate start dates for bounds on date inputs
-        this.calculateOriginalStartAndEndDates();
 
         // initialize drop-down-menu options
         this.initializeAvailableStates();
@@ -99,131 +232,167 @@ class DataController extends Component {
 
     // add input option fields for state selection
     initializeAvailableStates() {
-        var stateNamesToAdd = [];
+        var url = this.props.url + "getUniqueStates";
+        var xmlHttp = new XMLHttpRequest();
 
-        // iterate over totalData
-        for (var obj in this.state.totalData) {
-            // grab state abbreviation and name
-            var stateAbbrev = this.state.totalData[obj].state;
-            var stateName = this.stateAbbrevToStateName[stateAbbrev];
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                 // get state names
+                 var stateNames = []
 
-            // check if we haven't already added this state
-            if (!stateNamesToAdd.includes(stateName) && !this.state.availableStates.includes(stateName)) {
-                stateNamesToAdd.push(stateName);
-            }
-        }
+                 for (var state in xmlHttp.response) {
+                     var stateAbbrev = xmlHttp.response[state]
+                     stateNames.push(this.stateAbbrevToStateName[stateAbbrev]);
+                 }
 
-        // update state
-        this.setState({
-            availableStates: stateNamesToAdd
-        }, () => {
-            // set state of parent
-            this.props.parent.setState({
-                dataControllerState: this.state
-            });
-        });
+                // update state
+                this.setState({
+                    availableStates: stateNames
+                }, () => {
+                    // set state of parent
+                    this.props.parent.setState({
+                        dataControllerState: this.state
+                    });
+                });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 this.setState({
+                     availableStates: []
+                 })
+             }
+         }.bind(this);
+
+         xmlHttp.open("GET", url, true);
+         xmlHttp.responseType = 'json';
+         xmlHttp.send();
     }
 
     // add input option fields for national forest selection
     initializeAvailableNationalForests() {
-        var nationalForestNamesToAdd = [];
+        var filters = this.setQueryFilters();
+        var url = this.props.url + "getUniqueNationalForests";
+        var xmlHttp = new XMLHttpRequest();
 
-        // iterate over totalData
-        for (var obj in this.state.totalData) {
-            // grab national forest name
-            var nf = this.state.totalData[obj].nf;
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                 // update state
+                 this.setState({
+                     availableNationalForests: xmlHttp.response
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 // update state
+                 this.setState({
+                     availableNationalForests: []
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+         }.bind(this);
 
-            // check if we haven't already added this nf
-            if (!nationalForestNamesToAdd.includes(nf) && !this.state.availableNationalForests.includes(nf) && this.state.totalData[obj].state === this.state.stateAbbreviation && nf !== "") {
-                nationalForestNamesToAdd.push(nf);
-            }
-        }
-
-        // update state
-        this.setState({
-            availableNationalForests: nationalForestNamesToAdd
-        }, () => {
-            // set state of parent
-            this.props.parent.setState({
-                dataControllerState: this.state
-            });
-        });
+         xmlHttp.open("POST", url, true);
+         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+         xmlHttp.responseType = 'json';
+         xmlHttp.send(filters);
     }
 
     // add input option fields for local forest selection
     initializeAvailableLocalForests() {
-        var forestNamesToAdd = [];
+        var filters = this.setQueryFilters();
+        var url = this.props.url + "getUniqueLocalForests";
+        var xmlHttp = new XMLHttpRequest();
 
-        // iterate over totalData
-        for (var obj in this.state.totalData) {
-            // grab national forest name
-            var forest = this.state.totalData[obj].forest;
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                 // update state
+                 this.setState({
+                     availableLocalForests: xmlHttp.response
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 // update state
+                 this.setState({
+                     availableLocalForests: []
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+         }.bind(this);
 
-            // check if we haven't already added this forest
-            if (!forestNamesToAdd.includes(forest) && !this.state.availableLocalForests.includes(forest) && this.state.totalData[obj].state === this.state.stateAbbreviation && forest !== "") {
-                forestNamesToAdd.push(forest);
-            }
-        }
-
-        // update state
-        this.setState({
-            availableLocalForests: forestNamesToAdd
-        }, () => {
-            // set state of parent
-            this.props.parent.setState({
-                dataControllerState: this.state
-            });
-        });
+         xmlHttp.open("POST", url, true);
+         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+         xmlHttp.responseType = 'json';
+         xmlHttp.send(filters);
     }
 
     // add input option fields for year selection
     initializeAvailableYears() {
-        var yearsToAdd = [];
+        var url = this.props.url + "getUniqueYears";
+        var xmlHttp = new XMLHttpRequest();
 
-        // iterate over totalData
-        for (var obj in this.state.totalData) {
-            // grab national forest name
-            var year = this.state.totalData[obj].year;
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                 // update state
+                 this.setState({
+                     availableYears: xmlHttp.response
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 // update state
+                 this.setState({
+                     availableYears: []
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+         }.bind(this);
 
-            // check if we haven't already added this year
-            if (!yearsToAdd.includes(year) && !this.state.availableYears.includes(year) && year !== "") {
-                yearsToAdd.push(year);
-            }
-        }
-
-        // update state
-        this.setState({
-            availableYears: yearsToAdd
-        }, () => {
-            // set state of parent
-            this.props.parent.setState({
-                dataControllerState: this.state
-            });
-        });
+         xmlHttp.open("GET", url, true);
+         xmlHttp.responseType = 'json';
+         xmlHttp.send();
     }
 
     // update the start and end dates for the available data
-    updateStartAndEndDateFromCurrentData() {
-        var startDate = Infinity;
-        var endDate = 0;
-        for (var obj in this.state.currentData) {
-            // set startDate
-            if (this.state.currentData[obj].year < startDate) {
-                startDate = this.state.currentData[obj].year;
-            }
-            // set endDate
-            if (this.state.currentData[obj].year > endDate) {
-                endDate = this.state.currentData[obj].year;
-            }
-        }
-        // set the state then hold onto the original values
+    resetStartAndEndDate() {
         this.setState({
-            startDate: startDate,
-            endDate: endDate
+            startDate: this.state.originalStartDate,
+            endDate: this.state.originalEndDate
         }, () => {
             // set cookies
-            this.setCookie("startDate", startDate, 365);
-            this.setCookie("endDate", endDate, 365);
+            this.setCookie("startDate", this.state.startDate, 365);
+            this.setCookie("endDate", this.state.endDate, 365);
 
             // update current data
             this.updateCurrentData();
@@ -235,30 +404,10 @@ class DataController extends Component {
         });
     }
 
-    // determine very first and very last year in dataset
-    calculateOriginalStartAndEndDates() {
-        var startDate = Infinity;
-        var endDate = 0;
-        for (var obj in this.state.totalData) {
-            // set startDate
-            if (this.state.totalData[obj].year < startDate) {
-                startDate = this.state.totalData[obj].year;
-            }
-            // set endDate
-            if (this.state.totalData[obj].year > endDate) {
-                endDate = this.state.totalData[obj].year;
-            }
-        }
-
-        // hold original start and end dates
-        this.originalStartDate = startDate;
-        this.originalEndDate = endDate;
-    }
-
     // update start date and ensure requested date is available
     updateStartDate(date) {
         // so long as the newly requested date isn't before minDate and is before end date, update state
-        if (date >= this.originalStartDate && date <= this.state.endDate) {
+        if (date >= this.state.originalStartDate && date <= this.state.endDate) {
             this.setState({
                 startDate: date
             }, () => {
@@ -291,7 +440,7 @@ class DataController extends Component {
     // update end date and ensure requested date is available
     updateEndDate(date) {
         // so long as the newly requested date isn't after maxDate and is after start date, update state
-        if (date <= this.originalEndDate && date >= this.state.startDate) {
+        if (date <= this.state.originalEndDate && date >= this.state.startDate) {
             this.setState({
                 endDate: date
             }, () => {
@@ -330,6 +479,24 @@ class DataController extends Component {
             // set cookies
             this.setCookie("startDate", this.state.startDate, 365);
             this.setCookie("endDate", this.state.endDate, 365);
+
+            // update current data
+            this.updateCurrentData();
+
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
+            });
+        });
+    }
+
+    // set the year we are running the predictive model on
+    updatePredictionYearSelection(year) {
+        this.setState({
+            predictiveModelDate: year
+        }, () => {
+            // set cookies
+            this.setCookie("predictiveModelDate", this.state.predictiveModelDate, 365);
 
             // update current data
             this.updateCurrentData();
@@ -504,245 +671,119 @@ class DataController extends Component {
         }
     }
 
+    // get data from database in a summarized format based on latitude and longitude
     updateSummarizedDataByLatLong() {
-        var summarizedDataByLatLong = [];
+        var filters = this.setQueryFilters();
+        var url = this.props.url + "getSummarizedDataByLatLongFilter";
+        var xmlHttp = new XMLHttpRequest();
 
-        for (var entry in this.state.currentData) {
-            var dataObject = JSON.parse(JSON.stringify(this.state.currentData[entry]))
-            var lat = this.state.currentData[entry].latitude;
-            var long = this.state.currentData[entry].longitude;
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
 
-            if (lat !== null && long !== null && lat !== undefined && long !== undefined) {
-                var index = this.findLocationObject(summarizedDataByLatLong, lat, long);
-                var object = summarizedDataByLatLong[index];
-                if (object !== null && object !== undefined) {
-                    object.spots += dataObject.spots;
-                    object.spotsPerHundredKm += dataObject.spotsPerHundredKm;
-                    object.spbPerTwoWeeks += dataObject.spbPerTwoWeeks;
-                    object.cleridsPerTwoWeeks += dataObject.cleridsPerTwoWeeks;
+                 // store result
+                 this.setState({
+                     summarizedDataByLatLong: xmlHttp.response
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
 
-                    // update start date
-                    if (dataObject.year < object.startDate) {
-                        object.startDate = dataObject.year
-                    }
+                     // update available drop-down items
+                     this.updateAvailableNationalForestsAndForests();
+                 });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 console.log("API FAILURE")
+                 this.setState({
+                     summarizedDataByLatLong: []
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+         }.bind(this);
 
-                    // update end date
-                    if (dataObject.year > object.startDate) {
-                        object.endDate = dataObject.year
-                    }
-
-                    // add to year array
-                    if  (dataObject.year !== null && dataObject.year !== undefined && dataObject.year !== "" && !object.yearArray.includes(dataObject.year)) {
-                        object.yearArray.push(dataObject.year)
-                    }
-
-                }
-                else {
-                    var newObject = dataObject;
-
-                    // set start date and end date
-                    newObject.startDate = dataObject.year;
-                    newObject.endDate = dataObject.year
-
-                    // set years array
-                    var yearArray = []
-                    if  (newObject.year !== null && newObject.year !== undefined && newObject.year !== "") {
-                        yearArray.push(newObject.year)
-                    }
-                    newObject.yearArray = yearArray
-
-                    summarizedDataByLatLong.push(newObject)
-                }
-            }
-        }
-
-        // if all observations for a lat, long are 0, remove from dataset
-        var i = 0;
-        while (i < summarizedDataByLatLong.length) {
-            if (summarizedDataByLatLong[i].spots === 0 && summarizedDataByLatLong[i].spotsPerHundredKm === 0 && summarizedDataByLatLong[i].spbPerTwoWeeks === 0 && summarizedDataByLatLong[i].cleridsPerTwoWeeks === 0) {
-                // remove observation from dataset and year
-                summarizedDataByLatLong.splice(i,1);
-            }
-            else {
-                i += 1;
-            }
-        }
-
-        // update summarizedDataByLatLong
-        this.setState({
-            summarizedDataByLatLong: summarizedDataByLatLong
-        });
+         xmlHttp.open("POST", url, true);
+         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+         xmlHttp.responseType = 'json';
+         xmlHttp.send(jQuery.param(filters));
     }
 
-    findLocationObject(collection, lat, long) {
-        for (var i in collection) {
-            if (collection[i].latitude === lat && collection[i].longitude === long) {
-                return i
-            }
-        }
-        return null;
-    }
-
+    // get data from database in a summarized format based on year
     updateSummarizedDataByYear() {
-        var summarizedDataByYear = [];
+        var filters = this.setQueryFilters();
+        var url = this.props.url + "getSummarizedDataByYearFilter";
+        var xmlHttp = new XMLHttpRequest();
 
-        for (var entry in this.state.currentData) {
-            var dataObject = JSON.parse(JSON.stringify(this.state.currentData[entry]))
-            var year = this.state.currentData[entry].year;
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
 
-            if (year !== null && year !== undefined && year !== "") {
-                var index = this.findYearObject(summarizedDataByYear, year);
-                var object = summarizedDataByYear[index];
-                if (object !== null && object !== undefined) {
-                    object.spots += dataObject.spots;
-                    object.spotsPerHundredKm += dataObject.spotsPerHundredKm;
-                    object.spbPerTwoWeeks += dataObject.spbPerTwoWeeks;
-                    object.cleridsPerTwoWeeks += dataObject.cleridsPerTwoWeeks;
+                 // get response
+                 var startDate = xmlHttp.response[0] !== null ? xmlHttp.response[0] : this.state.startDate
+                 var endDate = xmlHttp.response[1] !== null ? xmlHttp.response[1] : this.state.endDate
+                 var data = xmlHttp.response[2]
 
-                    // add to state array
-                    if  (dataObject.state !== null && dataObject.state !== undefined && dataObject.state !== "" && !object.state.includes(dataObject.state)) {
-                        object.state.push(dataObject.state)
-                    }
+                 // store result
+                 this.setState({
+                     startDate: startDate,
+                     endDate: endDate,
+                     summarizedDataByYear: data
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 console.log("API FAILURE")
+                 this.setState({
+                     summarizedDataByYear: []
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+         }.bind(this);
 
-                    // add to nf array
-                    if  (dataObject.nf !== null && dataObject.nf !== undefined && dataObject.nf !== "" && !object.nf.includes(dataObject.nf)) {
-                        object.nf.push(dataObject.nf)
-                    }
-
-                    // add to forest array
-                    if  (dataObject.forest !== null && dataObject.forest !== undefined && dataObject.forest !== "" && !object.forest.includes(dataObject.forest)) {
-                        object.forest.push(dataObject.forest)
-                    }
-
-                }
-                else {
-                    var newObject = dataObject
-
-                    // set state to be array
-                    var stateArray = []
-                    if  (newObject.state !== null && newObject.state !== undefined && newObject.state !== "") {
-                        stateArray.push(newObject.state)
-                    }
-                    newObject.state = stateArray
-
-                    // set nf to be array
-                    var nfArray = []
-                    if  (newObject.nf !== null && newObject.nf !== undefined && newObject.nf !== "") {
-                        nfArray.push(newObject.nf)
-                    }
-                    newObject.nf = nfArray
-
-                    // set forest to be array
-                    var forestArray = []
-                    if  (newObject.forest !== null && newObject.forest !== undefined && newObject.forest !== "") {
-                        forestArray.push(newObject.forest)
-                    }
-                    newObject.forest = forestArray
-
-                    summarizedDataByYear.push(dataObject)
-                }
-            }
-        }
-
-        // if all observations for a year are 0, remove from dataset
-        var i = 0;
-        while (i < summarizedDataByYear.length) {
-            if (summarizedDataByYear[i].spots === 0 && summarizedDataByYear[i].spotsPerHundredKm === 0 && summarizedDataByYear[i].spbPerTwoWeeks === 0 && summarizedDataByYear[i].cleridsPerTwoWeeks === 0) {
-                // remove observation from dataset and year
-                summarizedDataByYear.splice(i,1);
-            }
-            else {
-                i += 1;
-            }
-        }
-
-        if (summarizedDataByYear.length > 0) {
-            // if we deleted the first date, update start date selection
-            if (this.state.startDate !== summarizedDataByYear[0].year) {
-                this.setState({
-                    startDate: summarizedDataByYear[0].year
-                });
-            }
-
-            // if we deleted the last date, update end date selection
-            if (this.state.endDate !== summarizedDataByYear[summarizedDataByYear.length - 1].year) {
-                this.setState({
-                    endDate: summarizedDataByYear[summarizedDataByYear.length - 1].year
-                });
-            }
-        }
-
-        // update summarizedDataByYear
-        this.setState({
-            summarizedDataByYear: summarizedDataByYear
-        });
-    }
-
-    findYearObject(collection, year) {
-        for (var i in collection) {
-            if (collection[i].year === year) {
-                return i
-            }
-        }
-        return null;
+         xmlHttp.open("POST", url, true);
+         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+         xmlHttp.responseType = 'json';
+         xmlHttp.send(jQuery.param(filters));
     }
 
     // update current data based on the user selections for state, forest, date, etc.
     updateCurrentData() {
-        var newSet = [];
+        // get summarized data
+        this.updateSummarizedDataByYear();
+        this.updateSummarizedDataByLatLong();
+    }
 
-        // if the user hasn't selected a state, take all of the data in date range
-        if (this.state.stateName === null && this.state.stateAbbreviation === null) {
-            for (var i in this.state.totalData) {
-                // ensure in proper date range
-                if ((this.state.totalData[i].year >= this.state.startDate && this.state.totalData[i].year <= this.state.endDate)) {
-                    newSet.push(this.state.totalData[i]);
-                }
-            }
-        }
-        else {
-            for (i in this.state.totalData) {
-                // ensure in proper date range and state
-                if ((this.state.totalData[i].year >= this.state.startDate && this.state.totalData[i].year <= this.state.endDate && this.state.totalData[i].state === this.state.stateAbbreviation)) {
+    updateCurrentDataOld() {
+        // get data from API
+        var filters = this.setQueryFilters();
+        var data = this.getHistoricalData(filters);
+    }
 
-                    // handle case where user selects only a state
-                    if (this.state.nationalForest == null && this.state.forest == null) {
-                        newSet.push(this.state.totalData[i]);
-                    }
-
-                    // handle case where user selects state and national forest but not local
-                    else if (this.state.nationalForest != null && this.state.forest == null) {
-                        if (this.state.totalData[i].nf === this.state.nationalForest) {
-                            newSet.push(this.state.totalData[i]);
-                        }
-                    }
-
-                    // handle case where user selects state  and local forest but not national
-                    else if (this.state.nationalForest == null && this.state.forest != null) {
-                        if (this.state.totalData[i].forest === this.state.forest) {
-                            newSet.push(this.state.totalData[i]);
-                        }
-                    }
-
-                    // handle case where user selects state, national forest, and local forest
-                    else if (this.state.nationalForest != null && this.state.forest != null) {
-                        if (this.state.totalData[i].nf === this.state.nationalForest && this.state.totalData[i].forest === this.state.forest) {
-                            newSet.push(this.state.totalData[i]);
-                        }
-                    }
-                }
-            }
-        }
-
-        // also update available forests and national forests
+    // after the state has been updated, also update available forests and national forests
+    updateAvailableNationalForestsAndForests() {
         var availableNationalForests = [];
         var availableLocalForests = [];
 
         if (this.state.stateName !== null && this.state.stateAbbreviation !== null) {
-            for (var obj in newSet) {
+            for (var obj in this.state.summarizedDataByLatLong) {
                 // grab national forest and local forests
-                var thisNF = newSet[obj].nf;
-                var thisForest = newSet[obj].forest;
+                var thisNF = this.state.summarizedDataByLatLong[obj].nf;
+                var thisForest = this.state.summarizedDataByLatLong[obj].forest;
 
                 // add to arrays
                 if (!availableNationalForests.includes(thisNF) && thisNF !== "") {
@@ -754,67 +795,52 @@ class DataController extends Component {
             }
         }
 
-        // sort data based on year
-        newSet = newSet.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0));
-
-        // update the state
-        this.setState({
-            currentData: newSet
-        }, () => {
-            // update summarizedData
-            this.updateSummarizedDataByLatLong();
-            this.updateSummarizedDataByYear();
-
-            // if neither national forest or local forest is selected, update both
-            if (this.state.nationalForest === null && this.state.forest === null) {
-                this.setState({
-                    availableNationalForests: availableNationalForests,
-                    availableLocalForests: availableLocalForests
-                }, () => {
-                    // set state of parent
-                    this.props.parent.setState({
-                        dataControllerState: this.state
-                    });
-                });
-            }
-            // if only local forest is unselected, update it
-            else if (this.state.nationalForest !== null && this.state.forest === null) {
-                this.setState({
-                    availableLocalForests: availableLocalForests
-                }, () => {
-                    // set state of parent
-                    this.props.parent.setState({
-                        dataControllerState: this.state
-                    });
-                });
-            }
-            // if only national forest is unselected, update it
-            else if (this.state.nationalForest === null && this.state.forest !== null) {
-                this.setState({
-                    availableNationalForests: availableNationalForests
-                }, () => {
-                    // set cookies
-                    this.setCookie("availableNationalForests", this.state.availableNationalForests, 365);
-
-                    // set state of parent
-                    this.props.parent.setState({
-                        dataControllerState: this.state
-                    });
-                });
-            }
-            else {
+        // if neither national forest or local forest is selected, update both
+        if (this.state.nationalForest === null && this.state.forest === null) {
+            this.setState({
+                availableNationalForests: availableNationalForests,
+                availableLocalForests: availableLocalForests
+            }, () => {
                 // set state of parent
                 this.props.parent.setState({
                     dataControllerState: this.state
                 });
-            }
-        });
+            });
+        }
+        // if only local forest is unselected, update it
+        else if (this.state.nationalForest !== null && this.state.forest === null) {
+            this.setState({
+                availableLocalForests: availableLocalForests
+            }, () => {
+                // set state of parent
+                this.props.parent.setState({
+                    dataControllerState: this.state
+                });
+            });
+        }
+        // if only national forest is unselected, update it
+        else if (this.state.nationalForest === null && this.state.forest !== null) {
+            this.setState({
+                availableNationalForests: availableNationalForests
+            }, () => {
+                // set state of parent
+                this.props.parent.setState({
+                    dataControllerState: this.state
+                });
+            });
+        }
+        else {
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
+            });
+        }
     }
 
     // set current to total and update menus/dropdowns
     clearCurrentData() {
         this.setState({
-            currentData: this.state.totalData,
+            currentData: [],
             stateName: null,
             stateAbbreviation: null,
             nationalForest: null,
@@ -832,9 +858,8 @@ class DataController extends Component {
             this.setCookie("startDate", this.state.startDate, 365);
             this.setCookie("endDate", this.state.endDate, 365);
 
-            // update data
-            this.updateStartAndEndDateFromCurrentData();
-            this.updateCurrentData();
+            // reset our original start and ending dates (calls updateCurrentData)
+            this.resetStartAndEndDate();
 
             // set state of parent
             this.props.parent.setState({

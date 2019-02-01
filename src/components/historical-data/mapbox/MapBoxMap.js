@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactMapGL, {NavigationControl, Marker, Popup, Layer, Feature} from 'react-map-gl';
 import Pin from './Pin';
 import PopupContent from './PopupContent';
-import '../../../styles/historical-data-page/mapbox/MapBoxMap.css';
+import '../../../styles/historical-data/mapbox/MapBoxMap.css';
 require('dotenv').config() // load mapbox access token
 
 
