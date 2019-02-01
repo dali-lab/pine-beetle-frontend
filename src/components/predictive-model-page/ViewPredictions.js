@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LoadingContainer from '../LoadingContainer';
-import PredictionsSelectionBar from '../selection-bar/PredictionsSelectionBar';
-import '../../styles/predictions/ViewPredictions.css';
+import PredictionsSelectionBar from '../selection-bars/PredictionsSelectionBar';
+import '../../styles/predictive-model-page/ViewPredictions.css';
 
 class ViewPredictions extends Component {
     constructor(props) {
@@ -19,22 +19,8 @@ class ViewPredictions extends Component {
         if (this.state.dataController != null && this.state.dataControllerState != null) {
             return(
                 <div>
-                    <PredictionsSelectionBar
-                        predictiveModelDate={this.state.dataControllerState.predictiveModelDate}
-                        stateName={this.state.dataControllerState.stateName}
-                        nationalForest={this.state.dataControllerState.nationalForest}
-                        forest={this.state.dataControllerState.forest}
-                        availableStates={this.state.dataControllerState.availableStates}
-                        availableNationalForests={this.state.dataControllerState.availableNationalForests}
-                        availableLocalForests={this.state.dataControllerState.availableLocalForests}
-                        availableYears={this.state.dataControllerState.availableYears}
+                    <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
 
-                        updatePredictionYearSelection={this.state.dataController.updatePredictionYearSelection}
-                        updateStateSelection={this.state.dataController.updateStateSelection}
-                        updateNationalForestSelection={this.state.dataController.updateNationalForestSelection}
-                        updateForestSelection={this.state.dataController.updateForestSelection}
-                        clearCurrentData={this.state.dataController.clearCurrentData}
-                    />
                     <div className="container">
                         <p>Check back soon for more functionality!</p>
                     </div>

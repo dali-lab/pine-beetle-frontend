@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {Bar} from 'react-chartjs-2';
+import {Line} from 'react-chartjs-2';
+import ReactTooltip from 'react-tooltip'
 import math from 'mathjs';
-import '../../styles/historical-data/BarChartArea.css';
+import '../../styles/historical-data-page/LineChartArea.css';
 
-class BarChartArea extends Component {
+class LineChartArea extends Component {
     constructor(props) {
         super(props);
 
@@ -14,20 +15,20 @@ class BarChartArea extends Component {
                     {
                         data: [],
                         label: "Total Spots",
-                        backgroundColor: "#1f77b4",
-                        hoverBackgroundColor: "#e9c46a"
+                        borderColor: "#1f77b4",
+                        fill: false
                     },
                     {
                         data: [],
                         label: "Total SPB Per Two Weeks",
-                        backgroundColor: "#ff7f0e",
-                        hoverBackgroundColor: "#e9c46a"
+                        borderColor: "#ff7f0e",
+                        fill: false
                     },
                     {
                         data: [],
                         label: "Total Clerids Per Two Weeks",
-                        backgroundColor: "#2ca02c",
-                        hoverBackgroundColor: "#e9c46a"
+                        borderColor: "#2ca02c",
+                        fill: false
                     }
                 ]
             }, // used for chartjs line chart
@@ -55,8 +56,19 @@ class BarChartArea extends Component {
     render() {
         return(
             <div className="flex-container" id="data-insights-holder">
-                <div className="container data-insights flex-item" id="data-insights">
-                        <Bar data={this.state.chartData} height={400} options={this.state.chartOptions}/>
+                <div className="container data-insights flex-item flex-item-left" id="data-insights">
+                        <Line data={this.state.chartData} height={400} options={this.state.chartOptions}/>
+                </div>
+                <div className="container flex-item flex-item-right" id="line-metrics-area">
+                        <p data-tip="Sample Mean of Spots"><b>Spots Mean: </b>{this.state.spotsMean.toLocaleString()}</p>
+                        <p data-tip="Standard Deviation of Spots"><b>Spots SD: </b>{this.state.spotsSD.toLocaleString().slice(0, -1)}</p>
+                        <div className="metrics-line"></div>
+                        <p data-tip="Sample Mean of SPB"><b>SPB Mean: </b>{this.state.spbMean.toLocaleString()}</p>
+                        <p data-tip="Standard Deviation of SPB"><b>SPB SD: </b>{this.state.spbSD.toLocaleString().slice(0, -1)}</p>
+                        <div className="metrics-line"></div>
+                        <p data-tip="Sample Mean of Clerids"><b>Clerids Mean: </b>{this.state.cleridsMean.toLocaleString()}</p>
+                        <p data-tip="Standard Deviation of Clerids"><b>Clerids SD: </b>{this.state.cleridsSD.toLocaleString().slice(0, -1)}</p>
+                        <ReactTooltip />
                 </div>
     		</div>
         );
@@ -106,6 +118,7 @@ class BarChartArea extends Component {
                 var spb = []
                 var clerids = []
 
+                // initialize start and end date
                 var startDate = props.firstObservedYear;
                 var endDate = props.lastObservedYear;
 
@@ -202,8 +215,8 @@ class BarChartArea extends Component {
                     cleridsSD: cleridsSD
                 });
             }
-        }    
+        }
     }
 }
 
-export default BarChartArea
+export default LineChartArea
