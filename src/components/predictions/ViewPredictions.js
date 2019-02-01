@@ -20,8 +20,7 @@ class ViewPredictions extends Component {
             return(
                 <div>
                     <PredictionsSelectionBar
-                        startDate={this.state.dataControllerState.startDate}
-                        endDate={this.state.dataControllerState.endDate}
+                        predictiveModelDate={this.state.dataControllerState.predictiveModelDate}
                         stateName={this.state.dataControllerState.stateName}
                         nationalForest={this.state.dataControllerState.nationalForest}
                         forest={this.state.dataControllerState.forest}
@@ -30,8 +29,7 @@ class ViewPredictions extends Component {
                         availableLocalForests={this.state.dataControllerState.availableLocalForests}
                         availableYears={this.state.dataControllerState.availableYears}
 
-
-                        updateYearSelection={this.state.dataController.updateYearSelection}
+                        updateYearSelection={this.state.dataController.updatePredictionYearSelection}
                         updateStateSelection={this.state.dataController.updateStateSelection}
                         updateNationalForestSelection={this.state.dataController.updateNationalForestSelection}
                         updateForestSelection={this.state.dataController.updateForestSelection}
@@ -51,7 +49,7 @@ class ViewPredictions extends Component {
 
         // select most recent year
         if (this.props.dataControllerState !== undefined && this.props.dataControllerState != null && this.props.dataController !== undefined && this.props.dataController != null) {
-            this.props.dataController.current.updateYearSelection(this.props.dataControllerState.availableYears[this.props.dataControllerState.availableYears.length - 1]);
+            this.props.dataController.current.updatePredictionYearSelection(this.props.dataControllerState.availableYears[this.props.dataControllerState.availableYears.length - 1]);
         }
     }
 

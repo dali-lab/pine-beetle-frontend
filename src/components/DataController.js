@@ -12,6 +12,7 @@ class DataController extends Component {
         var forest = (this.getCookie("forest") !== null && this.getCookie("forest") !== "null") ? this.getCookie("forest") : null;
         var startDate = (this.getCookie("startDate") !== null && this.getCookie("startDate") !== "null") ? this.getCookie("startDate") : Infinity;
         var endDate = (this.getCookie("endDate") !== null && this.getCookie("endDate") !== "null") ? this.getCookie("endDate") : 0;
+        var predictiveModelDate = (this.getCookie("predictiveModelDate") !== null && this.getCookie("predictiveModelDate") !== "null") ? this.getCookie("predictiveModelDate") : 0;
 
         // set state based off cookies
         this.state = {
@@ -21,6 +22,7 @@ class DataController extends Component {
             forest: forest,
             startDate: startDate,
             endDate: endDate,
+            predictiveModelDate: predictiveModelDate,
             originalStartDate: null,
             originalEndDate: null,
 
@@ -464,6 +466,24 @@ class DataController extends Component {
             // set cookies
             this.setCookie("startDate", this.state.startDate, 365);
             this.setCookie("endDate", this.state.endDate, 365);
+
+            // update current data
+            this.updateCurrentData();
+
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
+            });
+        });
+    }
+
+    // set the year we are running the predictive model on
+    updatePredictionYearSelection(year) {
+        this.setState({
+            predictiveModelDate: year
+        }, () => {
+            // set cookies
+            this.setCookie("predictiveModelDate", this.state.predictiveModelDate, 365);
 
             // update current data
             this.updateCurrentData();
