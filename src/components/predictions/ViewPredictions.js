@@ -29,14 +29,18 @@ class ViewPredictions extends Component {
                         availableLocalForests={this.state.dataControllerState.availableLocalForests}
                         availableYears={this.state.dataControllerState.availableYears}
 
-                        updateYearSelection={this.state.dataController.updatePredictionYearSelection}
+                        updatePredictionYearSelection={this.state.dataController.updatePredictionYearSelection}
                         updateStateSelection={this.state.dataController.updateStateSelection}
                         updateNationalForestSelection={this.state.dataController.updateNationalForestSelection}
                         updateForestSelection={this.state.dataController.updateForestSelection}
                         clearCurrentData={this.state.dataController.clearCurrentData}
                     />
+                    <div className="container">
+                        <p>Check back soon for more functionality!</p>
+                    </div>
 
                 </div>
+
             );
         }
         else {

@@ -35,7 +35,7 @@ class App extends Component {
         if (window.innerWidth >= 500) {
             return(
                 <div>
-                    <DataController url={this.localURL} parent={this} forceReRender={this.forceReRender} ref={this.dataController}/>
+                    <DataController url={this.deployedURL} parent={this} forceReRender={this.forceReRender} ref={this.dataController}/>
                     <Router>
                       <div>
                         <Header />

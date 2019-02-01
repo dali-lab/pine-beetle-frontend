@@ -66,6 +66,7 @@ class DataController extends Component {
         this.updateStartDate = this.updateStartDate.bind(this);
         this.updateEndDate = this.updateEndDate.bind(this);
         this.updateYearSelection = this.updateYearSelection.bind(this);
+        this.updatePredictionYearSelection = this.updatePredictionYearSelection.bind(this);
         this.updateStateSelection = this.updateStateSelection.bind(this);
         this.updateNationalForestSelection = this.updateNationalForestSelection.bind(this);
         this.updateForestSelection = this.updateForestSelection.bind(this);
@@ -187,13 +188,25 @@ class DataController extends Component {
              if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
                  // set the state
                  this.setState({
-                     originalEndDate: parseInt(xmlHttp.response)
+                     originalEndDate: parseInt(xmlHttp.response),
+                     predictiveModelDate: parseInt(xmlHttp.response)
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
                  });
              }
              // if the request failed, clear the data and notify the user
              else {
                  this.setState({
-                     originalEndDate: this.state.endDate
+                     originalEndDate: this.state.endDate,
+                     predictiveModelDate: this.state.endDate
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
                  });
              }
          }.bind(this);
@@ -394,7 +407,7 @@ class DataController extends Component {
     // update start date and ensure requested date is available
     updateStartDate(date) {
         // so long as the newly requested date isn't before minDate and is before end date, update state
-        if (date >= this.originalStartDate && date <= this.state.endDate) {
+        if (date >= this.state.originalStartDate && date <= this.state.endDate) {
             this.setState({
                 startDate: date
             }, () => {
@@ -427,7 +440,7 @@ class DataController extends Component {
     // update end date and ensure requested date is available
     updateEndDate(date) {
         // so long as the newly requested date isn't after maxDate and is after start date, update state
-        if (date <= this.originalEndDate && date >= this.state.startDate) {
+        if (date <= this.state.originalEndDate && date >= this.state.startDate) {
             this.setState({
                 endDate: date
             }, () => {
