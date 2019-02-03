@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter } from 'react-router-dom'
 import DataController from './DataController.js'
 import ScrollToTop from './ScrollToTop.js'
 import Header from './header-footer/Header.js'
@@ -37,7 +38,7 @@ class App extends Component {
             return(
                 <div>
                     <DataController url={this.deployedURL} parent={this} forceReRender={this.forceReRender} ref={this.dataController}/>
-                    <Router>
+                    <HashRouter hashType="noslash">
                       <div>
                         <Header />
                         <div className="content">
@@ -52,7 +53,7 @@ class App extends Component {
                         <ScrollToTop />
                         <Footer />
                       </div>
-                    </Router>
+                    </HashRouter>
                 </div>
             );
         }
