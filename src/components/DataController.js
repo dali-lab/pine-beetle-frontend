@@ -39,7 +39,24 @@ class DataController extends Component {
             // currentData: this.props.data.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0)),
 
             summarizedDataByLatLong: null,
-            summarizedDataByYear: null
+            summarizedDataByYear: null,
+
+            modelInputs: {
+                SPB: 0,
+                cleridst1: 0,
+    			spotst1: 0,
+    			spotst2: 0,
+    			endobrev: 1
+            },
+            modelOutputs: {
+                expSpotsIfOutbreak: 0,
+                prob0spots: 0,
+                prob19spots: 0,
+                prob53spots: 0,
+                prob147spots: 0,
+                prob402spots: 0,
+                prob1095spots: 0
+            }
         }
 
         // map of state abbreviations to their names
@@ -88,7 +105,7 @@ class DataController extends Component {
     }
 
     componentWillMount() {
-        // send query to database
+        // send query to database (begin the process immediately -- once this is complete, DataController will mount and send its state back to App, App then sends DataController to child components
         this.updateCurrentData();
 
         // get initial dates
@@ -766,12 +783,51 @@ class DataController extends Component {
         // get summarized data
         this.updateSummarizedDataByYear();
         this.updateSummarizedDataByLatLong();
+        this.getModelOutputs();
     }
 
-    updateCurrentDataOld() {
-        // get data from API
-        var filters = this.setQueryFilters();
-        var data = this.getHistoricalData(filters);
+    // run the R model and store outputs
+    getModelOutputs() {
+        var url = this.props.url + "getPredictions";
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.onload = function() {
+            // if the request was successful hold onto the data
+            if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                console.log("successfully loaded model outputs")
+
+                // set the state
+                this.setState({
+                    modelOutputs: {
+                        expSpotsIfOutbreak: xmlHttp.response[2].Predictions,
+                        prob0spots: xmlHttp.response[3].Predictions,
+                        prob19spots: xmlHttp.response[4].Predictions,
+                        prob53spots: xmlHttp.response[5].Predictions,
+                        prob147spots: xmlHttp.response[6].Predictions,
+                        prob402spots: xmlHttp.response[7].Predictions,
+                        prob1095spots: xmlHttp.response[8].Predictions
+                    }
+                });
+            }
+            // if the request failed, clear the data and notify the user
+            else {
+                this.setState({
+                    modelOutputs: {
+                        expSpotsIfOutbreak: 0,
+                        prob0spots: 0,
+                        prob19spots: 0,
+                        prob53spots: 0,
+                        prob147spots: 0,
+                        prob402spots: 0,
+                        prob1095spots: 0
+                    }
+                });
+            }
+        }.bind(this);
+
+        xmlHttp.open("GET", url, true);
+        xmlHttp.responseType = 'json';
+        xmlHttp.send();
     }
 
     // after the state has been updated, also update available forests and national forests
