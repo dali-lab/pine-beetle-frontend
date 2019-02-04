@@ -20,8 +20,7 @@ class ViewPredictions extends Component {
             return(
                 <div>
                     <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
-                    <ViewModelOutput modelOutputs={this.state.dataControllerState.modelOutputs} />
-
+                    <ViewModelOutput modelOutputs={this.state.dataControllerState.predictiveModel.modelOutputs} />
                 </div>
 
             );
@@ -36,7 +35,7 @@ class ViewPredictions extends Component {
 
         // select most recent year
         if (this.props.dataControllerState !== undefined && this.props.dataControllerState != null && this.props.dataController !== undefined && this.props.dataController != null) {
-            this.props.dataController.current.updatePredictionYearSelection(this.props.dataControllerState.availableYears[this.props.dataControllerState.availableYears.length - 1]);
+            this.props.dataController.current.updatePredictionYearSelection(this.props.dataControllerState.dropDownContent.availableYears[this.props.dataControllerState.dropDownContent.availableYears.length - 1]);
         }
     }
 

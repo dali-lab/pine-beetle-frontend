@@ -62,14 +62,14 @@ class HistoricalDataSelectionBar extends Component {
     // recalculate values to show on page
     updateStateFromProps(props) {
         this.setState({
-            startDate: props.dataControllerState.startDate,
-            endDate: props.dataControllerState.endDate,
-            stateName: props.dataControllerState.stateName,
-            nationalForest: props.dataControllerState.nationalForest,
-            forest: props.dataControllerState.forest,
-            availableStates: props.dataControllerState.availableStates,
-            availableNationalForests: props.dataControllerState.availableNationalForests,
-            availableLocalForests: props.dataControllerState.availableLocalForests
+            startDate: props.dataControllerState.userFilters.startDate,
+            endDate: props.dataControllerState.userFilters.endDate,
+            stateName: props.dataControllerState.userFilters.stateName,
+            nationalForest: props.dataControllerState.userFilters.nationalForest,
+            forest: props.dataControllerState.userFilters.forest,
+            availableStates: props.dataControllerState.dropDownContent.availableStates,
+            availableNationalForests: props.dataControllerState.dropDownContent.availableNationalForests,
+            availableLocalForests: props.dataControllerState.dropDownContent.availableLocalForests
         });
     }
 }

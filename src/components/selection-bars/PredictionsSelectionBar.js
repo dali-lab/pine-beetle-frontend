@@ -57,14 +57,14 @@ class PredictionsSelectionBar extends Component {
     // recalculate values to show on page
     updateStateFromProps(props) {
         this.setState({
-            predictiveModelDate: props.dataControllerState.predictiveModelDate,
-            stateName: props.dataControllerState.stateName,
-            nationalForest: props.dataControllerState.nationalForest,
-            forest: props.dataControllerState.forest,
-            availableStates: props.dataControllerState.availableStates,
-            availableNationalForests: props.dataControllerState.availableNationalForests,
-            availableLocalForests: props.dataControllerState.availableLocalForests,
-            availableYears: props.dataControllerState.availableYears
+            predictiveModelDate: props.dataControllerState.userFilters.predictiveModelDate,
+            stateName: props.dataControllerState.userFilters.stateName,
+            nationalForest: props.dataControllerState.userFilters.nationalForest,
+            forest: props.dataControllerState.userFilters.forest,
+            availableStates: props.dataControllerState.dropDownContent.availableStates,
+            availableNationalForests: props.dataControllerState.dropDownContent.availableNationalForests,
+            availableLocalForests: props.dataControllerState.dropDownContent.availableLocalForests,
+            availableYears: props.dataControllerState.dropDownContent.availableYears
         });
     }
 }

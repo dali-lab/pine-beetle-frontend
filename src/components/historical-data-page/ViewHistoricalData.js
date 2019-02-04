@@ -16,33 +16,27 @@ class ViewHistoricalData extends Component {
         this.state = {
             dataController: null,       // holds references to functions that are used to update the state, forest, etc.
             dataControllerState: null,  // defines the user's current selection for state, national forest, etc.
-            viewProperties: {
-                center: [-84.3880, 33.7490],
-                zoom: 5.5
-            }
         }
 
-        // bind functions
+        // bind functions and create references
         this.movePredictionModelDown = this.movePredictionModelDown.bind(this);
-
-        // create references
         this.containerComponent = React.createRef();
     }
     render() {
-        if (this.state.dataController != null && this.state.dataControllerState != null && this.state.dataControllerState.summarizedDataByYear !== null && this.state.dataControllerState.summarizedDataByLatLong !== null) {
+        if (this.state.dataController != null && this.state.dataControllerState != null && this.state.dataControllerState.historicalData.summarizedDataByYear !== null && this.state.dataControllerState.historicalData.summarizedDataByLatLong !== null) {
             return(
                 <div ref={this.containerComponent}>
                     <HistoricalDataSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} movePredictionModelDown={this.movePredictionModelDown}/>
 
-    				<LineChartArea data={this.state.dataControllerState.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.startDate} lastObservedYear={this.state.dataControllerState.endDate} />
-                    <BarChartArea data={this.state.dataControllerState.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.startDate} lastObservedYear={this.state.dataControllerState.endDate} />
+    				<LineChartArea data={this.state.dataControllerState.historicalData.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.userFilters.startDate} lastObservedYear={this.state.dataControllerState.userFilters.endDate} />
+                    <BarChartArea data={this.state.dataControllerState.historicalData.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.userFilters.startDate} lastObservedYear={this.state.dataControllerState.userFilters.endDate} />
 
                     <div className="flex-container" id="map-area-container">
                         <div className="flex-item flex-item-left" id="mapbox-container">
-                            <MapBoxMap summarizedDataByLatLong={this.state.dataControllerState.summarizedDataByLatLong} />
+                            <MapBoxMap summarizedDataByLatLong={this.state.dataControllerState.historicalData.summarizedDataByLatLong} />
                         </div>
                         <div className="flex-item flex-item-right container" id="beetle-count-area">
-                            <MapSideBar data={this.state.dataControllerState.summarizedDataByLatLong} stateName={this.state.dataControllerState.stateName} nationalForest={this.state.dataControllerState.nationalForest} forest={this.state.dataControllerState.forest} clearFunction={this.state.dataController.clearCurrentData}/>
+                            <MapSideBar data={this.state.dataControllerState.historicalData.summarizedDataByLatLong} stateName={this.state.dataControllerState.userFilters.stateName} nationalForest={this.state.dataControllerState.userFilters.nationalForest} forest={this.state.dataControllerState.userFilters.forest} clearFunction={this.state.dataController.clearCurrentData}/>
                         </div>
         			</div>
         		</div>
