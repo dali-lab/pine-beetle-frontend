@@ -44,25 +44,18 @@ class DataController extends Component {
                 summarizedDataByYear: null
             },
 
-            // inputs and outputs from predictive model
-            predictiveModel: {
-                modelInputs: {
-                    SPB: 0,
-                    cleridst1: 0,
-        			spotst1: 0,
-        			spotst2: 0,
-        			endobrev: 1
-                },
-                modelOutputs: {
-                    expSpotsIfOutbreak: 0,
-                    prob0spots: 0,
-                    prob19spots: 0,
-                    prob53spots: 0,
-                    prob147spots: 0,
-                    prob402spots: 0,
-                    prob1095spots: 0
-                }
-            }
+            // outputs from predictive model
+            predictiveModelOutputs: {
+                expSpotsIfOutbreak: 0,
+                prob0spots: 0,
+                prob19spots: 0,
+                prob53spots: 0,
+                prob147spots: 0,
+                prob402spots: 0,
+                prob1095spots: 0
+            },
+
+            url: ""
         }
 
         // map of state abbreviations to their names
@@ -112,17 +105,22 @@ class DataController extends Component {
     }
 
     componentWillMount() {
-        // send query to database (begin the process immediately -- once this is complete, DataController will mount and send its state back to App, App then sends DataController to child components
-        this.updateCurrentData();
+        // hold onto url we are using to get the data
+        this.setState({
+            url: this.props.url
+        }, () => {
+            // send query to database (begin the process immediately -- once this is complete, DataController will mount and send its state back to App, App then sends DataController to child components
+            this.updateCurrentData();
 
-        // get initial dates
-        this.getOriginalStartDate();
-        this.getOriginalEndDate();
+            // get initial dates
+            this.getOriginalStartDate();
+            this.getOriginalEndDate();
+        });
     }
 
     // query data from database using given filters
     getHistoricalData(filters) {
-        var url = this.props.url + "getHistoricalsFilter";
+        var url = this.state.url + "getHistoricalsFilter";
         var xmlHttp = new XMLHttpRequest();
 
          xmlHttp.onload = function() {
@@ -149,12 +147,20 @@ class DataController extends Component {
          xmlHttp.send(jQuery.param(filters));
     }
 
-    // construct filters to be passed to API
-    setQueryFilters() {
-        // always filter on year
-        var filters = {
-            startDate: this.state.userFilters.startDate,
-            endDate: this.state.userFilters.endDate
+    // construct filters to be passed to API -- param is boolean for if setting filters for the model or not
+    setQueryFilters(predictiveModel) {
+        // if we are running this on the predictive model, filter on the date the user wants to run the model on
+        if (predictiveModel) {
+            var filters = {
+                targetYear: this.state.userFilters.predictiveModelDate
+            }
+        }
+        // filter on start date and end date
+        else {
+            var filters = {
+                startDate: this.state.userFilters.startDate,
+                endDate: this.state.userFilters.endDate
+            }
         }
 
         // filter on state if the user has selected one
@@ -176,7 +182,7 @@ class DataController extends Component {
     }
 
     getOriginalStartDate() {
-        var url = this.props.url + "getMinimumYear";
+        var url = this.state.url + "getMinimumYear";
         var xmlHttp = new XMLHttpRequest();
 
          xmlHttp.onload = function() {
@@ -200,7 +206,7 @@ class DataController extends Component {
     }
 
     getOriginalEndDate() {
-        var url = this.props.url + "getMaximumYear";
+        var url = this.state.url + "getMaximumYear";
         var xmlHttp = new XMLHttpRequest();
 
          xmlHttp.onload = function() {
@@ -245,7 +251,7 @@ class DataController extends Component {
 
     // add input option fields for state selection
     initializeAvailableStates() {
-        var url = this.props.url + "getUniqueStates";
+        var url = this.state.url + "getUniqueStates";
         var xmlHttp = new XMLHttpRequest();
 
          xmlHttp.onload = function() {
@@ -298,8 +304,8 @@ class DataController extends Component {
 
     // add input option fields for national forest selection
     initializeAvailableNationalForests() {
-        var filters = this.setQueryFilters();
-        var url = this.props.url + "getUniqueNationalForests";
+        var filters = this.setQueryFilters(false);
+        var url = this.state.url + "getUniqueNationalForests";
         var xmlHttp = new XMLHttpRequest();
 
          xmlHttp.onload = function() {
@@ -346,8 +352,8 @@ class DataController extends Component {
 
     // add input option fields for local forest selection
     initializeAvailableLocalForests() {
-        var filters = this.setQueryFilters();
-        var url = this.props.url + "getUniqueLocalForests";
+        var filters = this.setQueryFilters(false);
+        var url = this.state.url + "getUniqueLocalForests";
         var xmlHttp = new XMLHttpRequest();
 
          xmlHttp.onload = function() {
@@ -394,7 +400,7 @@ class DataController extends Component {
 
     // add input option fields for year selection
     initializeAvailableYears() {
-        var url = this.props.url + "getUniqueYears";
+        var url = this.state.url + "getUniqueYears";
         var xmlHttp = new XMLHttpRequest();
 
          xmlHttp.onload = function() {
@@ -742,8 +748,8 @@ class DataController extends Component {
 
     // get data from database in a summarized format based on latitude and longitude
     updateSummarizedDataByLatLong() {
-        var filters = this.setQueryFilters();
-        var url = this.props.url + "getSummarizedDataByLatLongFilter";
+        var filters = this.setQueryFilters(false);
+        var url = this.state.url + "getSummarizedDataByLatLongFilter";
         var xmlHttp = new XMLHttpRequest();
 
          xmlHttp.onload = function() {
@@ -790,8 +796,8 @@ class DataController extends Component {
 
     // get data from database in a summarized format based on year
     updateSummarizedDataByYear() {
-        var filters = this.setQueryFilters();
-        var url = this.props.url + "getSummarizedDataByYearFilter";
+        var filters = this.setQueryFilters(false);
+        var url = this.state.url + "getSummarizedDataByYearFilter";
         var xmlHttp = new XMLHttpRequest();
 
          xmlHttp.onload = function() {
@@ -853,16 +859,16 @@ class DataController extends Component {
 
     // run the R model and store outputs
     getModelOutputs() {
-        var url = this.props.url + "getPredictions";
+        var url = this.state.url + "getPredictions";
         var xmlHttp = new XMLHttpRequest();
+        var filters = this.setQueryFilters(true);
 
         xmlHttp.onload = function() {
             // if the request was successful hold onto the data
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
                 console.log("successfully loaded model outputs")
 
-                var predictiveModel = Object.assign({}, this.state.predictiveModel);
-                predictiveModel.modelOutputs = {
+                var outputs = {
                     expSpotsIfOutbreak: xmlHttp.response[2].Predictions,
                     prob0spots: xmlHttp.response[3].Predictions,
                     prob19spots: xmlHttp.response[4].Predictions,
@@ -874,13 +880,12 @@ class DataController extends Component {
 
                 // set the state
                 this.setState({
-                    predictiveModel: predictiveModel
+                    predictiveModelOutputs: outputs
                 });
             }
             // if the request failed, clear the data and notify the user
             else {
-                var predictiveModel = Object.assign({}, this.state.predictiveModel);
-                predictiveModel.modelOutputs = {
+                var outputs = {
                     expSpotsIfOutbreak: 0,
                     prob0spots: 0,
                     prob19spots: 0,
@@ -892,14 +897,15 @@ class DataController extends Component {
 
                 // set the state
                 this.setState({
-                    predictiveModel: predictiveModel
+                    predictiveModelOutputs: outputs
                 });
             }
         }.bind(this);
 
-        xmlHttp.open("GET", url, true);
+        xmlHttp.open("POST", url, true);
+        xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xmlHttp.responseType = 'json';
-        xmlHttp.send();
+        xmlHttp.send(jQuery.param(filters));
     }
 
     // after the state has been updated, also update available forests and national forests

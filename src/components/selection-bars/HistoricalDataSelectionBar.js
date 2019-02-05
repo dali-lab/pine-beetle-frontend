@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import ReactTooltip from 'react-tooltip'
+import { CSVDownload } from "react-csv";
+import ReactTooltip from 'react-tooltip';
 import TextInput from './input-components/TextInput';
 import ChoiceInput from './input-components/ChoiceInput';
 import '../../styles/selection-bars/InputFields.css';
@@ -17,11 +18,13 @@ class HistoricalDataSelectionBar extends Component {
             forest: null,
             availableStates: [],
             availableNationalForests: [],
-            availableLocalForests: []
+            availableLocalForests: [],
+            csvDownload: null
         }
 
         // bind functions
         this.updateStateFromProps = this.updateStateFromProps.bind(this);
+        this.getCSVData = this.getCSVData.bind(this);
 
         // create refs
         this.stateInput = React.createRef();
@@ -42,6 +45,9 @@ class HistoricalDataSelectionBar extends Component {
 
                         <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
                         <button id="adjust-map-size-button" className="submit static-button" onClick={this.props.movePredictionModelDown} data-tip="Move the charts and map around">Toggle View</button>
+                        <button id="get-csv-button" className="submit static-button" onClick={this.getCSVData} data-tip="Make sure to allow popups!">Export CSV</button>
+                        <div>{this.state.csvDownload}</div>
+
                         <ReactTooltip />
                     </div>
                 </div>
@@ -71,6 +77,28 @@ class HistoricalDataSelectionBar extends Component {
             availableNationalForests: props.dataControllerState.dropDownContent.availableNationalForests,
             availableLocalForests: props.dataControllerState.dropDownContent.availableLocalForests
         });
+    }
+
+    getCSVData() {
+        // query data from database using given filters
+        var url = this.props.dataControllerState.url + "getHistoricals";
+        var xmlHttp = new XMLHttpRequest();
+
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                 // sort data based on year
+                 var sortedData = xmlHttp.response.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0));
+
+                 this.setState({
+                     csvDownload: <CSVDownload data={sortedData} />
+                 })
+             }
+         }.bind(this);
+
+         xmlHttp.open("GET", url, true);
+         xmlHttp.responseType = 'json';
+         xmlHttp.send();
     }
 }
 

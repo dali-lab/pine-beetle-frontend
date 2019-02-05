@@ -20,9 +20,8 @@ class ViewPredictions extends Component {
             return(
                 <div>
                     <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
-                    <ViewModelOutput modelOutputs={this.state.dataControllerState.predictiveModel.modelOutputs} />
+                    <ViewModelOutput modelOutputs={this.state.dataControllerState.predictiveModelOutputs} />
                 </div>
-
             );
         }
         else {

@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { HashRouter } from 'react-router-dom'
-import DataController from './DataController.js'
-import ScrollToTop from './ScrollToTop.js'
-import Header from './header-footer/Header.js'
-import Footer from './header-footer/Footer.js'
-import Home from './Home.js'
+import { HashRouter } from 'react-router-dom';
+import ReactGA from 'react-ga';
+import DataController from './DataController.js';
+import ScrollToTop from './ScrollToTop.js';
+import Header from './header-footer/Header.js';
+import Footer from './header-footer/Footer.js';
+import Home from './Home.js';
 import About from './about-page/About.js';
 import ViewHistoricalData from './historical-data-page/ViewHistoricalData.js';
 import ViewPredictions from './predictive-model-page/ViewPredictions.js';
 import MobileLandingPage from './MobileLandingPage.js';
 import '../styles/App.css';
+
+// google analytics
+ReactGA.initialize('UA-133847731-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 class App extends Component {
     constructor(props) {

@@ -128,7 +128,7 @@ h4.location {
     flex: 1.5 !important;
 }
 
-#adjust-map-size-button, #reset-current-data-button {
+#adjust-map-size-button, #reset-current-data-button, #get-csv-button {
     width: 100px;
     background-color: #E9C46A;
     margin-left: 15px;
@@ -136,7 +136,7 @@ h4.location {
     font-size: 13px;
 }
 
-#adjust-map-size-button, #reset-current-data-button:hover {
+#adjust-map-size-button, #reset-current-data-button, #get-csv-button:hover {
     font-weight: 500;
 }
 
