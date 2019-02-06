@@ -5,6 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import TextInput from './input-components/TextInput';
 import ChoiceInput from './input-components/ChoiceInput';
 import '../../styles/selection-bars/InputFields.css';
+var jQuery = require("jquery");
 
 class HistoricalDataSelectionBar extends Component {
     constructor(props) {
@@ -81,8 +82,9 @@ class HistoricalDataSelectionBar extends Component {
 
     getCSVData() {
         // query data from database using given filters
-        var url = this.props.dataControllerState.url + "getHistoricals";
+        var url = this.props.dataControllerState.url + "getHistoricalsFilter";
         var xmlHttp = new XMLHttpRequest();
+        var filters = this.props.dataController.setQueryFilters(false);
 
          xmlHttp.onload = function() {
              // if the request was successful hold onto the data
@@ -90,15 +92,22 @@ class HistoricalDataSelectionBar extends Component {
                  // sort data based on year
                  var sortedData = xmlHttp.response.sort((a,b) => (a.year > b.year) ? 1 : ((b.year >= a.year) ? -1 : 0));
 
+                 // cause the component to remount -- thereby downloading the csv for the user
                  this.setState({
                      csvDownload: <CSVDownload data={sortedData} />
-                 })
+                 }, () => {
+                     // after remount, set the component to null again -- allows user to redownload if desired
+                     this.setState({
+                         csvDownload: null
+                     });
+                 });
              }
          }.bind(this);
 
-         xmlHttp.open("GET", url, true);
+         xmlHttp.open("POST", url, true);
+         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
          xmlHttp.responseType = 'json';
-         xmlHttp.send();
+         xmlHttp.send(jQuery.param(filters));
     }
 }
 
