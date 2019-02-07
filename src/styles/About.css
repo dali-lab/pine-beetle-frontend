@@ -1,11 +1,14 @@
+
 .about-project p, .next-steps p, .using-product p {
     text-align: left;
-    margin: 15px 50px;
+    margin: 15px 300px 15px 300px;
     line-height: 2;
     color: white;
 }
 
 .about-project h2 {
+  text-align: left;
+  margin: 15px 300px 15px 300px;
   color: white;
 }
 
@@ -14,6 +17,7 @@
     justify-content: flex-start;   /* center flex items vertically */
     background-image: url("../assets/pexels-photo-943898.jpeg");
     background-size: cover;
+    background-position: bottom;
 }
 
 .about-project a {
@@ -86,9 +90,17 @@ a:hover {
 }
 
 .next-steps {
-    flex: 1.5 !important;
+    flex: 15 !important;
     flex-direction: column !important;    /* vertical alignment of flex items */
     justify-content: flex-start !important;   /* center flex items vertically */
+}
+
+.next-steps p {
+    color: #000000;
+}
+
+.contact-info {
+  flex-grow: 1;
 }
 
 .contact-info h4 {
@@ -101,9 +113,13 @@ a:hover {
     padding-bottom: 5px;
 }
 
+.using-product p {
+    color: #000000;
+}
+
 .contact-info a, .using-product a {
     text-decoration: none;
-    color: inherit;
+    color: #000000;
 }
 
 .using-product a:hover {
@@ -116,12 +132,17 @@ a:hover {
 }
 
 .info-box {
-    background-color: #ABB2B5;
-    padding: 10px;
+    background: #F2F5E8;
+    padding: 15%;
     border-radius: 5px;
     margin-bottom: 15px;
 }
 
 #pad-top {
-    padding-top: 10px;
+    padding-top: 10%;
+}
+
+.bottom {
+  flex-direction: column;
+  color: pink;
 }

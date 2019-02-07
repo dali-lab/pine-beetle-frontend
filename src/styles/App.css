@@ -4,7 +4,7 @@
 }
 
 body {
-    background-color: #24424F;
+    background-color: white;
     font-family: 'Open Sans', arial, serif;
     letter-spacing: -0.5px;
     color: #212122;
@@ -41,7 +41,7 @@ body img {
     width: auto;
     height: auto;
     margin: 15px 31px;
-    background-color: #E5E5E5;
+    background-color: white;
     border-radius: 5px;
     text-align: center;
 }

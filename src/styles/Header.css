@@ -2,7 +2,7 @@
     height: auto;
     margin: 31px 31px 15px 31px;
     border-radius: 5px;
-    background-color: #E5E5E5;
+    background-color: white;
 }
 
 #title-area {
@@ -28,7 +28,7 @@
 }
 
 #nav-buttons p {
-    color: #212122;
+    color: #62731D;;
     float: left;
     padding: 12px;
     border-radius: 5px;
