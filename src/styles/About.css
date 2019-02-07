@@ -2,11 +2,18 @@
     text-align: left;
     margin: 15px 50px;
     line-height: 2;
+    color: white;
+}
+
+.about-project h2 {
+  color: white;
 }
 
 .about-project {
     flex-direction: column;    /* vertical alignment of flex items */
     justify-content: flex-start;   /* center flex items vertically */
+    background-image: url("../assets/pexels-photo-943898.jpeg");
+    background-size: cover;
 }
 
 .about-project a {

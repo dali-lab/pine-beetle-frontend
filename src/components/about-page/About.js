@@ -6,7 +6,7 @@ class About extends Component {
     render() {
         return(
             <div>
-    			<div className="flex-container">
+    			<div className="flex-container flex-item flex-direction-column">
     				<div className="container about-project flex-item flex-item-left">
     					<h2>About the Project</h2>
                         <div className="line"></div>
@@ -19,10 +19,10 @@ class About extends Component {
                         <p id="more-info-text">For information specifically about Southern Pine Beetles or various national forests, please contact the <em><a href="https://www.fs.fed.us/" target="_blank" rel="noopener noreferrer">US Forest Service.</a></em></p>
     				</div>
     				<div className="container using-product flex-item flex-item-right">
-                        <h2>Using the Product</h2>
+                        <h2>History</h2>
                         <div className="line"></div>
-                        <p>To view the data, navigate to the <Link to="/viewdata"><strong><em>View Data</em></strong></Link> page. Here users can see graphical representations of the data as well as outbreak predictions and rankings from the statistical model. Use the selection boxes, slicers, and filters to adjust what data you are viewing. Users can adjust the range of years visualized as well as states, national forests, and local forests. Click the Reset Filters button to view all data.</p>
-    					<p>Above the graphs is a geographic representation of the trapping data from ArcGIS. Adjust the top menu buttons to see data from different ranges and play around with the graph to see changes in recent years. Click the Expand Map button to move the prediction model down and view the map in full screen. Please see the contact information at right for feature requests. Please note this website uses cookies to enhance user experience. To learn more, please see the <a href="https://en.wikipedia.org/wiki/HTTP_cookie" target="_blank" rel="noopener noreferrer">following</a>.</p>
+                        <p>This project carries on the work of Ron Billings of the Texas A&M University Forest Service (retired). Since 1987, Ron has coordinated annual predictions of summer SPB outbreak, based on spring trapping data provided by cooperators across the southern range of the beetle (Billings and Upton 2010). Our work builds on Ron’s tireless dedication to supporting and improving the prediction system over the past 30 years. </p>
+                        <p>(Billings, R. F., and W. W. Upton. 2010. A methodology for assessing annual risk of southern pine beetle outbreaks across the southern region using pheromone traps. Pages 73–85 in J. M. Pye, H. M. Rauscher, Y. Sands, D. C. Lee, and J. S. Beatty, editors. Advances in threat assessment and their application to forest and rangeland management. Gen. Tech. Rep. PNW-GTR-802. Portland, OR: U.S. Department of Agriculture, Forest Service, Pacific Northwest and Southern Research Stations.)</p>
                     </div>
     			</div>
 
