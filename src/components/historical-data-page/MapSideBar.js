@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../../styles/historical-data/MapSideBar.css';
+import '../../styles/historical-data-page/MapSideBar.css';
 
 class MapSideBar extends Component {
     constructor(props) {
