@@ -23,8 +23,6 @@ class About extends Component {
                 <div className="flex-container bottom;">
     				<div className="container next-steps flex-item flex-item-left">
     					<h2>Partners and Cooperators</h2>
-    					<div className="line"></div>
-
               <p>The southern pine beetle prediction system is a collaboration of scores of people and institutions.</p>
 
               <h3>Project Committee:</h3>
@@ -45,8 +43,6 @@ class About extends Component {
 
                     <div className="container contact-info flex-item flex-item-right">
                         <h2>Contact Information</h2>
-                        <div className="line"></div>
-
                         <div id="contact-info-area">
                             <div className="info-box">
                                 <h4>Questions about the program</h4>

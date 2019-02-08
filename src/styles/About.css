@@ -1,14 +1,14 @@
 
 .about-project p, .next-steps p, .using-product p {
     text-align: left;
-    margin: 15px 300px 15px 300px;
+    margin: 15px 100px 15px 100px;
     line-height: 2;
     color: white;
 }
 
 .about-project h2 {
   text-align: left;
-  margin: 15px 300px 15px 300px;
+  margin: 15px 100px 15px 100px;
   color: white;
 }
 
@@ -89,10 +89,28 @@ a:hover {
     justify-content: flex-start !important;   /* center flex items vertically */
 }
 
+.using-product h2 {
+      text-align: left;
+      margin: 15px 100px 15px 100px;
+      font-size: 24px;
+}
+
+
 .next-steps {
-    flex: 15 !important;
+    flex: 3 !important;
     flex-direction: column !important;    /* vertical alignment of flex items */
     justify-content: flex-start !important;   /* center flex items vertically */
+}
+
+.next-steps h2 {
+      text-align: left;
+      margin: 15px 100px 15px 100px;
+      font-size: 24px;
+}
+
+.next-steps h3 {
+      text-align: left;
+      margin: 15px 100px 15px 100px;
 }
 
 .next-steps p {

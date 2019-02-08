@@ -16,6 +16,11 @@
     color: #212122;
 }
 
+#title-area img {
+  height: 20%;
+  width: 20%;
+}
+
 #title-area h1 {
     padding-bottom: 0px;
 }

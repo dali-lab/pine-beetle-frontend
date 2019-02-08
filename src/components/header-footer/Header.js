@@ -8,7 +8,7 @@ class Header extends Component {
             <div id="header">
                 <div className="container">
     				<div id="title-area">
-    					<Link to="/"><h1>Pine Beetle Prediction Tool</h1></Link>
+    					<Link to="/"><img src={require("../../assets/pinebeetle.png")}></img></Link>
     				</div>
     				<div id="nav-button-area">
     					<div id="nav-buttons">
