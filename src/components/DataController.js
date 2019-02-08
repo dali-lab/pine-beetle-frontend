@@ -866,16 +866,14 @@ class DataController extends Component {
         xmlHttp.onload = function() {
             // if the request was successful hold onto the data
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-                console.log("successfully loaded model outputs")
-
                 var outputs = {
-                    expSpotsIfOutbreak: xmlHttp.response[2].Predictions,
-                    prob0spots: xmlHttp.response[3].Predictions,
-                    prob19spots: xmlHttp.response[4].Predictions,
-                    prob53spots: xmlHttp.response[5].Predictions,
-                    prob147spots: xmlHttp.response[6].Predictions,
-                    prob402spots: xmlHttp.response[7].Predictions,
-                    prob1095spots: xmlHttp.response[8].Predictions
+                    prob0spots: xmlHttp.response[0],
+                    prob19spots: xmlHttp.response[1],
+                    prob53spots: xmlHttp.response[2],
+                    prob147spots: xmlHttp.response[3],
+                    prob402spots: xmlHttp.response[4],
+                    prob1095spots: xmlHttp.response[5],
+                    expSpotsIfOutbreak: xmlHttp.response[6]
                 }
 
                 // set the state
@@ -886,13 +884,13 @@ class DataController extends Component {
             // if the request failed, clear the data and notify the user
             else {
                 var outputs = {
-                    expSpotsIfOutbreak: 0,
                     prob0spots: 0,
                     prob19spots: 0,
                     prob53spots: 0,
                     prob147spots: 0,
                     prob402spots: 0,
-                    prob1095spots: 0
+                    prob1095spots: 0,
+                    expSpotsIfOutbreak: 0
                 }
 
                 // set the state
