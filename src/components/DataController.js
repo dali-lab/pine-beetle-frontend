@@ -41,7 +41,8 @@ class DataController extends Component {
             historicalData: {
                 currentData: [],
                 summarizedDataByLatLong: null,
-                summarizedDataByYear: null
+                summarizedDataByYear: null,
+                summarizedDataByState: null
             },
 
             // outputs from predictive model
@@ -75,6 +76,25 @@ class DataController extends Component {
                 TN:"Tennesse",
                 TX:"Texas",
                 VA:"Virginia"
+            },
+
+            stateAbbrevToStateID: {
+                AL: "01",
+                AR: "05",
+                DE: "10",
+                FL: "12",
+                GA: "13",
+                KY: "21",
+                LA: "22",
+                MD: "24",
+                MS: "28",
+                NC: "37",
+                NJ: "34",
+                OK: "40",
+                SC: "45",
+                TN: "47",
+                TX: "48",
+                VA: "51"
             }
         }
 
@@ -115,6 +135,7 @@ class DataController extends Component {
             // get initial dates
             this.getOriginalStartDate();
             this.getOriginalEndDate();
+            this.getSummarizedDataByState();
         });
     }
 
@@ -849,11 +870,78 @@ class DataController extends Component {
          xmlHttp.send(jQuery.param(filters));
     }
 
+    // get data from database in a summarized format based on latitude and longitude
+    getSummarizedDataByState() {
+        var filters = {
+            startDate: this.state.startDate,
+            endDate: this.state.endDate
+        }
+
+        var url = "http://localhost:9090/v1/getSummarizedDataByState";
+        // var url = this.state.url + "getSummarizedDataByState";
+        var xmlHttp = new XMLHttpRequest();
+
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+
+                 var historicalData = Object.assign({}, this.state.historicalData);
+                 var response = xmlHttp.response;
+
+                 var max = 0;
+
+                 for (var entry in response) {
+                     response[entry].STATE_ID = this.state.stateAbbrevToStateID[response[entry].state];
+
+                     if (response[entry].spots > max) {
+                         max = response[entry].spots
+                     }
+                 }
+
+                 historicalData.summarizedDataByState = response;
+                 historicalData.maxSpotsByState = max;
+
+                 // store result
+                 this.setState({
+                     historicalData: historicalData
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+
+                     // update available drop-down items
+                     this.updateAvailableNationalForestsAndForests();
+                 });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 var historicalData = Object.assign({}, this.state.historicalData);
+                 historicalData.summarizedDataByState = null
+
+                 this.setState({
+                     historicalData: historicalData
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+         }.bind(this);
+
+         xmlHttp.open("POST", url, true);
+         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+         xmlHttp.responseType = 'json';
+         xmlHttp.send(jQuery.param(filters));
+    }
+
     // update current data based on the user selections for state, forest, date, etc.
     updateCurrentData() {
         // get summarized data
         this.updateSummarizedDataByYear();
         this.updateSummarizedDataByLatLong();
+        this.getSummarizedDataByState();
         this.getModelOutputs();
     }
 

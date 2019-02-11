@@ -12,8 +12,11 @@ class PredictiveMap extends Component {
         this.state = {
             map: null,
             dataController: null,
-            dataControllerState: null
+            dataControllerState: null,
+            builtMap: false
         }
+
+        this.createMap = this.createMap.bind(this);
     }
     render() {
         return(
@@ -24,11 +27,7 @@ class PredictiveMap extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            builtMap: false
-        }, () => {
-            this.updateStateFromProps(this.props);
-        });
+        this.updateStateFromProps(this.props);
     }
 
     // if receiving new data, update the state
@@ -41,7 +40,7 @@ class PredictiveMap extends Component {
             dataController: props.dataController,
             dataControllerState: props.dataControllerState
         }, () => {
-            if (this.state.builtMap === false && this.state.dataControllerState.historicalData.summarizedDataByLatLong !== null) {
+            if (this.state.builtMap === false && this.state.dataControllerState.historicalData.summarizedDataByState !== null) {
                 this.createMap();
             }
         })
@@ -65,23 +64,22 @@ class PredictiveMap extends Component {
                 // disable map zoom when using scroll
                 this.state.map.scrollZoom.disable();
 
-                var data = require('./StateGeoJSON.json');
-                console.log(this.state.dataControllerState)
-
                 this.state.map.on('load', function() {
-                    this.state.map.addSource('state-data', {
-                       type: 'geojson',
-                       data: data
-                   });
+                    // Add source for state polygons hosted on Mapbox, based on US Census Data:
+                    // https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
+                    this.state.map.addSource("states", {
+                        type: "vector",
+                        url: "mapbox://mapbox.us_census_states_2015"
+                    });
 
-                    var expression = ["match", ["get", "abbrev"]];
+                    var expression = ["match", ["get", "STATE_ID"]];
 
                     // Calculate color for each state based on the unemployment rate
-                    this.state.dataControllerState.historicalData.summarizedDataByLatLong.forEach(function(row) {
-                        var green = (row["spots"] / 1000) * 255;
+                    this.state.dataControllerState.historicalData.summarizedDataByState.forEach(function(row) {
+                        var green = (row["spots"] / (this.state.dataControllerState.historicalData.maxSpotsByState / 5)) * 255;
                         var color = "rgba(" + 0 + ", " + green + ", " + 0 + ", 1)";
-                        expression.push(row["state"], color);
-                    });
+                        expression.push(row["STATE_ID"], color);
+                    }.bind(this));
 
                     // Last value is the default, used where there is no data
                     expression.push("rgba(0,0,0,0)");
@@ -90,8 +88,8 @@ class PredictiveMap extends Component {
                     this.state.map.addLayer({
                         "id": "states-join",
                         "type": "fill",
-                        "source": "state-data",
-                        "source-layer": "state-data",
+                        "source": "states",
+                        "source-layer": "states",
                         "paint": {
                             "fill-color": expression
                         }
@@ -166,6 +164,8 @@ class PredictiveMap extends Component {
                 type: "vector",
                 url: "mapbox://mapbox.us_census_states_2015"
             });
+
+            console.log(this.state.map)
 
             var expression = ["match", ["get", "STATE_ID"]];
 
