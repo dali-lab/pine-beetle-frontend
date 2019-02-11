@@ -55,27 +55,27 @@ class DataController extends Component {
                 prob1095spots: 0
             },
 
-            url: ""
-        }
+            url: "",
 
-        // map of state abbreviations to their names
-        this.stateAbbrevToStateName = {
-            AL:"Alabama",
-            AR:"Arkansas",
-            DE:"Delaware",
-            FL:"Florida",
-            GA:"Georgia",
-            KY:"Kentucky",
-            LA:"Louisiana",
-            MD:"Maryland",
-            MS:"Mississippi",
-            NC:"North Carolina",
-            NJ:"New Jersey",
-            OK:"Oklahoma",
-            SC:"South Carolina",
-            TN:"Tennesse",
-            TX:"Texas",
-            VA:"Virginia"
+            // map of state abbreviations to their names
+            stateAbbrevToStateName: {
+                AL:"Alabama",
+                AR:"Arkansas",
+                DE:"Delaware",
+                FL:"Florida",
+                GA:"Georgia",
+                KY:"Kentucky",
+                LA:"Louisiana",
+                MD:"Maryland",
+                MS:"Mississippi",
+                NC:"North Carolina",
+                NJ:"New Jersey",
+                OK:"Oklahoma",
+                SC:"South Carolina",
+                TN:"Tennesse",
+                TX:"Texas",
+                VA:"Virginia"
+            }
         }
 
         // bind functions
@@ -262,7 +262,7 @@ class DataController extends Component {
 
                  for (var state in xmlHttp.response) {
                      var stateAbbrev = xmlHttp.response[state]
-                     stateNames.push(this.stateAbbrevToStateName[stateAbbrev]);
+                     stateNames.push(this.state.stateAbbrevToStateName[stateAbbrev]);
                  }
 
                  // update dropDownContent
@@ -595,8 +595,8 @@ class DataController extends Component {
         // if we were given a state name and not the abbreviation, we need to get its abbreviation
         else if (state.length > 2) {
             // search through map of state abbreviations to names to grab the correct one
-            for (var abbrev in this.stateAbbrevToStateName) {
-                if (this.stateAbbrevToStateName[abbrev] === state) {
+            for (var abbrev in this.state.stateAbbrevToStateName) {
+                if (this.state.stateAbbrevToStateName[abbrev] === state) {
                     userFilters.stateName = state
                     userFilters.stateAbbreviation = abbrev
                     userFilters.nationalForest = null
@@ -625,9 +625,9 @@ class DataController extends Component {
         // if we were given the abbreviation and not the name, get the name
         else {
             // search through map of state abbreviations to names to grab the correct one
-            for (abbrev in this.stateAbbrevToStateName) {
+            for (abbrev in this.state.stateAbbrevToStateName) {
                 if (abbrev === state) {
-                    userFilters.stateName = this.stateAbbrevToStateName[abbrev];
+                    userFilters.stateName = this.state.stateAbbrevToStateName[abbrev];
                     userFilters.stateAbbreviation = abbrev;
                     userFilters.nationalForest = null;
                     userFilters.forest = null;

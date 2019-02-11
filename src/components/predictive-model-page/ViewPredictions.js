@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LoadingContainer from '../LoadingContainer';
 import PredictionsSelectionBar from '../selection-bars/PredictionsSelectionBar';
 import ViewModelOutput from './ViewModelOutput.js';
+import PredictiveMap from './mapbox/PredictiveMap.js';
 import '../../styles/predictive-model-page/ViewPredictions.css';
 
 class ViewPredictions extends Component {
@@ -21,6 +22,7 @@ class ViewPredictions extends Component {
                 <div>
                     <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
                     <ViewModelOutput modelOutputs={this.state.dataControllerState.predictiveModelOutputs} />
+                    <PredictiveMap dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
                 </div>
             );
         }
