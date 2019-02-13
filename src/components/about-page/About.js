@@ -12,10 +12,13 @@ class About extends Component {
                   <p>After developing a model at Dartmouth College to predict outbreaks and movements of Southern Pine Beetles, Professor Ayres and Aoki approached Dartmouth’s DALI Lab to design and develop a tool to visualize the trapping data and predictions gathered annually. This project aimes to deploy a product that field researchers, USFS personel, and the general public can use to understand trends in pine beetle movements.</p>
     				</div>
     				<div className="container using-product flex-item flex-item-right">
-                        <div className="flex-item">
-                        <h2>History</h2>
-                        <p>This project carries on the work of Ron Billings of the Texas A&M University Forest Service (retired). Since 1987, Ron has coordinated annual predictions of summer SPB outbreak, based on spring trapping data provided by cooperators across the southern range of the beetle (Billings and Upton 2010). Our work builds on Ron’s tireless dedication to supporting and improving the prediction system over the past 30 years. </p>
-                        <p>(Billings, R. F., and W. W. Upton. 2010. A methodology for assessing annual risk of southern pine beetle outbreaks across the southern region using pheromone traps. Pages 73–85 in J. M. Pye, H. M. Rauscher, Y. Sands, D. C. Lee, and J. S. Beatty, editors. Advances in threat assessment and their application to forest and rangeland management. Gen. Tech. Rep. PNW-GTR-802. Portland, OR: U.S. Department of Agriculture, Forest Service, Pacific Northwest and Southern Research Stations.)</p>
+                        <div className="history flex-item flex-grow-3">
+                          <h2>History</h2>
+                          <p>This project carries on the work of Ron Billings of the Texas A&M University Forest Service (retired). Since 1987, Ron has coordinated annual predictions of summer SPB outbreak, based on spring trapping data provided by cooperators across the southern range of the beetle (Billings and Upton 2010). Our work builds on Ron’s tireless dedication to supporting and improving the prediction system over the past 30 years. </p>
+                          <p>(Billings, R. F., and W. W. Upton. 2010. A methodology for assessing annual risk of southern pine beetle outbreaks across the southern region using pheromone traps. Pages 73–85 in J. M. Pye, H. M. Rauscher, Y. Sands, D. C. Lee, and J. S. Beatty, editors. Advances in threat assessment and their application to forest and rangeland management. Gen. Tech. Rep. PNW-GTR-802. Portland, OR: U.S. Department of Agriculture, Forest Service, Pacific Northwest and Southern Research Stations.)</p>
+                        </div>
+                        <div className = "person flex-item">
+                          <img src={ require('../../assets/pinebeetletemp.jpg') } height = "100px" width = "100px" />
                         </div>
                     </div >
     			</div>
@@ -44,7 +47,7 @@ class About extends Component {
                     <div className="container contact-info flex-item flex-item-right">
                         <h2>Contact Information</h2>
                         <div id="contact-info-area">
-                            <div className="info-box">
+                            <div className="info-box flex-wrap-wrap">
                                 <h4>Questions about the program</h4>
                                 <h3>Carissa Aoki</h3>
                                 <a href="mailto:caoki@bates.edu">caoki@bates.edu</a>
@@ -55,7 +58,7 @@ class About extends Component {
 
                             <div className="info-box">
                                 <h4>Questions about local forests</h4>
-                                <h3>USDA Forest Service</h3>
+                                <h3>US Forest Service</h3>
                                 <span>(800) 832-1355</span>
                             </div>
 

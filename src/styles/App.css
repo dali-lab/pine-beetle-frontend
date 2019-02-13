@@ -12,21 +12,25 @@ body {
 
 body p {
     line-height: 1.8;
+    font-size: 14px;
 }
 
 body h2 {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    font-size: 18px;
 }
 
 body p, a, li {
     font-family: 'Open Sans', arial, serif;
-    padding-bottom: 15px;
+    font-size: 14px;
+    padding-bottom: 0px;
 }
 
 body h1, h2, h3, h4, h5, h6 {
     font-family: 'Open Sans', arial, serif;
-    padding-bottom: 12px;
+    padding-bottom: 0px;
+    font-size: 18px;
 }
 
 body h1 {
@@ -34,20 +38,20 @@ body h1 {
 }
 
 body img {
-    border-radius: 5px;
+    border-radius: 0px;
 }
 
 .container {
     width: auto;
     height: auto;
-    margin: 15px 31px;
+    margin: 0px; /* 15px 31px */
     background-color: white;
-    border-radius: 5px;
+    border-radius: 0px;
     text-align: center;
 }
 
 .content .container {
-    padding: 20px;
+    padding: 10px; /* 20px */
 }
 
 .flex-container {
@@ -60,18 +64,18 @@ body img {
 
 .flex-item {
     flex: 1;
-    padding: 15px;
+    padding: 0px; /* 15 */
     display: flex;             /* nested flex container */
     flex-direction: column;    /* vertical alignment of flex items */
     justify-content: center;   /* center flex items vertically */
 }
 
 .flex-item-left {
-    margin-right: 15px;
+    margin-right: 0px; /* 15 */
 }
 
 .flex-item-right {
-    margin-left: 15px;
+    margin-left: 0px; /* 15 */
 }
 
 .content {
