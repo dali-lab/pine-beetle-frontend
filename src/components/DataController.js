@@ -872,13 +872,8 @@ class DataController extends Component {
 
     // get data from database in a summarized format based on latitude and longitude
     getSummarizedDataByState() {
-        var filters = {
-            startDate: this.state.startDate,
-            endDate: this.state.endDate
-        }
-
-        var url = "http://localhost:9090/v1/getSummarizedDataByState";
-        // var url = this.state.url + "getSummarizedDataByState";
+        var filters = this.setQueryFilters(true);
+        var url = this.state.url + "getSummarizedDataByState";
         var xmlHttp = new XMLHttpRequest();
 
          xmlHttp.onload = function() {
@@ -916,7 +911,7 @@ class DataController extends Component {
              }
              // if the request failed, clear the data and notify the user
              else {
-                 var historicalData = Object.assign({}, this.state.historicalData);
+                 historicalData = Object.assign({}, this.state.historicalData);
                  historicalData.summarizedDataByState = null
 
                  this.setState({
@@ -947,7 +942,8 @@ class DataController extends Component {
 
     // run the R model and store outputs
     getModelOutputs() {
-        var url = this.state.url + "getPredictions";
+        // running on OLD model so we don't crash heroku
+        var url = this.state.url + "getPredictionsOld";
         var xmlHttp = new XMLHttpRequest();
         var filters = this.setQueryFilters(true);
 
@@ -1047,7 +1043,7 @@ class DataController extends Component {
         }
         // if only national forest is unselected, update it
         else if (this.state.userFilters.nationalForest === null && this.state.userFilters.forest !== null) {
-            var dropDownContent = Object.assign({}, this.state.dropDownContent);
+            dropDownContent = Object.assign({}, this.state.dropDownContent);
             dropDownContent.availableNationalForests = availableNationalForests;
 
             this.setState({
@@ -1076,6 +1072,7 @@ class DataController extends Component {
         userFilters.forest = null;
         userFilters.startDate = this.state.userFilters.originalStartDate;
         userFilters.endDate = this.state.userFilters.originalEndDate;
+        userFilters.predictiveModelDate = this.state.dropDownContent.availableYears[this.state.dropDownContent.availableYears.length - 1];
 
         var historicalData = Object.assign({}, this.state.historicalData);
         historicalData.currentData = [];
