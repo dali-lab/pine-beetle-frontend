@@ -135,7 +135,6 @@ class DataController extends Component {
             // get initial dates
             this.getOriginalStartDate();
             this.getOriginalEndDate();
-            this.getSummarizedDataByState();
         });
     }
 

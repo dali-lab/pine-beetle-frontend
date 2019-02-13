@@ -26,13 +26,13 @@ class PredictiveMap extends Component {
         return(
             <div className="map-container">
                 <div id="map"></div>
-                <div class='map-overlay' id='features'>
+                <div className='map-overlay' id='features'>
                     <h3>Total Spots Per State</h3>
                     <div id='pd'>
                         {this.state.hoverElement}
                     </div>
                 </div>
-                <div class='map-overlay' id='legend'>
+                <div className='map-overlay' id='legend'>
                     {this.state.legendTags}
                 </div>
             </div>
