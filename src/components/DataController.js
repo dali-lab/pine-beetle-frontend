@@ -41,7 +41,8 @@ class DataController extends Component {
             historicalData: {
                 currentData: [],
                 summarizedDataByLatLong: null,
-                summarizedDataByYear: null
+                summarizedDataByYear: null,
+                summarizedDataByState: null
             },
 
             // outputs from predictive model
@@ -55,27 +56,46 @@ class DataController extends Component {
                 prob1095spots: 0
             },
 
-            url: ""
-        }
+            url: "",
 
-        // map of state abbreviations to their names
-        this.stateAbbrevToStateName = {
-            AL:"Alabama",
-            AR:"Arkansas",
-            DE:"Delaware",
-            FL:"Florida",
-            GA:"Georgia",
-            KY:"Kentucky",
-            LA:"Louisiana",
-            MD:"Maryland",
-            MS:"Mississippi",
-            NC:"North Carolina",
-            NJ:"New Jersey",
-            OK:"Oklahoma",
-            SC:"South Carolina",
-            TN:"Tennesse",
-            TX:"Texas",
-            VA:"Virginia"
+            // map of state abbreviations to their names
+            stateAbbrevToStateName: {
+                AL:"Alabama",
+                AR:"Arkansas",
+                DE:"Delaware",
+                FL:"Florida",
+                GA:"Georgia",
+                KY:"Kentucky",
+                LA:"Louisiana",
+                MD:"Maryland",
+                MS:"Mississippi",
+                NC:"North Carolina",
+                NJ:"New Jersey",
+                OK:"Oklahoma",
+                SC:"South Carolina",
+                TN:"Tennesse",
+                TX:"Texas",
+                VA:"Virginia"
+            },
+
+            stateAbbrevToStateID: {
+                AL: "01",
+                AR: "05",
+                DE: "10",
+                FL: "12",
+                GA: "13",
+                KY: "21",
+                LA: "22",
+                MD: "24",
+                MS: "28",
+                NC: "37",
+                NJ: "34",
+                OK: "40",
+                SC: "45",
+                TN: "47",
+                TX: "48",
+                VA: "51"
+            }
         }
 
         // bind functions
@@ -262,7 +282,7 @@ class DataController extends Component {
 
                  for (var state in xmlHttp.response) {
                      var stateAbbrev = xmlHttp.response[state]
-                     stateNames.push(this.stateAbbrevToStateName[stateAbbrev]);
+                     stateNames.push(this.state.stateAbbrevToStateName[stateAbbrev]);
                  }
 
                  // update dropDownContent
@@ -595,8 +615,8 @@ class DataController extends Component {
         // if we were given a state name and not the abbreviation, we need to get its abbreviation
         else if (state.length > 2) {
             // search through map of state abbreviations to names to grab the correct one
-            for (var abbrev in this.stateAbbrevToStateName) {
-                if (this.stateAbbrevToStateName[abbrev] === state) {
+            for (var abbrev in this.state.stateAbbrevToStateName) {
+                if (this.state.stateAbbrevToStateName[abbrev] === state) {
                     userFilters.stateName = state
                     userFilters.stateAbbreviation = abbrev
                     userFilters.nationalForest = null
@@ -625,9 +645,9 @@ class DataController extends Component {
         // if we were given the abbreviation and not the name, get the name
         else {
             // search through map of state abbreviations to names to grab the correct one
-            for (abbrev in this.stateAbbrevToStateName) {
+            for (abbrev in this.state.stateAbbrevToStateName) {
                 if (abbrev === state) {
-                    userFilters.stateName = this.stateAbbrevToStateName[abbrev];
+                    userFilters.stateName = this.state.stateAbbrevToStateName[abbrev];
                     userFilters.stateAbbreviation = abbrev;
                     userFilters.nationalForest = null;
                     userFilters.forest = null;
@@ -849,17 +869,80 @@ class DataController extends Component {
          xmlHttp.send(jQuery.param(filters));
     }
 
+    // get data from database in a summarized format based on latitude and longitude
+    getSummarizedDataByState() {
+        var filters = this.setQueryFilters(true);
+        var url = this.state.url + "getSummarizedDataByState";
+        var xmlHttp = new XMLHttpRequest();
+
+         xmlHttp.onload = function() {
+             // if the request was successful hold onto the data
+             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+
+                 var historicalData = Object.assign({}, this.state.historicalData);
+                 var response = xmlHttp.response;
+
+                 var max = 0;
+
+                 for (var entry in response) {
+                     response[entry].STATE_ID = this.state.stateAbbrevToStateID[response[entry].state];
+
+                     if (response[entry].spots > max) {
+                         max = response[entry].spots
+                     }
+                 }
+
+                 historicalData.summarizedDataByState = response;
+                 historicalData.maxSpotsByState = max;
+
+                 // store result
+                 this.setState({
+                     historicalData: historicalData
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+
+                     // update available drop-down items
+                     this.updateAvailableNationalForestsAndForests();
+                 });
+             }
+             // if the request failed, clear the data and notify the user
+             else {
+                 historicalData = Object.assign({}, this.state.historicalData);
+                 historicalData.summarizedDataByState = null
+
+                 this.setState({
+                     historicalData: historicalData
+                 }, () => {
+                     // set state of parent
+                     this.props.parent.setState({
+                         dataControllerState: this.state
+                     });
+                 });
+             }
+         }.bind(this);
+
+         xmlHttp.open("POST", url, true);
+         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+         xmlHttp.responseType = 'json';
+         xmlHttp.send(jQuery.param(filters));
+    }
+
     // update current data based on the user selections for state, forest, date, etc.
     updateCurrentData() {
         // get summarized data
         this.updateSummarizedDataByYear();
         this.updateSummarizedDataByLatLong();
+        this.getSummarizedDataByState();
         this.getModelOutputs();
     }
 
     // run the R model and store outputs
     getModelOutputs() {
-        var url = this.state.url + "getPredictions";
+        // running on OLD model so we don't crash heroku
+        var url = this.state.url + "getPredictionsOld";
         var xmlHttp = new XMLHttpRequest();
         var filters = this.setQueryFilters(true);
 
@@ -959,7 +1042,7 @@ class DataController extends Component {
         }
         // if only national forest is unselected, update it
         else if (this.state.userFilters.nationalForest === null && this.state.userFilters.forest !== null) {
-            var dropDownContent = Object.assign({}, this.state.dropDownContent);
+            dropDownContent = Object.assign({}, this.state.dropDownContent);
             dropDownContent.availableNationalForests = availableNationalForests;
 
             this.setState({
@@ -988,6 +1071,7 @@ class DataController extends Component {
         userFilters.forest = null;
         userFilters.startDate = this.state.userFilters.originalStartDate;
         userFilters.endDate = this.state.userFilters.originalEndDate;
+        userFilters.predictiveModelDate = this.state.dropDownContent.availableYears[this.state.dropDownContent.availableYears.length - 1];
 
         var historicalData = Object.assign({}, this.state.historicalData);
         historicalData.currentData = [];

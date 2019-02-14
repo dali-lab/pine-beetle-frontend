@@ -46,7 +46,7 @@ class HistoricalDataSelectionBar extends Component {
 
                         <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
                         <button id="adjust-map-size-button" className="submit static-button" onClick={this.props.movePredictionModelDown} data-tip="Move the charts and map around">Toggle View</button>
-                        <button id="get-csv-button" className="submit static-button" onClick={this.getCSVData} data-tip="Make sure to allow popups!">Export CSV</button>
+                        <button id="get-csv-button" className="submit static-button" onClick={this.getCSVData} data-tip="Make sure to allow browser popups!">Export CSV</button>
                         <div>{this.state.csvDownload}</div>
 
                         <ReactTooltip />

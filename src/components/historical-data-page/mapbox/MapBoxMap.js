@@ -5,7 +5,6 @@ import PopupContent from './PopupContent';
 import '../../../styles/historical-data-page/mapbox/MapBoxMap.css';
 require('dotenv').config() // load mapbox access token
 
-
 class MapBoxMap extends Component {
     constructor(props) {
         super(props)
