@@ -942,7 +942,7 @@ class DataController extends Component {
     // run the R model and store outputs
     getModelOutputs() {
         // running on OLD model so we don't crash heroku
-        var url = this.state.url + "getPredictionsOld";
+        var url = this.state.url + "getPredictions";
         var xmlHttp = new XMLHttpRequest();
         var filters = this.setQueryFilters(true);
 
@@ -950,13 +950,13 @@ class DataController extends Component {
             // if the request was successful hold onto the data
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
                 var outputs = {
-                    prob0spots: xmlHttp.response[0],
-                    prob19spots: xmlHttp.response[1],
-                    prob53spots: xmlHttp.response[2],
-                    prob147spots: xmlHttp.response[3],
-                    prob402spots: xmlHttp.response[4],
-                    prob1095spots: xmlHttp.response[5],
-                    expSpotsIfOutbreak: xmlHttp.response[6]
+                    prob0spots: xmlHttp.response[0].toFixed(3),
+                    prob19spots: xmlHttp.response[1].toFixed(3),
+                    prob53spots: xmlHttp.response[2].toFixed(3),
+                    prob147spots: xmlHttp.response[3].toFixed(3),
+                    prob402spots: xmlHttp.response[4].toFixed(3),
+                    prob1095spots: xmlHttp.response[5].toFixed(3),
+                    expSpotsIfOutbreak: xmlHttp.response[6].toFixed(3)
                 }
 
                 // set the state
