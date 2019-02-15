@@ -21,7 +21,7 @@ class ViewPredictions extends Component {
             return(
                 <div>
                     <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
-                    <ViewModelOutput modelOutputs={this.state.dataControllerState.predictiveModelOutputs} />
+                    <ViewModelOutput modelOutputs={this.state.dataControllerState.predictiveModelOutputs} modelInputs={this.state.dataControllerState.predictiveModelInputs} />
                     <PredictiveMap dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} predictiveMapBuilt={this.state.predictiveMapBuilt} updatePredictiveMapBuilt={this.updatePredictiveMapBuilt}/>
                 </div>
             );

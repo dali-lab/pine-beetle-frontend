@@ -10,9 +10,9 @@ class DataController extends Component {
         var stateAbbreviation = (this.getCookie("stateAbbreviation") !== null && this.getCookie("stateAbbreviation") !== "null") ? this.getCookie("stateAbbreviation") : null;
         var nationalForest = (this.getCookie("nationalForest") !== null && this.getCookie("nationalForest") !== "null") ? this.getCookie("nationalForest") : null;
         var forest = (this.getCookie("forest") !== null && this.getCookie("forest") !== "null") ? this.getCookie("forest") : null;
-        var startDate = (this.getCookie("startDate") !== null && this.getCookie("startDate") !== "null") ? this.getCookie("startDate") : Infinity;
-        var endDate = (this.getCookie("endDate") !== null && this.getCookie("endDate") !== "null") ? this.getCookie("endDate") : 0;
-        var predictiveModelDate = (this.getCookie("predictiveModelDate") !== null && this.getCookie("predictiveModelDate") !== "null") ? this.getCookie("predictiveModelDate") : 0;
+        var startDate = (this.getCookie("startDate") !== null && this.getCookie("startDate") !== "null") ? this.getCookie("startDate") : 1986;
+        var endDate = (this.getCookie("endDate") !== null && this.getCookie("endDate") !== "null") ? this.getCookie("endDate") : 2010;
+        var predictiveModelDate = (this.getCookie("predictiveModelDate") !== null && this.getCookie("predictiveModelDate") !== "null") ? this.getCookie("predictiveModelDate") : 2010;
 
         // set state based off cookies
         this.state = {
@@ -54,6 +54,15 @@ class DataController extends Component {
                 prob147spots: 0,
                 prob402spots: 0,
                 prob1095spots: 0
+            },
+
+            // inputs to predictive model
+            predictiveModelInputs: {
+                SPB: 0,
+                cleridst1: 0,
+                spotst1: 0,
+                spotst2: 0,
+                endobrev: 1
             },
 
             url: "",
@@ -941,7 +950,6 @@ class DataController extends Component {
 
     // run the R model and store outputs
     getModelOutputs() {
-        // running on OLD model so we don't crash heroku
         var url = this.state.url + "getPredictions";
         var xmlHttp = new XMLHttpRequest();
         var filters = this.setQueryFilters(true);
@@ -949,23 +957,23 @@ class DataController extends Component {
         xmlHttp.onload = function() {
             // if the request was successful hold onto the data
             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-                var outputs = {
-                    prob0spots: xmlHttp.response[0].toFixed(3),
-                    prob19spots: xmlHttp.response[1].toFixed(3),
-                    prob53spots: xmlHttp.response[2].toFixed(3),
-                    prob147spots: xmlHttp.response[3].toFixed(3),
-                    prob402spots: xmlHttp.response[4].toFixed(3),
-                    prob1095spots: xmlHttp.response[5].toFixed(3),
-                    expSpotsIfOutbreak: xmlHttp.response[6].toFixed(3)
-                }
 
                 // set the state
                 this.setState({
-                    predictiveModelOutputs: outputs
+                    predictiveModelInputs: xmlHttp.response.inputs,
+                    predictiveModelOutputs: xmlHttp.response.outputs
                 });
             }
             // if the request failed, clear the data and notify the user
             else {
+
+                var inputs = {
+					SPB: 0,
+					cleridst1: 0,
+					spotst1: 0,
+					spotst2: 0
+				}
+
                 var outputs = {
                     prob0spots: 0,
                     prob19spots: 0,
@@ -978,6 +986,7 @@ class DataController extends Component {
 
                 // set the state
                 this.setState({
+                    predictiveModelInputs: inputs,
                     predictiveModelOutputs: outputs
                 });
             }
