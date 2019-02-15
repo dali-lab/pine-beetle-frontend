@@ -1,7 +1,9 @@
 #header {
     height: auto;
-    margin: 15px 15px 15px 15px;
-    background-color: white;
+    margin: 0px;
+
+    /* margin: 15px 15px 15px 15px; */
+    background-color: #616D39;
 }
 
 #title-area {
@@ -12,7 +14,7 @@
 
 #title-area a {
     text-decoration: none;
-    color: #212122;
+    color: #000000; /* #212122; */
 }
 
 #title-area img {
@@ -33,7 +35,7 @@
 }
 
 #nav-buttons p {
-    color: #62731D;;
+    color: #ffffff; /*#62731D;*/
     float: left;
     padding: 12px;
     border-radius: 0px;
@@ -50,7 +52,7 @@
 }
 
 #nav-buttons p:hover {
-    background-color: #E9C46A;
+    background-color: #616D39; /* #E9C46A;*/
     -o-transition:.5s;
     -ms-transition:.5s;
     -moz-transition:.5s;

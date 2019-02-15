@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import LoadingContainer from '../LoadingContainer';
 import HistoricalDataSelectionBar from '../selection-bars/HistoricalDataSelectionBar';
 import LineChartArea from './LineChartArea';
-import BarChartArea from './BarChartArea';
 import { Map } from 'react-arcgis';
 import MapBoxMap from './mapbox/MapBoxMap';
 import MapSideBar from './MapSideBar';
@@ -35,7 +34,6 @@ class ViewHistoricalData extends Component {
                     <HistoricalDataSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} movePredictionModelDown={this.movePredictionModelDown}/>
 
     				<LineChartArea data={this.state.dataControllerState.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.startDate} lastObservedYear={this.state.dataControllerState.endDate} />
-                    <BarChartArea data={this.state.dataControllerState.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.startDate} lastObservedYear={this.state.dataControllerState.endDate} />
 
                     <div className="flex-container" id="map-area-container">
                         <div className="flex-item flex-item-left" id="mapbox-container">
