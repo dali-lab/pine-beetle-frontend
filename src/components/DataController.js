@@ -143,6 +143,17 @@ class DataController extends Component {
         this.setState({
             url: this.props.url
         }, () => {
+            // if didn't have cookie for start or end date, set the start and end date
+            if (this.state.userFilters.startDate === Infinity || this.state.userFilters.endDate === 0) {
+                this.resetStartAndEndDate();
+            }
+    
+            // initialize drop-down-menu options
+            this.initializeAvailableStates();
+            this.initializeAvailableNationalForests();
+            this.initializeAvailableLocalForests();
+            this.initializeAvailableYears();
+
             // send query to database (begin the process immediately -- once this is complete, DataController will mount and send its state back to App, App then sends DataController to child components
             this.updateCurrentData();
 
@@ -163,6 +174,19 @@ class DataController extends Component {
         });
     }
 
+        // update start and end dates initially available to user, hold onto original dates, initialize the state drop-down menu
+        componentDidMount() {
+            // // if didn't have cookie for start or end date, set the start and end date
+            // if (this.state.userFilters.startDate === Infinity || this.state.userFilters.endDate === 0) {
+            //     this.resetStartAndEndDate();
+            // }
+    
+            // // initialize drop-down-menu options
+            // this.initializeAvailableStates();
+            // this.initializeAvailableNationalForests();
+            // this.initializeAvailableLocalForests();
+            // this.initializeAvailableYears();
+        }    
 
     // query data from database using given filters
     getHistoricalData(filters) {
@@ -262,7 +286,6 @@ class DataController extends Component {
                  // update userFilters
                  var userFilters = Object.assign({}, this.state.userFilters);
                  userFilters.originalEndDate = parseInt(xmlHttp.response)
-                 userFilters.predictiveModelDate = parseInt(xmlHttp.response)
 
                  // set the state
                  this.setState({
@@ -279,20 +302,6 @@ class DataController extends Component {
          xmlHttp.open("GET", url, true);
          xmlHttp.responseType = 'json';
          xmlHttp.send();
-    }
-
-    // update start and end dates initially available to user, hold onto original dates, initialize the state drop-down menu
-    componentDidMount() {
-        // if didn't have cookie for start or end date, set the start and end date
-        if (this.state.userFilters.startDate === Infinity || this.state.userFilters.endDate === 0) {
-            this.resetStartAndEndDate();
-        }
-
-        // initialize drop-down-menu options
-        this.initializeAvailableStates();
-        this.initializeAvailableNationalForests();
-        this.initializeAvailableLocalForests();
-        this.initializeAvailableYears();
     }
 
     // add input option fields for state selection
@@ -350,98 +359,107 @@ class DataController extends Component {
 
     // add input option fields for national forest selection
     initializeAvailableNationalForests() {
-        var filters = this.setQueryFilters(false);
-        var url = this.state.url + "getUniqueNationalForests";
-        var xmlHttp = new XMLHttpRequest();
+        if (this.state.userFilters.stateAbbreviation !== null) {
+            var filters = {
+                stateAbbreviation: this.state.userFilters.stateAbbreviation
+            }
+            var url = this.state.url + "getUniqueNationalForests";
+            var xmlHttp = new XMLHttpRequest();
 
-         xmlHttp.onload = function() {
-             // if the request was successful hold onto the data
-             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+            xmlHttp.onload = function() {
+                // if the request was successful hold onto the data
+                if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
 
-                 // update dropDownContent
-                 var dropDownContent = Object.assign({}, this.state.dropDownContent);
-                 dropDownContent.availableNationalForests = xmlHttp.response
+                    // update dropDownContent
+                    var dropDownContent = Object.assign({}, this.state.dropDownContent);
+                    dropDownContent.availableNationalForests = xmlHttp.response
 
-                 // update state
-                 this.setState({
-                     dropDownContent: dropDownContent
-                 }, () => {
-                     // set state of parent
-                     this.props.parent.setState({
-                         dataControllerState: this.state
-                     });
-                 });
-             }
-             // if the request failed, clear the data and notify the user
-             else {
-                 // update dropDownContent
-                 var dropDownContent = Object.assign({}, this.state.dropDownContent);
-                 dropDownContent.availableNationalForests = []
+                    // update state
+                    this.setState({
+                        dropDownContent: dropDownContent
+                    }, () => {
+                        console.log(this.state.dropDownContent)
+                        // set state of parent
+                        this.props.parent.setState({
+                            dataControllerState: this.state
+                        });
+                    });
+                }
+                // if the request failed, clear the data and notify the user
+                else {
+                    // update dropDownContent
+                    var dropDownContent = Object.assign({}, this.state.dropDownContent);
+                    dropDownContent.availableNationalForests = []
 
-                 // update state
-                 this.setState({
-                     dropDownContent: dropDownContent
-                 }, () => {
-                     // set state of parent
-                     this.props.parent.setState({
-                         dataControllerState: this.state
-                     });
-                 });
-             }
-         }.bind(this);
+                    // update state
+                    this.setState({
+                        dropDownContent: dropDownContent
+                    }, () => {
+                        // set state of parent
+                        this.props.parent.setState({
+                            dataControllerState: this.state
+                        });
+                    });
+                }
+            }.bind(this);
 
-         xmlHttp.open("POST", url, true);
-         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-         xmlHttp.responseType = 'json';
-         xmlHttp.send(filters);
+            xmlHttp.open("POST", url, true);
+            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xmlHttp.responseType = 'json';
+            xmlHttp.send(jQuery.param(filters));
+        }
     }
 
     // add input option fields for local forest selection
     initializeAvailableLocalForests() {
-        var filters = this.setQueryFilters(false);
-        var url = this.state.url + "getUniqueLocalForests";
-        var xmlHttp = new XMLHttpRequest();
+        if (this.state.userFilters.stateAbbreviation !== null) {
+            var filters = {
+                stateAbbreviation: this.state.userFilters.stateAbbreviation
+            }
+            var url = this.state.url + "getUniqueLocalForests";
+            var xmlHttp = new XMLHttpRequest();
 
-         xmlHttp.onload = function() {
-             // if the request was successful hold onto the data
-             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+            xmlHttp.onload = function() {
+                // if the request was successful hold onto the data
+                if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
 
-                 // update dropDownContent
-                 var dropDownContent = Object.assign({}, this.state.dropDownContent);
-                 dropDownContent.availableLocalForests = xmlHttp.response
+                    // update dropDownContent
+                    var dropDownContent = Object.assign({}, this.state.dropDownContent);
+                    dropDownContent.availableLocalForests = xmlHttp.response
 
-                 // update state
-                 this.setState({
-                     dropDownContent: dropDownContent
-                 }, () => {
-                     // set state of parent
-                     this.props.parent.setState({
-                         dataControllerState: this.state
-                     });
-                 });
-             }
-             // if the request failed, clear the data and notify the user
-             else {
-                 // update dropDownContent
-                 var dropDownContent = Object.assign({}, this.state.dropDownContent);
-                 dropDownContent.availableLocalForests = []
+                    // update state
+                    this.setState({
+                        dropDownContent: dropDownContent
+                    }, () => {
+                        // set state of parent
+                        this.props.parent.setState({
+                            dataControllerState: this.state
+                        });
+                    });
+                }
+                // if the request failed, clear the data and notify the user
+                else {
+                    // update dropDownContent
+                    var dropDownContent = Object.assign({}, this.state.dropDownContent);
+                    dropDownContent.availableLocalForests = []
 
-                 // update state
-                 this.setState({
-                     dropDownContent: dropDownContent
-                 }, () => {
-                     // set state of parent
-                     this.props.parent.setState({
-                         dataControllerState: this.state
-                     });
-                 });
-             }
-         }.bind(this);
+                    // update state
+                    this.setState({
+                        dropDownContent: dropDownContent
+                    }, () => {
+                        // set state of parent
+                        this.props.parent.setState({
+                            dataControllerState: this.state
+                        });
+                    });
+                }
+            }.bind(this);
 
-         xmlHttp.open("POST", url, true);
-         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-         xmlHttp.responseType = 'json';
-         xmlHttp.send(filters);
+            xmlHttp.open("POST", url, true);
+            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xmlHttp.responseType = 'json';
+            xmlHttp.send(jQuery.param(filters));
+        }
     }
 
     // add input option fields for year selection

@@ -36,7 +36,7 @@ class ChoiceInput extends Component {
     // update the options in the selection menu
     updateStateFromProps(props) {
         var options = [];
-        options.push(<option value="DEFAULT" key={0}>{this.state.firstOptionText}</option>);
+        options.push(<option value={null} key={0}>{this.state.firstOptionText}</option>);
 
         for (var op in props.availableOptions) {
             options.push(<option value={props.availableOptions[op]} key={op+1}>{props.availableOptions[op]}</option>);
