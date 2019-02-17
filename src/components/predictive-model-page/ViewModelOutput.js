@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TextInput from '../selection-bars/input-components/TextInput';
+import ProbabilityDistribution from './ProbabilityDistribution.js';
 import '../../styles/predictive-model-page/ViewModelOutput.css';
 
 class ViewModelOutput extends Component {
@@ -40,19 +41,7 @@ class ViewModelOutput extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="flex-container">
-                        <div className="container" id="filter-selections">
-                            <div id="selection-areas-view-data">
-                                <h3>Expected Spots If Outbreak: <span className="no-bold">{this.state.outputs.expSpotsIfOutbreak !== null ? this.state.outputs.expSpotsIfOutbreak.toFixed(3) : "null"}</span></h3>
-                                <h3>Probability &gt; 0 Spots: <span className="no-bold">{this.state.outputs.prob0spots !== null ? this.state.outputs.prob0spots.toFixed(3) : "null"}</span></h3>
-                                <h3>Probability &gt; 19 Spots: <span className="no-bold">{this.state.outputs.prob19spots !== null ? this.state.outputs.prob19spots.toFixed(3) : "null"}</span></h3>
-                                <h3>Probability &gt; 53 Spots: <span className="no-bold">{this.state.outputs.prob53spots !== null ? this.state.outputs.prob53spots.toFixed(3) : "null"}</span></h3>
-                                <h3>Probability &gt; 147 Spots: <span className="no-bold">{this.state.outputs.prob147spots !== null ? this.state.outputs.prob147spots.toFixed(3) : "null"}</span></h3>
-                                <h3>Probability &gt; 402 Spots: <span className="no-bold">{this.state.outputs.prob402spots !== null ? this.state.outputs.prob402spots.toFixed(3) : "null"}</span></h3>
-                                <h3>Probability &gt; 1095 Spots: <span className="no-bold">{this.state.outputs.prob1095spots !== null ? this.state.outputs.prob1095spots.toFixed(3) : "null"}</span></h3>
-                            </div>
-                        </div>
-                    </div>
+                    <ProbabilityDistribution data={this.state.outputs} />
                 </div>
             );
         }
@@ -60,6 +49,7 @@ class ViewModelOutput extends Component {
             return(
                 <div className="container">
                     <h3>Please select a state to run the predictive model.</h3>
+                    <p>It will take a few seconds to run. Please be patient!</p>
                 </div>
             );
         }

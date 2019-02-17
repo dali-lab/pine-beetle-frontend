@@ -53,7 +53,7 @@ class PredictiveMap extends Component {
             dataController: props.dataController,
             dataControllerState: props.dataControllerState
         }, () => {
-            if (this.state.dataControllerState.historicalData.summarizedDataByState !== null) {
+            if (this.state.dataControllerState.historicalData.summarizedDataByState !== null && this.state.dataControllerState.historicalData.summarizedDataByState.length > 0) {
                 if (this.state.map === null) {
                     this.createMap();
                 }

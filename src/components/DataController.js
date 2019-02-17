@@ -174,20 +174,6 @@ class DataController extends Component {
         });
     }
 
-        // update start and end dates initially available to user, hold onto original dates, initialize the state drop-down menu
-        componentDidMount() {
-            // // if didn't have cookie for start or end date, set the start and end date
-            // if (this.state.userFilters.startDate === Infinity || this.state.userFilters.endDate === 0) {
-            //     this.resetStartAndEndDate();
-            // }
-    
-            // // initialize drop-down-menu options
-            // this.initializeAvailableStates();
-            // this.initializeAvailableNationalForests();
-            // this.initializeAvailableLocalForests();
-            // this.initializeAvailableYears();
-        }    
-
     // query data from database using given filters
     getHistoricalData(filters) {
         var url = this.state.url + "getHistoricalsFilter";
