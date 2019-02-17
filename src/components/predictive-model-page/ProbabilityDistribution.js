@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Bar} from 'react-chartjs-2';
-import ReactTooltip from 'react-tooltip';
 import '../../styles/predictive-model-page/ProbabilityDistribution.css';
 
 class ProbabilityDistribution extends Component {
@@ -58,7 +57,6 @@ class ProbabilityDistribution extends Component {
                     <h3>Probability &gt; 147 Spots: <span className="no-bold">{this.state.outputs.prob147spots !== null ? this.state.outputs.prob147spots.toFixed(3) : "null"}</span></h3>
                     <h3>Probability &gt; 402 Spots: <span className="no-bold">{this.state.outputs.prob402spots !== null ? this.state.outputs.prob402spots.toFixed(3) : "null"}</span></h3>
                     <h3>Probability &gt; 1095 Spots: <span className="no-bold">{this.state.outputs.prob1095spots !== null ? this.state.outputs.prob1095spots.toFixed(3) : "null"}</span></h3>
-                    <ReactTooltip />
                 </div>
     		</div>
         );
