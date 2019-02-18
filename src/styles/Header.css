@@ -7,9 +7,9 @@
 }
 
 #title-area {
-    float: left;
     margin-top: 0px;
     margin-bottom: 0px;
+    background-color: #3F5726; /* #E9C46A;*/
 }
 
 #title-area a {
@@ -18,20 +18,24 @@
 }
 
 #title-area img {
-  height: 12%;
-  width: 12%;
-  float: left;
+  height: 55px;
+  width: 55px;
 }
 
 #title-area h1 {
     padding-bottom: 0px;
 }
 
+#logo {
+  float: left;
+}
+
 #nav-button-area {
-    float: center;
+    /* float: center; */
+    display: inline-block;
     margin-top: 0px;
     margin-bottom: 0px;
-    margin-right: 0px;
+    margin-right: 50px;
 }
 
 #nav-buttons p {
@@ -49,6 +53,7 @@
     -moz-transition:.3s;
     -webkit-transition:.3s;
     transition:.3s;
+    border-bottom: 1px solid transparent;
 }
 
 #nav-buttons p:hover {
@@ -58,6 +63,7 @@
     -moz-transition:.5s;
     -webkit-transition:.5s;
     transition:.5s;
+    border-color: white;
 }
 
 #middle {
