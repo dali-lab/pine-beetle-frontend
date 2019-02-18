@@ -12,6 +12,7 @@ import ViewHistoricalData from './historical-data-page/ViewHistoricalData.js';
 import ViewPredictions from './predictive-model-page/ViewPredictions.js';
 import MobileLandingPage from './MobileLandingPage.js';
 import LoadingContainer from './LoadingContainer.js';
+import UploadDataFromSurvey123 from './UploadDataFromSurvey123.js';
 import '../styles/App.css';
 
 // google analytics
@@ -54,6 +55,7 @@ class App extends Component {
                                 <Route path="/about" component={About} />
                                 <Route path="/home" component={Home} />
                                 <Route path="/loading" component={LoadingContainer} />
+                                <Route path='/uploadSurvey123Data'render={(props) => <UploadDataFromSurvey123 {...props} url={this.deployedURL} />}/>
                                 <Route path="*" component={Home} />
                             </Switch>
                         </div>

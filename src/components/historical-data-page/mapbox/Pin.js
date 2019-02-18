@@ -21,17 +21,33 @@ class Pin extends PureComponent {
             overflow: 'visible'
         };
 
-        if (this.props.numObjects >= 6) {
-            if (this.props.object.spotsClassification === "low") {
-                pinStyle.fill = this.lowFill
-            }
-            else if (this.props.object.spotsClassification === "medium") {
-                pinStyle.fill = this.mediumFill
-            }
-            else {
-                pinStyle.fill = this.highFill
-            }
+        if (this.props.object.spots >= 0 && this.props.object.spots <= 100) {
+            pinStyle.fill = this.props.colors[0]
         }
+        else if (this.props.object.spots > 100 && this.props.object.spots <= 250) {
+            pinStyle.fill = this.props.colors[1]
+        }
+        else if (this.props.object.spots > 250 && this.props.object.spots <= 500) {
+            pinStyle.fill = this.props.colors[2]
+        }
+        else if (this.props.object.spots > 500 && this.props.object.spots <= 750) {
+            pinStyle.fill = this.props.colors[3]
+        }
+        else if (this.props.object.spots > 750 && this.props.object.spots <= 1000) {
+            pinStyle.fill = this.props.colors[4]
+        }
+        else if (this.props.object.spots > 1000 && this.props.object.spots <= 2500) {
+            pinStyle.fill = this.props.colors[5]
+        }
+        else if (this.props.object.spots > 2500 && this.props.object.spots <= 5000) {
+            pinStyle.fill = this.props.colors[6]
+        }
+        else if (this.props.object.spots > 5000 && this.props.object.spots <= 10000) {
+            pinStyle.fill = this.props.colors[7]
+        }
+        else if (this.props.object.spots > 10000) {
+            pinStyle.fill = this.props.colors[8]
+        } 
 
         const {size = 20, onClick} = this.props;
 

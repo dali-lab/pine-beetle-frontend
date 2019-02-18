@@ -17,12 +17,12 @@ class ViewPredictions extends Component {
     }
 
     render() {
-        if (this.state.dataController != null && this.state.dataControllerState != null) {
+        if (this.state.dataController != null && this.state.dataControllerState != null && this.state.dataControllerState.dropDownContent.availableYears.length > 0) {
             return(
                 <div>
                     <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
-                    <ViewModelOutput modelOutputs={this.state.dataControllerState.predictiveModelOutputs} />
-                    <PredictiveMap dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} predictiveMapBuilt={this.state.predictiveMapBuilt} updatePredictiveMapBuilt={this.updatePredictiveMapBuilt}/>
+                    <ViewModelOutput dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                    <PredictiveMap dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
                 </div>
             );
         }
