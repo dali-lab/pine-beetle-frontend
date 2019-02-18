@@ -7,7 +7,7 @@ class UploadDataFromSurvey123 extends Component {
 
         this.state = {
             sentQuery: false,
-            responseOutput: {},
+            responseOutput: null,
             url: ""
         }
 
@@ -15,16 +15,30 @@ class UploadDataFromSurvey123 extends Component {
     }
 
     render() {
-        return(
-            <div>
+        if (this.state.responseOutput !== null) {
+            return(
+                <div>
+                    <div className="container">
+                        <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
+                        <p>Please be patient as this may take a few minutes to complete.</p>
+                        <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
+                        <h3 id="survey123-top">Added the following to the database:</h3>
+                        {JSON.stringify(this.state.responseOutput)}
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return(
                 <div className="container">
+                    <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
+                    <p>Please be patient as this may take a few minutes to complete.</p>
                     <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
                 </div>
-                <div className="container">
-                    {JSON.stringify(this.state.responseOutput)}
-                </div>
-            </div>
-        );
+            );
+        }
+
+        
     }
 
     componentWillMount() {
