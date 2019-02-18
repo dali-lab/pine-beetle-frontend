@@ -6,6 +6,7 @@ class Footer extends Component {
         return(
             <div id="footer">
                 <div className="container">
+                    <p>Designed and developed in the DALI Lab.</p>
                     <a href="http://dali.dartmouth.edu/" target="_blank" rel="noopener noreferrer"><img id="dali-logo" src={require("../../assets/dali_dark.png")} width="102px" height="39px" alt="DALI Lab Logo"></img></a>
                 </div>
                 <div style={{clear:"both"}}></div>
