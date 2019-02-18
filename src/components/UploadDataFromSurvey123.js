@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { CSVLink } from "react-csv";
 import '../styles/UploadDataFromSurvey123.css';
 
 class UploadDataFromSurvey123 extends Component {
@@ -22,8 +23,13 @@ class UploadDataFromSurvey123 extends Component {
                         <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
                         <p>Please be patient as this may take a few minutes to complete.</p>
                         <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
+
                         <h3 id="survey123-top">Added the following to the database:</h3>
                         {JSON.stringify(this.state.responseOutput)}
+
+                        <div id="survey123-csv">
+                            <CSVLink data={this.state.responseOutput} filename="uploaded-from-survey123">Click Here to Download the Added Data</CSVLink>
+                        </div>
                     </div>
                 </div>
             );

@@ -16,3 +16,12 @@
 #survey123-email:hover {
     text-decoration: underline;
 }
+
+#survey123-csv {
+    padding-top: 35px;
+    padding-bottom: 20px;
+}
+
+#survey123-csv a {
+    color: black;
+}
