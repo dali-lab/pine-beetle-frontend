@@ -3,7 +3,7 @@ import '../../../styles/predictive-model-page/PredictiveMap.css';
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 require('dotenv').config() // load mapbox access token
 
-class PredictiveMap extends Component {
+class PredictiveMapState extends Component {
     constructor(props) {
         super(props)
         mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
@@ -39,6 +39,10 @@ class PredictiveMap extends Component {
         );
     }
 
+    componentWillMount() {
+        this.updateStateFromProps(this.props);
+    }
+
     componentDidMount() {
         this.updateStateFromProps(this.props);
     }
@@ -48,12 +52,12 @@ class PredictiveMap extends Component {
         this.updateStateFromProps(nextProps);
     }
 
-    updateStateFromProps(props) {
+    updateStateFromProps(props) {   
         this.setState({
             dataController: props.dataController,
             dataControllerState: props.dataControllerState
         }, () => {
-            if (this.state.dataControllerState.historicalData.summarizedDataByState !== null && this.state.dataControllerState.historicalData.summarizedDataByState.length > 0) {
+            if (this.state.dataControllerState.historicalData.summarizedDataByState !== null) {
                 if (this.state.map === null) {
                     this.createMap();
                 }
@@ -108,6 +112,8 @@ class PredictiveMap extends Component {
                             });
       
                             let element;
+
+                            // handle new year selection here
       
                             if (states.length > 0) {
                                 // get totalSpots for this state
@@ -176,60 +182,66 @@ class PredictiveMap extends Component {
             });
         }
 
-        // define expression for computing choropleth colors
-        var expression = ["match", ["get", "STATE_ID"]];
+        // handle new year selection here\
+        if (this.state.dataControllerState.userFilters.predictiveModelDate === this.state.dataControllerState.userFilters.originalEndDate + 1) {
+            console.log("made it")
+        }
+        else {
+            // define expression for computing choropleth colors
+            var expression = ["match", ["get", "STATE_ID"]];
 
-        // calculate color for each state based on clerids
-        this.state.dataControllerState.historicalData.summarizedDataByState.forEach(function(row) {
-            let color;
+            // calculate color for each state based on clerids
+            this.state.dataControllerState.historicalData.summarizedDataByState.forEach(function(row) {
+                let color;
 
-            if (row["spots"] >= 0 && row["spots"] <= 100) {
-                color = this.state.colors[0]
-            }
-            else if (row["spots"] > 100 && row["spots"] <= 250) {
-                color = this.state.colors[1]
-            }
-            else if (row["spots"] > 250 && row["spots"] <= 500) {
-                color = this.state.colors[2]
-            }
-            else if (row["spots"] > 500 && row["spots"] <= 750) {
-                color = this.state.colors[3]
-            }
-            else if (row["spots"] > 750 && row["spots"] <= 1000) {
-                color = this.state.colors[4]
-            }
-            else if (row["spots"] > 1000 && row["spots"] <= 2500) {
-                color = this.state.colors[5]
-            }
-            else if (row["spots"] > 2500 && row["spots"] <= 5000) {
-                color = this.state.colors[6]
-            }
-            else if (row["spots"] > 5000 && row["spots"] <= 10000) {
-                color = this.state.colors[7]
-            }
-            else if (row["spots"] > 10000) {
-                color = this.state.colors[8]
-            } 
+                if (row["spots"] >= 0 && row["spots"] <= 100) {
+                    color = this.state.colors[0]
+                }
+                else if (row["spots"] > 100 && row["spots"] <= 250) {
+                    color = this.state.colors[1]
+                }
+                else if (row["spots"] > 250 && row["spots"] <= 500) {
+                    color = this.state.colors[2]
+                }
+                else if (row["spots"] > 500 && row["spots"] <= 750) {
+                    color = this.state.colors[3]
+                }
+                else if (row["spots"] > 750 && row["spots"] <= 1000) {
+                    color = this.state.colors[4]
+                }
+                else if (row["spots"] > 1000 && row["spots"] <= 2500) {
+                    color = this.state.colors[5]
+                }
+                else if (row["spots"] > 2500 && row["spots"] <= 5000) {
+                    color = this.state.colors[6]
+                }
+                else if (row["spots"] > 5000 && row["spots"] <= 10000) {
+                    color = this.state.colors[7]
+                }
+                else if (row["spots"] > 10000) {
+                    color = this.state.colors[8]
+                } 
 
-            // var red = (row["spots"] / (this.state.dataControllerState.historicalData.maxSpotsByState / 5)) * 255;
-            // var color = "rgba(" + red + ", " + 20 + ", " + 50 + ", 1)";
-            expression.push(row["STATE_ID"], color);
-        }.bind(this));
+                // var red = (row["spots"] / (this.state.dataControllerState.historicalData.maxSpotsByState / 5)) * 255;
+                // var color = "rgba(" + red + ", " + 20 + ", " + 50 + ", 1)";
+                expression.push(row["STATE_ID"], color);
+            }.bind(this));
 
-        // last value is the default, used where there is no data
-        expression.push("rgba(0,0,0,0)");
+            // last value is the default, used where there is no data
+            expression.push("rgba(0,0,0,0)");
 
-        // add layer from the vector tile source with data-driven style
-        this.state.map.addLayer({
-            "id": "states-join",
-            "type": "fill",
-            "source": "states",
-            "source-layer": "states",
-            "paint": {
-                "fill-color": expression
-            }
-        }, 'waterway-label');
+            // add layer from the vector tile source with data-driven style
+            this.state.map.addLayer({
+                "id": "states-join",
+                "type": "fill",
+                "source": "states",
+                "source-layer": "states",
+                "paint": {
+                    "fill-color": expression
+                }
+            }, 'waterway-label');
+        }
     }
 }
 
-export default PredictiveMap
+export default PredictiveMapState

@@ -27,6 +27,7 @@ class DataController extends Component {
                 predictiveModelDate: predictiveModelDate,
                 originalStartDate: null,
                 originalEndDate: null,
+                latestModelYear: false,
             },
 
             // arrays of states, forests, etc. to populate drop-down menus with
@@ -271,9 +272,16 @@ class DataController extends Component {
              // if the request was successful hold onto the data
              if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
 
-                 // update userFilters
-                 var userFilters = Object.assign({}, this.state.userFilters);
-                 userFilters.originalEndDate = parseInt(xmlHttp.response)
+                // update userFilters
+                var userFilters = Object.assign({}, this.state.userFilters);
+                userFilters.originalEndDate = parseInt(xmlHttp.response)
+                 
+                if (userFilters.predictiveModelDate - 1 === userFilters.originalEndDate && userFilters.stateAbbreviation === null) {
+                    userFilters.latestModelYear = true;
+                }
+                else {
+                    userFilters.latestModelYear = false;
+                }
 
                  // set the state
                  this.setState({
@@ -366,7 +374,6 @@ class DataController extends Component {
                     this.setState({
                         dropDownContent: dropDownContent
                     }, () => {
-                        console.log(this.state.dropDownContent)
                         // set state of parent
                         this.props.parent.setState({
                             dataControllerState: this.state
@@ -465,9 +472,19 @@ class DataController extends Component {
                  dropDownContent.availableModelYears = xmlHttp.response;
                  dropDownContent.availableModelYears.push(dropDownContent.availableYears[dropDownContent.availableYears.length - 1] + 1);
 
+                 var userFilters = Object.assign({}, this.state.userFilters);
+
+                 if (this.state.userFilters.predictiveModelDate === dropDownContent.availableModelYears[dropDownContent.availableModelYears.length - 1] && this.state.userFilters.state === null) {
+                     userFilters.latestModelYear = true;
+                 }
+                 else {
+                     userFilters.latestModelYear = false;
+                 }
+
                  // update state
                  this.setState({
-                     dropDownContent: dropDownContent
+                     dropDownContent: dropDownContent,
+                     userFilters: userFilters
                  }, () => {
                      // set state of parent
                      this.props.parent.setState({
@@ -596,9 +613,16 @@ class DataController extends Component {
 
     // set the year we are running the predictive model on
     updatePredictionYearSelection(year) {
+        var latestModelYear = false;
+
+        if (year - 1 === this.state.userFilters.originalEndDate && this.state.userFilters.stateAbbreviation === null) {
+            latestModelYear = true;
+        }
+        
         // update userFilters
         var userFilters = Object.assign({}, this.state.userFilters);
-        userFilters.predictiveModelDate = year
+        userFilters.predictiveModelDate = year;
+        userFilters.latestModelYear = latestModelYear;
 
         this.setState({
             userFilters: userFilters
@@ -628,6 +652,12 @@ class DataController extends Component {
             userFilters.nationalForest = null
             userFilters.forest = null
 
+            var latestModelYear = false;
+            if (this.state.userFilters.predictiveModelDate - 1 === this.state.userFilters.originalEndDate) {
+                latestModelYear = true;
+            }
+            userFilters.latestModelYear = latestModelYear
+    
             this.setState({
                 userFilters: userFilters
             }, () => {
@@ -655,6 +685,7 @@ class DataController extends Component {
                     userFilters.stateAbbreviation = abbrev
                     userFilters.nationalForest = null
                     userFilters.forest = null
+                    userFilters.latestModelYear = false;
 
                     this.setState({
                         userFilters: userFilters
@@ -681,10 +712,11 @@ class DataController extends Component {
             // search through map of state abbreviations to names to grab the correct one
             for (var abbrev in this.state.stateAbbrevToStateID) {
                 if (this.state.stateAbbrevToStateID[abbrev] === state) {
-                    userFilters.stateName = this.state.stateAbbrevToStateName[abbrev]
-                    userFilters.stateAbbreviation = abbrev
-                    userFilters.nationalForest = null
-                    userFilters.forest = null
+                    userFilters.stateName = this.state.stateAbbrevToStateName[abbrev];
+                    userFilters.stateAbbreviation = abbrev;
+                    userFilters.nationalForest = null;
+                    userFilters.forest = null;
+                    userFilters.latestModelYear = false;
 
                     this.setState({
                         userFilters: userFilters
@@ -715,6 +747,7 @@ class DataController extends Component {
                     userFilters.stateAbbreviation = abbrev;
                     userFilters.nationalForest = null;
                     userFilters.forest = null;
+                    userFilters.latestModelYear = false;
 
                     this.setState({
                         userFilters: userFilters
@@ -1280,7 +1313,8 @@ class DataController extends Component {
         userFilters.forest = null;
         userFilters.startDate = this.state.userFilters.originalStartDate;
         userFilters.endDate = this.state.userFilters.originalEndDate;
-        userFilters.predictiveModelDate = this.state.dropDownContent.availableYears[this.state.dropDownContent.availableYears.length - 1];
+        userFilters.predictiveModelDate = this.state.dropDownContent.availableModelYears[this.state.dropDownContent.availableModelYears.length - 1];
+        userFilters.latestModelYear = true;
 
         var historicalData = Object.assign({}, this.state.historicalData);
         historicalData.currentData = [];

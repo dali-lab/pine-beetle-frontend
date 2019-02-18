@@ -28,7 +28,10 @@ class ProbabilityDistribution extends Component {
                             min : 0
                         }
                     }]
-                }
+                },
+                legend: {
+                    display: false
+                 },
             },
             outputs: {
                 expSpotsIfOutbreak: 0,

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LoadingContainer from '../LoadingContainer';
 import PredictionsSelectionBar from '../selection-bars/PredictionsSelectionBar';
 import ViewModelOutput from './ViewModelOutput.js';
-import PredictiveMap from './mapbox/PredictiveMap.js';
+import PredictiveMapState from './mapbox/PredictiveMapState.js';
 import '../../styles/predictive-model-page/ViewPredictions.css';
 
 class ViewPredictions extends Component {
@@ -18,13 +18,23 @@ class ViewPredictions extends Component {
 
     render() {
         if (this.state.dataController != null && this.state.dataControllerState != null && this.state.dataControllerState.dropDownContent.availableYears.length > 0) {
-            return(
-                <div>
-                    <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
-                    <ViewModelOutput dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
-                    <PredictiveMap dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
-                </div>
-            );
+            if (!this.state.dataControllerState.userFilters.latestModelYear) {
+                return(
+                    <div>
+                        <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                        <ViewModelOutput dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                        <PredictiveMapState dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                    </div>
+                );
+            }
+            else {
+                return(
+                    <div>
+                        <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                        <ViewModelOutput dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                    </div>
+                );
+            }
         }
         else {
             return <LoadingContainer />

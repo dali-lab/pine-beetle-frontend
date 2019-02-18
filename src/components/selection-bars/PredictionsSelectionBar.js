@@ -15,7 +15,8 @@ class PredictionsSelectionBar extends Component {
             forest: null,
             availableStates: [],
             availableNationalForests: [],
-            availableLocalForests: []
+            availableLocalForests: [],
+            availableModelYears: []
         }
 
         // bind functions
@@ -32,7 +33,7 @@ class PredictionsSelectionBar extends Component {
             <div className="flex-container">
                 <div className="container" id="filter-selections">
                     <div id="selection-areas-view-data">
-                        <ChoiceInput instructions="Select Year" submitFunction={this.props.dataController.updatePredictionYearSelection} availableOptions={this.state.availableYears} idName="year" value={this.state.predictiveModelDate} ref={this.yearInput}/>
+                        <ChoiceInput instructions="Select Year" submitFunction={this.props.dataController.updatePredictionYearSelection} availableOptions={this.state.availableModelYears} idName="year" value={this.state.predictiveModelDate} ref={this.yearInput}/>
                         <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
                         <ChoiceInput instructions="Select Natl Forest" submitFunction={this.props.dataController.updateNationalForestSelection} availableOptions={this.state.availableNationalForests} idName="nationalForest" value={this.state.nationalForest} ref={this.nationalForestInput}/>
                         <ChoiceInput instructions="Select Local Forest" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableLocalForests} idName="forest" value={this.state.forest} ref={this.forestInput}/>
@@ -64,7 +65,7 @@ class PredictionsSelectionBar extends Component {
             availableStates: props.dataControllerState.dropDownContent.availableStates,
             availableNationalForests: props.dataControllerState.dropDownContent.availableNationalForests,
             availableLocalForests: props.dataControllerState.dropDownContent.availableLocalForests,
-            availableYears: props.dataControllerState.dropDownContent.availableYears
+            availableModelYears: props.dataControllerState.dropDownContent.availableModelYears
         });
     }
 }
