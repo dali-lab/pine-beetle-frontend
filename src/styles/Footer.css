@@ -1,8 +1,8 @@
 #footer {
     height: auto;
-    margin: 15px 31px 31px 31px;
-    border-radius: 5px;
-    background-color: #E5E5E5;
+    margin: 0px 0px 0px 0px;
+    padding: 5px;
+    background-color: #F2F5E8;
 }
 
 #footer .container {
