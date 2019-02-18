@@ -65,6 +65,7 @@ class DataController extends Component {
                 endobrev: 1
             },
 
+            runningModel: false,
             url: "",
 
             // map of state abbreviations to their names
@@ -672,6 +673,36 @@ class DataController extends Component {
                 }
             }
         }
+        // if we were given the state ID, select based on that
+        else if (state.length === 2 && typeof parseInt(state) === "number") {
+            // search through map of state abbreviations to names to grab the correct one
+            for (var abbrev in this.state.stateAbbrevToStateID) {
+                if (this.state.stateAbbrevToStateID[abbrev] === state) {
+                    userFilters.stateName = this.state.stateAbbrevToStateName[abbrev]
+                    userFilters.stateAbbreviation = abbrev
+                    userFilters.nationalForest = null
+                    userFilters.forest = null
+
+                    this.setState({
+                        userFilters: userFilters
+                    }, () => {
+                        // set cookies
+                        this.setCookie("stateName", this.state.userFilters.stateName, 365);
+                        this.setCookie("stateAbbreviation", this.state.userFilters.stateAbbreviation, 365);
+                        this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
+                        this.setCookie("forest", this.state.userFilters.forest, 365);
+
+                        // update current data
+                        this.updateCurrentData();
+
+                        // set state of parent
+                        this.props.parent.setState({
+                            dataControllerState: this.state
+                        });
+                    });
+                }
+            }
+        }
         // if we were given the abbreviation and not the name, get the name
         else {
             // search through map of state abbreviations to names to grab the correct one
@@ -971,93 +1002,98 @@ class DataController extends Component {
 
     // run the R model and store outputs
     getModelOutputs() {
-        var url = this.state.url + "getPredictions";
-        var xmlHttp = new XMLHttpRequest();
-        var filters = this.setQueryFilters(true);
+        this.setState({
+            runningModel: true
+        }, () => {
+            var url = this.state.url + "getPredictions";
+            var xmlHttp = new XMLHttpRequest();
+            var filters = this.setQueryFilters(true);
 
-        if (filters.state !== null && filters.state !== undefined && filters.state !== "") {
-            xmlHttp.onload = function() {
-                // if the request was successful hold onto the data
-                if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-    
-                    // set the state
-                    this.setState({
-                        predictiveModelInputs: xmlHttp.response.inputs,
-                        predictiveModelOutputs: xmlHttp.response.outputs
-                    }, () => {
-                        // set state of parent
-                        this.props.parent.setState({
-                            dataControllerState: this.state
+            if (filters.state !== null && filters.state !== undefined && filters.state !== "") {
+                xmlHttp.onload = function() {
+                    // if the request was successful hold onto the data
+                    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+        
+                        // set the state
+                        this.setState({
+                            predictiveModelInputs: xmlHttp.response.inputs,
+                            predictiveModelOutputs: xmlHttp.response.outputs,
+                            runningModel: false
+                        }, () => {
+                            // set state of parent
+                            this.props.parent.setState({
+                                dataControllerState: this.state
+                            });
                         });
-                    });
-                }
-                // if the request failed, clear the data and notify the user
-                else {
-    
-                    var inputs = {
-                        SPB: 0,
-                        cleridst1: 0,
-                        spotst1: 0,
-                        spotst2: 0
                     }
-    
-                    var outputs = {
-                        prob0spots: 0,
-                        prob19spots: 0,
-                        prob53spots: 0,
-                        prob147spots: 0,
-                        prob402spots: 0,
-                        prob1095spots: 0,
-                        expSpotsIfOutbreak: 0
-                    }
-    
-                    // set the state
-                    this.setState({
-                        predictiveModelInputs: inputs,
-                        predictiveModelOutputs: outputs
-                    }, () => {
-                        // set state of parent
-                        this.props.parent.setState({
-                            dataControllerState: this.state
+                    // if the request failed, clear the data and notify the user
+                    else {
+        
+                        var inputs = {
+                            SPB: 0,
+                            cleridst1: 0,
+                            spotst1: 0,
+                            spotst2: 0
+                        }
+        
+                        var outputs = {
+                            prob0spots: 0,
+                            prob19spots: 0,
+                            prob53spots: 0,
+                            prob147spots: 0,
+                            prob402spots: 0,
+                            prob1095spots: 0,
+                            expSpotsIfOutbreak: 0
+                        }
+        
+                        // set the state
+                        this.setState({
+                            predictiveModelInputs: inputs,
+                            predictiveModelOutputs: outputs
+                        }, () => {
+                            // set state of parent
+                            this.props.parent.setState({
+                                dataControllerState: this.state
+                            });
                         });
-                    });
+                    }
+                }.bind(this);
+        
+                xmlHttp.open("POST", url, true);
+                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlHttp.responseType = 'json';
+                xmlHttp.send(jQuery.param(filters));
+            }
+            else {
+                var inputs = {
+                    SPB: 0,
+                    cleridst1: 0,
+                    spotst1: 0,
+                    spotst2: 0
                 }
-            }.bind(this);
-    
-            xmlHttp.open("POST", url, true);
-            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xmlHttp.responseType = 'json';
-            xmlHttp.send(jQuery.param(filters));
-        }
-        else {
-            var inputs = {
-                SPB: 0,
-                cleridst1: 0,
-                spotst1: 0,
-                spotst2: 0
-            }
 
-            var outputs = {
-                prob0spots: 0,
-                prob19spots: 0,
-                prob53spots: 0,
-                prob147spots: 0,
-                prob402spots: 0,
-                prob1095spots: 0,
-                expSpotsIfOutbreak: 0
-            }
+                var outputs = {
+                    prob0spots: 0,
+                    prob19spots: 0,
+                    prob53spots: 0,
+                    prob147spots: 0,
+                    prob402spots: 0,
+                    prob1095spots: 0,
+                    expSpotsIfOutbreak: 0
+                }
 
-            // set the state
-            this.setState({
-                predictiveModelInputs: inputs,
-                predictiveModelOutputs: outputs
-            }, () => {
-                // set state of parent
-                this.props.parent.setState({
-                    dataControllerState: this.state
+                // set the state
+                this.setState({
+                    predictiveModelInputs: inputs,
+                    predictiveModelOutputs: outputs
+                }, () => {
+                    // set state of parent
+                    this.props.parent.setState({
+                        dataControllerState: this.state
+                    });
                 });
-            });
-        }
+            }
+        });
     }
 
     // run the R model and store outputs

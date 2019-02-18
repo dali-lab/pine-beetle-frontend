@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Bar} from 'react-chartjs-2';
+import RunningModel from '../RunningModel';
 import '../../styles/predictive-model-page/ProbabilityDistribution.css';
 
 class ProbabilityDistribution extends Component {
@@ -43,10 +44,17 @@ class ProbabilityDistribution extends Component {
         this.updateStateFromProps = this.updateStateFromProps.bind(this);
     }
     render() {
+        if (!this.props.runningModel) {
+            var visualization = <Bar data={this.state.chartData} height={400} options={this.state.chartOptions}/>
+        }
+        else {
+            var visualization = <RunningModel />
+        }
+
         return(
             <div className="flex-container">
                 <div className="container probability-distribution flex-item flex-item-left" id="probability-distribution">
-                        <Bar data={this.state.chartData} height={400} options={this.state.chartOptions}/>
+                    {visualization} 
                 </div>
                 <div className="container flex-item flex-item-right" id="probability-metrics-area">
                     <h3>Expected Spots If Outbreak: <span className="no-bold">{this.state.outputs.expSpotsIfOutbreak !== null ? this.state.outputs.expSpotsIfOutbreak.toFixed(3) : "null"}</span></h3>
@@ -58,7 +66,7 @@ class ProbabilityDistribution extends Component {
                     <h3>Probability &gt; 402 Spots: <span className="no-bold">{this.state.outputs.prob402spots !== null ? this.state.outputs.prob402spots.toFixed(3) : "null"}</span></h3>
                     <h3>Probability &gt; 1095 Spots: <span className="no-bold">{this.state.outputs.prob1095spots !== null ? this.state.outputs.prob1095spots.toFixed(3) : "null"}</span></h3>
                 </div>
-    		</div>
+            </div>
         );
     }
 

@@ -41,7 +41,7 @@ class ViewModelOutput extends Component {
                             </div>
                         </div>
                     </div>
-                    <ProbabilityDistribution data={this.state.outputs} />
+                    <ProbabilityDistribution data={this.state.outputs} runningModel={this.props.dataControllerState.runningModel} />
                 </div>
             );
         }
