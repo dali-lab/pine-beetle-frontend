@@ -22,27 +22,25 @@ class About extends Component {
                         </div>
                     </div >
     			</div>
-
+                                    
                 <div className="flex-container bottom;">
-    				<div className="container next-steps flex-item flex-item-left">
-    					<h2>Partners and Cooperators</h2>
-              <p>The southern pine beetle prediction system is a collaboration of scores of people and institutions.</p>
+                    <div className="container next-steps flex-item flex-item-left">
+                        <h2>Partners and Cooperators</h2>
+                        <p>The southern pine beetle prediction system is a collaboration of scores of people and institutions.</p>
 
-              <h3>Project Committee:</h3>
-              <p>Matthew Ayres, Carissa Aoki, Steve Clark, Kevin Dodds, Lorie Loeb, John Nowak, Brian Sullivan, Michael Torbett</p>
-              <p>The creation of this resource for delivering SPB outbreak predictions was supported by a grant from the U.S.D.A. Forest Service Special Technology Development Program (STDP) to MP Ayres and CF Aoki at Dartmouth College.</p>
+                        <h3>Project Committee:</h3>
+                        <p>Matthew Ayres, Carissa Aoki, Steve Clark, Kevin Dodds, Lorie Loeb, John Nowak, Brian Sullivan, Michael Torbett</p>
+                        <p>The creation of this resource for delivering SPB outbreak predictions was supported by a grant from the U.S.D.A. Forest Service Special Technology Development Program (STDP) to MP Ayres and CF Aoki at Dartmouth College.</p>
 
-              <h3>U.S.D.A. Forest Service: </h3>
-              <p>Steve Clark, Entomologist; John Nowak, Entomologist, Southern Pine Beetle Prevention Program Coordinator; Brian Sullivan, Entomologist</p>
+                        <h3>U.S.D.A. Forest Service: </h3>
+                        <p>Steve Clark, Entomologist; John Nowak, Entomologist, Southern Pine Beetle Prevention Program Coordinator; Brian Sullivan, Entomologist</p>
 
-              <h3>State Cooperators: </h3>
-              <p>Alabama Forestry Commission: Dana Stone; Arkansas Forestry Commission: Chandler Barton; Florida Forest Service: Jeff Eickwort and Chris Pearce; Georgia Forestry Commission: Michael Torbett and Chip Bates; Louisiana Department of Agriculture and Forestry: Brent Cutrer; Mississippi Forestry Commission: Todd Matthews; North Carolina Forest Service: Rob Trickel; South Carolina Forestry Commission: David Jenkins; Tennessee Division of Forestry: Nathan Hoover; Texas A&M Forest Service: Shane Harrington; Virginia Department of Forestry: Lori Chamberlin</p>
+                        <h3>State Cooperators: </h3>
+                        <p>Alabama Forestry Commission: Dana Stone; Arkansas Forestry Commission: Chandler Barton; Florida Forest Service: Jeff Eickwort and Chris Pearce; Georgia Forestry Commission: Michael Torbett and Chip Bates; Louisiana Department of Agriculture and Forestry: Brent Cutrer; Mississippi Forestry Commission: Todd Matthews; North Carolina Forest Service: Rob Trickel; South Carolina Forestry Commission: David Jenkins; Tennessee Division of Forestry: Nathan Hoover; Texas A&M Forest Service: Shane Harrington; Virginia Department of Forestry: Lori Chamberlin</p>
 
-              <h3>DALI Lab:</h3>
-              <p>Web design and development by the Dartmouth Applied Learning and Innovation (DALI) Lab at Dartmouth College. Lorie Loeb, Director and Co-founder; Madeline Hess, Developer; Thomas Monfre, Developer; Isabel Hurley, Developer; Mo Zhu, Team Manager; Bella Jacoby, Designer; Emi Hayakawa, Designer</p>
-
-
-            </div>
+                        <h3>DALI Lab:</h3>
+                        <p>Web design and development by the Dartmouth Applied Learning and Innovation (DALI) Lab at Dartmouth College. Lorie Loeb, Director and Co-founder; Madeline Hess, Developer; Thomas Monfre, Developer; Isabel Hurley, Developer; Mo Zhu, Team Manager; Bella Jacoby, Designer; Emi Hayakawa, Designer</p>
+                    </div>
 
                     <div className="container contact-info flex-item flex-item-right">
                         <h2>Contact Information</h2>
@@ -69,8 +67,8 @@ class About extends Component {
                             </div>
                         </div>
                     </div>
-                </div>
-    		</div>
+    		    </div>
+            </div>
         );
     }
 }

@@ -98,11 +98,35 @@ a:hover {
       font-size: 18px;
 }
 
-
 .next-steps {
     flex: 2 !important;
     flex-direction: column !important;    /* vertical alignment of flex items */
     justify-content: flex-start !important;   /* center flex items vertically */
+    text-align: left;
+}
+
+#text {
+    margin: 15px 4%;
+}
+
+#partners-cooperators h2 {
+    margin: auto;
+    margin-top: 15px;
+}
+
+#partners-cooperators .line {
+    margin: auto;
+    width: 250px;
+    margin-bottom: 15px;
+}
+
+.contact-info {
+    flex-direction: column !important;    /* vertical alignment of flex items */
+    justify-content: flex-start !important;   /* center flex items vertically */
+}
+
+.contact-info h2 {
+    margin-top: 15px;
 }
 
 .next-steps h2 {

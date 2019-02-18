@@ -37,7 +37,7 @@ class PredictionsSelectionBar extends Component {
                         <ChoiceInput instructions="Select Natl Forest" submitFunction={this.props.dataController.updateNationalForestSelection} availableOptions={this.state.availableNationalForests} idName="nationalForest" value={this.state.nationalForest} ref={this.nationalForestInput}/>
                         <ChoiceInput instructions="Select Local Forest" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableLocalForests} idName="forest" value={this.state.forest} ref={this.forestInput}/>
 
-                        <button id="reset-current-data-button" className="submit static-button" onClick={this.props.clearCurrentData}>Clear Filters</button>
+                        <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
                     </div>
                 </div>
     		</div>
@@ -57,14 +57,14 @@ class PredictionsSelectionBar extends Component {
     // recalculate values to show on page
     updateStateFromProps(props) {
         this.setState({
-            predictiveModelDate: props.dataControllerState.predictiveModelDate,
-            stateName: props.dataControllerState.stateName,
-            nationalForest: props.dataControllerState.nationalForest,
-            forest: props.dataControllerState.forest,
-            availableStates: props.dataControllerState.availableStates,
-            availableNationalForests: props.dataControllerState.availableNationalForests,
-            availableLocalForests: props.dataControllerState.availableLocalForests,
-            availableYears: props.dataControllerState.availableYears
+            predictiveModelDate: props.dataControllerState.userFilters.predictiveModelDate,
+            stateName: props.dataControllerState.userFilters.stateName,
+            nationalForest: props.dataControllerState.userFilters.nationalForest,
+            forest: props.dataControllerState.userFilters.forest,
+            availableStates: props.dataControllerState.dropDownContent.availableStates,
+            availableNationalForests: props.dataControllerState.dropDownContent.availableNationalForests,
+            availableLocalForests: props.dataControllerState.dropDownContent.availableLocalForests,
+            availableYears: props.dataControllerState.dropDownContent.availableYears
         });
     }
 }

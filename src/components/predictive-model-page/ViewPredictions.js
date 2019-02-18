@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import LoadingContainer from '../LoadingContainer';
 import PredictionsSelectionBar from '../selection-bars/PredictionsSelectionBar';
+import ViewModelOutput from './ViewModelOutput.js';
+import PredictiveMap from './mapbox/PredictiveMap.js';
 import '../../styles/predictive-model-page/ViewPredictions.css';
 
 class ViewPredictions extends Component {
@@ -10,23 +12,18 @@ class ViewPredictions extends Component {
         // create initial state
         this.state = {
             dataController: null,       // holds references to functions that are used to update the state, forest, etc.
-            dataControllerState: null  // defines the user's current selection for state, national forest, etc.
+            dataControllerState: null   // defines the user's current selection for state, national forest, etc.
         }
-
     }
 
     render() {
-        if (this.state.dataController != null && this.state.dataControllerState != null) {
+        if (this.state.dataController != null && this.state.dataControllerState != null && this.state.dataControllerState.dropDownContent.availableYears.length > 0) {
             return(
                 <div>
                     <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
-
-                    <div className="container">
-                        <p>Check back soon for more functionality!</p>
-                    </div>
-
+                    <ViewModelOutput dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                    <PredictiveMap dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
                 </div>
-
             );
         }
         else {
@@ -38,9 +35,9 @@ class ViewPredictions extends Component {
         this.updateStateFromProps(this.props);
 
         // select most recent year
-        if (this.props.dataControllerState !== undefined && this.props.dataControllerState != null && this.props.dataController !== undefined && this.props.dataController != null) {
-            this.props.dataController.current.updatePredictionYearSelection(this.props.dataControllerState.availableYears[this.props.dataControllerState.availableYears.length - 1]);
-        }
+        // if (this.props.dataControllerState !== undefined && this.props.dataControllerState != null && this.props.dataController !== undefined && this.props.dataController != null) {
+        //     this.props.dataController.current.updatePredictionYearSelection(this.props.dataControllerState.dropDownContent.availableYears[this.props.dataControllerState.dropDownContent.availableYears.length - 1]);
+        // }
     }
 
     // if receiving new data, update the state

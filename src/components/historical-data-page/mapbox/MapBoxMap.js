@@ -5,7 +5,6 @@ import PopupContent from './PopupContent';
 import '../../../styles/historical-data-page/mapbox/MapBoxMap.css';
 require('dotenv').config() // load mapbox access token
 
-
 class MapBoxMap extends Component {
     constructor(props) {
         super(props)
@@ -27,7 +26,10 @@ class MapBoxMap extends Component {
                 padding: '10px'
             },
             popupInfo: null,
-            summarizedDataByLatLong: []
+            summarizedDataByLatLong: [],
+            thresholds: ['0-100', '100-250', '250-500', '500-750', '750-1,000', '1,000-2,000', '2,000-5,000', '5,000-10,000', '10,000+'],
+            colors: ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026', '#4F0017'],
+            legendTags: []
         }
 
         this.updateViewport = this.updateViewport.bind(this);
@@ -41,6 +43,10 @@ class MapBoxMap extends Component {
                     <NavigationControl onViewportChange={this.updateViewport} captureScroll={false} showCompass={false} />
                 </div>
 
+                <div className='map-overlay' id='legend'>
+                    {this.state.legendTags}
+                </div>
+
                 { this.state.summarizedDataByLatLong.map(this.renderMarker) }
                 {this.renderPopup()}
 
@@ -50,6 +56,23 @@ class MapBoxMap extends Component {
 
     componentWillMount() {
         this.updateStateFromProps(this.props)
+        var legendTags = []
+
+        // add legend tags
+        for (var i = 0; i < this.state.colors.length; i++) {
+            var layer = this.state.thresholds[i];
+            var color = this.state.colors[i];
+            var element = <div key={i} >
+                    <span className="legend-key" style={{backgroundColor: color}}></span>
+                    <span>{layer}</span>
+                </div>
+
+            legendTags.push(element)
+        }
+
+        this.setState({
+            legendTags: legendTags
+        });
     }
 
     componentDidMount() {
@@ -67,32 +90,6 @@ class MapBoxMap extends Component {
         for (var entry in props.summarizedDataByLatLong) {
             var dataObject = JSON.parse(JSON.stringify(props.summarizedDataByLatLong[entry]))
             newArray.push(dataObject);
-        }
-
-        // sort based on spots
-        newArray.sort((a,b) => (a.spots > b.spots) ? 1 : ((b.spots > a.spots) ? -1 : 0));
-
-        // determine low, medium, and high
-        var low = newArray.slice(0, Math.ceil(newArray.length / 4));
-        var medium = newArray.slice(Math.ceil(newArray.length / 4), 3 * Math.ceil(newArray.length / 4));
-        var high = newArray.slice(3 * Math.ceil(newArray.length / 4));
-
-        // clear out new array
-        newArray = [];
-
-        for (entry in low) {
-            low[entry].spotsClassification = "low";
-            newArray.push(low[entry])
-        }
-
-        for (entry in medium) {
-            medium[entry].spotsClassification = "medium";
-            newArray.push(medium[entry])
-        }
-
-        for (entry in high) {
-            high[entry].spotsClassification = "high";
-            newArray.push(high[entry])
         }
 
         this.setState({
@@ -113,7 +110,7 @@ class MapBoxMap extends Component {
                 key={'marker-' + index}
                 longitude={object.longitude}
                 latitude={object.latitude} >
-                <Pin size={20} onClick={() => this.setState({popupInfo: object})} object={object} numObjects={this.state.summarizedDataByLatLong.length}/>
+                <Pin size={20} onClick={() => this.setState({popupInfo: object})} object={object} numObjects={this.state.summarizedDataByLatLong.length} colors={this.state.colors} />
             </Marker>
         );
     }
