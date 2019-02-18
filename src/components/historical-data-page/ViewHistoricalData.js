@@ -29,7 +29,6 @@ class ViewHistoricalData extends Component {
                     <HistoricalDataSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} movePredictionModelDown={this.movePredictionModelDown}/>
 
     				<LineChartArea data={this.state.dataControllerState.historicalData.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.userFilters.startDate} lastObservedYear={this.state.dataControllerState.userFilters.endDate} />
-                    <BarChartArea data={this.state.dataControllerState.historicalData.summarizedDataByYear} firstObservedYear={this.state.dataControllerState.userFilters.startDate} lastObservedYear={this.state.dataControllerState.userFilters.endDate} />
 
                     <div className="flex-container" id="map-area-container">
                         <div className="flex-item flex-item-left" id="mapbox-container">

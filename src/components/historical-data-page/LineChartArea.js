@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Line} from 'react-chartjs-2';
+import {Chart, Line} from 'react-chartjs-2';
 import ReactTooltip from 'react-tooltip'
 import math from 'mathjs';
 import '../../styles/historical-data-page/LineChartArea.css';
@@ -41,6 +41,10 @@ class LineChartArea extends Component {
                             min : 0
                         }
                     }]
+                },
+                tooltips: {
+                    mode: "index",
+                    intersect: false
                 }
             },
             spotsMean: 0,
