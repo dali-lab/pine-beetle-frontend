@@ -3,7 +3,7 @@
     margin: 0px;
 
     /* margin: 15px 15px 15px 15px; */
-    background-color: #616D39;
+    background-color: #3F5726;
 }
 
 #title-area {
@@ -18,8 +18,8 @@
 }
 
 #title-area img {
-  height: 15%;
-  width: 15%;
+  height: 12%;
+  width: 12%;
   float: left;
 }
 
@@ -28,10 +28,10 @@
 }
 
 #nav-button-area {
-    float: right;
+    float: center;
     margin-top: 5px;
     margin-bottom: 5px;
-    margin-right: 20px;
+    margin-right: 5px;
 }
 
 #nav-buttons p {
@@ -52,7 +52,7 @@
 }
 
 #nav-buttons p:hover {
-    background-color: #616D39; /* #E9C46A;*/
+    background-color: #3F5726; /* #E9C46A;*/
     -o-transition:.5s;
     -ms-transition:.5s;
     -moz-transition:.5s;

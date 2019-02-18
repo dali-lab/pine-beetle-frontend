@@ -18,7 +18,7 @@ class About extends Component {
                           <p>(Billings, R. F., and W. W. Upton. 2010. A methodology for assessing annual risk of southern pine beetle outbreaks across the southern region using pheromone traps. Pages 73–85 in J. M. Pye, H. M. Rauscher, Y. Sands, D. C. Lee, and J. S. Beatty, editors. Advances in threat assessment and their application to forest and rangeland management. Gen. Tech. Rep. PNW-GTR-802. Portland, OR: U.S. Department of Agriculture, Forest Service, Pacific Northwest and Southern Research Stations.)</p>
                         </div>
                         <div className = "person flex-item">
-                          <img src={ require('../../assets/pinebeetletemp.jpg') } height = "100px" width = "100px" />
+                          <img src={ require('../../assets/person.png') } height = "200px" width = "200px" />
                         </div>
                     </div >
     			</div>

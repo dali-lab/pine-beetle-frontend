@@ -15,7 +15,7 @@
 .about-project {
     flex-direction: column;    /* vertical alignment of flex items */
     justify-content: flex-start;   /* center flex items vertically */
-    background-image: url("../assets/pexels-photo-943898.jpeg");
+    background-image: url("../assets/about-background.png");
     background-size: cover;
     background-position: bottom;
     border-radius: 0px;
@@ -83,7 +83,8 @@ a:hover {
 
 .person img {
     display: inline-block;
-    margin: 0px;
+    border-radius: 50%;
+    margin: 0px 100px 0px 0px;
 }
 
 .using-product {
@@ -124,17 +125,19 @@ a:hover {
 }
 
 .contact-info {
+  font-size: 14px;
   flex-grow: 1;
+  padding: 10px;
 }
 
 .contact-info h4 {
     font-weight: lighter;
     font-style: italic;
-    padding-bottom: 2px;
+    /* padding-bottom: 2px; */
 }
 
 .contact-info h3 {
-    padding-bottom: 5px;
+    /* padding-bottom: 5px; */
 }
 
 .using-product p {
