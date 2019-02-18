@@ -28,6 +28,19 @@ class UploadDataFromSurvey123 extends Component {
                 </div>
             );
         }
+        else if (this.state.error) {
+            return(
+                <div>
+                    <div className="container">
+                        <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
+                        <p>Please be patient as this may take a few minutes to complete.</p>
+                        <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
+                        <h3 id="survey123-top" style={{color: "red"}}>Failed to upload data to the database.</h3>
+                        <p>Please email <a href="mailto:pine-beetle@dali.dartmouth.edu" id="survey123-email">pine-beetle@dali.dartmouth.edu</a> to report the error.</p>
+                    </div>
+                </div>
+            );
+        }
         else {
             return(
                 <div className="container">
@@ -57,7 +70,15 @@ class UploadDataFromSurvey123 extends Component {
                 if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
                     this.setState({
                         responseOutput: xmlHttp.response,
-                        sentQuery: true
+                        sentQuery: true,
+                        error: false
+                    });
+                }
+                else {
+                    this.setState({
+                        error: true,
+                        sentQuery: false,
+                        responseOutput: null
                     });
                 }
             }.bind(this);

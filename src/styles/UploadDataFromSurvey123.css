@@ -7,3 +7,12 @@
 #survey123-top {
     margin-top: 15px;
 }
+
+#survey123-email {
+    color: black;
+    text-decoration: none;
+}
+
+#survey123-email:hover {
+    text-decoration: underline;
+}

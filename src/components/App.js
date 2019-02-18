@@ -55,7 +55,7 @@ class App extends Component {
                                 <Route path="/about" component={About} />
                                 <Route path="/home" component={Home} />
                                 <Route path="/loading" component={LoadingContainer} />
-                                <Route path='/uploadSurvey123Data'render={(props) => <UploadDataFromSurvey123 {...props} url={this.localURL} />}/>
+                                <Route path='/uploadSurvey123Data'render={(props) => <UploadDataFromSurvey123 {...props} url={this.deployedURL} />}/>
                                 <Route path="*" component={Home} />
                             </Switch>
                         </div>
