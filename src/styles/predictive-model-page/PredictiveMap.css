@@ -19,11 +19,12 @@
   
   #features {
     top: 0;
-    height: 75px;
+    height: 100px;
     margin-top: 20px;
     margin-right: 60px;
     padding: 10px;
     width: 300px;
+    overflow: hidden;
   }
   
   #legend {

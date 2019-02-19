@@ -3,7 +3,7 @@ import '../../../styles/predictive-model-page/PredictiveMap.css';
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
 require('dotenv').config() // load mapbox access token
 
-class PredictiveMapState extends Component {
+class PredictiveMap extends Component {
     constructor(props) {
         super(props)
         mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
@@ -244,4 +244,4 @@ class PredictiveMapState extends Component {
     }
 }
 
-export default PredictiveMapState
+export default PredictiveMap
