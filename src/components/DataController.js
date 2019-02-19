@@ -1095,9 +1095,15 @@ class DataController extends Component {
             xmlHttp.onload = function() {
                 // if the request was successful hold onto the data
                 if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+
+                    var modelOutputs = [{
+                        inputs: xmlHttp.response.inputs,
+                        outputs: xmlHttp.response.outputs
+                    }];
     
                     // set the state
                     this.setState({
+                        predictiveModelOutputArray: modelOutputs,
                         predictiveModelInputs: xmlHttp.response.inputs,
                         predictiveModelOutputs: xmlHttp.response.outputs,
                         runningModel: false
@@ -1127,9 +1133,15 @@ class DataController extends Component {
                         prob1095spots: 0,
                         expSpotsIfOutbreak: 0
                     }
+
+                    var modelOutputs = [{
+                        inputs: inputs,
+                        outputs: outputs
+                    }];
     
                     // set the state
                     this.setState({
+                        predictiveModelOutputArray: modelOutputs,
                         predictiveModelInputs: inputs,
                         predictiveModelOutputs: outputs
                     }, () => {
