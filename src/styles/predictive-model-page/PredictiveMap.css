@@ -19,7 +19,7 @@
   
   #features {
     top: 0;
-    height: 100px;
+    height: 150px;
     margin-top: 20px;
     margin-right: 60px;
     padding: 10px;
@@ -31,7 +31,7 @@
     padding: 10px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     line-height: 18px;
-    height: 160px;
+    height: 175px;
     margin-bottom: 40px;
     width: 120px;
   }
@@ -43,3 +43,9 @@
     height: 10px;
     margin-right: 5px;
   }
+
+#choropleth-map-p-area p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}

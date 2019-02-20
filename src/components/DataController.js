@@ -110,6 +110,25 @@ class DataController extends Component {
                 TN: "47",
                 TX: "48",
                 VA: "51"
+            },
+
+            stateToZoomLevel: {
+                AL: [[-87.048138713534,32.752672386723674],6],
+                AR: [[-92.80060726071615,34.85911792533683],6],
+                DE: [[-84.3880,33.7490],4.8],
+                FL: [[-84.3880,33.7490],4.8],
+                GA: [[-83.61491117447409,33.18587501236726],6],
+                KY: [[-84.3880,33.7490],4.8],
+                LA: [[-92.38621633967261,31.4644733109196],6],
+                MD: [[-84.3880,33.7490],4.8],
+                MS: [[-89.67786020291152,32.533319001829355],6],
+                NC: [[-79.98982424872995,35.418474838855246],6],
+                NJ: [[-84.3880,33.7490],4.8],
+                OK: [[-84.3880,33.7490],4.8],
+                SC: [[-81.44966631576285,34.443473851986155],6],
+                TN: [[-84.09830961197325,35.48978594085894],6],
+                TX: [[-95.22010835516924,31.530900584738106],6],
+                VA: [[-84.3880,33.7490],4.8]
             }
         }
 
@@ -1006,7 +1025,7 @@ class DataController extends Component {
                      });
 
                      // update available drop-down items
-                     this.updateAvailableNationalForestsAndForests();
+                    //  this.updateAvailableNationalForestsAndForests();
                  });
              }
              // if the request failed, clear the data and notify the user
@@ -1035,14 +1054,13 @@ class DataController extends Component {
     updateCurrentData() {
         // get summarized data
         this.updateSummarizedDataByYear();
-        this.updateSummarizedDataByLatLong();
+        this.updateSummarizedDataByLatLong(); // calls runModel after completion
         this.getSummarizedDataByState();
-        this.runModel();
     }
 
     runModel() {
         // if a state has been selected
-        if (this.state.userFilters.stateAbbreviation !== null && this.state.userFilters.stateAbbreviation !== undefined && this.state.userFilters.stateAbbreviation !== "") {
+        if (this.state.userFilters.stateAbbreviation !== null && this.state.userFilters.stateAbbreviation !== undefined && this.state.userFilters.stateAbbreviation !== "") {            
             // if a forest or national forest has been selected
             if ((this.state.userFilters.nationalForest !== null && this.state.userFilters.nationalForest !== undefined && this.state.userFilters.nationalForest !== "") || (this.state.userFilters.forest !== null && this.state.userFilters.forest !== undefined && this.state.userFilters.forest !== "")) {
                 this.getModelOutputs();
@@ -1392,6 +1410,8 @@ class DataController extends Component {
             this.setState({
                 dropDownContent: dropDownContent
             }, () => {
+                this.runModel();
+
                 // set state of parent
                 this.props.parent.setState({
                     dataControllerState: this.state
@@ -1406,6 +1426,8 @@ class DataController extends Component {
             this.setState({
                 dropDownContent: dropDownContent
             }, () => {
+                this.runModel();
+
                 // set state of parent
                 this.props.parent.setState({
                     dataControllerState: this.state
@@ -1420,6 +1442,8 @@ class DataController extends Component {
             this.setState({
                 dropDownContent: dropDownContent
             }, () => {
+                this.runModel();
+
                 // set state of parent
                 this.props.parent.setState({
                     dataControllerState: this.state
@@ -1427,6 +1451,8 @@ class DataController extends Component {
             });
         }
         else {
+            this.runModel();
+
             // set state of parent
             this.props.parent.setState({
                 dataControllerState: this.state
