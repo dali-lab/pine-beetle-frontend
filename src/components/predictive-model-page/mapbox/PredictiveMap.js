@@ -191,79 +191,92 @@ class PredictiveMap extends Component {
             });
         }
 
-        // define expression for computing choropleth colors
-        // var expression = ["all", ["match", ["get", "stateCode"]], ["match", ["get", "forestCode"]]]
-        var expression = ["match", ["get", "stateCode"]];
-        var stateCodesAdded = []
+        if (this.state.dataControllerState.predictiveModelOutputArray.length > 0) {
+            // define expression for computing choropleth colors
+            // var expression = ["all", ["match", ["get", "stateCode"]], ["match", ["get", "forestCode"]]]
+            var expression = ["match", ["get", "stateCode"]];
+            var stateCodesAdded = []
 
-        // calculate color for each state based on clerids
-        this.state.dataControllerState.predictiveModelOutputArray.forEach(function(row) {
-            let color;
+            // calculate color for each state based on clerids
+            this.state.dataControllerState.predictiveModelOutputArray.forEach(function(row) {
+                let color;
 
-            if (row.outputs["prob53spots"] >= 0.0 && row.outputs["prob53spots"] <= 0.10) {
-                color = this.state.colors[0]
-            }
-            else if (row.outputs["prob53spots"] > 0.10 && row.outputs["prob53spots"] <= 0.20) {
-                color = this.state.colors[1]
-            }
-            else if (row.outputs["prob53spots"] > 0.20 && row.outputs["prob53spots"] <= 0.30) {
-                color = this.state.colors[2]
-            }
-            else if (row.outputs["prob53spots"] > 0.30 && row.outputs["prob53spots"] <= 0.40) {
-                color = this.state.colors[3]
-            }
-            else if (row.outputs["prob53spots"] > 0.40 && row.outputs["prob53spots"] <= 0.50) {
-                color = this.state.colors[4]
-            }
-            else if (row.outputs["prob53spots"] > 0.50 && row.outputs["prob53spots"] <= 0.60) {
-                color = this.state.colors[5]
-            }
-            else if (row.outputs["prob53spots"] > 0.60 && row.outputs["prob53spots"] <= 0.70) {
-                color = this.state.colors[6]
-            }
-            else if (row.outputs["prob53spots"] > 0.70 && row.outputs["prob53spots"] <= 0.80) {
-                color = this.state.colors[7]
-            }
-            else if (row.outputs["prob53spots"] > 0.80 && row.outputs["prob53spots"] <= 0.90) {
-                color = this.state.colors[8]
-            }
-            else if (row.outputs["prob53spots"] > 0.90) {
-                color = this.state.colors[9]
-            } 
-
-            if (!stateCodesAdded.includes(row.inputs["stateCode"])) {
-                if (row.inputs["stateCode"].toString().length == 1) {
-                    expression.push("0" + row.inputs["stateCode"].toString(), color);
+                if (row.outputs["prob53spots"] >= 0.0 && row.outputs["prob53spots"] <= 0.10) {
+                    color = this.state.colors[0]
                 }
-                else {
-                    expression.push(row.inputs["stateCode"].toString(), color);
+                else if (row.outputs["prob53spots"] > 0.10 && row.outputs["prob53spots"] <= 0.20) {
+                    color = this.state.colors[1]
                 }
+                else if (row.outputs["prob53spots"] > 0.20 && row.outputs["prob53spots"] <= 0.30) {
+                    color = this.state.colors[2]
+                }
+                else if (row.outputs["prob53spots"] > 0.30 && row.outputs["prob53spots"] <= 0.40) {
+                    color = this.state.colors[3]
+                }
+                else if (row.outputs["prob53spots"] > 0.40 && row.outputs["prob53spots"] <= 0.50) {
+                    color = this.state.colors[4]
+                }
+                else if (row.outputs["prob53spots"] > 0.50 && row.outputs["prob53spots"] <= 0.60) {
+                    color = this.state.colors[5]
+                }
+                else if (row.outputs["prob53spots"] > 0.60 && row.outputs["prob53spots"] <= 0.70) {
+                    color = this.state.colors[6]
+                }
+                else if (row.outputs["prob53spots"] > 0.70 && row.outputs["prob53spots"] <= 0.80) {
+                    color = this.state.colors[7]
+                }
+                else if (row.outputs["prob53spots"] > 0.80 && row.outputs["prob53spots"] <= 0.90) {
+                    color = this.state.colors[8]
+                }
+                else if (row.outputs["prob53spots"] > 0.90) {
+                    color = this.state.colors[9]
+                } 
 
-                stateCodesAdded.push(row.inputs["stateCode"]);
+                if (!stateCodesAdded.includes(row.inputs["stateCode"])) {
+                    if (row.inputs["stateCode"].toString().length == 1) {
+                        expression.push("0" + row.inputs["stateCode"].toString(), color);
+                    }
+                    else {
+                        expression.push(row.inputs["stateCode"].toString(), color);
+                    }
+
+                    stateCodesAdded.push(row.inputs["stateCode"]);
+                }
+            }.bind(this));
+
+            // last value is the default, used where there is no data
+            expression.push("rgba(0,0,0,0)");
+
+            // add layer from the vector tile source with data-driven style
+            this.state.map.addLayer({
+                "id": "forests-join",
+                "type": "fill",
+                "source": "forests",
+                "source-layer": "RD_SPB_NE",
+                "paint": {
+                    "fill-color": expression
+                }
+            }, 'waterway-label');
+
+            var center = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][0];
+            var zoom = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][1];
+
+            this.state.map.flyTo({
+                center: center,
+                zoom: zoom
+            });
+        }
+        else {
+            var mapLayer = this.state.map.getLayer('forests-join');
+            if (typeof mapLayer !== 'undefined') {
+                this.state.map.removeLayer("forests-join");
             }
-        }.bind(this));
 
-        // last value is the default, used where there is no data
-        expression.push("rgba(0,0,0,0)");
-
-        // add layer from the vector tile source with data-driven style
-        this.state.map.addLayer({
-            "id": "forests-join",
-            "type": "fill",
-            "source": "forests",
-            "source-layer": "RD_SPB_NE",
-            "paint": {
-                "fill-color": expression
-            }
-        }, 'waterway-label');
-
-        var center = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][0];
-        var zoom = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][1];
-
-        this.state.map.flyTo({
-            center: center,
-            zoom: zoom
-        });
+            this.state.map.flyTo({
+                center: [-84.3880,33.7490],
+                zoom: 4.8
+            });
+        }
     }
 }
 

@@ -1209,8 +1209,78 @@ class DataController extends Component {
                 promises.push(axios.post(url,filters))
             }.bind(this));
 
-            // once all the promises finish, store the outputs
-            axios.all(promises).then(function(results) {
+            if (promises.length > 0) {
+                // once all the promises finish, store the outputs
+                axios.all(promises).then(function(results) {
+                    // initialize outputs from predictive model
+                    var predictiveModelOutputs = {
+                        expSpotsIfOutbreak: 0,
+                        prob0spots: 0,
+                        prob19spots: 0,
+                        prob53spots: 0,
+                        prob147spots: 0,
+                        prob402spots: 0,
+                        prob1095spots: 0
+                    }
+
+                    // initialize inputs to predictive model
+                    var predictiveModelInputs = {
+                        SPB: 0,
+                        cleridst1: 0,
+                        spotst1: 0,
+                        spotst2: 0,
+                        endobrev: 1
+                    }
+
+                    results.forEach(function(response) {
+                        // store total response
+                        modelOutputs.push(response.data);
+
+                        // sum outputs
+                        predictiveModelOutputs.expSpotsIfOutbreak += response.data.outputs.expSpotsIfOutbreak;
+                        predictiveModelOutputs.prob0spots += response.data.outputs.prob0spots;
+                        predictiveModelOutputs.prob19spots += response.data.outputs.prob19spots;
+                        predictiveModelOutputs.prob53spots += response.data.outputs.prob53spots;
+                        predictiveModelOutputs.prob147spots += response.data.outputs.prob147spots;
+                        predictiveModelOutputs.prob402spots += response.data.outputs.prob402spots;
+                        predictiveModelOutputs.prob1095spots += response.data.outputs.prob1095spots;
+
+                        // sum inputs
+                        predictiveModelInputs.SPB += response.data.inputs.SPB;
+                        predictiveModelInputs.cleridst1 += response.data.inputs.cleridst1;
+                        predictiveModelInputs.spotst1 += response.data.inputs.spotst1;
+                        predictiveModelInputs.spotst2 += response.data.inputs.spotst2;
+                    });
+
+                    // take averages
+                    predictiveModelOutputs.expSpotsIfOutbreak = (predictiveModelOutputs.expSpotsIfOutbreak / modelOutputs.length);
+                    predictiveModelOutputs.prob0spots = (predictiveModelOutputs.prob0spots / modelOutputs.length);
+                    predictiveModelOutputs.prob19spots = (predictiveModelOutputs.prob19spots / modelOutputs.length);
+                    predictiveModelOutputs.prob53spots = (predictiveModelOutputs.prob53spots / modelOutputs.length);
+                    predictiveModelOutputs.prob147spots = (predictiveModelOutputs.prob147spots / modelOutputs.length);
+                    predictiveModelOutputs.prob402spots = (predictiveModelOutputs.prob402spots / modelOutputs.length);
+                    predictiveModelOutputs.prob1095spots = (predictiveModelOutputs.prob1095spots / modelOutputs.length);
+
+                    predictiveModelInputs.SPB = (predictiveModelInputs.SPB / modelOutputs.length);
+                    predictiveModelInputs.cleridst1 = (predictiveModelInputs.cleridst1 / modelOutputs.length);
+                    predictiveModelInputs.spotst1 = (predictiveModelInputs.spotst1 / modelOutputs.length);
+                    predictiveModelInputs.spotst2 = (predictiveModelInputs.spotst2 / modelOutputs.length);
+
+                    this.setState({
+                        predictiveModelOutputArray: modelOutputs,
+                        predictiveModelOutputs: predictiveModelOutputs,
+                        predictiveModelInputs: predictiveModelInputs,
+                        runningModel: false
+                    }, () => {
+                        // set state of parent
+                        this.props.parent.setState({
+                            dataControllerState: this.state
+                        });
+                    });
+                }.bind(this));
+            }
+            else {
+                console.log("here")
                 // initialize outputs from predictive model
                 var predictiveModelOutputs = {
                     expSpotsIfOutbreak: 0,
@@ -1231,42 +1301,8 @@ class DataController extends Component {
                     endobrev: 1
                 }
 
-                results.forEach(function(response) {
-                    // store total response
-                    modelOutputs.push(response.data);
-
-                    // sum outputs
-                    predictiveModelOutputs.expSpotsIfOutbreak += response.data.outputs.expSpotsIfOutbreak;
-                    predictiveModelOutputs.prob0spots += response.data.outputs.prob0spots;
-                    predictiveModelOutputs.prob19spots += response.data.outputs.prob19spots;
-                    predictiveModelOutputs.prob53spots += response.data.outputs.prob53spots;
-                    predictiveModelOutputs.prob147spots += response.data.outputs.prob147spots;
-                    predictiveModelOutputs.prob402spots += response.data.outputs.prob402spots;
-                    predictiveModelOutputs.prob1095spots += response.data.outputs.prob1095spots;
-
-                    // sum inputs
-                    predictiveModelInputs.SPB += response.data.inputs.SPB;
-                    predictiveModelInputs.cleridst1 += response.data.inputs.cleridst1;
-                    predictiveModelInputs.spotst1 += response.data.inputs.spotst1;
-                    predictiveModelInputs.spotst2 += response.data.inputs.spotst2;
-                });
-
-                // take averages
-                predictiveModelOutputs.expSpotsIfOutbreak = (predictiveModelOutputs.expSpotsIfOutbreak / modelOutputs.length);
-                predictiveModelOutputs.prob0spots = (predictiveModelOutputs.prob0spots / modelOutputs.length);
-                predictiveModelOutputs.prob19spots = (predictiveModelOutputs.prob19spots / modelOutputs.length);
-                predictiveModelOutputs.prob53spots = (predictiveModelOutputs.prob53spots / modelOutputs.length);
-                predictiveModelOutputs.prob147spots = (predictiveModelOutputs.prob147spots / modelOutputs.length);
-                predictiveModelOutputs.prob402spots = (predictiveModelOutputs.prob402spots / modelOutputs.length);
-                predictiveModelOutputs.prob1095spots = (predictiveModelOutputs.prob1095spots / modelOutputs.length);
-
-                predictiveModelInputs.SPB = (predictiveModelInputs.SPB / modelOutputs.length);
-                predictiveModelInputs.cleridst1 = (predictiveModelInputs.cleridst1 / modelOutputs.length);
-                predictiveModelInputs.spotst1 = (predictiveModelInputs.spotst1 / modelOutputs.length);
-                predictiveModelInputs.spotst2 = (predictiveModelInputs.spotst2 / modelOutputs.length);
-
                 this.setState({
-                    predictiveModelOutputArray: modelOutputs,
+                    predictiveModelOutputArray: [],
                     predictiveModelOutputs: predictiveModelOutputs,
                     predictiveModelInputs: predictiveModelInputs,
                     runningModel: false
@@ -1276,7 +1312,7 @@ class DataController extends Component {
                         dataControllerState: this.state
                     });
                 });
-            }.bind(this));
+            }  
         })
     }
 
