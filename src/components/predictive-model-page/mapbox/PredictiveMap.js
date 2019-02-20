@@ -145,9 +145,8 @@ class PredictiveMap extends Component {
                         }.bind(this));
 
                         // select state when user clicks on it
-                        this.state.map.on('click', 'forests-join', function (e) {
-                            console.log(e)
-                            // this.state.dataController.updateStateSelection(e.features[0].properties.STATE_ID)
+                        this.state.map.on('click', 'states-join', function (e) {
+                            this.state.dataController.updateStateSelection(e.features[0].properties.STATE_ID)
                         }.bind(this));
                     }
 
@@ -168,6 +167,25 @@ class PredictiveMap extends Component {
                         type: "vector",
                         url: "mapbox://pine-beetle-prediction.dyntv0xv"
                     });
+                }
+
+                if (this.state.map.getSource("states") === undefined) {
+                    // Add source for state polygons hosted on Mapbox, based on US Census Data:
+                    // https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
+                    this.state.map.addSource("states", {
+                        type: "vector",
+                        url: "mapbox://mapbox.us_census_states_2015"
+                    });
+
+                    this.state.map.addLayer({
+                        "id": "states-join",
+                        "type": "fill",
+                        "source": "states",
+                        "source-layer": "states",
+                        'paint': {
+                            'fill-opacity': 0
+                        },
+                    }, 'waterway-label');
                 }
 
                 this.colorStates();
@@ -258,13 +276,26 @@ class PredictiveMap extends Component {
                 }
             }, 'waterway-label');
 
-            var center = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][0];
-            var zoom = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][1];
+            if (this.state.dataControllerState.userFilters.stateAbbreviation !== null) {
+                var center = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][0];
+                var zoom = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][1];
 
-            this.state.map.flyTo({
-                center: center,
-                zoom: zoom
-            });
+                this.state.map.flyTo({
+                    center: center,
+                    zoom: zoom
+                });
+            }
+            else {
+                var mapLayer = this.state.map.getLayer('forests-join');
+                if (typeof mapLayer !== 'undefined') {
+                    this.state.map.removeLayer("forests-join");
+                }
+
+                this.state.map.flyTo({
+                    center: [-84.3880,33.7490],
+                    zoom: 4.8
+                });
+            }
         }
         else {
             var mapLayer = this.state.map.getLayer('forests-join');

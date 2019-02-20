@@ -14,6 +14,7 @@ class DataController extends Component {
         var startDate = (this.getCookie("startDate") !== null && this.getCookie("startDate") !== "null") ? this.getCookie("startDate") : 1986;
         var endDate = (this.getCookie("endDate") !== null && this.getCookie("endDate") !== "null") ? this.getCookie("endDate") : 2010;
         var predictiveModelDate = (this.getCookie("predictiveModelDate") !== null && this.getCookie("predictiveModelDate") !== "null") ? this.getCookie("predictiveModelDate") : 2010;
+        var runningModel = stateName !== null ? true : false;
 
         // set state based off cookies
         this.state = {
@@ -28,7 +29,6 @@ class DataController extends Component {
                 predictiveModelDate: predictiveModelDate,
                 originalStartDate: null,
                 originalEndDate: null,
-                latestModelYear: false,
             },
 
             // arrays of states, forests, etc. to populate drop-down menus with
@@ -70,7 +70,7 @@ class DataController extends Component {
                 endobrev: 1
             },
 
-            runningModel: false,
+            runningModel: runningModel,
             url: "",
 
             // map of state abbreviations to their names
@@ -296,13 +296,6 @@ class DataController extends Component {
                 var userFilters = Object.assign({}, this.state.userFilters);
                 userFilters.originalEndDate = parseInt(xmlHttp.response)
                  
-                if (userFilters.predictiveModelDate - 1 === userFilters.originalEndDate && userFilters.stateAbbreviation === null) {
-                    userFilters.latestModelYear = true;
-                }
-                else {
-                    userFilters.latestModelYear = false;
-                }
-
                  // set the state
                  this.setState({
                      userFilters: userFilters
@@ -492,19 +485,9 @@ class DataController extends Component {
                  dropDownContent.availableModelYears = xmlHttp.response;
                  dropDownContent.availableModelYears.push(dropDownContent.availableYears[dropDownContent.availableYears.length - 1] + 1);
 
-                 var userFilters = Object.assign({}, this.state.userFilters);
-
-                 if (this.state.userFilters.predictiveModelDate === dropDownContent.availableModelYears[dropDownContent.availableModelYears.length - 1] && this.state.userFilters.state === null) {
-                     userFilters.latestModelYear = true;
-                 }
-                 else {
-                     userFilters.latestModelYear = false;
-                 }
-
                  // update state
                  this.setState({
-                     dropDownContent: dropDownContent,
-                     userFilters: userFilters
+                     dropDownContent: dropDownContent
                  }, () => {
                     // send query to database for data -- once this is complete, DataController will mount and send its state back to App, App then sends DataController to child components
                     this.updateCurrentData();
@@ -635,17 +618,10 @@ class DataController extends Component {
     }
 
     // set the year we are running the predictive model on
-    updatePredictionYearSelection(year) {
-        var latestModelYear = false;
-
-        if (year - 1 === this.state.userFilters.originalEndDate && this.state.userFilters.stateAbbreviation === null) {
-            latestModelYear = true;
-        }
-        
+    updatePredictionYearSelection(year) {    
         // update userFilters
         var userFilters = Object.assign({}, this.state.userFilters);
         userFilters.predictiveModelDate = year;
-        userFilters.latestModelYear = latestModelYear;
 
         this.setState({
             userFilters: userFilters
@@ -665,6 +641,13 @@ class DataController extends Component {
 
     // select a new state -- control for if we are passed an abbreviation or a state name
     updateStateSelection(state) {
+        // if we are about to update the state from nothing to something, turn the runningModel indicator on
+        if (this.state.userFilters.stateName === null && state !== null) {
+            this.setState({
+                runningModel: true
+            });
+        }
+
         // copy userFilters
         var userFilters = Object.assign({}, this.state.userFilters);
 
@@ -674,12 +657,6 @@ class DataController extends Component {
             userFilters.stateAbbreviation = null
             userFilters.nationalForest = null
             userFilters.forest = null
-
-            var latestModelYear = false;
-            if (this.state.userFilters.predictiveModelDate - 1 === this.state.userFilters.originalEndDate) {
-                latestModelYear = true;
-            }
-            userFilters.latestModelYear = latestModelYear
     
             this.setState({
                 userFilters: userFilters
@@ -708,7 +685,6 @@ class DataController extends Component {
                     userFilters.stateAbbreviation = abbrev
                     userFilters.nationalForest = null
                     userFilters.forest = null
-                    userFilters.latestModelYear = false;
 
                     this.setState({
                         userFilters: userFilters
@@ -739,7 +715,6 @@ class DataController extends Component {
                     userFilters.stateAbbreviation = abbrev;
                     userFilters.nationalForest = null;
                     userFilters.forest = null;
-                    userFilters.latestModelYear = false;
 
                     this.setState({
                         userFilters: userFilters
@@ -770,7 +745,6 @@ class DataController extends Component {
                     userFilters.stateAbbreviation = abbrev;
                     userFilters.nationalForest = null;
                     userFilters.forest = null;
-                    userFilters.latestModelYear = false;
 
                     this.setState({
                         userFilters: userFilters
@@ -1506,7 +1480,6 @@ class DataController extends Component {
         userFilters.startDate = this.state.userFilters.originalStartDate;
         userFilters.endDate = this.state.userFilters.originalEndDate;
         userFilters.predictiveModelDate = this.state.dropDownContent.availableModelYears[this.state.dropDownContent.availableModelYears.length - 1];
-        userFilters.latestModelYear = true;
 
         var historicalData = Object.assign({}, this.state.historicalData);
         historicalData.currentData = [];
