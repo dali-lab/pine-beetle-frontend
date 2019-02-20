@@ -146,6 +146,7 @@ class PredictiveMap extends Component {
 
                         // select state when user clicks on it
                         this.state.map.on('click', 'states-join', function (e) {
+                            console.log(e)
                             this.state.dataController.updateStateSelection(e.features[0].properties.STATE_ID)
                         }.bind(this));
                     }
