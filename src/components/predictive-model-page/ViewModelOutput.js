@@ -49,7 +49,7 @@ class ViewModelOutput extends Component {
             return(
                 <div className="container">
                     <h3>Please select a state to run the predictive model.</h3>
-                    <p>It will take a few seconds to run. Please be patient!</p>
+                    <p>It will take a few seconds to run. Please be patient.</p>
                 </div>
             );
         }

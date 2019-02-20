@@ -641,13 +641,7 @@ class DataController extends Component {
 
     // select a new state -- control for if we are passed an abbreviation or a state name
     updateStateSelection(state) {
-        // if we are about to update the state from nothing to something, turn the runningModel indicator on
-        if (this.state.userFilters.stateName === null && state !== null) {
-            this.setState({
-                runningModel: true
-            });
-        }
-
+        console.log("set state")
         // copy userFilters
         var userFilters = Object.assign({}, this.state.userFilters);
 
@@ -677,7 +671,7 @@ class DataController extends Component {
             });
         }
         // if we were given a state name and not the abbreviation, we need to get its abbreviation
-        else if (state.length > 2) {
+        if (state.length > 2) {
             // search through map of state abbreviations to names to grab the correct one
             for (var abbrev in this.state.stateAbbrevToStateName) {
                 if (this.state.stateAbbrevToStateName[abbrev] === state) {
@@ -1077,124 +1071,205 @@ class DataController extends Component {
 
     // run the R model and store outputs -- call this when a state and nf/forest have been selected
     getModelOutputs() {
+        console.log("chose forest")
         this.setState({
             runningModel: true
         }, () => {
-            var url = this.state.url + "getPredictions";
-            var xmlHttp = new XMLHttpRequest();
-            var filters = this.setQueryFilters(true);
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
+            }, () => {
+                var url = this.state.url + "getPredictions";
+                var xmlHttp = new XMLHttpRequest();
+                var filters = this.setQueryFilters(true);
 
-            xmlHttp.onload = function() {
-                // if the request was successful hold onto the data
-                if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                xmlHttp.onload = function() {
+                    // if the request was successful hold onto the data
+                    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
 
-                    var modelOutputs = [{
-                        inputs: xmlHttp.response.inputs,
-                        outputs: xmlHttp.response.outputs
-                    }];
-    
-                    // set the state
-                    this.setState({
-                        predictiveModelOutputArray: modelOutputs,
-                        predictiveModelInputs: xmlHttp.response.inputs,
-                        predictiveModelOutputs: xmlHttp.response.outputs,
-                        runningModel: false
-                    }, () => {
-                        // set state of parent
-                        this.props.parent.setState({
-                            dataControllerState: this.state
+                        var modelOutputs = [{
+                            inputs: xmlHttp.response.inputs,
+                            outputs: xmlHttp.response.outputs
+                        }];
+        
+                        // set the state
+                        this.setState({
+                            predictiveModelOutputArray: modelOutputs,
+                            predictiveModelInputs: xmlHttp.response.inputs,
+                            predictiveModelOutputs: xmlHttp.response.outputs,
+                            runningModel: false
+                        }, () => {
+                            // set state of parent
+                            this.props.parent.setState({
+                                dataControllerState: this.state
+                            });
                         });
-                    });
-                }
-                // if the request failed, clear the data and notify the user
-                else {
-    
-                    var inputs = {
-                        SPB: 0,
-                        cleridst1: 0,
-                        spotst1: 0,
-                        spotst2: 0
                     }
-    
-                    var outputs = {
-                        prob0spots: 0,
-                        prob19spots: 0,
-                        prob53spots: 0,
-                        prob147spots: 0,
-                        prob402spots: 0,
-                        prob1095spots: 0,
-                        expSpotsIfOutbreak: 0
-                    }
+                    // if the request failed, clear the data and notify the user
+                    else {
+        
+                        var inputs = {
+                            SPB: 0,
+                            cleridst1: 0,
+                            spotst1: 0,
+                            spotst2: 0
+                        }
+        
+                        var outputs = {
+                            prob0spots: 0,
+                            prob19spots: 0,
+                            prob53spots: 0,
+                            prob147spots: 0,
+                            prob402spots: 0,
+                            prob1095spots: 0,
+                            expSpotsIfOutbreak: 0
+                        }
 
-                    var modelOutputs = [{
-                        inputs: inputs,
-                        outputs: outputs
-                    }];
-    
-                    // set the state
-                    this.setState({
-                        predictiveModelOutputArray: modelOutputs,
-                        predictiveModelInputs: inputs,
-                        predictiveModelOutputs: outputs
-                    }, () => {
-                        // set state of parent
-                        this.props.parent.setState({
-                            dataControllerState: this.state
+                        var modelOutputs = [{
+                            inputs: inputs,
+                            outputs: outputs
+                        }];
+        
+                        // set the state
+                        this.setState({
+                            predictiveModelOutputArray: modelOutputs,
+                            predictiveModelInputs: inputs,
+                            predictiveModelOutputs: outputs,
+                            runningModel: false
+                        }, () => {
+                            // set state of parent
+                            this.props.parent.setState({
+                                dataControllerState: this.state
+                            });
                         });
-                    });
-                }
-            }.bind(this);
-    
-            xmlHttp.open("POST", url, true);
-            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xmlHttp.responseType = 'json';
-            xmlHttp.send(jQuery.param(filters));   
+                    }
+                }.bind(this);
+        
+                xmlHttp.open("POST", url, true);
+                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlHttp.responseType = 'json';
+                xmlHttp.send(jQuery.param(filters));   
+            });
         });
     }
 
     // run model on all forests in a state then average outputs -- run this when only a state has been selected (and not a forest/nf)
     averageModelOutputs() {
+        console.log("did not choose forest")
+
         this.setState({
             runningModel: true
         }, () => {
-            // construct an array of outputs from running the model as well as an array of promises
-            var modelOutputs = [];
-            var promises = [];
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
+            }, () => {
+                // construct an array of outputs from running the model as well as an array of promises
+                var modelOutputs = [];
+                var promises = [];
 
-            // for each available forest, run the model and get the results
-            this.state.dropDownContent.availableLocalForests.forEach(function(forest) {
-                var url = this.state.url + "getPredictions";
-                var filters = {
-                    targetYear: this.state.userFilters.predictiveModelDate,
-                    state: this.state.userFilters.stateAbbreviation,
-                    forest: forest
+                // for each available forest, run the model and get the results
+                this.state.dropDownContent.availableLocalForests.forEach(function(forest) {
+                    var url = this.state.url + "getPredictions";
+                    var filters = {
+                        targetYear: this.state.userFilters.predictiveModelDate,
+                        state: this.state.userFilters.stateAbbreviation,
+                        forest: forest
+                    }
+                    promises.push(axios.post(url,filters))
+                }.bind(this));
+
+                // for each available national forest, run the model and get the results
+                this.state.dropDownContent.availableNationalForests.forEach(function(forest) {
+                    var url = this.state.url + "getPredictions";
+                    var filters = {
+                        targetYear: this.state.userFilters.predictiveModelDate,
+                        state: this.state.userFilters.stateAbbreviation,
+                        nf: forest
+                    }
+                    promises.push(axios.post(url,filters))
+                }.bind(this));
+
+                if (promises.length > 0) {
+                    // once all the promises finish, store the outputs
+                    axios.all(promises).then(function(results) {
+                        // initialize outputs from predictive model
+                        var predictiveModelOutputs = {
+                            expSpotsIfOutbreak: 0,
+                            prob0spots: 0,
+                            prob19spots: 0,
+                            prob53spots: 0,
+                            prob147spots: 0,
+                            prob402spots: 0,
+                            prob1095spots: 0
+                        }
+
+                        // initialize inputs to predictive model
+                        var predictiveModelInputs = {
+                            SPB: 0,
+                            cleridst1: 0,
+                            spotst1: 0,
+                            spotst2: 0,
+                            endobrev: 1
+                        }
+
+                        results.forEach(function(response) {
+                            // store total response
+                            modelOutputs.push(response.data);
+
+                            // sum outputs
+                            predictiveModelOutputs.expSpotsIfOutbreak += response.data.outputs.expSpotsIfOutbreak;
+                            predictiveModelOutputs.prob0spots += response.data.outputs.prob0spots;
+                            predictiveModelOutputs.prob19spots += response.data.outputs.prob19spots;
+                            predictiveModelOutputs.prob53spots += response.data.outputs.prob53spots;
+                            predictiveModelOutputs.prob147spots += response.data.outputs.prob147spots;
+                            predictiveModelOutputs.prob402spots += response.data.outputs.prob402spots;
+                            predictiveModelOutputs.prob1095spots += response.data.outputs.prob1095spots;
+
+                            // sum inputs
+                            predictiveModelInputs.SPB += response.data.inputs.SPB;
+                            predictiveModelInputs.cleridst1 += response.data.inputs.cleridst1;
+                            predictiveModelInputs.spotst1 += response.data.inputs.spotst1;
+                            predictiveModelInputs.spotst2 += response.data.inputs.spotst2;
+                        });
+
+                        // take averages
+                        predictiveModelOutputs.expSpotsIfOutbreak = (predictiveModelOutputs.expSpotsIfOutbreak / modelOutputs.length);
+                        predictiveModelOutputs.prob0spots = (predictiveModelOutputs.prob0spots / modelOutputs.length);
+                        predictiveModelOutputs.prob19spots = (predictiveModelOutputs.prob19spots / modelOutputs.length);
+                        predictiveModelOutputs.prob53spots = (predictiveModelOutputs.prob53spots / modelOutputs.length);
+                        predictiveModelOutputs.prob147spots = (predictiveModelOutputs.prob147spots / modelOutputs.length);
+                        predictiveModelOutputs.prob402spots = (predictiveModelOutputs.prob402spots / modelOutputs.length);
+                        predictiveModelOutputs.prob1095spots = (predictiveModelOutputs.prob1095spots / modelOutputs.length);
+
+                        predictiveModelInputs.SPB = (predictiveModelInputs.SPB / modelOutputs.length);
+                        predictiveModelInputs.cleridst1 = (predictiveModelInputs.cleridst1 / modelOutputs.length);
+                        predictiveModelInputs.spotst1 = (predictiveModelInputs.spotst1 / modelOutputs.length);
+                        predictiveModelInputs.spotst2 = (predictiveModelInputs.spotst2 / modelOutputs.length);
+
+                        this.setState({
+                            predictiveModelOutputArray: modelOutputs,
+                            predictiveModelOutputs: predictiveModelOutputs,
+                            predictiveModelInputs: predictiveModelInputs,
+                            runningModel: false
+                        }, () => {
+                            // set state of parent
+                            this.props.parent.setState({
+                                dataControllerState: this.state
+                            });
+                        });
+                    }.bind(this));
                 }
-                promises.push(axios.post(url,filters))
-            }.bind(this));
-
-            // for each available national forest, run the model and get the results
-            this.state.dropDownContent.availableNationalForests.forEach(function(forest) {
-                var url = this.state.url + "getPredictions";
-                var filters = {
-                    targetYear: this.state.userFilters.predictiveModelDate,
-                    state: this.state.userFilters.stateAbbreviation,
-                    nf: forest
-                }
-                promises.push(axios.post(url,filters))
-            }.bind(this));
-
-            if (promises.length > 0) {
-                // once all the promises finish, store the outputs
-                axios.all(promises).then(function(results) {
+                else {
                     // initialize outputs from predictive model
                     var predictiveModelOutputs = {
-                        expSpotsIfOutbreak: 0,
-                        prob0spots: 0,
-                        prob19spots: 0,
-                        prob53spots: 0,
-                        prob147spots: 0,
-                        prob402spots: 0,
-                        prob1095spots: 0
+                        expSpotsIfOutbreak: 6.394,
+                        prob0spots: 0.114,
+                        prob19spots: 0.043,
+                        prob53spots: 0.019,
+                        prob147spots: 0.007,
+                        prob402spots: 0.002,
+                        prob1095spots: 0.001
                     }
 
                     // initialize inputs to predictive model
@@ -1206,42 +1281,10 @@ class DataController extends Component {
                         endobrev: 1
                     }
 
-                    results.forEach(function(response) {
-                        // store total response
-                        modelOutputs.push(response.data);
-
-                        // sum outputs
-                        predictiveModelOutputs.expSpotsIfOutbreak += response.data.outputs.expSpotsIfOutbreak;
-                        predictiveModelOutputs.prob0spots += response.data.outputs.prob0spots;
-                        predictiveModelOutputs.prob19spots += response.data.outputs.prob19spots;
-                        predictiveModelOutputs.prob53spots += response.data.outputs.prob53spots;
-                        predictiveModelOutputs.prob147spots += response.data.outputs.prob147spots;
-                        predictiveModelOutputs.prob402spots += response.data.outputs.prob402spots;
-                        predictiveModelOutputs.prob1095spots += response.data.outputs.prob1095spots;
-
-                        // sum inputs
-                        predictiveModelInputs.SPB += response.data.inputs.SPB;
-                        predictiveModelInputs.cleridst1 += response.data.inputs.cleridst1;
-                        predictiveModelInputs.spotst1 += response.data.inputs.spotst1;
-                        predictiveModelInputs.spotst2 += response.data.inputs.spotst2;
-                    });
-
-                    // take averages
-                    predictiveModelOutputs.expSpotsIfOutbreak = (predictiveModelOutputs.expSpotsIfOutbreak / modelOutputs.length);
-                    predictiveModelOutputs.prob0spots = (predictiveModelOutputs.prob0spots / modelOutputs.length);
-                    predictiveModelOutputs.prob19spots = (predictiveModelOutputs.prob19spots / modelOutputs.length);
-                    predictiveModelOutputs.prob53spots = (predictiveModelOutputs.prob53spots / modelOutputs.length);
-                    predictiveModelOutputs.prob147spots = (predictiveModelOutputs.prob147spots / modelOutputs.length);
-                    predictiveModelOutputs.prob402spots = (predictiveModelOutputs.prob402spots / modelOutputs.length);
-                    predictiveModelOutputs.prob1095spots = (predictiveModelOutputs.prob1095spots / modelOutputs.length);
-
-                    predictiveModelInputs.SPB = (predictiveModelInputs.SPB / modelOutputs.length);
-                    predictiveModelInputs.cleridst1 = (predictiveModelInputs.cleridst1 / modelOutputs.length);
-                    predictiveModelInputs.spotst1 = (predictiveModelInputs.spotst1 / modelOutputs.length);
-                    predictiveModelInputs.spotst2 = (predictiveModelInputs.spotst2 / modelOutputs.length);
+                    console.log("made it")
 
                     this.setState({
-                        predictiveModelOutputArray: modelOutputs,
+                        predictiveModelOutputArray: [],
                         predictiveModelOutputs: predictiveModelOutputs,
                         predictiveModelInputs: predictiveModelInputs,
                         runningModel: false
@@ -1251,94 +1294,74 @@ class DataController extends Component {
                             dataControllerState: this.state
                         });
                     });
-                }.bind(this));
-            }
-            else {
-                console.log("here")
-                // initialize outputs from predictive model
-                var predictiveModelOutputs = {
-                    expSpotsIfOutbreak: 0,
-                    prob0spots: 0,
-                    prob19spots: 0,
-                    prob53spots: 0,
-                    prob147spots: 0,
-                    prob402spots: 0,
-                    prob1095spots: 0
                 }
-
-                // initialize inputs to predictive model
-                var predictiveModelInputs = {
-                    SPB: 0,
-                    cleridst1: 0,
-                    spotst1: 0,
-                    spotst2: 0,
-                    endobrev: 1
-                }
-
-                this.setState({
-                    predictiveModelOutputArray: [],
-                    predictiveModelOutputs: predictiveModelOutputs,
-                    predictiveModelInputs: predictiveModelInputs,
-                    runningModel: false
-                }, () => {
-                    // set state of parent
-                    this.props.parent.setState({
-                        dataControllerState: this.state
-                    });
-                });
-            }  
-        })
+            });
+        });
     }
 
     // run the R model and store outputs -- run this when the user puts custom model inputs in
     getCustomModelOutputs() {
-        var url = this.state.url + "getCustomPredictions";
-        var xmlHttp = new XMLHttpRequest();
-        var filters = this.state.predictiveModelInputs;
+        console.log("custom")
+        this.setState({
+            runningModel: true
+        }, () => {
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
+            }, () => {
 
-        xmlHttp.onload = function() {
-            // if the request was successful hold onto the data
-            if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                var url = this.state.url + "getCustomPredictions";
+                var xmlHttp = new XMLHttpRequest();
+                var filters = this.state.predictiveModelInputs;
 
-                // set the state
-                this.setState({
-                    predictiveModelOutputs: xmlHttp.response
-                }, () => {
-                    // set state of parent
-                    this.props.parent.setState({
-                        dataControllerState: this.state
-                    });
-                });
-            }
-            // if the request failed, clear the data and notify the user
-            else {
+                xmlHttp.onload = function() {
+                    // if the request was successful hold onto the data
+                    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
 
-                var outputs = {
-                    prob0spots: 0,
-                    prob19spots: 0,
-                    prob53spots: 0,
-                    prob147spots: 0,
-                    prob402spots: 0,
-                    prob1095spots: 0,
-                    expSpotsIfOutbreak: 0
-                }
+                        // set the state
+                        this.setState({
+                            predictiveModelOutputs: xmlHttp.response,
+                            runningModel: false
+                        }, () => {
+                            // set state of parent
+                            this.props.parent.setState({
+                                dataControllerState: this.state
+                            });
+                        });
+                    }
+                    // if the request failed, clear the data and notify the user
+                    else {
 
-                // set the state
-                this.setState({
-                    predictiveModelOutputs: outputs
-                }, () => {
-                    // set state of parent
-                    this.props.parent.setState({
-                        dataControllerState: this.state
-                    });
-                });
-            }
-        }.bind(this);
+                        var outputs = {
+                            prob0spots: 0,
+                            prob19spots: 0,
+                            prob53spots: 0,
+                            prob147spots: 0,
+                            prob402spots: 0,
+                            prob1095spots: 0,
+                            expSpotsIfOutbreak: 0
+                        }
 
-        xmlHttp.open("POST", url, true);
-        xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xmlHttp.responseType = 'json';
-        xmlHttp.send(jQuery.param(filters));
+                        // set the state
+                        this.setState({
+                            predictiveModelOutputs: outputs,
+                            runningModel: false
+                        }, () => {
+                            // set state of parent
+                            this.props.parent.setState({
+                                dataControllerState: this.state
+                            });
+                        });
+                    }
+                }.bind(this);
+
+                xmlHttp.open("POST", url, true);
+                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xmlHttp.responseType = 'json';
+                xmlHttp.send(jQuery.param(filters));
+
+            });
+        });
     }
 
     // set new model input value for spb
@@ -1391,6 +1414,8 @@ class DataController extends Component {
 
     // after the state has been updated, also update available forests and national forests
     updateAvailableNationalForestsAndForests() {
+        console.log("updating available forests")
+
         var availableNationalForests = [];
         var availableLocalForests = [];
 
