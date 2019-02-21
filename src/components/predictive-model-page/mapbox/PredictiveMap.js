@@ -118,19 +118,14 @@ class PredictiveMap extends Component {
                                     // get prediction for this state
                                     var probability = 0;
                                     for (var entry in this.state.dataControllerState.predictiveModelOutputArray) {
-                                        var check = this.state.dataControllerState.predictiveModelOutputArray[entry].inputs.stateCode.toString();
+                                        var check = this.state.dataControllerState.predictiveModelOutputArray[entry].inputs.forest;
 
-                                        if (check.length == 1) {
-                                            check = "0" + check;
-                                        }
-                
-                                        if (check === forests[0].properties.stateCode) {
+                                        if (check === forests[0].properties.forest.toUpperCase()) {
                                             probability = this.state.dataControllerState.predictiveModelOutputArray[entry].outputs.prob53spots;
                                         }
                                     }
                                     element = <div id="choropleth-map-p-area">
-                                                <p><strong>{forests[0].properties.FORESTNAME}</strong></p>
-                                                <p><strong>{forests[0].properties.DISTRICTNA}</strong></p>
+                                                <p><strong>{forests[0].properties.forest}</strong></p>
                                                 <p>{probability*100 + "%"}</p>
                                             </div> 
                                 }
@@ -146,7 +141,6 @@ class PredictiveMap extends Component {
 
                         // select state when user clicks on it
                         this.state.map.on('click', 'states-join', function (e) {
-                            console.log(e)
                             this.state.dataController.updateStateSelection(e.features[0].properties.STATE_ID)
                         }.bind(this));
                     }
@@ -166,7 +160,7 @@ class PredictiveMap extends Component {
                 if (this.state.map.getSource("forests") === undefined) {
                     this.state.map.addSource("forests", {
                         type: "vector",
-                        url: "mapbox://pine-beetle-prediction.dyntv0xv"
+                        url: "mapbox://pine-beetle-prediction.0tor8eeq"
                     });
                 }
 
@@ -206,15 +200,18 @@ class PredictiveMap extends Component {
 
             this.state.map.addSource("forests", {
                 type: "vector",
-                url: "mapbox://pine-beetle-prediction.dyntv0xv"
+                url: "mapbox://pine-beetle-prediction.0tor8eeq"
             });
         }
 
         if (this.state.dataControllerState.predictiveModelOutputArray.length > 0) {
             // define expression for computing choropleth colors
             // var expression = ["all", ["match", ["get", "stateCode"]], ["match", ["get", "forestCode"]]]
-            var expression = ["match", ["get", "stateCode"]];
-            var stateCodesAdded = []
+            // var expression = ["match", ["get", "forest"]];
+
+            var expression = ["match", ["upcase", ["get", "forest"]]];
+
+            var forestsAdded = []
 
             // calculate color for each state based on clerids
             this.state.dataControllerState.predictiveModelOutputArray.forEach(function(row) {
@@ -251,16 +248,11 @@ class PredictiveMap extends Component {
                     color = this.state.colors[9]
                 } 
 
-                if (!stateCodesAdded.includes(row.inputs["stateCode"])) {
-                    if (row.inputs["stateCode"].toString().length == 1) {
-                        expression.push("0" + row.inputs["stateCode"].toString(), color);
-                    }
-                    else {
-                        expression.push(row.inputs["stateCode"].toString(), color);
-                    }
-
-                    stateCodesAdded.push(row.inputs["stateCode"]);
+                if (!forestsAdded.includes(row.inputs["forest"])) {
+                    expression.push(row.inputs["forest"], color);
+                    forestsAdded.push(row.inputs["forest"]);
                 }
+
             }.bind(this));
 
             // last value is the default, used where there is no data

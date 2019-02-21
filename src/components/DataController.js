@@ -44,8 +44,7 @@ class DataController extends Component {
             historicalData: {
                 currentData: [],
                 summarizedDataByLatLong: null,
-                summarizedDataByYear: null,
-                summarizedDataByState: null
+                summarizedDataByYear: null
             },
 
             predictiveModelOutputArray: [],
@@ -641,7 +640,6 @@ class DataController extends Component {
 
     // select a new state -- control for if we are passed an abbreviation or a state name
     updateStateSelection(state) {
-        console.log("set state")
         // copy userFilters
         var userFilters = Object.assign({}, this.state.userFilters);
 
@@ -957,73 +955,11 @@ class DataController extends Component {
          xmlHttp.send(jQuery.param(filters));
     }
 
-    // get data from database in a summarized format based on latitude and longitude
-    getSummarizedDataByState() {
-        var filters = this.setQueryFilters(true);
-        var url = this.state.url + "getSummarizedDataByState";
-        var xmlHttp = new XMLHttpRequest();
-
-         xmlHttp.onload = function() {
-             // if the request was successful hold onto the data
-             if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-
-                 var historicalData = Object.assign({}, this.state.historicalData);
-                 var response = xmlHttp.response;
-
-                 var max = 0;
-
-                 for (var entry in response) {
-                     response[entry].STATE_ID = this.state.stateAbbrevToStateID[response[entry].state];
-
-                     if (response[entry].spots > max) {
-                         max = response[entry].spots
-                     }
-                 }
-
-                 historicalData.summarizedDataByState = response;
-                 historicalData.maxSpotsByState = max;
-
-                 // store result
-                 this.setState({
-                     historicalData: historicalData
-                 }, () => {
-                     // set state of parent
-                     this.props.parent.setState({
-                         dataControllerState: this.state
-                     });
-
-                     // update available drop-down items
-                    //  this.updateAvailableNationalForestsAndForests();
-                 });
-             }
-             // if the request failed, clear the data and notify the user
-             else {
-                 historicalData = Object.assign({}, this.state.historicalData);
-                 historicalData.summarizedDataByState = null
-
-                 this.setState({
-                     historicalData: historicalData
-                 }, () => {
-                     // set state of parent
-                     this.props.parent.setState({
-                         dataControllerState: this.state
-                     });
-                 });
-             }
-         }.bind(this);
-
-         xmlHttp.open("POST", url, true);
-         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-         xmlHttp.responseType = 'json';
-         xmlHttp.send(jQuery.param(filters));
-    }
-
     // update current data based on the user selections for state, forest, date, etc.
     updateCurrentData() {
         // get summarized data
         this.updateSummarizedDataByYear();
         this.updateSummarizedDataByLatLong(); // calls runModel after completion
-        this.getSummarizedDataByState();
     }
 
     runModel() {
@@ -1071,7 +1007,6 @@ class DataController extends Component {
 
     // run the R model and store outputs -- call this when a state and nf/forest have been selected
     getModelOutputs() {
-        console.log("chose forest")
         this.setState({
             runningModel: true
         }, () => {
@@ -1155,8 +1090,6 @@ class DataController extends Component {
 
     // run model on all forests in a state then average outputs -- run this when only a state has been selected (and not a forest/nf)
     averageModelOutputs() {
-        console.log("did not choose forest")
-
         this.setState({
             runningModel: true
         }, () => {
@@ -1281,8 +1214,6 @@ class DataController extends Component {
                         endobrev: 1
                     }
 
-                    console.log("made it")
-
                     this.setState({
                         predictiveModelOutputArray: [],
                         predictiveModelOutputs: predictiveModelOutputs,
@@ -1301,7 +1232,6 @@ class DataController extends Component {
 
     // run the R model and store outputs -- run this when the user puts custom model inputs in
     getCustomModelOutputs() {
-        console.log("custom")
         this.setState({
             runningModel: true
         }, () => {
@@ -1414,8 +1344,6 @@ class DataController extends Component {
 
     // after the state has been updated, also update available forests and national forests
     updateAvailableNationalForestsAndForests() {
-        console.log("updating available forests")
-
         var availableNationalForests = [];
         var availableLocalForests = [];
 
