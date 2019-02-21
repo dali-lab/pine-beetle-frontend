@@ -31,7 +31,7 @@ class ModelBreakDown extends Component {
             else {
                 return(
                     <div className="container flex-item flex-item-right" id="model-breakdown-container">
-                        <RunningModel />
+                        <RunningModel dataControllerState={this.state.dataControllerState} />
                     </div>
                 );
             }

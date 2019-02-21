@@ -26,13 +26,13 @@ class PredictiveMap extends Component {
         return(
             <div className="map-container flex-item-left">
                 <div id="map"></div>
-                <div className='map-overlay' id='features'>
+                <div className='map-overlay-hover-area' id='features'>
                     <h3>Predictions Per Forest</h3>
                     <div id='pd'>
                         {this.state.hoverElement}
                     </div>
                 </div>
-                <div className='map-overlay' id='legend'>
+                <div className='map-overlay-legend' id='legend'>
                     {this.state.legendTags}
                 </div>
             </div>
@@ -75,7 +75,10 @@ class PredictiveMap extends Component {
                     container: 'map', // container id
                     style: 'mapbox://styles/mapbox/streets-v9',
                     center: [-84.3880,33.7490], // starting position
-                    zoom: 4.8 // starting zoom
+                    zoom: 4.8, // starting zoom
+                    options: {
+                        trackResize: true
+                    }
                 })
             }, () => {
                 if (this.state.map !== null && this.state.map._controls !== undefined) {
@@ -155,6 +158,8 @@ class PredictiveMap extends Component {
     }
 
     updateChoroplethLayer() {  
+        this.state.map.resize();
+        
         if (this.state.map._listeners.load === undefined) {
             this.state.map.on('load', function() {
                 if (this.state.map.getSource("forests") === undefined) {

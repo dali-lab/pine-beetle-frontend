@@ -8,7 +8,7 @@
     flex: 2 !important;
 }
 
-.map-overlay {
+.map-overlay-legend {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -17,8 +17,18 @@
     overflow: auto;
     border-radius: 3px;
 }
+
+.map-overlay-hover-area {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.9);
+  margin-left: 20px;
+  overflow: auto;
+  border-radius: 3px;
+}
   
-  #features {
+#features {
     top: 0;
     height: 100px;
     margin-top: 20px;
@@ -26,24 +36,24 @@
     padding: 10px;
     width: 300px;
     overflow: hidden;
-  }
+}
   
-  #legend {
+#legend {
     padding: 10px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     line-height: 18px;
     height: 175px;
     margin-bottom: 40px;
     width: 120px;
-  }
+}
   
-  .legend-key {
+.legend-key {
     display: inline-block;
     border-radius: 20%;
     width: 10px;
     height: 10px;
     margin-right: 5px;
-  }
+}
 
 #choropleth-map-p-area p {
   margin-top: 0px;

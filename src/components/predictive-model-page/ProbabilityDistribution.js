@@ -51,7 +51,7 @@ class ProbabilityDistribution extends Component {
             var visualization = <Bar data={this.state.chartData} height={400} options={this.state.chartOptions}/>
         }
         else {
-            var visualization = <RunningModel />
+            var visualization = <RunningModel dataControllerState={this.props.dataControllerState} />
         }
 
         return(

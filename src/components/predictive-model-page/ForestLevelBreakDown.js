@@ -32,18 +32,21 @@ class ForestLevelBreakDown extends Component {
 
     render() {
         if (this.state.dataController !== null && this.state.dataControllerState !== null) {
-            if (this.state.dataControllerState.userFilters.nationalForest !== null || this.state.dataControllerState.userFilters.forest !== null) {
+            if (this.state.dataControllerState.runningModel) {
+                return null;
+            }
+            else if (this.state.dataControllerState.userFilters.nationalForest !== null || this.state.dataControllerState.userFilters.forest !== null) {
                 return(
                     <div>
                         <div className="flex-container">
                             <div className="container" id="filter-selections">
                                 <div id="selection-areas-view-data">
-                                    <TextInput instructions="SPB" submitFunction={this.updateSPB} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"}/>
+                                    <TextInput instructions="SPB" submitFunction={this.props.dataController.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"}/>
                                     <TextInput instructions="cleridst1" submitFunction={this.props.dataController.updateCleridst1Selection} valueToDisplay={this.state.inputs.cleridst1 !== null ? this.state.inputs.cleridst1 : "null"}/>
                                     <TextInput instructions="spotst1" submitFunction={this.props.dataController.updateSpotst1Selection} valueToDisplay={this.state.inputs.spotst1 !== null ? this.state.inputs.spotst1 : "null"}/>
                                     <TextInput instructions="spotst2" submitFunction={this.props.dataController.updateSpotst2Selection} valueToDisplay={this.state.inputs.spotst2 !== null ? this.state.inputs.spotst2 : "null"}/>
     
-                                    <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.runModel}>Reset Values</button>
+                                    <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.resetModelSelections}>Reset Values</button>
                                 </div>
                             </div>
                         </div>
