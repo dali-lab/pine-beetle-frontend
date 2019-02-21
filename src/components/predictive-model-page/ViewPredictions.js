@@ -31,6 +31,7 @@ class ViewPredictions extends Component {
             else {
                 return(
                     <div>
+                        <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
                         <div className="container">
                             <h3>Please select a state to run the predictive model.</h3>
                             <p>It will take a few seconds to run. Please be patient.</p>

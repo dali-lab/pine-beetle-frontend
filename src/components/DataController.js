@@ -1424,7 +1424,7 @@ class DataController extends Component {
             };
 
             for (var i in this.state.predictiveModelOutputArray) {
-                if (this.state.predictiveModelOutputArray.inputs[i].forest === this.state.userFilters.forest) {
+                if (this.state.predictiveModelOutputArray[i].inputs.forest === this.state.userFilters.forest) {
                     inputs = this.state.predictiveModelOutputArray[i].inputs;
                     outputs = this.state.predictiveModelOutputArray[i].outputs;
                 }
@@ -1500,7 +1500,7 @@ class DataController extends Component {
             };
 
             for (var i in this.state.predictiveModelOutputArray) {
-                if (this.state.predictiveModelOutputArray.inputs[i].forest === this.state.userFilters.forest) {
+                if (this.state.predictiveModelOutputArray[i].inputs.forest === this.state.userFilters.forest) {
                     inputs = this.state.predictiveModelOutputArray[i].inputs;
                     outputs = this.state.predictiveModelOutputArray[i].outputs;
                 }
