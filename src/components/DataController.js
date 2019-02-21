@@ -153,6 +153,7 @@ class DataController extends Component {
         this.updateCleridst1Selection = this.updateCleridst1Selection.bind(this);
         this.updateSpotst1Selection = this.updateSpotst1Selection.bind(this);
         this.updateSpotst2Selection = this.updateSpotst2Selection.bind(this);
+        this.handleModelForestClick = this.handleModelForestClick.bind(this);
 
         // set cookies
         this.setCookie("stateName", this.state.userFilters.stateName, 365);
@@ -635,7 +636,8 @@ class DataController extends Component {
         userFilters.predictiveModelDate = year;
 
         this.setState({
-            userFilters: userFilters
+            userFilters: userFilters,
+            updatedStateSelection: true
         }, () => {
             // set cookies
             this.setCookie("predictiveModelDate", this.state.userFilters.predictiveModelDate, 365);
@@ -1382,6 +1384,11 @@ class DataController extends Component {
         }, () => {
             this.getCustomModelOutputs();
         });
+    }
+
+    handleModelForestClick(e) {
+        e.persist();
+        this.updateForestSelection(e.target.textContent)
     }
 
     // after the state has been updated, also update available forests and national forests

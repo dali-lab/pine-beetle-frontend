@@ -15,7 +15,7 @@ class PredictiveMap extends Component {
             thresholds: ['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%'],
             colors: ['#FFF072', '#FFD850', '#FFA930', '#FF7B21', '#FF2000', '#F00000', '#CA000E', '#880021', '#560019', '#000000'],
             legendTags: [],
-            hoverElement: <p>{"Hover over a state for detailed information"}</p>
+            hoverElement: <p>{"Hover over a forest for detailed information"}</p>
         }
 
         this.createMap = this.createMap.bind(this);
@@ -159,7 +159,7 @@ class PredictiveMap extends Component {
 
     updateChoroplethLayer() {  
         this.state.map.resize();
-        
+
         if (this.state.map._listeners.load === undefined) {
             this.state.map.on('load', function() {
                 if (this.state.map.getSource("forests") === undefined) {

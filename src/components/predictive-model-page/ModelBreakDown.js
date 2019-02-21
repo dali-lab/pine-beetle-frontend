@@ -20,11 +20,34 @@ class ModelBreakDown extends Component {
                 var outputs = [];
 
                 for (var i in this.state.outputArray) {
-                    outputs.push(JSON.stringify(this.state.outputArray[i]))
+                    if (this.state.outputArray[i].inputs.forest !== null && this.state.outputArray[i].inputs.forest !== undefined && this.state.outputArray[i].inputs.forest !== "") {
+                        outputs.push(
+                            <tr key={i}>
+                                <td onClick={this.state.dataController.handleModelForestClick} style={{cursor: "pointer"}}>{this.state.outputArray[i].inputs.forest}</td>
+                                <td>{this.state.outputArray[i].outputs.prob0spots}</td>
+                                <td>{this.state.outputArray[i].outputs.prob53spots}</td>
+                                <td>{this.state.outputArray[i].outputs.expSpotsIfOutbreak}</td>
+                            </tr>
+                        );
+    
+                    }
                 }
+
                 return(
                     <div className="container flex-item flex-item-right" id="model-breakdown-container">
-                        {outputs}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Forest Name</th>
+                                    <th>Prob >0 Spots</th>
+                                    <th>Prob >53 Spots</th>
+                                    <th>Exp. Spots If Outbreak</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {outputs}
+                            </tbody>
+                        </table>
                     </div>
                 );
             }
@@ -54,7 +77,7 @@ class ModelBreakDown extends Component {
     updateStateFromProps(props) {
         if (props.dataController !== undefined && props.dataController != null) {
             this.setState({
-                dataController: props.dataController.current
+                dataController: props.dataController
             });
         }
 
