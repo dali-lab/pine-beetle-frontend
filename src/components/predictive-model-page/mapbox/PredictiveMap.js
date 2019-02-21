@@ -24,10 +24,10 @@ class PredictiveMap extends Component {
     }
     render() {
         return(
-            <div className="map-container">
+            <div className="map-container flex-item-left">
                 <div id="map"></div>
                 <div className='map-overlay' id='features'>
-                    <h3>Total Spots Per State</h3>
+                    <h3>Predictions Per Forest</h3>
                     <div id='pd'>
                         {this.state.hoverElement}
                     </div>
@@ -210,7 +210,6 @@ class PredictiveMap extends Component {
             // var expression = ["match", ["get", "forest"]];
 
             var expression = ["match", ["upcase", ["get", "forest"]]];
-
             var forestsAdded = []
 
             // calculate color for each state based on clerids

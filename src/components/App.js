@@ -50,10 +50,10 @@ class App extends Component {
                         <Header />
                         <div className="content">
                             <Switch>
-                                <Route exact path='/'render={(props) => <ViewHistoricalData {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState}/>}/>
+                                <Route exact path='/' component={Home} />
+                                <Route path='/historical-data'render={(props) => <ViewHistoricalData {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState}/>}/>
                                 <Route path='/predictions'render={(props) => <ViewPredictions {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState}/>}/>
                                 <Route path="/about" component={About} />
-                                <Route path="/home" component={Home} />
                                 <Route path="/loading" component={LoadingContainer} />
                                 <Route path='/uploadSurvey123Data'render={(props) => <UploadDataFromSurvey123 {...props} url={this.deployedURL} />}/>
                                 <Route path="*" component={Home} />

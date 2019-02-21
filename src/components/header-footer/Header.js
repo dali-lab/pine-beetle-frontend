@@ -12,7 +12,7 @@ class Header extends Component {
     				</div>
     				<div id="nav-button-area">
     					<div id="nav-buttons">
-    						<Link to="/"><p>HISTORICAL DATA</p></Link>
+    						<Link to="/historical-data"><p>HISTORICAL DATA</p></Link>
                             <Link to="/predictions"><p id="middle">PREDICTIVE MODEL</p></Link>
     						<Link to="/about"><p>ABOUT</p></Link>
     					</div>

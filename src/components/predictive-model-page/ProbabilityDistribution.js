@@ -47,7 +47,7 @@ class ProbabilityDistribution extends Component {
         this.updateStateFromProps = this.updateStateFromProps.bind(this);
     }
     render() {
-        if (!this.props.runningModel) {
+        if (!this.props.dataControllerState.runningModel) {
             var visualization = <Bar data={this.state.chartData} height={400} options={this.state.chartOptions}/>
         }
         else {
@@ -60,6 +60,7 @@ class ProbabilityDistribution extends Component {
                     {visualization} 
                 </div>
                 <div className="container flex-item flex-item-right" id="probability-metrics-area">
+                    <h3>Forest: <span className="no-bold">{this.props.dataControllerState.userFilters.forest}</span></h3>
                     <h3>Expected Spots If Outbreak: <span className="no-bold">{this.state.outputs.expSpotsIfOutbreak !== null ? this.state.outputs.expSpotsIfOutbreak.toFixed(3) : "null"}</span></h3>
                     <br />
                     <h3>Probability &gt; 0 Spots: <span className="no-bold">{this.state.outputs.prob0spots !== null ? this.state.outputs.prob0spots.toFixed(3) : "null"}</span></h3>
@@ -87,16 +88,9 @@ class ProbabilityDistribution extends Component {
     updateStateFromProps(props) {
         this.setState({
             outputs: props.data
-        })
+        });
 
-        var data = []
-
-        for (var key in props.data) {
-            data.push(props.data[key]);
-        }
-
-        // remove first value from array (exp spots)
-        data.shift();
+        var data = [props.data.prob0spots, props.data.prob19spots, props.data.prob53spots, props.data.prob147spots, props.data.prob402spots, props.data.prob1095spots];
 
         if (props.data !== null) {
             if (props.data.length !== 0) {

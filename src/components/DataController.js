@@ -14,7 +14,7 @@ class DataController extends Component {
         var startDate = (this.getCookie("startDate") !== null && this.getCookie("startDate") !== "null") ? this.getCookie("startDate") : 1986;
         var endDate = (this.getCookie("endDate") !== null && this.getCookie("endDate") !== "null") ? this.getCookie("endDate") : 2010;
         var predictiveModelDate = (this.getCookie("predictiveModelDate") !== null && this.getCookie("predictiveModelDate") !== "null") ? this.getCookie("predictiveModelDate") : 2010;
-        var runningModel = stateName !== null ? true : false;
+        var runningModel = false;
 
         // set state based off cookies
         this.state = {
@@ -143,6 +143,7 @@ class DataController extends Component {
         this.clearCurrentData = this.clearCurrentData.bind(this);
         this.getHistoricalData = this.getHistoricalData.bind(this);
         this.updateAvailableNationalForestsAndForests = this.updateAvailableNationalForestsAndForests.bind(this);
+        this.runModel = this.runModel.bind(this);
         this.getCustomModelOutputs = this.getCustomModelOutputs.bind(this);
         this.averageModelOutputs = this.averageModelOutputs.bind(this);
         this.updateSPBSelection = this.updateSPBSelection.bind(this);
@@ -491,10 +492,14 @@ class DataController extends Component {
                     // send query to database for data -- once this is complete, DataController will mount and send its state back to App, App then sends DataController to child components
                     this.updateCurrentData();
 
-                     // set state of parent
-                     this.props.parent.setState({
-                         dataControllerState: this.state
-                     });
+                    if (this.state.userFilters.forest !== null || this.state.userFilters.nf !== null) {
+                        this.runModel();
+                    }
+
+                    // set state of parent
+                    this.props.parent.setState({
+                        dataControllerState: this.state
+                    });
                  });
              }
              // if the request failed, clear the data and notify the user
@@ -507,10 +512,14 @@ class DataController extends Component {
                  this.setState({
                      dropDownContent: dropDownContent
                  }, () => {
-                     // set state of parent
-                     this.props.parent.setState({
-                         dataControllerState: this.state
-                     });
+                    if (this.state.userFilters.forest !== null || this.state.userFilters.nf !== null) {
+                        this.runModel();
+                    }
+
+                    // set state of parent
+                    this.props.parent.setState({
+                        dataControllerState: this.state
+                    });
                  });
              }
          }.bind(this);
@@ -628,8 +637,8 @@ class DataController extends Component {
             // set cookies
             this.setCookie("predictiveModelDate", this.state.userFilters.predictiveModelDate, 365);
 
-            // update current data
-            this.updateCurrentData();
+            // run the R model
+            this.runModel();
 
             // set state of parent
             this.props.parent.setState({
@@ -964,15 +973,16 @@ class DataController extends Component {
 
     runModel() {
         // if a state has been selected
-        if (this.state.userFilters.stateAbbreviation !== null && this.state.userFilters.stateAbbreviation !== undefined && this.state.userFilters.stateAbbreviation !== "") {            
-            // if a forest or national forest has been selected
-            if ((this.state.userFilters.nationalForest !== null && this.state.userFilters.nationalForest !== undefined && this.state.userFilters.nationalForest !== "") || (this.state.userFilters.forest !== null && this.state.userFilters.forest !== undefined && this.state.userFilters.forest !== "")) {
-                this.getModelOutputs();
-            }
-            // if only a forest has been selected
-            else {
-                this.averageModelOutputs();
-            }
+        if (this.state.userFilters.stateAbbreviation !== null && this.state.userFilters.stateAbbreviation !== undefined && this.state.userFilters.stateAbbreviation !== "") {        
+            this.averageModelOutputs();    
+            // // if a forest or national forest has been selected
+            // if ((this.state.userFilters.nationalForest !== null && this.state.userFilters.nationalForest !== undefined && this.state.userFilters.nationalForest !== "") || (this.state.userFilters.forest !== null && this.state.userFilters.forest !== undefined && this.state.userFilters.forest !== "")) {
+            //     this.getModelOutputs();
+            // }
+            // // if only a forest has been selected
+            // else {
+            //     this.averageModelOutputs();
+            // }
         }
         else {
             var inputs = {
@@ -1180,10 +1190,22 @@ class DataController extends Component {
                         predictiveModelInputs.spotst1 = (predictiveModelInputs.spotst1 / modelOutputs.length);
                         predictiveModelInputs.spotst2 = (predictiveModelInputs.spotst2 / modelOutputs.length);
 
+                        var setInputs = predictiveModelInputs;
+                        var setOutputs = predictiveModelOutputs;
+
+                        if (this.state.userFilters.forest !== null) {
+                            for (var i in modelOutputs) {
+                                if (modelOutputs[i].inputs.forest === this.state.userFilters.forest) {
+                                    setInputs = modelOutputs[i].inputs;
+                                    setOutputs = modelOutputs[i].outputs;
+                                }
+                            }
+                        }
+
                         this.setState({
                             predictiveModelOutputArray: modelOutputs,
-                            predictiveModelOutputs: predictiveModelOutputs,
-                            predictiveModelInputs: predictiveModelInputs,
+                            predictiveModelOutputs: setOutputs,
+                            predictiveModelInputs: setInputs,
                             runningModel: false
                         }, () => {
                             // set state of parent
@@ -1289,7 +1311,6 @@ class DataController extends Component {
                 xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xmlHttp.responseType = 'json';
                 xmlHttp.send(jQuery.param(filters));
-
             });
         });
     }
@@ -1297,7 +1318,7 @@ class DataController extends Component {
     // set new model input value for spb
     updateSPBSelection(value) {
         var predictiveModelInputs = Object.assign({}, this.state.predictiveModelInputs);
-        predictiveModelInputs.SPB = value;
+        predictiveModelInputs.SPB = parseInt(value);
 
         this.setState({
             predictiveModelInputs: predictiveModelInputs
@@ -1309,7 +1330,7 @@ class DataController extends Component {
     // set new model input value for cleridst1
     updateCleridst1Selection(value) {
         var predictiveModelInputs = Object.assign({}, this.state.predictiveModelInputs);
-        predictiveModelInputs.cleridst1 = value;
+        predictiveModelInputs.cleridst1 = parseInt(value);
 
         this.setState({
             predictiveModelInputs: predictiveModelInputs
@@ -1321,7 +1342,7 @@ class DataController extends Component {
     // set new model input value for spotst1
     updateSpotst1Selection(value) {
         var predictiveModelInputs = Object.assign({}, this.state.predictiveModelInputs);
-        predictiveModelInputs.spotst1 = value;
+        predictiveModelInputs.spotst1 = parseInt(value);
 
         this.setState({
             predictiveModelInputs: predictiveModelInputs
@@ -1333,7 +1354,7 @@ class DataController extends Component {
     // set new model input value for spotst2
     updateSpotst2Selection(value) {
         var predictiveModelInputs = Object.assign({}, this.state.predictiveModelInputs);
-        predictiveModelInputs.spotst2 = value;
+        predictiveModelInputs.spotst2 = parseInt(value);
 
         this.setState({
             predictiveModelInputs: predictiveModelInputs
@@ -1386,10 +1407,34 @@ class DataController extends Component {
             var dropDownContent = Object.assign({}, this.state.dropDownContent);
             dropDownContent.availableLocalForests = availableLocalForests;
 
+            var inputs = {
+                SPB: 0,
+                cleridst1: 0,
+                spotst1: 0,
+                spotst2: 0
+            };
+            var outputs = {
+                expSpotsIfOutbreak: 0,
+                prob0spots: 0,
+                prob19spots: 0,
+                prob53spots: 0,
+                prob147spots: 0,
+                prob402spots: 0,
+                prob1095spots: 0
+            };
+
+            for (var i in this.state.predictiveModelOutputArray) {
+                if (this.state.predictiveModelOutputArray.inputs[i].forest === this.state.userFilters.forest) {
+                    inputs = this.state.predictiveModelOutputArray[i].inputs;
+                    outputs = this.state.predictiveModelOutputArray[i].outputs;
+                }
+            }
+
             this.setState({
-                dropDownContent: dropDownContent
+                dropDownContent: dropDownContent,
+                predictiveModelInputs: inputs,
+                predictiveModelOutputs: outputs
             }, () => {
-                this.runModel();
 
                 // set state of parent
                 this.props.parent.setState({
@@ -1399,13 +1444,37 @@ class DataController extends Component {
         }
         // if only national forest is unselected, update it
         else if (this.state.userFilters.nationalForest === null && this.state.userFilters.forest !== null) {
-            dropDownContent = Object.assign({}, this.state.dropDownContent);
+            var dropDownContent = Object.assign({}, this.state.dropDownContent);
             dropDownContent.availableNationalForests = availableNationalForests;
 
+            var inputs = {
+                SPB: 0,
+                cleridst1: 0,
+                spotst1: 0,
+                spotst2: 0
+            };
+            var outputs = {
+                expSpotsIfOutbreak: 0,
+                prob0spots: 0,
+                prob19spots: 0,
+                prob53spots: 0,
+                prob147spots: 0,
+                prob402spots: 0,
+                prob1095spots: 0
+            };
+
+            for (var i in this.state.predictiveModelOutputArray) {
+                if (this.state.predictiveModelOutputArray[i].inputs.forest === this.state.userFilters.forest) {
+                    inputs = this.state.predictiveModelOutputArray[i].inputs;
+                    outputs = this.state.predictiveModelOutputArray[i].outputs;
+                }
+            }
+
             this.setState({
-                dropDownContent: dropDownContent
+                dropDownContent: dropDownContent,
+                predictiveModelInputs: inputs,
+                predictiveModelOutputs: outputs
             }, () => {
-                this.runModel();
 
                 // set state of parent
                 this.props.parent.setState({
@@ -1414,11 +1483,37 @@ class DataController extends Component {
             });
         }
         else {
-            this.runModel();
+            var inputs = {
+                SPB: 0,
+                cleridst1: 0,
+                spotst1: 0,
+                spotst2: 0
+            };
+            var outputs = {
+                expSpotsIfOutbreak: 0,
+                prob0spots: 0,
+                prob19spots: 0,
+                prob53spots: 0,
+                prob147spots: 0,
+                prob402spots: 0,
+                prob1095spots: 0
+            };
 
-            // set state of parent
-            this.props.parent.setState({
-                dataControllerState: this.state
+            for (var i in this.state.predictiveModelOutputArray) {
+                if (this.state.predictiveModelOutputArray.inputs[i].forest === this.state.userFilters.forest) {
+                    inputs = this.state.predictiveModelOutputArray[i].inputs;
+                    outputs = this.state.predictiveModelOutputArray[i].outputs;
+                }
+            }
+
+            this.setState({
+                predictiveModelInputs: inputs,
+                predictiveModelOutputs: outputs
+            }, () => {
+                // set state of parent
+                this.props.parent.setState({
+                    dataControllerState: this.state
+                });
             });
         }
     }

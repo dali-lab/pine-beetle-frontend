@@ -1,10 +1,11 @@
 #map {
-    height: 500px;
+    height: 540px;
 }
 
 .map-container {
     margin: 15px 31px;
     position: relative;
+    flex: 2 !important;
 }
 
 .map-overlay {
