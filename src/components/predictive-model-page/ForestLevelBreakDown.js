@@ -39,7 +39,7 @@ class ForestLevelBreakDown extends Component {
                 return(
                     <div>
                         <div className="flex-container">
-                            <div className="container" id="filter-selections">
+                            <div className="container dropdown-bar" id="pred-model-filters">
                                 <div id="selection-areas-view-data">
                                     <TextInput instructions="SPB" submitFunction={this.props.dataController.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"}/>
                                     <TextInput instructions="cleridst1" submitFunction={this.props.dataController.updateCleridst1Selection} valueToDisplay={this.state.inputs.cleridst1 !== null ? this.state.inputs.cleridst1 : "null"}/>

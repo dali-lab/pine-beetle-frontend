@@ -43,7 +43,7 @@ class MapBoxMap extends Component {
                     <NavigationControl onViewportChange={this.updateViewport} captureScroll={false} showCompass={false} />
                 </div>
 
-                <div className='map-overlay' id='legend'>
+                <div className='map-overlay-legend' id='legend'>
                     {this.state.legendTags}
                 </div>
 

@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import axios from 'axios';
 var jQuery = require("jquery");
+var $ = require("jquery");
 
 class DataController extends Component {
     constructor(props) {
@@ -1018,7 +1019,6 @@ class DataController extends Component {
     resetModelSelections() {
         for (var i in this.state.predictiveModelOutputArray) {
             if (this.state.predictiveModelOutputArray[i].inputs.forest === this.state.userFilters.forest) {
-                console.log(this.state.predictiveModelOutputArray[i])
                 this.setState({
                     predictiveModelInputs: this.state.predictiveModelOutputArray[i].inputs,
                     predictiveModelOutputs: this.state.predictiveModelOutputArray[i].outputs
@@ -1388,7 +1388,23 @@ class DataController extends Component {
 
     handleModelForestClick(e) {
         e.persist();
-        this.updateForestSelection(e.target.textContent)
+        this.updateForestSelection(e.target.textContent);
+
+        // scroll user down to chart area
+        if ($("#pred-model-filters").offset() !== undefined) {
+            $('html, body').animate({
+                scrollTop: $("#pred-model-filters").offset().top
+            }, 800);
+        }
+        else {
+            setTimeout(function() {
+                if ($("#pred-model-filters").offset() !== undefined) {
+                    $('html, body').animate({
+                        scrollTop: $("#pred-model-filters").offset().top
+                    }, 800);
+                }
+            }, 600);
+        }
     }
 
     // after the state has been updated, also update available forests and national forests
