@@ -14,8 +14,6 @@ class DataController extends Component {
         var startDate = (this.getCookie("startDate") !== null && this.getCookie("startDate") !== "null") ? this.getCookie("startDate") : 1986;
         var endDate = (this.getCookie("endDate") !== null && this.getCookie("endDate") !== "null") ? this.getCookie("endDate") : 2010;
         var predictiveModelDate = (this.getCookie("predictiveModelDate") !== null && this.getCookie("predictiveModelDate") !== "null") ? this.getCookie("predictiveModelDate") : 2010;
-        var runningModel = false;
-        var updatedStateSelection = true;
 
         // set state based off cookies
         this.state = {
@@ -68,8 +66,8 @@ class DataController extends Component {
                 endobrev: 1
             },
 
-            runningModel: runningModel,
-            updatedStateSelection: updatedStateSelection,
+            runningModel: false,
+            updatedStateSelection: true,
             initializeForests: true,
             hardStopModel: false,
             url: "",
@@ -157,7 +155,6 @@ class DataController extends Component {
         // set cookies
         this.setCookie("stateName", this.state.userFilters.stateName, 365);
         this.setCookie("stateAbbreviation", this.state.userFilters.stateAbbreviation, 365);
-        this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
         this.setCookie("forest", this.state.userFilters.forest, 365);
         this.setCookie("startDate", this.state.userFilters.startDate, 365);
         this.setCookie("endDate", this.state.userFilters.endDate, 365);
