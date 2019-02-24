@@ -10,7 +10,6 @@ class DataController extends Component {
         // determine initial state variables based on cookies
         var stateName = (this.getCookie("stateName") !== null && this.getCookie("stateName") !== "null") ? this.getCookie("stateName") : null;
         var stateAbbreviation = (this.getCookie("stateAbbreviation") !== null && this.getCookie("stateAbbreviation") !== "null") ? this.getCookie("stateAbbreviation") : null;
-        var nationalForest = (this.getCookie("nationalForest") !== null && this.getCookie("nationalForest") !== "null") ? this.getCookie("nationalForest") : null;
         var forest = (this.getCookie("forest") !== null && this.getCookie("forest") !== "null") ? this.getCookie("forest") : null;
         var startDate = (this.getCookie("startDate") !== null && this.getCookie("startDate") !== "null") ? this.getCookie("startDate") : 1986;
         var endDate = (this.getCookie("endDate") !== null && this.getCookie("endDate") !== "null") ? this.getCookie("endDate") : 2010;
@@ -24,7 +23,6 @@ class DataController extends Component {
             userFilters: {
                 stateName: stateName,
                 stateAbbreviation: stateAbbreviation,
-                nationalForest: nationalForest,
                 forest: forest,
                 startDate: startDate,
                 endDate: endDate,
@@ -36,10 +34,9 @@ class DataController extends Component {
             // arrays of states, forests, etc. to populate drop-down menus with
             dropDownContent: {
                 availableStates: [],
-                availableLocalForests: [],
-                availableNationalForests: [],
                 availableYears: [],
-                availableModelYears: []
+                availableModelYears: [],
+                availableForestsByNF: {}
             },
 
             // arrays of JSON data loaded from database
@@ -73,6 +70,8 @@ class DataController extends Component {
 
             runningModel: runningModel,
             updatedStateSelection: updatedStateSelection,
+            initializeForests: true,
+            hardStopModel: false,
             url: "",
 
             // map of state abbreviations to their names
@@ -140,12 +139,11 @@ class DataController extends Component {
         this.updateYearSelection = this.updateYearSelection.bind(this);
         this.updatePredictionYearSelection = this.updatePredictionYearSelection.bind(this);
         this.updateStateSelection = this.updateStateSelection.bind(this);
-        this.updateNationalForestSelection = this.updateNationalForestSelection.bind(this);
         this.updateForestSelection = this.updateForestSelection.bind(this);
         this.updateCurrentData = this.updateCurrentData.bind(this);
         this.clearCurrentData = this.clearCurrentData.bind(this);
         this.getHistoricalData = this.getHistoricalData.bind(this);
-        this.updateAvailableNationalForestsAndForests = this.updateAvailableNationalForestsAndForests.bind(this);
+        this.updateAvailableForestsByNF = this.updateAvailableForestsByNF.bind(this);
         this.runModel = this.runModel.bind(this);
         this.resetModelSelections = this.resetModelSelections.bind(this);
         this.getCustomModelOutputs = this.getCustomModelOutputs.bind(this);
@@ -181,8 +179,6 @@ class DataController extends Component {
     
             // initialize drop-down-menu options
             this.initializeAvailableStates();
-            this.initializeAvailableNationalForests();
-            this.initializeAvailableLocalForests();
             this.initializeAvailableYears(); // calls updateCurrentData when complete
 
             // get initial dates
@@ -194,7 +190,6 @@ class DataController extends Component {
         window.addEventListener("beforeunload", (ev) => {  
             this.setCookie("stateName", this.state.userFilters.stateName, 365);
             this.setCookie("stateAbbreviation", this.state.userFilters.stateAbbreviation, 365);
-            this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
             this.setCookie("forest", this.state.userFilters.forest, 365);
             this.setCookie("startDate", this.state.userFilters.startDate, 365);
             this.setCookie("endDate", this.state.userFilters.endDate, 365);
@@ -220,7 +215,7 @@ class DataController extends Component {
                  this.setState({
                      historicalData: historicalData
                  }, () => {
-                     this.updateAvailableNationalForestsAndForests();
+                     this.updateAvailableForestsByNF(false);
                  });
              }
          }.bind(this);
@@ -250,11 +245,6 @@ class DataController extends Component {
         // filter on state if the user has selected one
         if (this.state.userFilters.stateName !== null && this.state.userFilters.stateName !== "" && this.state.userFilters.stateAbbreviation !== null && this.state.userFilters.stateAbbreviation !== "") {
             filters.state = this.state.userFilters.stateAbbreviation;
-        }
-
-        // fitler on national forest if the user has selected one
-        if (this.state.userFilters.nationalForest !== null && this.state.userFilters.nationalForest !== "") {
-            filters.nf = this.state.userFilters.nationalForest;
         }
 
         // filter on forest if the user has selected one
@@ -371,110 +361,6 @@ class DataController extends Component {
          xmlHttp.send();
     }
 
-    // add input option fields for national forest selection
-    initializeAvailableNationalForests() {
-        if (this.state.userFilters.stateAbbreviation !== null) {
-            var filters = {
-                stateAbbreviation: this.state.userFilters.stateAbbreviation
-            }
-            var url = this.state.url + "getUniqueNationalForests";
-            var xmlHttp = new XMLHttpRequest();
-
-            xmlHttp.onload = function() {
-                // if the request was successful hold onto the data
-                if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-
-                    // update dropDownContent
-                    var dropDownContent = Object.assign({}, this.state.dropDownContent);
-                    dropDownContent.availableNationalForests = xmlHttp.response
-
-                    // update state
-                    this.setState({
-                        dropDownContent: dropDownContent
-                    }, () => {
-                        // set state of parent
-                        this.props.parent.setState({
-                            dataControllerState: this.state
-                        });
-                    });
-                }
-                // if the request failed, clear the data and notify the user
-                else {
-                    // update dropDownContent
-                    var dropDownContent = Object.assign({}, this.state.dropDownContent);
-                    dropDownContent.availableNationalForests = []
-
-                    // update state
-                    this.setState({
-                        dropDownContent: dropDownContent
-                    }, () => {
-                        // set state of parent
-                        this.props.parent.setState({
-                            dataControllerState: this.state
-                        });
-                    });
-                }
-            }.bind(this);
-
-            xmlHttp.open("POST", url, true);
-            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xmlHttp.responseType = 'json';
-            xmlHttp.send(jQuery.param(filters));
-        }
-    }
-
-    // add input option fields for local forest selection
-    initializeAvailableLocalForests() {
-        if (this.state.userFilters.stateAbbreviation !== null) {
-            var filters = {
-                stateAbbreviation: this.state.userFilters.stateAbbreviation
-            }
-            var url = this.state.url + "getUniqueLocalForests";
-            var xmlHttp = new XMLHttpRequest();
-
-            xmlHttp.onload = function() {
-                // if the request was successful hold onto the data
-                if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-
-                    // update dropDownContent
-                    var dropDownContent = Object.assign({}, this.state.dropDownContent);
-                    dropDownContent.availableLocalForests = xmlHttp.response
-
-                    // update state
-                    this.setState({
-                        dropDownContent: dropDownContent
-                    }, () => {
-                        // set state of parent
-                        this.props.parent.setState({
-                            dataControllerState: this.state
-                        });
-                    });
-                }
-                // if the request failed, clear the data and notify the user
-                else {
-                    // update dropDownContent
-                    var dropDownContent = Object.assign({}, this.state.dropDownContent);
-                    dropDownContent.availableLocalForests = []
-
-                    // update state
-                    this.setState({
-                        dropDownContent: dropDownContent
-                    }, () => {
-                        // set state of parent
-                        this.props.parent.setState({
-                            dataControllerState: this.state
-                        });
-                    });
-                }
-            }.bind(this);
-
-            xmlHttp.open("POST", url, true);
-            xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xmlHttp.responseType = 'json';
-            xmlHttp.send(jQuery.param(filters));
-        }
-    }
-
     // add input option fields for year selection
     initializeAvailableYears() {
         var url = this.state.url + "getUniqueYears";
@@ -497,7 +383,7 @@ class DataController extends Component {
                     // send query to database for data -- once this is complete, DataController will mount and send its state back to App, App then sends DataController to child components
                     this.updateCurrentData();
 
-                    if (this.state.userFilters.forest !== null || this.state.userFilters.nf !== null) {
+                    if (this.state.userFilters.forest !== null) {
                         this.runModel();
                     }
 
@@ -517,7 +403,7 @@ class DataController extends Component {
                  this.setState({
                      dropDownContent: dropDownContent
                  }, () => {
-                    if (this.state.userFilters.forest !== null || this.state.userFilters.nf !== null) {
+                    if (this.state.userFilters.forest !== null) {
                         this.runModel();
                     }
 
@@ -662,7 +548,6 @@ class DataController extends Component {
         if (state === null) {
             userFilters.stateName = null
             userFilters.stateAbbreviation = null
-            userFilters.nationalForest = null
             userFilters.forest = null
     
             this.setState({
@@ -671,7 +556,6 @@ class DataController extends Component {
                 // set cookies
                 this.setCookie("stateName", this.state.userFilters.stateName, 365);
                 this.setCookie("stateAbbreviation", this.state.userFilters.stateAbbreviation, 365);
-                this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
                 this.setCookie("forest", this.state.userFilters.forest, 365);
 
                 // update current data
@@ -684,13 +568,12 @@ class DataController extends Component {
             });
         }
         // if we were given a state name and not the abbreviation, we need to get its abbreviation
-        if (state.length > 2) {
+        else if (state.length > 2) {
             // search through map of state abbreviations to names to grab the correct one
             for (var abbrev in this.state.stateAbbrevToStateName) {
                 if (this.state.stateAbbrevToStateName[abbrev] === state) {
                     userFilters.stateName = state
                     userFilters.stateAbbreviation = abbrev
-                    userFilters.nationalForest = null
                     userFilters.forest = null
 
                     this.setState({
@@ -700,7 +583,6 @@ class DataController extends Component {
                         // set cookies
                         this.setCookie("stateName", this.state.userFilters.stateName, 365);
                         this.setCookie("stateAbbreviation", this.state.userFilters.stateAbbreviation, 365);
-                        this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
                         this.setCookie("forest", this.state.userFilters.forest, 365);
 
                         // update current data
@@ -721,7 +603,6 @@ class DataController extends Component {
                 if (this.state.stateAbbrevToStateID[abbrev] === state) {
                     userFilters.stateName = this.state.stateAbbrevToStateName[abbrev];
                     userFilters.stateAbbreviation = abbrev;
-                    userFilters.nationalForest = null;
                     userFilters.forest = null;
 
                     this.setState({
@@ -731,7 +612,6 @@ class DataController extends Component {
                         // set cookies
                         this.setCookie("stateName", this.state.userFilters.stateName, 365);
                         this.setCookie("stateAbbreviation", this.state.userFilters.stateAbbreviation, 365);
-                        this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
                         this.setCookie("forest", this.state.userFilters.forest, 365);
 
                         // update current data
@@ -752,7 +632,6 @@ class DataController extends Component {
                 if (abbrev === state) {
                     userFilters.stateName = this.state.stateAbbrevToStateName[abbrev];
                     userFilters.stateAbbreviation = abbrev;
-                    userFilters.nationalForest = null;
                     userFilters.forest = null;
 
                     this.setState({
@@ -762,7 +641,6 @@ class DataController extends Component {
                         // set cookies
                         this.setCookie("stateName", this.state.userFilters.stateName, 365);
                         this.setCookie("stateAbbreviation", this.state.userFilters.stateAbbreviation, 365);
-                        this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
                         this.setCookie("forest", this.state.userFilters.forest, 365);
 
                         // update current data
@@ -778,52 +656,6 @@ class DataController extends Component {
         }
     }
 
-    // update national forest selection -- clear forest if we are switching selections
-    updateNationalForestSelection(nationalForest) {
-        // if we are going from a null selection to a new selection, just update national forest
-        if (this.state.userFilters.nationalForest === null) {
-            var userFilters = Object.assign({}, this.state.userFilters);
-            userFilters.nationalForest = nationalForest;
-
-            this.setState({
-                userFilters: userFilters
-            }, () => {
-                // set cookies
-                this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
-
-                // update current data
-                this.updateCurrentData();
-
-                // set state of parent
-                this.props.parent.setState({
-                    dataControllerState: this.state
-                });
-            });
-        }
-        // if we are going from a non-null selection to a new selection, clear local forest
-        else {
-            var userFilters = Object.assign({}, this.state.userFilters);
-            userFilters.nationalForest = nationalForest;
-            userFilters.forest = null;
-
-            this.setState({
-                userFilters: userFilters
-            }, () => {
-                // set cookies
-                this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
-                this.setCookie("forest", this.state.userFilters.forest, 365);
-
-                // update current data
-                this.updateCurrentData();
-
-                // set state of parent
-                this.props.parent.setState({
-                    dataControllerState: this.state
-                });
-            });
-        }
-    }
-
     // update forest selection -- clear national forest if we are switching selections
     updateForestSelection(forest) {
         // if we are going from a null selection to a new selection, just update forest
@@ -832,7 +664,8 @@ class DataController extends Component {
             userFilters.forest = forest;
 
             this.setState({
-                userFilters: userFilters
+                userFilters: userFilters,
+                hardStopModel: true
             }, () => {
                 // set cookies
                 this.setCookie("forest", this.state.userFilters.forest, 365);
@@ -850,13 +683,11 @@ class DataController extends Component {
         else {
             var userFilters = Object.assign({}, this.state.userFilters);
             userFilters.forest = forest;
-            userFilters.nationalForest = null;
 
             this.setState({
                 userFilters: userFilters
             }, () => {
                 // set cookies
-                this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
                 this.setCookie("forest", this.state.userFilters.forest, 365);
 
                 // update current data
@@ -873,6 +704,11 @@ class DataController extends Component {
     // get data from database in a summarized format based on latitude and longitude
     updateSummarizedDataByLatLong() {
         var filters = this.setQueryFilters(false);
+
+        if (this.state.initializeForests) {
+            delete filters.forest
+        }
+
         var url = this.state.url + "getSummarizedDataByLatLongFilter";
         var xmlHttp = new XMLHttpRequest();
 
@@ -893,7 +729,7 @@ class DataController extends Component {
                      });
 
                      // update available drop-down items
-                     this.updateAvailableNationalForestsAndForests();
+                     this.updateAvailableForestsByNF(this.state.initializeForests);
                  });
              }
              // if the request failed, clear the data and notify the user
@@ -981,37 +817,44 @@ class DataController extends Component {
     }
 
     runModel() {
-        // if a state has been selected
-        if (this.state.userFilters.stateAbbreviation !== null && this.state.userFilters.stateAbbreviation !== undefined && this.state.userFilters.stateAbbreviation !== "" && this.state.updatedStateSelection) {        
-            this.averageModelOutputs();    
+        if (!this.state.hardStopModel) {
+            // if a state has been selected
+            if (this.state.userFilters.stateAbbreviation !== null && this.state.userFilters.stateAbbreviation !== undefined && this.state.userFilters.stateAbbreviation !== "") {        
+                this.averageModelOutputs();    
+            }
+            else {
+                var inputs = {
+                    SPB: 0,
+                    cleridst1: 0,
+                    spotst1: 0,
+                    spotst2: 0
+                }
+
+                var outputs = {
+                    prob0spots: 0,
+                    prob19spots: 0,
+                    prob53spots: 0,
+                    prob147spots: 0,
+                    prob402spots: 0,
+                    prob1095spots: 0,
+                    expSpotsIfOutbreak: 0
+                }
+
+                // set the state
+                this.setState({
+                    predictiveModelInputs: inputs,
+                    predictiveModelOutputs: outputs,
+                }, () => {
+                    // set state of parent
+                    this.props.parent.setState({
+                        dataControllerState: this.state
+                    });
+                });
+            }
         }
         else {
-            var inputs = {
-                SPB: 0,
-                cleridst1: 0,
-                spotst1: 0,
-                spotst2: 0
-            }
-
-            var outputs = {
-                prob0spots: 0,
-                prob19spots: 0,
-                prob53spots: 0,
-                prob147spots: 0,
-                prob402spots: 0,
-                prob1095spots: 0,
-                expSpotsIfOutbreak: 0
-            }
-
-            // set the state
             this.setState({
-                predictiveModelInputs: inputs,
-                predictiveModelOutputs: outputs
-            }, () => {
-                // set state of parent
-                this.props.parent.setState({
-                    dataControllerState: this.state
-                });
+                hardStopModel: false
             });
         }
     }
@@ -1032,7 +875,7 @@ class DataController extends Component {
         }
     }
 
-    // run the R model and store outputs -- call this when a state and nf/forest have been selected
+    // run the R model and store outputs -- call this when a state and forest have been selected -- deprecated
     getModelOutputs() {
         this.setState({
             runningModel: true
@@ -1117,7 +960,7 @@ class DataController extends Component {
         });
     }
 
-    // run model on all forests in a state then average outputs -- run this when only a state has been selected (and not a forest/nf)
+    // run model on all forests in a state then average outputs -- run this when only a state has been selected (and not a forest)
     averageModelOutputs() {
         this.setState({
             runningModel: true
@@ -1131,25 +974,16 @@ class DataController extends Component {
                 var promises = [];
 
                 // for each available forest, run the model and get the results
-                this.state.dropDownContent.availableLocalForests.forEach(function(forest) {
-                    var url = this.state.url + "getPredictions";
-                    var filters = {
-                        targetYear: this.state.userFilters.predictiveModelDate,
-                        state: this.state.userFilters.stateAbbreviation,
-                        forest: forest
-                    }
-                    promises.push(axios.post(url,filters))
-                }.bind(this));
-
-                // for each available national forest, run the model and get the results
-                this.state.dropDownContent.availableNationalForests.forEach(function(forest) {
-                    var url = this.state.url + "getPredictions";
-                    var filters = {
-                        targetYear: this.state.userFilters.predictiveModelDate,
-                        state: this.state.userFilters.stateAbbreviation,
-                        nf: forest
-                    }
-                    promises.push(axios.post(url,filters))
+                Object.keys(this.state.dropDownContent.availableForestsByNF).forEach(function(region) {
+                    this.state.dropDownContent.availableForestsByNF[region].forEach(function(forest) {
+                        var url = this.state.url + "getPredictions";
+                        var filters = {
+                            targetYear: this.state.userFilters.predictiveModelDate,
+                            state: this.state.userFilters.stateAbbreviation,
+                            forest: forest
+                        }
+                        promises.push(axios.post(url,filters))
+                    }.bind(this));
                 }.bind(this));
 
                 if (promises.length > 0) {
@@ -1226,7 +1060,8 @@ class DataController extends Component {
                             predictiveModelOutputs: setOutputs,
                             predictiveModelInputs: setInputs,
                             runningModel: false,
-                            updatedStateSelection: false
+                            updatedStateSelection: false,
+                            hardStopModel: false
                         }, () => {
                             // set state of parent
                             this.props.parent.setState({
@@ -1261,7 +1096,8 @@ class DataController extends Component {
                         predictiveModelOutputs: predictiveModelOutputs,
                         predictiveModelInputs: predictiveModelInputs,
                         runningModel: false,
-                        updatedStateSelection: false
+                        updatedStateSelection: false,
+                        hardStopModel: false
                     }, () => {
                         // set state of parent
                         this.props.parent.setState({
@@ -1407,159 +1243,92 @@ class DataController extends Component {
         }
     }
 
-    // after the state has been updated, also update available forests and national forests
-    updateAvailableNationalForestsAndForests() {
-        var availableNationalForests = [];
-        var availableLocalForests = [];
-
-        if (this.state.userFilters.stateName !== null && this.state.userFilters.stateAbbreviation !== null) {
+    updateAvailableForestsByNF(initialize) {
+        if (this.state.userFilters.stateName !== null && this.state.userFilters.stateAbbreviation !== null && (initialize || this.state.userFilters.forest === null)) {
+            var availableForestsByNF = {
+                "COUNTIES": []
+            };
+    
             for (var obj in this.state.historicalData.summarizedDataByLatLong) {
                 // grab national forest and local forests
                 var thisNF = this.state.historicalData.summarizedDataByLatLong[obj].nf;
                 var thisForest = this.state.historicalData.summarizedDataByLatLong[obj].forest;
-
-                // add to arrays
-                if (!availableNationalForests.includes(thisNF) && thisNF !== "") {
-                    availableNationalForests.push(thisNF);
-                }
-                if (!availableLocalForests.includes(thisForest) && thisForest !== "") {
-                    availableLocalForests.push(thisForest);
+    
+                if (thisForest !== null) {
+                    if (thisNF === "") {
+                        if (!availableForestsByNF["COUNTIES"].includes(thisForest)) {
+                            availableForestsByNF["COUNTIES"].push(thisForest);
+                        }
+                    }
+                    else {
+                        if (Object.keys(availableForestsByNF).includes(thisNF)) {
+                            if (!availableForestsByNF[thisNF].includes(thisForest)) {
+                                availableForestsByNF[thisNF].push(thisForest);
+                            }
+                        }
+                        else {
+                            availableForestsByNF[thisNF] = [thisForest];
+                        }
+                    }
                 }
             }
-        }
-
-        // if neither national forest or local forest is selected, update both
-        if (this.state.userFilters.nationalForest === null && this.state.userFilters.forest === null) {
-
+    
             var dropDownContent = Object.assign({}, this.state.dropDownContent);
-            dropDownContent.availableNationalForests = availableNationalForests;
-            dropDownContent.availableLocalForests = availableLocalForests;
+            dropDownContent.availableForestsByNF = availableForestsByNF;
 
+            var initializeForestsOld = this.state.initializeForests;
+    
             this.setState({
-                dropDownContent: dropDownContent
+                dropDownContent: dropDownContent,
+                initializeForests: false
             }, () => {
+                // set state of parent
+                this.props.parent.setState({
+                    dataControllerState: this.state
+                });
+
+                // if we are initializing, now grab data on specific forests
+                if (initializeForestsOld && this.state.userFilters.forest !== null) {
+                    this.updateSummarizedDataByLatLong()
+                }
+
                 this.runModel();
-
-                // set state of parent
-                this.props.parent.setState({
-                    dataControllerState: this.state
-                });
             });
         }
-        // if only local forest is unselected, update it
-        else if (this.state.userFilters.nationalForest !== null && this.state.userFilters.forest === null) {
-            var dropDownContent = Object.assign({}, this.state.dropDownContent);
-            dropDownContent.availableLocalForests = availableLocalForests;
 
-            var inputs = {
-                SPB: 0,
-                cleridst1: 0,
-                spotst1: 0,
-                spotst2: 0
-            };
-            var outputs = {
-                expSpotsIfOutbreak: 0,
-                prob0spots: 0,
-                prob19spots: 0,
-                prob53spots: 0,
-                prob147spots: 0,
-                prob402spots: 0,
-                prob1095spots: 0
-            };
+        var inputs = {
+            SPB: 0,
+            cleridst1: 0,
+            spotst1: 0,
+            spotst2: 0
+        };
+        var outputs = {
+            expSpotsIfOutbreak: 0,
+            prob0spots: 0,
+            prob19spots: 0,
+            prob53spots: 0,
+            prob147spots: 0,
+            prob402spots: 0,
+            prob1095spots: 0
+        };
 
-            for (var i in this.state.predictiveModelOutputArray) {
-                if (this.state.predictiveModelOutputArray[i].inputs.forest === this.state.userFilters.forest) {
-                    inputs = this.state.predictiveModelOutputArray[i].inputs;
-                    outputs = this.state.predictiveModelOutputArray[i].outputs;
-                }
+        for (var i in this.state.predictiveModelOutputArray) {
+            if (this.state.predictiveModelOutputArray[i].inputs.forest === this.state.userFilters.forest) {
+                inputs = this.state.predictiveModelOutputArray[i].inputs;
+                outputs = this.state.predictiveModelOutputArray[i].outputs;
             }
-
-            this.setState({
-                dropDownContent: dropDownContent,
-                predictiveModelInputs: inputs,
-                predictiveModelOutputs: outputs
-            }, () => {
-
-                // set state of parent
-                this.props.parent.setState({
-                    dataControllerState: this.state
-                });
-            });
         }
-        // if only national forest is unselected, update it
-        else if (this.state.userFilters.nationalForest === null && this.state.userFilters.forest !== null) {
-            var dropDownContent = Object.assign({}, this.state.dropDownContent);
-            dropDownContent.availableNationalForests = availableNationalForests;
 
-            var inputs = {
-                SPB: 0,
-                cleridst1: 0,
-                spotst1: 0,
-                spotst2: 0
-            };
-            var outputs = {
-                expSpotsIfOutbreak: 0,
-                prob0spots: 0,
-                prob19spots: 0,
-                prob53spots: 0,
-                prob147spots: 0,
-                prob402spots: 0,
-                prob1095spots: 0
-            };
+        this.setState({
+            predictiveModelInputs: inputs,
+            predictiveModelOutputs: outputs
+        }, () => {
 
-            for (var i in this.state.predictiveModelOutputArray) {
-                if (this.state.predictiveModelOutputArray[i].inputs.forest === this.state.userFilters.forest) {
-                    inputs = this.state.predictiveModelOutputArray[i].inputs;
-                    outputs = this.state.predictiveModelOutputArray[i].outputs;
-                }
-            }
-
-            this.setState({
-                dropDownContent: dropDownContent,
-                predictiveModelInputs: inputs,
-                predictiveModelOutputs: outputs
-            }, () => {
-
-                // set state of parent
-                this.props.parent.setState({
-                    dataControllerState: this.state
-                });
+            // set state of parent
+            this.props.parent.setState({
+                dataControllerState: this.state
             });
-        }
-        else {
-            var inputs = {
-                SPB: 0,
-                cleridst1: 0,
-                spotst1: 0,
-                spotst2: 0
-            };
-            var outputs = {
-                expSpotsIfOutbreak: 0,
-                prob0spots: 0,
-                prob19spots: 0,
-                prob53spots: 0,
-                prob147spots: 0,
-                prob402spots: 0,
-                prob1095spots: 0
-            };
-
-            for (var i in this.state.predictiveModelOutputArray) {
-                if (this.state.predictiveModelOutputArray[i].inputs.forest === this.state.userFilters.forest) {
-                    inputs = this.state.predictiveModelOutputArray[i].inputs;
-                    outputs = this.state.predictiveModelOutputArray[i].outputs;
-                }
-            }
-
-            this.setState({
-                predictiveModelInputs: inputs,
-                predictiveModelOutputs: outputs
-            }, () => {
-                // set state of parent
-                this.props.parent.setState({
-                    dataControllerState: this.state
-                });
-            });
-        }
+        });
     }
 
     // set current to total and update menus/dropdowns
@@ -1567,7 +1336,6 @@ class DataController extends Component {
         var userFilters = Object.assign({}, this.state.userFilters);
         userFilters.stateName = null;
         userFilters.stateAbbreviation = null;
-        userFilters.nationalForest = null;
         userFilters.forest = null;
         userFilters.startDate = this.state.userFilters.originalStartDate;
         userFilters.endDate = this.state.userFilters.originalEndDate;
@@ -1577,8 +1345,7 @@ class DataController extends Component {
         historicalData.currentData = [];
 
         var dropDownContent = Object.assign({}, this.state.dropDownContent);
-        dropDownContent.availableNationalForests = [];
-        dropDownContent.availableLocalForests = [];
+        dropDownContent.availableForestsByNF = {};
 
         this.setState({
             userFilters: userFilters,
@@ -1588,7 +1355,6 @@ class DataController extends Component {
             // set cookies
             this.setCookie("stateName", this.state.userFilters.stateName, 365);
             this.setCookie("stateAbbreviation", this.state.userFilters.stateAbbreviation, 365);
-            this.setCookie("nationalForest", this.state.userFilters.nationalForest, 365);
             this.setCookie("forest", this.state.userFilters.forest, 365);
             this.setCookie("startDate", this.state.userFilters.startDate, 365);
             this.setCookie("endDate", this.state.userFilters.endDate, 365);

@@ -4,6 +4,7 @@ import { CSVDownload } from "react-csv";
 import ReactTooltip from 'react-tooltip';
 import TextInput from './input-components/TextInput';
 import ChoiceInput from './input-components/ChoiceInput';
+import OptgroupChoiceInput from'./input-components/OptgroupChoiceInput';
 import '../../styles/selection-bars/InputFields.css';
 var jQuery = require("jquery");
 
@@ -18,8 +19,7 @@ class HistoricalDataSelectionBar extends Component {
             nationalForest: null,
             forest: null,
             availableStates: [],
-            availableNationalForests: [],
-            availableLocalForests: [],
+            availableForestsByNF: {},
             csvDownload: null
         }
 
@@ -41,8 +41,7 @@ class HistoricalDataSelectionBar extends Component {
                         <TextInput instructions="Enter End Year" submitFunction={this.props.dataController.updateEndDate} valueToDisplay={this.state.endDate}/>
 
                         <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
-                        <ChoiceInput instructions="Select Natl Forest" submitFunction={this.props.dataController.updateNationalForestSelection} availableOptions={this.state.availableNationalForests} idName="nationalForest" value={this.state.nationalForest} ref={this.nationalForestInput}/>
-                        <ChoiceInput instructions="Select Local Forest" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableLocalForests} idName="forest" value={this.state.forest} ref={this.forestInput}/>
+                        <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput}/>
 
                         <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
                         <button id="adjust-map-size-button" className="submit static-button" onClick={this.props.movePredictionModelDown} data-tip="Move the charts and map around">Toggle View</button>
@@ -55,6 +54,9 @@ class HistoricalDataSelectionBar extends Component {
     		</div>
         );
     }
+
+    // <ChoiceInput instructions="Select Natl Forest" submitFunction={this.props.dataController.updateNationalForestSelection} availableOptions={this.state.availableNationalForests} idName="nationalForest" value={this.state.nationalForest} ref={this.nationalForestInput}/>
+    // <ChoiceInput instructions="Select Local Forest" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableLocalForests} idName="forest" value={this.state.forest} ref={this.forestInput}/>
 
     // on mount, update the state
     componentDidMount() {
@@ -75,8 +77,7 @@ class HistoricalDataSelectionBar extends Component {
             nationalForest: props.dataControllerState.userFilters.nationalForest,
             forest: props.dataControllerState.userFilters.forest,
             availableStates: props.dataControllerState.dropDownContent.availableStates,
-            availableNationalForests: props.dataControllerState.dropDownContent.availableNationalForests,
-            availableLocalForests: props.dataControllerState.dropDownContent.availableLocalForests
+            availableForestsByNF: props.dataControllerState.dropDownContent.availableForestsByNF
         });
     }
 

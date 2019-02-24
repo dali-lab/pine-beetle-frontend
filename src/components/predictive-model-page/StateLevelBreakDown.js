@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import LoadingContainer from '../LoadingContainer';
 import PredictiveMap from './mapbox/PredictiveMap.js';
 import ModelBreakDown from './ModelBreakDown.js';
 

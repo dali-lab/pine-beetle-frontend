@@ -35,7 +35,7 @@ class ForestLevelBreakDown extends Component {
             if (this.state.dataControllerState.runningModel) {
                 return null;
             }
-            else if (this.state.dataControllerState.userFilters.nationalForest !== null || this.state.dataControllerState.userFilters.forest !== null) {
+            else if (this.state.dataControllerState.userFilters.forest !== null) {
                 return(
                     <div>
                         <div className="flex-container">

@@ -11,7 +11,7 @@ class RunningModel extends Component {
                 </div>
 
                 <div id="suggestion-section">
-                    <p>Please wait while we generate predictions for <span style={{fontWeight: "bold"}}>{this.props.dataControllerState.userFilters.stateName}</span>.</p>
+                    <p>Please wait while we generate predictions for <span style={{fontWeight: "bold"}}>{this.props.dataControllerState.userFilters.stateName + " in " + this.props.dataControllerState.userFilters.predictiveModelDate}</span>.</p>
                 </div>
             </div>
         );
