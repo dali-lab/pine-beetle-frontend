@@ -1,12 +1,24 @@
+
 .about-project p, .next-steps p, .using-product p {
-    text-align: left;
-    margin: 15px 50px;
-    line-height: 2;
+    text-align: justify;
+    margin: 0px 100px 15px 100px;
+    line-height: 1.5;
+    color: white;
+}
+
+.about-project h2 {
+  text-align: left;
+  margin: 15px 100px 15px 100px;
+  color: white;
 }
 
 .about-project {
     flex-direction: column;    /* vertical alignment of flex items */
     justify-content: flex-start;   /* center flex items vertically */
+    background-image: url("../assets/about-background.png");
+    background-size: cover;
+    background-position: bottom;
+    border-radius: 0px;
 }
 
 .about-project a {
@@ -47,12 +59,6 @@ a:hover {
     text-decoration: underline;
 }
 
-.meet-team img {
-    width: 225px;
-    height: 225px;
-    border-radius: 50%;
-}
-
 #people-previews {
     height: auto;
     display: block;
@@ -66,20 +72,34 @@ a:hover {
     margin-top: 10px;
 }
 
+
+.history {
+  flex: 4 !important;
+}
+
 .person {
+    flex: 1 !important;
+}
+
+.person img {
     display: inline-block;
-    margin-left: 4%;
-    margin-right: 4%;
-    margin-top: 15px;
+    border-radius: 50%;
+    margin: 0px 100px 0px 0px;
 }
 
 .using-product {
-    flex-direction: column !important;    /* vertical alignment of flex items */
+    flex-direction: row !important;    /* vertical alignment of flex items */
     justify-content: flex-start !important;   /* center flex items vertically */
 }
 
-#partners-cooperators {
-    flex: 1.5 !important;
+.using-product h2 {
+      text-align: left;
+      margin: 15px 100px 15px 100px;
+      font-size: 18px;
+}
+
+.next-steps {
+    flex: 2 !important;
     flex-direction: column !important;    /* vertical alignment of flex items */
     justify-content: flex-start !important;   /* center flex items vertically */
     text-align: left;
@@ -109,19 +129,50 @@ a:hover {
     margin-top: 15px;
 }
 
+.next-steps h2 {
+      text-align: left;
+      font-size: 18px;
+      margin: 0px 100px 5px 100px;
+      font-size: 18px;
+}
+
+.next-steps h3 {
+      text-align: left;
+      font-size: 18px;
+      margin: 30px 50px 5px 100px;
+}
+
+.next-steps p {
+    color: #000000;
+    font-size: 14px;
+    margin: 0px 10px 0px 100px;
+}
+
+.contact-info {
+  font-size: 14px;
+  flex-grow: 1;
+  padding: 10px;
+}
+
 .contact-info h4 {
     font-weight: lighter;
     font-style: italic;
-    padding-bottom: 2px;
+    /* padding-bottom: 2px; */
 }
 
 .contact-info h3 {
-    padding-bottom: 5px;
+    /* padding-bottom: 5px; */
+}
+
+.using-product p {
+    color: #000000;
 }
 
 .contact-info a, .using-product a {
     text-decoration: none;
-    color: inherit;
+    color: #000000;
+    font-size: 14px;
+
 }
 
 .using-product a:hover {
@@ -134,12 +185,16 @@ a:hover {
 }
 
 .info-box {
-    background-color: #ABB2B5;
-    padding: 10px;
-    border-radius: 5px;
+    flex-wrap: wrap;
+    background: #F2F5E8;
+    padding: 7%;
     margin-bottom: 15px;
 }
 
 #pad-top {
-    padding-top: 10px;
+    padding-top: 10%;
+}
+
+.bottom {
+  flex-direction: column;
 }

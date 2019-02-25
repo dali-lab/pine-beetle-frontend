@@ -1,40 +1,51 @@
 #header {
     height: auto;
-    margin: 31px 31px 15px 31px;
-    border-radius: 5px;
-    background-color: #E5E5E5;
+    margin: 0px;
+
+    /* margin: 15px 15px 15px 15px; */
+    background-color: #3F5726;
 }
 
 #title-area {
-    float: left;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: #3F5726; /* #E9C46A;*/
 }
 
 #title-area a {
     text-decoration: none;
-    color: #212122;
+    color: #000000; /* #212122; */
+}
+
+#title-area img {
+  height: 55px;
+  width: 55px;
 }
 
 #title-area h1 {
     padding-bottom: 0px;
 }
 
+#logo {
+  float: left;
+}
+
 #nav-button-area {
-    float: right;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 20px;
+    /* float: center; */
+    display: inline-block;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 50px;
 }
 
 #nav-buttons p {
-    color: #212122;
+    color: #ffffff; /*#62731D;*/
     float: left;
-    padding: 12px;
-    border-radius: 5px;
+    padding: 15px;
+    border-radius: 0px;
     text-decoration: none;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 14px;
     cursor: pointer;
 
     -o-transition:.3s;
@@ -42,15 +53,17 @@
     -moz-transition:.3s;
     -webkit-transition:.3s;
     transition:.3s;
+    border-bottom: 1px solid transparent;
 }
 
 #nav-buttons p:hover {
-    background-color: #E9C46A;
+    background-color: #3F5726; /* #E9C46A;*/
     -o-transition:.5s;
     -ms-transition:.5s;
     -moz-transition:.5s;
     -webkit-transition:.5s;
     transition:.5s;
+    border-color: white;
 }
 
 #middle {
