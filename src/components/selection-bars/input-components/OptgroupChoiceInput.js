@@ -58,9 +58,9 @@ class OptgroupChoiceInput extends Component {
             }
         }
 
-        var options = [];
+        options = [];
 
-        for (var forest in props.availableOptions["COUNTIES"]) {
+        for (forest in props.availableOptions["COUNTIES"]) {
             options.push(<option value={props.availableOptions["COUNTIES"][forest]} key={forest+1}>{props.availableOptions["COUNTIES"][forest]}</option>);
         }
 

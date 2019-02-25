@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Chart, Line} from 'react-chartjs-2';
+import {Line} from 'react-chartjs-2';
 import ReactTooltip from 'react-tooltip'
 import math from 'mathjs';
 import '../../styles/historical-data-page/LineChartArea.css';
@@ -16,18 +16,21 @@ class LineChartArea extends Component {
                         data: [],
                         label: "Total Spots",
                         borderColor: "#1f77b4",
+                        backgroundColor: 'rgba(31, 119, 180, 0.5)',
                         fill: false
                     },
                     {
                         data: [],
                         label: "Total SPB Per Two Weeks",
                         borderColor: "#ff7f0e",
+                        backgroundColor: 'rgba(255, 127, 14, 0.5)',
                         fill: false
                     },
                     {
                         data: [],
                         label: "Total Clerids Per Two Weeks",
                         borderColor: "#2ca02c",
+                        backgroundColor: 'rgba(44, 160, 44, 0.5)',
                         fill: false
                     }
                 ]
@@ -136,7 +139,7 @@ class LineChartArea extends Component {
                 // add data and labels to object
                 for (var i in props.data) {
                     var year = props.data[i].year
-                    var yearNum = year - startDate
+                    yearNum = year - startDate
 
                     // update spots count
                     if (props.data[i].spots != null) {
@@ -206,11 +209,13 @@ class LineChartArea extends Component {
                 }
 
                 // set new y-axis height
-                this.state.chartOptions.scales.yAxes[0].ticks.max = max
+                var chartOptions =  Object.assign({}, this.state.chartOptions);
+                chartOptions.scales.yAxes[0].ticks.max = max
 
                 // update state
                 this.setState({
                     chartData: chartData,
+                    chartOptions: chartOptions,
                     spotsMean: spotsMean,
                     spotsSD: spotsSD,
                     spbMean: spbMean,

@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import LoadingContainer from '../LoadingContainer';
 import HistoricalDataSelectionBar from '../selection-bars/HistoricalDataSelectionBar';
 import LineChartArea from './LineChartArea';
-import BarChartArea from './BarChartArea';
-import { Map } from 'react-arcgis';
 import MapBoxMap from './mapbox/MapBoxMap';
 import MapSideBar from './MapSideBar';
 import '../../styles/historical-data-page/ViewHistoricalData.css';

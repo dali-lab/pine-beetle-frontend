@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactMapGL, {NavigationControl, Marker, Popup, Layer, Feature} from 'react-map-gl';
+import ReactMapGL, {NavigationControl, Marker, Popup} from 'react-map-gl';
 import Pin from './Pin';
 import PopupContent from './PopupContent';
 import '../../../styles/historical-data-page/mapbox/MapBoxMap.css';
@@ -77,6 +77,7 @@ class MapBoxMap extends Component {
 
     componentDidMount() {
         this.updateStateFromProps(this.props);
+        window.addEventListener("resize", this.updateMapDimensions.bind(this));     // add resize event listener
     }
 
     // if receiving new data, update the state
@@ -133,11 +134,6 @@ class MapBoxMap extends Component {
     handleMouseClick(event) {
         console.log("MOUSE WAS CLICKED")
         console.log(event)
-    }
-
-    // add resize event listener
-    componentDidMount() {
-        window.addEventListener("resize", this.updateMapDimensions.bind(this));
     }
 
     // remove event listener

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 import { CSVDownload } from "react-csv";
 import ReactTooltip from 'react-tooltip';
 import TextInput from './input-components/TextInput';

@@ -264,7 +264,7 @@ class PredictiveMap extends Component {
                 });
             }
             else {
-                var mapLayer = this.state.map.getLayer('forests-join');
+                mapLayer = this.state.map.getLayer('forests-join');
                 if (typeof mapLayer !== 'undefined') {
                     this.state.map.removeLayer("forests-join");
                 }
@@ -276,7 +276,7 @@ class PredictiveMap extends Component {
             }
         }
         else {
-            var mapLayer = this.state.map.getLayer('forests-join');
+            mapLayer = this.state.map.getLayer('forests-join');
             if (typeof mapLayer !== 'undefined') {
                 this.state.map.removeLayer("forests-join");
             }

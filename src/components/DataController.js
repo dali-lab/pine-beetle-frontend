@@ -234,7 +234,7 @@ class DataController extends Component {
         }
         // filter on start date and end date
         else {
-            var filters = {
+            filters = {
                 startDate: this.state.userFilters.startDate,
                 endDate: this.state.userFilters.endDate
             }
@@ -339,7 +339,7 @@ class DataController extends Component {
              // if the request failed, clear the data and notify the user
              else {
                  // update dropDownContent
-                 var dropDownContent = Object.assign({}, this.state.dropDownContent);
+                 dropDownContent = Object.assign({}, this.state.dropDownContent);
                  dropDownContent.availableStates = []
 
                 // update state
@@ -394,7 +394,7 @@ class DataController extends Component {
              // if the request failed, clear the data and notify the user
              else {
                  // update dropDownContent
-                 var dropDownContent = Object.assign({}, this.state.dropDownContent);
+                 dropDownContent = Object.assign({}, this.state.dropDownContent);
                  dropDownContent.availableYears = []
 
                  // update state
@@ -597,7 +597,7 @@ class DataController extends Component {
         // if we were given the state ID, select based on that
         else if (state.length === 2 && typeof parseInt(state) === "number") {
             // search through map of state abbreviations to names to grab the correct one
-            for (var abbrev in this.state.stateAbbrevToStateID) {
+            for (abbrev in this.state.stateAbbrevToStateID) {
                 if (this.state.stateAbbrevToStateID[abbrev] === state) {
                     userFilters.stateName = this.state.stateAbbrevToStateName[abbrev];
                     userFilters.stateAbbreviation = abbrev;
@@ -679,7 +679,7 @@ class DataController extends Component {
         }
         // if we are going from a non-null selection to a new selection, clear national forest
         else {
-            var userFilters = Object.assign({}, this.state.userFilters);
+            userFilters = Object.assign({}, this.state.userFilters);
             userFilters.forest = forest;
 
             this.setState({
@@ -732,7 +732,7 @@ class DataController extends Component {
              }
              // if the request failed, clear the data and notify the user
              else {
-                 var historicalData = Object.assign({}, this.state.historicalData);
+                 historicalData = Object.assign({}, this.state.historicalData);
                  historicalData.summarizedDataByLatLong = []
 
                  this.setState({
@@ -787,7 +787,7 @@ class DataController extends Component {
              }
              // if the request failed, clear the data and notify the user
              else {
-                 var historicalData = Object.assign({}, this.state.historicalData);
+                 historicalData = Object.assign({}, this.state.historicalData);
                  historicalData.summarizedDataByYear = [];
 
                  this.setState({
@@ -931,7 +931,7 @@ class DataController extends Component {
                             expSpotsIfOutbreak: 0
                         }
 
-                        var modelOutputs = [{
+                        modelOutputs = [{
                             inputs: inputs,
                             outputs: outputs
                         }];
