@@ -1057,7 +1057,10 @@ class DataController extends Component {
                         }
 
                         var userFilters = Object.assign({}, this.state.userFilters);
-                        userFilters.forest = modelOutputs[0].inputs.forest;
+
+                        if (this.state.userFilters.forest === null) {
+                            userFilters.forest = modelOutputs[0].inputs.forest;
+                        }
 
                         this.setState({
                             predictiveModelOutputArray: modelOutputs,
