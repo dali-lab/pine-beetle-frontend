@@ -1115,7 +1115,7 @@ class DataController extends Component {
     }
 
     // run the R model and store outputs -- run this when the user puts custom model inputs in
-    getCustomModelOutputs() {
+    getCustomModelOutputs(inputs) {
         this.setState({
             runningModel: true
         }, () => {
@@ -1124,58 +1124,62 @@ class DataController extends Component {
                 dataControllerState: this.state
             }, () => {
 
-                var url = this.state.url + "getCustomPredictions";
-                var xmlHttp = new XMLHttpRequest();
-                var filters = this.state.predictiveModelInputs;
+                this.setState({
+                    predictiveModelInputs: inputs
+                }, () => {
+                    var url = this.state.url + "getCustomPredictions";
+                    var xmlHttp = new XMLHttpRequest();
+                    var filters = this.state.predictiveModelInputs;
 
-                xmlHttp.onload = function() {
-                    // if the request was successful hold onto the data
-                    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                    xmlHttp.onload = function() {
+                        // if the request was successful hold onto the data
+                        if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
 
-                        // set the state
-                        this.setState({
-                            predictiveModelOutputs: xmlHttp.response,
-                            runningModel: false,
-                            updatedStateSelection: false
-                        }, () => {
-                            // set state of parent
-                            this.props.parent.setState({
-                                dataControllerState: this.state
+                            // set the state
+                            this.setState({
+                                predictiveModelOutputs: xmlHttp.response,
+                                runningModel: false,
+                                updatedStateSelection: false
+                            }, () => {
+                                // set state of parent
+                                this.props.parent.setState({
+                                    dataControllerState: this.state
+                                });
                             });
-                        });
-                    }
-                    // if the request failed, clear the data and notify the user
-                    else {
-
-                        var outputs = {
-                            prob0spots: 0,
-                            prob19spots: 0,
-                            prob53spots: 0,
-                            prob147spots: 0,
-                            prob402spots: 0,
-                            prob1095spots: 0,
-                            expSpotsIfOutbreak: 0
                         }
+                        // if the request failed, clear the data and notify the user
+                        else {
 
-                        // set the state
-                        this.setState({
-                            predictiveModelOutputs: outputs,
-                            runningModel: false,
-                            updatedStateSelection: false
-                        }, () => {
-                            // set state of parent
-                            this.props.parent.setState({
-                                dataControllerState: this.state
+                            var outputs = {
+                                prob0spots: 0,
+                                prob19spots: 0,
+                                prob53spots: 0,
+                                prob147spots: 0,
+                                prob402spots: 0,
+                                prob1095spots: 0,
+                                expSpotsIfOutbreak: 0
+                            }
+
+                            // set the state
+                            this.setState({
+                                predictiveModelOutputs: outputs,
+                                runningModel: false,
+                                updatedStateSelection: false
+                            }, () => {
+                                // set state of parent
+                                this.props.parent.setState({
+                                    dataControllerState: this.state
+                                });
                             });
-                        });
-                    }
-                }.bind(this);
+                        }
+                    }.bind(this);
 
-                xmlHttp.open("POST", url, true);
-                xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xmlHttp.responseType = 'json';
-                xmlHttp.send(jQuery.param(filters));
-            });
+                    xmlHttp.open("POST", url, true);
+                    xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xmlHttp.responseType = 'json';
+                    xmlHttp.send(jQuery.param(filters));
+                });
+            });                
         });
     }
 
@@ -1186,8 +1190,6 @@ class DataController extends Component {
 
         this.setState({
             predictiveModelInputs: predictiveModelInputs
-        }, () => {
-            this.getCustomModelOutputs();
         });
     }
 
@@ -1198,8 +1200,6 @@ class DataController extends Component {
 
         this.setState({
             predictiveModelInputs: predictiveModelInputs
-        }, () => {
-            this.getCustomModelOutputs();
         });
     }
 
@@ -1210,8 +1210,6 @@ class DataController extends Component {
 
         this.setState({
             predictiveModelInputs: predictiveModelInputs
-        }, () => {
-            this.getCustomModelOutputs();
         });
     }
 
@@ -1222,8 +1220,6 @@ class DataController extends Component {
 
         this.setState({
             predictiveModelInputs: predictiveModelInputs
-        }, () => {
-            this.getCustomModelOutputs();
         });
     }
 
@@ -1235,8 +1231,6 @@ class DataController extends Component {
 
             this.setState({
                 predictiveModelInputs: predictiveModelInputs
-            }, () => {
-                this.getCustomModelOutputs();
             });
         }
     }
