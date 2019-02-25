@@ -119,7 +119,7 @@ class BarChartArea extends Component {
                 // add data and labels to object
                 for (var i in props.data) {
                     var year = props.data[i].year
-                    var yearNum = year - startDate
+                    yearNum = year - startDate
 
                     // update spots count
                     if (props.data[i].spots != null) {
@@ -189,11 +189,13 @@ class BarChartArea extends Component {
                 }
 
                 // set new y-axis height
-                this.state.chartOptions.scales.yAxes[0].ticks.max = max
+                var chartOptions =  Object.assign({}, this.state.chartOptions);
+                chartOptions.scales.yAxes[0].ticks.max = max
 
                 // update state
                 this.setState({
                     chartData: chartData,
+                    chartOptions: chartOptions,
                     spotsMean: spotsMean,
                     spotsSD: spotsSD,
                     spbMean: spbMean,

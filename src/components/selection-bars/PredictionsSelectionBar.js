@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
-import TextInput from './input-components/TextInput';
 import ChoiceInput from './input-components/ChoiceInput';
+import OptgroupChoiceInput from './input-components/OptgroupChoiceInput';
 import '../../styles/selection-bars/InputFields.css';
 
 class PredictionsSelectionBar extends Component {
@@ -14,12 +13,14 @@ class PredictionsSelectionBar extends Component {
             nationalForest: null,
             forest: null,
             availableStates: [],
-            availableNationalForests: [],
-            availableLocalForests: []
+            availableModelYears: [],
+            availableForestsByNF: {}
         }
 
         // bind functions
         this.updateStateFromProps = this.updateStateFromProps.bind(this);
+        this.updateForestSelection = this.updateForestSelection.bind(this);
+        this.updateNationalForestSelection = this.updateNationalForestSelection.bind(this);
 
         // create refs
         this.yearInput = React.createRef();
@@ -32,10 +33,9 @@ class PredictionsSelectionBar extends Component {
             <div className="flex-container">
                 <div className="container" id="filter-selections">
                     <div id="selection-areas-view-data">
-                        <ChoiceInput instructions="Select Year" submitFunction={this.props.dataController.updatePredictionYearSelection} availableOptions={this.state.availableYears} idName="year" value={this.state.predictiveModelDate} ref={this.yearInput}/>
+                        <ChoiceInput instructions="Select Year" submitFunction={this.props.dataController.updatePredictionYearSelection} availableOptions={this.state.availableModelYears} idName="year" value={this.state.predictiveModelDate} ref={this.yearInput}/>
                         <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
-                        <ChoiceInput instructions="Select Natl Forest" submitFunction={this.props.dataController.updateNationalForestSelection} availableOptions={this.state.availableNationalForests} idName="nationalForest" value={this.state.nationalForest} ref={this.nationalForestInput}/>
-                        <ChoiceInput instructions="Select Local Forest" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableLocalForests} idName="forest" value={this.state.forest} ref={this.forestInput}/>
+                        <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput}/>
 
                         <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
                     </div>
@@ -62,10 +62,53 @@ class PredictionsSelectionBar extends Component {
             nationalForest: props.dataControllerState.userFilters.nationalForest,
             forest: props.dataControllerState.userFilters.forest,
             availableStates: props.dataControllerState.dropDownContent.availableStates,
-            availableNationalForests: props.dataControllerState.dropDownContent.availableNationalForests,
-            availableLocalForests: props.dataControllerState.dropDownContent.availableLocalForests,
-            availableYears: props.dataControllerState.dropDownContent.availableYears
+            availableModelYears: props.dataControllerState.dropDownContent.availableModelYears,
+            availableForestsByNF: props.dataControllerState.dropDownContent.availableForestsByNF
         });
+    }
+
+    updateForestSelection(value) {
+        this.props.dataController.updateForestSelection(value);
+
+        // scroll the user down to the chart area
+        // if (value !== null) {
+        //     if ($("#pred-model-filters").offset() !== undefined) {
+        //         $('html, body').animate({
+        //             scrollTop: $("#pred-model-filters").offset().top
+        //         }, 800);
+        //     }
+        //     else {
+        //         setTimeout(function() {
+        //             if ($("#pred-model-filters").offset() !== undefined) {
+        //                 $('html, body').animate({
+        //                     scrollTop: $("#pred-model-filters").offset().top
+        //                 }, 800);
+        //             }
+        //         }, 600);
+        //     }
+        // }
+    }
+
+    updateNationalForestSelection(value) {
+        this.props.dataController.updateNationalForestSelection(value);
+        
+        // scroll the user down to the chart area
+        // if (value !== null) {
+        //     if ($("#pred-model-filters").offset() !== undefined) {
+        //         $('html, body').animate({
+        //             scrollTop: $("#pred-model-filters").offset().top
+        //         }, 800);
+        //     }
+        //     else {
+        //         setTimeout(function() {
+        //             if ($("#pred-model-filters").offset() !== undefined) {
+        //                 $('html, body').animate({
+        //                     scrollTop: $("#pred-model-filters").offset().top
+        //                 }, 800);
+        //             }
+        //         }, 600);
+        //     }
+        // }
     }
 }
 
