@@ -150,6 +150,7 @@ class DataController extends Component {
         this.updateCleridst1Selection = this.updateCleridst1Selection.bind(this);
         this.updateSpotst1Selection = this.updateSpotst1Selection.bind(this);
         this.updateSpotst2Selection = this.updateSpotst2Selection.bind(this);
+        this.updateEndobrevSelection = this.updateEndobrevSelection.bind(this);
         this.handleModelForestClick = this.handleModelForestClick.bind(this);
 
         // set cookies
@@ -824,7 +825,8 @@ class DataController extends Component {
                     SPB: 0,
                     cleridst1: 0,
                     spotst1: 0,
-                    spotst2: 0
+                    spotst2: 0,
+                    endobrev: 1
                 }
 
                 var outputs = {
@@ -915,7 +917,8 @@ class DataController extends Component {
                             SPB: 0,
                             cleridst1: 0,
                             spotst1: 0,
-                            spotst2: 0
+                            spotst2: 0,
+                            endobrev: 1
                         }
         
                         var outputs = {
@@ -977,7 +980,8 @@ class DataController extends Component {
                         var filters = {
                             targetYear: this.state.userFilters.predictiveModelDate,
                             state: this.state.userFilters.stateAbbreviation,
-                            forest: forest
+                            forest: forest,
+                            endobrev: this.state.predictiveModelInputs.endobrev
                         }
                         promises.push(axios.post(url,filters))
                     }.bind(this));
@@ -1003,7 +1007,7 @@ class DataController extends Component {
                             cleridst1: 0,
                             spotst1: 0,
                             spotst2: 0,
-                            endobrev: 1
+                            endobrev: this.state.predictiveModelInputs.endobrev
                         }
 
                         results.forEach(function(response) {
@@ -1052,10 +1056,14 @@ class DataController extends Component {
                             }
                         }
 
+                        var userFilters = Object.assign({}, this.state.userFilters);
+                        userFilters.forest = modelOutputs[0].inputs.forest;
+
                         this.setState({
                             predictiveModelOutputArray: modelOutputs,
                             predictiveModelOutputs: setOutputs,
                             predictiveModelInputs: setInputs,
+                            userFilters: userFilters,
                             runningModel: false,
                             updatedStateSelection: false,
                             hardStopModel: false
@@ -1085,7 +1093,7 @@ class DataController extends Component {
                         cleridst1: 0,
                         spotst1: 0,
                         spotst2: 0,
-                        endobrev: 1
+                        endobrev: this.state.predictiveModelInputs.endobrev
                     }
 
                     this.setState({
@@ -1219,6 +1227,20 @@ class DataController extends Component {
         });
     }
 
+    // set new model input value for endobrev
+    updateEndobrevSelection(value) {
+        if (parseInt(value) === 0 || parseInt(value) === 1) {
+            var predictiveModelInputs = Object.assign({}, this.state.predictiveModelInputs);
+            predictiveModelInputs.endobrev = parseInt(value);
+
+            this.setState({
+                predictiveModelInputs: predictiveModelInputs
+            }, () => {
+                this.getCustomModelOutputs();
+            });
+        }
+    }
+
     handleModelForestClick(e) {
         e.persist();
         this.updateForestSelection(e.target.textContent);
@@ -1297,7 +1319,8 @@ class DataController extends Component {
             SPB: 0,
             cleridst1: 0,
             spotst1: 0,
-            spotst2: 0
+            spotst2: 0,
+            endobrev: this.state.predictiveModelInputs.endobrev
         };
         var outputs = {
             expSpotsIfOutbreak: 0,

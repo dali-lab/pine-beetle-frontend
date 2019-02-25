@@ -3,7 +3,7 @@ import LoadingContainer from '../LoadingContainer';
 import PredictionsSelectionBar from '../selection-bars/PredictionsSelectionBar';
 import StateLevelBreakDown from './StateLevelBreakDown.js';
 import ForestLevelBreakDown from './ForestLevelBreakDown.js';
-import PredictiveMap from './mapbox/PredictiveMap.js';
+import StateMap from './mapbox/StateMap.js';
 import '../../styles/predictive-model-page/ViewPredictions.css';
 
 class ViewPredictions extends Component {
@@ -36,7 +36,7 @@ class ViewPredictions extends Component {
                             <h3>Please select a state to run the predictive model.</h3>
                             <p>It will take a few seconds to run. Please be patient.</p>
                         </div>
-                        <PredictiveMap dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                        <StateMap dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
                     </div>
                 );
             }

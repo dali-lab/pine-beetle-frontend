@@ -143,8 +143,8 @@ class PredictiveMap extends Component {
                         }.bind(this));
 
                         // select state when user clicks on it
-                        this.state.map.on('click', 'states-join', function (e) {
-                            this.state.dataController.updateStateSelection(e.features[0].properties.STATE_ID)
+                        this.state.map.on('click', 'forests-join', function (e) {
+                            this.state.dataController.updateForestSelection(e.features[0].properties.forest.toUpperCase())
                         }.bind(this));
                     }
 
@@ -167,25 +167,6 @@ class PredictiveMap extends Component {
                         type: "vector",
                         url: "mapbox://pine-beetle-prediction.0tor8eeq"
                     });
-                }
-
-                if (this.state.map.getSource("states") === undefined) {
-                    // Add source for state polygons hosted on Mapbox, based on US Census Data:
-                    // https://www.census.gov/geo/maps-data/data/cbf/cbf_state.html
-                    this.state.map.addSource("states", {
-                        type: "vector",
-                        url: "mapbox://mapbox.us_census_states_2015"
-                    });
-
-                    this.state.map.addLayer({
-                        "id": "states-join",
-                        "type": "fill",
-                        "source": "states",
-                        "source-layer": "states",
-                        'paint': {
-                            'fill-opacity': 0
-                        },
-                    }, 'waterway-label');
                 }
 
                 this.colorStates();

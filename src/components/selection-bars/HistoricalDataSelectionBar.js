@@ -25,6 +25,8 @@ class HistoricalDataSelectionBar extends Component {
 
         // bind functions
         this.updateStateFromProps = this.updateStateFromProps.bind(this);
+        this.updateStartDate = this.updateStartDate.bind(this);
+        this.updateEndDate = this.updateEndDate.bind(this);
         this.getCSVData = this.getCSVData.bind(this);
 
         // create refs
@@ -37,8 +39,8 @@ class HistoricalDataSelectionBar extends Component {
             <div className="flex-container">
                 <div className="container" id="filter-selections">
                     <div id="selection-areas-view-data">
-                        <TextInput instructions="Enter Start Year" submitFunction={this.props.dataController.updateStartDate} valueToDisplay={this.state.startDate}/>
-                        <TextInput instructions="Enter End Year" submitFunction={this.props.dataController.updateEndDate} valueToDisplay={this.state.endDate}/>
+                        <TextInput instructions="Enter Start Year" submitFunction={this.updateStartDate} valueToDisplay={this.state.startDate}/>
+                        <TextInput instructions="Enter End Year" submitFunction={this.updateEndDate} valueToDisplay={this.state.endDate}/>
 
                         <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
                         <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput}/>
@@ -79,6 +81,28 @@ class HistoricalDataSelectionBar extends Component {
             availableStates: props.dataControllerState.dropDownContent.availableStates,
             availableForestsByNF: props.dataControllerState.dropDownContent.availableForestsByNF
         });
+    }
+
+    updateStartDate(value) {
+        if (!isNaN(value)) {
+            this.props.dataController.updateStartDate(parseInt(value))
+        }
+        else {
+            this.setState({
+                startDate: this.state.startDate
+            });
+        }
+    }
+
+    updateEndDate(value) {
+        if (!isNaN(value)) {
+            this.props.dataController.updateEndDate(parseInt(value))
+        }
+        else {
+            this.setState({
+                endDate: this.state.endDate
+            });
+        }
     }
 
     getCSVData() {
