@@ -8,7 +8,7 @@ class About extends Component {
     			<div className="flex-container flex-item flex-direction-column">
     				<div className="container about-project flex-item">
     					<h2>About the Project</h2>
-                        <p>After developing a model at Dartmouth College to predict outbreaks and movements of Southern Pine Beetles, Professor Ayres and Aoki approached Dartmouth’s DALI Lab to design and develop a tool to visualize the trapping data and predictions gathered annually. This project aimes to deploy a product that field researchers, USFS personel, and the general public can use to understand trends in pine beetle movements.</p>
+                        <p>After developing a model at Dartmouth College to predict outbreaks and movements of Southern Pine Beetles, Professor Ayres and Aoki approached Dartmouth’s DALI Lab to design and develop a tool to visualize the trapping data and predictions gathered annually. This project aims to deploy a product that field researchers, USFS personel, and the general public can use to understand trends in pine beetle movements.</p>
     				</div>
     			</div>
                                     
@@ -18,7 +18,7 @@ class About extends Component {
                             <h3>History</h3>
                             <p>This project carries on the work of Ron Billings of the Texas A&M University Forest Service (retired). Since 1987, Ron has coordinated annual predictions of summer SPB outbreak, based on spring trapping data provided by cooperators across the southern range of the beetle (Billings and Upton 2010). Our work builds on Ron’s tireless dedication to supporting and improving the prediction system over the past 30 years. </p>
                             <br />
-                            <p>(Billings, R. F., and W. W. Upton. 2010. A methodology for assessing annual risk of southern pine beetle outbreaks across the southern region using pheromone traps. Pages 73–85 in J. M. Pye, H. M. Rauscher, Y. Sands, D. C. Lee, and J. S. Beatty, editors. Advances in threat assessment and their application to forest and rangeland management. Gen. Tech. Rep. PNW-GTR-802. Portland, OR: U.S. Department of Agriculture, Forest Service, Pacific Northwest and Southern Research Stations.)</p>
+                            <p id="special-about-italic">(Billings, R. F., and W. W. Upton. 2010. A methodology for assessing annual risk of southern pine beetle outbreaks across the southern region using pheromone traps. Pages 73–85 in J. M. Pye, H. M. Rauscher, Y. Sands, D. C. Lee, and J. S. Beatty, editors. Advances in threat assessment and their application to forest and rangeland management. Gen. Tech. Rep. PNW-GTR-802. Portland, OR: U.S. Department of Agriculture, Forest Service, Pacific Northwest and Southern Research Stations.)</p>
                         </div>
                         
                         <div className="header-text-container">

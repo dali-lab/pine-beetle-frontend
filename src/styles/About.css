@@ -9,21 +9,21 @@
 }
 
 .about-project p {
-    margin-bottom: 55px;
+    margin-bottom: 45px;
 }
 
 .about-project h2 {
   text-align: left;
   margin: 15px 100px 15px 100px;
-  margin-top: 55px;
+  margin-top: 45px;
   color: white;
   font-family: 'Open Sans', arial, serif;
+  font-size: 1.3em;
 }
 
 .about-project h3 {
     font-family: 'Open Sans', arial, serif;
 }
-
 
 .about-project {
     flex-direction: column;    /* vertical alignment of flex items */
@@ -63,8 +63,13 @@
     margin-bottom: 10px;
 }
 
+#special-about-italic {
+    font-style: italic;
+    font-size: 14px;
+}
+
 #contact-info-header {
-    padding-top: 55px;
+    padding-top: 65px;
     margin-bottom: 15px;
     text-align: center;
 }
@@ -102,7 +107,7 @@ a:hover {
 }
 
 #about-right-container {
-    margin-top: 70px;
+    margin-top: 60px;
     padding-right: 15px;
     flex-direction: column;    /* vertical alignment of flex items */
     justify-content: flex-start;   /* center flex items vertically */
