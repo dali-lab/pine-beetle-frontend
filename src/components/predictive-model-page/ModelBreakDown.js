@@ -34,7 +34,7 @@ class ModelBreakDown extends Component {
                 }
 
                 return(
-                    <div className="container flex-item flex-item-right" id="model-breakdown-container">
+                    <div className="container flex-item-right" id="model-breakdown-container">
                         <table>
                             <thead>
                                 <tr>

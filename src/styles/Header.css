@@ -34,11 +34,9 @@
 }
 
 #nav-button-area {
-    /* float: center; */
     display: inline-block;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    margin-right: 50px;
+    margin: auto;
+    margin-right: 22px;
 }
 
 #nav-buttons p {

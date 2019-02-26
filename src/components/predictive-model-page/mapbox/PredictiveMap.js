@@ -24,10 +24,10 @@ class PredictiveMap extends Component {
     }
     render() {
         return(
-            <div className="map-container flex-item-left">
+            <div className="container flex-item-left" id="map-container">
                 <div id="map"></div>
                 <div className='map-overlay-hover-area' id='features'>
-                    <h3>Predictions Per Forest</h3>
+                    <h3>Predictions By Forest</h3>
                     <div id='pd'>
                         {this.state.hoverElement}
                     </div>

@@ -1,0 +1,11 @@
+#filter-selections {
+    text-align: center;
+    padding-top: 0px;
+}
+
+.long-line {
+    margin-top: 35px;
+    height: 1px;
+    width: 100%;
+    background-color:#909090;
+}

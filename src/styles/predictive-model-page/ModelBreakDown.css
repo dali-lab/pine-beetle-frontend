@@ -1,4 +1,8 @@
 #model-breakdown-container {
     overflow: auto;
-    max-height: 500px;
+    max-height: 400px;
+    background-color: #F2F5E8;
+    margin-left: 15px;
+    margin-right: 120px;
+    flex: 1 !important;
 }

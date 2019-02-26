@@ -50,7 +50,7 @@ class About extends Component {
                         <div id="image-icon-area">
                             <img src={ require('../../assets/usfs.png') } height = "200px" width = "170px" alt="usfs-logo" />
                             <img src={ require('../../assets/sgsf.png') } height = "200px" width = "120px" alt="sgsf-logo" />
-                            <img src={ require('../../assets/dali_dark.png') } height = "100px" width = "260px" id="dali-low" alt="dali-logo" />
+                            <img src={ require('../../assets/dali_dark.png') } height = "100px" width = "270px" id="dali-low" alt="dali-logo" />
                         </div>
                     </div>
 

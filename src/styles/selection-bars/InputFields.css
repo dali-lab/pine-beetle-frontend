@@ -2,7 +2,7 @@ select, input {
     width: 175px;
     border: none;
     border-radius: 4px;
-    background-color: #ABB2B5;
+    background-color: #D8D8D8;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -19,22 +19,22 @@ input {
     padding: 7px;
     border: none;
     border-radius: 4px;
-    background-color: #f1f1f1;
+    background-color: #D8D8D8;
     cursor: pointer;
 }
 
 .submit:hover {
-    background-color: #E9C46A;
+    background-color: #D9E5B3;
     font-weight: bold;
 }
 
 select:hover {
-    background-color: #E9C46A;
+    background-color: #D9E5B3;
     font-weight: bold;
 }
 
 input:hover {
-    background-color: #E9C46A;
+    background-color: #D9E5B3;
     font-weight: bold;
 }
 

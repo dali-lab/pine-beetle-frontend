@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import LoadingContainer from '../LoadingContainer';
-import PredictionsSelectionBar from '../selection-bars/PredictionsSelectionBar';
+import LoadingContainer from '../LoadingContainer.js';
+import PredictiveModelIntroText from './PredictiveModelIntroText.js';
+import PredictionsSelectionBar from '../selection-bars/PredictionsSelectionBar.js';
 import StateLevelBreakDown from './StateLevelBreakDown.js';
 import ForestLevelBreakDown from './ForestLevelBreakDown.js';
 import StateMap from './mapbox/StateMap.js';
@@ -22,6 +23,7 @@ class ViewPredictions extends Component {
             if (this.props.dataControllerState.userFilters.stateAbbreviation !== null) {
                 return(
                     <div>
+                        <PredictiveModelIntroText />
                         <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
                         <StateLevelBreakDown dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
                         <ForestLevelBreakDown dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
@@ -31,8 +33,9 @@ class ViewPredictions extends Component {
             else {
                 return(
                     <div>
+                        <PredictiveModelIntroText />
                         <PredictionsSelectionBar dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
-                        <div className="container">
+                        <div className="container" id="pred-select-state-text">
                             <h3>Please select a state to run the predictive model.</h3>
                             <p>It will take a few seconds to run. Please be patient.</p>
                         </div>
