@@ -13,6 +13,7 @@
     float: left;
     font-style: italic;
     margin-top: 22px;
+    margin-left: 22px;
 }
 
 #footer img {
@@ -22,4 +23,5 @@
 
 #dali-logo {
     float: right;
+    margin-right: 22px;
 }

@@ -1,16 +1,25 @@
 
-.about-project p, .next-steps p, .using-product p {
-    text-align: justify;
-    margin: 0px 100px 15px 100px;
-    line-height: 1.5;
+.about-project {
     color: white;
+}
+
+.about-project p, #next-steps p, #about-page-text p {
+    text-align: justify;
+    line-height: 1.5;
+    margin-bottom: 15px;
 }
 
 .about-project h2 {
   text-align: left;
   margin: 15px 100px 15px 100px;
   color: white;
+  font-family: 'Open Sans', arial, serif;
 }
+
+.about-project h3 {
+    font-family: 'Open Sans', arial, serif;
+}
+
 
 .about-project {
     flex-direction: column;    /* vertical alignment of flex items */
@@ -19,6 +28,13 @@
     background-size: cover;
     background-position: bottom;
     border-radius: 0px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.about-project h2, .about-project p {
+    margin-left: 100px;
+    margin-right: 100px;
 }
 
 .about-project a {
@@ -31,6 +47,28 @@
     display: inline-block;
     margin-left: 4%;
     margin-right: 4%;
+}
+
+.header-text-container {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    text-align: left
+}
+
+.header-text-container h3 {
+    margin-bottom: 10px;
+}
+
+#contact-info-header {
+    padding-top: 25px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.info-box h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: normal;
 }
 
 #usfs-img-about {
@@ -59,6 +97,13 @@ a:hover {
     text-decoration: underline;
 }
 
+#about-right-container {
+    margin-top: 30px;
+    padding-right: 15px;
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+}
+
 #people-previews {
     height: auto;
     display: block;
@@ -72,37 +117,28 @@ a:hover {
     margin-top: 10px;
 }
 
-
-.history {
-  flex: 4 !important;
+#person {
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.person {
-    flex: 1 !important;
-}
-
-.person img {
-    display: inline-block;
+#person img {
     border-radius: 50%;
-    margin: 0px 100px 0px 0px;
 }
 
-.using-product {
-    flex-direction: row !important;    /* vertical alignment of flex items */
-    justify-content: flex-start !important;   /* center flex items vertically */
+#about-page-text {
+    flex: 2.3 !important;
+    margin-right: 40px;
 }
 
-.using-product h2 {
-      text-align: left;
-      margin: 15px 100px 15px 100px;
-      font-size: 18px;
-}
-
-.next-steps {
-    flex: 2 !important;
-    flex-direction: column !important;    /* vertical alignment of flex items */
-    justify-content: flex-start !important;   /* center flex items vertically */
+#about-page-text h2 {
     text-align: left;
+    font-size: 18px;
+}
+
+#next-steps-top {
+    margin-top: 0px;
+    padding-top: 0px;
 }
 
 #text {
@@ -120,62 +156,11 @@ a:hover {
     margin-bottom: 15px;
 }
 
-.contact-info {
-    flex-direction: column !important;    /* vertical alignment of flex items */
-    justify-content: flex-start !important;   /* center flex items vertically */
-}
-
-.contact-info h2 {
-    margin-top: 15px;
-}
-
-.next-steps h2 {
-      text-align: left;
-      font-size: 18px;
-      margin: 0px 100px 5px 100px;
-      font-size: 18px;
-}
-
-.next-steps h3 {
-      text-align: left;
-      font-size: 18px;
-      margin: 30px 50px 5px 100px;
-}
-
-.next-steps p {
-    color: #000000;
-    font-size: 14px;
-    margin: 0px 10px 0px 100px;
-}
-
-.contact-info {
-  font-size: 14px;
-  flex-grow: 1;
-  padding: 10px;
-}
-
-.contact-info h4 {
-    font-weight: lighter;
-    font-style: italic;
-    /* padding-bottom: 2px; */
-}
-
-.contact-info h3 {
-    /* padding-bottom: 5px; */
-}
-
-.using-product p {
+#about-page-text p {
     color: #000000;
 }
 
-.contact-info a, .using-product a {
-    text-decoration: none;
-    color: #000000;
-    font-size: 14px;
-
-}
-
-.using-product a:hover {
+#about-page-text a:hover {
     text-decoration: underline;
 }
 
@@ -185,16 +170,28 @@ a:hover {
 }
 
 .info-box {
-    flex-wrap: wrap;
     background: #F2F5E8;
-    padding: 7%;
+    padding: 25px;
     margin-bottom: 15px;
+}
+
+.info-box a {
+    color: black;
 }
 
 #pad-top {
     padding-top: 10%;
 }
 
-.bottom {
-  flex-direction: column;
+#image-icon-area {
+    margin-top: 15px;
+}
+
+#image-icon-area img {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+#dali-low {
+    margin-bottom: 50px;
 }
