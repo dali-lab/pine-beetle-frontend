@@ -11,25 +11,21 @@ body {
 
 body p {
     line-height: 1.8;
-    font-size: 14px;
 }
 
 body h2 {
     padding-top: 0px;
     padding-bottom: 0px;
-    font-size: 18px;
 }
 
 body p, a, li {
     font-family: 'Open Sans', arial, serif;
-    font-size: 14px;
     padding-bottom: 0px;
 }
 
 body h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', arial, serif;
     padding-bottom: 0px;
-    font-size: 18px;
 }
 
 body h1 {
