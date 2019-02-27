@@ -135,15 +135,17 @@ h4.location {
 }
 
 #adjust-map-size-button, #reset-current-data-button, #get-csv-button {
-    width: 100px;
-    background-color: #D9E5B3;
+    margin: 0px;
     margin-left: 15px;
-    height: 50px;
-    font-size: 13px;
+    background-color: #D8D8D8;
+    height: 45px;
+    width: 80px;
+    font-family: Montserrat;
 }
 
-#adjust-map-size-button, #reset-current-data-button, #get-csv-button:hover {
-    font-weight: 500;
+#adjust-map-size-button, #get-csv-button, #reset-current-data-button:hover  {
+    font-weight: normal;
+    background-color: #CCE1B6;
 }
 
 #map-area, #prediction-model {

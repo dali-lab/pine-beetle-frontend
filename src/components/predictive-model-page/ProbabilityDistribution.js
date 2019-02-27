@@ -15,7 +15,7 @@ class ProbabilityDistribution extends Component {
                         data: [],
                         label: "Probability of Spots",
                         backgroundColor: "#1f77b4",
-                        hoverBackgroundColor: "#e9c46a"
+                        hoverBackgroundColor: "#CCE1B6"
                     }
                 ]
             }, // used for chartjs line chart
@@ -56,19 +56,13 @@ class ProbabilityDistribution extends Component {
 
         return(
             <div className="flex-container">
-                <div className="container probability-distribution flex-item flex-item-left" id="probability-distribution">
+                <div className="container probability-distribution flex-item-left" id="probability-distribution">
                     {visualization} 
                 </div>
                 <div className="container flex-item flex-item-right" id="probability-metrics-area">
-                    <h3>Forest: <span className="no-bold">{this.props.dataControllerState.userFilters.forest}</span></h3>
-                    <h3>Expected Spots If Outbreak: <span className="no-bold">{this.state.outputs.expSpotsIfOutbreak !== null ? this.state.outputs.expSpotsIfOutbreak.toFixed(3) : "null"}</span></h3>
+                    <h4>Note on Statistics:</h4>
                     <br />
-                    <h3>Probability &gt; 0 Spots: <span className="no-bold">{this.state.outputs.prob0spots !== null ? this.state.outputs.prob0spots.toFixed(3) : "null"}</span></h3>
-                    <h3>Probability &gt; 19 Spots: <span className="no-bold">{this.state.outputs.prob19spots !== null ? this.state.outputs.prob19spots.toFixed(3) : "null"}</span></h3>
-                    <h3>Probability &gt; 53 Spots: <span className="no-bold">{this.state.outputs.prob53spots !== null ? this.state.outputs.prob53spots.toFixed(3) : "null"}</span></h3>
-                    <h3>Probability &gt; 147 Spots: <span className="no-bold">{this.state.outputs.prob147spots !== null ? this.state.outputs.prob147spots.toFixed(3) : "null"}</span></h3>
-                    <h3>Probability &gt; 402 Spots: <span className="no-bold">{this.state.outputs.prob402spots !== null ? this.state.outputs.prob402spots.toFixed(3) : "null"}</span></h3>
-                    <h3>Probability &gt; 1095 Spots: <span className="no-bold">{this.state.outputs.prob1095spots !== null ? this.state.outputs.prob1095spots.toFixed(3) : "null"}</span></h3>
+                    <p>The predictive model gives the probability for various levels of southern pine beetle spot severity. For example, the probability that the number of spots is between 20 and 53. In addition, it gives the expected number of spots if any. Please note that the model is probabilistic. An outcome with a low probability may nevertheless occur. The model also places special emphasis on three figures: the probability of any spots, the expected number of spots if any, and the probability of more than 53 spots. We emphasize probability of more than 53 spots because we consider it a signifier of a “bad” outcome, though various forest professional may use another benchmark.</p>
                 </div>
             </div>
         );
@@ -97,17 +91,37 @@ class ProbabilityDistribution extends Component {
                 var chartData = Object.assign({}, this.state.chartData);
                 chartData.datasets[0].data = data;
 
-                // blue
-                if (data[0] <= 0.33) {
-                    chartData.datasets[0].backgroundColor = "#1f77b4";
+                var colors = ['#FFF072', '#FFD850', '#FFA930', '#FF7B21', '#FF2000', '#F00000', '#CA000E', '#880021', '#560019', '#000000']
+
+                if (data[0] <= 0.10) {
+                    chartData.datasets[0].backgroundColor = colors[0];
                 }
-                // orange
-                else if (data[0] > 0.33 && data[0] <= 0.66) {
-                    chartData.datasets[0].backgroundColor = "#FF912B";
+                else if (data[0] > 0.10 && data[0] <= 0.20) {
+                    chartData.datasets[0].backgroundColor = colors[1];
                 }
-                // red
+                else if (data[0] > 0.20 && data[0] <= 0.30) {
+                    chartData.datasets[0].backgroundColor = colors[2];
+                }
+                else if (data[0] > 0.30 && data[0] <= 0.40) {
+                    chartData.datasets[0].backgroundColor = colors[3];
+                }
+                else if (data[0] > 0.40 && data[0] <= 0.50) {
+                    chartData.datasets[0].backgroundColor = colors[4];
+                }
+                else if (data[0] > 0.50 && data[0] <= 0.60) {
+                    chartData.datasets[0].backgroundColor = colors[5];
+                }
+                else if (data[0] > 0.60 && data[0] <= 0.70) {
+                    chartData.datasets[0].backgroundColor = colors[6];
+                }
+                else if (data[0] > 0.70 && data[0] <= 0.80) {
+                    chartData.datasets[0].backgroundColor = colors[7];
+                }
+                else if (data[0] > 0.80 && data[0] <= 0.90) {
+                    chartData.datasets[0].backgroundColor = colors[8];
+                }
                 else {
-                    chartData.datasets[0].backgroundColor = "#E31A1C";
+                    chartData.datasets[0].backgroundColor = colors[9];
                 }
 
                 // update state

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TimelineInput from '../selection-bars/input-components/TimelineInput.js';
 import TextInput from '../selection-bars/input-components/TextInput.js';
 import '../../styles/predictive-model-page/ModelInputArea.css';
+var $ = require("jquery");
 
 class ModelInputArea extends Component {
     constructor(props) {
@@ -46,14 +47,14 @@ class ModelInputArea extends Component {
     render() {
         if (this.state.dataControllerState !== null && this.state.dataController !== null) {
             return(
-                <div className="flex-container">
+                <div className="flex-container" id="model-input-area">
                     <div className="flex-item-left container" id="timeline">
                         <div id="timeline-area">
                             <ol>
                                 <li>
                                     <p class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 2}</p>
                                     <span class="point"></span>
-                                    <div class="description">
+                                    <div class="description" id="spots-input-pred">
                                         <TimelineInput instructions="Spots" submitFunction={this.updateSpotst2Selection} valueToDisplay={this.state.inputs.spotst2 !== null ? this.state.inputs.spotst2 : "null"} ref={this.spotst2Input} />
                                     </div>
                                 </li>
@@ -85,11 +86,11 @@ class ModelInputArea extends Component {
                                     <div className="description" id="timeline-button-description">
                                         <table>
                                             <tr>
-                                                <th><button id="reset-current-data-button" className="submit static-button" onClick={this.getCustomModelOutputs}>Run Model</button></th>
-                                                <th><button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.resetModelSelections}>Reset Values</button></th>
+                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.editValues}>Edit Values</button></th>
+                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.props.dataController.resetModelSelections}>Reset Values</button></th>
+                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.getCustomModelOutputs}>Run Model</button></th>
                                             </tr>
                                         </table>
-                                        
                                     </div>
                                 </li>
                             </ol>
@@ -160,6 +161,7 @@ class ModelInputArea extends Component {
         }
 
         this.props.dataController.getCustomModelOutputs(inputs)
+        $("#timeline li .description input").css("background-color", "#f4f4f4");
     }
 
     updateSPBSelection(value) {
@@ -229,6 +231,15 @@ class ModelInputArea extends Component {
             this.setState({
                 inputs: inputs
             });
+        }
+    }
+
+    editValues() {
+        if ($("#timeline li .description input").css("background-color") === "rgb(244, 244, 244)") {
+            $("#timeline li .description input").css("background-color", "#CCE1B6");
+        }
+        else {
+            $("#timeline li .description input").css("background-color", "#f4f4f4");
         }
     }
 }

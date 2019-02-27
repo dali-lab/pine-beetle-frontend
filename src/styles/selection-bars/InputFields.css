@@ -24,17 +24,17 @@ input {
 }
 
 .submit:hover {
-    background-color: #D9E5B3;
+    background-color: #CCE1B6;
     font-weight: bold;
 }
 
 select:hover {
-    background-color: #D9E5B3;
+    background-color: #CCE1B6;
     font-weight: bold;
 }
 
 input:hover {
-    background-color: #D9E5B3;
+    background-color: #CCE1B6;
     font-weight: bold;
 }
 
