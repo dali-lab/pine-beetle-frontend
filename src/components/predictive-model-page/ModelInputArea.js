@@ -54,14 +54,14 @@ class ModelInputArea extends Component {
                         <div id="timeline-area">
                             <ol>
                                 <li>
-                                    <p class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 2}</p>
+                                    <h3 class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 2}</h3>
                                     <span class="point"></span>
                                     <div class="description" id="spots-input-pred">
                                         <TimelineInput instructions="Spots" submitFunction={this.updateSpotst2Selection} valueToDisplay={this.state.inputs.spotst2 !== null ? this.state.inputs.spotst2 : "null"} ref={this.spotst2Input} />
                                     </div>
                                 </li>
                                 <li id="special-li-timeline">
-                                    <p class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 1}</p>
+                                    <h3 class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 1}</h3>
                                     <span class="point"></span>
                                     <div class="description">
                                         <table>
@@ -73,7 +73,7 @@ class ModelInputArea extends Component {
                                     </div>
                                 </li>
                                 <li id="special-li-timeline">
-                                    <p class="timeline-title">{"Spring " + this.state.dataControllerState.userFilters.predictiveModelDate}</p>
+                                    <h3 class="timeline-title">{"Spring " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
                                     <span class="point"></span>
                                     <div class="description">
                                         <table>
