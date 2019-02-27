@@ -1,3 +1,42 @@
+#home-outer-container {
+    height: calc(100vh - 135px );
+    width: 100%;
+    background-image: url("../assets/home-background.jpg");
+    background-size: cover;
+    background-position: top;
+}
+
+#home-landing-container {
+    margin: auto;
+    transform: perspective(1px) translateY(40%);
+    text-align: center;
+    width: 60%;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+}
+
+#home-landing-container h1 {
+    padding-top: 75px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+#home-landing-container p {
+    padding-top: 25px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+#home-last {
+    padding-bottom: 75px;
+}
+
+
+
+
+
+/* OLD */
 .landing-text {
     flex: 2.4 !important;
 }
