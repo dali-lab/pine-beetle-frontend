@@ -24,9 +24,9 @@ class ModelBreakDown extends Component {
                         outputs.push(
                             <tr key={i}>
                                 <td onClick={this.state.dataController.handleModelForestClick} style={{cursor: "pointer"}}>{this.state.outputArray[i].inputs.forest}</td>
-                                <td>{this.state.outputArray[i].outputs.prob0spots}</td>
-                                <td>{this.state.outputArray[i].outputs.prob53spots}</td>
-                                <td>{this.state.outputArray[i].outputs.expSpotsIfOutbreak}</td>
+                                <td>{(this.state.outputArray[i].outputs.prob0spots*100).toFixed(2) + "%"}</td>
+                                <td>{(this.state.outputArray[i].outputs.prob53spots*100).toFixed(2) + "%"}</td>
+                                <td>{this.state.outputArray[i].outputs.expSpotsIfOutbreak.toFixed(2)}</td>
                             </tr>
                         );
     
@@ -35,13 +35,13 @@ class ModelBreakDown extends Component {
 
                 return(
                     <div className="container flex-item-right" id="model-breakdown-container">
-                        <table>
+                        <table id="model-breakdown-table">
                             <thead>
                                 <tr>
                                     <th>Forest Name</th>
-                                    <th>Prob >0 Spots</th>
-                                    <th>Prob >53 Spots</th>
-                                    <th>Exp. Spots If Outbreak</th>
+                                    <th>% Probability of  >0 Spots</th>
+                                    <th>% Probability of  >53 Spots</th>
+                                    <th>Expected Spots If Any</th>
                                 </tr>
                             </thead>
                             <tbody>

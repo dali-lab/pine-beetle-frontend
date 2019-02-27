@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class TextInput extends Component {
+class TimelineInput extends Component {
     constructor(props) {
         super(props);
 
@@ -16,10 +16,9 @@ class TextInput extends Component {
     }
     render() {
         return(
-            <div className="selection">
-                <h4>{this.props.instructions}</h4>
+            <div className="selection" id="timeline-input-outer-div">
                 <input className="input" type="text" name="fname" value={this.state.value} onChange={this.setValue} onClick={this.selectText} onKeyPress={this.handleKeyPress}></input>
-                <button className="submit" onClick={this.submit}>Submit</button>
+                <h4>{this.props.instructions}</h4>
             </div>
         );
     }
@@ -54,4 +53,4 @@ class TextInput extends Component {
     }
 }
 
-export default TextInput
+export default TimelineInput
