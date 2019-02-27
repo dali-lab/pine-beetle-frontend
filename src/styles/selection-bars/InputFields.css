@@ -12,6 +12,7 @@ select, input {
 
 input {
     width: 150px;
+    margin-right: 10px;
 }
 
 .submit {
