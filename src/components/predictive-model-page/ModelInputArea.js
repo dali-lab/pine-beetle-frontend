@@ -36,6 +36,8 @@ class ModelInputArea extends Component {
         this.updateSpotst1Selection = this.updateSpotst1Selection.bind(this);
         this.updateSpotst2Selection = this.updateSpotst2Selection.bind(this);
         this.updateEndobrevSelection = this.updateEndobrevSelection.bind(this);
+        this.editValues = this.editValues.bind(this);
+        this.resetValues = this.resetValues.bind(this);
 
         this.SPBInput = React.createRef();
         this.cleridst1Input = React.createRef();
@@ -70,25 +72,25 @@ class ModelInputArea extends Component {
                                         </table>
                                     </div>
                                 </li>
-                                <li>
+                                <li id="special-li-timeline">
                                     <p class="timeline-title">{"Spring " + this.state.dataControllerState.userFilters.predictiveModelDate}</p>
                                     <span class="point"></span>
                                     <div class="description">
-                                        <TimelineInput instructions="SPB" submitFunction={this.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"} ref={this.SPBInput} />
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="description">
-                                        <TimelineInput instructions="endobrev" submitFunction={this.updateEndobrevSelection} valueToDisplay={this.state.inputs.endobrev !== null ? this.state.inputs.endobrev : "null"} ref={this.endobrevInput} />
+                                        <table>
+                                            <tr>
+                                                <th><TimelineInput instructions="SPB" submitFunction={this.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"} ref={this.SPBInput} /></th>
+                                                <th><TimelineInput instructions="endobrev" submitFunction={this.updateEndobrevSelection} valueToDisplay={this.state.inputs.endobrev !== null ? this.state.inputs.endobrev : "null"} ref={this.endobrevInput} /></th>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </li>
                                 <li id="timeline-button">
                                     <div className="description" id="timeline-button-description">
                                         <table>
                                             <tr>
-                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.editValues}>Edit Values</button></th>
-                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.props.dataController.resetModelSelections}>Reset Values</button></th>
-                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.getCustomModelOutputs}>Run Model</button></th>
+                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.editValues}>EDIT VALUES</button></th>
+                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.resetValues}>RESET VALUES</button></th>
+                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.getCustomModelOutputs}>RUN MODEL</button></th>
                                             </tr>
                                         </table>
                                     </div>
@@ -100,8 +102,7 @@ class ModelInputArea extends Component {
                         <div id="print-model-outputs">
                             <p>{"# of Spots in " + (this.state.dataControllerState.userFilters.predictiveModelDate - 1) + ": "}<strong>{this.state.dataControllerState.predictiveModelInputs.spotst1}</strong></p>
                             <p>{"Expected # of Spots in " + this.state.dataControllerState.userFilters.predictiveModelDate + ": "}<strong>{this.state.dataControllerState.predictiveModelOutputs.expSpotsIfOutbreak}</strong></p>
-                        </div>
-                        <div id="prob-any-spots">
+                            <div className="line"></div>
                             <p>{"Probability of Any Spots: "}<strong style={{color: "red"}}>{(this.state.dataControllerState.predictiveModelOutputs.prob0spots*100).toFixed(2) + "%"}</strong></p>
                         </div>
                     </div>
@@ -152,12 +153,47 @@ class ModelInputArea extends Component {
     }
 
     getCustomModelOutputs() {
+        if (isNaN(this.SPBInput.current.state.value)) {
+            var SPB = this.state.inputs.SPB
+        }
+        else {
+            var SPB = this.SPBInput.current.state.value
+        }
+
+        if (isNaN(this.cleridst1Input.current.state.value)) {
+            var cleridst1 = this.state.inputs.cleridst1
+        }
+        else {
+            var cleridst1 = this.cleridst1Input.current.state.value
+        }
+
+        if (isNaN(this.spotst1Input.current.state.value)) {
+            var spotst1 = this.state.inputs.spotst1
+        }
+        else {
+            var spotst1 = this.spotst1Input.current.state.value
+        }
+
+        if (isNaN(this.spotst2Input.current.state.value)) {
+            var spotst2 = this.state.inputs.spotst2
+        }
+        else {
+            var spotst2 = this.spotst2Input.current.state.value
+        }
+
+        if (isNaN(this.endobrevInput.current.state.value)) {
+            var endobrev = this.state.inputs.endobrev
+        }
+        else {
+            var endobrev = this.endobrevInput.current.state.value
+        }
+
         var inputs = {
-            SPB: this.SPBInput.current.state.value,
-            cleridst1: this.cleridst1Input.current.state.value,
-            spotst1: this.spotst1Input.current.state.value,
-            spotst2: this.spotst2Input.current.state.value,
-            endobrev: this.endobrevInput.current.state.value
+            SPB: SPB,
+            cleridst1: cleridst1,
+            spotst1: spotst1,
+            spotst2: spotst2,
+            endobrev: endobrev
         }
 
         this.props.dataController.getCustomModelOutputs(inputs)
@@ -234,12 +270,31 @@ class ModelInputArea extends Component {
         }
     }
 
+    resetValues() {
+        this.props.dataController.resetModelSelections();
+        $("#timeline li .description input").css("background-color", "#f4f4f4");
+    }
+
     editValues() {
         if ($("#timeline li .description input").css("background-color") === "rgb(244, 244, 244)") {
             $("#timeline li .description input").css("background-color", "#CCE1B6");
+
+            var inputs = {
+                SPB: 0,
+                cleridst1: 0,
+                spotst1: 0,
+                spotst2: 0,
+                endobrev: 1
+            }
+
+            this.setState({
+                inputs: inputs
+            });
+
         }
         else {
             $("#timeline li .description input").css("background-color", "#f4f4f4");
+            // this.props.dataController.resetModelSelections();
         }
     }
 }

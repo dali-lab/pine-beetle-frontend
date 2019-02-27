@@ -91,37 +91,22 @@ class ProbabilityDistribution extends Component {
                 var chartData = Object.assign({}, this.state.chartData);
                 chartData.datasets[0].data = data;
 
-                var colors = ['#FFF072', '#FFD850', '#FFA930', '#FF7B21', '#FF2000', '#F00000', '#CA000E', '#880021', '#560019', '#000000']
+                var colors = ['#FFF072', '#FFA930', '#FF2000', '#CA000E', '#560019']
 
-                if (data[0] <= 0.10) {
+                if (data[0] <= 0.20) {
                     chartData.datasets[0].backgroundColor = colors[0];
                 }
-                else if (data[0] > 0.10 && data[0] <= 0.20) {
+                else if (data[0] > 0.20 && data[0] <= 0.40) {
                     chartData.datasets[0].backgroundColor = colors[1];
                 }
-                else if (data[0] > 0.20 && data[0] <= 0.30) {
+                else if (data[0] > 0.40 && data[0] <= 0.60) {
                     chartData.datasets[0].backgroundColor = colors[2];
                 }
-                else if (data[0] > 0.30 && data[0] <= 0.40) {
+                else if (data[0] > 0.60 && data[0] <= 0.80) {
                     chartData.datasets[0].backgroundColor = colors[3];
                 }
-                else if (data[0] > 0.40 && data[0] <= 0.50) {
-                    chartData.datasets[0].backgroundColor = colors[4];
-                }
-                else if (data[0] > 0.50 && data[0] <= 0.60) {
-                    chartData.datasets[0].backgroundColor = colors[5];
-                }
-                else if (data[0] > 0.60 && data[0] <= 0.70) {
-                    chartData.datasets[0].backgroundColor = colors[6];
-                }
-                else if (data[0] > 0.70 && data[0] <= 0.80) {
-                    chartData.datasets[0].backgroundColor = colors[7];
-                }
-                else if (data[0] > 0.80 && data[0] <= 0.90) {
-                    chartData.datasets[0].backgroundColor = colors[8];
-                }
                 else {
-                    chartData.datasets[0].backgroundColor = colors[9];
+                    chartData.datasets[0].backgroundColor = colors[4];
                 }
 
                 // update state
