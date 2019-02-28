@@ -145,7 +145,7 @@ h4.location {
 #adjust-map-size-button, #reset-current-data-button, #get-csv-button {
     margin: 0px;
     margin-left: 15px;
-    background-color: #D8D8D8;
+    background-color: #CCE1B6;
     height: 45px;
     width: 80px;
     font-family: Montserrat;
@@ -153,7 +153,7 @@ h4.location {
 
 #adjust-map-size-button, #get-csv-button, #reset-current-data-button:hover  {
     font-weight: normal;
-    background-color: #CCE1B6;
+    background-color: #A5C187;
 }
 
 #map-area, #prediction-model {

@@ -14,6 +14,12 @@
     flex: 0.9 !important;
     margin-left: 0px;
     padding-left: 0px;
+    padding-top: 15px;
+}
+
+#box-info-area .timeline-title {
+    text-align: left;
+    font-size: 18px;
 }
 
 /* ---- Timeline ---- */
@@ -99,7 +105,7 @@
     margin-top: 15px;
     margin-left: 0px;
     margin-right: 20px;
-    background-color: #D8D8D8;
+    background-color: #CCE1B6;
     height: 45px;
     width: 160px;
     font-family: Montserrat;
@@ -110,7 +116,7 @@
 }
 
 #timeline-button-description button:hover {
-    background-color: #CCE1B6;
+    background-color: #A5C187;
 }
 
 #timeline li .timeline-title {
@@ -176,7 +182,7 @@
 } */
 
 #print-model-outputs {
-    margin-top: 10px;
+    margin-top: 22px;
     padding: 20px;
     background-color: #F2F5E8;
     margin-bottom: 20px;
@@ -186,4 +192,14 @@
 #prob-any-spots {
     padding: 20px;
     background-color: #F2F5E8;
+}
+
+.reset-val {
+    background-color: white !important;
+    border: 4px solid #CCE1B6;
+}
+
+.reset-val:hover {
+    background-color: #A5C187 !important;
+    border: 4px solid transparent;
 }

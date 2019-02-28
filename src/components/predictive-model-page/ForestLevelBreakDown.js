@@ -11,8 +11,10 @@ class ForestLevelBreakDown extends Component {
         this.state = {
             dataController: null,       // holds references to functions that are used to update the state, forest, etc.
             dataControllerState: null,   // defines the user's current selection for state, national forest, etc.
+            editMode: false
         }
 
+        this.setEditMode = this.setEditMode.bind(this);
     }
 
     render() {
@@ -24,9 +26,9 @@ class ForestLevelBreakDown extends Component {
                 return(
                     <div>
                         <div className="container" id="now-viewing-model-container">
-                            <p>Currently viewing data for: <span>{<OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.props.dataControllerState.dropDownContent.availableForestsByNF} idName="forest" value={this.props.dataControllerState.userFilters.forest} showAboveText={false} />}</span>Select a new locality to view a different forest's data.</p>
+                            <p>Currently viewing data for: <span><b>{this.props.dataControllerState.userFilters.forest}</b></span>. Select a new locality to view a different forest's data.</p>
                         </div>
-                        <ModelInputArea dataControllerState={this.state.dataControllerState} dataController={this.state.dataController} />
+                        <ModelInputArea dataControllerState={this.state.dataControllerState} dataController={this.state.dataController} editMode={this.state.editMode} setEditMode={this.setEditMode} color={this.state.editMode === true ? "#CCE1B6" : "#f4f4f4"}/>
                         <ProbabilityDistribution dataControllerState={this.state.dataControllerState} data={this.state.outputs} />
                     </div>
                 );
@@ -63,6 +65,12 @@ class ForestLevelBreakDown extends Component {
                 outputs: props.dataControllerState.predictiveModelOutputs
             });
         }
+    }
+
+    setEditMode(value) {
+        this.setState({
+            editMode: value
+        });
     }
 }
 

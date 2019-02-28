@@ -17,7 +17,7 @@ class TimelineInput extends Component {
     render() {
         return(
             <div className="selection" id="timeline-input-outer-div">
-                <input className="input" type="text" name="fname" value={this.state.value} onChange={this.setValue} onClick={this.selectText} onKeyPress={this.handleKeyPress}></input>
+                <input className="input" type="text" name="fname" value={this.state.value} onChange={this.setValue} onClick={this.selectText} onKeyPress={this.handleKeyPress} style={{backgroundColor: this.props.color}}></input>
                 <h4>{this.props.instructions}</h4>
             </div>
         );

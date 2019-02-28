@@ -20,22 +20,12 @@ input {
     padding: 7px;
     border: none;
     border-radius: 0px;
-    background-color: #D8D8D8;
+    background-color: #CCE1B6;
     cursor: pointer;
 }
 
 .submit:hover {
-    background-color: #CCE1B6;
-    font-weight: bold;
-}
-
-select:hover {
-    background-color: #CCE1B6;
-    font-weight: bold;
-}
-
-input:hover {
-    background-color: #CCE1B6;
+    background-color: #A5C187;
     font-weight: bold;
 }
 

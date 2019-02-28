@@ -27,7 +27,8 @@ class ModelInputArea extends Component {
                 prob147spots: 0,
                 prob402spots: 0,
                 prob1095spots: 0
-            }
+            },
+            editMode: this.props.editMode
         }
 
         this.getCustomModelOutputs = this.getCustomModelOutputs.bind(this);
@@ -48,6 +49,19 @@ class ModelInputArea extends Component {
 
     render() {
         if (this.state.dataControllerState !== null && this.state.dataController !== null) {
+            if (this.state.editMode) {
+                var buttons = 
+                    <div>
+                        <th><button id="pred-model-button" className="submit static-button" onClick={this.getCustomModelOutputs}>RUN MODEL</button></th>
+                        <th><button id="pred-model-button" className="submit static-button reset-val" onClick={this.resetValues}>RESET VALUES</button></th>
+                    </div>
+            }
+            else {
+                var buttons = 
+                    <div>
+                        <th><button id="pred-model-button" className="submit static-button" onClick={this.editValues}>EDIT VALUES</button></th>
+                    </div>
+            }
             return(
                 <div className="flex-container" id="model-input-area">
                     <div className="flex-item-left container" id="timeline">
@@ -57,7 +71,7 @@ class ModelInputArea extends Component {
                                     <h3 class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 2}</h3>
                                     <span class="point"></span>
                                     <div class="description" id="spots-input-pred">
-                                        <TimelineInput instructions="Spots" submitFunction={this.updateSpotst2Selection} valueToDisplay={this.state.inputs.spotst2 !== null ? this.state.inputs.spotst2 : "null"} ref={this.spotst2Input} />
+                                        <TimelineInput instructions="Spots" submitFunction={this.updateSpotst2Selection} valueToDisplay={this.state.inputs.spotst2 !== null ? this.state.inputs.spotst2 : "null"} ref={this.spotst2Input} color={this.props.color} />
                                     </div>
                                 </li>
                                 <li id="special-li-timeline">
@@ -66,8 +80,8 @@ class ModelInputArea extends Component {
                                     <div class="description">
                                         <table>
                                             <tr>
-                                                <th><TimelineInput instructions="Clerids" submitFunction={this.updateCleridst1Selection} valueToDisplay={this.state.inputs.cleridst1 !== null ? this.state.inputs.cleridst1 : "null"} ref={this.cleridst1Input} /></th>
-                                                <th><TimelineInput instructions="Spots" submitFunction={this.updateSpotst1Selection} valueToDisplay={this.state.inputs.spotst1 !== null ? this.state.inputs.spotst1 : "null"} ref={this.spotst1Input} /></th>
+                                                <th><TimelineInput instructions="Clerids" submitFunction={this.updateCleridst1Selection} valueToDisplay={this.state.inputs.cleridst1 !== null ? this.state.inputs.cleridst1 : "null"} ref={this.cleridst1Input} color={this.props.color} /></th>
+                                                <th><TimelineInput instructions="Spots" submitFunction={this.updateSpotst1Selection} valueToDisplay={this.state.inputs.spotst1 !== null ? this.state.inputs.spotst1 : "null"} ref={this.spotst1Input} color={this.props.color} /></th>
                                             </tr>
                                         </table>
                                     </div>
@@ -78,8 +92,8 @@ class ModelInputArea extends Component {
                                     <div class="description">
                                         <table>
                                             <tr>
-                                                <th><TimelineInput instructions="SPB" submitFunction={this.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"} ref={this.SPBInput} /></th>
-                                                <th><TimelineInput instructions="endobrev" submitFunction={this.updateEndobrevSelection} valueToDisplay={this.state.inputs.endobrev !== null ? this.state.inputs.endobrev : "null"} ref={this.endobrevInput} /></th>
+                                                <th><TimelineInput instructions="SPB" submitFunction={this.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"} ref={this.SPBInput} color={this.props.color} /></th>
+                                                <th><TimelineInput instructions="endobrev" submitFunction={this.updateEndobrevSelection} valueToDisplay={this.state.inputs.endobrev !== null ? this.state.inputs.endobrev : "null"} ref={this.endobrevInput} color={this.props.color} /></th>
                                             </tr>
                                         </table>
                                     </div>
@@ -88,9 +102,7 @@ class ModelInputArea extends Component {
                                     <div className="description" id="timeline-button-description">
                                         <table>
                                             <tr>
-                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.editValues}>EDIT VALUES</button></th>
-                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.resetValues}>RESET VALUES</button></th>
-                                                <th><button id="pred-model-button" className="submit static-button" onClick={this.getCustomModelOutputs}>RUN MODEL</button></th>
+                                                {buttons}
                                             </tr>
                                         </table>
                                     </div>
@@ -99,6 +111,7 @@ class ModelInputArea extends Component {
                         </div>
                     </div>
                     <div className="flex-item-right container" id="box-info-area">
+                        <h3 className="timeline-title">{"Summer " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
                         <div id="print-model-outputs">
                             <p>{"# of Spots in " + (this.state.dataControllerState.userFilters.predictiveModelDate - 1) + ": "}<strong>{this.state.dataControllerState.predictiveModelInputs.spotst1}</strong></p>
                             <p>{"Expected # of Spots in " + this.state.dataControllerState.userFilters.predictiveModelDate + ": "}<strong>{this.state.dataControllerState.predictiveModelOutputs.expSpotsIfOutbreak.toFixed(2)}</strong></p>
@@ -147,7 +160,8 @@ class ModelInputArea extends Component {
             this.setState({
                 dataControllerState: props.dataControllerState,
                 inputs: props.dataControllerState.predictiveModelInputs,
-                outputs: props.dataControllerState.predictiveModelOutputs
+                outputs: props.dataControllerState.predictiveModelOutputs,
+                editMode: props.editMode
             });
         }
     }
@@ -273,28 +287,17 @@ class ModelInputArea extends Component {
     resetValues() {
         this.props.dataController.resetModelSelections();
         $("#timeline li .description input").css("background-color", "#f4f4f4");
+        this.props.setEditMode(false);
     }
 
     editValues() {
+        this.props.setEditMode(true);
+
         if ($("#timeline li .description input").css("background-color") === "rgb(244, 244, 244)") {
             $("#timeline li .description input").css("background-color", "#CCE1B6");
-
-            var inputs = {
-                SPB: 0,
-                cleridst1: 0,
-                spotst1: 0,
-                spotst2: 0,
-                endobrev: 1
-            }
-
-            this.setState({
-                inputs: inputs
-            });
-
         }
         else {
             $("#timeline li .description input").css("background-color", "#f4f4f4");
-            // this.props.dataController.resetModelSelections();
         }
     }
 }
