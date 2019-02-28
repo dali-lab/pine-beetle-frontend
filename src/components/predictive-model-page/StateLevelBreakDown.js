@@ -16,9 +16,11 @@ class StateLevelBreakDown extends Component {
     render() {
         if (this.state.dataController !== null && this.state.dataControllerState !== null) {
             return(
-                <div className="flex-container">
-                    <PredictiveMap dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
-                    <ModelBreakDown dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                <div>
+                    <div className="flex-container" id="top-map-area">
+                        <PredictiveMap dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                        <ModelBreakDown dataController={this.state.dataController} dataControllerState={this.state.dataControllerState} />
+                    </div>
                 </div>
             );
         }

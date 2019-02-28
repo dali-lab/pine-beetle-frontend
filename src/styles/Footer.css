@@ -1,7 +1,7 @@
 #footer {
     height: auto;
     margin: 0px 0px 0px 0px;
-    padding: 5px;
+    padding: 0px 5px;
     background-color: #F2F5E8;
 }
 
@@ -13,6 +13,7 @@
     float: left;
     font-style: italic;
     margin-top: 22px;
+    margin-left: 22px;
 }
 
 #footer img {
@@ -22,4 +23,5 @@
 
 #dali-logo {
     float: right;
+    margin-right: 22px;
 }

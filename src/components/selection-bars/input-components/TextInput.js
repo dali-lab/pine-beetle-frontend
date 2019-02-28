@@ -17,7 +17,7 @@ class TextInput extends Component {
     render() {
         return(
             <div className="selection">
-                <h3>{this.props.instructions}</h3>
+                <h4>{this.props.instructions}</h4>
                 <input className="input" type="text" name="fname" value={this.state.value} onChange={this.setValue} onClick={this.selectText} onKeyPress={this.handleKeyPress}></input>
                 <button className="submit" onClick={this.submit}>Submit</button>
             </div>

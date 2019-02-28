@@ -18,7 +18,7 @@ class StateMap extends Component {
     }
     render() {
         return(
-            <div className="map-container">
+            <div className="container" id="select-state-map">
                 <div id="map"></div>
             </div>
         );

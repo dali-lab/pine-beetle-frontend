@@ -2,6 +2,14 @@
     flex: 1.3 !important;
     text-align: left;
     justify-content: flex-start;
+    margin-top: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#hist-data-selection-bar {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .dropdown-bar {
@@ -135,15 +143,17 @@ h4.location {
 }
 
 #adjust-map-size-button, #reset-current-data-button, #get-csv-button {
-    width: 100px;
-    background-color: #E9C46A;
+    margin: 0px;
     margin-left: 15px;
-    height: 50px;
-    font-size: 13px;
+    background-color: #CCE1B6;
+    height: 45px;
+    width: 80px;
+    font-family: Montserrat;
 }
 
-#adjust-map-size-button, #reset-current-data-button, #get-csv-button:hover {
-    font-weight: 500;
+#adjust-map-size-button, #get-csv-button, #reset-current-data-button:hover  {
+    font-weight: normal;
+    background-color: #A5C187;
 }
 
 #map-area, #prediction-model {

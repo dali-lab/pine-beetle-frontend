@@ -30,17 +30,16 @@ class PredictionsSelectionBar extends Component {
     }
     render() {
         return(
-            <div className="flex-container">
-                <div className="container" id="filter-selections">
-                    <div id="selection-areas-view-data">
-                        <ChoiceInput instructions="Select Year" submitFunction={this.props.dataController.updatePredictionYearSelection} availableOptions={this.state.availableModelYears} idName="year" value={this.state.predictiveModelDate} ref={this.yearInput}/>
-                        <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
-                        <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput}/>
+            <div className="container" id="filter-selections">
+                <div id="selection-areas-view-data">
+                    <ChoiceInput instructions="Select Year" submitFunction={this.props.dataController.updatePredictionYearSelection} availableOptions={this.state.availableModelYears} idName="year" value={this.state.predictiveModelDate} ref={this.yearInput}/>
+                    <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
+                    <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} />
 
-                        <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
-                    </div>
+                    <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
                 </div>
-    		</div>
+                <div className="long-line"></div>
+            </div>
         );
     }
 

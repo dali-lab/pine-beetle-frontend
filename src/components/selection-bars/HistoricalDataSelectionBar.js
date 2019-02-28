@@ -35,18 +35,17 @@ class HistoricalDataSelectionBar extends Component {
     }
     render() {
         return(
-            <div className="flex-container">
+            <div className="flex-container" id="hist-data-selection-bar">
                 <div className="container" id="filter-selections">
                     <div id="selection-areas-view-data">
                         <TextInput instructions="Enter Start Year" submitFunction={this.updateStartDate} valueToDisplay={this.state.startDate}/>
                         <TextInput instructions="Enter End Year" submitFunction={this.updateEndDate} valueToDisplay={this.state.endDate}/>
 
                         <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
-                        <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput}/>
+                        <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} />
 
                         <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
-                        <button id="adjust-map-size-button" className="submit static-button" onClick={this.props.movePredictionModelDown} data-tip="Move the charts and map around">Toggle View</button>
-                        <button id="get-csv-button" className="submit static-button" onClick={this.getCSVData} data-tip="Make sure to allow browser popups!">Export CSV</button>
+                        <button id="reset-current-data-button" className="submit static-button" onClick={this.getCSVData} data-tip="Make sure to allow browser popups!">Export CSV</button>
                         <div>{this.state.csvDownload}</div>
 
                         <ReactTooltip />

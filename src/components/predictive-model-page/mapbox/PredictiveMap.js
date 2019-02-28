@@ -12,8 +12,8 @@ class PredictiveMap extends Component {
             map: null,
             dataController: null,
             dataControllerState: null,
-            thresholds: ['0-10%', '10-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%'],
-            colors: ['#FFF072', '#FFD850', '#FFA930', '#FF7B21', '#FF2000', '#F00000', '#CA000E', '#880021', '#560019', '#000000'],
+            thresholds: ['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'],
+            colors: ['#FFF072', '#FFA930', '#FF2000', '#CA000E', '#560019'],
             legendTags: [],
             hoverElement: <p>{"Hover over a forest for detailed information"}</p>
         }
@@ -24,10 +24,10 @@ class PredictiveMap extends Component {
     }
     render() {
         return(
-            <div className="map-container flex-item-left">
+            <div className="container flex-item-left" id="map-container">
                 <div id="map"></div>
                 <div className='map-overlay-hover-area' id='features'>
-                    <h3>Predictions Per Forest</h3>
+                    <h3>Predictions By Forest</h3>
                     <div id='pd'>
                         {this.state.hoverElement}
                     </div>
@@ -202,35 +202,20 @@ class PredictiveMap extends Component {
             this.state.dataControllerState.predictiveModelOutputArray.forEach(function(row) {
                 let color;
 
-                if (row.outputs["prob53spots"] >= 0.0 && row.outputs["prob53spots"] <= 0.10) {
+                if (row.outputs["prob53spots"] >= 0.0 && row.outputs["prob53spots"] <= 0.20) {
                     color = this.state.colors[0]
                 }
-                else if (row.outputs["prob53spots"] > 0.10 && row.outputs["prob53spots"] <= 0.20) {
+                else if (row.outputs["prob53spots"] > 0.20 && row.outputs["prob53spots"] <= 0.40) {
                     color = this.state.colors[1]
                 }
-                else if (row.outputs["prob53spots"] > 0.20 && row.outputs["prob53spots"] <= 0.30) {
+                else if (row.outputs["prob53spots"] > 0.40 && row.outputs["prob53spots"] <= 0.60) {
                     color = this.state.colors[2]
                 }
-                else if (row.outputs["prob53spots"] > 0.30 && row.outputs["prob53spots"] <= 0.40) {
+                else if (row.outputs["prob53spots"] > 0.60 && row.outputs["prob53spots"] <= 0.80) {
                     color = this.state.colors[3]
                 }
-                else if (row.outputs["prob53spots"] > 0.40 && row.outputs["prob53spots"] <= 0.50) {
+                else if (row.outputs["prob53spots"] > 0.80) {
                     color = this.state.colors[4]
-                }
-                else if (row.outputs["prob53spots"] > 0.50 && row.outputs["prob53spots"] <= 0.60) {
-                    color = this.state.colors[5]
-                }
-                else if (row.outputs["prob53spots"] > 0.60 && row.outputs["prob53spots"] <= 0.70) {
-                    color = this.state.colors[6]
-                }
-                else if (row.outputs["prob53spots"] > 0.70 && row.outputs["prob53spots"] <= 0.80) {
-                    color = this.state.colors[7]
-                }
-                else if (row.outputs["prob53spots"] > 0.80 && row.outputs["prob53spots"] <= 0.90) {
-                    color = this.state.colors[8]
-                }
-                else if (row.outputs["prob53spots"] > 0.90) {
-                    color = this.state.colors[9]
                 } 
 
                 if (!forestsAdded.includes(row.inputs["forest"])) {

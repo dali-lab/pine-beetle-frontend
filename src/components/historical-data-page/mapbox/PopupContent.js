@@ -29,12 +29,11 @@ export default class PopupContent extends PureComponent {
         // console.log(this.props.info)
         return (
             <div className="popup-content">
-                <p>{this.stateAbbrevToStateName[this.props.info.state]}</p>
-                <p>{"NF: " + this.props.info.nf}</p>
-                <p>{"Forest: " + this.props.info.forest}</p>
-                <p>{"Spots: " + this.props.info.spots}</p>
-                <p>{"SPB: " + this.props.info.spbPerTwoWeeks}</p>
-                <p>{"Clerids: " + this.props.info.cleridsPerTwoWeeks}</p>
+                <p><b>{this.stateAbbrevToStateName[this.props.info.state]}</b></p>
+                <p><b>Forest: </b>{this.props.info.forest}</p>
+                <p><b>Spots: </b>{this.props.info.spots}</p>
+                <p><b>SPB: </b>{this.props.info.spbPerTwoWeeks}</p>
+                <p><b>Clerids: </b>{this.props.info.cleridsPerTwoWeeks}</p>
             </div>
         );
     }

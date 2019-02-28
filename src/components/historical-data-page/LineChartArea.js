@@ -62,24 +62,21 @@ class LineChartArea extends Component {
     }
     render() {
         return(
-            <div className="flex-container" id="data-insights-holder">
-                <div className="container data-insights flex-item flex-item-left" id="data-insights">
-                        <Line data={this.state.chartData} height={400} options={this.state.chartOptions}/>
-                </div>
-                <div className="container flex-item flex-item-right" id="line-metrics-area">
-                        <p data-tip="Sample Mean of Spots"><b>Spots Mean: </b>{this.state.spotsMean.toLocaleString()}</p>
-                        <p data-tip="Standard Deviation of Spots"><b>Spots SD: </b>{this.state.spotsSD.toLocaleString().slice(0, -1)}</p>
-                        <div className="metrics-line"></div>
-                        <p data-tip="Sample Mean of SPB"><b>SPB Mean: </b>{this.state.spbMean.toLocaleString()}</p>
-                        <p data-tip="Standard Deviation of SPB"><b>SPB SD: </b>{this.state.spbSD.toLocaleString().slice(0, -1)}</p>
-                        <div className="metrics-line"></div>
-                        <p data-tip="Sample Mean of Clerids"><b>Clerids Mean: </b>{this.state.cleridsMean.toLocaleString()}</p>
-                        <p data-tip="Standard Deviation of Clerids"><b>Clerids SD: </b>{this.state.cleridsSD.toLocaleString().slice(0, -1)}</p>
-                        <ReactTooltip />
-                </div>
-    		</div>
+            <Line data={this.state.chartData} height={400} options={this.state.chartOptions}/>
         );
     }
+
+    // <div className="flex-item" id="line-metrics-area">
+    //     <p data-tip="Sample Mean of Spots"><b>Spots Mean: </b>{this.state.spotsMean.toLocaleString()}</p>
+    //     <p data-tip="Standard Deviation of Spots"><b>Spots SD: </b>{this.state.spotsSD.toLocaleString().slice(0, -1)}</p>
+    //     <div className="metrics-line"></div>
+    //     <p data-tip="Sample Mean of SPB"><b>SPB Mean: </b>{this.state.spbMean.toLocaleString()}</p>
+    //     <p data-tip="Standard Deviation of SPB"><b>SPB SD: </b>{this.state.spbSD.toLocaleString().slice(0, -1)}</p>
+    //     <div className="metrics-line"></div>
+    //     <p data-tip="Sample Mean of Clerids"><b>Clerids Mean: </b>{this.state.cleridsMean.toLocaleString()}</p>
+    //     <p data-tip="Standard Deviation of Clerids"><b>Clerids SD: </b>{this.state.cleridsSD.toLocaleString().slice(0, -1)}</p>
+    //     <ReactTooltip />
+    // </div>
 
     // on mount, update the state
     componentDidMount() {

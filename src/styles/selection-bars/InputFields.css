@@ -1,8 +1,8 @@
 select, input {
     width: 175px;
     border: none;
-    border-radius: 4px;
-    background-color: #ABB2B5;
+    border-radius: 0px;
+    background-color: #D8D8D8;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -12,29 +12,20 @@ select, input {
 
 input {
     width: 150px;
+    margin-right: 10px;
 }
 
 .submit {
     width: 60px;
     padding: 7px;
     border: none;
-    border-radius: 4px;
-    background-color: #f1f1f1;
+    border-radius: 0px;
+    background-color: #CCE1B6;
     cursor: pointer;
 }
 
 .submit:hover {
-    background-color: #E9C46A;
-    font-weight: bold;
-}
-
-select:hover {
-    background-color: #E9C46A;
-    font-weight: bold;
-}
-
-input:hover {
-    background-color: #E9C46A;
+    background-color: #A5C187;
     font-weight: bold;
 }
 
@@ -43,6 +34,6 @@ input:hover {
     margin: 10px 15px;
 }
 
-.selection h3 {
+.selection h4 {
     text-align: left;
 }

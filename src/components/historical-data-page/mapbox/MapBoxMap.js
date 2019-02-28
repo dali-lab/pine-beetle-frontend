@@ -11,8 +11,8 @@ class MapBoxMap extends Component {
 
         this.state = {
             viewport: {
-                width: ((window.innerWidth - 62) * 0.70),
-                height: 600,
+                width: ((window.innerWidth - 62) * 0.50),
+                height: 432,
                 latitude: 33.7490,
                 longitude: -84.3880,
                 zoom: 4.8,
@@ -43,7 +43,7 @@ class MapBoxMap extends Component {
                     <NavigationControl onViewportChange={this.updateViewport} captureScroll={false} showCompass={false} />
                 </div>
 
-                <div className='map-overlay-legend' id='legend'>
+                <div className='map-overlay-legend' id='legend-hist'>
                     {this.state.legendTags}
                 </div>
 
@@ -144,7 +144,7 @@ class MapBoxMap extends Component {
     updateMapDimensions(event) {
         this.setState({
             viewport: {
-                width: ((window.innerWidth - 62) * 0.70),
+                width: ((window.innerWidth - 62) * 0.50),
                 height: this.state.viewport.height,
                 latitude: this.state.viewport.latitude,
                 longitude: this.state.viewport.longitude,
