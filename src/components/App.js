@@ -55,7 +55,7 @@ class App extends Component {
                                 <Route path='/predictions'render={(props) => <ViewPredictions {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState}/>}/>
                                 <Route path="/about" component={About} />
                                 <Route path="/loading" component={LoadingContainer} />
-                                <Route path='/uploadSurvey123Data'render={(props) => <UploadDataFromSurvey123 {...props} url={this.deployedURL} />}/>
+                                <Route path='/uploadSurvey123Data'render={(props) => <UploadDataFromSurvey123 {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState} url={this.deployedURL} />}/>
                                 <Route path="*" component={Home} />
                             </Switch>
                         </div>

@@ -165,7 +165,7 @@ class PredictiveMap extends Component {
                 if (this.state.map.getSource("forests") === undefined) {
                     this.state.map.addSource("forests", {
                         type: "vector",
-                        url: "mapbox://pine-beetle-prediction.0tor8eeq"
+                        url: "mapbox://pine-beetle-prediction.1be58pyi"
                     });
                 }
 
@@ -186,7 +186,7 @@ class PredictiveMap extends Component {
 
             this.state.map.addSource("forests", {
                 type: "vector",
-                url: "mapbox://pine-beetle-prediction.0tor8eeq"
+                url: "mapbox://pine-beetle-prediction.1be58pyi"
             });
         }
 
@@ -233,7 +233,7 @@ class PredictiveMap extends Component {
                 "id": "forests-join",
                 "type": "fill",
                 "source": "forests",
-                "source-layer": "RD_SPB_NE",
+                "source-layer": "US_Counties_updated",
                 "paint": {
                     "fill-color": expression
                 }

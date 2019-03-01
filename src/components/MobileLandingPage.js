@@ -5,9 +5,8 @@ class MobileLandingPage extends Component {
     render() {
         return(
             <div id="mobile-landing-page">
-                <h2>Uh oh!</h2>
-                <p>This website is not compatible on mobile.</p>
-                <p>Please navigate to a desktop to proceed.</p>
+                <img src={require("../assets/pinebeetle.png")} alt="logo"></img>
+                <p><b>We apologize</b>, but this website is not compatible on mobile. Please navigate to a desktop to proceed. </p>
             </div>
         );
     }
