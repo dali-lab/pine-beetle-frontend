@@ -8,7 +8,7 @@
 
 #home-landing-container {
     margin: auto;
-    transform: perspective(1px) translateY(40%);
+    transform: perspective(1px) translateY(20%);
     text-align: center;
     width: 60%;
     height: auto;
@@ -29,7 +29,21 @@
 }
 
 #home-last {
-    padding-bottom: 75px;
+    padding-bottom: 45px;
+}
+
+.home-button {
+    background-color: #F2F5E8;
+    margin-left: 15px;
+    margin-right: 15px;
+    text-decoration: none;
+    color: black;
+    padding: 15px;
+    border-radius: 2px;
+}
+
+#pred-model-link {
+    margin-bottom: 75px;
 }
 
 

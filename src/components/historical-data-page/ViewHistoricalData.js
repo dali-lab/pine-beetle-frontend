@@ -3,7 +3,6 @@ import LoadingContainer from '../LoadingContainer';
 import HistoricalDataSelectionBar from '../selection-bars/HistoricalDataSelectionBar';
 import LineChartArea from './LineChartArea';
 import MapBoxMap from './mapbox/MapBoxMap';
-import MapSideBar from './MapSideBar';
 import ReactTooltip from 'react-tooltip'
 import math from 'mathjs';
 import '../../styles/historical-data-page/ViewHistoricalData.css';

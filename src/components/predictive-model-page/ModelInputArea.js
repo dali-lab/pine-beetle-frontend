@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import TimelineInput from '../selection-bars/input-components/TimelineInput.js';
-import TextInput from '../selection-bars/input-components/TextInput.js';
 import '../../styles/predictive-model-page/ModelInputArea.css';
 var $ = require("jquery");
 
@@ -57,7 +56,7 @@ class ModelInputArea extends Component {
                     </div>
             }
             else {
-                var buttons = 
+                buttons = 
                     <div>
                         <th><button id="pred-model-button" className="submit static-button" onClick={this.editValues}>EDIT VALUES</button></th>
                     </div>
@@ -171,35 +170,35 @@ class ModelInputArea extends Component {
             var SPB = this.state.inputs.SPB
         }
         else {
-            var SPB = this.SPBInput.current.state.value
+            SPB = this.SPBInput.current.state.value
         }
 
         if (isNaN(this.cleridst1Input.current.state.value)) {
             var cleridst1 = this.state.inputs.cleridst1
         }
         else {
-            var cleridst1 = this.cleridst1Input.current.state.value
+            cleridst1 = this.cleridst1Input.current.state.value
         }
 
         if (isNaN(this.spotst1Input.current.state.value)) {
             var spotst1 = this.state.inputs.spotst1
         }
         else {
-            var spotst1 = this.spotst1Input.current.state.value
+            spotst1 = this.spotst1Input.current.state.value
         }
 
         if (isNaN(this.spotst2Input.current.state.value)) {
             var spotst2 = this.state.inputs.spotst2
         }
         else {
-            var spotst2 = this.spotst2Input.current.state.value
+            spotst2 = this.spotst2Input.current.state.value
         }
 
         if (isNaN(this.endobrevInput.current.state.value)) {
             var endobrev = this.state.inputs.endobrev
         }
         else {
-            var endobrev = this.endobrevInput.current.state.value
+            endobrev = this.endobrevInput.current.state.value
         }
 
         var inputs = {
