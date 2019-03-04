@@ -7,6 +7,7 @@ Last Updated: 3.1.2019
 - Project Status
 - Authors
 - Acknowledgements
+
 ## Project Overview
 Project Pine Beetle is a web application that visualizes data on Southern Pine Beetle outbreaks in 16 states across the US. This tool uses a predictive model to predict future outbreaks and movements of Southern Pine Beetles.
 
@@ -37,15 +38,7 @@ Runs the predictive model to generate predictions about future outbreaks on a st
 Predictions come in for each forest in the state and can be viewed on a distribution plot as well as a choropleth map showing outbreaks by geographical forest/county.
 
 ### Back-end
-#### NoSQL Database:
-Non-relational database built using MongoDB, responsible for storing data on pine beetle trappings and spots. The database was pre-populated with data collected from 1986-2010 which was stored locally and can be seen in the following [repository](https://github.com/dali-lab/pine-beetle-backend) in `src/data/`.
-
-Additionally, future data is imported to the database from Survey123, a data collection platform built on top of ArcGIS. All entries drawn from Survey123 come in on a trap-level. Data is collected across a 4-6 week trapping period, then aggregated from a trap level to a forest level. The data is pulled from Survey123 to the database as trapping data comes in. Seeing the surveys and data from Survey123 is strictly closed to the public. All data is publicly accessible on the front-end.
-
-#### Data:
-Trapping data is entered in the spring. Spot data is entered in the fall. For information on variable names, see the back-end repository linked [here](https://github.com/dali-lab/pine-beetle-backend) in `src/models`.
-
-Between Spring 2017 and Spring 2018, the USFS shifted over from manual data collection (Microsoft Excel) to data collection through Survey123, an online platform built on top of ArcGIS. A representation of the manually collected data can be seen in `src/data/` on the back-end, as well as within the database (currently closed to the public). Survey123 data is visible both through the database and through the Survey123 platform. Information on querying data from Survey123 and ArcGIS can be found [here](https://developers.arcgis.com/rest/services-reference/query-feature-service-layer-.html).
+You can the back-end repository [here](https://github.com/dali-lab/pine-beetle-backend).
 
 ## Developer Information
 ### Installation:
@@ -98,15 +91,6 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-#### Back-end repository:
-- For the back-end, run `git clone https://github.com/dali-lab/pine-beetle-backend`.
-- `cd pine-beetle-backend`. Then make sure you are on the master branch.
-- Install necessary packages and dependencies with `yarn install`.
-- Start a local server with `yarn start`
-- Build with `yarn build`
-- Deploy using heroku by setting a remote and running `git push heroku master`
-
-
 ### Front-end Repo Structure
 
 The front-end is built with React.js and deployed with surge. Please contact pine-beetle@dali.dartmouth.edu for access to `.env` files. 
@@ -121,32 +105,6 @@ The front-end is built with React.js and deployed with surge. Please contact pin
 - The frontend is deployed using surge. Make sure you install it if you don’t already have it: `npm install --global surge`
 - Next navigate to `build` and run `yarn build` then `surge --domain [insert domain name here]`. The CNAME file will automatically deploy to `pine-beetle-prediction.surge.sh`, but you must have permissions to deploy to this URL. Use `--domain` to override this and deploy to your own URL.
 - Visit https://pine-beetle-prediction.surge.sh/ to see project
-
-### Back-end Repo Structure
-
-#### Contents
-- `src/` contains the server and router
-- `src/models` contains the data models for the database
-- `src/controllers` contains the mongoose controllers
-- `src/data` contains local copies of the initially imported data
-- `src/importing-scripts` contains scripts used to manually upload data to the database as well as scripts for pulling Survey123 data. 
-
-
-#### Exploring the DB
-- Before you start anything, make sure mongo is installed correctly
-- Run `mongod`
-- Run `mongo`
-- Run `use db`
-- Explore database contents with calls such as `.find({})`
-
-#### Adding Data to DB
-To locally import the csv file in `src/data/`:
-`mongoimport --db pb-dev --collection spot-prediction --type csv --headerline --file ./src/data/sample_import_data.csv`
-
-#### Deployment
-- Deploy to heroku by setting a remote: `heroku git:remote -a pine-beetle-prediction`. You must be signed into a Heroku account with access to this project to gain access.
-- Then run `git push heroku master` to deploy and build.
-- See [heroku deployment documentation](https://devcenter.heroku.com/articles/git) for more.
 
 ## Project Status
 As of March 6th, 2019, Project Pine Beetle will not be under active development. It is intended to be under active development again starting in Fall 2019.
