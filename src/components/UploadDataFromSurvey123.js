@@ -47,7 +47,7 @@ class UploadDataFromSurvey123 extends Component {
                             <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
     
                             <h3 id="survey123-top">Added the following to the database:</h3>
-                            {JSON.stringify(this.state.responseOutput)}
+                            <div id="upload-output">{JSON.stringify(this.state.responseOutput)}</div>
     
                             <div id="survey123-csv">
                                 <CSVLink data={this.state.responseOutput} filename="uploaded-from-survey123">Click Here to Download the Added Data</CSVLink>
