@@ -5,7 +5,7 @@ class OptgroupChoiceInput extends Component {
         super(props);
 
         this.state = {
-            firstOptionText: this.props.instructions,
+            firstOptionText: this.props.firstOptionText,
             options: [],
             value: "DEFAULT"
         }
@@ -110,7 +110,7 @@ class OptgroupChoiceInput extends Component {
 
     resetOptionText() {
         this.setState({
-            firstOptionText: this.props.instructions
+            firstOptionText: this.props.firstOptionText
         });
     }
 
@@ -119,7 +119,7 @@ class OptgroupChoiceInput extends Component {
         if (event.target.value === this.state.firstOptionText) {
             this.props.submitFunction(null);
             this.setState({
-                firstOptionText: this.props.instructions
+                firstOptionText: this.props.firstOptionText
             });
         }
         else {
