@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Bar} from 'react-chartjs-2';
 import RunningModel from '../RunningModel';
 import '../../styles/predictive-model-page/ProbabilityDistribution.css';
+var pattern = require("patternomaly");
 
 class ProbabilityDistribution extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class ProbabilityDistribution extends Component {
                         data: [],
                         label: "Probability of Spots",
                         backgroundColor: "#1f77b4",
-                        hoverBackgroundColor: "#CCE1B6"
+                        hoverBackgroundColor: pattern.draw('diagonal', '#1f77b4')
                     }
                 ]
             }, // used for chartjs line chart
@@ -95,18 +96,23 @@ class ProbabilityDistribution extends Component {
 
                 if (data[1] <= 0.20) {
                     chartData.datasets[0].backgroundColor = colors[0];
+                    chartData.datasets[0].hoverBackgroundColor = pattern.draw('diagonal', colors[0])
                 }
                 else if (data[1] > 0.20 && data[1] <= 0.40) {
                     chartData.datasets[0].backgroundColor = colors[1];
+                    chartData.datasets[0].hoverBackgroundColor = pattern.draw('diagonal', colors[1])
                 }
                 else if (data[1] > 0.40 && data[1] <= 0.60) {
                     chartData.datasets[0].backgroundColor = colors[2];
+                    chartData.datasets[0].hoverBackgroundColor = pattern.draw('diagonal', colors[2])
                 }
                 else if (data[1] > 0.60 && data[1] <= 0.80) {
                     chartData.datasets[0].backgroundColor = colors[3];
+                    chartData.datasets[0].hoverBackgroundColor = pattern.draw('diagonal', colors[3])
                 }
                 else {
                     chartData.datasets[0].backgroundColor = colors[4];
+                    chartData.datasets[0].hoverBackgroundColor = pattern.draw('diagonal', colors[4])
                 }
 
                 // update state
