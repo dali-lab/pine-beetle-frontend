@@ -12,6 +12,7 @@ import ViewHistoricalData from './historical-data-page/ViewHistoricalData.js';
 import ViewPredictions from './predictive-model-page/ViewPredictions.js';
 import MobileLandingPage from './MobileLandingPage.js';
 import LoadingContainer from './LoadingContainer.js';
+import UploadLandingPage from './UploadLandingPage.js';
 import UploadDataFromSurvey123 from './UploadDataFromSurvey123.js';
 import '../styles/App.css';
 
@@ -30,11 +31,14 @@ class App extends Component {
         this.state = {
             dataControllerState: null,
             minimumAcceptableBrowserWidth: 500,
-            acceptableBrowserWidth: window.innerWidth > 500 ? true : false
+            acceptableBrowserWidth: window.innerWidth > 500 ? true : false,
+            passwordProtectedPageRoute: '/' + Math.random().toString(36).substring(2),
+            lockedOut: this.getCookie("upload-locked-out") === "true" ? true : false
         };
 
         // create reference
         this.dataController = React.createRef();
+        this.setLockout = this.setLockout.bind(this);
 
         // uncomment this and pass to DataController as a prop for local json data
         // data={require('../data/historical_data.json')}
@@ -55,7 +59,8 @@ class App extends Component {
                                 <Route path='/predictions'render={(props) => <ViewPredictions {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState}/>}/>
                                 <Route path="/about" component={About} />
                                 <Route path="/loading" component={LoadingContainer} />
-                                <Route path='/uploadSurvey123Data'render={(props) => <UploadDataFromSurvey123 {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState} url={this.deployedURL} />}/>
+                                <Route path='/uploadSurvey123Data' render={(props) => <UploadLandingPage {...props} passwordProtectedPageRoute={this.state.passwordProtectedPageRoute} setLockout={this.setLockout} lockedOut={this.state.lockedOut} />}/>
+                                <Route path={this.state.passwordProtectedPageRoute} render={(props) => <UploadDataFromSurvey123 {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState} url={this.deployedURL} lockedOut={this.state.lockedOut} />}/>
                                 <Route path="*" component={Home} />
                             </Switch>
                         </div>
@@ -101,6 +106,29 @@ class App extends Component {
                 acceptableBrowserWidth: false
             });
         }
+    }
+
+    setLockout(value) {
+        this.setState({
+            lockedOut: value
+        })
+    }
+
+    // source: https://www.w3schools.com/js/js_cookies.asp
+    getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return null;
     }
 }
 

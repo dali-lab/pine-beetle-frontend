@@ -113,7 +113,7 @@ class ModelInputArea extends Component {
                         <h3 className="timeline-title">{"Summer " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
                         <div id="print-model-outputs">
                             <p>{"# of Spots in " + (this.state.dataControllerState.userFilters.predictiveModelDate - 1) + ": "}<strong>{this.state.dataControllerState.predictiveModelInputs.spotst1}</strong></p>
-                            <p>{"Expected # of Spots in " + this.state.dataControllerState.userFilters.predictiveModelDate + "If Any: "}<strong>{this.state.dataControllerState.predictiveModelOutputs.expSpotsIfOutbreak.toFixed(2)}</strong></p>
+                            <p>{"Expected # of Spots in " + this.state.dataControllerState.userFilters.predictiveModelDate + " If Any: "}<strong>{this.state.dataControllerState.predictiveModelOutputs.expSpotsIfOutbreak.toFixed(2)}</strong></p>
                             <div className="line"></div>
                             <p>{"Probability of Any Spots: "}<strong style={{color: "red"}}>{(this.state.dataControllerState.predictiveModelOutputs.prob0spots*100).toFixed(2) + "%"}</strong></p>
                         </div>

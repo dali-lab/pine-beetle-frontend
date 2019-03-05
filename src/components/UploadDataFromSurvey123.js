@@ -34,56 +34,67 @@ class UploadDataFromSurvey123 extends Component {
     }
 
     render() {
-        if (this.state.dataController !== null) {
-            if (this.state.responseOutput !== null) {
-                return(
-                    <div>
+        if (!this.props.lockedOut) {
+            if (this.state.dataController !== null) {
+                if (this.state.responseOutput !== null) {
+                    return(
+                        <div>
+                            <div className="container">
+                                <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
+                                <p>Please be patient as this may take a few minutes to complete.</p>
+                                <ChoiceInput instructions="Select State" submitFunction={this.state.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
+                                <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.state.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} />
+                                <br />
+                                <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
+        
+                                <h3 id="survey123-top">Added the following to the database:</h3>
+                                <div id="upload-output">{JSON.stringify(this.state.responseOutput)}</div>
+        
+                                <div id="survey123-csv">
+                                    <CSVLink data={this.state.responseOutput} filename="uploaded-from-survey123">Click Here to Download the Added Data</CSVLink>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                }
+                else if (this.state.error) {
+                    return(
+                        <div>
+                            <div className="container">
+                                <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
+                                <p>Please be patient as this may take a few minutes to complete.</p>
+                                <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
+                                <h3 id="survey123-top" style={{color: "red"}}>Failed to upload data to the database.</h3>
+                                <p>Please email <a href="mailto:pine-beetle@dali.dartmouth.edu" id="survey123-email">pine-beetle@dali.dartmouth.edu</a> to report the error.</p>
+                            </div>
+                        </div>
+                    );
+                }
+                else {
+                    return(
                         <div className="container">
                             <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
                             <p>Please be patient as this may take a few minutes to complete.</p>
-                            <ChoiceInput instructions="Select State" submitFunction={this.state.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
+                            <ChoiceInput instructions="Select State" submitFunction={this.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
                             <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.state.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} />
                             <br />
                             <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
-    
-                            <h3 id="survey123-top">Added the following to the database:</h3>
-                            <div id="upload-output">{JSON.stringify(this.state.responseOutput)}</div>
-    
-                            <div id="survey123-csv">
-                                <CSVLink data={this.state.responseOutput} filename="uploaded-from-survey123">Click Here to Download the Added Data</CSVLink>
-                            </div>
                         </div>
-                    </div>
-                );
-            }
-            else if (this.state.error) {
-                return(
-                    <div>
-                        <div className="container">
-                            <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
-                            <p>Please be patient as this may take a few minutes to complete.</p>
-                            <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
-                            <h3 id="survey123-top" style={{color: "red"}}>Failed to upload data to the database.</h3>
-                            <p>Please email <a href="mailto:pine-beetle@dali.dartmouth.edu" id="survey123-email">pine-beetle@dali.dartmouth.edu</a> to report the error.</p>
-                        </div>
-                    </div>
-                );
+                    );
+                }
             }
             else {
-                return(
-                    <div className="container">
-                        <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
-                        <p>Please be patient as this may take a few minutes to complete.</p>
-                        <ChoiceInput instructions="Select State" submitFunction={this.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
-                        <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.state.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} />
-                        <br />
-                        <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
-                    </div>
-                );
+                return null;
             }
         }
         else {
-            return null;
+            return (
+                <div id="password-input-area">
+                    <center>
+                    <p>You are currently locked out from entering too many password attempts. Please try again in 30 minutes.</p>
+                    </center>
+                </div>
+            )
         }
     }
 
