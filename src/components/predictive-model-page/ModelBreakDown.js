@@ -44,8 +44,6 @@ class ModelBreakDown extends Component {
                     }
                 }
 
-                console.log(outputs)
-
                 return(
                     <div className="container flex-item-right" id="model-breakdown-container">
                         <table id="model-breakdown-table">
