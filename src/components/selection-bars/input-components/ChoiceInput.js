@@ -5,7 +5,7 @@ class ChoiceInput extends Component {
         super(props);
 
         this.state = {
-            firstOptionText: this.props.instructions,
+            firstOptionText: this.props.firstOptionText,
             options: [],
             value: "DEFAULT"
         }
@@ -69,7 +69,7 @@ class ChoiceInput extends Component {
 
     resetOptionText() {
         this.setState({
-            firstOptionText: this.props.instructions
+            firstOptionText: this.props.firstOptionText
         });
     }
 
@@ -78,7 +78,7 @@ class ChoiceInput extends Component {
         if (event.target.value === this.state.firstOptionText) {
             this.props.submitFunction(null);
             this.setState({
-                firstOptionText: this.props.instructions
+                firstOptionText: this.props.firstOptionText
             });
         }
         else {

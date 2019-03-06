@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import OptgroupChoiceInput from '../selection-bars/input-components/OptgroupChoiceInput.js';
 import ModelInputArea from './ModelInputArea.js';
 import ProbabilityDistribution from './ProbabilityDistribution.js';
 
