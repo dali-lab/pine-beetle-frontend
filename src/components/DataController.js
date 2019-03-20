@@ -1416,7 +1416,6 @@ class DataController extends Component {
 
       //Update Token Value for Data UploadDataFromSurvey123
       updateToken(value) {
-          console.log("updateToken in DataController running!")
           // set the state
           this.setState({
               token: value,

@@ -135,20 +135,17 @@ class UploadDataFromSurvey123 extends Component {
     }
 
     updateStateSelection(value) {
-        console.log('updateStateSelection in UploadData running!');
         this.state.dataController.updateStateSelection(value);
     }
 
     updateToken(value) {
-        console.log('updateToken in UploadData running!');
-        console.log('updateToken value = ' + value);
         this.state.dataController.updateToken(value);
     }
 
 
     uploadSurvey123Data() {
-        console.log(this.state.stateName);
-        console.log(this.state.token);
+        // console.log(this.state.stateName);
+        // console.log(this.state.token);
         if (!this.state.sentQuery) {
             var url = this.state.url + "uploadSurvey123Fake";
             var xmlHttp = new XMLHttpRequest();

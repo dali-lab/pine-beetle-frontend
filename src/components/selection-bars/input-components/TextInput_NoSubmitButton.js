@@ -31,18 +31,15 @@ class TextInput_NoSubmitButton extends Component {
 
     // update the held state in the input field
     setValue(event) {
-        console.log('value received = ' + event.target.value);
         this.setState({
             value: event.target.value
         }, () => {
-          console.log('setValue is submitting...' + this.state.value);
           this.props.submitFunction(this.state.value);
         });
     }
 
     // submit a new value for the given selection
     submit(event) {
-        console.log('submitting...' + this.state.value);
         this.props.submitFunction(this.state.value);
     }
 
@@ -58,7 +55,6 @@ class TextInput_NoSubmitButton extends Component {
             this.setState({
                 value: event.target.value
             }, () => {
-              console.log('handleKeyPress is submitting...' + this.state.value);
               this.props.submitFunction(this.state.value);
             });
         }
