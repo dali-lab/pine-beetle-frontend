@@ -66,6 +66,8 @@ class DataController extends Component {
                 endobrev: 1
             },
 
+            //token for uploading data
+            token: '',
             runningModel: false,
             updatedStateSelection: true,
             initializeForests: true,
@@ -152,6 +154,7 @@ class DataController extends Component {
         this.updateSpotst2Selection = this.updateSpotst2Selection.bind(this);
         this.updateEndobrevSelection = this.updateEndobrevSelection.bind(this);
         this.handleModelForestClick = this.handleModelForestClick.bind(this);
+        this.updateToken = this.updateToken.bind(this);
 
         // set cookies
         this.setCookie("stateName", this.state.userFilters.stateName, 365);
@@ -174,7 +177,7 @@ class DataController extends Component {
             if (this.state.userFilters.startDate === Infinity || this.state.userFilters.endDate === 0) {
                 this.resetStartAndEndDate();
             }
-    
+
             // initialize drop-down-menu options
             this.initializeAvailableStates();
             this.initializeAvailableYears(); // calls updateCurrentData when complete
@@ -185,7 +188,7 @@ class DataController extends Component {
         });
 
         // before the user closes the tab, save cookies one last time
-        window.addEventListener("beforeunload", (ev) => {  
+        window.addEventListener("beforeunload", (ev) => {
             this.setCookie("stateName", this.state.userFilters.stateName, 365);
             this.setCookie("stateAbbreviation", this.state.userFilters.stateAbbreviation, 365);
             this.setCookie("forest", this.state.userFilters.forest, 365);
@@ -288,7 +291,7 @@ class DataController extends Component {
                 // update userFilters
                 var userFilters = Object.assign({}, this.state.userFilters);
                 userFilters.originalEndDate = parseInt(xmlHttp.response)
-                 
+
                  // set the state
                  this.setState({
                      userFilters: userFilters
@@ -515,7 +518,7 @@ class DataController extends Component {
     }
 
     // set the year we are running the predictive model on
-    updatePredictionYearSelection(year) {    
+    updatePredictionYearSelection(year) {
         // update userFilters
         var userFilters = Object.assign({}, this.state.userFilters);
         userFilters.predictiveModelDate = year;
@@ -547,7 +550,7 @@ class DataController extends Component {
             userFilters.stateName = null
             userFilters.stateAbbreviation = null
             userFilters.forest = null
-    
+
             this.setState({
                 userFilters: userFilters
             }, () => {
@@ -817,8 +820,8 @@ class DataController extends Component {
     runModel() {
         if (!this.state.hardStopModel) {
             // if a state has been selected
-            if (this.state.userFilters.stateAbbreviation !== null && this.state.userFilters.stateAbbreviation !== undefined && this.state.userFilters.stateAbbreviation !== "") {        
-                this.averageModelOutputs();    
+            if (this.state.userFilters.stateAbbreviation !== null && this.state.userFilters.stateAbbreviation !== undefined && this.state.userFilters.stateAbbreviation !== "") {
+                this.averageModelOutputs();
             }
             else {
                 var inputs = {
@@ -895,7 +898,7 @@ class DataController extends Component {
                             inputs: xmlHttp.response.inputs,
                             outputs: xmlHttp.response.outputs
                         }];
-        
+
                         // set the state
                         this.setState({
                             predictiveModelOutputArray: modelOutputs,
@@ -912,7 +915,7 @@ class DataController extends Component {
                     }
                     // if the request failed, clear the data and notify the user
                     else {
-        
+
                         var inputs = {
                             SPB: 0,
                             cleridst1: 0,
@@ -920,7 +923,7 @@ class DataController extends Component {
                             spotst2: 0,
                             endobrev: 1
                         }
-        
+
                         var outputs = {
                             prob0spots: 0,
                             prob19spots: 0,
@@ -935,7 +938,7 @@ class DataController extends Component {
                             inputs: inputs,
                             outputs: outputs
                         }];
-        
+
                         // set the state
                         this.setState({
                             predictiveModelOutputArray: modelOutputs,
@@ -951,11 +954,11 @@ class DataController extends Component {
                         });
                     }
                 }.bind(this);
-        
+
                 xmlHttp.open("POST", url, true);
                 xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 xmlHttp.responseType = 'json';
-                xmlHttp.send(jQuery.param(filters));   
+                xmlHttp.send(jQuery.param(filters));
             });
         });
     }
@@ -1182,7 +1185,7 @@ class DataController extends Component {
                     xmlHttp.responseType = 'json';
                     xmlHttp.send(jQuery.param(filters));
                 });
-            });                
+            });
         });
     }
 
@@ -1264,12 +1267,12 @@ class DataController extends Component {
             var availableForestsByNF = {
                 "COUNTIES": []
             };
-    
+
             for (var obj in this.state.historicalData.summarizedDataByLatLong) {
                 // grab national forest and local forests
                 var thisNF = this.state.historicalData.summarizedDataByLatLong[obj].nf;
                 var thisForest = this.state.historicalData.summarizedDataByLatLong[obj].forest;
-    
+
                 if (thisForest !== null) {
                     if (thisNF === "") {
                         if (!availableForestsByNF["COUNTIES"].includes(thisForest)) {
@@ -1288,12 +1291,12 @@ class DataController extends Component {
                     }
                 }
             }
-    
+
             var dropDownContent = Object.assign({}, this.state.dropDownContent);
             dropDownContent.availableForestsByNF = availableForestsByNF;
 
             var initializeForestsOld = this.state.initializeForests;
-    
+
             this.setState({
                 dropDownContent: dropDownContent,
                 initializeForests: false
@@ -1410,6 +1413,22 @@ class DataController extends Component {
           }
           return null;
       }
+
+      //Update Token Value for Data UploadDataFromSurvey123
+      updateToken(value) {
+          console.log("updateToken in DataController running!")
+          // set the state
+          this.setState({
+              token: value,
+          }, () => {
+              // set state of parent
+              this.props.parent.setState({
+                  dataControllerState: this.state
+              });
+          });
+      }
+
+
 }
 
 export default DataController
