@@ -147,7 +147,7 @@ class UploadDataFromSurvey123 extends Component {
         // console.log(this.state.stateName);
         // console.log(this.state.token);
         if (!this.state.sentQuery) {
-            var url = this.state.url + "uploadSurvey123Fake";
+            var url = this.state.url + "uploadSurvey123"; //"uploadSurvey123Fake"
             var xmlHttp = new XMLHttpRequest();
 
             var filters = {
