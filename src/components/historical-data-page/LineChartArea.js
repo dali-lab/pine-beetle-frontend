@@ -190,6 +190,10 @@ class LineChartArea extends Component {
                 var cleridsMean = 0;
                 var cleridsSD = 0;
 
+                chartData.datasets[0].data = chartData.datasets[0].data.filter(item => !isNaN(item));
+                chartData.datasets[1].data = chartData.datasets[1].data.filter(item => !isNaN(item));
+                chartData.datasets[2].data = chartData.datasets[2].data.filter(item => !isNaN(item));
+
                 // compute mean and standard deviations
                 if (chartData.datasets[0].data.length > 0) {
                     spotsMean = math.mean(chartData.datasets[0].data)

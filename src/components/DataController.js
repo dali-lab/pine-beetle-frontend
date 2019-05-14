@@ -770,6 +770,8 @@ class DataController extends Component {
                  var endDate = xmlHttp.response[1] !== null ? xmlHttp.response[1] : this.state.userFilters.endDate
                  var data = xmlHttp.response[2]
 
+                console.log(data);
+
                  var userFilters = Object.assign({}, this.state.userFilters);
                  userFilters.startDate = startDate;
                  userFilters.endDate = endDate;

@@ -119,20 +119,24 @@ class ViewHistoricalData extends Component {
                         yearNum = year - startDate
     
                         // update spots count
-                        if (props.dataControllerState.historicalData.summarizedDataByYear[i].spots != null) {
+                        if (props.dataControllerState.historicalData.summarizedDataByYear[i].spots != null && !isNaN(props.dataControllerState.historicalData.summarizedDataByYear[i].spots) && props.dataControllerState.historicalData.summarizedDataByYear[i].spots !== undefined) {
                             spots[yearNum] += props.dataControllerState.historicalData.summarizedDataByYear[i].spots
                         }
     
                         // update spb per two weeks count
-                        if (props.dataControllerState.historicalData.summarizedDataByYear[i].spbPerTwoWeeks != null) {
+                        if (props.dataControllerState.historicalData.summarizedDataByYear[i].spbPerTwoWeeks != null && !isNaN(props.dataControllerState.historicalData.summarizedDataByYear[i].spbPerTwoWeeks) && props.dataControllerState.historicalData.summarizedDataByYear[i].spbPerTwoWeeks !== undefined) {
                             spb[yearNum] += props.dataControllerState.historicalData.summarizedDataByYear[i].spbPerTwoWeeks
                         }
     
                         // update clerids per two weeks count
-                        if (props.dataControllerState.historicalData.summarizedDataByYear[i].cleridsPerTwoWeeks != null) {
+                        if (props.dataControllerState.historicalData.summarizedDataByYear[i].cleridsPerTwoWeeks != null && !isNaN(props.dataControllerState.historicalData.summarizedDataByYear[i].cleridsPerTwoWeeks) && props.dataControllerState.historicalData.summarizedDataByYear[i].cleridsPerTwoWeeks !== undefined) {
                             clerids[yearNum] += props.dataControllerState.historicalData.summarizedDataByYear[i].cleridsPerTwoWeeks
                         }
                     }
+
+                    spb = spb.filter(item => !isNaN(item));
+                    clerids = clerids.filter(item => !isNaN(item));
+                    spots = spots.filter(item => !isNaN(item));
     
                     var spotsMean = 0;
                     var spotsSD = 0;
