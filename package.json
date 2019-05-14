@@ -28,9 +28,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "yarn clean; NODE_ENV=production webpack --colors",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "clean": "rimraf dist",
+    "deploy": "yarn build; surge -p dist -d dartmouth-seat-savers.surge.sh; yarn clean"
+
   },
   "eslintConfig": {
     "extends": "react-app"
