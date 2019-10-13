@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../../../styles/predictive-model-page/PredictiveMap.css';
 var mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
+var printPdf = require('mapbox-print-pdf');
 require('dotenv').config() // load mapbox access token
 
 class PredictiveMap extends Component {
@@ -19,6 +20,7 @@ class PredictiveMap extends Component {
         }
 
         this.createMap = this.createMap.bind(this);
+        this.downloadMap = this.downloadMap.bind(this);
         this.updateChoroplethLayer = this.updateChoroplethLayer.bind(this);
         this.colorStates = this.colorStates.bind(this);
     }
@@ -45,6 +47,11 @@ class PredictiveMap extends Component {
 
     componentDidMount() {
         this.updateStateFromProps(this.props);
+        
+        document.addEventListener('click', (event) => {
+            if (!event.target.matches('.download-button')) return;
+            this.downloadMap();
+        }, false);
     }
 
     // if receiving new data, update the state
@@ -86,7 +93,9 @@ class PredictiveMap extends Component {
                     if (this.state.map._controls.length < 3) {
                         // Add zoom and rotation controls to the map.
                         this.state.map.addControl(new mapboxgl.NavigationControl());
-                    }    
+                        this.state.map.addControl(new DownloadControl(), 'bottom-left');
+                    }
+
                     // disable map zoom when using scroll
                     this.state.map.scrollZoom.disable();
 
@@ -175,6 +184,16 @@ class PredictiveMap extends Component {
         else if(this.state.map.isStyleLoaded()) {
             this.colorStates();
         } 
+    }
+
+    downloadMap() {
+        printPdf.build()
+        .format('letter')
+        .portrait() 
+        .print(this.state.map, mapboxgl)
+        .then(function(pdf) {
+          pdf.save('map.pdf');
+        });
     }
 
     colorStates() {
@@ -274,4 +293,20 @@ class PredictiveMap extends Component {
     }
 }
 
+class DownloadControl {
+    onAdd(map){
+        this.map = map;
+        this.container = document.createElement('div');
+        this.container.className = 'download-button mapboxgl-ctrl';
+        this.container.innerHTML =  '<p>Download</p>';
+        return this.container;
+    }
+    
+    onRemove(){
+        this.container.parentNode.removeChild(this.container);
+        this.map = undefined;
+    }
+} 
+
 export default PredictiveMap
+
