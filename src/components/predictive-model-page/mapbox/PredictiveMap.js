@@ -13,7 +13,7 @@ class PredictiveMap extends Component {
             map: null,
             dataController: null,
             dataControllerState: null,
-            thresholds: ['0%', '0.1%-4%', '4.1%-6%', '6.1%-8%', '8.1%-10%', '10.1%-20%', '20.1%-40%', '40.1%-60%', '60.1%-80%', '80.1%-100%'],
+            thresholds: ['0%', '0.1%-2%', '2.1%-3%', '3.1%-5%', '5.1%-8%', '8.1%-13%', '13.1%-22%', '22.1%-36%', '36.1%-60%', '60.1%-100%'],
             colors: ['#4776b3', '#6F90B6', '#9AAEBC', '#C0CCBE', '#E9ECC0', '#FEE8B0', '#F9B988', '#F08D66', '#E46149', '#D4312E'],
             legendTags: [],
             hoverElement: <p>{"Hover over a forest for detailed information"}</p>
@@ -23,7 +23,10 @@ class PredictiveMap extends Component {
         this.downloadMap = this.downloadMap.bind(this);
         this.updateChoroplethLayer = this.updateChoroplethLayer.bind(this);
         this.colorStates = this.colorStates.bind(this);
+        this.returnMapName = this.returnMapName.bind(this);
+        this.buildFooter = this.buildFooter.bind(this);
     }
+
     render() {
         return(
             <div className="container flex-item-left" id="map-container">
@@ -50,6 +53,11 @@ class PredictiveMap extends Component {
         
         document.addEventListener('click', (event) => {
             if (!event.target.matches('.download-button')) return;
+            this.downloadMap();
+        }, false);
+
+        document.addEventListener('click', (event) => {
+            if (!event.target.matches('.download-button p')) return;
             this.downloadMap();
         }, false);
     }
@@ -186,15 +194,62 @@ class PredictiveMap extends Component {
         } 
     }
 
+    returnMapName() {
+        return(`${this.state.dataControllerState.userFilters.stateName}${this.state.dataControllerState.userFilters.predictiveModelDate}`);
+    }
+
+    buildFooter() {
+        var title = `Southern  Pine  Beetle  Outbreak  Prediction  Maps:  ${this.state.dataControllerState.userFilters.stateName}  ${this.state.dataControllerState.userFilters.predictiveModelDate}`;
+        var legendString = "";
+        for (var i = 0; i < this.state.thresholds.length; i++) {
+            var layer = this.state.thresholds[i];
+            var color = this.state.colors[i];
+            var spanString = `<div class="footer-legend-key" style="background: ${color};"></div><span>${layer}</span>`;
+            legendString = legendString.concat(spanString);
+        }
+        console.log(legendString);
+        return(
+            `<div id="map-footer">
+                <div id='footer-legend'>
+                    ${legendString}
+                </div>
+                <h3>Probability of (Any) Spots</h3>
+                <h2>${title}</h3>
+                <p>The outbreak prediction model is based on a number of predictor variables that were 
+                determined to provide the best fit to the data. Most prominent among the driving variables 
+                were number of SPB/two week time period, and number of spots last year.
+                </p>
+                <p>
+                The SPB prediction project is supported by USDA Forest Service: Science and Technology 
+                Development Program (STDP)
+                </p>
+                <p>Contact: Matthew P. Ayres - matthew.p.ayres@dartmouth.edu; Carissa F. Aoki - carissa.f.aoki@dartmouth.edu
+                </p>
+            </div>`
+        );
+
+    }
+
     // function to download map of currently selected data
     // connected to the onClick of the .download-button class
     downloadMap() {
+        var mapName = this.returnMapName();
         printPdf.build()
-        .format('letter')
+        .footer({
+            html: this.buildFooter(),
+            baseline: {format: 'a2', orientation: 'p'}
+        })
+        .margins({
+            top: 8,
+            right: 8,
+            left: 8,
+            bottom: 8
+          }, "pt")
+        .format('a2')
         .portrait() 
         .print(this.state.map, mapboxgl)
         .then(function(pdf) {
-          pdf.save('map.pdf');
+          pdf.save(mapName);
         });
     }
 
@@ -223,34 +278,34 @@ class PredictiveMap extends Component {
             this.state.dataControllerState.predictiveModelOutputArray.forEach(function(row) {
                 let color;
 
-                if (row.outputs["prob53spots"] <= 0.01 ) {
+                if (row.outputs["prob53spots"] <= 0.010 ) {
                     color = this.state.colors[0]
                 }
-                else if (row.outputs["prob53spots"] > 0.01 && row.outputs["prob53spots"] <= 0.04) {
+                else if (row.outputs["prob53spots"] > 0.010 && row.outputs["prob53spots"] <= 0.017) {
                     color = this.state.colors[1]
                 }
-                else if (row.outputs["prob53spots"] > 0.04 && row.outputs["prob53spots"] <= 0.06) {
+                else if (row.outputs["prob53spots"] > 0.017 && row.outputs["prob53spots"] <= 0.028) {
                     color = this.state.colors[2]
                 }
-                else if (row.outputs["prob53spots"] > 0.06 && row.outputs["prob53spots"] <= 0.08) {
+                else if (row.outputs["prob53spots"] > 0.028 && row.outputs["prob53spots"] <= 0.046) {
                     color = this.state.colors[3]
                 }
-                else if (row.outputs["prob53spots"] > 0.08 && row.outputs["prob53spots"] <= 0.10) {
+                else if (row.outputs["prob53spots"] > 0.046 && row.outputs["prob53spots"] <= 0.077) {
                     color = this.state.colors[4]
                 } 
-                else if (row.outputs["prob53spots"] > 0.10 && row.outputs["prob53spots"] <= 0.20) {
+                else if (row.outputs["prob53spots"] > 0.077 && row.outputs["prob53spots"] <= 0.129) {
                     color = this.state.colors[5]
                 }
-                else if (row.outputs["prob53spots"] > 0.20 && row.outputs["prob53spots"] <= 0.40) {
+                else if (row.outputs["prob53spots"] > 0.129 && row.outputs["prob53spots"] <= 0.215) {
                     color = this.state.colors[6]
                 }
-                else if (row.outputs["prob53spots"] > 0.40 && row.outputs["prob53spots"] <= 0.60) {
+                else if (row.outputs["prob53spots"] > 0.215 && row.outputs["prob53spots"] <= 0.359) {
                     color = this.state.colors[7]
                 }
-                else if (row.outputs["prob53spots"] > 0.60 && row.outputs["prob53spots"] <= 0.80) {
+                else if (row.outputs["prob53spots"] > 0.359 && row.outputs["prob53spots"] <= 0.599) {
                     color = this.state.colors[8]
                 }
-                else if (row.outputs["prob53spots"] > 0.80) {
+                else if (row.outputs["prob53spots"] > 0.599) {
                     color = this.state.colors[9]
                 } 
 
