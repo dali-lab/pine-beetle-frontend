@@ -26,6 +26,7 @@ class PredictiveMap extends Component {
         this.returnMapName = this.returnMapName.bind(this);
         this.buildFooter = this.buildFooter.bind(this);
         this.buildHeader = this.buildHeader.bind(this);
+        this.printMap = this.buildPrintMap.bind(this);
     }
 
     render() {
@@ -89,7 +90,8 @@ class PredictiveMap extends Component {
             this.setState({
                 map: new mapboxgl.Map({
                     container: 'map', // container id
-                    style: 'mapbox://styles/mapbox/streets-v9',
+                    // style: 'mapbox://styles/mapbox/streets-v9',
+                    style: 'mapbox://styles/pine-beetle-prediction/ck2kl9kcy4vvb1cjyf23s2ars',
                     center: [-84.3880,33.7490], // starting position
                     zoom: 4.8, // starting zoom
                     options: {
@@ -213,8 +215,9 @@ class PredictiveMap extends Component {
                 <div id='footer-legend'>
                     ${legendString}
                 </div>
-                <p class="footnote">Note: Color ramp is scaled to emphasize the lower values; 
+                <p class="footnote" >Note: Color ramp is scaled to emphasize the lower values; 
                 the midpoint colors indicate probability values between 8% and 20%.</p>
+                <div id="spacer"></div>
                 <h2>${title}</h2>
                 <p>The outbreak prediction model is based on a number of predictor variables that were 
                 determined to provide the best fit to the data. Most prominent among the driving variables 
@@ -241,10 +244,36 @@ class PredictiveMap extends Component {
         );
     }
 
+    buildPrintMap() {
+        console.log("maping")
+        var printMap = this.state.map;
+       
+        printMap.addSource("counties", {
+            type: "vector",
+            url: "mapbox://pine-beetle-prediction.6ag6fs2a"
+        });
+
+        printMap.addLayer({
+            "id": "county-label",
+            "type": "symbol",
+            "source": "counties",
+            "source-layer": "counties_for_labels-dlcufl",
+            "layout": {
+                "text-font": ["Open Sans Regular"],
+                "text-field": '{County [2]}',
+                "text-size": 12
+              }
+        }, 'waterway-label');
+
+        return printMap;
+    }
+
     // function to download map of currently selected data
     // connected to the onClick of the .download-button class
     downloadMap() {
         var mapName = this.returnMapName();
+        var printMap = this.buildPrintMap();
+
         printPdf.build()
         .header({
             html: this.buildHeader(),
@@ -262,7 +291,7 @@ class PredictiveMap extends Component {
           }, "pt")
         .format('a3')
         .portrait() 
-        .print(this.state.map, mapboxgl)
+        .print(printMap, mapboxgl)
         .then(function(pdf) {
           pdf.save(mapName);
         });
@@ -280,6 +309,8 @@ class PredictiveMap extends Component {
                 url: "mapbox://pine-beetle-prediction.1be58pyi"
             });
         }
+
+        this.state.map.setLayoutProperty('county-labels', 'visibility', 'none');
 
         if (this.state.dataControllerState.predictiveModelOutputArray.length > 0) {
             var expression = ["match", ["upcase", ["get", "forest"]]];
@@ -337,7 +368,6 @@ class PredictiveMap extends Component {
                 "source": "forests",
                 "source-layer": "US_Counties_updated",
                 "paint": {
-                    "fill-outline-color": "rgba(0,0,0,0.1)",
                     "fill-color": expression
                 }
             }, 'waterway-label');

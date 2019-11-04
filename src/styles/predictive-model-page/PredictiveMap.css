@@ -135,7 +135,7 @@
 
 #map-header h2 {
     letter-spacing: 1px;
-    margin-top: 150px;
+    margin-top: 200px;
     margin-bottom: 50px;
 }
 
@@ -145,4 +145,8 @@
     width: 53%;
     margin: auto;
     margin-bottom: 30px;
+}
+
+#spacer {
+    height: 50px;
 }
