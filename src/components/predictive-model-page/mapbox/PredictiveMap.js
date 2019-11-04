@@ -25,6 +25,7 @@ class PredictiveMap extends Component {
         this.colorStates = this.colorStates.bind(this);
         this.returnMapName = this.returnMapName.bind(this);
         this.buildFooter = this.buildFooter.bind(this);
+        this.buildHeader = this.buildHeader.bind(this);
     }
 
     render() {
@@ -207,14 +208,14 @@ class PredictiveMap extends Component {
             var spanString = `<div class="footer-legend-key" style="background: ${color};"></div><span>${layer}</span>`;
             legendString = legendString.concat(spanString);
         }
-        console.log(legendString);
         return(
             `<div id="map-footer">
                 <div id='footer-legend'>
                     ${legendString}
                 </div>
-                <h3>Probability of (Any) Spots</h3>
-                <h2>${title}</h3>
+                <p class="footnote">Note: Color ramp is scaled to emphasize the lower values; 
+                the midpoint colors indicate probability values between 8% and 20%.</p>
+                <h2>${title}</h2>
                 <p>The outbreak prediction model is based on a number of predictor variables that were 
                 determined to provide the best fit to the data. Most prominent among the driving variables 
                 were number of SPB/two week time period, and number of spots last year.
@@ -225,9 +226,19 @@ class PredictiveMap extends Component {
                 </p>
                 <p>Contact: Matthew P. Ayres - matthew.p.ayres@dartmouth.edu; Carissa F. Aoki - carissa.f.aoki@dartmouth.edu
                 </p>
+                <p class="footnote">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN, 
+                GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, © OpenStreetMap 
+                contributors, andthe GIS User Community</p>
             </div>`
         );
+    }
 
+    buildHeader() {
+        return(
+            `<div id="map-header">
+                <h2>Probability of (Any) Spots</h2>
+            </div>`
+        );
     }
 
     // function to download map of currently selected data
@@ -235,9 +246,13 @@ class PredictiveMap extends Component {
     downloadMap() {
         var mapName = this.returnMapName();
         printPdf.build()
+        .header({
+            html: this.buildHeader(),
+            baseline: {format: 'a3', orientation: 'p'}
+        })
         .footer({
             html: this.buildFooter(),
-            baseline: {format: 'a2', orientation: 'p'}
+            baseline: {format: 'a3', orientation: 'p'}
         })
         .margins({
             top: 8,
@@ -245,7 +260,7 @@ class PredictiveMap extends Component {
             left: 8,
             bottom: 8
           }, "pt")
-        .format('a2')
+        .format('a3')
         .portrait() 
         .print(this.state.map, mapboxgl)
         .then(function(pdf) {
@@ -267,10 +282,6 @@ class PredictiveMap extends Component {
         }
 
         if (this.state.dataControllerState.predictiveModelOutputArray.length > 0) {
-            // define expression for computing choropleth colors
-            // var expression = ["all", ["match", ["get", "stateCode"]], ["match", ["get", "forestCode"]]]
-            // var expression = ["match", ["get", "forest"]];
-
             var expression = ["match", ["upcase", ["get", "forest"]]];
             var forestsAdded = []
 
@@ -326,6 +337,7 @@ class PredictiveMap extends Component {
                 "source": "forests",
                 "source-layer": "US_Counties_updated",
                 "paint": {
+                    "fill-outline-color": "rgba(0,0,0,0.1)",
                     "fill-color": expression
                 }
             }, 'waterway-label');

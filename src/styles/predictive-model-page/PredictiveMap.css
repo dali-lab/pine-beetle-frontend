@@ -54,7 +54,7 @@
     font-size: .8em;
     height: 150px;
     margin-bottom: 25px;
-    width: 88px;
+    width: 90px;
     overflow: hidden;
     text-align: right;
 }
@@ -101,8 +101,8 @@
 }
 
 #map-footer h2 {
-    margin-bottom: 8px;
-    margin-top: 8px;
+    margin-bottom: 16px;
+    margin-top: 16px;
 }
 
 #map-footer p {
@@ -124,7 +124,25 @@
 }
 
 #footer-legend {
-    margin-left: 100px;
-    margin-right: 100px;
+    width: 53%;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+#map-header {
+    text-align: center;
+}
+
+#map-header h2 {
+    letter-spacing: 1px;
+    margin-top: 150px;
+    margin-bottom: 50px;
+}
+
+.footnote {
+    color: #898989;
+    line-height: 14px;
+    width: 53%;
+    margin: auto;
     margin-bottom: 30px;
 }
