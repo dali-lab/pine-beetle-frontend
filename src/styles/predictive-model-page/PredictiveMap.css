@@ -150,3 +150,7 @@
 #spacer {
     height: 50px;
 }
+
+#printmap {
+    display: none;
+}

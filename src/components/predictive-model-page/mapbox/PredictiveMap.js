@@ -13,7 +13,7 @@ class PredictiveMap extends Component {
             map: null,
             dataController: null,
             dataControllerState: null,
-            thresholds: ['0%', '0.1%-2%', '2.1%-3%', '3.1%-5%', '5.1%-8%', '8.1%-13%', '13.1%-22%', '22.1%-36%', '36.1%-60%', '60.1%-100%'],
+            thresholds: ['0%-1%', '1%-2%', '2.1%-3%', '3.1%-5%', '5.1%-8%', '8.1%-13%', '13.1%-22%', '22.1%-36%', '36.1%-60%', '60.1%-100%'],
             colors: ['#4776b3', '#6F90B6', '#9AAEBC', '#C0CCBE', '#E9ECC0', '#FEE8B0', '#F9B988', '#F08D66', '#E46149', '#D4312E'],
             legendTags: [],
             hoverElement: <p>{"Hover over a forest for detailed information"}</p>
@@ -42,6 +42,7 @@ class PredictiveMap extends Component {
                 <div className='map-overlay-legend' id='legend'>
                     {this.state.legendTags}
                 </div>
+                <div id="printmap"></div>
             </div>
         );
     }
@@ -245,13 +246,33 @@ class PredictiveMap extends Component {
     }
 
     buildPrintMap() {
-        console.log("maping")
+        // var printMap = new mapboxgl.Map({container: 'printmap',});
+        // Object.assign(printMap, this.state.map, {container: 'printmap'});
+        // console.log(printMap)
+
         var printMap = this.state.map;
-       
-        printMap.addSource("counties", {
-            type: "vector",
-            url: "mapbox://pine-beetle-prediction.6ag6fs2a"
+        
+        var mapLayer = this.state.map.getSource('counties');
+        console.log(mapLayer);
+        if (typeof mapLayer == 'undefined') {
+            printMap.addSource("counties", {
+                type: "vector",
+                url: "mapbox://pine-beetle-prediction.6ag6fs2a"
+            });
+        }
+
+        var expression = ["match", ["upcase", ["get", "CountyWithState"]]];
+        var forestsAdded = [];
+
+        this.state.dataControllerState.predictiveModelOutputArray.forEach(function(row) {
+            if (!forestsAdded.includes(row.inputs["forest"])) {
+                expression.push(row.inputs["forest"], 10);
+                forestsAdded.push(row.inputs["forest"]);
+            }
         });
+
+        expression.push(0);
+        console.log(expression);
 
         printMap.addLayer({
             "id": "county-label",
@@ -260,8 +281,8 @@ class PredictiveMap extends Component {
             "source-layer": "counties_for_labels-dlcufl",
             "layout": {
                 "text-font": ["Open Sans Regular"],
-                "text-field": '{County [2]}',
-                "text-size": 12
+                "text-field": '{CountyWithState}',
+                "text-size": expression
               }
         }, 'waterway-label');
 
@@ -294,6 +315,7 @@ class PredictiveMap extends Component {
         .print(printMap, mapboxgl)
         .then(function(pdf) {
           pdf.save(mapName);
+          printMap.removeLayer("county-label");
         });
     }
 
@@ -309,8 +331,6 @@ class PredictiveMap extends Component {
                 url: "mapbox://pine-beetle-prediction.1be58pyi"
             });
         }
-
-        this.state.map.setLayoutProperty('county-labels', 'visibility', 'none');
 
         if (this.state.dataControllerState.predictiveModelOutputArray.length > 0) {
             var expression = ["match", ["upcase", ["get", "forest"]]];
