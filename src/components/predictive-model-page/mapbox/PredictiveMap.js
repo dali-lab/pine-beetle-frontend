@@ -54,11 +54,13 @@ class PredictiveMap extends Component {
     componentDidMount() {
         this.updateStateFromProps(this.props);
         
+        // Calls function to download map when download control is clicked
         document.addEventListener('click', (event) => {
             if (!event.target.matches('.download-button')) return;
             this.downloadMap();
         }, false);
 
+        // Calls function to download map when download control is clicked
         document.addEventListener('click', (event) => {
             if (!event.target.matches('.download-button p')) return;
             this.downloadMap();
@@ -105,7 +107,7 @@ class PredictiveMap extends Component {
                     if (this.state.map._controls.length < 3) {
                         // Add zoom and rotation controls to the map.
                         this.state.map.addControl(new mapboxgl.NavigationControl());
-                        this.state.map.addControl(new DownloadControl(), 'bottom-left');
+                        this.state.map.addControl(new DownloadControl(), 'bottom-left'); // adds download button to map
                     }
 
                     // disable map zoom when using scroll
@@ -198,19 +200,28 @@ class PredictiveMap extends Component {
         } 
     }
 
+    // Creates and returns a string to name the downloaded PDF
+    // in the format 'StateYear.pdf"
     returnMapName() {
         return(`${this.state.dataControllerState.userFilters.stateName}${this.state.dataControllerState.userFilters.predictiveModelDate}`);
     }
 
+    // Creates and returns an HTML object with information for the footer
+    // of the downloaded maps. This includes a legend for the color scale,
+    // notes explaining the legend and sources, and information about the
+    // data collection process. This object is used by the mapbox-print-pdf library.
     buildFooter() {
         var title = `Southern  Pine  Beetle  Outbreak  Prediction  Maps:  ${this.state.dataControllerState.userFilters.stateName}  ${this.state.dataControllerState.userFilters.predictiveModelDate}`;
         var legendString = "";
+
+        // creates the color boxes and text fields for the legend in the footer
         for (var i = 0; i < this.state.thresholds.length; i++) {
             var layer = this.state.thresholds[i];
             var color = this.state.colors[i];
             var spanString = `<div class="footer-legend-key" style="background: ${color};"></div><span>${layer}</span>`;
             legendString = legendString.concat(spanString);
         }
+
         return(
             `<div id="map-footer">
                 <div id='footer-legend'>
@@ -237,6 +248,8 @@ class PredictiveMap extends Component {
         );
     }
 
+    // Creates and returns an HTML object with the title for the header
+    // of the downloaded maps. This object is used by the mapbox-print-pdf library.
     buildHeader() {
         return(
             `<div id="map-header">
@@ -245,15 +258,13 @@ class PredictiveMap extends Component {
         );
     }
 
+    // Makes design changes to the existing map and returns it to be saved by
+    // the downloadMap() function. 
     buildPrintMap() {
-        // var printMap = new mapboxgl.Map({container: 'printmap',});
-        // Object.assign(printMap, this.state.map, {container: 'printmap'});
-        // console.log(printMap)
-
         var printMap = this.state.map;
         
+        // add source for counties name if it does not already exist
         var mapLayer = this.state.map.getSource('counties');
-        console.log(mapLayer);
         if (typeof mapLayer == 'undefined') {
             printMap.addSource("counties", {
                 type: "vector",
@@ -264,16 +275,19 @@ class PredictiveMap extends Component {
         var expression = ["match", ["upcase", ["get", "CountyWithState"]]];
         var forestsAdded = [];
 
+        // create expression to make the text size 10 for counties that have predicted data
         this.state.dataControllerState.predictiveModelOutputArray.forEach(function(row) {
             if (!forestsAdded.includes(row.inputs["forest"])) {
                 expression.push(row.inputs["forest"], 10);
                 forestsAdded.push(row.inputs["forest"]);
             }
         });
+        // default to no text size if no data exists for that county
+        // this makes sure only colored-in counties have labels
+        expression.push(0); 
 
-        expression.push(0);
-        console.log(expression);
-
+        // add county labels to the map, using the expression to make sure
+        // only counties with data get labels
         printMap.addLayer({
             "id": "county-label",
             "type": "symbol",
@@ -284,7 +298,12 @@ class PredictiveMap extends Component {
                 "text-field": '{CountyWithState}',
                 "text-size": expression
               }
-        }, 'waterway-label');
+        }, 'county-outlines');
+
+        // hide city names so county names are not hidden due to overlap
+        printMap.setLayoutProperty("settlement-label", "visibility", "none");
+        // thicken state outlines to bring more focus to current state
+        printMap.setPaintProperty("admin-1-boundary", "line-width", 4);
 
         return printMap;
     }
@@ -315,7 +334,11 @@ class PredictiveMap extends Component {
         .print(printMap, mapboxgl)
         .then(function(pdf) {
           pdf.save(mapName);
+          // after saving, undo the design changes made by buildPrintMap() 
+          // so they do not persist on the map shown on the website
           printMap.removeLayer("county-label");
+          printMap.setLayoutProperty("settlement-label", "visibility", "visible");
+          printMap.setPaintProperty("admin-1-boundary", "line-width", 0.75);
         });
     }
 
@@ -390,7 +413,7 @@ class PredictiveMap extends Component {
                 "paint": {
                     "fill-color": expression
                 }
-            }, 'waterway-label');
+            }, 'national-park');
 
             if (this.state.dataControllerState.userFilters.stateAbbreviation !== null) {
                 var center = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][0];

@@ -89,6 +89,8 @@
     background: rgba(242, 240, 240, 1);
 }
 
+/* CSS below styles the header and footer for the downloaded PDF */
+
 #map-footer {
     text-align: center;
     letter-spacing: 1px;
@@ -135,6 +137,8 @@
 
 #map-header h2 {
     letter-spacing: 1px;
+    /* if a large enough margin-top is not included, 
+    the title in the printed pdf cannot be seen*/
     margin-top: 200px;
     margin-bottom: 50px;
 }

@@ -133,6 +133,15 @@ As of March 6th, 2019, Project Pine Beetle will not be under active development.
 - Implemented fresh redesigns
 - Constructed private capability for partners to pull Survey123 data to the database
 
+### Implemented: Fall, 2019
+#### Download Button
+We added a button to the map on the "Predictive Model" page that allows users to download the currently displayed map as a PDF. When the button is clicked, the current state and year selected in the dropdowns above the map will be displayed in the downloaded map and used to name the file. Currently, the only data that can be downloaded is the probability of any spots occuring in the selected states. This is reflected in the downloaded PDF title.
+
+The button itself is implemented as a mapbox control, which is added to the map in line 110 of `PredictiveMap.js` and is created in the `DownloadControl` function in the same file. When this button is clicked, it calls the `downloadMap` function written in `PredictiveMap.js` which makes necessary design changes to the existing map (adding county names, hiding city names, changing outline widths), uses a library ([mapbox-print-pdf](https://github.com/Eddie-Larsson/mapbox-print-pdf)) to download the map, then unmakes the changes so they are not displayed to the user on the website. This function makes use of `buildPrintMap`, `buildHeader`, and `buildFooter` to make the design changes to the map and create the HTML objects for the header and footer of the PDF.
+
+There is a small bug with this approach in that, if the download function takes a long time to run, the design changes briefly display on the website and then are quickly removed from the predictive model map. This could be fixed in the future by storing two separate maps in the react state and making sure that both the website map and the print map are updated on every zoom and dropdown selection change. The `downloadMap` function would then make the design changes to the print map and download the print map without ever changing the map shown on the website. 
+
+
 ### Expected Implementation: Fall, 2019
 - Improve pipeline from Survey123 to MongoDB for updated previously seen data
 - Fix problems seen with Spring 2019 data collection
