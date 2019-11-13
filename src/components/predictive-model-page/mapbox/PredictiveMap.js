@@ -13,7 +13,7 @@ class PredictiveMap extends Component {
             map: null,
             dataController: null,
             dataControllerState: null,
-            thresholds: ['0%-1%', '1%-2%', '2.1%-3%', '3.1%-5%', '5.1%-8%', '8.1%-13%', '13.1%-22%', '22.1%-36%', '36.1%-60%', '60.1%-100%'],
+            thresholds: ['0%-1%', '1%-1.7%', '1.7%-2.8%', '2.8%-4.6%', '4.6%-7.7%', '7.7%-13%', '13%-22%', '22%-36%', '36%-60%', '60%-100%'],
             colors: ['#4776b3', '#6F90B6', '#9AAEBC', '#C0CCBE', '#E9ECC0', '#FEE8B0', '#F9B988', '#F08D66', '#E46149', '#D4312E'],
             legendTags: [],
             hoverElement: <p>{"Hover over a forest for detailed information"}</p>
@@ -227,19 +227,19 @@ class PredictiveMap extends Component {
                 <div id='footer-legend'>
                     ${legendString}
                 </div>
-                <p class="footnote" >Note: Color ramp is scaled to emphasize the lower values; 
-                the midpoint colors indicate probability values between 8% and 20%.</p>
+                <p class="footnote" >Note: Color ramp ascends with a constant factor of 
+                increase in the probability of outcome.</p>
                 <div id="spacer"></div>
                 <h2>${title}</h2>
-                <p>The outbreak prediction model is based on a number of predictor variables that were 
-                determined to provide the best fit to the data. Most prominent among the driving variables 
-                were number of SPB/two week time period, and number of spots last year.
+                <p>Predictions are based on a zero-inflated Poisson model fit to historical data 
+                from 1988 – 2009 (Aoki 2017). The most important drivers of model predictions are
+                 SPB trap captures in the current spring and SPB spots the previous year.
                 </p>
                 <p>
                 The SPB prediction project is supported by USDA Forest Service: Science and Technology 
                 Development Program (STDP)
                 </p>
-                <p>Contact: Matthew P. Ayres - matthew.p.ayres@dartmouth.edu; Carissa F. Aoki - carissa.f.aoki@dartmouth.edu
+                <p>Contact: Matthew P. Ayres - matthew.p.ayres@dartmouth.edu; Carissa F. Aoki - caoki@bates.edu
                 </p>
                 <p class="footnote">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN, 
                 GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, © OpenStreetMap 
@@ -253,7 +253,7 @@ class PredictiveMap extends Component {
     buildHeader() {
         return(
             `<div id="map-header">
-                <h2>Probability of (Any) Spots</h2>
+                <h2>Probability of (Any) SPB Spots</h2>
             </div>`
         );
     }
@@ -273,18 +273,23 @@ class PredictiveMap extends Component {
         }
 
         var expression = ["match", ["upcase", ["get", "CountyWithState"]]];
+        var textExpression = ["match", ["upcase", ["get", "CountyWithState"]]];
         var forestsAdded = [];
-
+        
         // create expression to make the text size 10 for counties that have predicted data
         this.state.dataControllerState.predictiveModelOutputArray.forEach(function(row) {
             if (!forestsAdded.includes(row.inputs["forest"])) {
                 expression.push(row.inputs["forest"], 10);
+                textExpression.push(row.inputs["forest"], row.inputs["forest"].slice(0, -2))
                 forestsAdded.push(row.inputs["forest"]);
             }
         });
         // default to no text size if no data exists for that county
         // this makes sure only colored-in counties have labels
         expression.push(0); 
+        textExpression.push("");
+
+        console.log(textExpression);
 
         // add county labels to the map, using the expression to make sure
         // only counties with data get labels
@@ -295,7 +300,8 @@ class PredictiveMap extends Component {
             "source-layer": "counties_for_labels-dlcufl",
             "layout": {
                 "text-font": ["Open Sans Regular"],
-                "text-field": '{CountyWithState}',
+                // "text-field": '{CountyWithoutState}',
+                "text-field": textExpression,
                 "text-size": expression
               }
         }, 'county-outlines');
