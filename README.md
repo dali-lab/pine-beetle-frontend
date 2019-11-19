@@ -1,5 +1,5 @@
 # Project Pine Beetle
-Last Updated: 3.1.2019
+Last Updated: 11.19.2019
 ## Table of Contents
 - Project Overview
 - Project Architecture
@@ -107,7 +107,7 @@ The front-end is built with React.js and deployed with surge. Please contact pin
 - Visit https://pine-beetle-prediction.surge.sh/ to see project
 
 ## Project Status
-As of March 6th, 2019, Project Pine Beetle will not be under active development. It is intended to be under active development again starting in Fall 2019.
+As of November 19th, 2019, Project Pine Beetle will not be under active development. It is intended to be under active development again starting in Winter 2020.
 
 ### Implemented: Fall, 2018
 - Database in MongoDB developed
@@ -142,22 +142,25 @@ The button itself is implemented as a mapbox control, which is added to the map 
 There is a small bug with this approach in that, if the download function takes a long time to run, the design changes briefly display on the website and then are quickly removed from the predictive model map. This could be fixed in the future by storing two separate maps in the react state and making sure that both the website map and the print map are updated on every zoom and dropdown selection change. The `downloadMap` function would then make the design changes to the print map and download the print map without ever changing the map shown on the website. 
 
 
-### Expected Implementation: Fall, 2019
-- Improve pipeline from Survey123 to MongoDB for updated previously seen data
-- Fix problems seen with Spring 2019 data collection
-- Improve model
-- Improve run/load-times
-- Cache/store previous model runs on server or in database to both improve run times and allow future versions of the predictive model to use previous model runs as inputs
-- Implement a CDN
-- Improve historical data visualization and predictive model visualization
-- Add more educational and explanatory features/information for the general public to learn about this problem and this tool
-- Implement additional features requested by the partners
-
+### Expected Implementation: Winter, 2020
+- Add in a user-flow to display different ranges of probabilities on the map, four steps will have to be accomplished:
+	1. Add a dropdown next to the year, state, and county dropdowns (in PredictionsSelectionBar.js) that allows the user to select if
+	they want to see the probability of any spots, over 53 spots, etc.
+	2. Connect this data to the predictive model and use it to set the “probability” variable to the correct value in line 150 of
+	PredictiveMap.js
+	3. Make sure that this change appears in the map on the Predictive Model page and change any titles to make the category of the
+	displayed data clear
+	4. Make sure that the downloaded map’s title reflects the current category in buildMapHeader() in PredictiveMap.js
 
 ### Future Directions
 This product illustrates the threats facing communities in a visual manner. It is well suited to visualize any epidemic or spreading threat. It could be generalized and implemented for visualizing risk of forest fires, spread of disease, genetic diversity, or any threat that is predictable, has the potential to propagate outward, and displays a set of observable qualities indicating risk. Southern Pine Beetles may be just the beginning to the uses of a tool like this.
 
 ## Team Members
+
+### Fall 2019
+- Amanda Bak, Project Manager
+- Anuj Varma, Developer
+- Emma Langfitt, Developer
 
 ### Fall 2018
 - Thomas Monfre, Project Manager
@@ -172,7 +175,7 @@ This product illustrates the threats facing communities in a visual manner. It i
 - Bella Jacoby, Designer
 
 ## README Authors
-Thomas Monfre, Isabelle Hurley, Madeline Hess.
+Amanda Bak, Anuj Varma, Emma Langfitt.
 
 ## Acknowledgements
 - This project was built in partnership with Professor Carissa Aoki of Bates College and Professor Matt Ayres of Dartmouth College. We thank them for approaching the DALI Lab and cooperating with us to build this product.
