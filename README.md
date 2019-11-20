@@ -1,5 +1,5 @@
 # Project Pine Beetle
-Last Updated: 11.19.2019
+Last Updated: 11.20.2019
 ## Table of Contents
 - Project Overview
 - Project Architecture
@@ -107,7 +107,7 @@ The front-end is built with React.js and deployed with surge. Please contact pin
 - Visit https://pine-beetle-prediction.surge.sh/ to see project
 
 ## Project Status
-As of November 19th, 2019, Project Pine Beetle will not be under active development. It is intended to be under active development again starting in Winter 2020.
+As of November 20th, 2019, Project Pine Beetle will not be under active development. It is intended to be under active development again starting in Winter 2020.
 
 ### Implemented: Fall, 2018
 - Database in MongoDB developed
