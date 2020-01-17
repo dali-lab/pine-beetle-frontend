@@ -1,5 +1,5 @@
 # Project Pine Beetle
-Last Updated: 11.20.2019
+Last Updated: 01.15.2020
 ## Table of Contents
 - Project Overview
 - Project Architecture
