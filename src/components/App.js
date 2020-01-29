@@ -48,7 +48,7 @@ class App extends Component {
         if (this.state.acceptableBrowserWidth === true) {
             return(
                 <div>
-                    <DataController url={this.deployedURL} parent={this} forceReRender={this.forceReRender} ref={this.dataController}/>
+                    <DataController url={this.localURL} parent={this} forceReRender={this.forceReRender} ref={this.dataController}/>
                     <HashRouter hashType="noslash">
                       <div>
                         <Header />
