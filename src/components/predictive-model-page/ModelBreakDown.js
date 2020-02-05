@@ -27,7 +27,6 @@ class ModelBreakDown extends Component {
                                     <td onClick={this.state.dataController.handleModelForestClick} style={{cursor: "pointer"}}>{this.state.outputArray[i].inputs.forest}</td>
                                     <td>{(this.state.outputArray[i].outputs.prob0spots*100).toFixed(2) + "%"}</td>
                                     <td>{(this.state.outputArray[i].outputs.prob53spots*100).toFixed(2) + "%"}</td>
-                                    <td>{this.state.outputArray[i].outputs.expSpotsIfOutbreak.toFixed(2)}</td>
                                 </tr>
                             );
                         }
@@ -37,7 +36,6 @@ class ModelBreakDown extends Component {
                                     <td onClick={this.state.dataController.handleModelForestClick} style={{cursor: "pointer"}}>{this.state.outputArray[i].inputs.forest}</td>
                                     <td>{(this.state.outputArray[i].outputs.prob0spots*100).toFixed(2) + "%"}</td>
                                     <td>{(this.state.outputArray[i].outputs.prob53spots*100).toFixed(2) + "%"}</td>
-                                    <td>{this.state.outputArray[i].outputs.expSpotsIfOutbreak.toFixed(2)}</td>
                                 </tr>
                             );
                         }
@@ -50,9 +48,8 @@ class ModelBreakDown extends Component {
                             <thead>
                                 <tr>
                                     <th>Forest Name</th>
-                                    <th>% Probability of  >0 Spots</th>
-                                    <th>% Probability of  >53 Spots</th>
-                                    <th>Expected Spots If Any</th>
+                                    <th>% Probability of Any Spots</th>
+                                    <th>% Probability of >53 Spots</th>
                                 </tr>
                             </thead>
                             <tbody>
