@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import LoadingContainer from '../LoadingContainer.js';
 import PredictiveModelIntroText from './PredictiveModelIntroText.js';
+import PredictionVsOutcome from './PredictionVsOutcome.js'
 import PredictionsSelectionBar from '../selection-bars/PredictionsSelectionBar.js';
 import StateLevelBreakDown from './StateLevelBreakDown.js';
 import ForestLevelBreakDown from './ForestLevelBreakDown.js';

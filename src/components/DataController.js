@@ -524,23 +524,23 @@ class DataController extends Component {
         userFilters.predictiveModelDate = year;
 
     
-        if(year != null) {
-            this.setState({
-                userFilters: userFilters,
-                updatedStateSelection: true
-            }, () => {
-                // set cookies
+        this.setState({
+            userFilters: userFilters,
+            updatedStateSelection: true
+        }, () => {
+            // set cookies
                 this.setCookie("predictiveModelDate", this.state.userFilters.predictiveModelDate, 365);
-    
-                // run the R model
-                this.runModel();
-    
+
+                if(year != null) {
+                    // run the R model
+                    this.runModel();
+                }
+                
                 // set state of parent
                 this.props.parent.setState({
                     dataControllerState: this.state
                 });
-            });
-        }
+        });
     }
 
     // select a new state -- control for if we are passed an abbreviation or a state name

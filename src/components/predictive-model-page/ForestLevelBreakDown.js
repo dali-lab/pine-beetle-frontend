@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ModelInputArea from './ModelInputArea.js';
 import ProbabilityDistribution from './ProbabilityDistribution.js';
+import PredictionVsOutcome from './PredictionVsOutcome.js';
 
 class ForestLevelBreakDown extends Component {
     constructor(props) {
@@ -29,6 +30,7 @@ class ForestLevelBreakDown extends Component {
                         </div>
                         <ModelInputArea dataControllerState={this.state.dataControllerState} dataController={this.state.dataController} editMode={this.state.editMode} setEditMode={this.setEditMode} color={this.state.editMode === true ? "#CCE1B6" : "#f4f4f4"}/>
                         <ProbabilityDistribution dataControllerState={this.state.dataControllerState} data={this.state.outputs} />
+                        <PredictionVsOutcome />
                     </div>
                 );
             }

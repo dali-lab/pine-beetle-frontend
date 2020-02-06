@@ -1,0 +1,29 @@
+.pvo_information {
+    height: 600px;
+    width: 1000px;
+    padding: 15px;
+    padding-bottom: 50px;
+}
+
+.pvo_classification {
+    text-align: left;
+    padding: 15px;
+}
+
+.classification_information {
+    display: flex;
+}
+
+.classification_information img {
+    width: 150px;
+}
+
+.classification_information p {
+    width: 300px; 
+    margin-left: 30px;
+}
+
+.grow_container {
+    flex-direction: row;
+    align-items: center;
+}
