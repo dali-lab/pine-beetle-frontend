@@ -4,8 +4,9 @@ import '../../styles/predictive-model-page/PredictionsVersusOutcome.css';
 
 
 export default class PredictionVsOutcome extends Component {
-    render() {
-        // Math.abs(this.data.datasets.data[0] - this.data.datasets[1])
+    constructor(props) {
+        super(props);
+
         this.data = {
             labels: ['Predicted No. of Spots', 'Recorded No. of Spots', 'Error'],
             datasets: [{
@@ -41,18 +42,26 @@ export default class PredictionVsOutcome extends Component {
              },
         };
 
+        this.state = {
+            'confidence': 'low'
+        }
+    }
+
+    render() {
+        // Math.abs(this.data.datasets.data[0] - this.data.datasets[1])
+
         return (
             <center>
                 <div className="container">
-                    <div className="flex-container grow-container" >
+                    <div className="flex-container" style={{ alignItems:"center" }}>
                         <div className="pvo_information">
                             <h2>Accuracy and Precision of the Model</h2><br />
                             <Bar data={this.data} height={400} options={this.options}/>
                         </div>
                         <div className="pvo_classification">
                             <div className="classification_information">
-                                <img src={ require('../../assets/man.png') } alt="Shield" />
-                                <p>Our model has a <b>low</b> confidence rating for this prediction; we base this on a number of factors including the size of the error or prediction vs. actual outcome and previous historical data.</p>
+                                { (this.state.confidence === 'high') ? <img src={ require('../../assets/shield.png') } alt="Shield" /> : <img src={ require('../../assets/man.png') } alt="Man" /> }
+                                <p>Our model has a <b>{ this.state.confidence }</b> confidence rating for this prediction; we base this on a number of factors including the size of the error or prediction vs. actual outcome and previous historical data.</p>
                             </div>
                         </div>
                     </div>
