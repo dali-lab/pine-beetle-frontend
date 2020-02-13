@@ -75,6 +75,7 @@ class DataController extends Component {
             url: "",
 
             // map of state abbreviations to their names
+            // bug convert abbrev to state
             stateAbbrevToStateName: {
                 AL:"Alabama",
                 AR:"Arkansas",
@@ -135,6 +136,7 @@ class DataController extends Component {
 
         // bind functions
         this.updateStartDate = this.updateStartDate.bind(this);
+        this.getPredictionInformation = this.getPredictionInformation.bind(this);
         this.updateEndDate = this.updateEndDate.bind(this);
         this.updateYearSelection = this.updateYearSelection.bind(this);
         this.updatePredictionYearSelection = this.updatePredictionYearSelection.bind(this);
@@ -196,6 +198,27 @@ class DataController extends Component {
             this.setCookie("endDate", this.state.userFilters.endDate, 365);
             this.setCookie("predictiveModelDate", this.state.userFilters.predictiveModelDate, 365);
         });
+    }
+
+    /* get prediction confidence levels */
+
+    async getPredictionInformation() {        
+        const body = {
+            targetYear: this.state.userFilters.predictiveModelDate,
+            state: this.state.userFilters.stateAbbreviation,
+            forest: this.state.userFilters.forest,
+            endobrev: 1,
+        };
+
+        try {
+            var url = this.state.url + "getPredictions";
+            const res = await axios.post(url, body);
+            const data = res.data;
+
+            return data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     // query data from database using given filters
@@ -773,8 +796,6 @@ class DataController extends Component {
                  var endDate = xmlHttp.response[1] !== null ? xmlHttp.response[1] : this.state.userFilters.endDate
                  var data = xmlHttp.response[2]
 
-                console.log(data);
-
                  var userFilters = Object.assign({}, this.state.userFilters);
                  userFilters.startDate = startDate;
                  userFilters.endDate = endDate;
@@ -818,8 +839,22 @@ class DataController extends Component {
     // update current data based on the user selections for state, forest, date, etc.
     updateCurrentData() {
         // get summarized data
+
+        /*userFilters: {
+            stateName: stateName,
+            stateAbbreviation: stateAbbreviation,
+            forest: forest,
+            startDate: startDate,
+            endDate: endDate,
+            predictiveModelDate: predictiveModelDate,
+            originalStartDate: null,
+            originalEndDate: null,
+        },*/
+
         this.updateSummarizedDataByYear();
         this.updateSummarizedDataByLatLong(); // calls runModel after completion
+
+        // this.getPredictionInformation();
     }
 
     runModel() {

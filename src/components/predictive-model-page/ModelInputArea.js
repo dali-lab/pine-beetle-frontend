@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PredictionVsOutcome from './PredictionVsOutcome.js'
+
 import TimelineInput from '../selection-bars/input-components/TimelineInput.js';
 import '../../styles/predictive-model-page/ModelInputArea.css';
 var $ = require("jquery");
@@ -112,7 +114,8 @@ class ModelInputArea extends Component {
                     <div className="flex-item-right container" id="box-info-area">
                         <h3 className="timeline-title">{"Summer " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
                         <div id="print-model-outputs">
-                            <p>{"# of Spots in " + (this.state.dataControllerState.userFilters.predictiveModelDate - 1) + ": "}<strong>{this.state.dataControllerState.predictiveModelInputs.spotst1}</strong></p>
+                            <p>{"# of Spots in " + (this.state.dataControllerState.userFilters.predictiveModelDate) + ": "}<strong>{this.state.dataControllerState.predictiveModelInputs.spotst1}</strong></p>
+                            <PredictionVsOutcome prediction={this.props.dataController.getPredictionInformation} />
                             <div className="line"></div>
                             <p>{"Probability of Any Spots: "}<strong style={{color: "red"}}>{(this.state.dataControllerState.predictiveModelOutputs.prob0spots*100).toFixed(2) + "%"}</strong></p>
                         </div>
