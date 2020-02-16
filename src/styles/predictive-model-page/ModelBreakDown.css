@@ -18,3 +18,8 @@
     text-align: center;
     padding: 10px;
 }
+#model-breakdown-no-data{
+    background-color: #CCE1B6;
+    font-size: 16px;
+    padding: 10px;
+}

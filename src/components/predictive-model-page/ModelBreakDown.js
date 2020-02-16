@@ -41,23 +41,42 @@ class ModelBreakDown extends Component {
                         }
                     }
                 }
-
-                return(
-                    <div className="container flex-item-right" id="model-breakdown-container">
-                        <table id="model-breakdown-table">
-                            <thead>
-                                <tr>
-                                    <th>Forest Name</th>
-                                    <th>% Probability of Any Spots</th>
-                                    <th>% Probability of >53 Spots</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {outputs}
-                            </tbody>
-                        </table>
-                    </div>
-                );
+                if (outputs.length ===0){
+                    return(
+                        <div className="container flex-item-right" id="model-breakdown-container">
+                            <table id="model-breakdown-table">
+                                <thead>
+                                    <tr>
+                                        <th>Forest Name</th>
+                                        <th>% Probability of Any Spots</th>
+                                        <th>% Probability of >53 Spots</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <p id="model-breakdown-no-data"> No data</p>
+                        </div>
+                    )
+                }
+                else {
+                    return(
+                        <div className="container flex-item-right" id="model-breakdown-container">
+                            <table id="model-breakdown-table">
+                                <thead>
+                                    <tr>
+                                        <th>Forest Name</th>
+                                        <th>% Probability of Any Spots</th>
+                                        <th>% Probability of >53 Spots</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {outputs}
+                                </tbody>
+                            </table>
+                        </div>
+                    );
+                }
             }
             else {
                 return(
