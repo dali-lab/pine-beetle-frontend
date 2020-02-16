@@ -60,7 +60,7 @@ class App extends Component {
                                 <Route path="/about" component={About} />
                                 <Route path="/loading" component={LoadingContainer} />
                                 <Route path='/uploadSurvey123Data' render={(props) => <UploadLandingPage {...props} passwordProtectedPageRoute={this.state.passwordProtectedPageRoute} setLockout={this.setLockout} lockedOut={this.state.lockedOut} />}/>
-                                <Route path={this.state.passwordProtectedPageRoute} render={(props) => <UploadDataFromSurvey123 {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState} url={this.localURL} lockedOut={this.state.lockedOut} />}/>
+                                <Route path={this.state.passwordProtectedPageRoute} render={(props) => <UploadDataFromSurvey123 {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState} url={this.deployedURL} lockedOut={this.state.lockedOut} />}/>
                                 <Route path="*" component={Home} />
                             </Switch>
                         </div>
