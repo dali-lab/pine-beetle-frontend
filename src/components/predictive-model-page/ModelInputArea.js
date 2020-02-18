@@ -52,18 +52,20 @@ class ModelInputArea extends Component {
     }
 
     handleSelect(i) {
-        this.setState({
-            activeTab: i,
-        }, () => {
-            if(this.state.activeTab === 1) {
-                this.resetValues();
-            } else if(this.state.activeTab === 2) {
-                this.editValues();
-            }
-
-            console.log(this.state.activeTab);
-            console.log(i);
-        });
+        if(i !== this.state.activeTab) {
+            this.setState({
+                activeTab: i,
+            }, () => {
+                if(this.state.activeTab === 1) {
+                    this.resetValues();
+                } else if(this.state.activeTab === 2) {
+                    this.editValues();
+                }
+    
+                console.log(this.state.activeTab);
+                console.log(i);
+            });
+        }
     }
 
     render() {
