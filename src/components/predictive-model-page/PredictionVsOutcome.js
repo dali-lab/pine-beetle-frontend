@@ -20,7 +20,6 @@ export default class PredictionVsOutcome extends Component {
      */
 
     calculateConfidence() {
-        console.log("calculating confidence...");
         this.props.prediction().then((res) => {
             const outputs = res.outputs;
 

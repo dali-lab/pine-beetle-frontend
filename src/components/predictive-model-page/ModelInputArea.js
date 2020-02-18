@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PredictionVsOutcome from './PredictionVsOutcome.js'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 import TimelineInput from '../selection-bars/input-components/TimelineInput.js';
 import '../../styles/predictive-model-page/ModelInputArea.css';
@@ -11,6 +13,7 @@ class ModelInputArea extends Component {
 
         // create initial state
         this.state = {
+            activeTab: 0,
             dataController: null,       // holds references to functions that are used to update the state, forest, etc.
             dataControllerState: null,   // defines the user's current selection for state, national forest, etc.
             inputs: {
@@ -48,6 +51,21 @@ class ModelInputArea extends Component {
         this.endobrevInput = React.createRef();
     }
 
+    handleSelect(i) {
+        this.setState({
+            activeTab: i,
+        }, () => {
+            if(this.state.activeTab === 1) {
+                this.resetValues();
+            } else if(this.state.activeTab === 2) {
+                this.editValues();
+            }
+
+            console.log(this.state.activeTab);
+            console.log(i);
+        });
+    }
+
     render() {
         if (this.state.dataControllerState !== null && this.state.dataController !== null) {
             if (this.state.editMode) {
@@ -63,64 +81,133 @@ class ModelInputArea extends Component {
                         <th><button id="pred-model-button" className="submit static-button" onClick={this.editValues}>EDIT VALUES</button></th>
                     </div>
             }
-            return(
-                <div className="flex-container" id="model-input-area">
-                    <div className="flex-item-left container" id="timeline">
-                        <div id="timeline-area">
-                            <ol>
-                                <li>
-                                    <h3 class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 2}</h3>
-                                    <span class="point"></span>
-                                    <div class="description" id="spots-input-pred">
-                                        <TimelineInput instructions="Spots" submitFunction={this.updateSpotst2Selection} valueToDisplay={this.state.inputs.spotst2 !== null ? this.state.inputs.spotst2 : "null"} ref={this.spotst2Input} color={this.props.color} />
-                                    </div>
-                                </li>
-                                <li id="special-li-timeline">
-                                    <h3 class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 1}</h3>
-                                    <span class="point"></span>
-                                    <div class="description">
-                                        <table>
-                                            <tr>
-                                                <th><TimelineInput instructions="Clerids" submitFunction={this.updateCleridst1Selection} valueToDisplay={this.state.inputs.cleridst1 !== null ? this.state.inputs.cleridst1 : "null"} ref={this.cleridst1Input} color={this.props.color} /></th>
-                                                <th><TimelineInput instructions="Spots" submitFunction={this.updateSpotst1Selection} valueToDisplay={this.state.inputs.spotst1 !== null ? this.state.inputs.spotst1 : "null"} ref={this.spotst1Input} color={this.props.color} /></th>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </li>
-                                <li id="special-li-timeline">
-                                    <h3 class="timeline-title">{"Spring " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
-                                    <span class="point"></span>
-                                    <div class="description">
-                                        <table>
-                                            <tr>
-                                                <th><TimelineInput instructions="SPB" submitFunction={this.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"} ref={this.SPBInput} color={this.props.color} /></th>
-                                                <th><TimelineInput instructions="endobrev" submitFunction={this.updateEndobrevSelection} valueToDisplay={this.state.inputs.endobrev !== null ? this.state.inputs.endobrev : "null"} ref={this.endobrevInput} color={this.props.color} /></th>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </li>
-                                <li id="timeline-button">
-                                    <div className="description" id="timeline-button-description">
-                                        <table>
-                                            <tr>
-                                                {buttons}
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </li>
-                            </ol>
+
+            return (
+                <Tabs>
+                    <TabList>
+                        <Tab onClick={(e) => this.handleSelect(1)}>View Prediction Detail</Tab>
+                        <Tab onClick={(e) => this.handleSelect(2)}>Play with the Model</Tab>
+                    </TabList>
+
+                    <TabPanel>
+                        <div className="flex-container" id="model-input-area">
+                            <div className="flex-item-left container" id="timeline">
+                                <div id="timeline-area">
+                                    <ol>
+                                        <li>
+                                            <h3 class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 2}</h3>
+                                            <span class="point"></span>
+                                            <div class="description" id="spots-input-pred">
+                                                <TimelineInput instructions="Spots" submitFunction={this.updateSpotst2Selection} valueToDisplay={this.state.inputs.spotst2 !== null ? this.state.inputs.spotst2 : "null"} ref={this.spotst2Input} color={this.props.color} />
+                                            </div>
+                                        </li>
+                                        <li id="special-li-timeline">
+                                            <h3 class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 1}</h3>
+                                            <span class="point"></span>
+                                            <div class="description">
+                                                <table>
+                                                    <tr>
+                                                        <th><TimelineInput instructions="Clerids" submitFunction={this.updateCleridst1Selection} valueToDisplay={this.state.inputs.cleridst1 !== null ? this.state.inputs.cleridst1 : "null"} ref={this.cleridst1Input} color={this.props.color} /></th>
+                                                        <th><TimelineInput instructions="Spots" submitFunction={this.updateSpotst1Selection} valueToDisplay={this.state.inputs.spotst1 !== null ? this.state.inputs.spotst1 : "null"} ref={this.spotst1Input} color={this.props.color} /></th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </li>
+                                        <li id="special-li-timeline">
+                                            <h3 class="timeline-title">{"Spring " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
+                                            <span class="point"></span>
+                                            <div class="description">
+                                                <table>
+                                                    <tr>
+                                                        <th><TimelineInput instructions="SPB" submitFunction={this.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"} ref={this.SPBInput} color={this.props.color} /></th>
+                                                        <th><TimelineInput instructions="endobrev" submitFunction={this.updateEndobrevSelection} valueToDisplay={this.state.inputs.endobrev !== null ? this.state.inputs.endobrev : "null"} ref={this.endobrevInput} color={this.props.color} /></th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </li>
+                                        <li id="timeline-button">
+                                            <div className="description" id="timeline-button-description">
+                                                <table>
+                                                    <tr>
+                                                        {buttons}
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div className="flex-item-right container" id="box-info-area">
+                                <h3 className="timeline-title">{"Summer " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
+                                <div id="print-model-outputs">
+                                    <p>{"# of Spots in " + (this.state.dataControllerState.userFilters.predictiveModelDate) + ": "}<strong>{this.state.dataControllerState.predictiveModelInputs.spotst1}</strong></p>
+                                    <PredictionVsOutcome prediction={this.props.dataController.getPredictionInformation} />
+                                    <div className="line"></div>
+                                    <p>{"Probability of Any Spots: "}<strong style={{color: "red"}}>{(this.state.dataControllerState.predictiveModelOutputs.prob0spots*100).toFixed(2) + "%"}</strong></p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex-item-right container" id="box-info-area">
-                        <h3 className="timeline-title">{"Summer " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
-                        <div id="print-model-outputs">
-                            <p>{"# of Spots in " + (this.state.dataControllerState.userFilters.predictiveModelDate) + ": "}<strong>{this.state.dataControllerState.predictiveModelInputs.spotst1}</strong></p>
-                            <PredictionVsOutcome prediction={this.props.dataController.getPredictionInformation} />
-                            <div className="line"></div>
-                            <p>{"Probability of Any Spots: "}<strong style={{color: "red"}}>{(this.state.dataControllerState.predictiveModelOutputs.prob0spots*100).toFixed(2) + "%"}</strong></p>
+                    </TabPanel>
+                    <TabPanel>
+                        <div className="flex-container" id="model-input-area">
+                            <div className="flex-item-left container" id="timeline">
+                                <div id="timeline-area">
+                                    <ol>
+                                        <li>
+                                            <h3 class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 2}</h3>
+                                            <span class="point"></span>
+                                            <div class="description" id="spots-input-pred">
+                                                <TimelineInput instructions="Spots" submitFunction={this.updateSpotst2Selection} valueToDisplay={this.state.inputs.spotst2 !== null ? this.state.inputs.spotst2 : "null"} ref={this.spotst2Input} color={this.props.color} />
+                                            </div>
+                                        </li>
+                                        <li id="special-li-timeline">
+                                            <h3 class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 1}</h3>
+                                            <span class="point"></span>
+                                            <div class="description">
+                                                <table>
+                                                    <tr>
+                                                        <th><TimelineInput instructions="Clerids" submitFunction={this.updateCleridst1Selection} valueToDisplay={this.state.inputs.cleridst1 !== null ? this.state.inputs.cleridst1 : "null"} ref={this.cleridst1Input} color={this.props.color} /></th>
+                                                        <th><TimelineInput instructions="Spots" submitFunction={this.updateSpotst1Selection} valueToDisplay={this.state.inputs.spotst1 !== null ? this.state.inputs.spotst1 : "null"} ref={this.spotst1Input} color={this.props.color} /></th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </li>
+                                        <li id="special-li-timeline">
+                                            <h3 class="timeline-title">{"Spring " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
+                                            <span class="point"></span>
+                                            <div class="description">
+                                                <table>
+                                                    <tr>
+                                                        <th><TimelineInput instructions="SPB" submitFunction={this.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"} ref={this.SPBInput} color={this.props.color} /></th>
+                                                        <th><TimelineInput instructions="endobrev" submitFunction={this.updateEndobrevSelection} valueToDisplay={this.state.inputs.endobrev !== null ? this.state.inputs.endobrev : "null"} ref={this.endobrevInput} color={this.props.color} /></th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </li>
+                                        <li id="timeline-button">
+                                            <div className="description" id="timeline-button-description">
+                                                <table>
+                                                    <tr>
+                                                        {buttons}
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div className="flex-item-right container" id="box-info-area">
+                                <h3 className="timeline-title">{"Summer " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
+                                <div id="print-model-outputs">
+                                    <p>{"# of Spots in " + (this.state.dataControllerState.userFilters.predictiveModelDate) + ": "}<strong>{this.state.dataControllerState.predictiveModelInputs.spotst1}</strong></p>
+                                    <PredictionVsOutcome prediction={this.props.dataController.getPredictionInformation} />
+                                    <div className="line"></div>
+                                    <p>{"Probability of Any Spots: "}<strong style={{color: "red"}}>{(this.state.dataControllerState.predictiveModelOutputs.prob0spots*100).toFixed(2) + "%"}</strong></p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </TabPanel>
+                </Tabs>
             );   
         }
         else {
