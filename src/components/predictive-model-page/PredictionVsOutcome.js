@@ -67,11 +67,24 @@ export default class PredictionVsOutcome extends Component {
     render() {
         return (
             <center>
-                <div className="container" style={{ backgroundColor: '#F2F5E8' }}>
+                <div className="container">
                     <div className="classification_information">
-                        { (this.state.confidence === 'high') ? <img src={ require('../../assets/shield.png') } alt="Shield" /> : <img src={ require('../../assets/man.png') } alt="Man" /> }
-                        <p>Our model has a <b>{ this.state.confidence }</b> confidence rating for this prediction <b>({ (1 - (this.state.percentageError)).toFixed(4) * 100 }% confidence)</b>; we base this on a number of factors including the size of the error or prediction vs. actual outcome and previous historical data.</p>
-                    </div>
+                        <h1>How well did we do?</h1>
+                        <div className="classification_prediction">
+                            <img src={ require('../../assets/check.png') } alt="Cross" />
+                            <div className="information">
+                                <h2>Prediction</h2>
+                                <h3>If our model predicted an outbreak.</h3>
+                            </div>
+                        </div>
+                        <div className="classification_actual">
+                            <img src={ require('../../assets/no-waiting.png') } alt="Cross" />
+                            <div className="information">
+                                <h2>Actual</h2>
+                                <h3>If there was actually an outbreak.</h3>
+                            </div>
+                        </div>
+                   </div>
                 </div>
             </center>
         );

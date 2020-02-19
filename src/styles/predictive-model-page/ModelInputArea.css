@@ -29,8 +29,8 @@
     margin: auto;
     margin-top: 40px;
     width: 80%;
-	height: 4px;
-    background: #909090;
+    height: 1px;
+    background: lightgray;
 }
 /* #timeline ol::after {
     content: "";
@@ -51,8 +51,8 @@
 	display: block;
 	width: 205px;
     height: 0;
-    right: -135px;
-	border: 3px dashed #909090;
+    right: -205px;
+	border: 2px dashed #909090;
 	border-style: dashed none none none;
     border-radius: 3px;
 }
@@ -124,18 +124,19 @@
   top: -47px;
   left: 0;
   color: #000000;
+  font-weight: lighter;
 }
 
 #timeline li .point {
 	content: "";
-	top: -5px;
-	left: 0;
-	display: block;
-	width: 6px;
-	height: 6px;
-	border: 4px solid #909090;
-	border-radius: 10px;
-	background: #909090;
+    top: -6px;
+    left: 0;
+    display: block;
+    width: 6px;
+    height: 6px;
+    border: 4px solid black;
+    border-radius: 17px;
+    background: black;
     position: absolute;
 }
 #timeline li .description {
@@ -202,4 +203,24 @@
 .reset-val:hover {
     background-color: #A5C187 !important;
     border: 4px solid transparent;
+}
+
+.react-tabs__tab-list {
+    border: 1px solid #D7D7D7;
+}
+
+.react-tabs__tab {
+    padding: 15px;
+    font-family: Montserrat;
+    border: none;
+}
+
+.react-tabs__tab--selected {
+    font-weight: bold;
+    color: #537136;
+    border-bottom: 3px solid #537136;
+}
+
+.react-tabs__tab-list {
+    text-align: center;
 }

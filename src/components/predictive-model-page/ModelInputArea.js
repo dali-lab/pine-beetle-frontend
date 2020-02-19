@@ -8,6 +8,7 @@ import '../../styles/predictive-model-page/ModelInputArea.css';
 var $ = require("jquery");
 
 class ModelInputArea extends Component {
+    
     constructor(props) {
         super(props);
 
@@ -57,13 +58,14 @@ class ModelInputArea extends Component {
                 activeTab: i,
             }, () => {
                 if(this.state.activeTab === 1) {
+                    this.props.switchTab(1);
                     this.resetValues();
                 } else if(this.state.activeTab === 2) {
+                    this.props.switchTab(2);
                     this.editValues();
                 }
     
-                console.log(this.state.activeTab);
-                console.log(i);
+                //console.log(i);
             });
         }
     }
@@ -143,7 +145,6 @@ class ModelInputArea extends Component {
                                 <h3 className="timeline-title">{"Summer " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
                                 <div id="print-model-outputs">
                                     <p>{"# of Spots in " + (this.state.dataControllerState.userFilters.predictiveModelDate) + ": "}<strong>{this.state.dataControllerState.predictiveModelInputs.spotst1}</strong></p>
-                                    <PredictionVsOutcome prediction={this.props.dataController.getPredictionInformation} />
                                     <div className="line"></div>
                                     <p>{"Probability of Any Spots: "}<strong style={{color: "red"}}>{(this.state.dataControllerState.predictiveModelOutputs.prob0spots*100).toFixed(2) + "%"}</strong></p>
                                 </div>
@@ -202,7 +203,6 @@ class ModelInputArea extends Component {
                                 <h3 className="timeline-title">{"Summer " + this.state.dataControllerState.userFilters.predictiveModelDate}</h3>
                                 <div id="print-model-outputs">
                                     <p>{"# of Spots in " + (this.state.dataControllerState.userFilters.predictiveModelDate) + ": "}<strong>{this.state.dataControllerState.predictiveModelInputs.spotst1}</strong></p>
-                                    <PredictionVsOutcome prediction={this.props.dataController.getPredictionInformation} />
                                     <div className="line"></div>
                                     <p>{"Probability of Any Spots: "}<strong style={{color: "red"}}>{(this.state.dataControllerState.predictiveModelOutputs.prob0spots*100).toFixed(2) + "%"}</strong></p>
                                 </div>
