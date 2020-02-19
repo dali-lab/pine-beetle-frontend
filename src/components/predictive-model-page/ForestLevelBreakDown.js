@@ -16,6 +16,7 @@ class ForestLevelBreakDown extends Component {
         }
 
         this.setEditMode = this.setEditMode.bind(this);
+        this.switchTab = this.switchTab.bind(this);
     }
 
     switchTab(id) {
