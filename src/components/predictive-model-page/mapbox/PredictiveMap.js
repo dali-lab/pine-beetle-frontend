@@ -204,7 +204,7 @@ class PredictiveMap extends Component {
     // Creates and returns a string to name the downloaded PDF
     // in the format 'StateYear.pdf"
     returnMapName() {
-        return(`${this.state.dataControllerState.userFilters.stateName}${this.state.dataControllerState.userFilters.predictiveModelDate}`);
+        return(`${this.state.dataControllerState.userFilters.stateName}${this.state.dataControllerState.userFilters.predictiveModelDate}`+'.pdf');
     }
 
     // Creates and returns an HTML object with information for the footer
