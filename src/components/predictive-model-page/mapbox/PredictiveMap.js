@@ -219,33 +219,37 @@ class PredictiveMap extends Component {
         for (var i = 0; i < this.state.thresholds.length; i++) {
             var layer = this.state.thresholds[i];
             var color = this.state.colors[i];
-            var spanString = `<div class="footer-legend-key" style="background: ${color};"></div><span>${layer}</span>`;
+            var spanString = `
+
+            <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${color};display: inline-block;border-radius: 20%;width: 20px;height: 20px;margin-right: 5px;margin-left: 5px;"></div><span>${layer}</span>`;
             legendString = legendString.concat(spanString);
         }
 
         return(
-            `<div id="map-footer">
-                <div id='footer-legend'>
+            `
+            <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
+                <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 51%;margin: auto;margin-bottom: 10px;">
                     ${legendString}
                 </div>
-                <p class="footnote" >Note: Color ramp ascends with a constant factor of 
+                <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Note: Color ramp ascends with a constant factor of 
                 increase in the probability of outcome.</p>
-                <div id="spacer"></div>
-                <h2>${title}</h2>
-                <p>Predictions are based on a zero-inflated Poisson model fit to historical data 
+                <div id="spacer" style="height: 50px;"></div>
+                <h2 style="font-family: 'Open Sans', arial, serif;margin-bottom: 16px;margin-top: 16px;">${title}</h2>
+                <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">Predictions are based on a zero-inflated Poisson model fit to historical data 
                 from 1988 – 2009 (Aoki 2017). The most important drivers of model predictions are
                  SPB trap captures in the current spring and SPB spots the previous year.
                 </p>
-                <p>
+                <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">
                 The SPB prediction project is supported by USDA Forest Service: Science and Technology 
                 Development Program (STDP)
                 </p>
-                <p>Contact: Matthew P. Ayres - matthew.p.ayres@dartmouth.edu; Carissa F. Aoki - caoki@bates.edu
+                <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">Contact: Matthew P. Ayres - matthew.p.ayres@dartmouth.edu; Carissa F. Aoki - caoki@bates.edu
                 </p>
-                <p class="footnote">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN, 
+                <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN, 
                 GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, © OpenStreetMap 
                 contributors, andthe GIS User Community</p>
-            </div>`
+            </div>
+            `
         );
     }
 
@@ -253,8 +257,8 @@ class PredictiveMap extends Component {
     // of the downloaded maps. This object is used by the mapbox-print-pdf library.
     buildHeader() {
         return(
-            `<div id="map-header">
-                <h2>Probability of (Any) SPB Spots</h2>
+            `<div id="map-header" style="text-align: center;">
+                <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">Probability of (Any) SPB Spots</h2>
             </div>`
         );
     }
