@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../../styles/predictive-model-page/PredictionsVersusOutcome.css';
+import { CircularProgressbarWithChildren, buildStyles} from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 export default class PredictionVsOutcome extends Component {
     constructor(props) {
@@ -21,7 +23,7 @@ export default class PredictionVsOutcome extends Component {
 
     calculateConfidence() {
         this.props.prediction().then((res) => {
-            const outputs = res.outputs;
+            const outputs = null; //res.outputs;
 
             let previousKey = "0";
 
@@ -67,24 +69,27 @@ export default class PredictionVsOutcome extends Component {
     render() {
         return (
             <center>
-                <div className="container">
+                <div className="container" style={{ textAlign: 'left' }}>
+                    <h1 style={{ marginBottom: 20 }}>How well did we do?</h1>
                     <div className="classification_information">
-                        <h1>How well did we do?</h1>
                         <div className="classification_prediction">
-                            <img src={ require('../../assets/check.png') } alt="Cross" />
-                            <div className="information">
-                                <h2>Prediction</h2>
-                                <h3>If our model predicted an outbreak.</h3>
-                            </div>
+                            <CircularProgressbarWithChildren value={66} styles={buildStyles({pathColor: "#9FBC96", trailColor: "#F1F1F1"})}>
+                                <h1 style={{ fontSize: '4em', marginBottom: 10 }}>3.4%</h1>
+                                <div style={{ fontSize: 12, marginTop: -5 }}>
+                                    <strong>Chances of an outbreak<span id="asterisk">*</span></strong>
+                                </div>
+                            </CircularProgressbarWithChildren>
                         </div>
                         <div className="classification_actual">
-                            <img src={ require('../../assets/no-waiting.png') } alt="Cross" />
-                            <div className="information">
-                                <h2>Actual</h2>
-                                <h3>If there was actually an outbreak.</h3>
-                            </div>
+                            <CircularProgressbarWithChildren value={100} styles={buildStyles({pathColor: "#EDC475", trailColor: "#F1F1F1"})}>
+                                <h1 style={{ fontSize: '4em', marginBottom: 10 }}>No</h1>
+                                <div style={{ fontSize: 12, marginTop: -5 }}>
+                                    <strong>Was there an outbreak?</strong>
+                                </div>
+                            </CircularProgressbarWithChildren>
                         </div>
                    </div>
+                   <p class="outbreak_disclaimer"><span id="asterisk">*</span> Outbreak defined as >50 spots in a particular year.</p>
                 </div>
             </center>
         );

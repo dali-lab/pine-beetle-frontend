@@ -19,6 +19,7 @@
     "react": "^16.8.1",
     "react-arcgis": "^3.3.3",
     "react-chartjs-2": "^2.7.4",
+    "react-circular-progressbar": "^2.0.3",
     "react-csv": "^1.1.1",
     "react-dom": "^16.8.1",
     "react-ga": "^2.5.7",

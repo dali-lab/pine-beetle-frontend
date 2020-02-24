@@ -11,6 +11,7 @@
 }
 
 .classification_information {
+    display: flex;
     border-left: 1px solid #aaa;
     padding: 15px;
 }
@@ -35,7 +36,7 @@
 }
 
 .classification_prediction, .classification_actual {
-    display: flex;
+    width: 250px;
 }
 
 .classification_prediction img, .classification_actual img {
@@ -54,7 +55,17 @@
     font-weight: lighter;
 }
 
-.classification_actual {
-    margin-top: 25px;
+.classification_prediction {
+    margin-left: 25px;
 }
 
+.classification_actual {
+    margin-left: 50px;
+}
+
+.outbreak_disclaimer {
+    text-align: center;
+    color: #777777;
+    margin-top: 20px;
+    font-family: 'Montserrat', arial, serif;
+}

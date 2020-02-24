@@ -56,8 +56,6 @@ class ProbabilityDistribution extends Component {
             visualization = <RunningModel dataControllerState={this.props.dataControllerState} />
         }
 
-        //console.log(this.props.confusionMatrixVisible);
-
         return(
             <div>
             { (this.props.confusionMatrixVisible) ? 
