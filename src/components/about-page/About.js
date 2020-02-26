@@ -44,7 +44,7 @@ class About extends Component {
 
                         <div className="header-text-container">
                             <h4>DALI Lab:</h4>
-                            <p>Web design and development by the Dartmouth Applied Learning and Innovation (DALI) Lab at Dartmouth College. Lorie Loeb, Director and Co-founder; Madeline Hess, Developer; Thomas Monfre, Developer; Isabel Hurley, Developer; Mo Zhu, Team Manager; Bella Jacoby, Designer; Emi Hayakawa, Designer</p>
+                            <p>Web design and development by the Dartmouth Applied Learning and Innovation (DALI) Lab at Dartmouth College. Lorie Loeb, Director and Co-founder; Madeline Hess, Developer; Thomas Monfre, Developer; Isabel Hurley, Developer; Mo Zhu, Team Manager; Bella Jacoby, Designer; Emi Hayakawa, Designer; John MacDonald '22, Developer.</p>
                         </div>
 
                         <div id="image-icon-area">

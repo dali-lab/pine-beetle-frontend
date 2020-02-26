@@ -63,9 +63,7 @@ class ModelInputArea extends Component {
                 } else if(this.state.activeTab === 2) {
                     this.props.switchTab(2);
                     this.editValues();
-                }
-    
-                //console.log(i);
+                }    
             });
         }
     }
@@ -102,7 +100,7 @@ class ModelInputArea extends Component {
                                             <h3 class="timeline-title">{this.state.dataControllerState.userFilters.predictiveModelDate - 2}</h3>
                                             <span class="point"></span>
                                             <div class="description" id="spots-input-pred">
-                                                <TimelineInput instructions="Spots" submitFunction={this.updateSpotst2Selection} valueToDisplay={this.state.inputs.spotst2 !== null ? this.state.inputs.spotst2 : "null"} ref={this.spotst2Input} color={this.props.color} />
+                                                <TimelineInput disabled instructions="Spots" submitFunction={this.updateSpotst2Selection} valueToDisplay={this.state.inputs.spotst2 !== null ? this.state.inputs.spotst2 : "null"} ref={this.spotst2Input} color={this.props.color} />
                                             </div>
                                         </li>
                                         <li id="special-li-timeline">
@@ -111,8 +109,8 @@ class ModelInputArea extends Component {
                                             <div class="description">
                                                 <table>
                                                     <tr>
-                                                        <th><TimelineInput instructions="Clerids" submitFunction={this.updateCleridst1Selection} valueToDisplay={this.state.inputs.cleridst1 !== null ? this.state.inputs.cleridst1 : "null"} ref={this.cleridst1Input} color={this.props.color} /></th>
-                                                        <th><TimelineInput instructions="Spots" submitFunction={this.updateSpotst1Selection} valueToDisplay={this.state.inputs.spotst1 !== null ? this.state.inputs.spotst1 : "null"} ref={this.spotst1Input} color={this.props.color} /></th>
+                                                        <th><TimelineInput disabled instructions="Clerids" submitFunction={this.updateCleridst1Selection} valueToDisplay={this.state.inputs.cleridst1 !== null ? this.state.inputs.cleridst1 : "null"} ref={this.cleridst1Input} color={this.props.color} /></th>
+                                                        <th><TimelineInput disabled instructions="Spots" submitFunction={this.updateSpotst1Selection} valueToDisplay={this.state.inputs.spotst1 !== null ? this.state.inputs.spotst1 : "null"} ref={this.spotst1Input} color={this.props.color} /></th>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -123,8 +121,8 @@ class ModelInputArea extends Component {
                                             <div class="description">
                                                 <table>
                                                     <tr>
-                                                        <th><TimelineInput instructions="SPB" submitFunction={this.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"} ref={this.SPBInput} color={this.props.color} /></th>
-                                                        <th><TimelineInput instructions="endobrev" submitFunction={this.updateEndobrevSelection} valueToDisplay={this.state.inputs.endobrev !== null ? this.state.inputs.endobrev : "null"} ref={this.endobrevInput} color={this.props.color} /></th>
+                                                        <th><TimelineInput disabled instructions="SPB" submitFunction={this.updateSPBSelection} valueToDisplay={this.state.inputs.SPB !== null ? this.state.inputs.SPB : "null"} ref={this.SPBInput} color={this.props.color} /></th>
+                                                        <th><TimelineInput disabled instructions="endobrev" submitFunction={this.updateEndobrevSelection} valueToDisplay={this.state.inputs.endobrev !== null ? this.state.inputs.endobrev : "null"} ref={this.endobrevInput} color={this.props.color} /></th>
                                                     </tr>
                                                 </table>
                                             </div>

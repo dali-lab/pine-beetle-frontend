@@ -1,13 +1,15 @@
 select, input {
     width: 175px;
-    border: none;
-    border-radius: 0px;
-    background-color: #D8D8D8;
+    border: 1.5px solid #232323;
+    background: white;
+    border-radius: 4px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    padding: 7px;
+    padding: 20px;
     cursor: pointer;
+    font-family: Montserrat;
+    font-size: 1em;
 }
 
 input {
@@ -16,11 +18,8 @@ input {
 }
 
 .submit {
-    width: 60px;
-    padding: 7px;
     border: none;
     border-radius: 0px;
-    background-color: #CCE1B6;
     cursor: pointer;
 }
 
@@ -31,7 +30,8 @@ input {
 
 .selection {
     display: inline-block;
-    margin: 10px 15px;
+    margin: 10px 0px;
+    width: 460px;
 }
 
 .selection h4 {
