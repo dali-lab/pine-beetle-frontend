@@ -56,7 +56,7 @@ class BarChartArea extends Component {
         return(
             <div className="flex-container" id="data-insights-holder">
                 <div className="container data-insights flex-item" id="data-insights">
-                        <Bar data={this.state.chartData} height={400} options={this.state.chartOptions}/>
+                    <Bar data={this.state.chartData} height={400} options={this.state.chartOptions}/>
                 </div>
     		</div>
         );

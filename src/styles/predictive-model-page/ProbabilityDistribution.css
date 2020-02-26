@@ -1,11 +1,12 @@
 #probability-distribution {
-    flex: 2.5 !important;
+    flex: 0.5 !important;
     flex: 0 1 20%;
     width: 20%;
     position: relative;
     margin-right: 0px;
     margin-top: 20px;
     margin-bottom: 25px;
+    margin-left: 200px;
 }
 
 #probability-metrics-area {
@@ -17,6 +18,7 @@
     margin-left: 0px;
     font-size: 14px;
     text-align: left;
+    flex: 0.5;
 }
 
 #line-metrics-area p {
@@ -31,4 +33,11 @@
     margin: auto;
     margin-top: 30px;
     margin-bottom: 30px;
+}
+
+.disclaimer {
+    margin-left: 220px;
+    margin-right: 100px;
+    margin-bottom: 50px;
+    line-height: 2.5;
 }
