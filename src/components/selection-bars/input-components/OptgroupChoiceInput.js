@@ -18,10 +18,9 @@ class OptgroupChoiceInput extends Component {
         if (this.props.showAboveText) {
             return(
                 <div className="selection">
-                    <h4>{this.props.instructions}</h4>
-                        <select className="selection-no-button" id={this.props.idName + "-select"} name={this.props.idName} onChange={this.submit} ref={this.selectField} value={this.state.value}>
-                            {this.state.options}
-                        </select>
+                    <select className="selection-no-button" id={this.props.idName + "-select"} name={this.props.idName} onChange={this.submit} ref={this.selectField} value={this.state.value}>
+                        {this.state.options}
+                    </select>
                 </div>
             );
         }

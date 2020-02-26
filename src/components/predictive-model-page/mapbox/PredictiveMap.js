@@ -40,7 +40,7 @@ class PredictiveMap extends Component {
                     </div>
                 </div>
                 <div className='map-overlay-legend' id='legend'>
-                <div classname='legend-key-title'><strong>Probability of >50 spots</strong></div>
+                <div className='legend-key-title'><strong>Probability of >50 spots</strong></div>
                     {this.state.legendTags}
                 </div>
                 <div id="printmap"></div>

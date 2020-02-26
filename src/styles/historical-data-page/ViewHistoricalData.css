@@ -3,7 +3,7 @@
     text-align: left;
     justify-content: flex-start;
     margin-top: 25px;
-    margin-left: 10px;
+    margin-left: 15px;
     margin-right: 10px;
 }
 
@@ -58,7 +58,7 @@
 }
 
 .selection-no-button {
-    width: 180px;
+    width: 100%;
 }
 
 #start-year-input, #end-year-input {
@@ -144,16 +144,13 @@ h4.location {
 
 #adjust-map-size-button, #reset-current-data-button, #get-csv-button {
     margin: 0px;
-    margin-left: 15px;
-    background-color: #CCE1B6;
-    height: 45px;
-    width: 80px;
+    width: 100px;
     font-family: Montserrat;
-}
-
-#adjust-map-size-button, #get-csv-button, #reset-current-data-button:hover  {
-    font-weight: normal;
-    background-color: #A5C187;
+    text-align: right;
+    font-weight: bold;
+    font-size: 0.8em;
+    padding: 0;
+    color: #537136;
 }
 
 #map-area, #prediction-model {

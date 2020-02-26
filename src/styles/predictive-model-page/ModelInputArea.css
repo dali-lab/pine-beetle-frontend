@@ -52,7 +52,7 @@
 	width: 205px;
     height: 0;
     right: -205px;
-	border: 2px dashed #909090;
+	border: 1px dashed #909090;
 	border-style: dashed none none none;
     border-radius: 3px;
 }
@@ -64,7 +64,7 @@
 	float: left;
 	width: 20%;
 	font: bold 14px arial;
-    height: 50px;
+    height: 100px;
     margin-bottom: 40px;
 }
 
@@ -86,7 +86,7 @@
 
 #special-li-timeline table {
     width: 100%;
-    text-align: left;
+    text-align: center;
     padding: 0px;
     border: 0px;
     margin: 0px;
@@ -129,36 +129,49 @@
 
 #timeline li .point {
 	content: "";
-    top: -6px;
+    top: -8px;
     left: 0;
     display: block;
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     border: 4px solid black;
     border-radius: 17px;
     background: black;
     position: absolute;
 }
+
+#box-info-area .point {
+    position: relative;
+    top: 15px;
+    left: 54px;
+	content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    border: 4px solid black;
+    border-radius: 17px;
+    background: white;
+}
+
 #timeline li .description {
-  background-color: #f4f4f4;
+  background-color: transparent;
   margin-top: 20px;
   font-weight: normal;
   text-align: left;
   padding-bottom: 5px;
 }
 
-.description input {
-    width: 100%;
-    font-size: 18px;
-    background-color: #f4f4f4;
-}
-
-.description input:hover {
-    background-color: #CCE1B6;
-}
-
-.description h4 {
-    margin-left: 5px;
+.summer_line {
+    position: relative;
+    top: 7px;
+    left: -8px;
+    height: 20px;
+    border-left: none;
+    width: 62px;
+    border: 1px dashed#909090;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
 }
 
 /* #timeline .description::before {
@@ -183,11 +196,13 @@
 } */
 
 #print-model-outputs {
-    margin-top: 22px;
+    text-align: center;
+    width: 250px;
     padding: 20px;
-    background-color: #F2F5E8;
     margin-bottom: 20px;
     z-index: 2;
+    position: relative;
+    left: -82px;
 }
 
 #prob-any-spots {
@@ -223,4 +238,7 @@
 
 .react-tabs__tab-list {
     text-align: center;
+}
+
+.react-tabs__tab-panel {
 }
