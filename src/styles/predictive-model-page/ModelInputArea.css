@@ -239,3 +239,7 @@
 .react-tabs__tab-list {
     text-align: center;
 }
+
+.react-tabs__tab-panel {
+    margin-left: 25vw;
+}
