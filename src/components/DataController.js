@@ -214,6 +214,7 @@ class DataController extends Component {
             var url = this.state.url + "getPredictions";
             const res = await axios.post(url, body);
             const data = res.data;
+            console.log(data);
             return data;
         } catch (error) {
             console.log(error);

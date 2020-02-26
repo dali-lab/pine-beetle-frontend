@@ -46,7 +46,7 @@ class ForestLevelBreakDown extends Component {
                         <div className="container" id="now-viewing-model-container">
                             <p>Currently viewing data for: <span><b>{this.props.dataControllerState.userFilters.forest}</b></span>. Select a new locality to view a different forest's data.</p>
                         </div>
-                        <ModelInputArea dataControllerState={this.state.dataControllerState} dataController={this.state.dataController} editMode={this.state.editMode} setEditMode={this.setEditMode} switchTab={this.switchTab} color={this.state.editMode === true ? "#CCE1B6" : "#f4f4f4"}/>
+                        <ModelInputArea dataControllerState={this.state.dataControllerState} dataController={this.state.dataController} editMode={this.state.editMode} setEditMode={this.setEditMode} switchTab={this.switchTab} color={this.state.editMode === true ? "#CCE1B6" : "transparent"}/>
                         <ProbabilityDistribution confusionMatrixVisible={this.state.confusionMatrixVisible} dataControllerState={this.state.dataControllerState} dataController={this.state.dataController} data={this.state.outputs} />
                     </div>
                 );

@@ -73,8 +73,8 @@ export default class PredictionVsOutcome extends Component {
                     <h1 style={{ marginBottom: 20 }}>How well did we do?</h1>
                     <div className="classification_information">
                         <div className="classification_prediction">
-                            <CircularProgressbarWithChildren value={66} styles={buildStyles({pathColor: "#9FBC96", trailColor: "#F1F1F1"})}>
-                                <h1 style={{ fontSize: '4em', marginBottom: 10 }}>3.4%</h1>
+                            <CircularProgressbarWithChildren value={88} styles={buildStyles({pathColor: "#9FBC96", trailColor: "#F1F1F1"})}>
+                                <h1 style={{ fontSize: '4em', marginBottom: 10 }}>88.4%</h1>
                                 <div style={{ fontSize: 12, marginTop: -5 }}>
                                     <strong>Chances of an outbreak<span id="asterisk">*</span></strong>
                                 </div>
