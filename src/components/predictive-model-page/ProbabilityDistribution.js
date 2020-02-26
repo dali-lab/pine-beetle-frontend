@@ -64,7 +64,7 @@ class ProbabilityDistribution extends Component {
                     {visualization} 
                     </div>
                     <div className="container flex-item flex-item-right" id="probability-metrics-area">
-                        <PredictionVsOutcome prediction={this.props.dataController.getPredictionInformation} />
+                        <PredictionVsOutcome prediction={this.props.dataController.getPredictionInformation} assessment={this.props.dataController.getAssessment} />
                     </div>
                 </div>
                 : <p></p>}                    

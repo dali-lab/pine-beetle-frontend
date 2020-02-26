@@ -163,11 +163,11 @@
 
 .summer_line {
     position: relative;
-    top: 6px;
-    left: -4px;
+    top: 7px;
+    left: -8px;
     height: 20px;
     border-left: none;
-    width: 57px;
+    width: 62px;
     border: 1px dashed#909090;
     border-bottom: none;
     border-left: none;
@@ -241,5 +241,4 @@
 }
 
 .react-tabs__tab-panel {
-    margin-left: 25vw;
 }

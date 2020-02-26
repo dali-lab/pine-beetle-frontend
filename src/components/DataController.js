@@ -137,6 +137,7 @@ class DataController extends Component {
         // bind functions
         this.updateStartDate = this.updateStartDate.bind(this);
         this.getPredictionInformation = this.getPredictionInformation.bind(this);
+        this.getAssessment = this.getAssessment.bind(this);
         this.updateEndDate = this.updateEndDate.bind(this);
         this.updateYearSelection = this.updateYearSelection.bind(this);
         this.updatePredictionYearSelection = this.updatePredictionYearSelection.bind(this);
@@ -214,6 +215,25 @@ class DataController extends Component {
             var url = this.state.url + "getPredictions";
             const res = await axios.post(url, body);
             const data = res.data;
+            console.log(data);
+            return data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getAssessment() {
+        const body = {
+            targetYear: this.state.userFilters.predictiveModelDate,
+            state: this.state.userFilters.stateAbbreviation,
+            forest: this.state.userFilters.forest,
+        };
+
+        try {
+            var url = this.state.url + "getPredictionAssessment";
+            const res = await axios.post(url, body);
+            const data = res.data;
+            console.log("assessment")
             console.log(data);
             return data;
         } catch (error) {

@@ -8,10 +8,13 @@ export default class PredictionVsOutcome extends Component {
         super(props);
 
         this.state = {
-            confidence: 'high'
+            confidence: 'high',
+            outbreakChance: 100.0,
+            outbreakOccurred: false,
         }
 
         this.calculateConfidence();
+        this.getAssessment();
     }
 
     /**
@@ -23,9 +26,11 @@ export default class PredictionVsOutcome extends Component {
 
     calculateConfidence() {
         this.props.prediction().then((res) => {
-            const outputs = null; //res.outputs;
+            const outputs = res.outputs;
 
             let previousKey = "0";
+
+            console.log(outputs)
 
             for (const key in outputs) {
                 var probability = outputs[key];
@@ -59,10 +64,24 @@ export default class PredictionVsOutcome extends Component {
                     });
 
                     break;
+                
+                
                 }
 
                 previousKey = key;
             }
+        });
+    }
+
+    getAssessment() {
+        this.props.assessment().then((res) => {   
+            console.log("outbreak")
+            console.log(res.outbreakOcurred);
+
+            this.setState({
+                outbreakOccurred: (res.outbreakOcurred == null) ? "N/A" : res.outbreakOcurred,
+                outbreakChance: (res.outbreakPredicted == null) ? "N/A" : (res.outbreakPredicted * 100).toFixed(2),
+            });
         });
     }
 
@@ -73,8 +92,8 @@ export default class PredictionVsOutcome extends Component {
                     <h1 style={{ marginBottom: 20 }}>How well did we do?</h1>
                     <div className="classification_information">
                         <div className="classification_prediction">
-                            <CircularProgressbarWithChildren value={88} styles={buildStyles({pathColor: "#9FBC96", trailColor: "#F1F1F1"})}>
-                                <h1 style={{ fontSize: '4em', marginBottom: 10 }}>88.4%</h1>
+                            <CircularProgressbarWithChildren value={this.state.outbreakChance} styles={buildStyles({pathColor: "#9FBC96", trailColor: "#F1F1F1"})}>
+                                <h1 style={{ fontSize: '4em', marginBottom: 10 }}>{this.state.outbreakChance}%</h1>
                                 <div style={{ fontSize: 12, marginTop: -5 }}>
                                     <strong>Chances of an outbreak<span id="asterisk">*</span></strong>
                                 </div>
@@ -82,14 +101,14 @@ export default class PredictionVsOutcome extends Component {
                         </div>
                         <div className="classification_actual">
                             <CircularProgressbarWithChildren value={100} styles={buildStyles({pathColor: "#EDC475", trailColor: "#F1F1F1"})}>
-                                <h1 style={{ fontSize: '4em', marginBottom: 10 }}>No</h1>
+                                <h1 style={{ fontSize: '4em', marginBottom: 10 }}>{this.state.outbreakOccurred ? "Yes" : "No"}</h1>
                                 <div style={{ fontSize: 12, marginTop: -5 }}>
                                     <strong>Was there an outbreak?</strong>
                                 </div>
                             </CircularProgressbarWithChildren>
                         </div>
                    </div>
-                   <p class="outbreak_disclaimer"><span id="asterisk">*</span> Outbreak defined as >50 spots in a particular year.</p>
+                   <p className="outbreak_disclaimer"><span id="asterisk">*</span> Outbreak defined as >50 spots in a particular year.</p>
                 </div>
             </center>
         );
