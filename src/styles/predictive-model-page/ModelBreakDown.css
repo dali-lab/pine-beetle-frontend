@@ -1,7 +1,6 @@
 #model-breakdown-container {
     overflow: auto;
     max-height: 440px;
-    background-color: #F2F5E8;
     margin-left: 15px;
     margin-right: 120px;
     padding: 0px;
@@ -17,4 +16,25 @@
     border: 3px solid white;
     text-align: center;
     padding: 10px;
+}
+
+.forestRow {
+    display: flex;
+    width: 400px;
+    padding: 15px 30px;
+}
+
+#forestName {
+    flex: 0.5;
+    text-align: left;
+}
+
+.forestRowData {
+    flex: 0.5;
+    text-align: right;
+}
+
+#forestRowSelected {
+    border: 1px solid black;
+    border-radius: 4px;
 }

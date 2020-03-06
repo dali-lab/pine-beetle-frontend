@@ -1,26 +1,20 @@
-select, input {
+select {
     width: 175px;
-    border: none;
-    border-radius: 0px;
-    background-color: #D8D8D8;
+    border: 1.5px solid #232323;
+    background: white;
+    border-radius: 4px;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    padding: 7px;
+    padding: 20px;
     cursor: pointer;
-}
-
-input {
-    width: 150px;
-    margin-right: 10px;
+    font-family: Montserrat;
+    font-size: 1em;
 }
 
 .submit {
-    width: 60px;
-    padding: 7px;
     border: none;
     border-radius: 0px;
-    background-color: #CCE1B6;
     cursor: pointer;
 }
 
@@ -31,9 +25,36 @@ input {
 
 .selection {
     display: inline-block;
-    margin: 10px 15px;
+    margin: 15px 0px;
+    width: 460px;
 }
 
 .selection h4 {
     text-align: left;
+}
+
+input:focus {
+    outline: none;
+}
+
+.prediction_variables {
+    font-family: Montserrat;
+    font-weight: lighter;
+    display: flex;
+    width: 100px;
+    padding: 10px 25px;
+    border: 1px solid black;
+    border-radius: 11px;
+    font-size: 1.2em;
+    margin-top: 30px;
+}
+
+.variableInput {
+    text-align: right;
+    padding-right: 5px;
+    font-weight: bold;
+    width: 100%;
+    font-size: 1.1em;
+    background: transparent;
+    border: none;
 }

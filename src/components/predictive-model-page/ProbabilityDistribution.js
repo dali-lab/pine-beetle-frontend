@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Bar} from 'react-chartjs-2';
 import RunningModel from '../RunningModel';
+import PredictionVsOutcome from './PredictionVsOutcome.js'
 import '../../styles/predictive-model-page/ProbabilityDistribution.css';
 var pattern = require("patternomaly");
 
@@ -56,15 +57,18 @@ class ProbabilityDistribution extends Component {
         }
 
         return(
-            <div className="flex-container">
-                <div className="container probability-distribution flex-item-left" id="probability-distribution">
+            <div>
+            { (this.props.confusionMatrixVisible) ? 
+                <div className="flex-container">
+                    <div className="container probability-distribution flex-item-left" id="probability-distribution">
                     {visualization} 
+                    </div>
+                    <div className="container flex-item flex-item-right" id="probability-metrics-area">
+                        <PredictionVsOutcome prediction={this.props.dataController.getPredictionInformation} assessment={this.props.dataController.getAssessment} />
+                    </div>
                 </div>
-                <div className="container flex-item flex-item-right" id="probability-metrics-area">
-                    <h4>Note on Statistics:</h4>
-                    <br />
-                    <p>The predictive model gives the probability for various levels of southern pine beetle spot severity. For example, the probability that the number of spots is between 20 and 53. Please note that the model is probabilistic. An outcome with a low probability may nevertheless occur. The model also places special emphasis on two figures: the probability of any spots and the probability of more than 53 spots. We emphasize probability of more than 53 spots because we consider it a signifier of a “bad” outcome, though various forest professional may use another benchmark.</p>
-                </div>
+                : <p></p>}                    
+                <p className="disclaimer">The predictive model gives the probability for various levels of southern pine beetle spot severity. For example, the probability that the number of spots is between 20 and 53. In addition, it gives the expected number of spots if any. Please note that the model is probabilistic. An outcome with a low probability may nevertheless occur. The model also places special emphasis on three figures: the probability of any spots, the expected number of spots if any, and the probability of more than 53 spots. We emphasize probability of more than 53 spots because we consider it a signifier of a “bad” outcome, though various forest professionals may use other benchmarks.</p>
             </div>
         );
     }

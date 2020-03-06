@@ -11,10 +11,28 @@ class ForestLevelBreakDown extends Component {
         this.state = {
             dataController: null,       // holds references to functions that are used to update the state, forest, etc.
             dataControllerState: null,   // defines the user's current selection for state, national forest, etc.
-            editMode: false
+            editMode: false,
+            confusionMatrixVisible: true,
         }
 
         this.setEditMode = this.setEditMode.bind(this);
+        this.switchTab = this.switchTab.bind(this);
+    }
+
+    switchTab(id) {
+        let visiblity = false;
+
+        if(id === 1) {
+            visiblity = true;
+        }
+
+        console.log("Forest Switching Tab: ")
+        console.log(visiblity);
+        console.log(id);
+
+        this.setState({
+            confusionMatrixVisible: visiblity,
+        });
     }
 
     render() {
@@ -28,8 +46,8 @@ class ForestLevelBreakDown extends Component {
                         <div className="container" id="now-viewing-model-container">
                             <p>Currently viewing data for: <span><b>{this.props.dataControllerState.userFilters.forest}</b></span>. Select a new locality to view a different forest's data.</p>
                         </div>
-                        <ModelInputArea dataControllerState={this.state.dataControllerState} dataController={this.state.dataController} editMode={this.state.editMode} setEditMode={this.setEditMode} color={this.state.editMode === true ? "#CCE1B6" : "#f4f4f4"}/>
-                        <ProbabilityDistribution dataControllerState={this.state.dataControllerState} data={this.state.outputs} />
+                        <ModelInputArea dataControllerState={this.state.dataControllerState} dataController={this.state.dataController} editMode={this.state.editMode} setEditMode={this.setEditMode} switchTab={this.switchTab} color={this.state.editMode === true ? "#CCE1B6" : "transparent"}/>
+                        <ProbabilityDistribution confusionMatrixVisible={this.state.confusionMatrixVisible} dataControllerState={this.state.dataControllerState} dataController={this.state.dataController} data={this.state.outputs} />
                     </div>
                 );
             }
