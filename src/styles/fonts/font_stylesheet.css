@@ -1,0 +1,136 @@
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-Regular.woff2') format('woff2'),
+        url('GraphikWeb-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-LightItalic.woff2') format('woff2'),
+        url('GraphikWeb-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-BoldItalic.woff2') format('woff2'),
+        url('GraphikWeb-BoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-Light.woff2') format('woff2'),
+        url('GraphikWeb-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lyon Display Web';
+    src: url('LyonDisplayWeb-BlackItalic.woff2') format('woff2'),
+        url('LyonDisplayWeb-BlackItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-ExtralightItalic.woff2') format('woff2'),
+        url('GraphikWeb-ExtralightItalic.woff') format('woff');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-Black.woff2') format('woff2'),
+        url('GraphikWeb-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-MediumItalic.woff2') format('woff2'),
+        url('GraphikWeb-MediumItalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-RegularItalic.woff2') format('woff2'),
+        url('GraphikWeb-RegularItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lyon Display Web';
+    src: url('LyonDisplayWeb-Regular.woff2') format('woff2'),
+        url('LyonDisplayWeb-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-BlackItalic.woff2') format('woff2'),
+        url('GraphikWeb-BlackItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lyon Display Web';
+    src: url('LyonDisplayWeb-Black.woff2') format('woff2'),
+        url('LyonDisplayWeb-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-Medium.woff2') format('woff2'),
+        url('GraphikWeb-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-Extralight.woff2') format('woff2'),
+        url('GraphikWeb-Extralight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-Bold.woff2') format('woff2'),
+        url('GraphikWeb-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lyon Display Web';
+    src: url('LyonDisplayWeb-Medium.woff2') format('woff2'),
+        url('LyonDisplayWeb-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('GraphikWeb-Semibold.woff2') format('woff2'),
+        url('GraphikWeb-Semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+

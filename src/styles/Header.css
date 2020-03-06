@@ -48,7 +48,8 @@
     cursor: pointer;
     text-decoration: none;
     text-underline-position: under;
-    font-family: 'Montserrat', arial, serif;
+    font-family: 'Graphik Web';
+    font-weight: 500;
 
     -o-transition:.3s;
     -ms-transition:.3s;

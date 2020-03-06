@@ -18,6 +18,7 @@ class ChoiceInput extends Component {
     render() {
         return(
             <div className="selection">
+                <img src={ require('../../../assets/menu.png') } className="dropdown_img" alt="drop down" />
                 <select className="selection-no-button" id={this.props.idName + "-select"} name={this.props.idName} onChange={this.submit} ref={this.selectField} value={this.state.value}>
                     {this.state.options}
                 </select>
