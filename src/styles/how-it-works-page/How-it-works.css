@@ -1,0 +1,262 @@
+@import url(//db.onlinewebfonts.com/c/105007d99d9df64c50cc24d696d79555?family=Graphik+Web+Regular);
+
+@font-face {font-family: "Graphik Web Regular"; src: url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.eot"); src: url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.woff") format("woff"), url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.svg#Graphik Web Regular") format("svg"); }
+
+@import url(//db.onlinewebfonts.com/c/96cea24c1dcaf763c8d2cc035c3bdcf5?family=Lyon+Display+Web+Medium);
+
+@font-face {font-family: "Lyon Display Web Medium"; src: url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.eot"); src: url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.woff") format("woff"), url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.svg#Lyon Display Web Medium") format("svg"); }
+
+@import url(//db.onlinewebfonts.com/c/cc2250c97b014737ff4fab71c892a94d?family=Graphik+Web+Medium);
+
+@font-face {font-family: "Graphik Web Medium"; src: url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.eot"); src: url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.woff") format("woff"), url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.svg#Graphik Web Medium") format("svg"); }
+
+.rectangle-box {
+    position: absolute;
+    justify-content: center;
+    margin-left: 15vmax !important;
+    margin-right: 15vmax !important;
+    top: 298px;
+    background: white;
+
+    padding-left: 4vmax;
+    padding-right: 4vmax;
+
+    font-family: 'Graphik Web Medium';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 36px;
+    /* or 225% */
+
+    text-align: center;
+    letter-spacing: 0.5px;
+
+    color: #000000;
+}
+
+.top-photo{
+    height: 450px;
+    left: 0px;
+    top: 48px;
+    background-size: cover;
+    background-position: bottom;
+    border-radius: 0px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+}
+
+.responsive {
+    width: 100%;
+    height: auto;
+}
+
+.how {
+    font-family: 'Lyon Display Web Medium';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 36px;
+    line-height: 29px;
+    /* or 81% */
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    letter-spacing: 1px;
+
+    color: #232323;
+}
+
+.long-line {
+    margin-top: 35px;
+    height: 6px;
+    width: 100%;
+    background-color: #F9F3ED;
+    align-items: center;
+}
+
+.dot-container {
+    margin-left: 20vmax;
+    margin-right: 20vmax;
+    align-self: center;
+    display: flex;
+    background-size: cover;
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+}
+
+.dot-container img {
+    position: relative;
+    top: -8px;
+}
+
+div.galleryP img {
+    width: 110px;
+    height: 70px;
+    padding-left: 17vmax;
+}
+
+div.galleryB img {
+    width: 90px;
+    height: 80px;
+    padding-left: 11vmax;
+}
+
+div.galleryO img {
+    width: 80px;
+    height: 90px;
+    padding-left: 12vmax;
+}
+
+div.galleryG img {
+    width: 70px;
+    height: 90px;
+    padding-left: 13vmax;
+}
+
+.gallery-text1 {
+    font-family: 'Graphik Web Medium';
+    font-style: normal;
+
+    font-size: 13px;
+    line-height: 36px;
+    padding-left: 13vmax;
+}
+
+.gallery-text2 {
+    font-family: 'Graphik Web Medium';
+    font-style: normal;
+
+    font-size: 13px;
+    line-height: 36px;
+    padding-left: 5vmax;
+}
+
+.gallery-text3 {
+    font-family: 'Graphik Web Medium';
+    font-style: normal;
+
+    font-size: 13px;
+    line-height: 36px;
+    padding-left: 4vmax;
+}
+
+.gallery-text4 {
+    font-family: 'Graphik Web Medium';
+    font-style: normal;
+
+    font-size: 13px;
+    line-height: 36px;
+    padding-left: 6vmax;
+}
+
+.row {
+    content: "";
+    clear: both;
+    display: table;
+    border-collapse: collapse;
+}
+
+.column {
+    float: left;
+    border-collapse: collapse;
+    justify-content: center;
+    display: flex;
+}
+
+.row2 {
+    content: "";
+    clear: both;
+    display: table;
+    border-collapse: collapse;
+}
+
+.column2 {
+    float: left;
+    margin-left: 2vmax;
+    border-collapse: collapse;
+    justify-content: center;
+    display: flex;
+}
+
+.rectangle-box-bottom{
+    background: #F9F3ED;
+
+    background-size: cover;
+    background-position: bottom;
+    border-radius: 0px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: flex-start;   /* center flex items vertically */
+}
+
+.mo-txt { /* Used for Model Out Break and Testing The Inputs Header */
+    padding-right: 8vmax;
+    padding-left: 8vmax;
+    font-family: 'Graphik Web Medium';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 36px;
+    /* or 225% */
+
+    letter-spacing: 0.5px;
+
+    color: #000000;
+}
+
+.txt-header {
+    font-family: 'Lyon Display Web';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 29px;
+    /* or 104% */
+
+    display: flex;
+    align-items: center;
+    letter-spacing: 1px;
+}
+
+.acorn {   
+    padding-right: 10px;
+}
+
+.row3 {
+    content: "";
+    clear: both;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border-collapse: collapse;
+}
+
+.column3 {
+    float: left;
+    margin-left: 1vmax;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 10px;
+    border-collapse: collapse;
+    justify-content: center;
+    display: flex;
+}
+
+.less-txt { /* Used for Statistical Model and Zero Inflation The Inputs Header */
+    font-family: 'Graphik Web Medium';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 36px;
+    /* or 225% */
+    justify-content: center;
+    display: table;
+    letter-spacing: 0.5px;
+    width: 40vmax;
+    color: #000000;
+}
+
+.model-dynamics {
+
+}

@@ -5,7 +5,8 @@
 
 body {
     background-color: white;
-    font-family: 'Open Sans', arial, serif;
+    font-family: 'Graphik Web';
+    font-weight: normal;
     color: #212122;
 }
 
@@ -19,12 +20,12 @@ body h2 {
 }
 
 body p, a, li {
-    font-family: 'Open Sans', arial, serif;
+    font-family: 'Graphik Web';
     padding-bottom: 0px;
 }
 
 body h1, h2, h3, h4, h5, h6 {
-    font-family: 'Montserrat', arial, serif;
+    font-family: 'Graphik Web';
     padding-bottom: 0px;
 }
 

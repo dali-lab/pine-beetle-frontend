@@ -196,19 +196,19 @@ class ModelInputArea extends Component {
             spotst2 = this.spotst2Input.current.state.value
         }
 
-        if (isNaN(this.endobrevInput.current.state.value)) {
+        /*if (isNaN(this.endobrevInput.current.state.value)) {
             var endobrev = this.state.inputs.endobrev
         }
         else {
             endobrev = this.endobrevInput.current.state.value
-        }
+        }*/
 
         var inputs = {
             SPB: SPB,
             cleridst1: cleridst1,
             spotst1: spotst1,
             spotst2: spotst2,
-            endobrev: endobrev
+            endobrev: 1
         }
 
         this.props.dataController.getCustomModelOutputs(inputs)

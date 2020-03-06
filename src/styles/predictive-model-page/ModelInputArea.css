@@ -19,7 +19,7 @@
 
 #box-info-area .timeline-title {
     text-align: left;
-    font-size: 18px;
+    font-size: 22px;
 }
 
 /* ---- Timeline ---- */
@@ -226,7 +226,7 @@
 
 .react-tabs__tab {
     padding: 15px;
-    font-family: Montserrat;
+    font-family: 'Graphik Web';
     border: none;
 }
 
@@ -241,4 +241,5 @@
 }
 
 .react-tabs__tab-panel {
+    height: 300px;
 }

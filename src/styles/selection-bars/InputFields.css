@@ -8,25 +8,74 @@ select {
     appearance: none;
     padding: 20px;
     cursor: pointer;
-    font-family: Montserrat;
-    font-size: 1em;
+    font-family: 'Graphik Web';
+    letter-spacing: 1.5px;
+    font-size: 1.15em;
 }
 
 .submit {
     border: none;
     border-radius: 0px;
     cursor: pointer;
+    transition: 0.2s text-shadow;
 }
 
 .submit:hover {
-    background-color: #A5C187;
     font-weight: bold;
+    text-shadow: 1px 1px 5px grey;
+}
+
+.forestDivider {
+    width: 460px;
+    text-align: center;
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #D7D7D7;
+    border-bottom: 1px solid #D7D7D7;
+}
+
+.forestDivider img {
+    width: 20px;
+    float: left;
+    position: relative;
+    left: 180px;
+    bottom: 2px;
+}
+
+.stateDivider {
+    width: 460px;
+    text-align: center;
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #D7D7D7;
+    border-bottom: 1px solid #D7D7D7;
+}
+
+label {
+    font-style: italic;
+    position: relative;
+    top: 16px;
+    font-size: 14px;
+}
+
+.stateDivider img {
+    width: 20px;
+    float: left;
+    position: relative;
+    left: 155px;
+    bottom: 1px;
 }
 
 .selection {
     display: inline-block;
-    margin: 15px 0px;
     width: 460px;
+}
+
+img.dropdown_img {
+    width: 20px;
+    position: relative;
+    top: 44px;
+    left: 415px;
 }
 
 .selection h4 {
@@ -38,18 +87,22 @@ input:focus {
 }
 
 .prediction_variables {
-    font-family: Montserrat;
+    position: relative;
+    right: 65px;
+    font-family: 'Lyon Display Web';
     font-weight: lighter;
     display: flex;
-    width: 100px;
+    width: 75px;
     padding: 10px 25px;
     border: 1px solid black;
     border-radius: 11px;
-    font-size: 1.2em;
+    font-size: 15px;
     margin-top: 30px;
 }
 
 .variableInput {
+    position: relative;
+    top: -3px;
     text-align: right;
     padding-right: 5px;
     font-weight: bold;

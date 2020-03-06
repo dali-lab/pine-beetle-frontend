@@ -12,7 +12,7 @@ class MapBoxMap extends Component {
         this.state = {
             viewport: {
                 width: ((window.innerWidth - 62) * 0.50),
-                height: 432,
+                height: 800,
                 latitude: 33.7490,
                 longitude: -84.3880,
                 zoom: 4.8,

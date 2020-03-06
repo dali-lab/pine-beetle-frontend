@@ -145,9 +145,10 @@ h4.location {
 #adjust-map-size-button, #reset-current-data-button, #get-csv-button {
     margin: 0px;
     width: 100px;
-    font-family: Montserrat;
+    font-family: 'Graphik Web';
     text-align: right;
-    font-weight: bold;
+    font-weight: normal;
+    letter-spacing: 0.5px;
     font-size: 0.8em;
     padding: 0;
     color: #537136;
