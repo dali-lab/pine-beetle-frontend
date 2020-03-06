@@ -15,8 +15,9 @@ class Header extends Component {
                         <div id="nav-button-area">
                             <div id="nav-buttons">
                                 <Link to="/historical-data"><p>HISTORICAL DATA</p></Link>
-                                <Link to="/predictions"><p id="middle">PREDICTIVE MODEL</p></Link>
+                                <Link to="/predictions"><p>PREDICTIVE MODEL</p></Link>
                                 <Link to="/about"><p>ABOUT</p></Link>
+                                <Link to="/how-it-works"><p>HOW IT WORKS</p></Link>
                             </div>
                         </div>
                     </div>
