@@ -13,12 +13,15 @@ class OptgroupChoiceInput extends Component {
         this.submit = this.submit.bind(this);
         this.resetOptionText = this.resetOptionText.bind(this);
         this.selectField = React.createRef();
+
+        // <img src={ require('../../../assets/menu.png') } className="dropdown_img" alt="drop down" />
+
     }
     render() {
         if (this.props.showAboveText) {
             return(
                 <div className="selection">
-                    <img src={ require('../../../assets/menu.png') } className="dropdown_img" alt="drop down" />
+                    <label>{this.props.instructions}</label>
                     <select className="selection-no-button" id={this.props.idName + "-select"} name={this.props.idName} onChange={this.submit} ref={this.selectField} value={this.state.value}>
                         {this.state.options}
                     </select>
@@ -28,8 +31,8 @@ class OptgroupChoiceInput extends Component {
         else {
             return(
                 <div className="selection">
-                    <img src={ require('../../../assets/menu.png') } className="dropdown_img" alt="drop down" />
-                    <select className="selection-no-button" id={this.props.idName + "-select"} name={this.props.idName} onChange={this.submit} ref={this.selectField} value={this.state.value}>
+                    <label>{this.props.instructions}</label>
+                    <select className="selection-no-button" id={this.props.idName + "-select"} name={this.props.idName} onChange={this.submit} ref={this.selectField} value={this.props.value}>
                         {this.state.options}
                     </select>
                 </div>

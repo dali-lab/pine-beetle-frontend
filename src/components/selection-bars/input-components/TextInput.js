@@ -16,10 +16,9 @@ class TextInput extends Component {
     }
     render() {
         return(
-            <div className="selection">
-                <h4>{this.props.instructions}</h4>
+            <div className="menuInstruction">
+                <label>{this.props.instructions}</label><br />
                 <input className="input" type="text" name="fname" value={this.state.value} onChange={this.setValue} onClick={this.selectText} onKeyPress={this.handleKeyPress}></input>
-                <button className="submit" onClick={this.submit}>Submit</button>
             </div>
         );
     }
@@ -31,9 +30,15 @@ class TextInput extends Component {
 
     // update the held state in the input field
     setValue(event) {
-        this.setState({
-            value: event.target.value
-        });
+        if(event.target.value.length <= 4) {
+            this.setState({
+                value: event.target.value
+            });
+        } 
+
+        if(event.target.value.length === 4) {
+            this.submit();
+        }
     }
 
     // submit a new value for the given selection
