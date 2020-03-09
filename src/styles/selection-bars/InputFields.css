@@ -11,6 +11,7 @@ select {
     font-family: 'Graphik Web';
     letter-spacing: 1.5px;
     font-size: 1.15em;
+    margin-top: 10px;
 }
 
 .submit {
@@ -53,8 +54,6 @@ select {
 
 label {
     font-style: italic;
-    position: relative;
-    top: 16px;
     font-size: 14px;
 }
 
@@ -67,8 +66,38 @@ label {
 }
 
 .selection {
+    margin-top: 10px;
+    margin-right: 10px;
     display: inline-block;
     width: 460px;
+    text-align: left;
+}
+
+.menuInstruction {
+    margin-top: 10px;
+    float:left;
+    text-align: left;
+}
+
+.menuInstruction input {
+    border: 1.5px solid #232323;
+    background: white;
+    border-radius: 4px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 20px;
+    cursor: pointer;
+    font-family: 'Graphik Web';
+    letter-spacing: 1.5px;
+    font-size: 1.15em;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.menuInstruction label {
+    font-style: italic;
 }
 
 img.dropdown_img {
@@ -80,6 +109,10 @@ img.dropdown_img {
 
 .selection h4 {
     text-align: left;
+}
+
+.selection label {
+    font-style: italic;
 }
 
 input:focus {
