@@ -77,11 +77,13 @@ export default class PredictionVsOutcome extends Component {
         this.props.assessment().then((res) => {   
             console.log("outbreak")
             console.log(res.outbreakOcurred);
-
+            var occurred = "N/A";
+            if (res.outbreakOcurred != null){ occurred = (res.outbreakOcurred) ? "Yes" : "No"}
             this.setState({
-                outbreakOccurred: (res.outbreakOcurred == null) ? "N/A" : res.outbreakOcurred,
+                outbreakOccurred: occurred,
                 outbreakChance: (res.outbreakPredicted == null) ? "N/A" : (res.outbreakPredicted * 100).toFixed(2),
             });
+            console.log(this.state.outbreakOccurred);
         });
     }
 
@@ -101,7 +103,7 @@ export default class PredictionVsOutcome extends Component {
                         </div>
                         <div className="classification_actual">
                             <CircularProgressbarWithChildren value={100} styles={buildStyles({pathColor: "#EDC475", trailColor: "#F1F1F1"})}>
-                                <h1 style={{ fontSize: '4em', marginBottom: 10 }}>{this.state.outbreakOccurred ? "Yes" : "No"}</h1>
+                                <h1 style={{ fontSize: '4em', marginBottom: 10 }}>{this.state.outbreakOccurred}</h1>
                                 <div style={{ fontSize: 12, marginTop: -5 }}>
                                     <strong>Was there an outbreak?</strong>
                                 </div>
