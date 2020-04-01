@@ -54,7 +54,7 @@
     font-size: .8em;
     height: 175px;
     margin-bottom: 25px;
-    width: 90px;
+    width: 150px;
     overflow: hidden;
     text-align: right;
 }
@@ -70,9 +70,8 @@
 .legend-key-title {
     display: inline-block;
     border-radius: 20%;
-    width: 13px;
-    height: 13px;
-    margin-left: 5px;
+    width: 100%;
+    height: 20px;
 }
 
 

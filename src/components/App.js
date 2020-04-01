@@ -14,6 +14,7 @@ import MobileLandingPage from './MobileLandingPage.js';
 import LoadingContainer from './LoadingContainer.js';
 import UploadLandingPage from './UploadLandingPage.js';
 import UploadDataFromSurvey123 from './UploadDataFromSurvey123.js';
+import HowItWorks from './how-it-works-page/how-it-works.js';
 import '../styles/App.css';
 
 // google analytics
@@ -58,6 +59,7 @@ class App extends Component {
                                 <Route path='/historical-data'render={(props) => <ViewHistoricalData {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState}/>}/>
                                 <Route path='/predictions'render={(props) => <ViewPredictions {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState}/>}/>
                                 <Route path="/about" component={About} />
+                                <Route path="/how-it-works" component={HowItWorks} />
                                 <Route path="/loading" component={LoadingContainer} />
                                 <Route path='/uploadSurvey123Data' render={(props) => <UploadLandingPage {...props} passwordProtectedPageRoute={this.state.passwordProtectedPageRoute} setLockout={this.setLockout} lockedOut={this.state.lockedOut} />}/>
                                 <Route path={this.state.passwordProtectedPageRoute} render={(props) => <UploadDataFromSurvey123 {...props} dataController={this.dataController} dataControllerState={this.state.dataControllerState} url={this.deployedURL} lockedOut={this.state.lockedOut} />}/>

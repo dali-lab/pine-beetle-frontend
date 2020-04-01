@@ -144,13 +144,64 @@ h4.location {
 
 #adjust-map-size-button, #reset-current-data-button, #get-csv-button {
     margin: 0px;
-    width: 100px;
-    font-family: Montserrat;
+    width: 159px;
+    font-family: 'Graphik Web';
     text-align: right;
-    font-weight: bold;
-    font-size: 0.8em;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    font-size: 0.90em;
     padding: 0;
-    color: #537136;
+    height: 61px;
+    text-align: center;
+    margin: 20px 5px;
+    margin-top: 36px;
+    padding: 0px 20px;
+    border-radius: 3px;
+}
+
+.clear-button {
+    border: 1px solid #e74c3c;
+    background: rgba(192, 57, 43, 1.0);
+    color: white;
+    transition: background 0.2s;
+}
+
+.export-button {
+    border: 1px solid #3498db;
+    background: rgba(41, 128, 185, 1.0);
+    color: white;    
+    transition: background 0.2s;
+}
+
+.start-button:focus {
+    outline:none;
+}
+
+.export-button:focus {
+    outline:none;
+}
+
+.clear-button:focus {
+    outline:none;
+}
+
+.start-button {
+    border: 1px solid #2ecc71;
+    background: rgba(39, 174, 96, 1.0);
+    color: white;
+    transition: background 0.2s;
+}
+
+.start-button:hover {
+    background: rgba(39, 174, 96, 0.7);
+}
+
+.export-button:hover {
+    background: rgba(41, 128, 185, 0.7);
+}
+
+.clear-button:hover {
+    background: rgba(192, 57, 43, 0.7);
 }
 
 #map-area, #prediction-model {

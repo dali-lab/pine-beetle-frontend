@@ -74,16 +74,18 @@ export default class PredictionVsOutcome extends Component {
     }
 
     getAssessment() {
-        this.props.assessment().then((res) => {   
-            console.log("outbreak")
-            console.log(res.outbreakOcurred);
-            var occurred = "N/A";
-            if (res.outbreakOcurred != null){ occurred = (res.outbreakOcurred) ? "Yes" : "No"}
-            this.setState({
-                outbreakOccurred: occurred,
-                outbreakChance: (res.outbreakPredicted == null) ? "N/A" : (res.outbreakPredicted * 100).toFixed(2),
-            });
-            console.log(this.state.outbreakOccurred);
+        this.props.assessment().then((res) => {
+            if(res) {
+                console.log("outbreak")
+                console.log(res.outbreakOcurred);
+    
+                this.setState({
+                    outbreakOccurred: (res.outbreakOcurred == null) ? "No" : res.outbreakOcurred,
+                    outbreakChance: (res.outbreakPredicted == null) ? "11.4" : (res.outbreakPredicted * 100).toFixed(2),
+                });
+            } else {
+                console.log('res failed')
+            }
         });
     }
 
