@@ -418,7 +418,6 @@ class DataController extends Component {
                  var dropDownContent = Object.assign({}, this.state.dropDownContent);
                  dropDownContent.availableYears = xmlHttp.response;
                  dropDownContent.availableModelYears = xmlHttp.response;
-                 dropDownContent.availableModelYears.push(dropDownContent.availableYears[dropDownContent.availableYears.length - 1] + 1);
 
                  // update state
                  this.setState({
