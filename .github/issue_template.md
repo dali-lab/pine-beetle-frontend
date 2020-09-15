@@ -1,4 +1,4 @@
-# Title
+# Description
 
 One to two sentence description.
 
@@ -7,19 +7,3 @@ One to two sentence description.
 - [ ] New feature
 - [ ] Bug fix
 - [ ] Documentation update
-
-## Expected Behavior
-
-- Item 1
-- Item 2
-- Item 3
-
-## Current Behavior (if bug)
-
-- Item 1
-- Item 2
-- Item 3
-
-## Screenshots
-
-Please attach any design screenshots if UI update.
