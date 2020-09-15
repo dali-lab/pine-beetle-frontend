@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { CSVDownload } from "react-csv";
-import ReactTooltip from 'react-tooltip';
+// import ReactTooltip from 'react-tooltip';
 import TextInput from './input-components/TextInput';
 import ChoiceInput from './input-components/ChoiceInput';
 import OptgroupChoiceInput from'./input-components/OptgroupChoiceInput';

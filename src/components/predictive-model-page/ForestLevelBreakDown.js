@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ModelInputArea from './ModelInputArea.js';
 import ProbabilityDistribution from './ProbabilityDistribution.js';
-import PredictionVsOutcome from './PredictionVsOutcome.js';
+// import PredictionVsOutcome from './PredictionVsOutcome.js';
 
 class ForestLevelBreakDown extends Component {
     constructor(props) {
