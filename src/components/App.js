@@ -17,6 +17,8 @@ import UploadDataFromSurvey123 from './UploadDataFromSurvey123.js';
 import HowItWorks from './how-it-works-page/how-it-works.js';
 import '../styles/App.css';
 
+import { getServerUrl } from '../constants';
+
 // google analytics
 ReactGA.initialize('UA-133847731-1');
 ReactGA.pageview(window.location.pathname + window.location.search);
@@ -24,9 +26,9 @@ ReactGA.pageview(window.location.pathname + window.location.search);
 class App extends Component {
     constructor(props) {
         super(props)
-        // define urls
-        this.localURL = "http://localhost:9090/v1/";
-        this.deployedURL = "https://pine-beetle-prediction.herokuapp.com/v1/";
+
+        // define server endpoint
+        this.deployedURL = getServerUrl();
 
         // hold onto state of dataController
         this.state = {
