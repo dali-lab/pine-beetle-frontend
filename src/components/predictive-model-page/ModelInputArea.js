@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import PredictionVsOutcome from './PredictionVsOutcome.js'
+// import PredictionVsOutcome from './PredictionVsOutcome.js'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import ModelInputTab from './ModelInputTab';
 import 'react-tabs/style/react-tabs.css';
 
-import TimelineInput from '../selection-bars/input-components/TimelineInput.js';
+// import TimelineInput from '../selection-bars/input-components/TimelineInput.js';
 import '../../styles/predictive-model-page/ModelInputArea.css';
 var $ = require("jquery");
 

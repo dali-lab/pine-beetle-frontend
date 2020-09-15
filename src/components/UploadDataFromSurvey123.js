@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { CSVLink } from "react-csv";
 import ChoiceInput from './selection-bars/input-components/ChoiceInput.js';
-import OptgroupChoiceInput from './selection-bars/input-components/OptgroupChoiceInput.js';
+// import OptgroupChoiceInput from './selection-bars/input-components/OptgroupChoiceInput.js';
 import TextInput_NoSubmitButton from './selection-bars/input-components/TextInput_NoSubmitButton.js';
 import '../styles/UploadDataFromSurvey123.css';
 var jQuery = require("jquery");
