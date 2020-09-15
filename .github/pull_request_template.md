@@ -1,10 +1,6 @@
-# Title
+# Description
 
 One to two sentence description.
-
-- Main update 1
-- Main update 2
-- Main update 3
 
 ## Type of Change
 
@@ -15,15 +11,13 @@ One to two sentence description.
 
 ## Checklist
 
-- [ ] Resolved any merge conflicts
-- [ ] Updated documentation
-- [ ] Added and passed unit/integration tests
+- [ ] Unit/integration tests
+- [ ] Documentation
 
-## Referenced Issue(s)
+## Tickets
 
 - [Issue Number](Link)
-- [Issue Number](Link)
 
-## Screenshots/Screen Recordings
+## Screenshots
 
-Please attach screenshots or screen recordings if you made a UI change.
+Please attach any design screenshots if UI update.
