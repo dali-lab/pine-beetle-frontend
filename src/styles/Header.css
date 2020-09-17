@@ -1,21 +1,21 @@
 #header {
-    height: auto;
-    margin: 0px;
+  height: auto;
+  margin: 0px;
 
-    /* margin: 15px 15px 15px 15px; */
-    background-color: #3F5726;
+  /* margin: 15px 15px 15px 15px; */
+  background-color: #3f5726;
 }
 
 #title-area {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    height: auto;
-    background-color: #3F5726; /* #E9C46A;*/
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: auto;
+  background-color: #3f5726; /* #E9C46A;*/
 }
 
 #title-area a {
-    text-decoration: none;
-    color: #000000; /* #212122; */
+  text-decoration: none;
+  color: #000000; /* #212122; */
 }
 
 #title-area img {
@@ -24,7 +24,7 @@
 }
 
 #title-area h1 {
-    padding-bottom: 0px;
+  padding-bottom: 0px;
 }
 
 #logo {
@@ -34,38 +34,37 @@
 }
 
 #nav-button-area {
-    display: inline-block;
-    margin: auto;
-    margin-right: 100px;
+  display: inline-block;
+  margin: auto;
+  margin-right: 100px;
 }
 
 #nav-buttons p {
-    color: #ffffff; /*#62731D;*/
-    float: left;
-    padding: 15px;
-    padding-top: 18px;
-    font-size: 16px;
-    cursor: pointer;
-    text-decoration: none;
-    text-underline-position: under;
-    font-family: 'Graphik Web';
-    font-weight: 500;
+  color: #ffffff; /*#62731D;*/
+  float: left;
+  padding: 15px;
+  padding-top: 18px;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: "Graphik Web";
+  font-weight: 500;
 
-    -o-transition:.3s;
-    -ms-transition:.3s;
-    -moz-transition:.3s;
-    -webkit-transition:.3s;
-    transition:.3s;
+  -o-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
 }
 
 #nav-buttons p:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 #middle {
-    margin: 0px 10px;
+  margin: 0px 10px;
 }
 
 #nav-active {
-    text-decoration: underline !important;
+  text-decoration: underline !important;
 }
