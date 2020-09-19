@@ -30,11 +30,11 @@ class PredictionsSelectionBar extends Component {
         this.forestInput = React.createRef();
     }
     render() {
-        const sortedAvailableForests = {};
-        Object.entries(this.state.availableForestsByNF)
+        const sortedAvailableForests = Object.entries(this.state.availableForestsByNF)
           .filter(([key]) => key !== 'COUNTIES')
           .sort(([key1], [key2]) => key1.localeCompare(key2))
-          .forEach(([key, value]) => sortedAvailableForests[key] = value);
+          .reduce((accumobj, [key, value]) => ({ ...accumobj, [key]: value.sort() }), {});
+
         sortedAvailableForests.COUNTIES = this.state.availableForestsByNF.COUNTIES;
 
         return(
