@@ -70,7 +70,8 @@ export default class PredictionVsOutcome extends Component {
 
                 previousKey = key;
             }
-        });
+        })
+        .catch((err) => console.log(err));
     }
 
     getAssessment() {
