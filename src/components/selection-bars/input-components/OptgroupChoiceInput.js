@@ -18,26 +18,21 @@ class OptgroupChoiceInput extends Component {
 
     }
     render() {
-        if (this.props.showAboveText) {
-            return(
-                <div className="selection">
-                    <label>{this.props.instructions}</label>
-                    <select className="selection-no-button" id={this.props.idName + "-select"} name={this.props.idName} onChange={this.submit} ref={this.selectField} value={this.state.value}>
-                        {this.state.options}
-                    </select>
-                </div>
-            );
-        }
-        else {
-            return(
-                <div className="selection">
-                    <label>{this.props.instructions}</label>
-                    <select className="selection-no-button" id={this.props.idName + "-select"} name={this.props.idName} onChange={this.submit} ref={this.selectField} value={this.props.value}>
-                        {this.state.options}
-                    </select>
-                </div>
-            );
-        }
+        return(
+            <div className="selection">
+                <label>{this.props.instructions}</label>
+                <select
+                    className="selection-no-button"
+                    id={this.props.idName + "-select"}
+                    name={this.props.idName}
+                    onChange={this.submit}
+                    ref={this.selectField}
+                    value={this.props.showAboveText ? this.state.value : this.props.value}
+                >
+                    {this.state.options}
+                </select>
+            </div>
+        );
     }
 
     componentDidMount() {

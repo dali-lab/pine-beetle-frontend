@@ -16,7 +16,7 @@ const getServerUrl = () => {
           return SERVER_ENDPOINTS.PROD;
     
         default:
-          return SERVER_ENDPOINTS.PROD;
+          return SERVER_ENDPOINTS.DEV;
       }
 };
 

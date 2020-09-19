@@ -6,7 +6,7 @@ select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    padding: 20px;
+    padding: 12px;
     cursor: pointer;
     font-family: 'Graphik Web';
     letter-spacing: 1.5px;
@@ -86,7 +86,7 @@ label {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    padding: 20px;
+    padding: 12px;
     cursor: pointer;
     font-family: 'Graphik Web';
     letter-spacing: 1.5px;
@@ -131,6 +131,10 @@ input:focus {
     border-radius: 11px;
     font-size: 15px;
     margin-top: 30px;
+}
+
+#predictionbar {
+    padding: 10px;
 }
 
 .variableInput {
