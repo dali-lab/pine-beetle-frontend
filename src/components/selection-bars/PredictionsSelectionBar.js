@@ -36,7 +36,7 @@ class PredictionsSelectionBar extends Component {
           .sort(([key1], [key2]) => key1.localeCompare(key2))
           .forEach(([key, value]) => sortedAvailableForests[key] = value);
         sortedAvailableForests.COUNTIES = this.state.availableForestsByNF.COUNTIES;
-        console.log(sortedAvailableForests);
+
         return(
             <div className="container" id="filter-selections">
                 <div id="selection-areas-view-data" style={{textAlign: "left"}}>

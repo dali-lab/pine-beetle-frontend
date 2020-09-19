@@ -41,7 +41,7 @@ class HistoricalDataSelectionBar extends Component {
           .sort(([key1], [key2]) => key1.localeCompare(key2))
           .forEach(([key, value]) => sortedAvailableForests[key] = value);
         sortedAvailableForests.COUNTIES = this.state.availableForestsByNF.COUNTIES;
-        console.log(sortedAvailableForests);
+
         return(
             <div className="container" style={{display: 'flex'}}>
                 <TextInput instructions="Start Year" submitFunction={this.updateStartDate} valueToDisplay={this.state.startDate}/>
