@@ -370,7 +370,7 @@ class DataController extends Component {
 
                  // update dropDownContent
                  var dropDownContent = Object.assign({}, this.state.dropDownContent);
-                 dropDownContent.availableStates = stateNames
+                 dropDownContent.availableStates = stateNames.sort();
 
                 // update state
                 this.setState({
@@ -1337,8 +1337,7 @@ class DataController extends Component {
                         if (!availableForestsByNF["COUNTIES"].includes(thisForest)) {
                             availableForestsByNF["COUNTIES"].push(thisForest);
                         }
-                    }
-                    else {
+                    } else {
                         if (Object.keys(availableForestsByNF).includes(thisNF)) {
                             if (!availableForestsByNF[thisNF].includes(thisForest)) {
                                 availableForestsByNF[thisNF].push(thisForest);
@@ -1352,6 +1351,7 @@ class DataController extends Component {
             }
 
             var dropDownContent = Object.assign({}, this.state.dropDownContent);
+            availableForestsByNF.COUNTIES = availableForestsByNF.COUNTIES.sort();
             dropDownContent.availableForestsByNF = availableForestsByNF;
 
             var initializeForestsOld = this.state.initializeForests;
@@ -1485,8 +1485,6 @@ class DataController extends Component {
               });
           });
       }
-
-
 }
 
 export default DataController
