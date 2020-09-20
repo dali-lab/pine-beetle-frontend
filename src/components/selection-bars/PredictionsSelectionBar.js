@@ -30,6 +30,13 @@ class PredictionsSelectionBar extends Component {
         this.forestInput = React.createRef();
     }
     render() {
+        const sortedAvailableForests = Object.entries(this.state.availableForestsByNF)
+          .filter(([key]) => key !== 'COUNTIES')
+          .sort(([key1], [key2]) => key1.localeCompare(key2))
+          .reduce((accumobj, [key, value]) => ({ ...accumobj, [key]: value.sort() }), {});
+
+        sortedAvailableForests.COUNTIES = this.state.availableForestsByNF.COUNTIES;
+
         return(
             <div className="container" id="filter-selections">
                 <div id="selection-areas-view-data" style={{textAlign: "left"}}>
@@ -39,7 +46,7 @@ class PredictionsSelectionBar extends Component {
                     </div>
                     <ChoiceInput instructions="Select Year" submitFunction={this.props.dataController.updatePredictionYearSelection} availableOptions={this.state.availableModelYears} idName="year" value={this.state.predictiveModelDate} ref={this.yearInput} firstOptionText={"Year"}/><br />
                     <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput} firstOptionText={"State"}/><br />
-                    <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} firstOptionText={"County / RD"} /><br />
+                    <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={sortedAvailableForests} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} firstOptionText={"County / RD"} /><br />
                     <br />
                     <div style={{textAlign: 'right', width: 460}}>
                         <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>

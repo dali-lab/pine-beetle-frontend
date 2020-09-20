@@ -18,9 +18,9 @@ const getServerUrl = () => {
         default:
           return SERVER_ENDPOINTS.DEV;
       }
-}
+};
 
 export {
     SERVER_ENDPOINTS,
     getServerUrl
-}
+};
