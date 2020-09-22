@@ -145,7 +145,7 @@ There is a small bug with this approach in that, if the download function takes 
 ### Expected Implementation: Winter, 2020
 - Add in a user-flow to display different ranges of probabilities on the map, four steps will have to be accomplished:
 	- Add a dropdown next to the year, state, and county dropdowns (in PredictionsSelectionBar.js) that allows the user to select if
-they want to see the probability of any spots, over 53 spots, etc.
+they want to see the probability of any spots, over 50 spots, etc.
 	- Connect this data to the predictive model and use it to set the “probability” variable to the correct value in line 150 of PredictiveMap.js
 	- Make sure that this change appears in the map on the Predictive Model page and change any titles to make the category of the displayed data clear
 	- Make sure that the downloaded map’s title reflects the current category in buildMapHeader() in PredictiveMap.js

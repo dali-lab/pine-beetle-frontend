@@ -68,7 +68,7 @@ class ProbabilityDistribution extends Component {
                     </div>
                 </div>
                 : <p></p>}                    
-                <p className="disclaimer">The predictive model gives the probability for various levels of southern pine beetle spot severity. For example, the probability that the number of spots is between 20 and 53. In addition, it gives the expected number of spots if any. Please note that the model is probabilistic. An outcome with a low probability may nevertheless occur. The model also places special emphasis on three figures: the probability of any spots, the expected number of spots if any, and the probability of more than 53 spots. We emphasize probability of more than 53 spots because we consider it a signifier of a “bad” outcome, though various forest professionals may use other benchmarks.</p>
+                <p className="disclaimer">The predictive model gives the probability for various levels of southern pine beetle spot severity. For example, the probability that the number of spots is between 20 and 53. In addition, it gives the expected number of spots if any. Please note that the model is probabilistic. An outcome with a low probability may nevertheless occur. The model also places special emphasis on three figures: the probability of any spots, the expected number of spots if any, and the probability of more than 50 spots. We emphasize probability of more than 50 spots because we consider it a signifier of a “bad” outcome, though various forest professionals may use other benchmarks.</p>
             </div>
         );
     }
