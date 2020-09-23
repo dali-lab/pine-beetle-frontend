@@ -52,7 +52,7 @@ class ModelBreakDown extends Component {
                             {outputs}
                         </div>
                         <div style={{textAlign: "center", width: 500, marginTop: 20}}>
-                            <p style={{opacity: 0.5}}>Probability of: <span style={{fontWeight: 'bold'}}>any spots</span> | <span style={{fontWeight: 'bold'}}>more than 53 spots</span>.</p>
+                            <p style={{opacity: 0.5}}>Probability of: <span style={{fontWeight: 'bold'}}>any spots</span> | <span style={{fontWeight: 'bold'}}>more than 50 spots</span>.</p>
                         </div>
                     </div>
                 );

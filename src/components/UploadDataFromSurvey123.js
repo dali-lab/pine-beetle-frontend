@@ -7,7 +7,7 @@ import TextInput_NoSubmitButton from './selection-bars/input-components/TextInpu
 import '../styles/UploadDataFromSurvey123.css';
 var jQuery = require("jquery");
 
-// {/* <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.state.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} /> */}
+// {/* <OptgroupChoiceInput instructions="Select County / Parish" submitFunction={this.state.dataController.updateForestSelection} availableOptions={this.state.availableForestsByNF} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} /> */}
 
 class UploadDataFromSurvey123 extends Component {
     constructor(props) {
@@ -50,7 +50,7 @@ class UploadDataFromSurvey123 extends Component {
                                 <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
                                 <p>Please be patient as this may take a few minutes to complete.</p>
                                 <ChoiceInput instructions="Select State" submitFunction={this.state.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
-                                <TextInput_NoSubmitButton instructions="Select County / RD:" submitFunction={this.state.dataController.updateForestSelection} idName="forest" value={this.state.forest} ref={this.forestInput}/>
+                                <TextInput_NoSubmitButton instructions="Select County / Parish:" submitFunction={this.state.dataController.updateForestSelection} idName="forest" value={this.state.forest} ref={this.forestInput}/>
                                 <TextInput_NoSubmitButton instructions="Please enter query token:" submitFunction={this.state.dataController.updateToken} idName="token" value={this.state.token} ref={this.tokenInput}/>
                                 <br />
                                 <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
@@ -84,7 +84,7 @@ class UploadDataFromSurvey123 extends Component {
                             <p>Click the button below to grab all submitted surveys from Survey123 and add them to the database.</p>
                             <p>Please be patient as this may take a few minutes to complete.</p>
                             <ChoiceInput instructions="Select State" submitFunction={this.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput}/>
-                            <TextInput_NoSubmitButton instructions="Select County / RD" submitFunction={this.state.dataController.updateForestSelection} idName="forest" value={this.state.forest} ref={this.forestInput} />
+                            <TextInput_NoSubmitButton instructions="Select County / Parish" submitFunction={this.state.dataController.updateForestSelection} idName="forest" value={this.state.forest} ref={this.forestInput} />
                             <TextInput_NoSubmitButton instructions="Please enter query token" submitFunction={this.state.dataController.updateToken} idName="token" value={this.state.token} ref={this.tokenInput}/>
                             <br />
                             <button id="survey123-button" className="submit static-button" onClick={this.uploadSurvey123Data}>Upload Survey123 Data</button>
