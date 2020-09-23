@@ -47,7 +47,7 @@ class HistoricalDataSelectionBar extends Component {
                 <TextInput instructions="Start Year" submitFunction={this.updateStartDate} valueToDisplay={this.state.startDate}/>
                 <TextInput instructions="End Year" submitFunction={this.updateEndDate} valueToDisplay={this.state.endDate}/>
                 <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput} firstOptionText={"State"} />
-                <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={sortedAvailableForests} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} firstOptionText={"County / RD"} />
+                <OptgroupChoiceInput instructions="Select County / Parish" submitFunction={this.props.dataController.updateForestSelection} availableOptions={sortedAvailableForests} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} firstOptionText={"County / Parish"} />
                 <button id="reset-current-data-button" className="submit static-button clear-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
                 <button id="reset-current-data-button" className="submit static-button export-button" onClick={this.getCSVData} data-tip="Make sure to allow browser popups!">Export CSV</button>
             </div>

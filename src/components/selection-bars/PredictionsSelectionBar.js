@@ -46,14 +46,14 @@ class PredictionsSelectionBar extends Component {
                     </div>
                     <ChoiceInput instructions="Select Year" submitFunction={this.props.dataController.updatePredictionYearSelection} availableOptions={this.state.availableModelYears} idName="year" value={this.state.predictiveModelDate} ref={this.yearInput} firstOptionText={"Year"}/><br />
                     <ChoiceInput instructions="Select State" submitFunction={this.props.dataController.updateStateSelection} availableOptions={this.state.availableStates} idName="state" value={this.state.stateName} ref={this.stateInput} firstOptionText={"State"}/><br />
-                    <OptgroupChoiceInput instructions="Select County / RD" submitFunction={this.props.dataController.updateForestSelection} availableOptions={sortedAvailableForests} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} firstOptionText={"County / RD"} /><br />
+                    <OptgroupChoiceInput instructions="Select County / Parish" submitFunction={this.props.dataController.updateForestSelection} availableOptions={sortedAvailableForests} idName="forest" value={this.state.forest} ref={this.forestInput} showAboveText={true} firstOptionText={"County / Parish"} /><br />
                     <br />
                     <div style={{textAlign: 'right', width: 460}}>
                         <button id="reset-current-data-button" className="submit static-button" onClick={this.props.dataController.clearCurrentData}>Clear Filters</button>
                     </div>
                     <div className="forestDivider">
                         <img src={ require('../../assets/tree.png') } alt="tree" />
-                        <h4 style={{fontSize: '1.25em', fontFamily: 'Graphik Web', fontWeight: 'normal'}}>Forests</h4>
+                        <h4 style={{fontSize: '1.25em', fontFamily: 'Graphik Web', fontWeight: 'normal'}}>Counties / Parishes</h4>
                     </div>
                 </div>
             </div>
