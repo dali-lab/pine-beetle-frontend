@@ -125,7 +125,7 @@ input:focus {
     font-family: 'Lyon Display Web';
     font-weight: lighter;
     display: flex;
-    width: 75px;
+    width: 6vw;
     padding: 10px 25px;
     border: 1px solid black;
     border-radius: 11px;

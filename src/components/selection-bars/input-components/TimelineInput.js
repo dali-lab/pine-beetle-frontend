@@ -17,7 +17,7 @@ class TimelineInput extends Component {
     render() {
         return(
             <div className="prediction_variables">
-                <input className="variableInput" type="text" name="fname" value={this.state.value} onChange={this.setValue} onClick={this.selectText} onKeyPress={this.handleKeyPress} style={{backgroundColor: this.props.color}} disabled={(this.props.disabled != null && this.props.disabled) ? this.props.disabled : false}></input>
+                <input className="variableInput" type="text" name="fname" value={parseInt(this.state.value)} onChange={this.setValue} onClick={this.selectText} onKeyPress={this.handleKeyPress} style={{backgroundColor: this.props.color}} disabled={(this.props.disabled != null && this.props.disabled) ? this.props.disabled : false}></input>
                 <span className="variableLabel">{this.props.instructions}</span>
             </div>
         );
