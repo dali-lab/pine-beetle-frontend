@@ -1,0 +1,71 @@
+.pvo_information {
+    height: 600px;
+    width: 1000px;
+    padding: 15px;
+    padding-bottom: 50px;
+}
+
+.pvo_classification {
+    text-align: left;
+    padding: 15px;
+}
+
+.classification_information {
+    display: flex;
+    border-left: 1px solid #aaa;
+    padding: 15px;
+}
+
+.classification_information h1 {
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.classification_information img {
+    width: 150px;
+}
+
+.classification_information p {
+    width: 300px; 
+    margin-left: 30px;
+}
+
+.grow_container {
+    flex-direction: row;
+    align-items: center;
+}
+
+.classification_prediction, .classification_actual {
+    width: 250px;
+}
+
+.classification_prediction img, .classification_actual img {
+    width: 50px;
+    height: 50px;
+    margin-top: 3px;
+    margin-right: 20px;
+}
+
+.classification_prediction h2, .classification_actual h2 {
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.classification_prediction h3, .classification_actual h3 {
+    font-weight: lighter;
+}
+
+.classification_prediction {
+    margin-left: 25px;
+}
+
+.classification_actual {
+    margin-left: 50px;
+}
+
+.outbreak_disclaimer {
+    text-align: center;
+    color: #777777;
+    margin-top: 20px;
+    font-family: 'Montserrat', arial, serif;
+}

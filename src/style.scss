@@ -1,0 +1,228 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: white;
+    font-family: 'Graphik Web';
+    font-weight: normal;
+    color: #212122;
+}
+
+body p {
+    line-height: 1.8;
+}
+
+body h2 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+body p, a, li {
+    font-family: 'Graphik Web';
+    padding-bottom: 0px;
+}
+
+body h1, h2, h3, h4, h5, h6 {
+    font-family: 'Graphik Web';
+    padding-bottom: 0px;
+}
+
+body h1 {
+    letter-spacing: -1.5px;
+}
+
+body img {
+    border-radius: 0px;
+}
+
+.container {
+    width: auto;
+    height: auto;
+    margin: 0px; /* 15px 31px */
+    background-color: white;
+    border-radius: 0px;
+    text-align: center;
+}
+
+.content .container {
+    padding: 20px; /* 20px */
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.flex-container {
+    width: 100%;
+    display: flex;             /* primary flex container */
+    flex-direction: row;       /* horizontal alignment of flex items */
+    align-items: stretch;      /* will apply equal heights to flex items*/
+    height: 100%;
+}
+
+.flex-item {
+    flex: 1;
+    padding: 0px; /* 15 */
+    display: flex;             /* nested flex container */
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: center;   /* center flex items vertically */
+}
+
+.flex-item-left {
+    margin-right: 0px; /* 15 */
+}
+
+.flex-item-right {
+    margin-left: 0px; /* 15 */
+}
+
+.content {
+    height: 100%;
+    min-height: calc(100vh - 135px);
+}
+
+.line {
+    width: 156px;
+    height: 1px;
+    margin: auto;
+    background-color: #212122;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-Regular.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-LightItalic.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-BoldItalic.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-BoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-Light.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lyon Display Web';
+    src: url('./assets/fonts/LyonDisplayWeb-BlackItalic.woff2') format('woff2'),
+        url('./assets/fonts/LyonDisplayWeb-BlackItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-ExtralightItalic.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-ExtralightItalic.woff') format('woff');
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-Black.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-MediumItalic.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-MediumItalic.woff') format('woff');
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-RegularItalic.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-RegularItalic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lyon Display Web';
+    src: url('./assets/fonts/LyonDisplayWeb-Regular.woff2') format('woff2'),
+        url('./assets/fonts/LyonDisplayWeb-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-BlackItalic.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-BlackItalic.woff') format('woff');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lyon Display Web';
+    src: url('./assets/fonts/LyonDisplayWeb-Black.woff2') format('woff2'),
+        url('./assets/fonts/LyonDisplayWeb-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-Medium.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-Extralight.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-Extralight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-Bold.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lyon Display Web';
+    src: url('./assets/fonts/LyonDisplayWeb-Medium.woff2') format('woff2'),
+        url('./assets/fonts/LyonDisplayWeb-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Graphik Web';
+    src: url('./assets/fonts/GraphikWeb-Semibold.woff2') format('woff2'),
+        url('./assets/fonts/GraphikWeb-Semibold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
