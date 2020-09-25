@@ -4,7 +4,7 @@
 
 #timeline {
     position: relative;
-    flex: 1.1 !important;
+    flex: 2.5 !important;
     margin-right: 0px;
     z-index: 1;
     overflow: hidden;
