@@ -16,10 +16,8 @@ const TextInput = (props) => {
       <input
         className="input"
         type="text"
-        name="fname"
         value={value}
-        onChange={e => setValue(e.target.value)}
-        onClick={e => e.target.select()}
+        onChange={e => setValue(parseInt(e.target.value, 10) || '')}
       />
     </div>
   );
