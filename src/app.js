@@ -2,14 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-// import {
-//   fetchRemoteAppConfig,
-//   getAllFridges,
-//   getAllProducts,
-//   getAllProductTags,
-//   getAllPromotions,
-//   getUserData,
-// } from './state/actions';
+// TODO: import actions here
 
 import {
   About,
@@ -36,6 +29,8 @@ const FallBack = () => {
 const App = () => {
   useEffect(() => {
     global.API_URL = getServerUrl();
+
+    // TODO: dispatch actions for fetching initial data
   }, []);
 
   return (
