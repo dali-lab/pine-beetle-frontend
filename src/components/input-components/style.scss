@@ -1,0 +1,150 @@
+select {
+    width: 175px;
+    border: 1.5px solid #232323;
+    background: white;
+    border-radius: 4px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 12px;
+    cursor: pointer;
+    font-family: 'Graphik Web';
+    letter-spacing: 1.5px;
+    font-size: 1.15em;
+    margin-top: 10px;
+}
+
+.submit {
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    transition: 0.2s text-shadow;
+}
+
+.submit:hover {
+    font-weight: bold;
+    text-shadow: 1px 1px 5px grey;
+}
+
+.forestDivider {
+    width: 460px;
+    text-align: center;
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #D7D7D7;
+    border-bottom: 1px solid #D7D7D7;
+}
+
+.forestDivider img {
+    width: 20px;
+    float: left;
+    position: relative;
+    left: 100px;
+    bottom: 2px;
+}
+
+.stateDivider {
+    width: 460px;
+    text-align: center;
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #D7D7D7;
+    border-bottom: 1px solid #D7D7D7;
+}
+
+label {
+    font-style: italic;
+    font-size: 14px;
+}
+
+.stateDivider img {
+    width: 20px;
+    float: left;
+    position: relative;
+    left: 155px;
+    bottom: 1px;
+}
+
+.selection {
+    margin-top: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    width: 460px;
+    text-align: left;
+}
+
+.menuInstruction {
+    margin-top: 10px;
+    float:left;
+    text-align: left;
+}
+
+.menuInstruction input {
+    border: 1.5px solid #232323;
+    background: white;
+    border-radius: 4px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 12px;
+    cursor: pointer;
+    font-family: 'Graphik Web';
+    letter-spacing: 1.5px;
+    font-size: 1.15em;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.menuInstruction label {
+    font-style: italic;
+}
+
+img.dropdown_img {
+    width: 20px;
+    position: relative;
+    top: 44px;
+    left: 415px;
+}
+
+.selection h4 {
+    text-align: left;
+}
+
+.selection label {
+    font-style: italic;
+}
+
+input:focus {
+    outline: none;
+}
+
+.prediction_variables {
+    position: relative;
+    right: 65px;
+    font-family: 'Lyon Display Web';
+    font-weight: lighter;
+    display: flex;
+    width: 75px;
+    padding: 10px 25px;
+    border: 1px solid black;
+    border-radius: 11px;
+    font-size: 15px;
+    margin-top: 30px;
+}
+
+#predictionbar {
+    padding: 10px;
+}
+
+.variableInput {
+    position: relative;
+    top: -3px;
+    text-align: right;
+    padding-right: 5px;
+    font-weight: bold;
+    width: 100%;
+    font-size: 1.1em;
+    background: transparent;
+    border: none;
+}

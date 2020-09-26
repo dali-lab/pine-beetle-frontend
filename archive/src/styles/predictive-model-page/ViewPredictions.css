@@ -1,0 +1,26 @@
+#filter-selections {
+    text-align: center;
+    padding: 0px;
+    margin-top: 10px;
+}
+
+.forestDivider {
+    width: 460px;
+    text-align: center;
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #D7D7D7;
+    border-bottom: 1px solid #D7D7D7;
+}
+
+.long-line {
+    margin-top: 35px;
+    height: 1px;
+    width: 100%;
+    background-color:#D8D8D8;
+}
+
+#top-map-area {
+    margin-top: 15px;
+    margin-bottom: 25px;
+}

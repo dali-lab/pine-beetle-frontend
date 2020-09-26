@@ -1,0 +1,27 @@
+#mapbox-container {
+    flex: 1 !important;
+    background-color: #F2F5E8;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-right: 20px;
+}
+
+#legend-hist {
+    padding: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    line-height: 18px;
+    height: 160px;
+    margin-bottom: 25px;
+    width: 112px;
+    overflow: hidden;
+    text-align: left;
+}
+
+.popup-content {
+    font-family: 'Open Sans', arial, serif;
+}
+
+.popup-content p {
+    padding: 0;
+    margin: 0;
+}
