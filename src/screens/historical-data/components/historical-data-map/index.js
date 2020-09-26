@@ -6,8 +6,6 @@ import PopupContent from './popup-content';
 
 import './style.scss';
 
-console.log(process.env.MAPBOX_ACCESS_TOKEN);
-
 const HistoricalDataMap = (props) => {
   const {
     summarizedDataByLatLong = [],
