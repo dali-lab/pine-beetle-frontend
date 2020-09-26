@@ -9,7 +9,7 @@
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server",
     "test": "eslint src/**.js",
-    "build": "yarn clean; NODE_ENV=production webpack --colors; cp src/_redirects dist/_redirects",
+    "build": "yarn clean; touch .env; NODE_ENV=production webpack --colors; cp src/_redirects dist/_redirects",
     "clean": "rimraf dist",
     "deploy": "yarn build; netlify deploy --dir=dist; yarn clean"
   },
@@ -47,7 +47,7 @@
     "axios": "^0.18.0",
     "canvg": "^3.0.6",
     "chart.js": "^2.9.3",
-    "dotenv": "^8.2.0",
+    "dotenv-safe": "^8.2.0",
     "mapbox": "^1.0.0-beta10",
     "mapbox-gl": "^1.12.0",
     "mapbox-print-pdf": "^0.4.3",
