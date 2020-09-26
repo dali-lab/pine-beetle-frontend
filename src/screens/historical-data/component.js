@@ -25,7 +25,7 @@ const HistoricalData = (_props) => {
         <SelectionBar />
         <div className="flex-container" id="map-area-container">
           <div className="flex-item container" id="line-container">
-            <LineChart /* data={} firstObservedYear={} lastObservedYear={} */ />
+            <LineChart data={[]} /* firstObservedYear={} lastObservedYear={} */ />
           </div>
           <div id="mapbox-container">
             <HistoricalDataMap /* summarizedDataByLatLong={} */ />
