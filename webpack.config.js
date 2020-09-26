@@ -7,7 +7,7 @@ const env = process.env.NODE_ENV || 'development';
 const finalCSSLoader = (env === 'production') ? MiniCssExtractPlugin.loader : { loader: 'style-loader' };
 const autoprefixer = require('autoprefixer');
 
-require('dotenv').config();
+require('dotenv-safe').config({ silent: true });
 const DotenvPlugin = require('webpack-dotenv-plugin');
 
 module.exports = {
@@ -78,6 +78,7 @@ module.exports = {
       path: '.env',
       sample: '.env',
       allowEmptyValues: true,
+      silent: true,
     }),
   ],
   devServer: {
