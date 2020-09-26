@@ -4,6 +4,9 @@ const SERVER_ENDPOINTS = {
   PROD: 'https://pine-beetle-prediction.herokuapp.com/v2/',
 };
 
+// map of state abbreviations to their names
+const stateAbbrevToStateName = require('./state-abbreviations.json');
+
 const AUTH_TOKEN_KEY = 'DALI_PB_AUTH_TOKEN';
 
 const getServerUrl = () => {
@@ -26,4 +29,5 @@ export {
   AUTH_TOKEN_KEY,
   SERVER_ENDPOINTS,
   getServerUrl,
+  stateAbbrevToStateName,
 };

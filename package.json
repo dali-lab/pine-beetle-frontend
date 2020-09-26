@@ -74,6 +74,7 @@
     "react-transition-group": "^4.3.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "webpack-dotenv-plugin": "^2.1.0",
     "yarn": "^1.22.4"
   }
 }
