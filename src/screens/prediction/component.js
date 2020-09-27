@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import { OverviewText, StateMap } from './components';
+import { OverviewText, StateMap, PredictionMap } from './components';
 
 import './style.scss';
 
@@ -22,7 +22,7 @@ const Prediction = (props) => {
         </Fragment>
       ) : (
       // render either loading icon here if fetching predictions or the prediction output
-        <div>User selected: {selectedState}</div>
+        <PredictionMap />
       )}
     </div>
   );
