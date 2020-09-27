@@ -3,7 +3,15 @@ import { connect } from 'react-redux';
 import Prediction from './component';
 
 const mapStateToProps = (state) => {
-  return {};
+  const {
+    selections: {
+      state: selectedState,
+    },
+  } = state;
+
+  return {
+    selectedState,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
