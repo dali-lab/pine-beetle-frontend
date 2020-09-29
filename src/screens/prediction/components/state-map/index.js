@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 
-import Prediction from './component';
+import StateMap from './component';
+
+import {
+  setState,
+} from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
@@ -15,10 +19,14 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setState: (state) => {
+      dispatch(setState(state));
+    },
+  };
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Prediction);
+)(StateMap);

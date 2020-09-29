@@ -6,6 +6,8 @@ const SERVER_ENDPOINTS = {
 
 // map of state abbreviations to their names
 const stateAbbrevToStateName = require('./state-abbreviations.json');
+const stateAbbrevToStateId = require('./state-ids.json');
+const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 
 const AUTH_TOKEN_KEY = 'DALI_PB_AUTH_TOKEN';
 
@@ -30,4 +32,6 @@ export {
   SERVER_ENDPOINTS,
   getServerUrl,
   stateAbbrevToStateName,
+  stateAbbrevToStateId,
+  stateAbbrevToZoomLevel,
 };
