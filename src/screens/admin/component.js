@@ -2,7 +2,7 @@ import React from 'react';
 
 const Admin = (props) => {
   return (
-    <div>Admin Screen</div>
+    <div>Admin</div>
   );
 };
 
