@@ -7,6 +7,7 @@ import {
   getCountyTrapping,
   getRangerDistrictPredictions,
   getRangerDistrictTrapping,
+  setDataMode,
 } from './state/actions';
 
 import {
@@ -24,6 +25,7 @@ import {
 } from './components';
 
 import {
+  DATA_MODES,
   getServerUrl,
 } from './constants';
 
@@ -32,6 +34,11 @@ const FallBack = () => {
 };
 
 const App = (props) => {
+  const {
+    countyPredictions,
+    countyTrapping,
+  } = props;
+
   useEffect(() => {
     global.API_URL = getServerUrl();
 
@@ -41,6 +48,11 @@ const App = (props) => {
     props.getCountyPredictions();
     props.getRangerDistrictPredictions();
   }, []);
+
+  // set all trapping/prediction all fields to county once we get them
+  useEffect(() => {
+    props.setDataMode(DATA_MODES.COUNTY); // note that this can be driven by a local storage cookie in the future
+  }, [countyPredictions, countyTrapping]);
 
   return (
     <Router>
@@ -64,7 +76,19 @@ const App = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  const {
+    trappings: {
+      county: countyTrapping,
+    },
+    predictions: {
+      county: countyPredictions,
+    },
+  } = state;
+
+  return {
+    countyTrapping,
+    countyPredictions,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -80,6 +104,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getRangerDistrictTrapping: (filters) => {
       dispatch(getRangerDistrictTrapping(filters));
+    },
+    setDataMode: (mode) => {
+      dispatch(setDataMode(mode));
     },
   };
 };
