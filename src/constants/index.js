@@ -27,8 +27,14 @@ const getServerUrl = () => {
   }
 };
 
+const DATA_MODES = {
+  COUNTY: 'COUNTY',
+  RANGER_DISTRICT: 'RANGER_DISTRICT',
+};
+
 export {
   AUTH_TOKEN_KEY,
+  DATA_MODES,
   SERVER_ENDPOINTS,
   getServerUrl,
   stateAbbrevToStateName,

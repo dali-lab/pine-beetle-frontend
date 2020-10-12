@@ -6,15 +6,16 @@ import {
 
 import {
   ActionTypes as selectionActionTypes,
+  clearSelections,
   setAllCounties,
   setAllRangerDistricts,
   setAllStates,
   setCounty,
+  setDataMode,
   setRangerDistrict,
   setState,
   setYear,
   setYearRange,
-  clearSelections,
 } from './selections';
 
 import {
@@ -48,6 +49,7 @@ export {
   setAllRangerDistricts,
   setAllStates,
   setCounty,
+  setDataMode,
   setRangerDistrict,
   setState,
   setYear,

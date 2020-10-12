@@ -1,4 +1,5 @@
 import { ActionTypes } from '../actions';
+import { DATA_MODES } from '../../constants';
 
 const initialState = {
   year: new Date().getFullYear(),
@@ -12,6 +13,7 @@ const initialState = {
   allStates: [],
   allCounties: [],
   allRangerDistricts: [],
+  dataMode: DATA_MODES.COUNTY,
 };
 
 const SelectionsReducer = (state = initialState, action) => {
@@ -45,6 +47,9 @@ const SelectionsReducer = (state = initialState, action) => {
 
     case ActionTypes.SET_ALL_RANGER_DISTRICTS:
       return { ...state, allRangerDistricts: action.payload };
+
+    case ActionTypes.SET_DATA_MODE:
+      return { ...state, dataMode: action.payload };
 
     case ActionTypes.CLEAR_SELECTIONS:
       return initialState;

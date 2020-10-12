@@ -8,6 +8,7 @@ export const ActionTypes = {
   SET_ALL_STATES: 'SET_ALL_STATES',
   SET_ALL_COUNTIES: 'SET_ALL_COUNTIES',
   SET_ALL_RANGER_DISTRICTS: 'SET_ALL_RANGER_DISTRICTS',
+  SET_DATA_MODE: 'SET_DATA_MODE',
 };
 
 /**
@@ -94,5 +95,14 @@ export const setAllCounties = (counties) => {
 export const setAllRangerDistricts = (rangerDistricts) => {
   return (dispatch) => {
     dispatch({ type: ActionTypes.SET_ALL_RANGER_DISTRICTS, payload: rangerDistricts });
+  };
+};
+
+/**
+ * @description action creator for setting data mode
+ */
+export const setDataMode = (mode) => {
+  return (dispatch) => {
+    dispatch({ type: ActionTypes.SET_DATA_MODE, payload: mode });
   };
 };
