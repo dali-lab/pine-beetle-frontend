@@ -1,7 +1,7 @@
 const SERVER_ENDPOINTS = {
-  LOCAL: 'http://localhost:9090/v2/',
-  DEV: 'https://pine-beetle-prediction-dev.herokuapp.com/v2/',
-  PROD: 'https://pine-beetle-prediction.herokuapp.com/v2/',
+  LOCAL: 'http://localhost:9090/v2',
+  DEV: 'https://pine-beetle-prediction-dev.herokuapp.com/v2',
+  PROD: 'https://pine-beetle-prediction.herokuapp.com/v2',
 };
 
 // map of state abbreviations to their names
@@ -13,7 +13,7 @@ const AUTH_TOKEN_KEY = 'DALI_PB_AUTH_TOKEN';
 
 const getServerUrl = () => {
   switch (window.location.origin) {
-    case 'http://localhost:3000':
+    case 'http://localhost:8080':
       return SERVER_ENDPOINTS.DEV; // could to LOCAL if running server locally
 
     case 'https://pine-beetle-prediction-dev.netlify.app/':

@@ -2,7 +2,12 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-// TODO: import actions here
+import {
+  getCountyPredictions,
+  getCountyTrapping,
+  getRangerDistrictPredictions,
+  getRangerDistrictTrapping,
+} from './state/actions';
 
 import {
   About,
@@ -26,11 +31,15 @@ const FallBack = () => {
   return <div>URL not found</div>;
 };
 
-const App = () => {
+const App = (props) => {
   useEffect(() => {
     global.API_URL = getServerUrl();
 
-    // TODO: dispatch actions for fetching initial data
+    // fetch initial data
+    props.getCountyTrapping();
+    props.getRangerDistrictTrapping();
+    props.getCountyPredictions();
+    props.getRangerDistrictPredictions();
   }, []);
 
   return (
@@ -59,7 +68,20 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    getCountyPredictions: (filters) => {
+      dispatch(getCountyPredictions(filters));
+    },
+    getCountyTrapping: (filters) => {
+      dispatch(getCountyTrapping(filters));
+    },
+    getRangerDistrictPredictions: (filters) => {
+      dispatch(getRangerDistrictPredictions(filters));
+    },
+    getRangerDistrictTrapping: (filters) => {
+      dispatch(getRangerDistrictTrapping(filters));
+    },
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
