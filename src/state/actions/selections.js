@@ -85,7 +85,6 @@ export const setState = (state) => {
         ...getState().selections,
         ...attachData(getState()),
         state,
-        dispatch,
       },
     });
   };
