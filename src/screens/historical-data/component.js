@@ -18,9 +18,8 @@ const HistoricalData = (props) => {
     <div>
       <div>
         <SelectionBar />
-        <p>{JSON.stringify(trappingData)}</p>
         <div>
-          <LineChart data={[]} /* firstObservedYear={} lastObservedYear={} */ />
+          <LineChart data={trappingData} />
         </div>
         <div>
           <HistoricalDataMap /* summarizedDataByLatLong={} */ />

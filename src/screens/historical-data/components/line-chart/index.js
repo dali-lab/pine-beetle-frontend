@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 
+import { getYearRange } from './utils';
+
 import './style.scss';
 
 const LineChart = (props) => {
   const {
     data = [],
-    firstObservedYear = 1987,
-    lastObservedYear = new Date().getFullYear(),
   } = props;
 
   const [chartData, setChartData] = useState({
@@ -22,14 +22,14 @@ const LineChart = (props) => {
       },
       {
         data: [],
-        label: 'Total SPB Per Two Weeks',
+        label: 'Total SPB',
         borderColor: '#ff7f0e',
         backgroundColor: 'rgba(255, 127, 14, 0.5)',
         fill: false,
       },
       {
         data: [],
-        label: 'Total Clerids Per Two Weeks',
+        label: 'Total Clerids',
         borderColor: '#2ca02c',
         backgroundColor: 'rgba(44, 160, 44, 0.5)',
         fill: false,
@@ -82,57 +82,40 @@ const LineChart = (props) => {
       ...chartOptions,
     };
 
-    // initialize data arrays
-    const spots = [];
-    const spb = [];
-    const clerids = [];
+    // sort data array
+    const sortedData = data.sort((a, b) => (a.year > b.year ? 1 : -1));
 
     // initialize start and end date
-    const startDate = firstObservedYear;
-    const endDate = lastObservedYear;
+    const startDate = sortedData.reduce((p, c) => (p.year < c.year ? p : c), {})?.year || 2011;
+    const endDate = sortedData.reduce((p, c) => (p.year > c.year ? p : c), {})?.year || new Date().getFullYear();
 
-    let yearNum;
+    updatedChartData.labels = getYearRange(startDate, endDate);
 
-    // initialize sum for each year
-    for (yearNum = 0; yearNum <= (parseInt(endDate, 10) - parseInt(startDate, 10)); yearNum += 1) {
-      spots[yearNum] = 0;
-      spb[yearNum] = 0;
-      clerids[yearNum] = 0;
-    }
+    // sum up spots by year
+    const spotMap = sortedData.reduce((acc, curr) => ({
+      ...acc,
+      [curr.year]: curr.spots + acc[curr.year],
+    }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
 
-    // add data and labels to object
-    data.forEach((dataPoint) => {
-      const { year } = dataPoint;
-      yearNum = year - startDate;
+    // sum up spb by year
+    const spbMap = sortedData.reduce((acc, curr) => ({
+      ...acc,
+      [curr.year]: curr.spbCount + acc[curr.year],
+    }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
 
-      // update spots count
-      if (dataPoint.spots != null) {
-        spots[yearNum] += dataPoint.spots;
-      }
-
-      // update spb per two weeks count
-      if (dataPoint.spbPerTwoWeeks != null) {
-        spb[yearNum] += dataPoint.spbPerTwoWeeks;
-      }
-
-      // update clerids per two weeks count
-      if (dataPoint.cleridsPerTwoWeeks != null) {
-        clerids[yearNum] += dataPoint.cleridsPerTwoWeeks;
-      }
-
-      // add to the line chart's label if we haven't yet found this day
-      if (!updatedChartData.labels.includes(year)) {
-        updatedChartData.labels.push(year);
-      }
-    });
+    // sum up clerids by year
+    const cleridMap = sortedData.reduce((acc, curr) => ({
+      ...acc,
+      [curr.year]: curr.cleridCount + acc[curr.year],
+    }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
 
     // update chartData
-    updatedChartData.datasets[0].data = spots;
-    updatedChartData.datasets[1].data = spb;
-    updatedChartData.datasets[2].data = clerids;
+    updatedChartData.datasets[0].data = Object.values(spotMap);
+    updatedChartData.datasets[1].data = Object.values(spbMap);
+    updatedChartData.datasets[2].data = Object.values(cleridMap);
 
     // maximum value found in the array
-    const max = Math.max([
+    const max = Math.max(...[
       ...updatedChartData.datasets[0].data,
       ...updatedChartData.datasets[1].data,
       ...updatedChartData.datasets[2].data,
@@ -141,14 +124,9 @@ const LineChart = (props) => {
     // set new y-axis height
     updatedChartOptions.scales.yAxes[0].ticks.max = max;
 
-    // filter out any missing/undefined values
-    updatedChartData.datasets[0].data = updatedChartData.datasets[0].data.filter(item => !!item);
-    updatedChartData.datasets[1].data = updatedChartData.datasets[1].data.filter(item => !!item);
-    updatedChartData.datasets[2].data = updatedChartData.datasets[2].data.filter(item => !!item);
-
     setChartData(updatedChartData);
     setChartOptions(updatedChartOptions);
-  }, [data, firstObservedYear, lastObservedYear]);
+  }, [data]);
 
   return (
     <Line data={chartData} height={400} options={chartOptions} />
