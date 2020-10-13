@@ -6,6 +6,9 @@ export const ActionTypes = {
 
   FETCHING_COUNTY_TRAPPING: 'FETCHING_COUNTY_TRAPPING',
   FETCHING_RANGER_DISTRICT_TRAPPING: 'FETCHING_RANGER_DISTRICT_TRAPPING',
+
+  SET_TRAPPING_ERROR: 'SET_TRAPPING_ERROR',
+  CLEAR_TRAPPING_ERROR: 'CLEAR_TRAPPING_ERROR',
 };
 
 /**
@@ -19,8 +22,13 @@ export const getCountyTrapping = (filters = {}) => {
       const response = await trapping.getAllCountyData(filters);
       dispatch({ type: ActionTypes.SET_COUNTY_TRAPPING, payload: response });
     } catch (error) {
-      console.log(error);
-      // TODO: dispatch to generic error reducer
+      dispatch({
+        type: ActionTypes.SET_TRAPPING_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch county trapping data',
+        },
+      });
     } finally {
       dispatch({ type: ActionTypes.FETCHING_COUNTY_TRAPPING, payload: false });
     }
@@ -38,8 +46,13 @@ export const getRangerDistrictTrapping = (filters = {}) => {
       const response = await trapping.getAllRDData(filters);
       dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_TRAPPING, payload: response });
     } catch (error) {
-      console.log(error);
-      // TODO: dispatch to generic error reducer
+      dispatch({
+        type: ActionTypes.SET_TRAPPING_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch ranger district trapping data',
+        },
+      });
     } finally {
       dispatch({ type: ActionTypes.FETCHING_RANGER_DISTRICT_TRAPPING, payload: false });
     }

@@ -6,6 +6,9 @@ export const ActionTypes = {
 
   FETCHING_COUNTY_PREDICTIONS: 'FETCHING_COUNTY_PREDICTIONS',
   FETCHING_RANGER_DISTRICT_PREDICTIONS: 'FETCHING_RANGER_DISTRICT_PREDICTIONS',
+
+  SET_PREDICTIONS_ERROR: 'SET_PREDICTIONS_ERROR',
+  CLEAR_PREDICTIONS_ERROR: 'CLEAR_PREDICTIONS_ERROR',
 };
 
 /**
@@ -19,8 +22,13 @@ export const getCountyPredictions = (filters = {}) => {
       const response = await predictions.getAllCountyData(filters);
       dispatch({ type: ActionTypes.SET_COUNTY_PREDICTIONS, payload: response });
     } catch (error) {
-      console.log(error);
-      // TODO: dispatch to generic error reducer
+      dispatch({
+        type: ActionTypes.SET_PREDICTIONS_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch county predictions',
+        },
+      });
     } finally {
       dispatch({ type: ActionTypes.FETCHING_COUNTY_PREDICTIONS, payload: false });
     }
@@ -38,8 +46,13 @@ export const getRangerDistrictPredictions = (filters = {}) => {
       const response = await predictions.getAllRDData(filters);
       dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_PREDICTIONS, payload: response });
     } catch (error) {
-      console.log(error);
-      // TODO: dispatch to generic error reducer
+      dispatch({
+        type: ActionTypes.SET_PREDICTIONS_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch ranger district predictions',
+        },
+      });
     } finally {
       dispatch({ type: ActionTypes.FETCHING_RANGER_DISTRICT_PREDICTIONS, payload: false });
     }

@@ -11,11 +11,16 @@ import {
 
 const HistoricalData = (props) => {
   const {
+    isLoading,
     trappingData,
+    trappingErrorText,
   } = props;
 
   return (
     <div>
+      {/* TODO: make this a spinner */}
+      {isLoading && <p>Loading...</p>}
+      {trappingErrorText.length > 0 && trappingErrorText.map(t => <p>{t}</p>)}
       <div>
         <SelectionBar />
         <div>

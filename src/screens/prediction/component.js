@@ -6,11 +6,16 @@ import './style.scss';
 
 const Prediction = (props) => {
   const {
+    isLoading,
+    predictionsErrorText,
     selectedState,
   } = props;
 
   return (
     <div>
+      {/* TODO: make this a spinner */}
+      {isLoading && <p>Loading...</p>}
+      {predictionsErrorText.length > 0 && predictionsErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       {!selectedState ? (
         <Fragment>
