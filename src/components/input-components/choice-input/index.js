@@ -27,16 +27,15 @@ const ChoiceInput = (props) => {
   };
 
   const opts = [
-    <option value="" key={0}>{firstOptionText}</option>,
+    <option value="" key={firstOptionText}>{firstOptionText}</option>,
     ...options.map(op => (
-      <option value={op}>{op}</option>
+      <option value={op} key={op}>{op}</option>
     )),
   ];
 
-  //
   useEffect(() => {
     setFirstOptionText(value ? CLEAR_TEXT : initialFirstOptionText);
-  }, [value]);
+  }, [value, initialFirstOptionText]);
 
   return (
     <div className="selection">

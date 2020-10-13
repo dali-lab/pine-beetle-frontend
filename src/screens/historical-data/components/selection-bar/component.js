@@ -3,6 +3,8 @@ import React from 'react';
 
 import { TextInput, ChoiceInput } from '../../../../components/input-components';
 
+import { DATA_MODES } from '../../../../constants';
+
 import {
   getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
@@ -12,30 +14,43 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    allCounties,
-    allStates,
     clearAllSelections,
     county,
+    dataMode,
     endYear,
+    rangerDistrict,
     selectedState,
     setCounty,
     setEndYear,
+    setRangerDistrict,
     setStartYear,
     setState,
     startYear,
+    trappingData,
   } = props;
 
-  const getCSVData = () => {};
+  const countyMode = dataMode === DATA_MODES.COUNTY;
+
+  const allStates = [...new Set(trappingData.map(obj => obj.state))];
+  const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))] : [];
+  const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))] : [];
 
   const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev));
+  const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
   return (
     <div id="predictionbar" className="container" style={{ display: 'flex' }}>
       <TextInput instructions="Start Year" setValue={setStartYear} value={startYear} />
       <TextInput instructions="End Year" setValue={setEndYear} value={endYear} />
-      <ChoiceInput instructions="Select State" value={selectedState} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
-      <ChoiceInput instructions="Select County" value={county} setValue={setCounty} options={allCounties} firstOptionText="County" />
+      <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
+      <ChoiceInput
+        instructions={countyMode ? 'Select County' : 'Select Ranger District'}
+        value={countyMode ? county : rangerDistrict}
+        setValue={countyMode ? setCounty : setRangerDistrict}
+        options={countyMode ? allCounties : allRangerDistricts}
+        firstOptionText={countyMode ? 'County' : 'Ranger District'}
+      />
 
       {/* <ChoiceInput instructions="Select State" submitFunction={updateState} availableOptions={availableStates} idName="state" value={this.state.stateName} firstOptionText="State" /> */}
       {/* <OptgroupChoiceInput
@@ -49,7 +64,6 @@ const SelectionBar = (props) => {
         firstOptionText="County / Parish"
       /> */}
       <button id="reset-current-data-button" className="submit static-button clear-button" onClick={clearAllSelections}>Clear Filters</button>
-      <button id="reset-current-data-button" className="submit static-button export-button" onClick={getCSVData} data-tip="Make sure to allow browser popups!">Export CSV</button>
     </div>
   );
 };

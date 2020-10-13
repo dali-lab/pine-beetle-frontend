@@ -6,33 +6,47 @@ import {
 
 import {
   ActionTypes as selectionActionTypes,
-  setAllCounties,
-  setAllRangerDistricts,
-  setAllStates,
+  clearSelections,
   setCounty,
+  setDataMode,
   setRangerDistrict,
   setState,
   setYear,
   setYearRange,
-  clearSelections,
 } from './selections';
 
+import {
+  ActionTypes as trappingActionTypes,
+  getCountyTrapping,
+  getRangerDistrictTrapping,
+} from './trapping';
+
+import {
+  ActionTypes as predictionActionTypes,
+  getCountyPredictions,
+  getRangerDistrictPredictions,
+} from './predictions';
+
 const ActionTypes = {
-  ...userActionTypes,
+  ...predictionActionTypes,
   ...selectionActionTypes,
+  ...trappingActionTypes,
+  ...userActionTypes,
 };
 
 export {
   ActionTypes,
+  clearSelections,
+  getCountyPredictions,
+  getCountyTrapping,
+  getRangerDistrictPredictions,
+  getRangerDistrictTrapping,
   login,
-  signUp,
-  setAllCounties,
-  setAllRangerDistricts,
-  setAllStates,
   setCounty,
+  setDataMode,
   setRangerDistrict,
   setState,
   setYear,
   setYearRange,
-  clearSelections,
+  signUp,
 };

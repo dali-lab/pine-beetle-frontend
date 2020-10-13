@@ -1,11 +1,17 @@
 import { combineReducers } from 'redux';
 
-import UserReducer from './user';
+import ErrorReducer from './error';
+import PredictionsReducer from './predictions';
 import SelectionsReducer from './selections';
+import TrappingReducer from './trapping';
+import UserReducer from './user';
 
 const rootReducer = combineReducers({
-  user: UserReducer,
+  error: ErrorReducer,
+  predictions: PredictionsReducer,
   selections: SelectionsReducer,
+  trappings: TrappingReducer,
+  user: UserReducer,
 });
 
 export default rootReducer;
