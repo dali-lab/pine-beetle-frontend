@@ -3,7 +3,15 @@ import { connect } from 'react-redux';
 import HistoricalData from './component';
 
 const mapStateToProps = (state) => {
-  return {};
+  const {
+    trappings: {
+      data: trappingData,
+    },
+  } = state;
+
+  return {
+    trappingData,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {

@@ -7,8 +7,6 @@ import {
 import {
   ActionTypes as selectionActionTypes,
   clearSelections,
-  setAllCounties,
-  setAllRangerDistricts,
   setAllStates,
   setCounty,
   setDataMode,
@@ -45,8 +43,6 @@ export {
   getRangerDistrictPredictions,
   getRangerDistrictTrapping,
   login,
-  setAllCounties,
-  setAllRangerDistricts,
   setAllStates,
   setCounty,
   setDataMode,

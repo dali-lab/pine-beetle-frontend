@@ -21,20 +21,20 @@ const mapStateToProps = (state) => {
       county,
       rangerDistrict,
       allStates,
-      allCounties,
-      allRangerDistricts,
+    },
+    trappings: {
+      data: trappingData,
     },
   } = state;
 
   return {
-    allCounties,
-    allRangerDistricts,
     allStates,
     county,
     endYear,
     rangerDistrict,
     selectedState,
     startYear,
+    trappingData,
   };
 };
 
