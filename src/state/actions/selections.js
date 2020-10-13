@@ -130,15 +130,6 @@ export const clearSelections = () => {
 };
 
 /**
- * @description action creator for setting all states
- */
-export const setAllStates = (states) => {
-  return (dispatch) => {
-    dispatch({ type: ActionTypes.SET_ALL_STATES, payload: states });
-  };
-};
-
-/**
  * @description action creator for setting data mode
  */
 export const setDataMode = (mode) => {

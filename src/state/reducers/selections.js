@@ -11,7 +11,6 @@ const initialState = {
   state: '',
   county: '',
   rangerDistrict: '',
-  allStates: [],
   dataMode: DATA_MODES.COUNTY,
 };
 
@@ -40,9 +39,6 @@ const SelectionsReducer = (state = initialState, action) => {
     case ActionTypes.SET_RANGER_DISTRICT:
       return { ...state, rangerDistrict: action.payload.rangerDistrict };
 
-    case ActionTypes.SET_ALL_STATES:
-      return { ...state, allStates: action.payload };
-
     case ActionTypes.SET_DATA_MODE:
       const { trappingData, mode } = action.payload;
 
@@ -59,7 +55,6 @@ const SelectionsReducer = (state = initialState, action) => {
         state: '',
         county: '',
         rangerDistrict: '',
-        allStates: [...new Set(trappingData.map(obj => obj.state))],
         dataMode: mode,
       };
 
