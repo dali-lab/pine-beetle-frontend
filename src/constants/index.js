@@ -32,6 +32,16 @@ const DATA_MODES = {
   RANGER_DISTRICT: 'RANGER_DISTRICT',
 };
 
+const ROUTES = {
+  ABOUT: '/about',
+  ADMIN: '/admin',
+  HISTORICAL_DATA: '/historical-data',
+  HOME: '/',
+  HOW_IT_WORKS: '/how-it-works',
+  PLAY_WITH_MODEL: '/play-with-model',
+  PREDICTIONS: '/predictions',
+};
+
 export {
   AUTH_TOKEN_KEY,
   DATA_MODES,
@@ -40,4 +50,5 @@ export {
   stateAbbrevToStateName,
   stateAbbrevToStateId,
   stateAbbrevToZoomLevel,
+  ROUTES,
 };

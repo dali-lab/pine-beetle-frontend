@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './style.scss';
+import { ROUTES } from '../../constants';
 
-const pineBeetleImage = require('../../assets/pinebeetle.png');
+const pineBeetleImage = require('../../assets/black_beetle_logo.png');
 
 const Header = () => {
   const routes = {
-    '/historical-data': 'HISTORICAL DATA',
-    '/predictions': 'PREDICTIONS',
-    '/about': 'ABOUT',
-    '/how-it-works': 'HOW IT WORKS',
+    [ROUTES.HISTORICAL_DATA]: 'Historical Data',
+    [ROUTES.PREDICTIONS]: 'Predict Outbreak',
+    [ROUTES.PLAY_WITH_MODEL]: 'Play With Model',
   };
 
   return (

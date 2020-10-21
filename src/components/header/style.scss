@@ -3,13 +3,15 @@
     margin: 0px;
 
     /* margin: 15px 15px 15px 15px; */
-    background-color: #3f5726;
+    background-color: #E5E5E5;
 
     #title-area {
         margin-top: 0px;
         margin-bottom: 0px;
         height: auto;
-        background-color: #3f5726; /* #E9C46A;*/
+        background-color: #E5E5E5; /* #E9C46A;*/
+        display: flex;
+        justify-content: space-between;
     }
     
     #title-area a {
@@ -33,21 +35,29 @@
     }
     
     #nav-button-area {
-        display: inline-block;
+        // display: inline-block;
         margin: auto;
         margin-right: 100px;
     }
     
     #nav-buttons p {
-        color: #ffffff; /*#62731D;*/
+        color: #000000; /*#62731D;*/
         float: left;
         padding: 15px;
         padding-top: 18px;
-        font-size: 16px;
+        // font-size: 16px;
         cursor: pointer;
         text-decoration: none;
-        font-family: "Graphik Web";
+        // font-family: "Graphik Web";
+        // font-weight: 500;
+
+        font-family: "Inter";
+        font-size: 20px;
+        font-style: normal;
         font-weight: 500;
+        line-height: 24px;
+        letter-spacing: 0em;
+        text-align: left;
     
         -o-transition: 0.3s;
         -ms-transition: 0.3s;
