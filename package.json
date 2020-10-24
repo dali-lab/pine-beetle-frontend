@@ -47,6 +47,7 @@
     "axios": "^0.18.0",
     "canvg": "^3.0.6",
     "chart.js": "^2.9.3",
+    "chartjs-top-round-bar": "^1.0.1",
     "dotenv-safe": "^8.2.0",
     "mapbox": "^1.0.0-beta10",
     "mapbox-gl": "^1.12.0",

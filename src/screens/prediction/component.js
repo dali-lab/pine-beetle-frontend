@@ -1,6 +1,12 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
-import { OverviewText, StateMap, PredictionMap } from './components';
+import {
+  BarChart,
+  OverviewText,
+  PredictionDetails,
+  PredictionMap,
+  SelectionBar,
+} from './components';
 
 import './style.scss';
 
@@ -8,7 +14,7 @@ const Prediction = (props) => {
   const {
     isLoading,
     predictionsErrorText,
-    selectedState,
+    // spotData,
   } = props;
 
   return (
@@ -17,18 +23,18 @@ const Prediction = (props) => {
       {isLoading && <p>Loading...</p>}
       {predictionsErrorText.length > 0 && predictionsErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
-      {!selectedState ? (
-        <Fragment>
-          <div className="container" id="pred-select-state-text">
-            <h3>Please select a state to run the predictive model.</h3>
-            <p>It will take a few seconds to run. Please be patient.</p>
-          </div>
-          <StateMap />
-        </Fragment>
-      ) : (
-      // render either loading icon here if fetching predictions or the prediction output
-        <PredictionMap />
-      )}
+      <SelectionBar />
+      <PredictionMap />
+      {/* TODO: Dynamically Change header */}
+      <div className="container" id="pred-header">Prediction Details</div>
+      <div className="container" id="predictions">
+        <div className="bar-chart">
+          <BarChart data={[1, 0.5, 0.25, 0.15, 0]} />
+        </div>
+        <div className="prediction-details">
+          <PredictionDetails />
+        </div>
+      </div>
     </div>
   );
 };

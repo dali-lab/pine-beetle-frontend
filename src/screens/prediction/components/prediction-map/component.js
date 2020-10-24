@@ -4,8 +4,8 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 
 import './style.scss';
 
-const thresholds = ['0%-1%', '1%-1.7%', '1.7%-2.8%', '2.8%-4.6%', '4.6%-7.7%', '7.7%-13%', '13%-22%', '22%-36%', '36%-60%', '60%-100%'];
-const colors = ['#4776b3', '#6F90B6', '#9AAEBC', '#C0CCBE', '#E9ECC0', '#FEE8B0', '#F9B988', '#F08D66', '#E46149', '#D4312E'];
+const thresholds = ['0-1%', '1-5%', '5-10%', '10-30%', '30-60%', '60-100%'];
+const colors = ['#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
 
 class DownloadControl {
   onAdd(map) {
@@ -33,7 +33,8 @@ const PredictionMap = (_props) => {
     const createdMap = new mapboxgl.Map({
       container: 'map', // container id
       // style: 'mapbox://styles/mapbox/streets-v9',
-      style: 'mapbox://styles/pine-beetle-prediction/ck2kl9kcy4vvb1cjyf23s2ars',
+      // style: 'mapbox://styles/pine-beetle-prediction/ck2kl9kcy4vvb1cjyf23s2ars',
+      style: 'mapbox://styles/barkincavdaroglu/ckfx27xrv02k519mhahinwsni',
       center: [-84.3880, 33.7490], // starting position
       zoom: 4.8, // starting zoom
       options: {

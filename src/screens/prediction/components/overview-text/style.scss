@@ -1,8 +1,14 @@
+.container {
+    background: blue;
+    background-clip: padding-box;
+}
+
 #title {
     font-family: 'Inter';
     font-size: 44px;
     letter-spacing: 1;
-    margin-top: 84px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     display: inline-block;
     margin-right: 21px;
 }

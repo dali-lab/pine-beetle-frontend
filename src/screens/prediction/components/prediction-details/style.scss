@@ -1,0 +1,96 @@
+.percentages {
+    display: flex;
+}
+
+#subtitle {
+    padding-bottom: 18px;
+    text-align: left;
+    font-weight: 600;
+    font-family: 'Inter';
+    font-size: 24px;
+}
+
+.circle {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    color: black; 
+    text-align: center;
+    background: red; // change dynamically later
+    justify-content: space-between;
+    margin-right: 30px;
+    margin-bottom: 100px;
+}
+
+.prediction-circle #percent {
+    line-height: 110px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.prediction-circle p {
+    font-family: 'Inter';
+    // font-weight: 200;
+    font-size: 16px;
+    text-align: center;
+}
+
+.prediction-table {
+    align-self: center;
+    width: 100%;
+    font-size: 16px;
+    // border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0 30px;
+}
+
+.prediction-table td:nth-child(2){
+    border-right:1px solid white;
+}
+
+.prediction-table td {
+    width: 33%;
+    height: 40px;
+    text-align: left;
+    padding: 0px 5px 5px;
+}
+
+#bullet {
+    height: 25px;
+    width: 25px;
+    background: #E9EAEF;
+    border-radius: 50%;
+}
+
+.prediction-table td img {
+    width: 18px;
+    height: 18px;
+    background-size: 150%;
+    // margin-left: 2px;
+    margin-right: 8px;
+    // margin-top: 5px;
+    padding: 5px;
+}
+
+.prediction-table #clerids img {
+    background-color: #FFE5B4;
+    border-radius: 6px;
+}
+
+.prediction-table #spots img {
+    background-color: #C7FFB4;
+    border-radius: 6px;
+}
+
+.prediction-table #spb img {
+    background-color: #B4DBFF;
+    border-radius: 6px;
+}
+
+#clerids, #spb, #spots, #endobrev {
+    text-align: right;
+    background: #FFFFFF;
+    box-shadow: 0px 7px 22px -2px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+}

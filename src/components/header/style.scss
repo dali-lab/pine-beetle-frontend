@@ -3,13 +3,14 @@
     margin: 0px;
 
     /* margin: 15px 15px 15px 15px; */
-    background-color: #E5E5E5;
+    background-color: #FBFBFD;
 
     #title-area {
         margin-top: 0px;
         margin-bottom: 0px;
         height: auto;
-        background-color: #E5E5E5; /* #E9C46A;*/
+        background-color: #FBFBFD;
+        /* #E9C46A;*/
         display: flex;
         justify-content: space-between;
     }
@@ -45,16 +46,11 @@
         float: left;
         padding: 15px;
         padding-top: 18px;
-        // font-size: 16px;
+        font-size: 16px;
         cursor: pointer;
         text-decoration: none;
-        // font-family: "Graphik Web";
-        // font-weight: 500;
-
         font-family: "Inter";
-        font-size: 20px;
         font-style: normal;
-        font-weight: 500;
         line-height: 24px;
         letter-spacing: 0em;
         text-align: left;

@@ -3,9 +3,12 @@
     padding: 0;
 }
 
+#main {
+    background-color: #FBFBFD;
+}
+
 body {
-    background-color: white;
-    font-family: 'Graphik Web';
+    font-family: 'Inter';
     font-weight: normal;
     color: #212122;
 }
@@ -41,7 +44,8 @@ body img {
     width: auto;
     height: auto;
     margin: 0px; /* 15px 31px */
-    background-color: white;
+    background-color:#FBFBFD;
+    background-clip: border-box;
     border-radius: 0px;
     text-align: center;
 }
