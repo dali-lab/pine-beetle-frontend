@@ -66,8 +66,10 @@ export const setYearRange = (startYear, endYear) => {
       payload: {
         ...getState().selections,
         yearRange: {
-          startYear: startYear || getState().selections.yearRange.startYear,
-          endYear: endYear || getState().selections.yearRange.endYear,
+          // explicit check against undefined instead of falsey value because empty string is valid input for nothing,
+          // whereas undefined is strictly when not provided (so we default to previous value in this case)
+          startYear: startYear !== undefined ? startYear : getState().selections.yearRange.startYear,
+          endYear: endYear !== undefined ? endYear : getState().selections.yearRange.endYear,
         },
       },
     });
