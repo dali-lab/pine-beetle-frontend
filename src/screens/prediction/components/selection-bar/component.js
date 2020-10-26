@@ -39,10 +39,6 @@ const SelectionBar = (props) => {
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
-  // useEffect(() => {
-  //   console.log(year);
-  // }, [year]);
-
   return (
     <div id="predictionbar" className="container">
       <TextInput instructions="Year" setValue={setYear} value={year} />

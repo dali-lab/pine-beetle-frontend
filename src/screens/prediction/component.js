@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   BarChart,
@@ -13,9 +13,34 @@ import './style.scss';
 const Prediction = (props) => {
   const {
     isLoading,
+    predictionData,
     predictionsErrorText,
-    // spotData,
   } = props;
+
+  const [predHTML, setPredHTML] = useState(<div />);
+
+  const predDetails = (bool) => {
+    if (bool) {
+      return (
+        <div>
+          <div className="container" id="pred-header">Prediction Details</div>
+          <div className="container" id="predictions">
+            <div className="bar-chart">
+              <BarChart data={predictionData} />
+            </div>
+            <div className="prediction-details">
+              <PredictionDetails data={predictionData} />
+            </div>
+          </div>
+        </div>
+      );
+    } else { return <div />; }
+  };
+
+  useEffect(() => {
+    // prediction details only come up when year, state, county/rd specified
+    setPredHTML(predDetails(predictionData.length === 1));
+  }, [predictionData]);
 
   return (
     <div>
@@ -26,15 +51,7 @@ const Prediction = (props) => {
       <SelectionBar />
       <PredictionMap />
       {/* TODO: Dynamically Change header */}
-      <div className="container" id="pred-header">Prediction Details</div>
-      <div className="container" id="predictions">
-        <div className="bar-chart">
-          <BarChart data={[1, 0.5, 0.25, 0.15, 0]} />
-        </div>
-        <div className="prediction-details">
-          <PredictionDetails />
-        </div>
-      </div>
+      { predHTML }
     </div>
   );
 };

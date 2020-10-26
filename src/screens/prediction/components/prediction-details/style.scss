@@ -16,7 +16,6 @@
     border-radius: 50%;
     color: black; 
     text-align: center;
-    background: red; // change dynamically later
     justify-content: space-between;
     margin-right: 30px;
     margin-bottom: 100px;
@@ -67,9 +66,7 @@
     width: 18px;
     height: 18px;
     background-size: 150%;
-    // margin-left: 2px;
-    margin-right: 8px;
-    // margin-top: 5px;
+    float: left;
     padding: 5px;
 }
 

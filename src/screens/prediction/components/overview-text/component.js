@@ -10,7 +10,7 @@ const OverviewText = _props => (
       The Predictive Tool
     </h1>
     <img id="icon"
-      data-tip="here is text if you need help!"
+      data-tip="Please select year, state, and county/RD for predictions. After selecting a specific county or RD, you can see prediction breakdown below the map."
       src={questionIcon}
       alt="Help"
     />

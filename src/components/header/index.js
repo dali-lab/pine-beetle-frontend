@@ -7,7 +7,8 @@ const pineBeetleImage = require('../../assets/black_beetle_logo.png');
 
 const Header = () => {
   const routes = {
-    [ROUTES.HISTORICAL_DATA]: 'Historical Data',
+    [ROUTES.HOME]: 'Home',
+    [ROUTES.HISTORICAL_DATA]: 'Trapping Data',
     [ROUTES.PREDICTIONS]: 'Predict Outbreak',
     [ROUTES.PLAY_WITH_MODEL]: 'Play With Model',
   };
