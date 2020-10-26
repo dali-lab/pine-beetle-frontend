@@ -136,11 +136,27 @@ export const clearSelections = () => {
  */
 export const setDataMode = (mode) => {
   return (dispatch, getState) => {
+    const data = attachData(getState(), mode);
+
     dispatch({
       type: ActionTypes.SET_DATA_MODE,
       payload: {
-        ...attachData(getState(), mode),
+        ...data,
         mode,
+      },
+    });
+
+    // find last year in dataset
+    const endYear = data.trappingData.reduce((prev, curr) => (
+      prev.year > curr.year ? prev : curr
+    ), {})?.year || getState().selections.yearRange.endYear;
+
+    // explicitly set the year (to trigger filtering)
+    dispatch({
+      type: ActionTypes.SET_YEAR,
+      payload: {
+        ...getState().selections,
+        year: endYear,
       },
     });
   };

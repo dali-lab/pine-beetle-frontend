@@ -39,14 +39,17 @@ const PredictionsReducer = (state = initialState, action) => {
         ...state,
         data: filterLocation(getFullDataArray(action.payload.dataMode, state).filter(obj => (
           obj.year === action.payload.year
-        ))),
+        )), action),
       };
 
     case ActionTypes.SET_YEAR_RANGE:
-      return {
-        ...state,
-        data: filterYear(filterLocation(getFullDataArray(action.payload.dataMode, state), action), action),
-      };
+      return state;
+
+      // keeping this in case we want predictions to filter on year range (likely not)
+      // return {
+      //   ...state,
+      //   data: filterYear(filterLocation(getFullDataArray(action.payload.dataMode, state), action), action),
+      // };
 
     case ActionTypes.SET_STATE:
       const filteredData = filterYear(getFullDataArray(action.payload.dataMode, state), action).filter((obj) => {
