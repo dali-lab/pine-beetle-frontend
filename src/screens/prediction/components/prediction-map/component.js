@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import { stateAbbrevToZoomLevel } from '../../../../constants';
 // import printPdf from 'mapbox-print-pdf';
 
 import './style.scss';
@@ -22,7 +23,11 @@ class DownloadControl {
   }
 }
 
-const PredictionMap = (_props) => {
+const PredictionMap = (props) => {
+  const {
+    selectedState,
+  } = props;
+
   const [map, setMap] = useState();
   const [legendTags, setLegendTags] = useState([]);
   const [hoverElement, setHoverElement] = useState(<p>Hover over a forest for detailed information</p>);
@@ -70,25 +75,25 @@ const PredictionMap = (_props) => {
         createdMap.on('mousemove', (e) => {
           if (!createdMap) return;
 
-          const forests = createdMap.queryRenderedFeatures(e.point, {
-            layers: ['forests-join'],
+          const counties = createdMap.queryRenderedFeatures(e.point, {
+            layers: ['counties-join'],
           });
 
           let element;
 
-          if (forests.length > 0) {
+          if (counties.length > 0) {
             // get prediction for this state
             const probability = 0;
             // for (const entry in this.state.dataControllerState.predictiveModelOutputArray) {
             //   const check = this.state.dataControllerState.predictiveModelOutputArray[entry].inputs.forest;
 
-            //   if (check === forests[0].properties.forest.toUpperCase()) {
+            //   if (check === counties[0].properties.forest.toUpperCase()) {
             //     probability = this.state.dataControllerState.predictiveModelOutputArray[entry].outputs.prob53spots;
             //   }
             // }
             element = (
               <div id="choropleth-map-p-area">
-                <p><strong>{forests[0].properties.forest}</strong></p>
+                <p><strong>{counties[0].properties.forest}</strong></p>
                 <p>{`${probability * 100}%`}</p>
               </div>
             );
@@ -100,13 +105,13 @@ const PredictionMap = (_props) => {
         });
 
         // select forest when user clicks on it
-        createdMap.on('click', 'forests-join', (e) => {
+        createdMap.on('click', 'counties-join', (e) => {
           const forest = e.features[0].properties.forest.toUpperCase();
 
           console.log(forest);
 
           // TODO: select forest/county/ranger district in redux selections store
-          // this.state.dataController.updateForestSelection(e.features[0].properties.forest.toUpperCase());
+          // this.state.dataController.updatecountieselection(e.features[0].properties.forest.toUpperCase());
         });
       }
 
@@ -114,101 +119,104 @@ const PredictionMap = (_props) => {
     }
   };
 
-  const colorStates = () => {
-    // remove forests-join layer if already constructed
-    let mapLayer = map.getLayer('forests-join');
+  const colorState = (selectedSt) => {
+    // remove counties-join layer if already constructed
+    const mapLayer = map.getLayer('counties-join');
 
     if (mapLayer) {
-      map.removeLayer('forests-join');
-      map.removeSource('forests');
+      map.removeLayer('counties-join');
+      map.removeSource('counties');
 
-      map.addSource('forests', {
+      map.addSource('counties', {
         type: 'vector',
         url: 'mapbox://pine-beetle-prediction.1be58pyi',
       });
     }
 
-    // eslint-disable-next-line no-constant-condition
-    if (false /* this.state.dataControllerState.predictiveModelOutputArray.length > 0 */) {
-      // const expression = ['match', ['upcase', ['get', 'forest']]];
-      // const forestsAdded = [];
+    console.log(selectedSt);
+    console.log(mapLayer);
 
-      // // calculate color for each state based on clerids
-      // this.state.dataControllerState.predictiveModelOutputArray.forEach((row) => {
-      //   let color;
 
-      //   if (row.outputs.prob53spots <= 0.010) {
-      //     color = colors[0];
-      //   } else if (row.outputs.prob53spots > 0.010 && row.outputs.prob53spots <= 0.017) {
-      //     color = colors[1];
-      //   } else if (row.outputs.prob53spots > 0.017 && row.outputs.prob53spots <= 0.028) {
-      //     color = colors[2];
-      //   } else if (row.outputs.prob53spots > 0.028 && row.outputs.prob53spots <= 0.046) {
-      //     color = colors[3];
-      //   } else if (row.outputs.prob53spots > 0.046 && row.outputs.prob53spots <= 0.077) {
-      //     color = colors[4];
-      //   } else if (row.outputs.prob53spots > 0.077 && row.outputs.prob53spots <= 0.129) {
-      //     color = colors[5];
-      //   } else if (row.outputs.prob53spots > 0.129 && row.outputs.prob53spots <= 0.215) {
-      //     color = colors[6];
-      //   } else if (row.outputs.prob53spots > 0.215 && row.outputs.prob53spots <= 0.359) {
-      //     color = colors[7];
-      //   } else if (row.outputs.prob53spots > 0.359 && row.outputs.prob53spots <= 0.599) {
-      //     color = colors[8];
-      //   } else if (row.outputs.prob53spots > 0.599) {
-      //     color = colors[9];
-      //   }
+    // if (this.state.dataControllerState.predictiveModelOutputArray.length > 0) {
+    //   const expression = ['match', ['upcase', ['get', 'forest']]];
+    //   const countiesAdded = [];
 
-      //   if (!forestsAdded.includes(row.inputs.forest)) {
-      //     expression.push(row.inputs.forest, color);
-      //     forestsAdded.push(row.inputs.forest);
-      //   }
-      // });
+    //   // calculate color for each state based on clerids
+    //   this.state.dataControllerState.predictiveModelOutputArray.forEach((row) => {
+    //     let color;
 
-      // // last value is the default, used where there is no data
-      // expression.push('rgba(0,0,0,0)');
+    //     if (row.outputs.prob53spots <= 0.010) {
+    //       color = colors[0];
+    //     } else if (row.outputs.prob53spots > 0.010 && row.outputs.prob53spots <= 0.017) {
+    //       color = colors[1];
+    //     } else if (row.outputs.prob53spots > 0.017 && row.outputs.prob53spots <= 0.028) {
+    //       color = colors[2];
+    //     } else if (row.outputs.prob53spots > 0.028 && row.outputs.prob53spots <= 0.046) {
+    //       color = colors[3];
+    //     } else if (row.outputs.prob53spots > 0.046 && row.outputs.prob53spots <= 0.077) {
+    //       color = colors[4];
+    //     } else if (row.outputs.prob53spots > 0.077 && row.outputs.prob53spots <= 0.129) {
+    //       color = colors[5];
+    //     } else if (row.outputs.prob53spots > 0.129 && row.outputs.prob53spots <= 0.215) {
+    //       color = colors[6];
+    //     } else if (row.outputs.prob53spots > 0.215 && row.outputs.prob53spots <= 0.359) {
+    //       color = colors[7];
+    //     } else if (row.outputs.prob53spots > 0.359 && row.outputs.prob53spots <= 0.599) {
+    //       color = colors[8];
+    //     } else if (row.outputs.prob53spots > 0.599) {
+    //       color = colors[9];
+    //     }
 
-      // // add layer from the vector tile source with data-driven style
-      // map.addLayer({
-      //   id: 'forests-join',
-      //   type: 'fill',
-      //   source: 'forests',
-      //   'source-layer': 'US_Counties_updated',
-      //   paint: {
-      //     'fill-color': expression,
-      //   },
-      // }, 'national-park');
+    //     if (!countiesAdded.includes(row.inputs.forest)) {
+    //       expression.push(row.inputs.forest, color);
+    //       countiesAdded.push(row.inputs.forest);
+    //     }
+    //   });
 
-      // if (this.state.dataControllerState.userFilters.stateAbbreviation !== null) {
-      //   const center = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][0];
-      //   const zoom = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][1];
+    //   // last value is the default, used where there is no data
+    //   expression.push('rgba(0,0,0,0)');
 
-      //   map.flyTo({
-      //     center,
-      //     zoom,
-      //   });
-      // } else {
-      //   mapLayer = map.getLayer('forests-join');
-      //   if (typeof mapLayer !== 'undefined') {
-      //     map.removeLayer('forests-join');
-      //   }
+    //   // add layer from the vector tile source with data-driven style
+    //   map.addLayer({
+    //     id: 'counties-join',
+    //     type: 'fill',
+    //     source: 'counties',
+    //     'source-layer': 'US_Counties_updated',
+    //     paint: {
+    //       'fill-color': expression,
+    //     },
+    //   }, 'national-park');
 
-      //   map.flyTo({
-      //     center: [-84.3880, 33.7490],
-      //     zoom: 4.8,
-      //   });
-      // }
-    } else {
-      mapLayer = map.getLayer('forests-join');
-      if (mapLayer) {
-        map.removeLayer('forests-join');
-      }
+    //   if (this.state.dataControllerState.userFilters.stateAbbreviation !== null) {
+    //     const center = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][0];
+    //     const zoom = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][1];
 
-      map.flyTo({
-        center: [-84.3880, 33.7490],
-        zoom: 4.8,
-      });
-    }
+    //     map.flyTo({
+    //       center,
+    //       zoom,
+    //     });
+    //   } else {
+    //     mapLayer = map.getLayer('counties-join');
+    //     if (typeof mapLayer !== 'undefined') {
+    //       map.removeLayer('counties-join');
+    //     }
+
+    //     map.flyTo({
+    //       center: [-84.3880, 33.7490],
+    //       zoom: 4.8,
+    //     });
+    //   }
+    // } else {
+    //   mapLayer = map.getLayer('counties-join');
+    //   if (mapLayer) {
+    //     map.removeLayer('counties-join');
+    //   }
+
+    //   map.flyTo({
+    //     center: [-84.3880, 33.7490],
+    //     zoom: 4.8,
+    //   });
+    // }
   };
 
   // function to download map of currently selected data
@@ -262,26 +270,43 @@ const PredictionMap = (_props) => {
     }, false);
   }, []);
 
+  // useEffect(() => {
+  //   if (!map) return;
+
+  //   map.resize();
+
+  //   if (map._listeners.load === undefined) {
+  //     map.on('load', () => {
+  //       if (map.getSource('counties') === undefined) {
+  //         map.addSource('counties', {
+  //           type: 'vector',
+  //           url: 'mapbox://pine-beetle-prediction.1be58pyi',
+  //         });
+  //       }
+
+  //       colorStates();
+  //     });
+  //   } else if (map.isStyleLoaded()) {
+  //     colorStates();
+  //   }
+  // }, [map]);
+
   useEffect(() => {
-    if (!map) return;
-
-    map.resize();
-
-    if (map._listeners.load === undefined) {
-      map.on('load', () => {
-        if (map.getSource('forests') === undefined) {
-          map.addSource('forests', {
-            type: 'vector',
-            url: 'mapbox://pine-beetle-prediction.1be58pyi',
-          });
-        }
-
-        colorStates();
+    if (map && selectedState) {
+      const zoom = stateAbbrevToZoomLevel[selectedState];
+      map.flyTo({
+        center: zoom[0],
+        zoom: zoom[1],
       });
-    } else if (map.isStyleLoaded()) {
-      colorStates();
+      colorState(selectedState);
+    } else if (map) {
+      map.flyTo({
+        center: [-84.3880, 33.7490],
+        zoom: 4.8,
+      });
+      // TODO: uncolor state after zoom out
     }
-  }, [map]);
+  }, [selectedState]);
 
   return (
     <div className="container flex-item-left" id="map-container">

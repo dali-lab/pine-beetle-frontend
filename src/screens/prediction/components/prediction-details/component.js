@@ -10,8 +10,7 @@ const PredictionDetails = (props) => {
   } = props;
 
   const currYear = data[0].year;
-  console.log(data);
-  // TODO: figure out how to get data in here?
+
   return (
     <div className="prediction-details">
       <div id="subtitle">

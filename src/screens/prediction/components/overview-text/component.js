@@ -14,7 +14,7 @@ const OverviewText = _props => (
       src={questionIcon}
       alt="Help"
     />
-    <ReactTooltip />
+    <ReactTooltip place="right" />
 
 
     {/* <p id="pred-model-intro-text">This page allows you to use the predictive tool to anticipate the severity of southern pine beetle spots in a given locality.

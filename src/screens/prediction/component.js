@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import {
   BarChart,
@@ -15,9 +15,13 @@ const Prediction = (props) => {
     isLoading,
     predictionData,
     predictionsErrorText,
+    selectedState,
   } = props;
 
-  const [predHTML, setPredHTML] = useState(<div />);
+  // eslint-disable-next-line no-unused-vars
+  // const [mapData, setMapData] = useState(null);
+  // console.log(selectedState);
+  // console.log(predictionData);
 
   const predDetails = (bool) => {
     if (bool) {
@@ -34,13 +38,13 @@ const Prediction = (props) => {
           </div>
         </div>
       );
-    } else { return <div />; }
+    } else { return null; }
   };
 
-  useEffect(() => {
-    // prediction details only come up when year, state, county/rd specified
-    setPredHTML(predDetails(predictionData.length === 1));
-  }, [predictionData]);
+  // useEffect(() => {
+  //   setMapData(selectedState);
+  //   console.log('selected state updated');
+  // }, [selectedState]);
 
   return (
     <div>
@@ -49,9 +53,9 @@ const Prediction = (props) => {
       {predictionsErrorText.length > 0 && predictionsErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
-      <PredictionMap />
+      <PredictionMap data={selectedState} />
       {/* TODO: Dynamically Change header */}
-      { predHTML }
+      { predDetails(predictionData.length === 1) }
     </div>
   );
 };
