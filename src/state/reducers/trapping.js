@@ -94,7 +94,7 @@ const TrappingReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.CLEAR_SELECTIONS:
-      return { ...state, data: action.payload === DATA_MODES.COUNTY ? state.county : state.rangerDistrict };
+      return { ...state, data: action.payload.dataMode === DATA_MODES.COUNTY ? state.county : state.rangerDistrict };
 
     default:
       return state;
