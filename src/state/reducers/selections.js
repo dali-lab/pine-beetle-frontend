@@ -25,8 +25,8 @@ const SelectionsReducer = (state = initialState, action) => {
       return {
         ...state,
         yearRange: {
-          startYear: startYear === '' ? '' : (startYear || startYear),
-          endYear: endYear === '' ? '' : (endYear || endYear),
+          startYear: startYear === '' ? '' : (startYear || state.yearRange.startYear),
+          endYear: endYear === '' ? '' : (endYear || state.yearRange.endYear),
         },
       };
 
