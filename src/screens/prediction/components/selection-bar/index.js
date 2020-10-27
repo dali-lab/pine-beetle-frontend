@@ -19,8 +19,8 @@ const mapStateToProps = (state) => {
       rangerDistrict,
       dataMode,
     },
-    trappings: {
-      data: trappingData,
+    predictions: {
+      data: predictionsData,
     },
   } = state;
 
@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
     county,
     rangerDistrict,
     selectedState,
-    trappingData,
+    predictionsData,
     dataMode,
     year,
   };

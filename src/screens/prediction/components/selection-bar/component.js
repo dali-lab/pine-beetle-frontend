@@ -16,24 +16,24 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    // clearAllSelections,
+    clearAllSelections,
     county,
     dataMode,
+    predictionsData,
     rangerDistrict,
     selectedState,
     setCounty,
     setRangerDistrict,
-    setYear,
     setState,
+    setYear,
     year,
-    trappingData,
   } = props;
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const allStates = [...new Set(trappingData.map(obj => obj.state))];
-  const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))] : [];
-  const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))] : [];
+  const allStates = [...new Set(predictionsData.map(obj => obj.state))];
+  const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))] : [];
+  const allRangerDistricts = selectedState ? [...new Set(predictionsData.map((obj => obj.rangerDistrict)))] : [];
 
   const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev));
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
@@ -72,6 +72,7 @@ const SelectionBar = (props) => {
           alt="Predict Button"
         />
       </button> */}
+      <button id="reset-current-data-button" className="submit static-button clear-button" onClick={clearAllSelections}>Clear Filters</button>
     </div>
   );
 };

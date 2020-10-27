@@ -255,19 +255,22 @@ const PredictionMap = (props) => {
 
   useEffect(() => {
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
-    generateMap();
 
-    // Calls function to download map when download control is clicked
-    document.addEventListener('click', (event) => {
-      if (!event.target.matches('.download-button')) return;
-      downloadMap();
-    }, false);
+    setTimeout(() => {
+      generateMap();
 
-    // Calls function to download map when download control is clicked
-    document.addEventListener('click', (event) => {
-      if (!event.target.matches('.download-button p')) return;
-      downloadMap();
-    }, false);
+      // Calls function to download map when download control is clicked
+      document.addEventListener('click', (event) => {
+        if (!event.target.matches('.download-button')) return;
+        downloadMap();
+      }, false);
+
+      // Calls function to download map when download control is clicked
+      document.addEventListener('click', (event) => {
+        if (!event.target.matches('.download-button p')) return;
+        downloadMap();
+      }, false);
+    }, 100);
   }, []);
 
   // useEffect(() => {

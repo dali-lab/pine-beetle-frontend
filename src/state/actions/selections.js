@@ -126,8 +126,8 @@ export const setRangerDistrict = (rangerDistrict) => {
  * @description action creator for clearing all selections
  */
 export const clearSelections = () => {
-  return (dispatch) => {
-    dispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+  return (dispatch, getState) => {
+    dispatch({ type: ActionTypes.CLEAR_SELECTIONS, payload: attachData(getState()) });
   };
 };
 

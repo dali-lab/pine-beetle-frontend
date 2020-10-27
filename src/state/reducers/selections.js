@@ -59,7 +59,14 @@ const SelectionsReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.CLEAR_SELECTIONS:
-      return initialState;
+      const year = action.payload.trappingData.reduce((prev, curr) => (
+        prev.year > curr.year ? prev : curr
+      ), {})?.year || state.yearRange.endYear;
+
+      return {
+        ...initialState,
+        year,
+      };
 
     default:
       return state;
