@@ -4,19 +4,33 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
 // import printPdf from 'mapbox-print-pdf';
 
+import {
+  separatePascalCase,
+} from './utils';
+
 import './style.scss';
 
 const thresholds = ['0-2.5%', '2.5-5%', '5-15%', '15-25%', '25-40%', '40-100%'];
 const colors = ['#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
 
-const MAP_SOURCE = {
-  type: 'vector',
-  url: 'mapbox://pine-beetle-prediction.1be58pyi',
+const MAP_SOURCES = {
+  COUNTY: {
+    type: 'vector',
+    url: 'mapbox://pine-beetle-prediction.1be58pyi',
+  },
+  RANGER_DISTRICT: {
+    type: 'vector',
+    url: 'mapbox://pine-beetle-prediction.0tor8eeq',
+  },
+};
+
+const SOURCE_LAYERS = {
+  COUNTY: 'US_Counties_updated',
+  RANGER_DISTRICT: 'RD_SPB_NE',
 };
 
 const MAP_SOURCE_NAME = 'counties';
-const SOURCE_LAYER = 'US_Counties_updated';
-const VECTOR_LAYER = 'us-counties-updated';
+const VECTOR_LAYER = 'prediction-chloropleth-layer';
 
 class DownloadControl {
   onAdd(map) {
@@ -46,8 +60,8 @@ const PredictionMap = (props) => {
   const [initialFill, setInitialFill] = useState(false);
   const [legendTags, setLegendTags] = useState([]);
 
-  const generateMap = () => {
-    if (map) return;
+  const generateMap = (forceRegenerate) => {
+    if (map && !forceRegenerate) return;
 
     const createdMap = new mapboxgl.Map({
       container: 'map', // container id
@@ -88,7 +102,8 @@ const PredictionMap = (props) => {
     if (!createdMap._listeners.load) {
       createdMap.on('load', () => {
         if (!createdMap.getSource(MAP_SOURCE_NAME)) {
-          createdMap.addSource(MAP_SOURCE_NAME, MAP_SOURCE);
+          createdMap.addSource(MAP_SOURCE_NAME, dataMode === DATA_MODES.COUNTY ? MAP_SOURCES.COUNTY : MAP_SOURCES.RANGER_DISTRICT);
+          console.log(createdMap.getSource(MAP_SOURCE_NAME));
         }
       });
     }
@@ -118,8 +133,15 @@ const PredictionMap = (props) => {
     setMap(createdMap);
   };
 
-  const colorPredictions = () => {
-    if (!map.isStyleLoaded()) return;
+  const colorPredictions = (predictions) => {
+    // keep trying until map styles are loaded
+    if (!map.isStyleLoaded()) {
+      setTimeout(() => {
+        colorPredictions(predictions);
+      }, 1000);
+
+      return;
+    }
 
     // remove county layer if already constructed
     if (map.getLayer(VECTOR_LAYER)) {
@@ -129,7 +151,7 @@ const PredictionMap = (props) => {
     const fillExpression = ['match', ['upcase', ['get', 'forest']]];
     const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
 
-    predictionsData.forEach(({
+    predictions.forEach(({
       county,
       prediction,
       rangerDistrict,
@@ -153,8 +175,13 @@ const PredictionMap = (props) => {
         color = colors[5];
       }
 
-      // TODO: might need to use different layer for ranger district
-      const locationName = dataMode === DATA_MODES.COUNTY ? `${county.toUpperCase()} ${state}` : rangerDistrict;
+      const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
+      const rangerDistrictFormatName = rangerDistrict ? separatePascalCase(rangerDistrict.split('_').pop()).toUpperCase() : '';
+
+      const locationName = dataMode === DATA_MODES.COUNTY
+        ? countyFormatName
+        // handles case where tileset has two spaces instead of one (this is a one-off)
+        : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD')];
 
       fillExpression.push(locationName, color);
       strokeExpression.push(locationName, '#000000');
@@ -169,10 +196,10 @@ const PredictionMap = (props) => {
       id: VECTOR_LAYER,
       type: 'fill',
       source: MAP_SOURCE_NAME,
-      'source-layer': SOURCE_LAYER,
+      'source-layer': dataMode === DATA_MODES.COUNTY ? SOURCE_LAYERS.COUNTY : SOURCE_LAYERS.RANGER_DISTRICT,
       paint: {
         'fill-color': fillExpression,
-        'fill-outline-color': strokeExpression,
+        'fill-outline-color': strokeExpression[1][1].length < 4 ? 'rgba(0,0,0,0)' : strokeExpression,
       },
     }, 'water-point-label');
   };
@@ -215,7 +242,8 @@ const PredictionMap = (props) => {
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
     setTimeout(() => {
-      generateMap();
+      setMap(undefined);
+      generateMap(true);
 
       // Calls function to download map when download control is clicked
       document.addEventListener('click', (event) => {
@@ -229,12 +257,12 @@ const PredictionMap = (props) => {
         downloadMap();
       }, false);
     }, 100);
-  }, []);
+  }, [dataMode]);
 
   useEffect(() => {
     if (!map) return;
 
-    if (year.toString().length === 4) colorPredictions();
+    if (year.toString().length === 4) colorPredictions(predictionsData);
 
     if (selectedState) {
       const zoom = stateAbbrevToZoomLevel[selectedState];
@@ -253,10 +281,8 @@ const PredictionMap = (props) => {
 
   useEffect(() => {
     if (!initialFill && map && predictionsData.length > 0) {
-      setTimeout(() => {
-        colorPredictions();
-        setInitialFill(true);
-      }, 1000);
+      colorPredictions(predictionsData);
+      setInitialFill(true);
     }
   }, [map, predictionsData]);
 
