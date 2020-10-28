@@ -53,6 +53,7 @@ const PredictionMap = (props) => {
     predictionsData,
     selectedState,
     setCounty,
+    setRangerDistrict,
     year,
   } = props;
 
@@ -112,7 +113,14 @@ const PredictionMap = (props) => {
     if (!createdMap._listeners.click) {
       createdMap.on('click', VECTOR_LAYER, (e) => {
         const forest = e.features[0].properties.forest.slice(0, -3);
-        setCounty(forest);
+
+        if (dataMode === DATA_MODES.COUNTY) {
+          setCounty(forest);
+        } else {
+          // TODO: need to format ranger district name properly here (i.e. find corresponding name where contains)
+          // this is because the format of the RD name in our db vs in the geojson tileset differs
+          setRangerDistrict(forest);
+        }
       });
     }
 
