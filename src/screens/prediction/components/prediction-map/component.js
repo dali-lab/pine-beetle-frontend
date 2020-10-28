@@ -49,6 +49,7 @@ class DownloadControl {
 
 const PredictionMap = (props) => {
   const {
+    allRangerDistricts,
     dataMode,
     predictionsData,
     selectedState,
@@ -117,9 +118,9 @@ const PredictionMap = (props) => {
         if (dataMode === DATA_MODES.COUNTY) {
           setCounty(forest);
         } else {
-          // TODO: need to format ranger district name properly here (i.e. find corresponding name where contains)
-          // this is because the format of the RD name in our db vs in the geojson tileset differs
-          setRangerDistrict(forest);
+          setRangerDistrict(allRangerDistricts.find(district => (
+            district.includes(forest.replace(' ', ''))
+          )));
         }
       });
     }
@@ -250,8 +251,10 @@ const PredictionMap = (props) => {
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
     setTimeout(() => {
-      setMap(undefined);
-      generateMap(true);
+      if (!initialFill) {
+        setMap(undefined);
+        generateMap(true);
+      }
 
       // Calls function to download map when download control is clicked
       document.addEventListener('click', (event) => {
@@ -265,7 +268,7 @@ const PredictionMap = (props) => {
         downloadMap();
       }, false);
     }, 100);
-  }, [dataMode]);
+  }, [dataMode, allRangerDistricts]);
 
   useEffect(() => {
     if (!map) return;
