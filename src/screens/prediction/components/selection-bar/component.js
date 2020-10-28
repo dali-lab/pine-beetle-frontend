@@ -45,11 +45,11 @@ const SelectionBar = (props) => {
       <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
       {/* TODO: fix county/rd selection */}
       <ChoiceInput
-        instructions={countyMode ? 'County' : 'RD'}
+        instructions={countyMode ? 'County' : 'Ranger District'}
         value={countyMode ? county : rangerDistrict}
         setValue={countyMode ? setCounty : setRangerDistrict}
         options={countyMode ? allCounties : allRangerDistricts}
-        firstOptionText={countyMode ? 'County' : 'RD'}
+        firstOptionText={countyMode ? 'County' : 'Ranger District'}
       />
 
       {/* <ChoiceInput instructions="Select State" submitFunction={updateState} availableOptions={availableStates} idName="state" value={this.state.stateName} firstOptionText="State" /> */}

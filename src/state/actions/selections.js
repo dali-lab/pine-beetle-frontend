@@ -127,7 +127,13 @@ export const setRangerDistrict = (rangerDistrict) => {
  */
 export const clearSelections = () => {
   return (dispatch, getState) => {
-    dispatch({ type: ActionTypes.CLEAR_SELECTIONS, payload: attachData(getState()) });
+    dispatch({
+      type: ActionTypes.CLEAR_SELECTIONS,
+      payload: {
+        ...attachData(getState()),
+        ...getState().selections,
+      },
+    });
   };
 };
 

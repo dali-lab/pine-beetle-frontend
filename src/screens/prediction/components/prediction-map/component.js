@@ -1,12 +1,36 @@
+/* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
-import { stateAbbrevToZoomLevel } from '../../../../constants';
+import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
 // import printPdf from 'mapbox-print-pdf';
+
+import {
+  separatePascalCase,
+} from './utils';
 
 import './style.scss';
 
-const thresholds = ['0-1%', '1-5%', '5-10%', '10-30%', '30-60%', '60-100%'];
+const thresholds = ['0-2.5%', '2.5-5%', '5-15%', '15-25%', '25-40%', '40-100%'];
 const colors = ['#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
+
+const MAP_SOURCES = {
+  COUNTY: {
+    type: 'vector',
+    url: 'mapbox://pine-beetle-prediction.1be58pyi',
+  },
+  RANGER_DISTRICT: {
+    type: 'vector',
+    url: 'mapbox://pine-beetle-prediction.0tor8eeq',
+  },
+};
+
+const SOURCE_LAYERS = {
+  COUNTY: 'US_Counties_updated',
+  RANGER_DISTRICT: 'RD_SPB_NE',
+};
+
+const MAP_SOURCE_NAME = 'counties';
+const VECTOR_LAYER = 'prediction-chloropleth-layer';
 
 class DownloadControl {
   onAdd(map) {
@@ -25,21 +49,25 @@ class DownloadControl {
 
 const PredictionMap = (props) => {
   const {
+    allRangerDistricts,
+    dataMode,
+    predictionsData,
     selectedState,
+    setCounty,
+    setRangerDistrict,
+    year,
   } = props;
 
   const [map, setMap] = useState();
+  const [initialFill, setInitialFill] = useState(false);
   const [legendTags, setLegendTags] = useState([]);
-  const [hoverElement, setHoverElement] = useState(<p>Hover over a forest for detailed information</p>);
 
-  const generateMap = () => {
-    if (map) return;
+  const generateMap = (forceRegenerate) => {
+    if (map && !forceRegenerate) return;
 
     const createdMap = new mapboxgl.Map({
       container: 'map', // container id
-      // style: 'mapbox://styles/mapbox/streets-v9',
-      // style: 'mapbox://styles/pine-beetle-prediction/ck2kl9kcy4vvb1cjyf23s2ars',
-      style: 'mapbox://styles/barkincavdaroglu/ckfx27xrv02k519mhahinwsni',
+      style: 'mapbox://styles/pine-beetle-prediction/ckgrzijos0q5119paazko291z',
       center: [-84.3880, 33.7490], // starting position
       zoom: 4.8, // starting zoom
       options: {
@@ -47,176 +75,142 @@ const PredictionMap = (props) => {
       },
     });
 
-    if (createdMap._controls) {
-      // if we haven't added a navigation control, add one
-      if (createdMap._controls.length < 3) {
-        createdMap.addControl(new mapboxgl.NavigationControl());
-        createdMap.addControl(new DownloadControl(), 'bottom-left'); // adds download button to map
-      }
+    if (!createdMap._controls) return;
 
-      // disable map zoom when using scroll
-      createdMap.scrollZoom.disable();
-
-      const legendTagsToSet = thresholds.map((threshold, index) => {
-        const color = colors[index];
-
-        return (
-          <div key={color}>
-            <span>{threshold}</span>
-            <span className="legend-key" style={{ backgroundColor: color }} />
-          </div>
-        );
-      });
-
-      // add legend tags
-      setLegendTags(legendTagsToSet);
-
-      if (createdMap._listeners.mousemove === undefined) {
-        createdMap.on('mousemove', (e) => {
-          if (!createdMap) return;
-
-          const counties = createdMap.queryRenderedFeatures(e.point, {
-            layers: ['counties-join'],
-          });
-
-          let element;
-
-          if (counties.length > 0) {
-            // get prediction for this state
-            const probability = 0;
-            // for (const entry in this.state.dataControllerState.predictiveModelOutputArray) {
-            //   const check = this.state.dataControllerState.predictiveModelOutputArray[entry].inputs.forest;
-
-            //   if (check === counties[0].properties.forest.toUpperCase()) {
-            //     probability = this.state.dataControllerState.predictiveModelOutputArray[entry].outputs.prob53spots;
-            //   }
-            // }
-            element = (
-              <div id="choropleth-map-p-area">
-                <p><strong>{counties[0].properties.forest}</strong></p>
-                <p>{`${probability * 100}%`}</p>
-              </div>
-            );
-          } else {
-            element = <p>Hover over a forest for detailed information</p>;
-          }
-
-          setHoverElement(element);
-        });
-
-        // select forest when user clicks on it
-        createdMap.on('click', 'counties-join', (e) => {
-          const forest = e.features[0].properties.forest.toUpperCase();
-
-          console.log(forest);
-
-          // TODO: select forest/county/ranger district in redux selections store
-          // this.state.dataController.updatecountieselection(e.features[0].properties.forest.toUpperCase());
-        });
-      }
-
-      setMap(createdMap);
+    // if we haven't added a navigation control, add one
+    if (createdMap._controls.length < 3) {
+      createdMap.addControl(new mapboxgl.NavigationControl());
+      createdMap.addControl(new DownloadControl(), 'bottom-left'); // adds download button to map
     }
+
+    // disable map zoom when using scroll
+    createdMap.scrollZoom.disable();
+
+    const legendTagsToSet = thresholds.map((threshold, index) => {
+      const color = colors[index];
+
+      return (
+        <div key={color}>
+          <span>{threshold}</span>
+          <span className="legend-key" style={{ backgroundColor: color }} />
+        </div>
+      );
+    });
+
+    // add legend tags
+    setLegendTags(legendTagsToSet);
+
+    // add map source on load
+    if (!createdMap._listeners.load) {
+      createdMap.on('load', () => {
+        if (!createdMap.getSource(MAP_SOURCE_NAME)) {
+          createdMap.addSource(MAP_SOURCE_NAME, dataMode === DATA_MODES.COUNTY ? MAP_SOURCES.COUNTY : MAP_SOURCES.RANGER_DISTRICT);
+          console.log(createdMap.getSource(MAP_SOURCE_NAME));
+        }
+      });
+    }
+
+    // select county/RD when user clicks on it
+    if (!createdMap._listeners.click) {
+      createdMap.on('click', VECTOR_LAYER, (e) => {
+        const forest = e.features[0].properties.forest.slice(0, -3);
+
+        if (dataMode === DATA_MODES.COUNTY) {
+          setCounty(forest);
+        } else {
+          setRangerDistrict(allRangerDistricts.find(district => (
+            district.includes(forest.replace(' ', ''))
+          )));
+        }
+      });
+    }
+
+    if (createdMap._listeners.mousemove === undefined) {
+      createdMap.on('mousemove', (e) => {
+        if (!createdMap) return;
+
+        const counties = createdMap.queryRenderedFeatures(e.point, {
+          layers: [VECTOR_LAYER],
+        });
+
+        if (counties.length > 0) {
+          console.log(counties[0].properties.forest);
+        }
+      });
+    }
+
+    setMap(createdMap);
   };
 
-  const colorState = (selectedSt) => {
-    // remove counties-join layer if already constructed
-    const mapLayer = map.getLayer('counties-join');
+  const colorPredictions = (predictions) => {
+    // keep trying until map styles are loaded
+    if (!map.isStyleLoaded()) {
+      setTimeout(() => {
+        colorPredictions(predictions);
+      }, 1000);
 
-    if (mapLayer) {
-      map.removeLayer('counties-join');
-      map.removeSource('counties');
-
-      map.addSource('counties', {
-        type: 'vector',
-        url: 'mapbox://pine-beetle-prediction.1be58pyi',
-      });
+      return;
     }
 
-    console.log(selectedSt);
-    console.log(mapLayer);
+    // remove county layer if already constructed
+    if (map.getLayer(VECTOR_LAYER)) {
+      map.removeLayer(VECTOR_LAYER);
+    }
 
+    const fillExpression = ['match', ['upcase', ['get', 'forest']]];
+    const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
 
-    // if (this.state.dataControllerState.predictiveModelOutputArray.length > 0) {
-    //   const expression = ['match', ['upcase', ['get', 'forest']]];
-    //   const countiesAdded = [];
+    predictions.forEach(({
+      county,
+      prediction,
+      rangerDistrict,
+      state,
+    }) => {
+      const fillProb = prediction['prob.Spots>53'];
 
-    //   // calculate color for each state based on clerids
-    //   this.state.dataControllerState.predictiveModelOutputArray.forEach((row) => {
-    //     let color;
+      let color;
 
-    //     if (row.outputs.prob53spots <= 0.010) {
-    //       color = colors[0];
-    //     } else if (row.outputs.prob53spots > 0.010 && row.outputs.prob53spots <= 0.017) {
-    //       color = colors[1];
-    //     } else if (row.outputs.prob53spots > 0.017 && row.outputs.prob53spots <= 0.028) {
-    //       color = colors[2];
-    //     } else if (row.outputs.prob53spots > 0.028 && row.outputs.prob53spots <= 0.046) {
-    //       color = colors[3];
-    //     } else if (row.outputs.prob53spots > 0.046 && row.outputs.prob53spots <= 0.077) {
-    //       color = colors[4];
-    //     } else if (row.outputs.prob53spots > 0.077 && row.outputs.prob53spots <= 0.129) {
-    //       color = colors[5];
-    //     } else if (row.outputs.prob53spots > 0.129 && row.outputs.prob53spots <= 0.215) {
-    //       color = colors[6];
-    //     } else if (row.outputs.prob53spots > 0.215 && row.outputs.prob53spots <= 0.359) {
-    //       color = colors[7];
-    //     } else if (row.outputs.prob53spots > 0.359 && row.outputs.prob53spots <= 0.599) {
-    //       color = colors[8];
-    //     } else if (row.outputs.prob53spots > 0.599) {
-    //       color = colors[9];
-    //     }
+      if (fillProb <= 0.025) {
+        color = colors[0];
+      } else if (fillProb > 0.025 && fillProb <= 0.05) {
+        color = colors[1];
+      } else if (fillProb > 0.05 && fillProb <= 0.15) {
+        color = colors[2];
+      } else if (fillProb > 0.15 && fillProb <= 0.25) {
+        color = colors[3];
+      } else if (fillProb > 0.25 && fillProb <= 0.4) {
+        color = colors[4];
+      } else {
+        color = colors[5];
+      }
 
-    //     if (!countiesAdded.includes(row.inputs.forest)) {
-    //       expression.push(row.inputs.forest, color);
-    //       countiesAdded.push(row.inputs.forest);
-    //     }
-    //   });
+      const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
+      const rangerDistrictFormatName = rangerDistrict ? separatePascalCase(rangerDistrict.split('_').pop()).toUpperCase() : '';
 
-    //   // last value is the default, used where there is no data
-    //   expression.push('rgba(0,0,0,0)');
+      const locationName = dataMode === DATA_MODES.COUNTY
+        ? countyFormatName
+        // handles case where tileset has two spaces instead of one (this is a one-off)
+        : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD')];
 
-    //   // add layer from the vector tile source with data-driven style
-    //   map.addLayer({
-    //     id: 'counties-join',
-    //     type: 'fill',
-    //     source: 'counties',
-    //     'source-layer': 'US_Counties_updated',
-    //     paint: {
-    //       'fill-color': expression,
-    //     },
-    //   }, 'national-park');
+      fillExpression.push(locationName, color);
+      strokeExpression.push(locationName, '#000000');
+    });
 
-    //   if (this.state.dataControllerState.userFilters.stateAbbreviation !== null) {
-    //     const center = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][0];
-    //     const zoom = this.state.dataControllerState.stateToZoomLevel[this.state.dataControllerState.userFilters.stateAbbreviation][1];
+    // last value is the default, used where there is no data
+    fillExpression.push('rgba(0,0,0,0)');
+    strokeExpression.push('rgba(0,0,0,0)');
 
-    //     map.flyTo({
-    //       center,
-    //       zoom,
-    //     });
-    //   } else {
-    //     mapLayer = map.getLayer('counties-join');
-    //     if (typeof mapLayer !== 'undefined') {
-    //       map.removeLayer('counties-join');
-    //     }
-
-    //     map.flyTo({
-    //       center: [-84.3880, 33.7490],
-    //       zoom: 4.8,
-    //     });
-    //   }
-    // } else {
-    //   mapLayer = map.getLayer('counties-join');
-    //   if (mapLayer) {
-    //     map.removeLayer('counties-join');
-    //   }
-
-    //   map.flyTo({
-    //     center: [-84.3880, 33.7490],
-    //     zoom: 4.8,
-    //   });
-    // }
+    // add layer from the vector tile source with data-driven style
+    map.addLayer({
+      id: VECTOR_LAYER,
+      type: 'fill',
+      source: MAP_SOURCE_NAME,
+      'source-layer': dataMode === DATA_MODES.COUNTY ? SOURCE_LAYERS.COUNTY : SOURCE_LAYERS.RANGER_DISTRICT,
+      paint: {
+        'fill-color': fillExpression,
+        'fill-outline-color': strokeExpression[1][1].length < 4 ? 'rgba(0,0,0,0)' : strokeExpression,
+      },
+    }, 'water-point-label');
   };
 
   // function to download map of currently selected data
@@ -257,7 +251,10 @@ const PredictionMap = (props) => {
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
     setTimeout(() => {
-      generateMap();
+      if (!initialFill) {
+        setMap(undefined);
+        generateMap(true);
+      }
 
       // Calls function to download map when download control is clicked
       document.addEventListener('click', (event) => {
@@ -271,55 +268,38 @@ const PredictionMap = (props) => {
         downloadMap();
       }, false);
     }, 100);
-  }, []);
-
-  // useEffect(() => {
-  //   if (!map) return;
-
-  //   map.resize();
-
-  //   if (map._listeners.load === undefined) {
-  //     map.on('load', () => {
-  //       if (map.getSource('counties') === undefined) {
-  //         map.addSource('counties', {
-  //           type: 'vector',
-  //           url: 'mapbox://pine-beetle-prediction.1be58pyi',
-  //         });
-  //       }
-
-  //       colorStates();
-  //     });
-  //   } else if (map.isStyleLoaded()) {
-  //     colorStates();
-  //   }
-  // }, [map]);
+  }, [dataMode, allRangerDistricts]);
 
   useEffect(() => {
-    if (map && selectedState) {
+    if (!map) return;
+
+    if (year.toString().length === 4) colorPredictions(predictionsData);
+
+    if (selectedState) {
       const zoom = stateAbbrevToZoomLevel[selectedState];
+
       map.flyTo({
         center: zoom[0],
         zoom: zoom[1],
       });
-      colorState(selectedState);
-    } else if (map) {
+    } else {
       map.flyTo({
         center: [-84.3880, 33.7490],
         zoom: 4.8,
       });
-      // TODO: uncolor state after zoom out
     }
-  }, [selectedState]);
+  }, [predictionsData, selectedState, map]);
+
+  useEffect(() => {
+    if (!initialFill && map && predictionsData.length > 0) {
+      colorPredictions(predictionsData);
+      setInitialFill(true);
+    }
+  }, [map, predictionsData]);
 
   return (
     <div className="container flex-item-left" id="map-container">
       <div id="map" />
-      <div className="map-overlay-hover-area" id="features">
-        <h3>Predictions By Forest</h3>
-        <div id="pd">
-          {hoverElement}
-        </div>
-      </div>
       <div className="map-overlay-legend" id="legend">
         <div className="legend-key-title"><strong>Probability of &gt;50 spots</strong></div>
         {legendTags}
