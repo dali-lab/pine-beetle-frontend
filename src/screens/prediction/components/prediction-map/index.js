@@ -5,6 +5,7 @@ import StateMap from './component';
 import {
   setCounty,
   setRangerDistrict,
+  setState,
 } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
@@ -41,6 +42,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));
+    },
+    setState: (state) => {
+      dispatch(setState(state));
     },
   };
 };
