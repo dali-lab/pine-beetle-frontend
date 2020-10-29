@@ -168,3 +168,18 @@
 #printmap {
     display: none;
 }
+
+#prediction-hover {
+    position: absolute;
+    // left: 100px;
+    // top: 150px;
+    background-color: rgba(17, 18, 22, 0.75);
+    padding: 15px;
+    color: white;
+    text-align: left;
+    border-radius: 10px;
+
+    h3 {
+        margin-bottom: 10px;
+    }
+}
