@@ -1,11 +1,9 @@
 /* eslint-disable react/button-has-type */
-import React, { useState } from 'react';
+import React from 'react';
 
 import { TextInput, ChoiceInput } from '../../../../components/input-components';
 
 import { DATA_MODES } from '../../../../constants';
-
-import { setDataMode } from '../../../../state/actions';
 
 import {
   getStateNameFromAbbreviation,
@@ -23,13 +21,12 @@ const SelectionBar = (props) => {
     rangerDistrict,
     selectedState,
     setCounty,
+    setDataMode,
     setRangerDistrict,
     setState,
     setYear,
     year,
   } = props;
-
-  const [countyMode, setCountyMode] = useState(dataMode === DATA_MODES.COUNTY);
 
   const allStates = [...new Set(predictionsData.map(obj => obj.state))].sort();
   const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))].sort() : [];
@@ -39,8 +36,10 @@ const SelectionBar = (props) => {
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
+  const countyMode = dataMode === DATA_MODES.COUNTY;
+
   const boldenSelection = (mode) => {
-    if ((mode === 'county' && countyMode) || (mode === 'rd' && !countyMode)) {
+    if ((mode === DATA_MODES.COUNTY && countyMode) || (mode === DATA_MODES.RANGER_DISTRICT && !countyMode)) {
       return ({ color: '#2d2d2d' });
     }
     return null;
@@ -56,16 +55,16 @@ const SelectionBar = (props) => {
         <div id="mode-selection">
           <button
             id="mode-btn"
-            onClick={() => { setDataMode(DATA_MODES.COUNTY); setCountyMode(dataMode === DATA_MODES.COUNTY); }}
-            style={boldenSelection('county')}
+            onClick={() => setDataMode(DATA_MODES.COUNTY)}
+            style={boldenSelection(DATA_MODES.COUNTY)}
           >
             County
           </button>
           <div id="vl2" />
           <button
             id="mode-btn"
-            onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); setCountyMode(dataMode === DATA_MODES.RANGER_DISTRICT); }}
-            style={boldenSelection('rd')}
+            onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
+            style={boldenSelection(DATA_MODES.RANGER_DISTRICT)}
           >
             Ranger District
           </button>
@@ -76,7 +75,7 @@ const SelectionBar = (props) => {
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? setCounty : setRangerDistrict}
             options={countyMode ? allCounties : allRangerDistricts}
-            firstOptionText={countyMode ? 'County' : 'RD'}
+            firstOptionText={countyMode ? 'County' : 'Ranger District'}
           />
         </div>
       </div>
