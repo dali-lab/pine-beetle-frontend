@@ -19,8 +19,8 @@ const BarChart = (props) => {
 
   // data to be put into bar chart
   const [inputData, setInputData] = useState([]);
-  const barLabels = ['0', '>0', '>19', '>53', '>147'];
-  const barColors = ['#FF4954', '#FF9B53', '#FFCF53', '#5383FF', '#6FDCFF'];
+  const barLabels = ['>0', '>20', '>50', '>150'];
+  const barColors = ['#FF9B53', '#FFCF53', '#5383FF', '#6FDCFF'];
 
   // function for updating
   const chartData = (input = []) => {
@@ -61,7 +61,6 @@ const BarChart = (props) => {
 
   useEffect(() => {
     const updatedInputData = [
-      1 - data[0].prediction['prob.Spots>0'],
       data[0].prediction['prob.Spots>0'],
       data[0].prediction['prob.Spots>19'],
       data[0].prediction['prob.Spots>53'],

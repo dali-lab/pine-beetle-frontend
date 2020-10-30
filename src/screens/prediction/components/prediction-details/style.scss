@@ -33,6 +33,7 @@
     // font-weight: 200;
     font-size: 16px;
     text-align: center;
+    white-space: nowrap;
 }
 
 .prediction-table {
@@ -42,6 +43,7 @@
     // border-collapse: collapse;
     border-collapse: separate;
     border-spacing: 0 30px;
+    white-space: nowrap;
 }
 
 .prediction-table td:nth-child(2){
@@ -52,7 +54,7 @@
     width: 33%;
     height: 40px;
     text-align: left;
-    padding: 0px 5px 5px;
+    padding: 2px 20px 2px 20px;
 }
 
 #bullet {

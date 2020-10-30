@@ -1,9 +1,11 @@
 /* eslint-disable react/button-has-type */
-import React from 'react';
+import React, { useState } from 'react';
 
 import { TextInput, ChoiceInput } from '../../../../components/input-components';
 
 import { DATA_MODES } from '../../../../constants';
+
+import { setDataMode } from '../../../../state/actions';
 
 import {
   getStateNameFromAbbreviation,
@@ -11,8 +13,6 @@ import {
 } from './utils';
 
 import './style.scss';
-
-// const predictionBeetle = require('../../../../assets/icons/predict-beetle.png');
 
 const SelectionBar = (props) => {
   const {
@@ -29,7 +29,7 @@ const SelectionBar = (props) => {
     year,
   } = props;
 
-  const countyMode = dataMode === DATA_MODES.COUNTY;
+  const [countyMode, setCountyMode] = useState(dataMode === DATA_MODES.COUNTY);
 
   const allStates = [...new Set(predictionsData.map(obj => obj.state))].sort();
   const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))].sort() : [];
@@ -39,39 +39,47 @@ const SelectionBar = (props) => {
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
+  const boldenSelection = (mode) => {
+    if ((mode === 'county' && countyMode) || (mode === 'rd' && !countyMode)) {
+      return ({ color: '#2d2d2d' });
+    }
+    return null;
+  };
+
   return (
     <div id="predictionbar" className="container">
       <TextInput instructions="Year" setValue={setYear} value={year} />
+      <div id="vl1" />
       <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
-      {/* TODO: fix county/rd selection */}
-      <ChoiceInput
-        instructions={countyMode ? 'County' : 'Ranger District'}
-        value={countyMode ? county : rangerDistrict}
-        setValue={countyMode ? setCounty : setRangerDistrict}
-        options={countyMode ? allCounties : allRangerDistricts}
-        firstOptionText={countyMode ? 'County' : 'Ranger District'}
-      />
-
-      {/* <ChoiceInput instructions="Select State" submitFunction={updateState} availableOptions={availableStates} idName="state" value={this.state.stateName} firstOptionText="State" /> */}
-      {/* <OptgroupChoiceInput
-        instructions="Select County / Parish"
-        submitFunction={this.props.dataController.updateForestSelection}
-        availableOptions={sortedAvailableForests}
-        idName="forest"
-        value={this.state.forest}
-        ref={this.forestInput}
-        showAboveText
-        firstOptionText="County / Parish"
-      /> */}
-
-      {/* TODO: make predict button predit things */}
-      {/* <button className="predict-button">
-        <p>Predict</p>
-        <img
-          src={predictionBeetle}
-          alt="Predict Button"
-        />
-      </button> */}
+      <div id="vl1" />
+      <div className="menuInstruction">
+        <div id="mode-selection">
+          <button
+            id="mode-btn"
+            onClick={() => { setDataMode(DATA_MODES.COUNTY); setCountyMode(dataMode === DATA_MODES.COUNTY); }}
+            style={boldenSelection('county')}
+          >
+            County
+          </button>
+          <div id="vl2" />
+          <button
+            id="mode-btn"
+            onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); setCountyMode(dataMode === DATA_MODES.RANGER_DISTRICT); }}
+            style={boldenSelection('rd')}
+          >
+            Ranger District
+          </button>
+        </div>
+        <div style={{ width: '50px' }}>
+          <ChoiceInput
+            // instructions={countyMode ? 'County' : 'RD'}
+            value={countyMode ? county : rangerDistrict}
+            setValue={countyMode ? setCounty : setRangerDistrict}
+            options={countyMode ? allCounties : allRangerDistricts}
+            firstOptionText={countyMode ? 'County' : 'RD'}
+          />
+        </div>
+      </div>
       <button id="reset-current-data-button" className="submit static-button clear-button" onClick={clearAllSelections}>Clear Filters</button>
     </div>
   );
