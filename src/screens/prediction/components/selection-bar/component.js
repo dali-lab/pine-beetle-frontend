@@ -31,10 +31,9 @@ const SelectionBar = (props) => {
 
   const [countyMode, setCountyMode] = useState(dataMode === DATA_MODES.COUNTY);
 
-  const allStates = [...new Set(predictionsData.map(obj => obj.state))];
-  const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))] : [];
-  const allRangerDistricts = selectedState ? [...new Set(predictionsData.map((obj => obj.rangerDistrict)))] : [];
-  // const [allRangerDistricts, setAllRangerDistricts] = useState([]);
+  const allStates = [...new Set(predictionsData.map(obj => obj.state))].sort();
+  const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))].sort() : [];
+  const allRangerDistricts = selectedState ? [...new Set(predictionsData.map((obj => obj.rangerDistrict)))].sort() : [];
 
   const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev));
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
