@@ -10,7 +10,7 @@ import {
 
 import './style.scss';
 
-const thresholds = ['0-2.5%', '2.5-5%', '5-15%', '15-25%', '25-40%', '40-100%'];
+const thresholds = ['0-100', '101-500', '501-1000', '1001-5000', '5001-10000', '>10000'];
 const colors = ['#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
 
 const MAP_SOURCES = {
@@ -47,25 +47,25 @@ class DownloadControl {
   }
 }
 
-const PredictionMap = (props) => {
+const HistoricalMap = (props) => {
   const {
     allRangerDistricts,
     dataMode,
-    predictionsData,
     selectedState,
     setCounty,
     setRangerDistrict,
     setState,
+    trappingData,
     year,
   } = props;
 
   const [map, setMap] = useState();
   const [initialFill, setInitialFill] = useState(false);
   const [legendTags, setLegendTags] = useState([]);
-  const [predictionHover, setPredictionHover] = useState(null);
+  const [trappingHover, setTrappingHover] = useState(null);
 
   // twice-curried function for generating hover callback
-  const createMapHoverCallback = (predictions, rangerDistricts, mode) => (e) => {
+  const createMapHoverCallback = (trappings, rangerDistricts, mode) => (e) => {
     if (!map) return;
 
     const counties = map.queryRenderedFeatures(e.point, {
@@ -83,29 +83,28 @@ const PredictionMap = (props) => {
         location = rangerDistricts.find(rd => rd.includes(counties[0].properties.forest.replaceAll(' ', '')));
       }
 
-      const pred = predictions.find((p) => {
+      const data = trappings.filter((p) => {
         return (p.county === location && mode === DATA_MODES.COUNTY)
         || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT);
       });
 
-      if (pred && x && y) {
-        const {
-          county: countyName,
-          prediction: {
-            'prob.Spots>0': probAny,
-            'prob.Spots>53': probOutbreak,
-          },
-        } = pred;
+      if (data && data.length > 0 && x && y) {
+        const countyName = data.find(t => t.county) ? data.find(t => t.county).county : '';
 
-        setPredictionHover((
-          <div id="prediction-hover" style={{ left: `${x}px`, top: `${y - 125}px` }}>
+        const averageSpots = data.reduce((acc, curr) => (acc + curr.spots), 0) / data.length;
+        const avgSpbPer2Weeks = data.reduce((acc, curr) => (acc + curr.spbPer2Weeks), 0) / data.length;
+        const avgCleridsPer2Weeks = data.reduce((acc, curr) => (acc + curr.cleridPer2Weeks), 0) / data.length;
+
+        setTrappingHover((
+          <div id="trapping-hover" style={{ left: `${x}px`, top: `${y - 125}px` }}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
-            <p>Probability of any spots: {probAny.toFixed(2)}%</p>
-            <p>Probability of an outbreak: {probOutbreak.toFixed(2)}%</p>
+            <p>Average Spots: {averageSpots.toFixed(2)}</p>
+            <p>Average SPB Per 2 Weeks: {avgSpbPer2Weeks.toFixed(2)}</p>
+            <p>Average Clerids Per 2 Weeks: {avgCleridsPer2Weeks.toFixed(2)}</p>
           </div>
         ));
       } else {
-        setPredictionHover(null);
+        setTrappingHover(null);
       }
     }
   };
@@ -186,17 +185,17 @@ const PredictionMap = (props) => {
     }
 
     if (createdMap._listeners.mousemove === undefined) {
-      createdMap.on('mousemove', createMapHoverCallback(predictionsData, allRangerDistricts, dataMode));
+      createdMap.on('mousemove', createMapHoverCallback(trappingData, allRangerDistricts, dataMode));
     }
 
     setMap(createdMap);
   };
 
-  const colorPredictions = (predictions) => {
+  const colorFill = (trappings) => {
     // keep trying until map styles are loaded
     if (!map.isStyleLoaded()) {
       setTimeout(() => {
-        colorPredictions(predictions);
+        colorFill(trappings);
       }, 1000);
 
       return;
@@ -210,40 +209,49 @@ const PredictionMap = (props) => {
     const fillExpression = ['match', ['upcase', ['get', 'forest']]];
     const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
 
-    predictions.forEach(({
-      county,
-      prediction,
-      rangerDistrict,
-      state,
-    }) => {
-      const fillProb = prediction['prob.Spots>53'];
+    const trappingsByLocality = trappings.reduce((acc, curr) => {
+      const {
+        county,
+        rangerDistrict,
+        state,
+        spots,
+      } = curr;
+
+      const countyFormatName = `${county} ${state}`.toUpperCase();
+      const rangerDistrictFormatName = rangerDistrict ? separatePascalCase(rangerDistrict.split('_').pop()).toUpperCase() : '';
+
+      const localityDescription = dataMode === DATA_MODES.COUNTY ? countyFormatName : rangerDistrictFormatName;
+
+      return {
+        ...acc,
+        [localityDescription]: {
+          sum: ((acc[localityDescription] && acc[localityDescription].sum) || 0) + spots,
+          numEntries: ((acc[localityDescription] && acc[localityDescription].numEntries) || 0) + 1,
+        },
+      };
+    }, {});
+
+    Object.entries(trappingsByLocality).forEach(([localityDescription, spotData]) => {
+      const spots = spotData.sum / spotData.numEntries;
 
       let color;
 
-      if (fillProb <= 0.025) {
+      if (spots <= 100) {
         color = colors[0];
-      } else if (fillProb > 0.025 && fillProb <= 0.05) {
+      } else if (spots > 100 && spots <= 500) {
         color = colors[1];
-      } else if (fillProb > 0.05 && fillProb <= 0.15) {
+      } else if (spots > 500 && spots <= 1000) {
         color = colors[2];
-      } else if (fillProb > 0.15 && fillProb <= 0.25) {
+      } else if (spots > 1000 && spots <= 5000) {
         color = colors[3];
-      } else if (fillProb > 0.25 && fillProb <= 0.4) {
+      } else if (spots > 5000 && spots <= 10000) {
         color = colors[4];
       } else {
         color = colors[5];
       }
 
-      const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
-      const rangerDistrictFormatName = rangerDistrict ? separatePascalCase(rangerDistrict.split('_').pop()).toUpperCase() : '';
-
-      const locationName = dataMode === DATA_MODES.COUNTY
-        ? countyFormatName
-        // handles case where tileset has two spaces instead of one (this is a one-off)
-        : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD')];
-
-      fillExpression.push(locationName, color);
-      strokeExpression.push(locationName, '#000000');
+      fillExpression.push(localityDescription, color);
+      strokeExpression.push(localityDescription, '#000000');
     });
 
     // last value is the default, used where there is no data
@@ -321,7 +329,7 @@ const PredictionMap = (props) => {
   useEffect(() => {
     if (!map) return;
 
-    if (year.toString().length === 4) colorPredictions(predictionsData);
+    if (year.toString().length === 4) colorFill(trappingData);
 
     if (selectedState) {
       const zoom = stateAbbrevToZoomLevel[selectedState];
@@ -336,18 +344,18 @@ const PredictionMap = (props) => {
         zoom: 4.8,
       });
     }
-  }, [predictionsData, selectedState, map]);
+  }, [trappingData, selectedState, map]);
 
   useEffect(() => {
-    if (!initialFill && map && predictionsData.length > 0) {
-      colorPredictions(predictionsData);
+    if (!initialFill && map && trappingData.length > 0) {
+      colorFill(trappingData);
       setInitialFill(true);
     }
 
-    if (map && predictionsData) {
-      map.on('mousemove', createMapHoverCallback(predictionsData, allRangerDistricts, dataMode));
+    if (map && trappingData) {
+      map.on('mousemove', createMapHoverCallback(trappingData, allRangerDistricts, dataMode));
     }
-  }, [map, predictionsData, allRangerDistricts, dataMode]);
+  }, [map, trappingData, allRangerDistricts, dataMode]);
 
   useEffect(() => {
     if (map && allRangerDistricts) {
@@ -359,13 +367,13 @@ const PredictionMap = (props) => {
     <div className="container flex-item-left" id="map-container">
       <div id="map" />
       <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title"><strong>Probability of &gt;50 spots</strong></div>
+        <div className="legend-key-title"><strong>Total number of spots</strong></div>
         {legendTags}
       </div>
       <div id="printmap" />
-      {predictionHover}
+      {trappingHover}
     </div>
   );
 };
 
-export default PredictionMap;
+export default HistoricalMap;
