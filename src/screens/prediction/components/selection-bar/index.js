@@ -1,44 +1,53 @@
 import { connect } from 'react-redux';
 
-import StateMap from './component';
+import SelectionBar from './component';
 
 import {
+  clearSelections,
   setCounty,
+  setDataMode,
   setRangerDistrict,
   setState,
+  setYear,
 } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
     selections: {
-      county,
-      dataMode,
-      rangerDistrict,
-      state: selectedState,
       year,
+      state: selectedState,
+      county,
+      rangerDistrict,
+      dataMode,
     },
     predictions: {
       data: predictionsData,
     },
   } = state;
 
-  const allRangerDistricts = [...new Set(predictionsData.map((obj => obj.rangerDistrict)))];
-
   return {
-    allRangerDistricts,
     county,
-    dataMode,
-    predictionsData,
     rangerDistrict,
     selectedState,
+    predictionsData,
+    dataMode,
     year,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    clearAllSelections: () => {
+      dispatch(clearSelections());
+    },
+    setYear: (year) => {
+      dispatch(setYear(year));
+    },
     setCounty: (county) => {
       dispatch(setCounty(county));
+    },
+    setDataMode: (dataMode) => {
+      dispatch(setDataMode(dataMode));
     },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));
@@ -52,4 +61,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(StateMap);
+)(SelectionBar);

@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
       },
     },
     predictions: {
+      data: predictionData,
       fetchingCounty,
       fetchingRangerDistrict,
     },
@@ -22,6 +23,7 @@ const mapStateToProps = (state) => {
 
   return {
     isLoading,
+    predictionData,
     predictionsErrorText,
     selectedState,
   };

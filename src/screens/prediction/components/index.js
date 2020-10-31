@@ -1,9 +1,13 @@
+import BarChart from './bar-chart';
 import OverviewText from './overview-text';
+import PredictionDetails from './prediction-details';
 import PredictionMap from './prediction-map';
-import StateMap from './state-map';
+import SelectionBar from './selection-bar';
 
 export {
+  BarChart,
   OverviewText,
+  PredictionDetails,
   PredictionMap,
-  StateMap,
+  SelectionBar,
 };

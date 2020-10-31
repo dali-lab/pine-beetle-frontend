@@ -16,6 +16,7 @@ import {
   HistoricalData,
   HowItWorks,
   Landing,
+  PlayWithModel,
   Prediction,
 } from './screens';
 
@@ -27,6 +28,7 @@ import {
 import {
   DATA_MODES,
   getServerUrl,
+  ROUTES,
 } from './constants';
 
 const FallBack = () => {
@@ -60,12 +62,13 @@ const App = (props) => {
         <Header />
         <div className="content">
           <Switch>
-            <Route exact path="/" component={Landing} />
-            <Route path="/about" component={About} />
-            <Route path="/admin" component={Admin} />
-            <Route path="/historical-data" component={HistoricalData} />
-            <Route path="/how-it-works" component={HowItWorks} />
-            <Route path="/predictions" component={Prediction} />
+            <Route exact path={ROUTES.HOME} component={Landing} />
+            <Route path={ROUTES.ABOUT} component={About} />
+            <Route path={ROUTES.ADMIN} component={Admin} />
+            <Route path={ROUTES.HISTORICAL_DATA} component={HistoricalData} />
+            <Route path={ROUTES.HOW_IT_WORKS} component={HowItWorks} />
+            <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModel} />
+            <Route path={ROUTES.PREDICTIONS} component={Prediction} />
             <Route component={FallBack} />
           </Switch>
         </div>

@@ -94,7 +94,13 @@ const PredictionsReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.CLEAR_SELECTIONS:
-      return { ...state, data: action.payload === DATA_MODES.COUNTY ? state.county : state.rangerDistrict };
+      const year = action.payload.trappingData.reduce((prev, curr) => (
+        prev.year > curr.year ? prev : curr
+      ), {})?.year || state.yearRange.endYear;
+
+      const newData = action.payload.dataMode === DATA_MODES.COUNTY ? state.county : state.rangerDistrict;
+
+      return { ...state, data: newData.filter(obj => obj.year === year) };
 
     default:
       return state;

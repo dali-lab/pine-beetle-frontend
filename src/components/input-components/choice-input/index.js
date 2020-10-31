@@ -40,6 +40,7 @@ const ChoiceInput = (props) => {
   return (
     <div className="selection">
       <label>{instructions}</label>
+      <br />
       <select className="selection-no-button" onChange={submit} value={value}>
         {opts}
       </select>

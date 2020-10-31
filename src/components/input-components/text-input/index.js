@@ -12,7 +12,8 @@ const TextInput = (props) => {
 
   return (
     <div className="menuInstruction">
-      <label>{instructions}</label><br />
+      <label>{instructions}</label>
+      <br />
       <input
         className="input"
         type="text"

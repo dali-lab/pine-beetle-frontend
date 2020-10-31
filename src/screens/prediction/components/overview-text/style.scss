@@ -1,6 +1,20 @@
-#pred-model-intro-text {
-    font-family: 'Graphik Web';
-    font-weight: normal;
-    text-align: left;
-    font-size: 14px;
+.container {
+    background: blue;
+    background-clip: padding-box;
+}
+
+#title {
+    font-family: 'Inter';
+    font-size: 44px;
+    letter-spacing: 1;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    display: inline-block;
+    margin-right: 21px;
+}
+
+#icon {
+    width: 36px;
+    height: 36px;
+    display: inline-block;
 }

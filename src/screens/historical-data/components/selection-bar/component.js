@@ -31,9 +31,9 @@ const SelectionBar = (props) => {
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const allStates = [...new Set(trappingData.map(obj => obj.state))];
-  const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))] : [];
-  const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))] : [];
+  const allStates = [...new Set(trappingData.map(obj => obj.state))].sort();
+  const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
+  const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
 
   const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev));
   const selectedStateName = getStateNameFromAbbreviation(selectedState);

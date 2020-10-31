@@ -1,20 +1,20 @@
 #header {
     height: auto;
     margin: 0px;
-
-    /* margin: 15px 15px 15px 15px; */
-    background-color: #3f5726;
+    background-color: #FBFBFD;
 
     #title-area {
         margin-top: 0px;
         margin-bottom: 0px;
         height: auto;
-        background-color: #3f5726; /* #E9C46A;*/
+        background-color: #FBFBFD;
+        display: flex;
+        justify-content: space-between;
     }
     
     #title-area a {
         text-decoration: none;
-        color: #000000; /* #212122; */
+        color: #000000;
     }
     
     #title-area img {
@@ -33,21 +33,23 @@
     }
     
     #nav-button-area {
-        display: inline-block;
         margin: auto;
         margin-right: 100px;
     }
     
     #nav-buttons p {
-        color: #ffffff; /*#62731D;*/
+        color: #000000;
         float: left;
         padding: 15px;
         padding-top: 18px;
         font-size: 16px;
         cursor: pointer;
         text-decoration: none;
-        font-family: "Graphik Web";
-        font-weight: 500;
+        font-family: "Inter";
+        font-style: normal;
+        line-height: 24px;
+        letter-spacing: 0em;
+        text-align: left;
     
         -o-transition: 0.3s;
         -ms-transition: 0.3s;
@@ -66,5 +68,9 @@
     
     #nav-active {
         text-decoration: underline !important;
+    }
+
+    .current-nav {
+        font-weight: bold;
     }
 }
