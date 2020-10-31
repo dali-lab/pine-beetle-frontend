@@ -5,9 +5,8 @@ import 'chartjs-top-round-bar';
 
 // import { getFullYear } from './utils';
 
-// import './style.scss';
+import './style.scss';
 
-// we want a bar graph with prob of 0, >0, ... >147 spots
 // reference: https://github.com/chartjs/Chart.js/blob/master/samples/charts/bar/vertical.html
 // https://stackoverflow.com/questions/43254153/how-to-create-rounded-bars-for-bar-chart-js-v2
 
@@ -70,7 +69,7 @@ const BarChart = (props) => {
   }, [data]);
 
   return (
-    <div style={{ width: '40vw' }}>
+    <div id="bar-chart-container">
       <Bar data={chartData(inputData)} height={400} options={chartOptions} />
     </div>
   );

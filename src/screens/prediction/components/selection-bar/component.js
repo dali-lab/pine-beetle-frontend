@@ -34,18 +34,10 @@ const SelectionBar = (props) => {
   const allStates = [...new Set(predictionsData.map(obj => obj.state))];
   const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))] : [];
   const allRangerDistricts = selectedState ? [...new Set(predictionsData.map((obj => obj.rangerDistrict)))] : [];
-  // const [allRangerDistricts, setAllRangerDistricts] = useState([]);
 
   const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev));
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
-
-  const boldenSelection = (mode) => {
-    if ((mode === 'county' && countyMode) || (mode === 'rd' && !countyMode)) {
-      return ({ color: '#2d2d2d' });
-    }
-    return null;
-  };
 
   return (
     <div id="predictionbar" className="container">
@@ -58,7 +50,7 @@ const SelectionBar = (props) => {
           <button
             id="mode-btn"
             onClick={() => { setDataMode(DATA_MODES.COUNTY); setCountyMode(dataMode === DATA_MODES.COUNTY); }}
-            style={boldenSelection('county')}
+            className={(countyMode) ? 'county-rd-selection' : null}
           >
             County
           </button>
@@ -66,7 +58,7 @@ const SelectionBar = (props) => {
           <button
             id="mode-btn"
             onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); setCountyMode(dataMode === DATA_MODES.RANGER_DISTRICT); }}
-            style={boldenSelection('rd')}
+            className={(!countyMode) ? 'county-rd-selection' : null}
           >
             Ranger District
           </button>

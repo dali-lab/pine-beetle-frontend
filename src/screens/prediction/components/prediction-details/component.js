@@ -9,14 +9,7 @@ const PredictionDetails = (props) => {
     data = [],
   } = props;
 
-  const currYear = data[0].year;
-
-  const hasEndobrev = () => {
-    if (data[0].endobrev === 0) {
-      return ('no');
-    }
-    return ('yes');
-  };
+  const currYear = data[0]?.year ?? (new Date()).getFullYear();
 
   return (
     <div className="prediction-details">
@@ -27,26 +20,27 @@ const PredictionDetails = (props) => {
         <div className="prediction-circle">
           <div className="circle" style={{ background: '#FFC148' }}>
             <p id="percent">{data[0].prediction['prob.Spots>0'].toFixed(2)}</p>
-            <p>Probability of</p><p>Any Spots</p>
+            <p>Probability of</p>
+            <p>Any Spots</p>
+          </div>
+        </div>
+        <div className="prediction-circle">
+          <div className="circle" style={{ background: '#86CCFF' }}>
+            <p id="percent">{data[0].prediction['prob.Spots>53'].toFixed(2)}</p>
+            <p>Probability of</p>
+            <p>Outbreak</p>
           </div>
         </div>
         {/* <div className="prediction-circle">
           <div className="circle" style={{ background: '#86CCFF' }}>
-            <p id="percent">{data[0].prediction['prob.Spots>53'].toFixed(2)}</p>
-            <p>Probability of Outbreak</p>
-          </div>
-        </div> */}
-        <div className="prediction-circle">
-          <div className="circle" style={{ background: '#86CCFF' }}>
             <p id="percent">{Math.round(data[0].prediction['Exp spots if outbreak'])}</p>
             <p>Expected Number</p><p>of Spots</p>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="prediction-table">
         <table>
           <tr>
-            {/* <td><div id="bullet" /></td> */}
             <td>{currYear - 2}</td>
             <td />
             <td id="spots">
@@ -58,7 +52,6 @@ const PredictionDetails = (props) => {
             </td>
           </tr>
           <tr>
-            {/* <td><div id="bullet" /></td> */}
             <td>{currYear - 1}</td>
             <td id="clerids">
               <img
@@ -76,7 +69,6 @@ const PredictionDetails = (props) => {
             </td>
           </tr>
           <tr>
-            {/* <td><div id="bullet" /></td> */}
             <td>Spring {currYear}</td>
             <td id="spb">
               <img
@@ -85,7 +77,7 @@ const PredictionDetails = (props) => {
               />
               {data[0].SPB.toFixed(1)} SPB
             </td>
-            <td id="endobrev">{hasEndobrev()} endobrev</td>
+            <td id="endobrev">{(data[0].endobrev === 0) ? 'no' : 'yes'} endobrev</td>
           </tr>
         </table>
       </div>

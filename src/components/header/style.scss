@@ -1,8 +1,6 @@
 #header {
     height: auto;
     margin: 0px;
-
-    /* margin: 15px 15px 15px 15px; */
     background-color: #FBFBFD;
 
     #title-area {
@@ -10,14 +8,13 @@
         margin-bottom: 0px;
         height: auto;
         background-color: #FBFBFD;
-        /* #E9C46A;*/
         display: flex;
         justify-content: space-between;
     }
     
     #title-area a {
         text-decoration: none;
-        color: #000000; /* #212122; */
+        color: #000000;
     }
     
     #title-area img {
@@ -36,13 +33,12 @@
     }
     
     #nav-button-area {
-        // display: inline-block;
         margin: auto;
         margin-right: 100px;
     }
     
     #nav-buttons p {
-        color: #000000; /*#62731D;*/
+        color: #000000;
         float: left;
         padding: 15px;
         padding-top: 18px;
@@ -72,5 +68,9 @@
     
     #nav-active {
         text-decoration: underline !important;
+    }
+
+    .current-nav {
+        font-weight: bold;
     }
 }

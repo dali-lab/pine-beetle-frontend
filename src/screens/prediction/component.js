@@ -42,37 +42,35 @@ const Prediction = (props) => {
     }
   };
 
-  const createHistogramJSX = (bool) => {
-    if (bool) {
-      const predProb50 = predictionData[0].prediction['prob.Spots>53'];
-      const histogram = getHistogram(predProb50);
-      return (
-        <img
-          src={histogram}
-          alt="Histogram for Predicted % Chance of >50 Spots"
-          style={{ width: '800px' }}
-          className="container"
-        />
-      );
-    } else { return null; }
+  const createHistogramJSX = (hasPredData) => {
+    if (!hasPredData) return null;
+    const predProb50 = predictionData[0].prediction['prob.Spots>53'];
+    const histogram = getHistogram(predProb50);
+    return (
+      <img
+        src={histogram}
+        alt="Histogram for Predicted % Chance of >50 Spots"
+        style={{ width: '800px' }}
+        className="container"
+      />
+    );
   };
 
-  const predDetails = (bool) => {
-    if (bool) {
-      return (
-        <div>
-          <div className="container" id="pred-header">Prediction Details</div>
-          <div className="container" id="predictions">
-            <div className="bar-chart">
-              <BarChart data={predictionData} />
-            </div>
-            <div className="prediction-details">
-              <PredictionDetails data={predictionData} />
-            </div>
+  const predDetails = (hasPredData) => {
+    if (!hasPredData) return null;
+    return (
+      <div>
+        <div className="container" id="pred-header">Prediction Details</div>
+        <div className="container" id="predictions">
+          <div className="bar-chart">
+            <BarChart data={predictionData} />
+          </div>
+          <div className="prediction-details">
+            <PredictionDetails data={predictionData} />
           </div>
         </div>
-      );
-    } else { return null; }
+      </div>
+    );
   };
 
   return (
