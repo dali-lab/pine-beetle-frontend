@@ -1,8 +1,9 @@
 /* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import printPdf from 'mapbox-print-pdf';
+
 import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
-// import printPdf from 'mapbox-print-pdf';
 
 import {
   separatePascalCase,
@@ -32,29 +33,16 @@ const SOURCE_LAYERS = {
 const MAP_SOURCE_NAME = 'counties';
 const VECTOR_LAYER = 'prediction-chloropleth-layer';
 
-class DownloadControl {
-  onAdd(map) {
-    this.map = map;
-    this.container = document.createElement('div');
-    this.container.className = 'download-button mapboxgl-ctrl';
-    this.container.innerHTML = '<p>Download</p>';
-    return this.container;
-  }
-
-  onRemove() {
-    this.container.parentNode.removeChild(this.container);
-    this.map = undefined;
-  }
-}
-
 const HistoricalMap = (props) => {
   const {
     allRangerDistricts,
     dataMode,
+    endYear,
     selectedState,
     setCounty,
     setRangerDistrict,
     setState,
+    startYear,
     trappingData,
     year,
   } = props;
@@ -63,6 +51,7 @@ const HistoricalMap = (props) => {
   const [initialFill, setInitialFill] = useState(false);
   const [legendTags, setLegendTags] = useState([]);
   const [trappingHover, setTrappingHover] = useState(null);
+  const [isDownloadingMap, setIsDownloadingMap] = useState(false);
 
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (trappings, rangerDistricts, mode) => (e) => {
@@ -147,9 +136,8 @@ const HistoricalMap = (props) => {
     if (!createdMap._controls) return;
 
     // if we haven't added a navigation control, add one
-    if (createdMap._controls.length < 3) {
+    if (createdMap._controls.length < 2) {
       createdMap.addControl(new mapboxgl.NavigationControl());
-      createdMap.addControl(new DownloadControl(), 'bottom-left'); // adds download button to map
     }
 
     // disable map zoom when using scroll
@@ -271,38 +259,92 @@ const HistoricalMap = (props) => {
     }, 'water-point-label');
   };
 
-  // function to download map of currently selected data
-  // connected to the onClick of the .download-button class
-  const downloadMap = () => {
-    // var mapName = this.returnMapName();
-    // var printMap = this.buildPrintMap();
+  // adopted from old site
+  // Creates and returns HTML with the title for the header
+  // of the downloaded maps. This object is used by the mapbox-print-pdf library.
+  const buildHeader = () => {
+    return (
+      `<div id="map-header" style="text-align: center;">
+          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">Total Number of Spots</h2>
+        </div>`
+    );
+  };
 
-    // printPdf.build()
-    // .header({
-    //     html: this.buildHeader(),
-    //     baseline: {format: 'a3', orientation: 'p'}
-    // })
-    // .footer({
-    //     html: this.buildFooter(),
-    //     baseline: {format: 'a3', orientation: 'p'}
-    // })
-    // .margins({
-    //     top: 8,
-    //     right: 8,
-    //     left: 8,
-    //     bottom: 8
-    //   }, "pt")
-    // .format('a3')
-    // .portrait()
-    // .print(printMap, mapboxgl)
-    // .then(function(pdf) {
-    //   pdf.save(mapName);
-    //   // after saving, undo the design changes made by buildPrintMap()
-    //   // so they do not persist on the map shown on the website
-    //   printMap.removeLayer("county-label");
-    //   printMap.setLayoutProperty("settlement-label", "visibility", "visible");
-    //   printMap.setPaintProperty("admin-1-boundary", "line-width", 0.75);
-    // });
+  // adopted from old site
+  // Creates and returns HTML with information for the footer
+  // of the downloaded maps. This includes a legend for the color scale,
+  // notes explaining the legend and sources, and information about the
+  // data collection process. This object is used by the mapbox-print-pdf library.
+  const buildFooter = () => {
+    const title = `Southern Pine Beetle Outbreak Spot Maps: ${selectedState} ${startYear}-${endYear}`;
+
+    // creates the color boxes and text fields for the legend in the footer
+    const legendString = thresholds.reduce((acc, curr, index) => {
+      const layer = curr;
+      const color = colors[index];
+      const spanString = `
+          <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${color};display: 
+          inline-block;border-radius: 20%;width: 20px;height: 20px;margin-right: 5px;margin-left: 5px;"></div><span>${layer}</span>`;
+      return acc.concat(spanString);
+    }, '');
+
+    return (
+      `
+          <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
+              <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 
+              14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Average spots per year:</p>
+              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 51%;margin: auto;margin-bottom: 10px;">
+                  ${legendString}
+              </div>
+              <div id="spacer" style="height: 50px;"></div>
+              <h2 style="font-family: 'Open Sans', arial, serif;margin-bottom: 16px;margin-top: 16px;">${title}</h2>
+              <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">
+              The SPB prediction project is supported by USDA Forest Service: Science and Technology 
+              Development Program (STDP)
+              </p>
+              <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">Contact: Matthew P. Ayres - matthew.p.ayres@dartmouth.edu; Carissa F. Aoki - caoki@bates.edu
+              </p>
+              <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 14px;width: 53%;
+              margin: auto;margin-bottom: 16px;font-size: 14px;">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN, 
+              GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, © OpenStreetMap 
+              contributors, andthe GIS User Community</p>
+          </div>
+          `
+    );
+  };
+
+  const downloadMap = () => {
+    if (!map || !year || isDownloadingMap) return;
+
+    setIsDownloadingMap(true);
+
+    const mapName = `${selectedState || 'All States'}-${year}.pdf`;
+
+    printPdf.build()
+      .header({
+        html: buildHeader(),
+        baseline: { format: 'a3', orientation: 'p' },
+      })
+      .footer({
+        html: buildFooter(),
+        baseline: { format: 'a3', orientation: 'p' },
+      })
+      .margins({
+        top: 8,
+        right: 8,
+        left: 8,
+        bottom: 8,
+      }, 'pt')
+      .format('a3')
+      .portrait()
+      .print(map, mapboxgl)
+      .then((pdf) => {
+        pdf.save(mapName);
+        setIsDownloadingMap(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -366,11 +408,13 @@ const HistoricalMap = (props) => {
   return (
     <div className="container flex-item-left" id="map-container">
       <div id="map" />
+      <div id="map-overlay-download" onClick={downloadMap}>
+        <h4>{isDownloadingMap ? 'Downloading...' : 'Download'}</h4>
+      </div>
       <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title"><strong>Total number of spots</strong></div>
+        <div className="legend-key-title"><strong>Average spots per year</strong></div>
         {legendTags}
       </div>
-      <div id="printmap" />
       {trappingHover}
     </div>
   );

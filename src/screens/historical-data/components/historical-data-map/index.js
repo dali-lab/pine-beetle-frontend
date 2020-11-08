@@ -16,6 +16,10 @@ const mapStateToProps = (state) => {
       rangerDistrict,
       state: selectedState,
       year,
+      yearRange: {
+        startYear,
+        endYear,
+      },
     },
     trappings: {
       data: trappingData,
@@ -28,9 +32,11 @@ const mapStateToProps = (state) => {
     allRangerDistricts,
     county,
     dataMode,
-    trappingData,
+    endYear,
     rangerDistrict,
     selectedState,
+    startYear,
+    trappingData,
     year,
   };
 };
