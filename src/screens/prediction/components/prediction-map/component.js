@@ -64,6 +64,18 @@ const PredictionMap = (props) => {
   const [legendTags, setLegendTags] = useState([]);
   const [predictionHover, setPredictionHover] = useState(null);
 
+  const mapboxHoverStyle = (x, y) => {
+    if (x < 300 && y < 200) {
+      return ({ left: `${x}px`, top: `${y}px` });
+    } else if (y < 200) {
+      return ({ left: `${x - 280}px`, top: `${y}px` });
+    } else if (x < 300) {
+      return ({ left: `${x}px`, top: `${y - 125}px` });
+    } else {
+      return ({ left: `${x - 280}px`, top: `${y - 125}px` });
+    }
+  };
+
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (predictions, rangerDistricts, mode) => (e) => {
     if (!map) return;
@@ -98,7 +110,7 @@ const PredictionMap = (props) => {
         } = pred;
 
         setPredictionHover((
-          <div id="prediction-hover" style={{ left: `${x}px`, top: `${y - 125}px` }}>
+          <div id="prediction-hover" style={mapboxHoverStyle(x, y)}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
             <p>Probability of any spots: {probAny.toFixed(2)}%</p>
             <p>Probability of an outbreak: {probOutbreak.toFixed(2)}%</p>
