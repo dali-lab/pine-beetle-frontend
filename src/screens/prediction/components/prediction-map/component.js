@@ -251,16 +251,19 @@ const PredictionMap = (props) => {
     strokeExpression.push('rgba(0,0,0,0)');
 
     // add layer from the vector tile source with data-driven style
-    map.addLayer({
-      id: VECTOR_LAYER,
-      type: 'fill',
-      source: MAP_SOURCE_NAME,
-      'source-layer': dataMode === DATA_MODES.COUNTY ? SOURCE_LAYERS.COUNTY : SOURCE_LAYERS.RANGER_DISTRICT,
-      paint: {
-        'fill-color': fillExpression,
-        'fill-outline-color': strokeExpression,
-      },
-    }, 'water-point-label');
+    // double-checking if we have valid fillExpression for paint
+    if (fillExpression.length > 3) {
+      map.addLayer({
+        id: VECTOR_LAYER,
+        type: 'fill',
+        source: MAP_SOURCE_NAME,
+        'source-layer': dataMode === DATA_MODES.COUNTY ? SOURCE_LAYERS.COUNTY : SOURCE_LAYERS.RANGER_DISTRICT,
+        paint: {
+          'fill-color': fillExpression,
+          'fill-outline-color': strokeExpression,
+        },
+      }, 'water-point-label');
+    }
   };
 
   // function to download map of currently selected data
@@ -321,7 +324,7 @@ const PredictionMap = (props) => {
   useEffect(() => {
     if (!map) return;
 
-    if (year.toString().length === 4) colorPredictions(predictionsData);
+    if (year.toString().length === 4 && predictionsData.length > 0) colorPredictions(predictionsData);
 
     if (selectedState) {
       const zoom = stateAbbrevToZoomLevel[selectedState];
