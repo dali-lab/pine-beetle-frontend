@@ -112,8 +112,8 @@ const PredictionMap = (props) => {
         setPredictionHover((
           <div id="prediction-hover" style={mapboxHoverStyle(x, y)}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
-            <p>Probability of any spots: {probAny.toFixed(2)}%</p>
-            <p>Probability of an outbreak: {probOutbreak.toFixed(2)}%</p>
+            <p>Probability of any spots: {(probAny * 100).toFixed(1)}%</p>
+            <p>Probability of an outbreak: {(probOutbreak * 100).toFixed(1)}%</p>
           </div>
         ));
       } else {
@@ -131,11 +131,11 @@ const PredictionMap = (props) => {
 
     const forest = _forest.slice(0, -3);
 
-    if (!selectedState) {
-      setState(_state);
-    }
+    // three cases: in a state and want to click on county, not in state go to state, click on neighbour state
 
-    if (dataMode === DATA_MODES.COUNTY) {
+    if (!selectedState || _state !== selectedState) {
+      setState(_state);
+    } else if (dataMode === DATA_MODES.COUNTY) {
       setCounty(forest);
     } else {
       setRangerDistrict(rangerDistricts.find(district => (
@@ -194,6 +194,7 @@ const PredictionMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
+      console.log('listener created');
       createdMap.on('click', VECTOR_LAYER, createMapClickCallback(allRangerDistricts));
     }
 

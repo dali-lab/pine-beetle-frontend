@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { TextInput, ChoiceInput } from '../../../../components/input-components';
 
@@ -37,11 +37,6 @@ const SelectionBar = (props) => {
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
-
-  useEffect(() => {
-    console.log(selectedStateName); // Georgia
-    console.log(selectedState); // GA
-  }, [selectedState]);
 
   return (
     <div id="predictionbar" className="container">
