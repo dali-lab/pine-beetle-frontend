@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
+// import { all } from 'mathjs';
 
 import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
 
@@ -110,25 +111,36 @@ const PredictionMap = (props) => {
   };
 
   // twice-curried function for generating click callback
-  const createMapClickCallback = rangerDistricts => (e) => {
-    const {
-      forest: _forest,
-      STATE: _state,
-    } = e.features[0].properties;
+  const createMapClickCallback = (rangerDistricts) => {
+    let pastSelectedState = '';
 
-    const forest = _forest.slice(0, -3);
+    return (e) => {
+      const {
+        forest: _forest,
+        STATE: _state,
+      } = e.features[0].properties;
 
-    // three cases: in a state and want to click on county, not in state go to state, click on neighbour state
+      console.log(e.features);
 
-    if (!selectedState || _state !== selectedState) {
-      setState(_state);
-    } else if (dataMode === DATA_MODES.COUNTY) {
-      setCounty(forest);
-    } else {
-      setRangerDistrict(rangerDistricts.find(district => (
-        district.includes(forest.replace(' ', ''))
-      )));
-    }
+      console.log({
+        _forest, _state, year, pastSelectedState, dataMode, mode: DATA_MODES.COUNTY,
+      });
+
+      const forest = _forest.slice(0, -3);
+
+      if (!pastSelectedState || _state !== pastSelectedState) { // click on neighbor state or in a state and want to click on county
+        setState(_state);
+      } else if (dataMode === DATA_MODES.COUNTY) { // not in state go to state
+        console.log('county happened');
+        setCounty(forest);
+      } else {
+        setRangerDistrict(rangerDistricts.find(district => (
+          district.includes(forest.replace(' ', ''))
+        )));
+      }
+
+      pastSelectedState = _state;
+    };
   };
 
   const generateMap = (forceRegenerate) => {
@@ -180,7 +192,7 @@ const PredictionMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      console.log('listener created');
+      console.log('hi');
       createdMap.on('click', VECTOR_LAYER, createMapClickCallback(allRangerDistricts));
     }
 
@@ -398,11 +410,12 @@ const PredictionMap = (props) => {
     }
   }, [map, predictionsData, allRangerDistricts, dataMode]);
 
-  useEffect(() => {
-    if (map && allRangerDistricts) {
-      map.on('click', VECTOR_LAYER, createMapClickCallback(allRangerDistricts));
-    }
-  }, [map, allRangerDistricts]);
+  // useEffect(() => {
+  //   if (map && allRangerDistricts) {
+  //     console.log('hello');
+  //     map.on('click', VECTOR_LAYER, createMapClickCallback(allRangerDistricts));
+  //   }
+  // }, [map, allRangerDistricts]);
 
   return (
     <div className="container flex-item-left" id="map-container">

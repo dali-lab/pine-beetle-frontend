@@ -19,10 +19,11 @@ const mapStateToProps = (state) => {
     },
     predictions: {
       data: predictionsData,
+      rangerDistrict: allRangerDistrictData,
     },
   } = state;
 
-  const allRangerDistricts = [...new Set(predictionsData.map((obj => obj.rangerDistrict)))];
+  const allRangerDistricts = [...new Set(allRangerDistrictData.map((obj => obj.rangerDistrict)))];
 
   return {
     allRangerDistricts,
