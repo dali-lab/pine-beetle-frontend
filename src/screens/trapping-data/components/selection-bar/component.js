@@ -77,25 +77,6 @@ const SelectionBar = (props) => {
           />
         </div>
       </div>
-      {/* <ChoiceInput
-        instructions={countyMode ? 'Select County' : 'Select Ranger District'}
-        value={countyMode ? county : rangerDistrict}
-        setValue={countyMode ? setCounty : setRangerDistrict}
-        options={countyMode ? allCounties : allRangerDistricts}
-        firstOptionText={countyMode ? 'County' : 'Ranger District'}
-      /> */}
-
-      {/* <ChoiceInput instructions="Select State" submitFunction={updateState} availableOptions={availableStates} idName="state" value={this.state.stateName} firstOptionText="State" /> */}
-      {/* <OptgroupChoiceInput
-        instructions="Select County / Parish"
-        submitFunction={this.props.dataController.updateForestSelection}
-        availableOptions={sortedAvailableForests}
-        idName="forest"
-        value={this.state.forest}
-        ref={this.forestInput}
-        showAboveText
-        firstOptionText="County / Parish"
-      /> */}
       <button id="reset-current-data-button" className="submit static-button clear-button" onClick={clearAllSelections}>Clear Filters</button>
     </div>
   );

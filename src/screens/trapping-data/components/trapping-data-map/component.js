@@ -162,7 +162,6 @@ const HistoricalMap = (props) => {
       createdMap.on('load', () => {
         if (!createdMap.getSource(MAP_SOURCE_NAME)) {
           createdMap.addSource(MAP_SOURCE_NAME, dataMode === DATA_MODES.COUNTY ? MAP_SOURCES.COUNTY : MAP_SOURCES.RANGER_DISTRICT);
-          console.log(createdMap.getSource(MAP_SOURCE_NAME));
         }
       });
     }

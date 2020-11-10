@@ -9,8 +9,10 @@ import {
   SelectionBar,
 } from './components';
 
-const mapIcon = require('../../assets/icons/map.png');
-const chartIcon = require('../../assets/icons/line-chart.png');
+const mapSelectedIcon = require('../../assets/icons/map-selected.png');
+const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
+const graphSelectedIcon = require('../../assets/icons/graph-selected.png');
+const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
 
 const TrappingData = (props) => {
   const {
@@ -32,7 +34,7 @@ const TrappingData = (props) => {
       <div className="container" id="view-selections">
         <div id="selection">
           <img
-            src={mapIcon}
+            src={chartMode ? mapUnselectedIcon : mapSelectedIcon}
             alt="Map View"
             id={chartMode ? null : 'selected-view'}
             onClick={() => setChartMode(false)}
@@ -48,7 +50,7 @@ const TrappingData = (props) => {
         </div>
         <div id="selection">
           <img
-            src={chartIcon}
+            src={chartMode ? graphSelectedIcon : graphUnselectedIcon}
             alt="Chart View"
             id={chartMode ? 'selected-view' : null}
             onClick={() => setChartMode(true)}
@@ -66,14 +68,6 @@ const TrappingData = (props) => {
       <div>
         {chartMode ? <LineChart data={trappingData} /> : <TrappingDataMap />}
       </div>
-      {/* <div>
-          <LineChart data={trappingData} />
-        </div>
-        <div>
-          <TrappingDataMap />
-        </div> */}
-      {/* <ReactTooltip /> */}
-      {/* </div> */}
     </div>
   );
 };

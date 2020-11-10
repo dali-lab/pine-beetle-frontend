@@ -1,15 +1,3 @@
-@import url(//db.onlinewebfonts.com/c/105007d99d9df64c50cc24d696d79555?family=Graphik+Web+Regular);
-
-@font-face {font-family: "Graphik Web Regular"; src: url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.eot"); src: url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.woff") format("woff"), url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/105007d99d9df64c50cc24d696d79555.svg#Graphik Web Regular") format("svg"); }
-
-@import url(//db.onlinewebfonts.com/c/96cea24c1dcaf763c8d2cc035c3bdcf5?family=Lyon+Display+Web+Medium);
-
-@font-face {font-family: "Lyon Display Web Medium"; src: url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.eot"); src: url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.woff") format("woff"), url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/96cea24c1dcaf763c8d2cc035c3bdcf5.svg#Lyon Display Web Medium") format("svg"); }
-
-@import url(//db.onlinewebfonts.com/c/cc2250c97b014737ff4fab71c892a94d?family=Graphik+Web+Medium);
-
-@font-face {font-family: "Graphik Web Medium"; src: url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.eot"); src: url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.woff") format("woff"), url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/cc2250c97b014737ff4fab71c892a94d.svg#Graphik Web Medium") format("svg"); }
-
 .rectangle-box {
     position: absolute;
     justify-content: center;
@@ -21,7 +9,7 @@
     padding-left: 4vmax;
     padding-right: 4vmax;
 
-    font-family: 'Graphik Web Medium';
+    font-family: 'Inter Medium';
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -115,7 +103,7 @@ div.galleryG img {
 }
 
 .gallery-text1 {
-    font-family: 'Graphik Web Medium';
+    font-family: 'Inter Medium';
     font-style: normal;
 
     font-size: 13px;
@@ -124,7 +112,7 @@ div.galleryG img {
 }
 
 .gallery-text2 {
-    font-family: 'Graphik Web Medium';
+    font-family: 'Inter Medium';
     font-style: normal;
 
     font-size: 13px;
@@ -133,7 +121,7 @@ div.galleryG img {
 }
 
 .gallery-text3 {
-    font-family: 'Graphik Web Medium';
+    font-family: 'Inter Medium';
     font-style: normal;
 
     font-size: 13px;
@@ -142,7 +130,7 @@ div.galleryG img {
 }
 
 .gallery-text4 {
-    font-family: 'Graphik Web Medium';
+    font-family: 'Inter Medium';
     font-style: normal;
 
     font-size: 13px;
@@ -194,7 +182,7 @@ div.galleryG img {
 .mo-txt { /* Used for Model Out Break and Testing The Inputs Header */
     padding-right: 8vmax;
     padding-left: 8vmax;
-    font-family: 'Graphik Web Medium';
+    font-family: 'Inter Medium';
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -244,7 +232,7 @@ div.galleryG img {
 }
 
 .less-txt { /* Used for Statistical Model and Zero Inflation The Inputs Header */
-    font-family: 'Graphik Web Medium';
+    font-family: 'Inter Medium';
     font-style: normal;
     font-weight: normal;
     font-size: 16px;

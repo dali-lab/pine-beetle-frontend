@@ -2,7 +2,6 @@
 import React from 'react';
 
 import {
-  // BarChart,
   OverviewText,
   PredictionDetails,
   PredictionMap,
@@ -42,20 +41,6 @@ const Prediction = (props) => {
     }
   };
 
-  // const createHistogramJSX = (hasPredData) => {
-  //   if (!hasPredData) return null;
-  //   const predProb50 = predictionData[0].prediction['prob.Spots>53'];
-  //   const histogram = getHistogram(predProb50);
-  //   return (
-  //     <img
-  //       src={histogram}
-  //       alt="Histogram for Predicted % Chance of >50 Spots"
-  //       style={{ width: '800px' }}
-  //       className="container"
-  //     />
-  //   );
-  // };
-
   const predDetails = (hasPredData) => {
     if (!hasPredData) return null;
     const predProb50 = predictionData[0].prediction['prob.Spots>53'];
@@ -88,7 +73,6 @@ const Prediction = (props) => {
       <SelectionBar />
       <PredictionMap data={selectedState} />
       { predDetails(predictionData.length === 1) }
-      {/* { createHistogramJSX(predictionData.length === 1) } */}
     </div>
   );
 };

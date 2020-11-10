@@ -15,7 +15,6 @@ const ChoiceInput = (props) => {
   } = props;
 
   const [firstOptionText, setFirstOptionText] = useState('');
-  // const [otherOpts, setOtherOpts] = useState([]);
 
   const submit = (event) => {
     if (event.target.value === '') {
@@ -26,17 +25,6 @@ const ChoiceInput = (props) => {
       setFirstOptionText(CLEAR_TEXT);
     }
   };
-
-  // console.log(value);
-
-  // if (value && otherOpts.length) {
-  //   console.log({ value });
-  //   setOtherOpts([value]);
-  // } else {
-  //   setOtherOpts(options.map(op => (
-  //     <option value={op} key={op}>{op}</option>
-  //   )));
-  // }
 
   const opts = [
     <option value="" key={firstOptionText}>{firstOptionText}</option>,

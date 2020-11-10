@@ -16,22 +16,16 @@ const LineChart = (props) => {
       {
         data: [],
         label: 'Total Spots',
-        // borderColor: 'rgba(0, 0, 0, 0.1)',
-        // backgroundColor: '#5383ff',
         fill: false,
       },
       {
         data: [],
         label: 'Total SPB',
-        // borderColor: '#ff525c',
-        // backgroundColor: '#ff525c',
         fill: false,
       },
       {
         data: [],
         label: 'Total Clerids',
-        // borderColor: '#ffc148',
-        // backgroundColor: '#ffc148',
         fill: false,
       },
     ],

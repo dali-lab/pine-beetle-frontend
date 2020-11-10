@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
-// import { all } from 'mathjs';
 
 import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
 
@@ -120,18 +119,11 @@ const PredictionMap = (props) => {
         STATE: _state,
       } = e.features[0].properties;
 
-      console.log(e.features);
-
-      console.log({
-        _forest, _state, year, pastSelectedState, dataMode, mode: DATA_MODES.COUNTY,
-      });
-
       const forest = _forest.slice(0, -3);
 
       if (!pastSelectedState || _state !== pastSelectedState) { // click on neighbor state or in a state and want to click on county
         setState(_state);
       } else if (dataMode === DATA_MODES.COUNTY) { // not in state go to state
-        console.log('county happened');
         setCounty(forest);
       } else {
         setRangerDistrict(rangerDistricts.find(district => (
@@ -185,14 +177,12 @@ const PredictionMap = (props) => {
       createdMap.on('load', () => {
         if (!createdMap.getSource(MAP_SOURCE_NAME)) {
           createdMap.addSource(MAP_SOURCE_NAME, dataMode === DATA_MODES.COUNTY ? MAP_SOURCES.COUNTY : MAP_SOURCES.RANGER_DISTRICT);
-          console.log(createdMap.getSource(MAP_SOURCE_NAME));
         }
       });
     }
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      console.log('hi');
       createdMap.on('click', VECTOR_LAYER, createMapClickCallback(allRangerDistricts));
     }
 
@@ -409,13 +399,6 @@ const PredictionMap = (props) => {
       map.on('mousemove', createMapHoverCallback(predictionsData, allRangerDistricts, dataMode));
     }
   }, [map, predictionsData, allRangerDistricts, dataMode]);
-
-  // useEffect(() => {
-  //   if (map && allRangerDistricts) {
-  //     console.log('hello');
-  //     map.on('click', VECTOR_LAYER, createMapClickCallback(allRangerDistricts));
-  //   }
-  // }, [map, allRangerDistricts]);
 
   return (
     <div className="container flex-item-left" id="map-container">
