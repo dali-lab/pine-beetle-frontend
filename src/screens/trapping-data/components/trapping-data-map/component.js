@@ -11,7 +11,7 @@ import {
 
 import './style.scss';
 
-const thresholds = ['0-2.5%', '2.5-5%', '5-15%', '15-25%', '25-40%', '40-100%'];
+const thresholds = ['0-100', '101-500', '501-1000', '1001-5000', '5001-10000', '>10000'];
 const colors = ['#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
 
 const MAP_SOURCES = {
@@ -33,38 +33,28 @@ const SOURCE_LAYERS = {
 const MAP_SOURCE_NAME = 'counties';
 const VECTOR_LAYER = 'prediction-chloropleth-layer';
 
-const PredictionMap = (props) => {
+const HistoricalMap = (props) => {
   const {
     allRangerDistricts,
     dataMode,
-    predictionsData,
+    endYear,
     selectedState,
     setCounty,
     setRangerDistrict,
     setState,
+    startYear,
+    trappingData,
     year,
   } = props;
 
   const [map, setMap] = useState();
   const [initialFill, setInitialFill] = useState(false);
   const [legendTags, setLegendTags] = useState([]);
-  const [predictionHover, setPredictionHover] = useState(null);
+  const [trappingHover, setTrappingHover] = useState(null);
   const [isDownloadingMap, setIsDownloadingMap] = useState(false);
 
-  const mapboxHoverStyle = (x, y) => {
-    if (x < 300 && y < 200) {
-      return ({ left: `${x}px`, top: `${y}px` });
-    } else if (y < 200) {
-      return ({ left: `${x - 280}px`, top: `${y}px` });
-    } else if (x < 300) {
-      return ({ left: `${x}px`, top: `${y - 125}px` });
-    } else {
-      return ({ left: `${x - 280}px`, top: `${y - 125}px` });
-    }
-  };
-
   // twice-curried function for generating hover callback
-  const createMapHoverCallback = (predictions, rangerDistricts, mode) => (e) => {
+  const createMapHoverCallback = (trappings, rangerDistricts, mode) => (e) => {
     if (!map) return;
 
     const counties = map.queryRenderedFeatures(e.point, {
@@ -82,57 +72,52 @@ const PredictionMap = (props) => {
         location = rangerDistricts.find(rd => rd.includes(counties[0].properties.forest.replaceAll(' ', '')));
       }
 
-      const pred = predictions.find((p) => {
+      const data = trappings.filter((p) => {
         return (p.county === location && mode === DATA_MODES.COUNTY)
         || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT);
       });
 
-      if (pred && x && y) {
-        const {
-          county: countyName,
-          prediction: {
-            'prob.Spots>0': probAny,
-            'prob.Spots>53': probOutbreak,
-          },
-        } = pred;
+      if (data && data.length > 0 && x && y) {
+        const countyName = data.find(t => t.county) ? data.find(t => t.county).county : '';
 
-        setPredictionHover((
-          <div id="prediction-hover" style={mapboxHoverStyle(x, y)}>
+        const averageSpots = data.reduce((acc, curr) => (acc + curr.spots), 0) / data.length;
+        const avgSpbPer2Weeks = data.reduce((acc, curr) => (acc + curr.spbPer2Weeks), 0) / data.length;
+        const avgCleridsPer2Weeks = data.reduce((acc, curr) => (acc + curr.cleridPer2Weeks), 0) / data.length;
+
+        setTrappingHover((
+          <div id="trapping-hover" style={{ left: `${x}px`, top: `${y - 125}px` }}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
-            <p>Probability of any spots: {(probAny * 100).toFixed(1)}%</p>
-            <p>Probability of an outbreak: {(probOutbreak * 100).toFixed(1)}%</p>
+            <p>Average Spots: {averageSpots.toFixed(2)}</p>
+            <p>Average SPB Per 2 Weeks: {avgSpbPer2Weeks.toFixed(2)}</p>
+            <p>Average Clerids Per 2 Weeks: {avgCleridsPer2Weeks.toFixed(2)}</p>
           </div>
         ));
       } else {
-        setPredictionHover(null);
+        setTrappingHover(null);
       }
     }
   };
 
   // twice-curried function for generating click callback
-  const createMapClickCallback = (rangerDistricts) => {
-    let pastSelectedState = '';
+  const createMapClickCallback = rangerDistricts => (e) => {
+    const {
+      forest: _forest,
+      STATE: _state,
+    } = e.features[0].properties;
 
-    return (e) => {
-      const {
-        forest: _forest,
-        STATE: _state,
-      } = e.features[0].properties;
+    const forest = _forest.slice(0, -3);
 
-      const forest = _forest.slice(0, -3);
+    if (!selectedState) {
+      setState(_state);
+    }
 
-      if (!pastSelectedState || _state !== pastSelectedState) { // click on neighbor state or in a state and want to click on county
-        setState(_state);
-      } else if (dataMode === DATA_MODES.COUNTY) { // not in state go to state
-        setCounty(forest);
-      } else {
-        setRangerDistrict(rangerDistricts.find(district => (
-          district.includes(forest.replace(' ', ''))
-        )));
-      }
-
-      pastSelectedState = _state;
-    };
+    if (dataMode === DATA_MODES.COUNTY) {
+      setCounty(forest);
+    } else {
+      setRangerDistrict(rangerDistricts.find(district => (
+        district.includes(forest.replace(' ', ''))
+      )));
+    }
   };
 
   const generateMap = (forceRegenerate) => {
@@ -187,17 +172,17 @@ const PredictionMap = (props) => {
     }
 
     if (createdMap._listeners.mousemove === undefined) {
-      createdMap.on('mousemove', createMapHoverCallback(predictionsData, allRangerDistricts, dataMode));
+      createdMap.on('mousemove', createMapHoverCallback(trappingData, allRangerDistricts, dataMode));
     }
 
     setMap(createdMap);
   };
 
-  const colorPredictions = (predictions) => {
+  const colorFill = (trappings) => {
     // keep trying until map styles are loaded
     if (!map.isStyleLoaded()) {
       setTimeout(() => {
-        colorPredictions(predictions);
+        colorFill(trappings);
       }, 1000);
 
       return;
@@ -211,40 +196,49 @@ const PredictionMap = (props) => {
     const fillExpression = ['match', ['upcase', ['get', 'forest']]];
     const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
 
-    predictions.forEach(({
-      county,
-      prediction,
-      rangerDistrict,
-      state,
-    }) => {
-      const fillProb = prediction['prob.Spots>53'];
+    const trappingsByLocality = trappings.reduce((acc, curr) => {
+      const {
+        county,
+        rangerDistrict,
+        state,
+        spots,
+      } = curr;
+
+      const countyFormatName = `${county} ${state}`.toUpperCase();
+      const rangerDistrictFormatName = rangerDistrict ? separatePascalCase(rangerDistrict.split('_').pop()).toUpperCase() : '';
+
+      const localityDescription = dataMode === DATA_MODES.COUNTY ? countyFormatName : rangerDistrictFormatName;
+
+      return {
+        ...acc,
+        [localityDescription]: {
+          sum: ((acc[localityDescription] && acc[localityDescription].sum) || 0) + spots,
+          numEntries: ((acc[localityDescription] && acc[localityDescription].numEntries) || 0) + 1,
+        },
+      };
+    }, {});
+
+    Object.entries(trappingsByLocality).forEach(([localityDescription, spotData]) => {
+      const spots = spotData.sum / spotData.numEntries;
 
       let color;
 
-      if (fillProb <= 0.025) {
+      if (spots <= 100) {
         color = colors[0];
-      } else if (fillProb > 0.025 && fillProb <= 0.05) {
+      } else if (spots > 100 && spots <= 500) {
         color = colors[1];
-      } else if (fillProb > 0.05 && fillProb <= 0.15) {
+      } else if (spots > 500 && spots <= 1000) {
         color = colors[2];
-      } else if (fillProb > 0.15 && fillProb <= 0.25) {
+      } else if (spots > 1000 && spots <= 5000) {
         color = colors[3];
-      } else if (fillProb > 0.25 && fillProb <= 0.4) {
+      } else if (spots > 5000 && spots <= 10000) {
         color = colors[4];
       } else {
         color = colors[5];
       }
 
-      const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
-      const rangerDistrictFormatName = rangerDistrict ? separatePascalCase(rangerDistrict.split('_').pop()).toUpperCase() : '';
-
-      const locationName = dataMode === DATA_MODES.COUNTY
-        ? countyFormatName
-        // handles case where tileset has two spaces instead of one (this is a one-off)
-        : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD')];
-
-      fillExpression.push(locationName, color);
-      strokeExpression.push(locationName, '#000000');
+      fillExpression.push(localityDescription, color);
+      strokeExpression.push(localityDescription, '#000000');
     });
 
     // last value is the default, used where there is no data
@@ -252,19 +246,16 @@ const PredictionMap = (props) => {
     strokeExpression.push('rgba(0,0,0,0)');
 
     // add layer from the vector tile source with data-driven style
-    // double-checking if we have valid fillExpression for paint
-    if (fillExpression.length > 3) {
-      map.addLayer({
-        id: VECTOR_LAYER,
-        type: 'fill',
-        source: MAP_SOURCE_NAME,
-        'source-layer': dataMode === DATA_MODES.COUNTY ? SOURCE_LAYERS.COUNTY : SOURCE_LAYERS.RANGER_DISTRICT,
-        paint: {
-          'fill-color': fillExpression,
-          'fill-outline-color': strokeExpression,
-        },
-      }, 'water-point-label');
-    }
+    map.addLayer({
+      id: VECTOR_LAYER,
+      type: 'fill',
+      source: MAP_SOURCE_NAME,
+      'source-layer': dataMode === DATA_MODES.COUNTY ? SOURCE_LAYERS.COUNTY : SOURCE_LAYERS.RANGER_DISTRICT,
+      paint: {
+        'fill-color': fillExpression,
+        'fill-outline-color': strokeExpression,
+      },
+    }, 'water-point-label');
   };
 
   // adopted from old site
@@ -273,7 +264,7 @@ const PredictionMap = (props) => {
   const buildHeader = () => {
     return (
       `<div id="map-header" style="text-align: center;">
-          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">Probability of (Any) SPB Spots</h2>
+          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">Total Number of Spots</h2>
         </div>`
     );
   };
@@ -284,7 +275,7 @@ const PredictionMap = (props) => {
   // notes explaining the legend and sources, and information about the
   // data collection process. This object is used by the mapbox-print-pdf library.
   const buildFooter = () => {
-    const title = `Southern Pine Beetle Outbreak Prediction Maps: ${selectedState} ${year}`;
+    const title = `Southern Pine Beetle Outbreak Spot Maps: ${selectedState} ${startYear}-${endYear}`;
 
     // creates the color boxes and text fields for the legend in the footer
     const legendString = thresholds.reduce((acc, curr, index) => {
@@ -299,18 +290,13 @@ const PredictionMap = (props) => {
     return (
       `
           <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
+              <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 
+              14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Average spots per year:</p>
               <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 51%;margin: auto;margin-bottom: 10px;">
                   ${legendString}
               </div>
-              <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 
-              14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Note: Color ramp ascends with a constant factor of 
-              increase in the probability of outcome.</p>
               <div id="spacer" style="height: 50px;"></div>
               <h2 style="font-family: 'Open Sans', arial, serif;margin-bottom: 16px;margin-top: 16px;">${title}</h2>
-              <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">Predictions are based on a zero-inflated Poisson model fit to historical data 
-              from 1988 – 2009 (Aoki 2017). The most important drivers of model predictions are
-               SPB trap captures in the current spring and SPB spots the previous year.
-              </p>
               <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">
               The SPB prediction project is supported by USDA Forest Service: Science and Technology 
               Development Program (STDP)
@@ -366,13 +352,25 @@ const PredictionMap = (props) => {
     setTimeout(() => {
       setMap(undefined);
       generateMap(true);
+
+      // Calls function to download map when download control is clicked
+      document.addEventListener('click', (event) => {
+        if (!event.target.matches('.download-button')) return;
+        downloadMap();
+      }, false);
+
+      // Calls function to download map when download control is clicked
+      document.addEventListener('click', (event) => {
+        if (!event.target.matches('.download-button p')) return;
+        downloadMap();
+      }, false);
     }, 100);
   }, [dataMode]);
 
   useEffect(() => {
     if (!map) return;
 
-    if (year.toString().length === 4 && predictionsData.length > 0) colorPredictions(predictionsData);
+    if (year.toString().length === 4) colorFill(trappingData);
 
     if (selectedState) {
       const zoom = stateAbbrevToZoomLevel[selectedState];
@@ -387,32 +385,38 @@ const PredictionMap = (props) => {
         zoom: 4.8,
       });
     }
-  }, [predictionsData, selectedState, map]);
+  }, [trappingData, selectedState, map]);
 
   useEffect(() => {
-    if (!initialFill && map && predictionsData.length > 0) {
-      colorPredictions(predictionsData);
+    if (!initialFill && map && trappingData.length > 0) {
+      colorFill(trappingData);
       setInitialFill(true);
     }
 
-    if (map && predictionsData) {
-      map.on('mousemove', createMapHoverCallback(predictionsData, allRangerDistricts, dataMode));
+    if (map && trappingData) {
+      map.on('mousemove', createMapHoverCallback(trappingData, allRangerDistricts, dataMode));
     }
-  }, [map, predictionsData, allRangerDistricts, dataMode]);
+  }, [map, trappingData, allRangerDistricts, dataMode]);
+
+  useEffect(() => {
+    if (map && allRangerDistricts) {
+      map.on('click', VECTOR_LAYER, createMapClickCallback(allRangerDistricts));
+    }
+  }, [map, allRangerDistricts]);
 
   return (
-    <div className="container flex-item-left" id="map-container">
+    <div className="flex-item-left" id="map-container">
       <div id="map" />
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download'}</h4>
       </div>
       <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title"><strong>Probability of &gt;50 spots</strong></div>
+        <div className="legend-key-title"><strong>Average spots per year</strong></div>
         {legendTags}
       </div>
-      {predictionHover}
+      {trappingHover}
     </div>
   );
 };
 
-export default PredictionMap;
+export default HistoricalMap;

@@ -2,7 +2,6 @@
 import React from 'react';
 
 import {
-  BarChart,
   OverviewText,
   PredictionDetails,
   PredictionMap,
@@ -42,31 +41,23 @@ const Prediction = (props) => {
     }
   };
 
-  const createHistogramJSX = (hasPredData) => {
+  const predDetails = (hasPredData) => {
     if (!hasPredData) return null;
     const predProb50 = predictionData[0].prediction['prob.Spots>53'];
     const histogram = getHistogram(predProb50);
     return (
-      <img
-        src={histogram}
-        alt="Histogram for Predicted % Chance of >50 Spots"
-        style={{ width: '800px' }}
-        className="container"
-      />
-    );
-  };
-
-  const predDetails = (hasPredData) => {
-    if (!hasPredData) return null;
-    return (
       <div>
         <div className="container" id="pred-header">Prediction Details</div>
         <div className="container" id="predictions">
-          <div className="bar-chart">
-            <BarChart data={predictionData} />
-          </div>
           <div className="prediction-details">
             <PredictionDetails data={predictionData} />
+          </div>
+          <div className="histogram">
+            <img
+              src={histogram}
+              alt="Histogram for Predicted % Chance of >50 Spots"
+              style={{ width: '400px' }}
+            />
           </div>
         </div>
       </div>
@@ -81,9 +72,7 @@ const Prediction = (props) => {
       <OverviewText />
       <SelectionBar />
       <PredictionMap data={selectedState} />
-      {/* TODO: Dynamically Change header */}
       { predDetails(predictionData.length === 1) }
-      { createHistogramJSX(predictionData.length === 1) }
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import './style.scss';
 import { ROUTES } from '../../constants';
 
-const pineBeetleImage = require('../../assets/black_beetle_logo.png');
+const pineBeetleImage = require('../../assets/icons/black-beetle-logo.png');
 
 const Header = () => {
   const routes = {

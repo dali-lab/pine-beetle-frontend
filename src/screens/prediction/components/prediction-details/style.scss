@@ -1,3 +1,7 @@
+.prediction-details {
+    display: flex;
+}
+
 .percentages {
     display: flex;
 }
@@ -17,6 +21,7 @@
     color: black; 
     text-align: center;
     justify-content: space-between;
+    margin-left: 40px;
     margin-right: 30px;
     margin-bottom: 100px;
 }
@@ -30,59 +35,39 @@
 
 .prediction-circle p {
     font-family: 'Inter';
-    // font-weight: 200;
     font-size: 16px;
     text-align: center;
+}
+
+.prediction-circle #overflow {
     white-space: nowrap;
 }
 
-.prediction-table {
-    align-self: center;
-    width: 100%;
-    font-size: 16px;
-    // border-collapse: collapse;
-    border-collapse: separate;
-    border-spacing: 0 30px;
-    white-space: nowrap;
+.prediction-grid {
+    display: grid;
+    grid-template-rows: auto 10px auto 10px auto;
+    grid-template-columns: repeat(3, auto);
 }
 
-.prediction-table td:nth-child(2){
-    border-right:1px solid white;
-}
-
-.prediction-table td {
-    width: 33%;
-    height: 40px;
-    text-align: left;
-    padding: 2px 20px 2px 20px;
-}
-
-#bullet {
-    height: 25px;
-    width: 25px;
-    background: #E9EAEF;
-    border-radius: 50%;
-}
-
-.prediction-table td img {
+.prediction-grid img {
     width: 18px;
     height: 18px;
-    background-size: 150%;
+    // background-size: 150%;
     float: left;
     padding: 5px;
 }
 
-.prediction-table #clerids img {
+.prediction-grid #clerids img {
     background-color: #FFE5B4;
     border-radius: 6px;
 }
 
-.prediction-table #spots img {
+.prediction-grid #spots img {
     background-color: #C7FFB4;
     border-radius: 6px;
 }
 
-.prediction-table #spb img {
+.prediction-grid #spb img {
     background-color: #B4DBFF;
     border-radius: 6px;
 }
