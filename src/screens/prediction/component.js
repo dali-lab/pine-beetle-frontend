@@ -46,19 +46,16 @@ const Prediction = (props) => {
     const predProb50 = predictionData[0].prediction['prob.Spots>53'];
     const histogram = getHistogram(predProb50);
     return (
-      <div>
-        <div className="container" id="pred-header">Prediction Details</div>
-        <div className="container" id="predictions">
-          <div className="prediction-details">
-            <PredictionDetails data={predictionData} />
-          </div>
-          <div className="histogram">
-            <img
-              src={histogram}
-              alt="Histogram for Predicted % Chance of >50 Spots"
-              style={{ width: '400px' }}
-            />
-          </div>
+      <div className="container" id="predictions">
+        <div className="prediction-details">
+          <PredictionDetails data={predictionData} />
+        </div>
+        <div className="histogram">
+          <img
+            src={histogram}
+            alt="Histogram for Predicted % Chance of >50 Spots"
+            style={{ width: '400px' }}
+          />
         </div>
       </div>
     );
