@@ -45,59 +45,69 @@ const PredictionDetails = (props) => {
                 <div className="bullet" />
               </div>
               <div className="prediction-grid">
-                <div className="col1-row1">
-                  {currYear - 2}
-                  <p>Whole Year</p>
+                <div className="yeart2">
+                  <div className="year-title">{currYear - 2}</div>
+                  <div className="year-description">Whole Year</div>
                 </div>
-                <div className="col2-row1" />
-                <div className="col3-row1" id="spots">
-                  <img
-                    src={trapIcon}
-                    alt="spots"
-                  />
-                  {Math.round(data[0].spotst2)} spots
+                <div className="yeart2-spots" id="spots">
+                  <div className="content-container">
+                    <img
+                      src={trapIcon}
+                      alt="spots"
+                    />
+                    <div className="content-text">{Math.round(data[0].spotst2)} spots</div>
+                  </div>
                 </div>
-                <div className="row2"><hr /></div>
-                <div className="col1-row3">
-                  {currYear - 1}
-                  <p>Whole Year</p>
+                <div className="yeart1">
+                  <hr />
+                  <div className="year-title">{currYear - 1}</div>
+                  <div className="year-description">Whole Year</div>
                 </div>
-                <div className="col2-row3" id="clerids">
-                  <img
-                    src={cleridIcon}
-                    alt="clerids"
-                  />
-                  {Math.round(data[0].cleridst1)} clerids
+                <div className="yeart1-clerids" id="clerids">
+                  <hr />
+                  <div className="content-container">
+                    <img
+                      src={cleridIcon}
+                      alt="clerids"
+                    />
+                    <div className="content-text">{Math.round(data[0].cleridst1)} clerids</div>
+                  </div>
                 </div>
-                <div className="col3-row3" id="spots">
-                  <img
-                    src={trapIcon}
-                    alt="spots"
-                  />
-                  {Math.round(data[0].spotst1)} spots
+                <div className="yeart1-spots" id="spots">
+                  <hr />
+                  <div className="content-container">
+                    <img
+                      src={trapIcon}
+                      alt="spots"
+                    />
+                    <div className="content-text">{Math.round(data[0].spotst1)} spots</div>
+                  </div>
                 </div>
-                <div className="row4"><hr /></div>
-                <div className="col1-row5">
-                  Spring {currYear}
+                <div className="curr-year">
+                  <hr />
+                  <div className="year-title" id="spring-curr-year">Spring {currYear}</div>
                 </div>
-                <div className="col2-row5" id="spb">
-                  <img
-                    src={cleridIcon}
-                    alt="spb"
-                  />
-                  {data[0].SPB.toFixed(1)} SPB
+                <div className="curr-spb" id="spb">
+                  <hr />
+                  <div className="content-container">
+                    <img
+                      src={cleridIcon}
+                      alt="spb"
+                    />
+                    <div className="content-text">{data[0].SPB.toFixed(1)} SPB</div>
+                  </div>
                 </div>
-                <div className="col3-row5" id="endobrev">
-                  {(data[0].endobrev === 0) ? 'no' : 'yes'} endo-brevicomin
+                <div className="curr-endobrev" id="endobrev">
+                  <hr />
+                  <div className="content-container">
+                    {/* TODO: figure out how to fit "-brevicomin" */}
+                    <div className="content-text">{(data[0].endobrev === 0) ? 'no' : 'yes'} endo-brevicomin</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="histogram-about-container">
-        <div className="histogram">histogram</div>
-        <div className="about-prediction">about</div>
       </div>
     </div>
   );
