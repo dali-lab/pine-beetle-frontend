@@ -1,17 +1,61 @@
+.prediction-details-container {
+    box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+    background-color: #ffffff;
+    padding: 39px;
+    border-radius: 26px;
+}
+
 .prediction-details {
+    // TODO: why is its margin left and right more than others?
+    background-color: #ffffff;
+    border-radius: 26px;
+}
+
+.prediction-title h1 {
+    font-size: 32px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #2f303a;
+    margin-bottom: 13px;
+}
+
+.prediction-title p {
+    font-family: Inter;
+    font-size: 22px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.31;
+    letter-spacing: normal;
+    text-align: left;
+    color: #464756;
+    margin-bottom: 24px;
+
+}
+
+.prediction-info {
     display: flex;
+    justify-content: space-between;
 }
 
 .percentages {
     display: flex;
 }
 
-#subtitle {
-    padding-bottom: 18px;
-    text-align: left;
-    font-weight: 600;
-    font-family: 'Inter';
-    font-size: 24px;
+.prediction-circle #percent {
+    line-height: 110px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.prediction-circle p {
+    font-size: 16px;
+    text-align: center;
 }
 
 .circle {
@@ -26,35 +70,166 @@
     margin-bottom: 100px;
 }
 
-.prediction-circle #percent {
-    line-height: 110px;
-    text-align: center;
-    font-size: 28px;
-    font-weight: 900;
+#any-spots {
+    box-shadow: 0 6px 20px -2px rgba(255, 193, 72, 0.55);
+    background-color: #ffc148;
 }
 
-.prediction-circle p {
-    font-family: 'Inter';
-    font-size: 16px;
-    text-align: center;
+#outbreak {
+    box-shadow: 0 6px 20px -2px rgba(134, 204, 255, 0.55);
+    background-color: #86ccff;
 }
 
-.prediction-circle #overflow {
-    white-space: nowrap;
+.circle p {
+    width: 110px;
+    text-align: center;
+    align-content: center;
+    width: 160px;
+    height: 42px;
+    margin: 13px 37px 12px -20px;
+    font-size: 13px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.31;
+    letter-spacing: normal;
+    text-align: center;
+    color: #383b4a;
+}
+
+.prediction-grid-container {
+    display: flex;
+}
+
+.bullets {
+    margin-top: 18px;
+    margin-right: 10px;
+}
+
+.bullet {
+    position: relative;
+    border: 2px solid #e9eaef;
+    border-radius: 100%; 
+    width: 20px; 
+    height: 20px;
+    line-height: 40px; 
+    text-align: center; 
+    margin-top: 50px; 
+    background-color: #e9eaef; 
+    z-index: 2;
+}
+
+.bullet:first-child {
+    margin-top: 0;
+}
+
+.bullet:before {
+    position: absolute; 
+    border: 1px solid #e9eaef; 
+    width: 0; 
+    height: 50px; 
+    display: block; 
+    content: ''; 
+    left: 50%; 
+    z-index: 1; 
+    top: -54px; 
+    margin-left: -1px;
+}
+
+.bullet:first-child:before {
+    display: none;
 }
 
 .prediction-grid {
     display: grid;
-    grid-template-rows: auto 10px auto 10px auto;
-    grid-template-columns: repeat(3, auto);
+    // TODO: find out why second column is so shrunken, so you don't have to use this hacky way of solving spacing
+    grid-template-columns: auto 150px auto;
+    grid-template-areas: 
+    'yeart2 yeart2 yeart2-spots'
+    'yeart1 yeart1-clerids yeart1-spots'
+    'curr-year curr-spb curr-endobrev';
+}
+
+.prediction-grid > div {
+    text-align: left;
+    font-family: 'Inter';
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+}
+
+.prediction-grid .year-title {
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #2f303a;
+}
+
+.prediction-grid .year-description {
+    font-size: 10px;
+    font-weight: 500;
+    color: #a3a3a3;
+}
+
+.yeart2 {
+    grid-area: yeart2;
+}
+
+.yeart2-spots {
+    grid-area: yeart2-spots;
+}
+
+.yeart1 {
+    grid-area: yeart1;
+}
+
+.yeart1-clerids {
+    grid-area: yeart1-clerids;
+}
+
+.yeart1-spots {
+    grid-area: yeart1-spots;
+}
+
+.curr-year {
+    grid-area: curr-year;
+}
+
+.curr-spb {
+    grid-area: curr-spb;
+}
+
+.curr-endobrev {
+    grid-area: curr-endobrev;
+}
+
+#spring-curr-year {
+    margin-top: 23px;
+}
+
+.content-container {
+    margin: 12px;
+    padding: 7px 9px 9px 7px;
+    border-radius: 6px;
+    box-shadow: 0 7px 22px -2px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+hr {
+    height: 1px;
+    border: none;
+    background-color: #dbdbdb;
 }
 
 .prediction-grid img {
-    width: 18px;
-    height: 18px;
-    // background-size: 150%;
+    width: 17px;
+    height: 17px;
     float: left;
     padding: 5px;
+    margin-right: 5px;
 }
 
 .prediction-grid #clerids img {
@@ -72,9 +247,7 @@
     border-radius: 6px;
 }
 
-#clerids, #spb, #spots, #endobrev {
-    text-align: right;
-    background: #FFFFFF;
-    box-shadow: 0px 7px 22px -2px rgba(0, 0, 0, 0.08);
-    border-radius: 6px;
+.content-text {
+    padding-top: 5px;
+    font-size: 16px;
 }

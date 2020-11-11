@@ -2,6 +2,7 @@
 import React from 'react';
 
 import {
+  AboutPredictions,
   OverviewText,
   PredictionDetails,
   PredictionMap,
@@ -10,12 +11,12 @@ import {
 
 import './style.scss';
 
-const histogrambin1 = require('../../assets/images/spb-histogram-bin1.jpg');
-const histogrambin2 = require('../../assets/images/spb-histogram-bin2.jpg');
-const histogrambin3 = require('../../assets/images/spb-histogram-bin3.jpg');
-const histogrambin4 = require('../../assets/images/spb-histogram-bin4.jpg');
-const histogrambin5 = require('../../assets/images/spb-histogram-bin5.jpg');
-const histogrambin6 = require('../../assets/images/spb-histogram-bin6.jpg');
+const histogrambin1 = require('../../assets/images/spb-histogram-bin1.png');
+const histogrambin2 = require('../../assets/images/spb-histogram-bin2.png');
+const histogrambin3 = require('../../assets/images/spb-histogram-bin3.png');
+const histogrambin4 = require('../../assets/images/spb-histogram-bin4.png');
+const histogrambin5 = require('../../assets/images/spb-histogram-bin5.png');
+const histogrambin6 = require('../../assets/images/spb-histogram-bin6.png');
 
 const Prediction = (props) => {
   const {
@@ -46,19 +47,16 @@ const Prediction = (props) => {
     const predProb50 = predictionData[0].prediction['prob.Spots>53'];
     const histogram = getHistogram(predProb50);
     return (
-      <div>
-        <div className="container" id="pred-header">Prediction Details</div>
-        <div className="container" id="predictions">
-          <div className="prediction-details">
-            <PredictionDetails data={predictionData} />
-          </div>
+      <div className="container">
+        <PredictionDetails data={predictionData} />
+        <div className="prediction-bottom">
           <div className="histogram">
             <img
               src={histogram}
               alt="Histogram for Predicted % Chance of >50 Spots"
-              style={{ width: '400px' }}
             />
           </div>
+          <AboutPredictions />
         </div>
       </div>
     );

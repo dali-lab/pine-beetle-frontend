@@ -1,7 +1,19 @@
-#pred-header {
-    font-family: 'Inter';
-    font-size: 32px;
-    font-style: normal;
-    font-weight: 600;
-    text-align: left;
+.about-predictions {
+    margin-top: 20px;
+}
+
+.prediction-bottom {
+    display: flex;
+    margin-top: 75px;
+    margin-bottom: 100px;
+}
+
+.histogram img {
+    padding: 25px;
+    border-radius: 26px;
+    box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+    background-color: #ffffff;
+    margin-right: 45px;
+    height: auto;
+    width: 50vw;
 }
