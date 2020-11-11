@@ -9,11 +9,7 @@ const PredictionDetails = (props) => {
     data = [],
   } = props;
 
-  // https://stackoverflow.com/questions/31984929/connecting-vertical-lines-between-css-elements-that-are-part-of-a-tables-rows
-
   const currYear = data[0]?.year ?? (new Date()).getFullYear();
-
-  console.log(data);
 
   return (
     <div>
