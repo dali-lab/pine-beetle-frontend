@@ -55,7 +55,7 @@ const PredictionDetails = (props) => {
                       src={trapIcon}
                       alt="spots"
                     />
-                    <div className="content-text">{Math.round(data[0].spotst2)} spots</div>
+                    <div className="content-text">{Math.round(data[0].spotst2)} <u>spots</u></div>
                   </div>
                 </div>
                 <div className="yeart1">
@@ -70,7 +70,7 @@ const PredictionDetails = (props) => {
                       src={cleridIcon}
                       alt="clerids"
                     />
-                    <div className="content-text">{Math.round(data[0].cleridst1)} clerids</div>
+                    <div className="content-text">{Math.round(data[0].cleridst1)} <u>clerids</u></div>
                   </div>
                 </div>
                 <div className="yeart1-spots" id="spots">
@@ -80,7 +80,7 @@ const PredictionDetails = (props) => {
                       src={trapIcon}
                       alt="spots"
                     />
-                    <div className="content-text">{Math.round(data[0].spotst1)} spots</div>
+                    <div className="content-text">{Math.round(data[0].spotst1)} <u>spots</u></div>
                   </div>
                 </div>
                 <div className="curr-year">
@@ -94,14 +94,14 @@ const PredictionDetails = (props) => {
                       src={cleridIcon}
                       alt="spb"
                     />
-                    <div className="content-text">{data[0].SPB.toFixed(1)} SPB</div>
+                    <div className="content-text">{data[0].SPB.toFixed(1)} <u>SPB</u></div>
                   </div>
                 </div>
                 <div className="curr-endobrev" id="endobrev">
                   <hr />
                   <div className="content-container">
                     {/* TODO: figure out how to fit "-brevicomin" */}
-                    <div className="content-text">{(data[0].endobrev === 0) ? 'no' : 'yes'} endo-brevicomin</div>
+                    <div className="content-text">{(data[0].endobrev === 0) ? 'no' : 'yes'} <u>endo-brevicomin</u></div>
                   </div>
                 </div>
               </div>
