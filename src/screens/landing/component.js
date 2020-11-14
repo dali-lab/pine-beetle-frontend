@@ -49,7 +49,7 @@ const Landing = (_props) => {
         <div className="page-container" id="right-page-container">
           <div id="page-name">Play with the model</div>
           <div id="summary">
-            Trapping data collected since 2011 were used to build the prediction model on this website. View and download the data here with years and/or locations filter.
+            Trapping data collected since 2011 were used to build the prediction model on this website. View and download the data here with years and/or location filters.
           </div>
           <Link to={ROUTES.PLAY_WITH_MODEL}>
             <btn id="click-to">
@@ -120,7 +120,7 @@ const Landing = (_props) => {
             <div id="description-title">Zero Inflation</div>
           </div>
           <div id="description-text">
-            Because most locations in most years are not in outbreak, a very large number of zeros occurs in the data over the course of
+            Because most locations in most years do not experience an outbreak, a very large number of zeroes occurs in the data over the course of
             the three decades that data have been collected. This means that traditional statistics methods cannot be applied.
             Zero-inflation, however, is designed for precisely this kind of data, and we think it might prove to be a robust method for other kinds of irregularly outbreaking insects—not just SPB.
           </div>
