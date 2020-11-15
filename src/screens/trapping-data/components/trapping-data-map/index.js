@@ -26,10 +26,14 @@ const mapStateToProps = (state) => {
     },
   } = state;
 
+  const allCounties = [...new Set(trappingData.map((obj => obj.county)))];
   const allRangerDistricts = [...new Set(trappingData.map((obj => obj.rangerDistrict)))];
+  const allStates = [...new Set(trappingData.map((obj => obj.state)))];
 
   return {
+    allCounties,
     allRangerDistricts,
+    allStates,
     county,
     dataMode,
     endYear,
