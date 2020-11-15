@@ -95,3 +95,12 @@ export const runCustomPrediction = (cleridst1, spotst1, spotst2, SPB, endobrev) 
     }
   };
 };
+
+/**
+ * @description action creator for clearing all selections
+ */
+export const clearCustomPredictionError = () => {
+  return (dispatch) => {
+    dispatch({ type: ActionTypes.CLEAR_CUSTOM_PREDICTION_ERROR });
+  };
+};

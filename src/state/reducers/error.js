@@ -52,6 +52,9 @@ const ErrorReducer = (state = initialState, action) => {
         },
       };
 
+    case ActionTypes.CLEAR_CUSTOM_PREDICTION_ERROR:
+      return { ...state, customPredictionError: initialState.customPredictionError };
+
     default:
       return state;
   }
