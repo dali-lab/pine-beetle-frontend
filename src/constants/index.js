@@ -67,6 +67,7 @@ const ROUTES = {
 export {
   AUTH_TOKEN_KEY,
   DATA_MODES,
+  AUTOMATION_SERVER_ENDPOINTS,
   SERVER_ENDPOINTS,
   getAutomationServerUrl,
   getServerUrl,
