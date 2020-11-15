@@ -9,6 +9,11 @@ const initialState = {
     error: [],
     text: [],
   },
+  customPredictionError: {
+    error: [],
+    text: [],
+    input: [],
+  },
 };
 
 const ErrorReducer = (state = initialState, action) => {
@@ -36,6 +41,16 @@ const ErrorReducer = (state = initialState, action) => {
 
     case ActionTypes.CLEAR_PREDICTIONS_ERROR:
       return { ...state, predictionsError: initialState.predictionsError };
+
+    case ActionTypes.SET_CUSTOM_PREDICTION_ERROR:
+      return {
+        ...state,
+        customPredictionError: {
+          error: [...state.customPredictionError.error, action.payload.error],
+          text: [...state.customPredictionError.text, action.payload.text],
+          input: [...state.customPredictionError.input, action.payload.input],
+        },
+      };
 
     default:
       return state;

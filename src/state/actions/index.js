@@ -25,6 +25,7 @@ import {
   ActionTypes as predictionActionTypes,
   getCountyPredictions,
   getRangerDistrictPredictions,
+  runCustomPrediction,
 } from './predictions';
 
 const ActionTypes = {
@@ -42,6 +43,7 @@ export {
   getRangerDistrictPredictions,
   getRangerDistrictTrapping,
   login,
+  runCustomPrediction,
   setCounty,
   setDataMode,
   setRangerDistrict,
