@@ -1,0 +1,147 @@
+#play-with-model-inputs-container {
+    display: flex;
+    padding: 36px 47px 39px 61px;
+    border-radius: 26px;
+    box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+    background-color: #ffffff;
+    margin-top: 58px;
+    margin-bottom: 100px;
+}
+
+.change-fields {
+    text-align: left;
+}
+
+#change-fields-title {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: left;
+    color: #2f303a;
+    margin-bottom: 37px;
+}
+
+.field {
+    display: inline-flex;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.icon {
+    width: 13px;
+    height: 13px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+#field-text {
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+#trap-icon {
+    background-color: #c7ffb4;
+}
+
+#clerids-icon {
+    background-color: #ffe5b4;
+}
+
+#spb-icon {
+    background-color: #b4dbff;
+}
+
+#endobrev-icon {
+    background-color: #deb4ff;
+}
+
+#run-button {
+    width: 129px;
+    padding: 11px 20px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    background-color: #3c4253;
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff;
+    float: right;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Pre-render the bigger shadow, but hide it */
+#run-button::after {
+    border-radius: 5px;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Transition to showing the bigger shadow on hover */
+#run-button:hover {
+    -webkit-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+}
+
+#run-button:hover {
+    opacity: 1;
+}
+
+#vl {
+    border-left: 2px dashed #d7dae4;
+    height: auto;
+    margin-right: 50px;
+    margin-left: 30px;
+} 
+
+#predictions-generated-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #3c4253;
+    text-align: left;
+}
+
+.predictions-generated #prob-spots {
+    width: 11vw;
+    padding: 14px 48px 14px 49px;
+    border-radius: 12px;
+    box-shadow: 0 18px 50px 0 rgba(255, 193, 72, 0.4);
+    background-color: #ffc148;
+    margin-top: 35px;
+}
+
+#percent {
+    font-size: 30px;
+    font-weight: 900;
+    text-align: center;
+    color: #3c4253;
+    margin-bottom: 10px;
+}
+
+#prob-text {
+    font-size: 12px;
+    line-height: 1.31;
+    text-align: center;
+    color: #17191f;
+}
+
+.predictions-generated #prob-outbreak {
+    width: 11vw;
+    padding: 14px 48px 14px 49px;
+    border-radius: 12px;
+    box-shadow: 0 18px 50px 0 rgba(134, 204, 255, 0.4);
+    background-color: #86ccff;
+    margin-top: 35px;
+}

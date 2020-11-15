@@ -4,12 +4,13 @@ import './style.scss';
 
 const questionIcon = require('../../../../assets/icons/help-circle.png');
 
+// TODO: make new tool tip text
 const helpText = 'Please select year, state, and county/RD for predictions.<br />After selecting a specific county or RD,<br />you can see prediction breakdown below the map.';
 
 const OverviewText = _props => (
   <div className="container">
     <h1 id="title">
-      The Predictive Tool
+      Play with the Model
     </h1>
     <img id="icon"
       data-tip={helpText}

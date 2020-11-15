@@ -1,8 +1,18 @@
 import React from 'react';
 
+import {
+  PlayWithModelInputs,
+  OverviewText,
+  SelectionBar,
+} from './components';
+
 const PlayWithModel = (props) => {
   return (
-    <div />
+    <div>
+      <OverviewText />
+      <SelectionBar />
+      <PlayWithModelInputs />
+    </div>
   );
 };
 
