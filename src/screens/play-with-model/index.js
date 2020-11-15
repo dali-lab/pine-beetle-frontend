@@ -8,11 +8,13 @@ const mapStateToProps = (state) => {
   const {
     predictions: {
       customPrediction,
+      fetchingCustomPrediction,
     },
   } = state;
 
   return {
     customPrediction,
+    isLoading: fetchingCustomPrediction,
   };
 };
 
