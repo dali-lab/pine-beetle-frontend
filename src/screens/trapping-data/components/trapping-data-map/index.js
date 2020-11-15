@@ -23,11 +23,12 @@ const mapStateToProps = (state) => {
     },
     trappings: {
       data: trappingData,
+      rangerDistrict: allRangerDistrictData,
     },
   } = state;
 
   const allCounties = [...new Set(trappingData.map((obj => obj.county)))];
-  const allRangerDistricts = [...new Set(trappingData.map((obj => obj.rangerDistrict)))];
+  const allRangerDistricts = [...new Set(allRangerDistrictData.map((obj => obj.rangerDistrict)))];
   const allStates = [...new Set(trappingData.map((obj => obj.state)))];
 
   return {

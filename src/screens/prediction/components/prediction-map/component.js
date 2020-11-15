@@ -88,7 +88,7 @@ const PredictionMap = (props) => {
       }
 
       const pred = predictions.find((p) => {
-        return ((p.state === hoverState && p.state === state) || (!state && availableStates.includes(hoverState)))
+        return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availableStates.includes(hoverState)))
         && ((p.county === location && mode === DATA_MODES.COUNTY)
         || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
       });
@@ -116,7 +116,7 @@ const PredictionMap = (props) => {
   };
 
   // twice-curried function for generating click callback
-  const createMapClickCallback = (states, counties, rangerDistricts, currentState) => (e) => {
+  const createMapClickCallback = (states, counties, rangerDistricts, currentState, predictions, mode) => (e) => {
     if (!e) return;
 
     const {
@@ -126,24 +126,28 @@ const PredictionMap = (props) => {
 
     const forest = _forest.slice(0, -3);
 
+    const rangerDistrictToSet = rangerDistricts.find(district => (
+      district.includes(forest.replace(' ', ''))
+    ));
+
+    let state = _state;
+
+    if (!_state && mode === DATA_MODES.RANGER_DISTRICT) {
+      state = predictions.find(p => p.rangerDistrict === rangerDistrictToSet)?.state;
+    }
+
     // ensure clicked on valid state
-    if (!states.includes(_state)) return;
+    if (!states.includes(state)) return;
 
     // select state if no state selected (or click neighbor state)
-    if (!currentState || _state !== currentState) {
-      setState(_state);
+    if (!currentState || state !== currentState) {
+      setState(state);
       // select county otherwise
     } else if (dataMode === DATA_MODES.COUNTY && counties.includes(forest)) {
       setCounty(forest);
       // select rd otherwise
-    } else {
-      const rangerDistrictToSet = rangerDistricts.find(district => (
-        district.includes(forest.replace(' ', ''))
-      ));
-
-      if (rangerDistricts.includes(rangerDistrictToSet)) {
-        setRangerDistrict(rangerDistrictToSet);
-      }
+    } else if (rangerDistricts.includes(rangerDistrictToSet)) {
+      setRangerDistrict(rangerDistrictToSet);
     }
   };
 
@@ -195,7 +199,7 @@ const PredictionMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      const callback = createMapClickCallback(allStates, allCounties, allRangerDistricts, selectedState);
+      const callback = createMapClickCallback(allStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode);
       setMapClickCallback(() => callback);
       createdMap.on('click', VECTOR_LAYER, callback);
     }
@@ -429,11 +433,11 @@ const PredictionMap = (props) => {
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
-      const callback = createMapClickCallback(allStates, allCounties, allRangerDistricts, selectedState);
+      const callback = createMapClickCallback(allStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode);
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
-  }, [map, allStates, allCounties, allRangerDistricts, selectedState]);
+  }, [map, allStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode]);
 
   return (
     <div className="container flex-item-left" id="map-container">
