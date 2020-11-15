@@ -23,10 +23,14 @@ const mapStateToProps = (state) => {
     },
   } = state;
 
+  const allCounties = [...new Set(predictionsData.map((obj => obj.county)))];
   const allRangerDistricts = [...new Set(allRangerDistrictData.map((obj => obj.rangerDistrict)))];
+  const allStates = [...new Set(predictionsData.map((obj => obj.state)))];
 
   return {
+    allCounties,
     allRangerDistricts,
+    allStates,
     county,
     dataMode,
     predictionsData,

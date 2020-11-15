@@ -35,7 +35,9 @@ const VECTOR_LAYER = 'prediction-chloropleth-layer';
 
 const PredictionMap = (props) => {
   const {
+    allCounties,
     allRangerDistricts,
+    allStates,
     dataMode,
     predictionsData,
     selectedState,
@@ -50,6 +52,8 @@ const PredictionMap = (props) => {
   const [legendTags, setLegendTags] = useState([]);
   const [predictionHover, setPredictionHover] = useState(null);
   const [isDownloadingMap, setIsDownloadingMap] = useState(false);
+  const [mapClickCallback, setMapClickCallback] = useState();
+  const [mapHoverCallback, setMapHoverCallback] = useState();
 
   const mapboxHoverStyle = (x, y) => {
     if (x < 300 && y < 200) {
@@ -64,8 +68,8 @@ const PredictionMap = (props) => {
   };
 
   // twice-curried function for generating hover callback
-  const createMapHoverCallback = (predictions, rangerDistricts, mode) => (e) => {
-    if (!map) return;
+  const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availableStates) => (e) => {
+    if (!map || !e) return;
 
     const counties = map.queryRenderedFeatures(e.point, {
       layers: [VECTOR_LAYER],
@@ -73,6 +77,7 @@ const PredictionMap = (props) => {
 
     if (counties.length > 0 && counties[0] && counties[0].properties && counties[0].properties.forest) {
       const { x, y } = e.point;
+      const { STATE: hoverState } = counties[0].properties;
 
       let location;
 
@@ -83,8 +88,9 @@ const PredictionMap = (props) => {
       }
 
       const pred = predictions.find((p) => {
-        return (p.county === location && mode === DATA_MODES.COUNTY)
-        || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT);
+        return ((p.state === hoverState && p.state === state) || (!state && availableStates.includes(hoverState)))
+        && ((p.county === location && mode === DATA_MODES.COUNTY)
+        || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
       });
 
       if (pred && x && y) {
@@ -110,29 +116,35 @@ const PredictionMap = (props) => {
   };
 
   // twice-curried function for generating click callback
-  const createMapClickCallback = (rangerDistricts) => {
-    let pastSelectedState = '';
+  const createMapClickCallback = (states, counties, rangerDistricts, currentState) => (e) => {
+    if (!e) return;
 
-    return (e) => {
-      const {
-        forest: _forest,
-        STATE: _state,
-      } = e.features[0].properties;
+    const {
+      forest: _forest,
+      STATE: _state,
+    } = e.features[0].properties;
 
-      const forest = _forest.slice(0, -3);
+    const forest = _forest.slice(0, -3);
 
-      if (!pastSelectedState || _state !== pastSelectedState) { // click on neighbor state or in a state and want to click on county
-        setState(_state);
-      } else if (dataMode === DATA_MODES.COUNTY) { // not in state go to state
-        setCounty(forest);
-      } else {
-        setRangerDistrict(rangerDistricts.find(district => (
-          district.includes(forest.replace(' ', ''))
-        )));
+    // ensure clicked on valid state
+    if (!states.includes(_state)) return;
+
+    // select state if no state selected (or click neighbor state)
+    if (!currentState || _state !== currentState) {
+      setState(_state);
+      // select county otherwise
+    } else if (dataMode === DATA_MODES.COUNTY && counties.includes(forest)) {
+      setCounty(forest);
+      // select rd otherwise
+    } else {
+      const rangerDistrictToSet = rangerDistricts.find(district => (
+        district.includes(forest.replace(' ', ''))
+      ));
+
+      if (rangerDistricts.includes(rangerDistrictToSet)) {
+        setRangerDistrict(rangerDistrictToSet);
       }
-
-      pastSelectedState = _state;
-    };
+    }
   };
 
   const generateMap = (forceRegenerate) => {
@@ -183,11 +195,15 @@ const PredictionMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      createdMap.on('click', VECTOR_LAYER, createMapClickCallback(allRangerDistricts));
+      const callback = createMapClickCallback(allStates, allCounties, allRangerDistricts, selectedState);
+      setMapClickCallback(() => callback);
+      createdMap.on('click', VECTOR_LAYER, callback);
     }
 
     if (createdMap._listeners.mousemove === undefined) {
-      createdMap.on('mousemove', createMapHoverCallback(predictionsData, allRangerDistricts, dataMode));
+      const callback = createMapHoverCallback(predictionsData, allRangerDistricts, dataMode, selectedState, allStates);
+      setMapHoverCallback(() => callback);
+      createdMap.on('mousemove', callback);
     }
 
     setMap(createdMap);
@@ -396,9 +412,28 @@ const PredictionMap = (props) => {
     }
 
     if (map && predictionsData) {
-      map.on('mousemove', createMapHoverCallback(predictionsData, allRangerDistricts, dataMode));
+      // remove current callback
+      if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
+
+      // generate new callback
+      const callback = createMapHoverCallback(predictionsData, allRangerDistricts, dataMode, selectedState, allStates);
+      setMapHoverCallback(() => callback);
+      map.on('mousemove', callback);
     }
-  }, [map, predictionsData, allRangerDistricts, dataMode]);
+  }, [map, predictionsData, allRangerDistricts, dataMode, selectedState, allStates]);
+
+  // update the click callback handler when all RD or all states changes
+  useEffect(() => {
+    if (map && allStates && allCounties && allRangerDistricts) {
+      // remove current callback
+      if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
+
+      // generate new callback
+      const callback = createMapClickCallback(allStates, allCounties, allRangerDistricts, selectedState);
+      setMapClickCallback(() => callback);
+      map.on('click', VECTOR_LAYER, callback);
+    }
+  }, [map, allStates, allCounties, allRangerDistricts, selectedState]);
 
   return (
     <div className="container flex-item-left" id="map-container">

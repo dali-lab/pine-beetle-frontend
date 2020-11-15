@@ -109,9 +109,7 @@ const HistoricalMap = (props) => {
 
     if (!selectedState) {
       setState(_state);
-    }
-
-    if (dataMode === DATA_MODES.COUNTY) {
+    } else if (dataMode === DATA_MODES.COUNTY) {
       setCounty(forest);
     } else {
       setRangerDistrict(rangerDistricts.find(district => (
