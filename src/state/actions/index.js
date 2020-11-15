@@ -23,8 +23,10 @@ import {
 
 import {
   ActionTypes as predictionActionTypes,
+  clearCustomPredictionError,
   getCountyPredictions,
   getRangerDistrictPredictions,
+  runCustomPrediction,
 } from './predictions';
 
 const ActionTypes = {
@@ -36,12 +38,14 @@ const ActionTypes = {
 
 export {
   ActionTypes,
+  clearCustomPredictionError,
   clearSelections,
   getCountyPredictions,
   getCountyTrapping,
   getRangerDistrictPredictions,
   getRangerDistrictTrapping,
   login,
+  runCustomPrediction,
   setCounty,
   setDataMode,
   setRangerDistrict,

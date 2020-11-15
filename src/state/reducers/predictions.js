@@ -12,9 +12,11 @@ const initialState = {
   data: [], // current data (changes when user updates data mode, components should import this)
   county: [], // the county data
   rangerDistrict: [], // the ranger district data
+  customPrediction: {},
 
   fetchingCounty: false,
   fetchingRangerDistrict: false,
+  fetchingCustomPrediction: false,
 };
 
 const PredictionsReducer = (state = initialState, action) => {
@@ -25,11 +27,17 @@ const PredictionsReducer = (state = initialState, action) => {
     case ActionTypes.SET_RANGER_DISTRICT_PREDICTIONS:
       return { ...state, rangerDistrict: action.payload };
 
+    case ActionTypes.SET_CUSTOM_PREDICTION:
+      return { ...state, customPrediction: action.payload };
+
     case ActionTypes.FETCHING_COUNTY_PREDICTIONS:
       return { ...state, fetchingCounty: action.payload };
 
     case ActionTypes.FETCHING_RANGER_DISTRICT_PREDICTIONS:
       return { ...state, fetchingRangerDistrict: action.payload };
+
+    case ActionTypes.FETCHING_CUSTOM_PREDICTION:
+      return { ...state, fetchingCustomPrediction: action.payload };
 
     case ActionTypes.SET_DATA_MODE:
       return { ...state, data: action.payload.mode === DATA_MODES.COUNTY ? state.county : state.rangerDistrict };
