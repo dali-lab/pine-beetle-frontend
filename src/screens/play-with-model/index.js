@@ -1,5 +1,7 @@
 import { connect } from 'react-redux';
 
+import { clearCustomPredictionError, runCustomPrediction } from '../../state/actions';
+
 import PlayWithModel from './component';
 
 const mapStateToProps = (state) => {
@@ -13,11 +15,24 @@ const mapStateToProps = (state) => {
       county: countyTrappingsData,
       rangerDistrict: rangerDistrictTrappingsData,
     },
+    error: {
+      customPredictionError,
+    },
+    predictions: {
+      customPrediction,
+      fetchingCustomPrediction,
+    },
   } = state;
+
+  const isError = customPredictionError.error.length > 0;
 
   return {
     county,
     countyTrappingsData,
+    customPrediction,
+    error: customPredictionError,
+    isError,
+    isLoading: fetchingCustomPrediction,
     rangerDistrictTrappingsData,
     selectedState,
     year,
@@ -25,7 +40,14 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    clearError: () => {
+      dispatch(clearCustomPredictionError());
+    },
+    runCustomPrediction: (cleridst1, spotst1, spotst2, SPB, endobrev) => {
+      dispatch(runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev));
+    },
+  };
 };
 
 export default connect(
