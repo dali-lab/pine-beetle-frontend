@@ -1,3 +1,24 @@
+import { connect } from 'react-redux';
+
 import PlayWithModelInputs from './component';
 
-export default PlayWithModelInputs;
+const mapStateToProps = (state) => {
+  const {
+    selections: {
+      year,
+    },
+  } = state;
+
+  return {
+    year,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PlayWithModelInputs);

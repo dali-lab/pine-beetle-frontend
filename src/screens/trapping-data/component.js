@@ -40,13 +40,14 @@ const TrappingData = (props) => {
             onClick={() => setChartMode(false)}
           />
           <br />
-          <btn
+          <button
             onClick={() => setChartMode(false)}
             id={chartMode ? null : 'selected-view'}
             className="view-selection-btn"
+            type="button"
           >
             Map View
-          </btn>
+          </button>
         </div>
         <div id="selection">
           <img
@@ -56,13 +57,14 @@ const TrappingData = (props) => {
             onClick={() => setChartMode(true)}
           />
           <br />
-          <btn
+          <button
             onClick={() => setChartMode(true)}
             id={chartMode ? 'selected-view' : null}
             className="view-selection-btn"
+            type="button"
           >
             Graph View
-          </btn>
+          </button>
         </div>
       </div>
       <div>
