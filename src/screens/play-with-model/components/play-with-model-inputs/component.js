@@ -2,93 +2,22 @@ import React from 'react';
 
 import './style.scss';
 
-const trapIcon = require('../../../../assets/icons/trap.png');
-const cleridsIcon = require('../../../../assets/icons/clerids.png');
-const endobrevIcon = require('../../../../assets/icons/endobrev.png');
+import InputContainer from '../input-container';
 
-const PlayWithModelInputs = () => {
+const PlayWithModelInputs = (props) => {
+  const {
+    modelInputs,
+    runModel,
+    setModelInputs,
+  } = props;
+
   return (
     <div className="container" id="play-with-model-inputs-container">
-      <div className="change-fields-container">
-        <div className="change-fields">
-          <div id="change-fields-title">
-            Change numbers in any of the fields below to gauge effect on predicted risks at right
-          </div>
-          <div className="field">
-            <img
-              className="icon"
-              id="trap-icon"
-              src={trapIcon}
-              alt="number of spots icon"
-            />
-            {/* TODO: render dynamically */}
-            <div id="field-text">
-              Enter a number for spots in 2018 (whole year)
-            </div>
-            {/* TODO: make this an input */}
-            <div id="input" />
-          </div>
-          <div className="field">
-            <img
-              className="icon"
-              id="trap-icon"
-              src={trapIcon}
-              alt="number of spots icon"
-            />
-            {/* TODO: render dynamically */}
-            <div id="field-text">
-              Enter a number for spots per 2 weeks in 2019 (whole year)
-            </div>
-            {/* TODO: make this an input */}
-            <div id="input" />
-          </div>
-          <div className="field">
-            <img
-              className="icon"
-              id="clerids-icon"
-              src={cleridsIcon}
-              alt="number of clerids icon"
-            />
-            {/* TODO: render dynamically */}
-            <div id="field-text">
-              Enter a number for clerids in 2019 (whole year)
-            </div>
-            {/* TODO: make this an input */}
-            <div id="input" />
-          </div>
-          <div className="field">
-            <img
-              className="icon"
-              id="spb-icon"
-              src={trapIcon}
-              alt="number of SPB icon"
-            />
-            {/* TODO: render dynamically */}
-            <div id="field-text">
-              Enter a number for SPB per 2 weeks in Spring, 2020 (whole year)
-            </div>
-            {/* TODO: make this an input */}
-            <div id="input" />
-          </div>
-          <div className="field">
-            <img
-              className="icon"
-              id="endobrev-icon"
-              src={endobrevIcon}
-              alt="endo-brevicomin icon"
-            />
-            {/* TODO: render dynamically */}
-            <div id="field-text">
-              Was endo-brevicomin used in Spring, 2020 (whole year)
-            </div>
-            {/* TODO: make this an input */}
-            <div id="input" />
-          </div>
-        </div>
-        <btn id="run-button">
-          Run
-        </btn>
-      </div>
+      <InputContainer
+        modelInputs={modelInputs}
+        runModel={runModel}
+        setModelInputs={setModelInputs}
+      />
       <div id="vl" />
       <div className="predictions-generated">
         <div id="predictions-generated-title">
