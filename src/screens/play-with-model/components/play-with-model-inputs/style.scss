@@ -22,9 +22,14 @@
 }
 
 .field {
-    display: inline-flex;
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
     text-align: left;
+}
+
+.icon-text-container {
+    display: inline-flex;
 }
 
 .icon {
@@ -53,6 +58,50 @@
 
 #endobrev-icon {
     background-color: #deb4ff;
+}
+
+.field input[type=number] {
+    width: 88px;
+    height: 28px;
+    border-radius: 6px;
+    background-color: #f0f2f8;
+    border: none;
+    padding: 3px 0px 4px 10px;
+
+    font-family: 'Inter';
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.16;
+    text-align: center;
+    color: #2f303a;
+}
+
+.field .checkboxes {
+    font-family: 'Inter';
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.16;
+    color: #2f303a;
+    display: inline-flex;
+}
+
+.endobrev-checkbox span {
+    margin: 0 0 0 5px;
+    font-family: 'Inter';
+    font-size: 18px;
+    font-weight: 500;
+    text-align: left;
+    color: #000000;
+}
+
+.endobrev-checkbox {
+    width: 88px;
+    height: 28px;
+    border-radius: 6px;
+    background-color: #f0f2f8;
+    border: none;
+    padding: 3px 0px 4px 10px;
+    margin-left: 5px;
 }
 
 #run-button {
@@ -107,6 +156,7 @@
 } 
 
 #predictions-generated-title {
+    margin-top: 20px;
     font-size: 16px;
     font-weight: 600;
     color: #3c4253;
@@ -143,5 +193,5 @@
     border-radius: 12px;
     box-shadow: 0 18px 50px 0 rgba(134, 204, 255, 0.4);
     background-color: #86ccff;
-    margin-top: 35px;
+    margin-top: 50px;
 }

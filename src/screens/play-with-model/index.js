@@ -8,6 +8,8 @@ const mapStateToProps = (state) => {
   const {
     selections: {
       county,
+      dataMode,
+      rangerDistrict,
       state: selectedState,
       year,
     },
@@ -30,9 +32,11 @@ const mapStateToProps = (state) => {
     county,
     countyTrappingsData,
     customPrediction,
+    dataMode,
     error: customPredictionError,
     isError,
     isLoading: fetchingCustomPrediction,
+    rangerDistrict,
     rangerDistrictTrappingsData,
     selectedState,
     year,

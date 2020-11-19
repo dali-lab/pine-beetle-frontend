@@ -5,7 +5,10 @@ import './style.scss';
 const questionIcon = require('../../../../assets/icons/help-circle.png');
 
 // TODO: make new tool tip text
-const helpText = 'Please select year, state, and county/RD for predictions.<br />After selecting a specific county or RD,<br />you can see prediction breakdown below the map.';
+const helpText = `Please input desired fields to generate outbreak predictions.<br />
+  For your reference, the selection bar helps you <br />
+  fill in fields based on year, state, and county. <br />
+  Click the run button to generate predictions.`;
 
 const OverviewText = _props => (
   <div className="container">

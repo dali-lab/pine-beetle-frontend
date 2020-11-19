@@ -6,19 +6,23 @@ import {
   SelectionBar,
 } from './components';
 
+import { DATA_MODES } from '../../constants';
+
 const PlayWithModel = (props) => {
   const {
-    countyTrappingsData,
-    // rangerDistrictTrappingsData,
-    year,
-    selectedState,
+    clearError, // function to clear the error
     county,
-    //   clearError, // function to clear the error
-  //   customPrediction, // result of prediction output
-  //   error, // error object if one occurred
-  //   isError, // whether or not an error occurred
-  //   isLoading, // whether or not we are loading (i.e. running the model)
-  //   runCustomPrediction, // function to call for running the prediction
+    countyTrappingsData,
+    customPrediction, // result of prediction output
+    dataMode,
+    error, // error object if one occurred
+    isError, // whether or not an error occurred
+    isLoading, // whether or not we are loading (i.e. running the model)
+    rangerDistrict,
+    rangerDistrictTrappingsData,
+    runCustomPrediction, // function to call for running the prediction
+    selectedState,
+    year,
   } = props;
 
   const [modelInputs, setModelInputs] = useState({
@@ -37,16 +41,36 @@ const PlayWithModel = (props) => {
   };
 
   const runModel = () => {
-    console.log(modelInputs);
+    if (isError) {
+      clearError();
+    }
+    runCustomPrediction(modelInputs.cleridst1, modelInputs.spotst1, modelInputs.spotst2, modelInputs.spb, modelInputs.endobrev);
   };
 
   useEffect(() => {
-    if (year && selectedState && county) {
+    console.log(modelInputs);
+  }, [modelInputs]);
+
+  useEffect(() => {
+    const sublocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
+    const dataArray = dataMode === DATA_MODES.COUNTY ? countyTrappingsData : rangerDistrictTrappingsData;
+
+    // sets input fields to 0 if selection cleared
+    if (!selectedState && !sublocation) {
+      setModelInputs({
+        cleridst1: 0,
+        endobrev: 0,
+        spb: 0,
+        spotst1: 0,
+        spotst2: 0,
+      });
+    } else if (year && selectedState && sublocation) {
       // filter to find relevant data fields
-      const relevantData = countyTrappingsData
+      const relevantData = dataArray
         .filter(obj => (
           obj.state === selectedState
-          && obj.county === county
+          && ((dataMode === DATA_MODES.COUNTY && obj.county === county)
+            || (dataMode === DATA_MODES.RANGER_DISTRICT && obj.rangerDistrict === rangerDistrict))
           && (obj.year === year || obj.year === year - 1)
         ));
 
@@ -68,14 +92,69 @@ const PlayWithModel = (props) => {
 
       // update the state
       updateModelInputs({
-        spotst1,
-        spotst2,
-        spb: spbPer2Weeks,
-        endobrev,
-        cleridst1: cleridPer2Weeks,
+        spotst1: (spotst1 || 0),
+        spotst2: (spotst2 || 0),
+        spb: (spbPer2Weeks || 0),
+        endobrev: (endobrev || 0),
+        cleridst1: (cleridPer2Weeks || 0),
       });
     }
-  }, [year, selectedState, county]);
+  }, [year, selectedState, county, rangerDistrict, dataMode]);
+
+  const predictionOutputs = (haveCustomPredictions) => {
+    // eslint-disable-next-line no-restricted-globals
+    if (isNaN(customPrediction['prob.Spots>0']) || isNaN(customPrediction['prob.Spots>53'])) {
+      return (
+        <div className="predictions-generated">
+          <p>Please make sure inputted fields are valid.</p>
+        </div>
+      );
+    } else if (haveCustomPredictions) {
+      return (
+        <div className="predictions-generated">
+          <div id="predictions-generated-title">
+            <p>Predicted beetle risks in {year}</p>
+          </div>
+          <div id="prob-spots">
+            <div id="percent">
+              {(customPrediction['prob.Spots>0'] * 100).toFixed(1)}%
+            </div>
+            <div id="prob-text">
+              <p>Predicted % Chance of Any Spots ({'>'}0 spots)</p>
+            </div>
+          </div>
+          <div id="prob-outbreak">
+            <div id="percent">
+              {(customPrediction['prob.Spots>53'] * 100).toFixed(1)}%
+            </div>
+            <div id="prob-text">
+              <p>Predicted % Chance of Outbreak ({'>'}50 spots)</p>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (isLoading) {
+      return (
+        <div className="predictions-generated">
+          <p>Generating predictions...</p>
+        </div>
+      );
+    } else if (isError) {
+      return (
+        <div className="predictions-generated">
+          <p>An error occured.</p>
+          <p>Error message: {error.text}</p>
+          <p>Please make sure all fields are inputted correctly.</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className="predictions-generated">
+          <p>Please input desired fields and press run to generate predictions.</p>
+        </div>
+      );
+    }
+  };
 
   return (
     <div>
@@ -85,31 +164,10 @@ const PlayWithModel = (props) => {
         <PlayWithModelInputs
           modelInputs={modelInputs}
           runModel={runModel}
-          setModelInputs={setModelInputs}
+          updateModelInputs={updateModelInputs}
         />
         <div id="vl" />
-        <div className="predictions-generated">
-          <div id="predictions-generated-title">
-            Predicted beetle risks in 2020
-          </div>
-          {/* TODO: dynamically render data */}
-          <div id="prob-spots">
-            <div id="percent">
-              10.2%
-            </div>
-            <div id="prob-text">
-              Predicted % Chance of Any Spots ({'>'}0 spots)
-            </div>
-          </div>
-          <div id="prob-outbreak">
-            <div id="percent">
-              0.2%
-            </div>
-            <div id="prob-text">
-              Predicted % Chance of Outbreak ({'>'}50 spots)
-            </div>
-          </div>
-        </div>
+        {predictionOutputs(Object.keys(customPrediction).length !== 0)}
       </div>
     </div>
   );
