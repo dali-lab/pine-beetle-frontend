@@ -48,10 +48,6 @@ const PlayWithModel = (props) => {
   };
 
   useEffect(() => {
-    console.log(modelInputs);
-  }, [modelInputs]);
-
-  useEffect(() => {
     const sublocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
     const dataArray = dataMode === DATA_MODES.COUNTY ? countyTrappingsData : rangerDistrictTrappingsData;
 
