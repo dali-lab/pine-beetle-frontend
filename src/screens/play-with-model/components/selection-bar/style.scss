@@ -1,0 +1,149 @@
+#predictionbar {
+    background: #FFFFFF;
+    box-shadow: 0px 12px 30px -5px rgba(77, 81, 94, 0.04);
+    border-radius: 18px;
+    font-family: 'Inter';
+    font-size: 18px; 
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0em;
+    text-align: left;
+    display: flex;
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
+
+.menuInstruction {
+    background: #FFFFFF;
+}
+
+.menuInstruction label {
+    background: #FFFFFF;
+    color: #7c7c96;
+}
+
+.menuInstruction .input {
+    padding-left: 20px;
+    background: #EDEDEE;
+    height: 43px;
+    font-family: 'Inter';
+    font-size: 18px; 
+    width: 10vw !important;
+    max-width: 200px;
+    border-radius: 6px;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+}
+
+.selection {
+    background: #FFFFFF;
+}
+
+.selection label {
+    color: #7c7c96;
+    background: #FFFFFF;
+}
+
+.selection-no-button {
+    padding-left: 20px;
+    background: #EDEDEE;
+    height: 43px;
+    font-family: 'Inter';
+    font-size: 18px; 
+    width: 15vw;
+    max-width: 220px;
+    border-radius: 6px;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+}
+
+#vl1 {
+    border-left: 2px solid #f9f9f9;
+    height: 72px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#vl2 {
+    border-left: 2px solid #f9f9f9;
+    height: 24px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.county-rd-selection {
+    color: #2d2d2d !important;
+}
+
+#mode-selection {
+    display: flex;
+    height: 0px;
+}
+
+#mode-selection button {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor:pointer;
+    outline: none; 
+    color: #84848a;
+    font-size: 18px;
+}
+
+#reset-current-data-button {
+    background: #C9CDD9;
+    height: 43px;
+    font-family: 'Inter';
+    font-size: 18px; 
+    width: 12vw;
+    max-width: 150px;
+    border-radius: 10px;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+    color: #2F303A;
+    margin-left: 4.5vw;
+    transform: translateY(10px);
+
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Pre-render the bigger shadow, but hide it */
+#reset-current-data-button::after {
+    border-radius: 5px;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Transition to showing the bigger shadow on hover */
+#reset-current-data-button:hover {
+    -webkit-transform: scale(1.1, 1.1);
+    transform: scale(1.1, 1.1);
+}
+
+#reset-current-data-button:hover {
+    opacity: 1;
+}

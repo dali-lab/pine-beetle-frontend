@@ -1,0 +1,95 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#main {
+    background-color: #FBFBFD;
+}
+
+body {
+    font-family: 'Inter';
+    font-weight: normal;
+    color: #212122;
+}
+
+body p {
+    line-height: 1.8;
+}
+
+body h2 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+body p, a, li {
+    font-family: 'Inter';
+    padding-bottom: 0px;
+}
+
+body h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter';
+    padding-bottom: 0px;
+}
+
+body h1 {
+    letter-spacing: -1.5px;
+}
+
+body img {
+    border-radius: 0px;
+}
+
+.container {
+    width: auto;
+    height: auto;
+    margin: 0px; /* 15px 31px */
+    background-color:#FBFBFD;
+    background-clip: border-box;
+    border-radius: 0px;
+    text-align: center;
+}
+
+.content .container {
+    padding: 20px; /* 20px */
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.flex-container {
+    width: 100%;
+    display: flex;             /* primary flex container */
+    flex-direction: row;       /* horizontal alignment of flex items */
+    align-items: stretch;      /* will apply equal heights to flex items*/
+    height: 100%;
+}
+
+.flex-item {
+    flex: 1;
+    padding: 0px; /* 15 */
+    display: flex;             /* nested flex container */
+    flex-direction: column;    /* vertical alignment of flex items */
+    justify-content: center;   /* center flex items vertically */
+}
+
+.flex-item-left {
+    margin-right: 0px; /* 15 */
+}
+
+.flex-item-right {
+    margin-left: 0px; /* 15 */
+}
+
+.content {
+    height: 100%;
+    min-height: calc(100vh - 135px);
+}
+
+.line {
+    width: 156px;
+    height: 1px;
+    margin: auto;
+    background-color: #212122;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
