@@ -1,7 +1,7 @@
 import { DATA_MODES } from '../../constants';
 
 export const ActionTypes = {
-  SET_YEAR: 'SET_SET_YEARSELECTED_YEAR',
+  SET_YEAR: 'SET_YEAR',
   SET_YEAR_RANGE: 'SET_YEAR_RANGE',
   SET_STATE: 'SET_STATE',
   SET_COUNTY: 'SET_COUNTY',
