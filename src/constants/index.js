@@ -22,10 +22,10 @@ const getServerUrl = () => {
     case 'http://localhost:8080':
       return SERVER_ENDPOINTS.DEV; // could to LOCAL if running server locally
 
-    case 'https://pine-beetle-prediction-dev.netlify.app/':
+    case 'https://pine-beetle-prediction-dev.netlify.app':
       return SERVER_ENDPOINTS.DEV;
 
-    case 'https://pine-beetle-prediction.netlify.app/':
+    case 'https://pine-beetle-prediction.netlify.app':
       return SERVER_ENDPOINTS.PROD;
 
     default:
@@ -38,10 +38,10 @@ const getAutomationServerUrl = () => {
     case 'http://localhost:8080':
       return AUTOMATION_SERVER_ENDPOINTS.DEV; // could to LOCAL if running server locally
 
-    case 'https://pine-beetle-prediction-dev.netlify.app/':
+    case 'https://pine-beetle-prediction-dev.netlify.app':
       return AUTOMATION_SERVER_ENDPOINTS.DEV;
 
-    case 'https://pine-beetle-prediction.netlify.app/':
+    case 'https://pine-beetle-prediction.netlify.app':
       return AUTOMATION_SERVER_ENDPOINTS.PROD;
 
     default:
