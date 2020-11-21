@@ -62,7 +62,7 @@ const PlayWithModelInputs = (props) => {
       icon: endobrevIcon,
       iconAlt: 'endo-brevicomin icon',
       iconId: 'endobrev-icon',
-      value: parseInt(modelInputs.endobrev, 10),
+      value: modelInputs.endobrev,
       setValue: createValueSetter('endobrev'),
       trueFalseSelection: true,
     },
@@ -75,7 +75,7 @@ const PlayWithModelInputs = (props) => {
           <input
             type="number"
             min="0"
-            onChange={e => setValue(e.target.value.length > 0 ? e.target.value : '')}
+            onChange={e => setValue(e.target.value)}
             value={value}
           />
         </form>
