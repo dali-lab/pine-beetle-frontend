@@ -9,6 +9,7 @@
     letter-spacing: 0em;
     text-align: left;
     display: flex;
+    justify-content: space-between !important;
     padding-left: 5vw;
     padding-right: 5vw;
 }
@@ -38,12 +39,19 @@
     letter-spacing: 1.5px;
 }
 
+#year-selection {
+    display: flex;
+    justify-content: flex-start;
+}
+
 #start-year-selection .input {
     border-radius: 6px 0px 0px 6px;
+    width: 5.5vw !important;
 }
 
 #end-year-selection .input {
     border-radius: 0px 6px 6px 0px;
+    width: 5.5vw !important;
 }
 
 .selection {
@@ -75,8 +83,8 @@
 #vl1 {
     border-left: 2px solid #f9f9f9;
     height: 72px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 2vw;
+    margin-right: 2vw;
 }
 
 #vl2 {
@@ -96,6 +104,7 @@
 
 .county-rd-selection {
     color: #2d2d2d !important;
+    font-weight: 600;
 }
 
 #mode-selection {
@@ -111,6 +120,15 @@
     outline: none; 
     color: #84848a;
     font-size: 18px;
+}
+
+// Hide short text by default (resolution > 1200px)
+.short-text { display: none; }
+
+// When resolution <= 1108px, hide full text and show short text
+@media (max-width: 1108px) {
+    .short-text { display: inline-block; }
+    .full-text { display: none; }
 }
 
 #reset-current-data-button {
@@ -129,6 +147,7 @@
     letter-spacing: 1.5px;
     color: #2F303A;
     margin-left: 4.5vw;
+    margin-top: 10px;
     transform: translateY(10px);
 
     border-radius: 5px;

@@ -59,12 +59,12 @@ const SelectionBar = (props) => {
             onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
             className={(!countyMode) ? 'county-rd-selection' : null}
           >
-            Ranger District
+            <span className="full-text">Ranger District</span>
+            <span className="short-text">RD</span>
           </button>
         </div>
-        <div style={{ width: '50px' }}>
+        <div>
           <ChoiceInput
-            // instructions={countyMode ? 'County' : 'RD'}
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? setCounty : setRangerDistrict}
             options={countyMode ? allCounties : allRangerDistricts}
