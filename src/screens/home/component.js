@@ -10,7 +10,7 @@ const testInputIcon = require('../../assets/icons/test-inputs.png');
 const statsIcon = require('../../assets/icons/stats.png');
 const zeroIcon = require('../../assets/icons/zero.png');
 
-const Landing = (_props) => {
+const Home = (_props) => {
   return (
     <div className="container">
       <div className="title-area">
@@ -40,7 +40,7 @@ const Landing = (_props) => {
           <div id="summary">
             Trapping data collected since 2011 were used to build the prediction model on this website. View and download the data here. Data can be filtered by years and/or locations.
           </div>
-          <Link to={ROUTES.HISTORICAL_DATA}>
+          <Link to={ROUTES.TRAPPING_DATA}>
             <button id="click-to" type="button">
               View trapping data
             </button>
@@ -152,4 +152,4 @@ const Landing = (_props) => {
   );
 };
 
-export default Landing;
+export default Home;

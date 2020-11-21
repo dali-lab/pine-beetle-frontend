@@ -1,13 +1,13 @@
 import Admin from './admin';
-import HistoricalData from './trapping-data';
-import Landing from './landing';
+import TrappingData from './trapping-data';
+import Home from './home';
 import PlayWithModel from './play-with-model';
 import Prediction from './prediction';
 
 export {
   Admin,
-  HistoricalData,
-  Landing,
+  TrappingData,
+  Home,
   PlayWithModel,
   Prediction,
 };

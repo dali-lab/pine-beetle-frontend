@@ -55,12 +55,11 @@ const DATA_MODES = {
 };
 
 const ROUTES = {
-  ABOUT: '/about',
   ADMIN: '/admin',
-  HISTORICAL_DATA: '/historical-data',
+  TRAPPING_DATA: '/trapping-data',
   HOME: '/',
   PLAY_WITH_MODEL: '/play-with-model',
-  PREDICTIONS: '/predictions',
+  PREDICTIONS: '/predict-outbreak',
 };
 
 export {
