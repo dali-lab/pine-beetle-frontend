@@ -179,8 +179,8 @@ const PredictionMap = (props) => {
 
       return (
         <div key={color}>
-          <span>{threshold}</span>
           <span className="legend-key" style={{ backgroundColor: color }} />
+          <span>{threshold}</span>
         </div>
       );
     });
@@ -446,7 +446,7 @@ const PredictionMap = (props) => {
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download'}</h4>
       </div>
       <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title"><strong>Probability of &gt;50 spots</strong></div>
+        <div className="legend-key-title">Probability of &gt;50 spots</div>
         {legendTags}
       </div>
       {predictionHover}
