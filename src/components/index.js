@@ -1,11 +1,13 @@
-import Header from './header';
 import Footer from './footer';
+import Header from './header';
 import Loading from './loading';
+import ScrollIcon from './scroll-icon';
 import ScrollToTop from './scroll-to-top';
 
 export {
-  Header,
   Footer,
+  Header,
   Loading,
+  ScrollIcon,
   ScrollToTop,
 };
