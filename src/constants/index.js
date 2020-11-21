@@ -59,7 +59,6 @@ const ROUTES = {
   ADMIN: '/admin',
   HISTORICAL_DATA: '/historical-data',
   HOME: '/',
-  HOW_IT_WORKS: '/how-it-works',
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predictions',
 };
