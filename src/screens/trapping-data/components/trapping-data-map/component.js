@@ -170,8 +170,8 @@ const HistoricalMap = (props) => {
 
       return (
         <div key={color}>
-          <span>{threshold}</span>
           <span className="legend-key" style={{ backgroundColor: color }} />
+          <span>{threshold}</span>
         </div>
       );
     });
@@ -446,10 +446,10 @@ const HistoricalMap = (props) => {
     <div className="flex-item-left" id="map-container">
       <div id="map" />
       <div id="map-overlay-download" onClick={downloadMap}>
-        <h4>{isDownloadingMap ? 'Downloading...' : 'Download'}</h4>
+        <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
       </div>
       <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title"><strong>Average spots per year</strong></div>
+        <div className="legend-key-title">Total Number of Spots</div>
         {legendTags}
       </div>
       {trappingHover}

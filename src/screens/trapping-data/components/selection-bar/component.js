@@ -41,11 +41,13 @@ const SelectionBar = (props) => {
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
   return (
-    <div id="predictionbar" className="container" style={{ display: 'flex' }}>
-      <div id="start-year-selection"><TextInput instructions="Year" setValue={setStartYear} value={startYear} /></div>
-      <div id="vl3" />
-      {/* TODO: "to" */}
-      <div id="end-year-selection"><TextInput setValue={setEndYear} value={endYear} /></div>
+    <div id="predictionbar" className="container">
+      <div id="year-selection">
+        <div id="start-year-selection"><TextInput instructions="Year" setValue={setStartYear} value={startYear} /></div>
+        <div id="vl3" />
+        {/* TODO: "to" */}
+        <div id="end-year-selection"><TextInput setValue={setEndYear} value={endYear} /></div>
+      </div>
       <div id="vl1" />
       <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
       <div id="vl1" />
@@ -64,12 +66,12 @@ const SelectionBar = (props) => {
             onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
             className={(!countyMode) ? 'county-rd-selection' : null}
           >
-            Ranger District
+            <span className="full-text">Ranger District</span>
+            <span className="short-text">RD</span>
           </button>
         </div>
-        <div style={{ width: '50px' }}>
+        <div>
           <ChoiceInput
-            // instructions={countyMode ? 'County' : 'RD'}
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? setCounty : setRangerDistrict}
             options={countyMode ? allCounties : allRangerDistricts}

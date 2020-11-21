@@ -26,7 +26,7 @@ const PlayWithModelInputs = (props) => {
       icon: trapIcon,
       iconAlt: 'number of spots icon',
       iconId: 'trap-icon',
-      value: modelInputs.spotst2,
+      value: parseInt(modelInputs.spotst2, 10),
       setValue: createValueSetter('spotst2'),
       trueFalseSelection: false,
     },
@@ -35,30 +35,30 @@ const PlayWithModelInputs = (props) => {
       icon: trapIcon,
       iconAlt: 'number of spots icon',
       iconId: 'trap-icon',
-      value: modelInputs.spotst1,
+      value: parseInt(modelInputs.spotst1, 10),
       setValue: createValueSetter('spotst1'),
       trueFalseSelection: false,
     },
     CLERIDST1: {
-      text: 'Enter a number for clerids in {YEAR-1} (whole year)',
+      text: 'Enter a number for clerids per 2 weeks in Spring, {YEAR-1}',
       icon: cleridsIcon,
       iconAlt: 'number of clerids icon',
       iconId: 'clerids-icon',
-      value: modelInputs.cleridst1,
+      value: parseInt(modelInputs.cleridst1, 10),
       setValue: createValueSetter('cleridst1'),
       trueFalseSelection: false,
     },
     SPB: {
-      text: 'Enter a number for SPB per 2 weeks in Spring, {YEAR} (whole year)',
+      text: 'Enter a number for SPB per 2 weeks in Spring, {YEAR}',
       icon: trapIcon,
       iconAlt: 'number of SPB icon',
       iconId: 'spb-icon',
-      value: modelInputs.spb,
+      value: parseInt(modelInputs.spb, 10),
       setValue: createValueSetter('spb'),
       trueFalseSelection: false,
     },
     ENDOBREV: {
-      text: 'Was endo-brevicomin used in Spring, {YEAR} (whole year)',
+      text: 'Was endo-brevicomin used in Spring, {YEAR}',
       icon: endobrevIcon,
       iconAlt: 'endo-brevicomin icon',
       iconId: 'endobrev-icon',
@@ -74,9 +74,8 @@ const PlayWithModelInputs = (props) => {
         <form>
           <input
             type="number"
-            step="0.01"
             min="0"
-            onChange={e => setValue(e.target.value.length > 0 ? e.target.value : '')}
+            onChange={e => setValue(e.target.value)}
             value={value}
           />
         </form>
@@ -93,7 +92,7 @@ const PlayWithModelInputs = (props) => {
                   onChange={e => setValue((e.target.checked))}
                   checked={value}
                 />
-                <span>True</span>
+                <span>Yes</span>
               </label>
             </div>
             <div className="endobrev-checkbox">
@@ -104,7 +103,7 @@ const PlayWithModelInputs = (props) => {
                   onChange={e => setValue(!e.target.checked)}
                   checked={!value}
                 />
-                <span>False</span>
+                <span>No</span>
               </label>
             </div>
           </div>

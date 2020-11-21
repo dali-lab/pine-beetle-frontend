@@ -11,11 +11,9 @@ import {
 } from './state/actions';
 
 import {
-  About,
   Admin,
-  HistoricalData,
-  HowItWorks,
-  Landing,
+  TrappingData,
+  Home,
   PlayWithModel,
   Prediction,
 } from './screens';
@@ -64,11 +62,9 @@ const App = (props) => {
           <Header />
           <div className="content">
             <Switch>
-              <Route exact path={ROUTES.HOME} component={Landing} />
-              <Route path={ROUTES.ABOUT} component={About} />
+              <Route exact path={ROUTES.HOME} component={Home} />
               <Route path={ROUTES.ADMIN} component={Admin} />
-              <Route path={ROUTES.HISTORICAL_DATA} component={HistoricalData} />
-              <Route path={ROUTES.HOW_IT_WORKS} component={HowItWorks} />
+              <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
               <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModel} />
               <Route path={ROUTES.PREDICTIONS} component={Prediction} />
               <Route component={FallBack} />

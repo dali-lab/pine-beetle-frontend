@@ -4,10 +4,13 @@ import './style.scss';
 
 const questionIcon = require('../../../../assets/icons/help-circle.png');
 
-const helpText = 'Please select year, state, and county/RD for historical data.<br />You can switch between map or chart view by toggling the button below.';
+const helpText = `Please select year, state, and<br />
+county/RD for historical data.<br />
+You can switch between map or chart<br />
+view by toggling the button below.`;
 
 const OverviewText = _props => (
-  <div className="container">
+  <div className="container" id="overview-text">
     <h1 id="title">
       Trapping &amp; Spot Data
     </h1>
