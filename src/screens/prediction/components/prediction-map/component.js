@@ -6,7 +6,7 @@ import printPdf from 'mapbox-print-pdf';
 import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
 
 import {
-  separatePascalCase,
+  getMapboxRDNameFormat,
 } from '../../../../utils';
 
 import './style.scss';
@@ -76,7 +76,7 @@ const PredictionMap = (props) => {
     });
 
     if (counties.length > 0 && counties[0] && counties[0].properties && counties[0].properties.forest) {
-      const { x, y } = e.point;
+      const { x, y } = e.point || {};
       const { STATE: hoverState } = counties[0].properties;
 
       let location;
@@ -84,7 +84,9 @@ const PredictionMap = (props) => {
       if (mode === DATA_MODES.COUNTY) {
         location = counties[0].properties.forest.slice(0, -3);
       } else {
-        location = rangerDistricts.find(rd => rd.includes(counties[0].properties.forest.replaceAll(' ', '')));
+        location = rangerDistricts.filter(rd => !!rd).find(rd => (
+          rd.includes(counties[0].properties.forest.replaceAll('  ', ' '))
+        ));
       }
 
       const pred = predictions.find((p) => {
@@ -251,7 +253,7 @@ const PredictionMap = (props) => {
       }
 
       const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
-      const rangerDistrictFormatName = rangerDistrict ? separatePascalCase(rangerDistrict.split('_').pop()).toUpperCase() : '';
+      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict).toUpperCase() : '';
 
       const locationName = dataMode === DATA_MODES.COUNTY
         ? countyFormatName
