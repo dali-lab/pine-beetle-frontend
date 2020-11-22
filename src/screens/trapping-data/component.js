@@ -28,43 +28,28 @@ const TrappingData = (props) => {
       {/* TODO: make this a spinner */}
       {isLoading && <p>Loading...</p>}
       {trappingErrorText.length > 0 && trappingErrorText.map(t => <p>{t}</p>)}
-      {/* <div> */}
       <OverviewText />
       <SelectionBar />
-      <div className="container" id="view-selections">
-        <div id="selection">
-          <img
-            src={chartMode ? mapUnselectedIcon : mapSelectedIcon}
-            alt="Map View"
-            id={chartMode ? null : 'selected-view'}
-            onClick={() => setChartMode(false)}
-          />
-          <br />
-          <button
-            onClick={() => setChartMode(false)}
-            id={chartMode ? null : 'selected-view'}
-            className="view-selection-btn"
-            type="button"
-          >
-            Map View
-          </button>
-        </div>
-        <div id="selection">
+      <div id="view-selections">
+        <div id="selection" onClick={() => setChartMode(true)}>
           <img
             src={chartMode ? graphSelectedIcon : graphUnselectedIcon}
             alt="Chart View"
             id={chartMode ? 'selected-view' : null}
-            onClick={() => setChartMode(true)}
           />
-          <br />
-          <button
-            onClick={() => setChartMode(true)}
-            id={chartMode ? 'selected-view' : null}
-            className="view-selection-btn"
-            type="button"
-          >
+          <p id={chartMode ? 'selected-view' : null} className="view-selection-btn">
             Graph View
-          </button>
+          </p>
+        </div>
+        <div id="selection" onClick={() => setChartMode(false)}>
+          <img
+            src={chartMode ? mapUnselectedIcon : mapSelectedIcon}
+            alt="Map View"
+            id={chartMode ? null : 'selected-view'}
+          />
+          <p id={chartMode ? null : 'selected-view'} className="view-selection-btn">
+            Map View
+          </p>
         </div>
       </div>
       <div>
