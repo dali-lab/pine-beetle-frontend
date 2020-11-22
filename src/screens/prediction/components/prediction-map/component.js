@@ -440,7 +440,7 @@ const PredictionMap = (props) => {
     <div className="container flex-item-left" id="map-container">
       <div id="map" />
       <div id="map-overlay-download" onClick={downloadMap}>
-        <h4>{isDownloadingMap ? 'Downloading...' : 'Download'}</h4>
+        <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
       </div>
       <div className="map-overlay-legend" id="legend">
         <div className="legend-key-title">Probability of &gt;50 spots</div>

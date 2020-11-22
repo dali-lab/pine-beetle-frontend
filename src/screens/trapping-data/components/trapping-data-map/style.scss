@@ -5,15 +5,13 @@
     border-radius: 18px;
 }
 
-#map-container {
+#trapping-map-container {
     position: relative;
-    // TODO: find out why it's not adjusting bottom margin properly
-    margin-bottom: 100px !important;
+    margin-bottom: 100px;
     margin-top: 30px;
     margin-left: 40px;
     margin-right: 40px;
     flex: 1.1 !important;
-    padding: 10px 21px 6px 6px;
     border-radius: 20px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: #ffffff;

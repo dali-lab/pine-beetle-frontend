@@ -440,7 +440,7 @@ const HistoricalMap = (props) => {
   }, [map, allStates, allCounties, allRangerDistricts, selectedState, trappingData, dataMode]);
 
   return (
-    <div className="flex-item-left" id="map-container">
+    <div id="trapping-map-container">
       <div id="map" />
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>

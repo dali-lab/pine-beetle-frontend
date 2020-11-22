@@ -8,12 +8,24 @@
     margin-bottom: 100px;
 }
 
-.histogram img {
+.histogram {
     padding: 25px;
     border-radius: 26px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: #ffffff;
     margin-right: 45px;
-    height: auto;
+    height: 0%;
+}
+
+.histogram #histogram-title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.6;
+    letter-spacing: normal;
+    text-align: left;
+    color: #2f303a;
+}
+
+.histogram img {
     width: 50vw;
 }
