@@ -97,12 +97,21 @@ const PlayWithModel = (props) => {
     }
   }, [year, selectedState, county, rangerDistrict, dataMode]);
 
-  const predictionOutputs = (haveCustomPredictions) => {
-    // eslint-disable-next-line no-restricted-globals
-    if (isNaN(customPrediction['prob.Spots>0']) || isNaN(customPrediction['prob.Spots>53'])) {
+  const predictionOutputs = () => {
+    const haveCustomPredictions = Object.keys(customPrediction).length !== 0;
+
+    if (isLoading) {
       return (
         <div className="predictions-generated">
-          <p>Please make sure inputted fields are valid.</p>
+          <p>Generating predictions...</p>
+        </div>
+      );
+    } else if (isError) {
+      return (
+        <div className="predictions-generated">
+          <p>An error occured.</p>
+          <p>Error message: {error.text}</p>
+          <p>Please make sure all fields are inputted correctly.</p>
         </div>
       );
     } else if (haveCustomPredictions) {
@@ -129,18 +138,11 @@ const PlayWithModel = (props) => {
           </div>
         </div>
       );
-    } else if (isLoading) {
+      // eslint-disable-next-line no-restricted-globals
+    } else if (isNaN(customPrediction['prob.Spots>0']) || isNaN(customPrediction['prob.Spots>53'])) {
       return (
         <div className="predictions-generated">
-          <p>Generating predictions...</p>
-        </div>
-      );
-    } else if (isError) {
-      return (
-        <div className="predictions-generated">
-          <p>An error occured.</p>
-          <p>Error message: {error.text}</p>
-          <p>Please make sure all fields are inputted correctly.</p>
+          <p>Please make sure inputted fields are valid.</p>
         </div>
       );
     } else {
@@ -163,7 +165,7 @@ const PlayWithModel = (props) => {
           updateModelInputs={updateModelInputs}
         />
         <div id="vl" />
-        {predictionOutputs(Object.keys(customPrediction).length !== 0)}
+        {predictionOutputs()}
       </div>
     </div>
   );
