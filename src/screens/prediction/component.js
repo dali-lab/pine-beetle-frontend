@@ -51,6 +51,11 @@ const Prediction = (props) => {
         <PredictionDetails data={predictionData} />
         <div className="prediction-bottom">
           <div className="histogram">
+            <div id="histogram-title">
+              <span>
+                Predicted vs. Observed Outcomes for All Data, 1987-2019 (n=2,978)
+              </span>
+            </div>
             <img
               src={histogram}
               alt="Histogram for Predicted % Chance of >50 Spots"
