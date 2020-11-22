@@ -82,6 +82,17 @@ const LineChart = (props) => {
       bodyFontFamily: 'Inter',
       bodyFontColor: '#ffffff',
       bodyAlign: 'left',
+
+      // set custom label (rounds spb and clerid per 2 weeks)
+      callbacks: {
+        label: (tooltipItem, d) => {
+          const { label } = d.datasets[tooltipItem.datasetIndex];
+          const value = tooltipItem.yLabel;
+
+          if (label === 'Total Spots') return `${label}: ${value}`;
+          else return `${label}: ${value.toFixed(2)}`;
+        },
+      },
     },
     legend: {
       display: true,
