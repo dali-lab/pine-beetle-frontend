@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './style.scss';
 
 import {
+  DownloadTrapping,
   TrappingDataMap,
   LineChart,
   OverviewText,
@@ -70,6 +71,7 @@ const TrappingData = (props) => {
       <div>
         {chartMode ? <LineChart data={trappingData} /> : <TrappingDataMap />}
       </div>
+      <DownloadTrapping />
     </div>
   );
 };
