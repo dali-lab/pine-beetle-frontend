@@ -8,6 +8,7 @@ import {
   getRangerDistrictPredictions,
   getRangerDistrictTrapping,
   setDataMode,
+  getUserFromStorage,
 } from './state/actions';
 
 import {
@@ -30,6 +31,11 @@ import {
   ROUTES,
 } from './constants';
 
+import {
+  getAuthTokenFromStorage,
+  getUserIdFromStorage,
+} from './utils';
+
 const FallBack = () => {
   return <div>URL not found</div>;
 };
@@ -38,6 +44,7 @@ const App = (props) => {
   const {
     countyPredictions,
     countyTrapping,
+    loginUserFromStorage,
   } = props;
 
   useEffect(() => {
@@ -48,6 +55,11 @@ const App = (props) => {
     props.getRangerDistrictTrapping();
     props.getCountyPredictions();
     props.getRangerDistrictPredictions();
+
+    // fetch user data if persist in browser
+    if (getAuthTokenFromStorage() && getUserIdFromStorage()) {
+      loginUserFromStorage();
+    }
   }, []);
 
   // set all trapping/prediction all fields to county once we get them
@@ -106,6 +118,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getRangerDistrictTrapping: (filters) => {
       dispatch(getRangerDistrictTrapping(filters));
+    },
+    loginUserFromStorage: () => {
+      dispatch(getUserFromStorage());
     },
     setDataMode: (mode) => {
       dispatch(setDataMode(mode));

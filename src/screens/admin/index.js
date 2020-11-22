@@ -1,13 +1,30 @@
 import { connect } from 'react-redux';
 
+import { signOut } from '../../state/actions';
+
 import Admin from './component';
 
 const mapStateToProps = (state) => {
-  return {};
+  const {
+    user: {
+      user,
+    },
+  } = state;
+
+  const isLoggedIn = Object.keys(user).length > 0;
+
+  return {
+    isLoggedIn,
+    user,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    signOut: () => {
+      dispatch(signOut());
+    },
+  };
 };
 
 export default connect(

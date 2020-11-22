@@ -1,0 +1,51 @@
+#auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    h1 {
+        margin-top: 50px;
+        margin-bottom: 30px;
+    }
+
+    #auth-header {
+        text-align: center;
+
+        #sign-out {
+            font-style: italic;
+            color: darkgrey;
+        }
+
+        #sign-out:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+
+    #selection-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+
+        #selected-option {
+            text-decoration: underline;
+        }
+
+        .component-option {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .component-option:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+
+    #component-container {
+        margin-bottom: 50px;
+    }
+}

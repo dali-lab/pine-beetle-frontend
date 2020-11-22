@@ -1,3 +1,5 @@
+import { AUTH_TOKEN_KEY, AUTH_USER_ID } from '../constants';
+
 /**
  * @description casts object to url query params
  * @param {Object} obj generic object to cast
@@ -34,3 +36,15 @@ export const separatePascalCase = (str) => {
 export const getMapboxRDNameFormat = rangerDistrict => (
   rangerDistrict.match(/\((.*?)\)/)?.[1]
 );
+
+/**
+ * @description retrieves user auth token from local storage
+ * @returns {String} auth token
+ */
+export const getAuthTokenFromStorage = () => localStorage.getItem(AUTH_TOKEN_KEY);
+
+/**
+ * @description retrieves user id from local storage
+ * @returns {String} user id
+ */
+export const getUserIdFromStorage = () => localStorage.getItem(AUTH_USER_ID);

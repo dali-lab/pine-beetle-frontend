@@ -1,6 +1,8 @@
 import {
   ActionTypes as userActionTypes,
+  getUserFromStorage,
   login,
+  signOut,
   signUp,
 } from './user';
 
@@ -44,6 +46,7 @@ export {
   getCountyTrapping,
   getRangerDistrictPredictions,
   getRangerDistrictTrapping,
+  getUserFromStorage,
   login,
   runCustomPrediction,
   setCounty,
@@ -52,5 +55,6 @@ export {
   setState,
   setYear,
   setYearRange,
+  signOut,
   signUp,
 };
