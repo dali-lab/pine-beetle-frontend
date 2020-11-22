@@ -317,7 +317,7 @@ const HistoricalMap = (props) => {
           <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
               <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 
               14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Average spots per year:</p>
-              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 51%;margin: auto;margin-bottom: 10px;">
+              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 90%;margin: auto;margin-bottom: 10px;">
                   ${legendString}
               </div>
               <div id="spacer" style="height: 50px;"></div>

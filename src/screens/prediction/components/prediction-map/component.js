@@ -316,7 +316,7 @@ const PredictionMap = (props) => {
     return (
       `
           <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
-              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 51%;margin: auto;margin-bottom: 10px;">
+              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 90%;margin: auto;margin-bottom: 10px;">
                   ${legendString}
               </div>
               <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 
