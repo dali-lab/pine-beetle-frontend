@@ -23,18 +23,13 @@
     margin-bottom: 13px;
 }
 
-.prediction-title p {
-    font-family: Inter;
+#prediction-subtitle {
     font-size: 22px;
     font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.31;
-    letter-spacing: normal;
     text-align: left;
     color: #464756;
     margin-bottom: 24px;
-
 }
 
 .prediction-info {
@@ -98,6 +93,7 @@
 }
 
 .prediction-grid-container {
+    margin-top: -20px;
     display: flex;
 }
 
@@ -142,7 +138,6 @@
 
 .prediction-grid {
     display: grid;
-    // TODO: find out why second column is so shrunken, so you don't have to use this hacky way of solving spacing
     grid-template-columns: auto 150px auto;
     grid-template-areas: 
     'yeart2 yeart2 yeart2-spots'
