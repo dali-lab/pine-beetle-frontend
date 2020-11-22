@@ -26,3 +26,11 @@ export const separatePascalCase = (str) => {
     // Remove any white space left around the word
     .trim();
 };
+
+/**
+ * @description maps ranger district name format in db to mapbox format
+ * @param {String} rangerDistrict ranger district name
+ */
+export const getMapboxRDNameFormat = rangerDistrict => (
+  rangerDistrict.match(/\((.*?)\)/)?.[1]
+);
