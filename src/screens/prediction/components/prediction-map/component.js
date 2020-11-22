@@ -164,12 +164,7 @@ const PredictionMap = (props) => {
       },
     });
 
-    if (!createdMap._controls) return;
-
-    // if we haven't added a navigation control, add one
-    if (createdMap._controls.length < 2) {
-      createdMap.addControl(new mapboxgl.NavigationControl());
-    }
+    createdMap.addControl(new mapboxgl.NavigationControl());
 
     // disable map zoom when using scroll
     createdMap.scrollZoom.disable();
