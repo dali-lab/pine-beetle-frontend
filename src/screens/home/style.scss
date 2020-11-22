@@ -75,7 +75,7 @@
     color: #5e6076
 }
 
-#click-to {
+.click-to {
     border: none;
     cursor: pointer;
     padding: 0.86vw;
@@ -87,6 +87,7 @@
     position: absolute;
     bottom: 0;
     margin-bottom: 38px;
+    text-decoration: none;
 }
 
 .how-it-works #how-it-works-title-container {
