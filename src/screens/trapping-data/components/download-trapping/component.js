@@ -33,21 +33,22 @@ const DownloadTrapping = (props) => {
     trappingData,
   } = props;
 
-  // constants for year, county, rd selections
+  // vars for year, county, rd selections
   const countyMode = dataMode === DATA_MODES.COUNTY;
   const allStates = [...new Set(trappingData.map(obj => obj.state))].sort();
   const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
   const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
-  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev));
+
+  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
-  // constants for showing modal
+  // functions for showing modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // constants for selecting types of data in modal
+  // vars for selecting types of data in modal
   const [fieldsToDownload, setFieldsToDownload] = useState({
     PREDICTION: false,
     SUMMARIZED: false,
