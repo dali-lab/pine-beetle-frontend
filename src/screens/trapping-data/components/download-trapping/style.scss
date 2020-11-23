@@ -1,0 +1,136 @@
+#download-button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#download-button img {
+    margin-top: 3px;
+}
+
+#download-button {
+    height: 43px;
+    padding: 6px 21px 5px;
+    border-radius: 6px;
+    background-color: #ced6fe;
+    display: flex;
+    margin-bottom: 90px;
+    margin-right: 40px;
+}
+
+#download-button img {
+    width: 24px;
+    height: 24px;
+}
+
+#download-button p {
+    margin-left: 20px;
+    font-size: 18px;
+    text-align: left;
+    color: #000000;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 720px;
+    height: 550px;
+    padding: 50px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    // TODO: replace box shadow with grayer background later
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+}
+
+// remove unnecessary blue outline from modal (does not impact accessibility)
+.modal:focus {
+    outline:0;
+}
+
+#modal-title {
+    font-size: 30px;
+    font-weight: 500;
+    text-align: center;
+    color: #1e1e1e;
+}
+
+#modal-year {
+    display: flex;
+    margin-top: 35px;
+}
+
+#modal-year #year-selection {
+    margin-right: 60px;
+}
+
+#modal-year #all-years-button {
+    padding: 7px 15px;
+    margin-top: 25px;
+    border-radius: 6px;
+    background-color: #c9cdd9;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2f303a;
+    float: right;
+}
+
+#modal-state-county-rd {
+    margin-top: 20px;
+    margin-right: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#modal-download-selection #question {
+    margin-top: 60px;
+    display: flex;
+}
+
+#modal-download-selection #question p {
+    font-size: 20px;
+    margin-right: 50px;
+}
+
+#selection-types {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#checkbox-text {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+#circle-checkbox {
+    margin-top: 20px;
+}
+
+#modal-submit-btn {
+    width: 216px;
+    height: 43px;
+    padding: 6px 101px 5px 22px;
+    margin-left: 35%;
+    margin-top: 20px;
+    border-radius: 6px;
+    background-color: #ced6fe;
+    display: flex;
+    border: none;
+}
+
+#modal-submit-btn img {
+    height: 24px;
+    width: 24px;
+    margin-right: 20px;
+    margin-top: 2px;
+}
+
+#modal-submit-btn p {
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+#modal-footnote {
+    margin-top: 60px;
+}

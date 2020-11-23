@@ -77,6 +77,27 @@ export const setYearRange = (startYear, endYear) => {
 };
 
 /**
+ * @description action creator for selecting from first year till onwards
+ */
+export const setAllYears = () => {
+  return (dispatch, getState) => {
+    const { trappingData } = attachData(getState());
+    const years = trappingData.map(({ year }) => year);
+
+    dispatch({
+      type: ActionTypes.SET_YEAR_RANGE,
+      payload: {
+        ...getState().selections,
+        yearRange: {
+          startYear: Math.min(...years),
+          endYear: Math.max(...years),
+        },
+      },
+    });
+  };
+};
+
+/**
  * @description action creator for setting state
  */
 export const setState = (state) => {

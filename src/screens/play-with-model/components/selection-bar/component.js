@@ -8,7 +8,7 @@ import { DATA_MODES } from '../../../../constants';
 import {
   getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
-} from './utils';
+} from '../../../../utils';
 
 import './style.scss';
 
@@ -32,7 +32,7 @@ const SelectionBar = (props) => {
   const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))].sort() : [];
   const allRangerDistricts = selectedState ? [...new Set(predictionsData.map((obj => obj.rangerDistrict)))].sort() : [];
 
-  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev));
+  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 

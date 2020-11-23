@@ -23,7 +23,7 @@ const Header = () => {
           <div id="nav-button-area">
             <div id="nav-buttons">
               {Object.entries(routes).map(([key, value]) => (
-                <Link to={key}>
+                <Link to={key} key={key}>
                   <p className={(useLocation().pathname === key) ? 'current-nav' : null}>{value}</p>
                 </Link>
               ))}

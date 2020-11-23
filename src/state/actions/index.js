@@ -9,6 +9,7 @@ import {
 import {
   ActionTypes as selectionActionTypes,
   clearSelections,
+  setAllYears,
   setCounty,
   setDataMode,
   setRangerDistrict,
@@ -49,6 +50,7 @@ export {
   getUserFromStorage,
   login,
   runCustomPrediction,
+  setAllYears,
   setCounty,
   setDataMode,
   setRangerDistrict,
