@@ -1,58 +1,75 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-import './style.scss';
+import { connect } from 'react-redux';
 
-const downloadIcon = require('../../../../assets/icons/download.png');
+import DownloadTrapping from './component';
 
-// const customStyles = {
-//   content: {
-//     top: '50%',
-//     left: '50%',
-//     right: 'auto',
-//     bottom: 'auto',
-//     marginRight: '-50%',
-//     transform: 'translate(-50%, -50%)',
-//     // margin: '44px 11px 111px 255px',
-//     padding: '33px 32px 10.4px 34px',
-//     borderRadius: '20px',
-//     backgroundColor: '#ffffff',
-//   },
-// };
+import {
+  clearSelections,
+  setAllYears,
+  setCounty,
+  setDataMode,
+  setRangerDistrict,
+  setState,
+  setYearRange,
+} from '../../../../state/actions';
 
-const DownloadTrapping = () => {
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+const mapStateToProps = (state) => {
+  const {
+    selections: {
+      yearRange: {
+        startYear,
+        endYear,
+      },
+      state: selectedState,
+      county,
+      rangerDistrict,
+      dataMode,
+    },
+    trappings: {
+      data: trappingData,
+    },
+  } = state;
 
-  return (
-    <>
-      <div id="download-button-container">
-        <button
-          onClick={handleShow}
-          type="button"
-          id="download-button"
-        >
-          <img
-            src={downloadIcon}
-            alt="download icon"
-          />
-          <p>Download Data</p>
-        </button>
-      </div>
-
-      <Modal
-        isOpen={show}
-        onAfterOpen={handleShow}
-        onRequestClose={handleClose}
-        // style={customStyles}
-        contentLabel="Download Data Modal"
-        className="modal"
-      >
-        <h2>Hello</h2>
-        <div>I am a modal</div>
-      </Modal>
-    </>
-  );
+  return {
+    county,
+    endYear,
+    rangerDistrict,
+    selectedState,
+    startYear,
+    trappingData,
+    dataMode,
+  };
 };
 
-export default DownloadTrapping;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearAllSelections: () => {
+      dispatch(clearSelections());
+    },
+    setAllYears: () => {
+      dispatch(setAllYears());
+    },
+    setStartYear: (startYear) => {
+      dispatch(setYearRange(startYear, undefined));
+    },
+    setEndYear: (endYear) => {
+      dispatch(setYearRange(undefined, endYear));
+    },
+    setCounty: (county) => {
+      dispatch(setCounty(county));
+    },
+    setDataMode: (dataMode) => {
+      dispatch(setDataMode(dataMode));
+    },
+    setRangerDistrict: (rangerDistrict) => {
+      dispatch(setRangerDistrict(rangerDistrict));
+    },
+    setState: (state) => {
+      dispatch(setState(state));
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DownloadTrapping);

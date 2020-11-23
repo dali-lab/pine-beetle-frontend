@@ -13,40 +13,8 @@
     border-radius: 6px;
     background-color: #ced6fe;
     display: flex;
-    border: none;
     margin-bottom: 90px;
     margin-right: 40px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-/* Pre-render the bigger shadow, but hide it */
-#download-button::after {
-    border-radius: 5px;
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    opacity: 0;
-    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-/* Transition to showing the bigger shadow on hover */
-#download-button:hover {
-    -webkit-transform: scale(1.1, 1.1);
-    transform: scale(1.1, 1.1);
-}
-
-#download-button:hover {
-    opacity: 1;
 }
 
 #download-button img {
@@ -66,11 +34,98 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 500px;
-    height: 420px;
-    padding: 33px 32px 10.4px 34px;
+    width: 720px;
+    height: 550px;
+    padding: 50px;
     border-radius: 40px;
     background-color: #ffffff;
     // TODO: replace box shadow with grayer background later
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+}
+
+#modal-title {
+    font-size: 30px;
+    font-weight: 500;
+    text-align: center;
+    color: #1e1e1e;
+}
+
+#modal-year {
+    display: flex;
+    margin-top: 35px;
+}
+
+#modal-year #year-selection {
+    margin-right: 60px;
+}
+
+#modal-year #all-years-button {
+    padding: 7px 15px;
+    margin-top: 25px;
+    border-radius: 6px;
+    background-color: #c9cdd9;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2f303a;
+    float: right;
+}
+
+#modal-state-county-rd {
+    margin-top: 20px;
+    margin-right: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#modal-download-selection #question {
+    margin-top: 60px;
+    display: flex;
+}
+
+#modal-download-selection #question p {
+    font-size: 20px;
+    margin-right: 50px;
+}
+
+#selection-types {
+    margin-top: 25px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#checkbox-text {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+#circle-checkbox {
+    margin-top: 20px;
+}
+
+#modal-submit-btn {
+    width: 216px;
+    height: 43px;
+    padding: 6px 101px 5px 22px;
+    margin-left: 35%;
+    margin-top: 20px;
+    border-radius: 6px;
+    background-color: #ced6fe;
+    display: flex;
+    border: none;
+}
+
+#modal-submit-btn img {
+    height: 24px;
+    width: 24px;
+    margin-right: 20px;
+    margin-top: 2px;
+}
+
+#modal-submit-btn p {
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+#modal-footnote {
+    margin-top: 60px;
 }
