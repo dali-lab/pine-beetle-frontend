@@ -34,8 +34,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 720px;
-    height: 550px;
+    max-width: 720px;
+    width: 60vw;
     padding: 50px;
     border-radius: 20px;
     background-color: #ffffff;
@@ -46,6 +46,24 @@
 // remove unnecessary blue outline from modal (does not impact accessibility)
 .modal:focus {
     outline:0;
+}
+
+#close-icon {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: -25px;
+
+    img {
+        width: 25px;
+        height: 25px;
+        margin-right: -25px;
+    }
+
+    img:hover {
+        cursor: pointer;
+    }
 }
 
 #modal-title {
@@ -61,7 +79,7 @@
 }
 
 #modal-year #year-selection {
-    margin-right: 60px;
+    margin-right: 52px;
 }
 
 #modal-year #all-years-button {
@@ -69,26 +87,26 @@
     margin-top: 25px;
     border-radius: 6px;
     background-color: #c9cdd9;
+    font-family: "Inter";
     font-size: 14px;
     font-weight: 500;
     color: #2f303a;
-    float: right;
 }
 
 #modal-state-county-rd {
     margin-top: 20px;
     margin-right: 25px;
     display: flex;
-    justify-content: space-between;
 }
 
 #modal-download-selection #question {
     margin-top: 60px;
     display: flex;
+    align-items: center;
 }
 
-#modal-download-selection #question p {
-    font-size: 20px;
+#modal-download-selection #question h4 {
+    font-size: 18px;
     margin-right: 50px;
 }
 
@@ -96,10 +114,11 @@
     margin-top: 25px;
     display: flex;
     justify-content: space-between;
+    margin-right: 78px;
 }
 
-#checkbox-text {
-    font-size: 20px;
+.checkbox-text {
+    font-size: 18px;
     margin-left: 10px;
 }
 
@@ -108,15 +127,15 @@
 }
 
 #modal-submit-btn {
-    width: 216px;
     height: 43px;
-    padding: 6px 101px 5px 22px;
+    padding: 5px 52px 5px 22px;
     margin-left: 35%;
-    margin-top: 20px;
+    margin-top: 55px;
     border-radius: 6px;
     background-color: #ced6fe;
     display: flex;
     border: none;
+    text-align: center;
 }
 
 #modal-submit-btn img {
@@ -132,5 +151,19 @@
 }
 
 #modal-footnote {
-    margin-top: 60px;
+    margin-top: 40px;
+}
+
+// https://stackoverflow.com/questions/58355628/animate-react-modal
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: all 150ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+    opacity: 0;
 }
