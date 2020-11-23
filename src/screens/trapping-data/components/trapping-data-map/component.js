@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
@@ -94,14 +95,14 @@ const HistoricalMap = (props) => {
         const avgCleridsPer2Weeks = data.reduce((acc, curr) => (acc + curr.cleridPer2Weeks), 0) / data.length;
 
         const spots = data.map(obj => obj.spots).filter(s => s !== null && s !== undefined);
-        const spotRange = { max: Math.max(...spots), min: Math.min(...spots) };
+        const spotRange = { max: parseInt(Math.max(...spots), 10), min: parseInt(Math.min(...spots), 10) };
 
         setTrappingHover((
           <div id="trapping-hover" style={{ left: `${x + 10}px`, top: `${y - 140}px` }}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
             <p>Average SPB Per 2 Weeks: {avgSpbPer2Weeks.toFixed(2)}</p>
             <p>Average Clerids Per 2 Weeks: {avgCleridsPer2Weeks.toFixed(2)}</p>
-            <p>Spot Range: [{parseInt(spotRange.min, 10)}, {parseInt(spotRange.max, 10)}]</p>
+            {!isNaN(spotRange.min) && !isNaN(spotRange.max) ? <p>Spot Range: [{spotRange.min}, {spotRange.max}]</p> : null}
           </div>
         ));
       } else {
