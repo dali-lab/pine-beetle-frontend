@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+// import { CSVLink, CSVDownload } from "react-csv";
+
 import { TextInput, ChoiceInput } from '../../../../components/input-components';
+
 import { DATA_MODES } from '../../../../constants';
+
 import {
   getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
 } from './utils';
+
+import { downloadCsv } from '../../../../utils';
+
 import './style.scss';
 
 const downloadIcon = require('../../../../assets/icons/download.png');
@@ -58,6 +65,37 @@ const DownloadTrapping = (props) => {
     }
   };
   const [includeHelper, setIncludeHelper] = useState(false);
+
+  // function for handling trapping data download
+  const handleDownload = async () => {
+    if (dataMode === 'COUNTY') {
+      if (unsummarized) {
+        const csv = await downloadCsv('UNSUMMARIZED', selectedState, true, county, startYear, endYear);
+        console.log(csv);
+      } if (includeHelper) {
+        downloadCsv('HELPER', selectedState, true, county, startYear, endYear);
+      } if (summarized) {
+        const csv = await downloadCsv('SUMMARIZED_COUNTY', selectedState, true, county, startYear, endYear);
+        console.log(csv);
+      } if (prediction) {
+        downloadCsv('PREDICTION_COUNTY', selectedState, true, county, startYear, endYear);
+      }
+    } else {
+      if (unsummarized) {
+        downloadCsv('UNSUMMARIZED', selectedState, false, rangerDistrict, startYear, endYear);
+      } if (includeHelper) {
+        downloadCsv('HELPER', selectedState, false, rangerDistrict, startYear, endYear);
+      } if (summarized) {
+        downloadCsv('SUMMARIZED_RD', selectedState, false, rangerDistrict, startYear, endYear);
+      } if (prediction) {
+        downloadCsv('PREDICTION_RD', selectedState, false, rangerDistrict, startYear, endYear);
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(county, dataMode, startYear, endYear, selectedState);
+  }, [props]);
 
   return (
     <>
@@ -199,10 +237,10 @@ const DownloadTrapping = (props) => {
           </div>
           <div>
             <button
-              // TODO: onClick, download data
               type="button"
               id="modal-submit-btn"
               className="animated-button"
+              onClick={handleDownload}
             >
               <img
                 src={downloadIcon}

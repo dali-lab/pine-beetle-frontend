@@ -1,4 +1,10 @@
-import { AUTH_TOKEN_KEY, AUTH_USER_ID } from '../constants';
+import Axios from 'axios';
+import {
+  AUTH_TOKEN_KEY,
+  AUTH_USER_ID,
+  DOWNLOAD_DATA_ROUTES,
+  getAutomationServerUrl,
+} from '../constants';
 
 /**
  * @description casts object to url query params
@@ -48,3 +54,23 @@ export const getAuthTokenFromStorage = () => localStorage.getItem(AUTH_TOKEN_KEY
  * @returns {String} user id
  */
 export const getUserIdFromStorage = () => localStorage.getItem(AUTH_USER_ID);
+
+/**
+ * @description downloads trapping data as csv
+ * @param {String} dataType the type of data we want to download, i.e. UNSUMMARIZED, SUMMARIZED_COUNTY, etc.
+ * @param {String} state selected state's abbreviation, e.g. "FL" for Florida
+ * @param {Boolean} countyMode true if in county mode, false if in rd mode
+ * @param {String} countyRD name of county / rd selected, depending on whether it is county or RD mode
+ * @param {Number} startYear
+ * @param {Number} endYear
+ */
+export const downloadCsv = async (dataType, state, countyMode, countyRD, startYear, endYear) => {
+  const request = `${getAutomationServerUrl()}${DOWNLOAD_DATA_ROUTES[dataType]}
+  startYear=${startYear}\
+  &endYear=${endYear}\
+  ${state ?? `&state=${state}`}\
+  ${(countyRD && countyMode) ?? `&county=${countyRD}`}\
+  ${(countyRD && !countyMode) ?? `&rangerDistrict=${countyRD}`}`;
+  console.log(request);
+  return Axios.get(request);
+};
