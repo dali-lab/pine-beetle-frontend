@@ -64,12 +64,12 @@ const ROUTES = {
 };
 
 const DOWNLOAD_DATA_ROUTES = {
-  UNSUMMARIZED: '/unsummarized-trapping/download?',
-  SUMMARIZED_COUNTY: '/summarized-county-trapping/download?',
-  SUMMARIZED_RD: '/summarized-rangerdistrict-trapping/download?',
-  PREDICTION_COUNTY: '/county-prediction/download?',
-  PREDICTION_RD: '/rd-prediction/download?',
-  HELPER: '/data-download/helper-data?',
+  UNSUMMARIZED: '/unsummarized-trapping/download',
+  SUMMARIZED_COUNTY: '/summarized-county-trapping/download',
+  SUMMARIZED_RD: '/summarized-rangerdistrict-trapping/download',
+  PREDICTION_COUNTY: '/county-prediction/download',
+  PREDICTION_RD: '/rd-prediction/download',
+  HELPER: '/data-download/helper-data',
 };
 
 export {

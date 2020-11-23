@@ -19,7 +19,7 @@ const OverviewText = _props => (
       src={questionIcon}
       alt="Help"
     />
-    <ReactTooltip multiline="true" place="right" />
+    <ReactTooltip multiline place="right" />
   </div>
 );
 

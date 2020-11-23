@@ -8,7 +8,7 @@ import { DATA_MODES } from '../../../../constants';
 import {
   getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
-} from './utils';
+} from '../../../../utils';
 
 import './style.scss';
 

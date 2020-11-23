@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 import React from 'react';
 
 import { TextInput, ChoiceInput } from '../../../../components/input-components';
@@ -8,7 +7,7 @@ import { DATA_MODES } from '../../../../constants';
 import {
   getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
-} from './utils';
+} from '../../../../utils';
 
 import './style.scss';
 
@@ -57,6 +56,7 @@ const SelectionBar = (props) => {
             id="mode-btn"
             onClick={() => { setDataMode(DATA_MODES.COUNTY); }}
             className={(countyMode) ? 'county-rd-selection' : null}
+            type="button"
           >
             County
           </button>
@@ -65,6 +65,7 @@ const SelectionBar = (props) => {
             id="mode-btn"
             onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
             className={(!countyMode) ? 'county-rd-selection' : null}
+            type="button"
           >
             <span className="full-text">Ranger District</span>
             <span className="short-text">RD</span>
@@ -79,7 +80,7 @@ const SelectionBar = (props) => {
           />
         </div>
       </div>
-      <button id="reset-current-data-button" className="submit static-button clear-button" onClick={clearAllSelections}>Clear Filters</button>
+      <button id="reset-current-data-button" className="submit static-button clear-button animed-button" onClick={clearAllSelections} type="button">Clear Filters</button>
     </div>
   );
 };

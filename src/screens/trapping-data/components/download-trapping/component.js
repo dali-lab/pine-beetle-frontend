@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
-// import { CSVLink, CSVDownload } from "react-csv";
 
 import { TextInput, ChoiceInput } from '../../../../components/input-components';
 
 import { DATA_MODES } from '../../../../constants';
 
 import {
+  downloadCsv,
   getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
-} from './utils';
-
-import { downloadCsv } from '../../../../utils';
+} from '../../../../utils';
 
 import './style.scss';
 
@@ -50,52 +48,52 @@ const DownloadTrapping = (props) => {
   const handleShow = () => setShow(true);
 
   // constants for selecting types of data in modal
-  const [prediction, setPrediction] = useState(false);
-  const [summarized, setSummarized] = useState(false);
-  const [unsummarized, setUnsummarized] = useState(false);
+  const [fieldsToDownload, setFieldsToDownload] = useState({
+    PREDICTION: false,
+    SUMMARIZED: false,
+    UNSUMMARIZED: false,
+    HELPER: false,
+  });
+
+  const addFieldToDownload = fieldName => e => setFieldsToDownload({
+    ...fieldsToDownload,
+    [fieldName]: e.target.checked,
+  });
+
   const selectAll = (selected) => {
     if (selected) {
-      setPrediction(true);
-      setSummarized(true);
-      setUnsummarized(true);
+      setFieldsToDownload({
+        ...fieldsToDownload,
+        PREDICTION: true,
+        SUMMARIZED: true,
+        UNSUMMARIZED: true,
+      });
     } else {
-      setPrediction(false);
-      setSummarized(false);
-      setUnsummarized(false);
+      setFieldsToDownload({
+        ...fieldsToDownload,
+        PREDICTION: false,
+        SUMMARIZED: false,
+        UNSUMMARIZED: false,
+      });
     }
   };
-  const [includeHelper, setIncludeHelper] = useState(false);
 
   // function for handling trapping data download
   const handleDownload = async () => {
-    if (dataMode === 'COUNTY') {
-      if (unsummarized) {
-        const csv = await downloadCsv('UNSUMMARIZED', selectedState, true, county, startYear, endYear);
-        console.log(csv);
-      } if (includeHelper) {
-        downloadCsv('HELPER', selectedState, true, county, startYear, endYear);
-      } if (summarized) {
-        const csv = await downloadCsv('SUMMARIZED_COUNTY', selectedState, true, county, startYear, endYear);
-        console.log(csv);
-      } if (prediction) {
-        downloadCsv('PREDICTION_COUNTY', selectedState, true, county, startYear, endYear);
-      }
-    } else {
-      if (unsummarized) {
-        downloadCsv('UNSUMMARIZED', selectedState, false, rangerDistrict, startYear, endYear);
-      } if (includeHelper) {
-        downloadCsv('HELPER', selectedState, false, rangerDistrict, startYear, endYear);
-      } if (summarized) {
-        downloadCsv('SUMMARIZED_RD', selectedState, false, rangerDistrict, startYear, endYear);
-      } if (prediction) {
-        downloadCsv('PREDICTION_RD', selectedState, false, rangerDistrict, startYear, endYear);
-      }
-    }
-  };
+    Object.entries(fieldsToDownload).forEach(async ([fieldName, value]) => {
+      if (!value) return;
 
-  useEffect(() => {
-    console.log(county, dataMode, startYear, endYear, selectedState);
-  }, [props]);
+      const dataTypeName = countyMode ? 'COUNTY' : 'RD';
+      const dataName = fieldName === 'PREDICTION' || fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
+
+      await downloadCsv(dataName, {
+        state: selectedState,
+        [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
+        startYear,
+        endYear,
+      });
+    });
+  };
 
   return (
     <>
@@ -120,6 +118,7 @@ const DownloadTrapping = (props) => {
         onRequestClose={handleClose}
         contentLabel="Download Data Modal"
         className="modal"
+        ariaHideApp={false}
       >
         <div id="modal-title">Download Data</div>
         <div id="modal-year">
@@ -183,7 +182,7 @@ const DownloadTrapping = (props) => {
                   type="checkbox"
                   id="select-all"
                   onChange={e => selectAll(e.target.checked)}
-                  checked={prediction && summarized && unsummarized}
+                  checked={fieldsToDownload.PREDICTION && fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED}
                 />
                 <span id="checkbox-text">Select All</span>
               </label>
@@ -195,8 +194,8 @@ const DownloadTrapping = (props) => {
                 <input
                   type="checkbox"
                   id="prediction-data"
-                  onChange={e => setPrediction(e.target.checked)}
-                  checked={prediction}
+                  onChange={addFieldToDownload('PREDICTION')}
+                  checked={fieldsToDownload.PREDICTION}
                 />
                 <span id="checkbox-text">Prediction data</span>
               </label>
@@ -206,8 +205,8 @@ const DownloadTrapping = (props) => {
                 <input
                   type="checkbox"
                   id="summarized-data"
-                  onChange={e => setSummarized(e.target.checked)}
-                  checked={summarized}
+                  onChange={addFieldToDownload('SUMMARIZED')}
+                  checked={fieldsToDownload.SUMMARIZED}
                 />
                 <span id="checkbox-text">Summarized data</span>
               </label>
@@ -217,8 +216,8 @@ const DownloadTrapping = (props) => {
                 <input
                   type="checkbox"
                   id="unsummarized-data"
-                  onChange={e => setUnsummarized(e.target.checked)}
-                  checked={unsummarized}
+                  onChange={addFieldToDownload('UNSUMMARIZED')}
+                  checked={fieldsToDownload.UNSUMMARIZED}
                 />
                 <span id="checkbox-text">Unsummarized data</span>
               </label>
@@ -229,8 +228,8 @@ const DownloadTrapping = (props) => {
               <input
                 type="checkbox"
                 id="include-helper"
-                onChange={e => setIncludeHelper(e.target.checked)}
-                checked={includeHelper}
+                onChange={addFieldToDownload('HELPER')}
+                checked={fieldsToDownload.HELPER}
               />
               <span id="checkbox-text">Include helper data*</span>
             </label>
