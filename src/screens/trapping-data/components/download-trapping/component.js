@@ -61,21 +61,12 @@ const DownloadTrapping = (props) => {
   });
 
   const selectAll = (selected) => {
-    if (selected) {
-      setFieldsToDownload({
-        ...fieldsToDownload,
-        PREDICTION: true,
-        SUMMARIZED: true,
-        UNSUMMARIZED: true,
-      });
-    } else {
-      setFieldsToDownload({
-        ...fieldsToDownload,
-        PREDICTION: false,
-        SUMMARIZED: false,
-        UNSUMMARIZED: false,
-      });
-    }
+    setFieldsToDownload({
+      ...fieldsToDownload,
+      PREDICTION: selected,
+      SUMMARIZED: selected,
+      UNSUMMARIZED: selected,
+    });
   };
 
   // function for handling trapping data download

@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import {
   AUTH_TOKEN_KEY,
   AUTH_USER_ID,
@@ -64,9 +65,7 @@ export const separatePascalCase = (str) => {
  * @description maps ranger district name format in db to mapbox format
  * @param {String} rangerDistrict ranger district name
  */
-export const getMapboxRDNameFormat = rangerDistrict => (
-  rangerDistrict.match(/\((.*?)\)/)?.[1]
-);
+export const getMapboxRDNameFormat = rangerDistrict => rangerDistrict.match(/\((.*?)\)/)?.[1];
 
 /**
  * @description retrieves user auth token from local storage
@@ -86,15 +85,20 @@ export const getUserIdFromStorage = () => localStorage.getItem(AUTH_USER_ID);
  * @param {Object} [queryParams={}] object of query parameters
  */
 export const downloadCsv = async (dataType, queryParams = {}) => {
+  // generate url
   const query = toQueryParams(queryParams);
   const url = `${getAutomationServerUrl()}${DOWNLOAD_DATA_ROUTES[dataType]}${query.length > 0 ? '?' : ''}${query}`;
 
+  // download blob and create object url
   const { data } = await axios.get(url, { responseType: 'blob' });
   const objectUrl = URL.createObjectURL(data);
 
+  // generate link for browser to click (allows us to set the name of the file)
   const link = document.createElement('a');
   link.href = objectUrl;
   link.setAttribute('download', dataType === 'HELPER' ? `${dataType}.zip` : `${dataType}.csv`);
+
+  // trigger download then remove from DOM
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
