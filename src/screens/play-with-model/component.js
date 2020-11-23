@@ -118,7 +118,7 @@ const PlayWithModel = (props) => {
       return (
         <div className="predictions-generated">
           <div id="predictions-generated-title">
-            <p>Predicted beetle risks in {year}</p>
+            <p>Predictions based on model inputs</p>
           </div>
           <div id="prob-spots">
             <div id="percent">

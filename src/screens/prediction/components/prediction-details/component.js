@@ -1,12 +1,15 @@
 import React from 'react';
 import './style.scss';
 
+import { DATA_MODES } from '../../../../constants';
+
 const trapIcon = require('../../../../assets/icons/trap.png');
 const cleridIcon = require('../../../../assets/icons/clerids.png');
 
 const PredictionDetails = (props) => {
   const {
     data = [],
+    dataMode,
   } = props;
 
   const currYear = data[0]?.year ?? (new Date()).getFullYear();
@@ -16,7 +19,7 @@ const PredictionDetails = (props) => {
       <div className="prediction-details-container">
         <div className="prediction-details">
           <div className="prediction-title">
-            <h1>{data[0].county} Detail</h1>
+            <h1>{dataMode === DATA_MODES.COUNTY ? `${data[0].county} County` : data[0].rangerDistrict} Detail</h1>
           </div>
           <div className="prediction-info">
             <div className="percentages-container">
