@@ -82,6 +82,17 @@ const LineChart = (props) => {
       bodyFontFamily: 'Inter',
       bodyFontColor: '#ffffff',
       bodyAlign: 'left',
+
+      // set custom label (rounds spb and clerid per 2 weeks)
+      callbacks: {
+        label: (tooltipItem, d) => {
+          const { label } = d.datasets[tooltipItem.datasetIndex];
+          const value = tooltipItem.yLabel;
+
+          if (label === 'Total Spots') return `${label}: ${value}`;
+          else return `${label}: ${value.toFixed(2)}`;
+        },
+      },
     },
     legend: {
       display: true,
@@ -144,13 +155,13 @@ const LineChart = (props) => {
     // sum up spb by year
     const spbMap = sortedData.reduce((acc, curr) => ({
       ...acc,
-      [curr.year]: curr.spbCount + acc[curr.year],
+      [curr.year]: curr.spbPer2Weeks + acc[curr.year],
     }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
 
     // sum up clerids by year
     const cleridMap = sortedData.reduce((acc, curr) => ({
       ...acc,
-      [curr.year]: curr.cleridCount + acc[curr.year],
+      [curr.year]: curr.cleridPer2Weeks + acc[curr.year],
     }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
 
     // update chartData

@@ -1,7 +1,10 @@
 #view-selections {
     display: flex;
-    -webkit-flex-direction: row-reverse; 
-    flex-direction: row-reverse;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 45px;
+    margin-right: 65px;
+    margin-bottom: -10px;
 }
 
 #selection {

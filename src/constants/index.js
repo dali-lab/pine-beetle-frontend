@@ -16,6 +16,7 @@ const stateAbbrevToStateId = require('./state-ids.json');
 const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 
 const AUTH_TOKEN_KEY = 'DALI_PB_AUTH_TOKEN';
+const AUTH_USER_ID = 'DALI_PB_AUTH_USER_ID';
 
 const getServerUrl = () => {
   switch (window.location.origin) {
@@ -64,6 +65,7 @@ const ROUTES = {
 
 export {
   AUTH_TOKEN_KEY,
+  AUTH_USER_ID,
   DATA_MODES,
   AUTOMATION_SERVER_ENDPOINTS,
   SERVER_ENDPOINTS,

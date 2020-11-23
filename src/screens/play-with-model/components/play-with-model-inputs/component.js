@@ -58,7 +58,7 @@ const PlayWithModelInputs = (props) => {
       trueFalseSelection: false,
     },
     ENDOBREV: {
-      text: 'Was endo-brevicomin used in Spring, {YEAR}',
+      text: 'Was endo-brevicomin used in Spring, {YEAR}?',
       icon: endobrevIcon,
       iconAlt: 'endo-brevicomin icon',
       iconId: 'endobrev-icon',

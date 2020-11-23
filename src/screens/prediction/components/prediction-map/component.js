@@ -6,7 +6,7 @@ import printPdf from 'mapbox-print-pdf';
 import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
 
 import {
-  separatePascalCase,
+  getMapboxRDNameFormat,
 } from '../../../../utils';
 
 import './style.scss';
@@ -76,7 +76,7 @@ const PredictionMap = (props) => {
     });
 
     if (counties.length > 0 && counties[0] && counties[0].properties && counties[0].properties.forest) {
-      const { x, y } = e.point;
+      const { x, y } = e.point || {};
       const { STATE: hoverState } = counties[0].properties;
 
       let location;
@@ -84,7 +84,9 @@ const PredictionMap = (props) => {
       if (mode === DATA_MODES.COUNTY) {
         location = counties[0].properties.forest.slice(0, -3);
       } else {
-        location = rangerDistricts.find(rd => rd.includes(counties[0].properties.forest.replaceAll(' ', '')));
+        location = rangerDistricts.filter(rd => !!rd).find(rd => (
+          rd.includes(counties[0].properties.forest.replaceAll('  ', ' '))
+        ));
       }
 
       const pred = predictions.find((p) => {
@@ -164,12 +166,7 @@ const PredictionMap = (props) => {
       },
     });
 
-    if (!createdMap._controls) return;
-
-    // if we haven't added a navigation control, add one
-    if (createdMap._controls.length < 2) {
-      createdMap.addControl(new mapboxgl.NavigationControl());
-    }
+    createdMap.addControl(new mapboxgl.NavigationControl());
 
     // disable map zoom when using scroll
     createdMap.scrollZoom.disable();
@@ -256,7 +253,7 @@ const PredictionMap = (props) => {
       }
 
       const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
-      const rangerDistrictFormatName = rangerDistrict ? separatePascalCase(rangerDistrict.split('_').pop()).toUpperCase() : '';
+      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict).toUpperCase() : '';
 
       const locationName = dataMode === DATA_MODES.COUNTY
         ? countyFormatName
@@ -319,7 +316,7 @@ const PredictionMap = (props) => {
     return (
       `
           <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
-              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 51%;margin: auto;margin-bottom: 10px;">
+              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 90%;margin: auto;margin-bottom: 10px;">
                   ${legendString}
               </div>
               <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 

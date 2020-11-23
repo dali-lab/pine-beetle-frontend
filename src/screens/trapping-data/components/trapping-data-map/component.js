@@ -6,7 +6,7 @@ import printPdf from 'mapbox-print-pdf';
 import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
 
 import {
-  separatePascalCase,
+  getMapboxRDNameFormat,
 } from '../../../../utils';
 
 import './style.scss';
@@ -66,7 +66,7 @@ const HistoricalMap = (props) => {
     });
 
     if (counties.length > 0 && counties[0] && counties[0].properties && counties[0].properties.forest) {
-      const { x, y } = e.point;
+      const { x, y } = e.point || {};
       const { STATE: hoverState } = counties[0].properties;
 
       let location;
@@ -74,7 +74,9 @@ const HistoricalMap = (props) => {
       if (mode === DATA_MODES.COUNTY) {
         location = counties[0].properties.forest.slice(0, -3);
       } else {
-        location = rangerDistricts.find(rd => rd.includes(counties[0].properties.forest.replaceAll(' ', '')));
+        location = rangerDistricts.filter(rd => !!rd).find(rd => (
+          rd.includes(counties[0].properties.forest.replaceAll('  ', ' '))
+        ));
       }
 
       const data = trappings.filter((p) => {
@@ -88,16 +90,18 @@ const HistoricalMap = (props) => {
       if (data && data.length > 0 && x && y) {
         const countyName = data.find(t => t.county) ? data.find(t => t.county).county : '';
 
-        const averageSpots = data.reduce((acc, curr) => (acc + curr.spots), 0) / data.length;
         const avgSpbPer2Weeks = data.reduce((acc, curr) => (acc + curr.spbPer2Weeks), 0) / data.length;
         const avgCleridsPer2Weeks = data.reduce((acc, curr) => (acc + curr.cleridPer2Weeks), 0) / data.length;
+
+        const spots = data.map(obj => obj.spots).filter(s => s !== null && s !== undefined);
+        const spotRange = { max: Math.max(...spots), min: Math.min(...spots) };
 
         setTrappingHover((
           <div id="trapping-hover" style={{ left: `${x + 10}px`, top: `${y - 140}px` }}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
-            <p>Average Spots: {averageSpots.toFixed(2)}</p>
             <p>Average SPB Per 2 Weeks: {avgSpbPer2Weeks.toFixed(2)}</p>
             <p>Average Clerids Per 2 Weeks: {avgCleridsPer2Weeks.toFixed(2)}</p>
+            <p>Spot Range: [{parseInt(spotRange.min, 10)}, {parseInt(spotRange.max, 10)}]</p>
           </div>
         ));
       } else {
@@ -155,12 +159,7 @@ const HistoricalMap = (props) => {
       },
     });
 
-    if (!createdMap._controls) return;
-
-    // if we haven't added a navigation control, add one
-    if (createdMap._controls.length < 2) {
-      createdMap.addControl(new mapboxgl.NavigationControl());
-    }
+    createdMap.addControl(new mapboxgl.NavigationControl());
 
     // disable map zoom when using scroll
     createdMap.scrollZoom.disable();
@@ -231,7 +230,7 @@ const HistoricalMap = (props) => {
       } = curr;
 
       const countyFormatName = `${county} ${state}`.toUpperCase();
-      const rangerDistrictFormatName = rangerDistrict ? separatePascalCase(rangerDistrict.split('_').pop()).toUpperCase() : '';
+      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict).toUpperCase() : '';
 
       const localityDescription = dataMode === DATA_MODES.COUNTY ? countyFormatName : rangerDistrictFormatName;
 
@@ -290,7 +289,7 @@ const HistoricalMap = (props) => {
   const buildHeader = () => {
     return (
       `<div id="map-header" style="text-align: center;">
-          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">Total Number of Spots</h2>
+          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">Average Number of Spots</h2>
         </div>`
     );
   };
@@ -318,7 +317,7 @@ const HistoricalMap = (props) => {
           <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
               <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 
               14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Average spots per year:</p>
-              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 51%;margin: auto;margin-bottom: 10px;">
+              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 90%;margin: auto;margin-bottom: 10px;">
                   ${legendString}
               </div>
               <div id="spacer" style="height: 50px;"></div>
@@ -449,7 +448,7 @@ const HistoricalMap = (props) => {
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
       </div>
       <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title">Total Number of Spots</div>
+        <div className="legend-key-title">Average Number of Spots</div>
         {legendTags}
       </div>
       {trappingHover}
