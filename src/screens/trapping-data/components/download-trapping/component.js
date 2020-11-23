@@ -239,7 +239,7 @@ const DownloadTrapping = (props) => {
               <p>Submit</p>
             </button>
           </div>
-          <p id="modal-footnote">* helper data includes state/fips mappings and ranger district standardization mappings</p>
+          <p id="modal-footnote">* helper data includes ranger district name mappings and state abbreviation mappings</p>
         </div>
       </Modal>
     </>
