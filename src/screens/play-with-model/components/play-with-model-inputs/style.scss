@@ -1,5 +1,6 @@
 #play-with-model-inputs-container {
     display: flex;
+    justify-content: space-between;
     padding: 36px 47px 39px 61px;
     border-radius: 26px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
@@ -146,11 +147,4 @@
 
 #run-button:hover {
     opacity: 1;
-}
-
-#vl {
-    border-left: 2px dashed #d7dae4;
-    height: auto;
-    margin-right: 50px;
-    margin-left: 30px;
 }

@@ -105,7 +105,6 @@ const PlayWithModel = (props) => {
           runModel={runModel}
           updateModelInputs={updateModelInputs}
         />
-        <div id="vl" />
         <PlayWithModelOutputs />
       </div>
     </div>
