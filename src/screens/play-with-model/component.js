@@ -105,7 +105,13 @@ const PlayWithModel = (props) => {
           runModel={runModel}
           updateModelInputs={updateModelInputs}
         />
-        <PlayWithModelOutputs />
+        <PlayWithModelOutputs
+          county={county}
+          dataMode={dataMode}
+          rangerDistrict={rangerDistrict}
+          selectedState={selectedState}
+          year={year}
+        />
       </div>
     </div>
   );
