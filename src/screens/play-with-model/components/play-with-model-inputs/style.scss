@@ -153,45 +153,4 @@
     height: auto;
     margin-right: 50px;
     margin-left: 30px;
-} 
-
-#predictions-generated-title {
-    margin-top: 20px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #3c4253;
-    text-align: left;
-}
-
-.predictions-generated #prob-spots {
-    width: 11vw;
-    padding: 14px 48px 14px 49px;
-    border-radius: 12px;
-    box-shadow: 0 18px 50px 0 rgba(255, 193, 72, 0.4);
-    background-color: #ffc148;
-    margin-top: 35px;
-}
-
-#percent {
-    font-size: 30px;
-    font-weight: 900;
-    text-align: center;
-    color: #3c4253;
-    margin-bottom: 10px;
-}
-
-#prob-text {
-    font-size: 12px;
-    line-height: 1.31;
-    text-align: center;
-    color: #17191f;
-}
-
-.predictions-generated #prob-outbreak {
-    width: 11vw;
-    padding: 14px 48px 14px 49px;
-    border-radius: 12px;
-    box-shadow: 0 18px 50px 0 rgba(134, 204, 255, 0.4);
-    background-color: #86ccff;
-    margin-top: 50px;
 }

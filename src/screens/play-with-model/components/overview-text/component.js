@@ -6,7 +6,7 @@ const questionIcon = require('../../../../assets/icons/help-circle.png');
 
 const helpText = `Pick a year, state and<br />
 county/ranger district to<br />
-prepulate the fields based<br />
+prepopulate the fields based<br />
 on historical data.`;
 
 const OverviewText = _props => (
