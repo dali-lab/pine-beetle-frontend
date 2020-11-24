@@ -1,5 +1,6 @@
 import {
   stateAbbrevToStateName,
+  stateNameToAbbrev,
 } from '../constants';
 
 /**
@@ -8,10 +9,7 @@ import {
  */
 export const getStateNameFromAbbreviation = (abbrev) => {
   if (!abbrev) return '';
-  return Object.values(stateAbbrevToStateName)
-    .find((stateName) => {
-      return stateAbbrevToStateName[abbrev] === stateName;
-    });
+  return stateAbbrevToStateName[abbrev];
 };
 
 /**
@@ -20,10 +18,7 @@ export const getStateNameFromAbbreviation = (abbrev) => {
    */
 export const getStateAbbreviationFromStateName = (stateName) => {
   if (!stateName) return '';
-  return Object.keys(stateAbbrevToStateName)
-    .find((abbrev) => {
-      return stateAbbrevToStateName[abbrev] === stateName;
-    });
+  return stateNameToAbbrev[stateName];
 };
 
 /**
