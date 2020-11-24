@@ -12,7 +12,7 @@ const zeroIcon = require('../../assets/icons/zero.png');
 
 const Home = (_props) => {
   return (
-    <div className="container">
+    <div className="container home-container">
       <div className="title-area">
         <img src={beetleIcon} alt="beetle" />
         <div className="title-words">
