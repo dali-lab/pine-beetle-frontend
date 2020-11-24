@@ -1,5 +1,7 @@
 import { connect } from 'react-redux';
 
+import { setChartMode } from '../../state/actions';
+
 import TrappingData from './component';
 
 const mapStateToProps = (state) => {
@@ -8,6 +10,9 @@ const mapStateToProps = (state) => {
       trappingError: {
         text: trappingErrorText,
       },
+    },
+    selections: {
+      chartMode,
     },
     trappings: {
       data: trappingData,
@@ -19,6 +24,7 @@ const mapStateToProps = (state) => {
   const isLoading = fetchingCounty && fetchingRangerDistrict;
 
   return {
+    chartMode,
     isLoading,
     trappingData,
     trappingErrorText,
@@ -26,7 +32,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setChartMode: () => {
+      dispatch(setChartMode());
+    },
+  };
 };
 
 export default connect(

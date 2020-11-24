@@ -18,6 +18,9 @@ const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 const AUTH_TOKEN_KEY = 'DALI_PB_AUTH_TOKEN';
 const AUTH_USER_ID = 'DALI_PB_AUTH_USER_ID';
 
+const DATA_MODE_KEY = 'DALI_PB_DATA_MODE';
+const CHART_MODE_KEY = 'DALI_PB_CHART_MODE';
+
 const getServerUrl = () => {
   switch (window.location.origin) {
     case 'http://localhost:8080':
@@ -55,6 +58,11 @@ const DATA_MODES = {
   RANGER_DISTRICT: 'RANGER_DISTRICT',
 };
 
+const CHART_MODES = {
+  MAP: 'MAP',
+  GRAPH: 'GRAPH',
+};
+
 const ROUTES = {
   ADMIN: '/admin',
   TRAPPING_DATA: '/trapping-data',
@@ -76,13 +84,16 @@ export {
   AUTH_TOKEN_KEY,
   AUTH_USER_ID,
   AUTOMATION_SERVER_ENDPOINTS,
+  CHART_MODE_KEY,
+  CHART_MODES,
+  DATA_MODE_KEY,
   DATA_MODES,
   DOWNLOAD_DATA_ROUTES,
-  SERVER_ENDPOINTS,
   getAutomationServerUrl,
   getServerUrl,
-  stateAbbrevToStateName,
-  stateAbbrevToStateId,
-  stateAbbrevToZoomLevel,
   ROUTES,
+  SERVER_ENDPOINTS,
+  stateAbbrevToStateId,
+  stateAbbrevToStateName,
+  stateAbbrevToZoomLevel,
 };

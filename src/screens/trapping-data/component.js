@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+import { CHART_MODES } from '../../constants';
 
 import './style.scss';
 
@@ -17,12 +19,16 @@ const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
 
 const TrappingData = (props) => {
   const {
+    chartMode,
+    setChartMode,
     isLoading,
     trappingData,
     trappingErrorText,
   } = props;
 
-  const [chartMode, setChartMode] = useState(true);
+  const isGraphView = chartMode === CHART_MODES.GRAPH;
+  const setGraphView = () => setChartMode(CHART_MODES.GRAPH);
+  const setMapView = () => setChartMode(CHART_MODES.GRAPH);
 
   return (
     <div>
@@ -32,29 +38,29 @@ const TrappingData = (props) => {
       <OverviewText />
       <SelectionBar />
       <div id="view-selections">
-        <div id="selection" onClick={() => setChartMode(true)}>
+        <div id="selection" onClick={setGraphView}>
           <img
-            src={chartMode ? graphSelectedIcon : graphUnselectedIcon}
+            src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
             alt="Chart View"
-            id={chartMode ? 'selected-view' : null}
+            id={isGraphView ? 'selected-view' : null}
           />
-          <p id={chartMode ? 'selected-view' : null} className="view-selection-btn">
+          <p id={isGraphView ? 'selected-view' : null} className="view-selection-btn">
             Graph View
           </p>
         </div>
-        <div id="selection" onClick={() => setChartMode(false)}>
+        <div id="selection" onClick={setMapView}>
           <img
-            src={chartMode ? mapUnselectedIcon : mapSelectedIcon}
+            src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
             alt="Map View"
-            id={chartMode ? null : 'selected-view'}
+            id={isGraphView ? null : 'selected-view'}
           />
-          <p id={chartMode ? null : 'selected-view'} className="view-selection-btn">
+          <p id={isGraphView ? null : 'selected-view'} className="view-selection-btn">
             Map View
           </p>
         </div>
       </div>
       <div>
-        {chartMode ? <LineChart data={trappingData} /> : <TrappingDataMap />}
+        {isGraphView ? <LineChart data={trappingData} /> : <TrappingDataMap />}
       </div>
       <DownloadTrapping />
     </div>
