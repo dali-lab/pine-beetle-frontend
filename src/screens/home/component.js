@@ -79,7 +79,7 @@ const Home = (_props) => {
           </div>
           <div id="description-text">
             We decided not to use traditional modeling techniques that involve modeling the beetles themselves;
-            instead we model the number of infestations, commonly referred to as “spots.”
+            instead, we model the number of infestations, commonly referred to as “spots.”
             Complex population models are often difficult to fit to real data,
             so we opted for an approach that would allow us to use spot data that was already being collected by state forest service agencies and their federal counterparts.
           </div>
