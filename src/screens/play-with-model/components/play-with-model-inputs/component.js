@@ -82,7 +82,7 @@ const PlayWithModelInputs = (props) => {
       );
     } else {
       return (
-        <form>
+        <form onSubmit={e => e.preventDefault()}>
           <div className="checkboxes">
             <div className="endobrev-checkbox">
               <label htmlFor="yes-endobrev">
