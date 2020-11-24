@@ -13,6 +13,7 @@ import {
 
 import './style.scss';
 
+const closeIcon = require('../../../../assets/icons/close.png');
 const downloadIcon = require('../../../../assets/icons/download.png');
 
 const DownloadTrapping = (props) => {
@@ -67,6 +68,7 @@ const DownloadTrapping = (props) => {
       PREDICTION: selected,
       SUMMARIZED: selected,
       UNSUMMARIZED: selected,
+      HELPER: selected,
     });
   };
 
@@ -111,7 +113,11 @@ const DownloadTrapping = (props) => {
         contentLabel="Download Data Modal"
         className="modal"
         ariaHideApp={false}
+        closeTimeoutMS={150}
       >
+        <div id="close-icon">
+          <img src={closeIcon} alt="close icon" onClick={handleClose} />
+        </div>
         <div id="modal-title">Download Data</div>
         <div id="modal-year">
           <div id="year-selection">
@@ -167,8 +173,8 @@ const DownloadTrapping = (props) => {
         </div>
         <div id="modal-download-selection">
           <div id="question">
-            <p>What type of data would you like to download?</p>
-            <div id="data-checkbox">
+            <h4>What type of data would you like to download?</h4>
+            <div>
               <label htmlFor="select-all">
                 <input
                   type="checkbox"
@@ -176,12 +182,12 @@ const DownloadTrapping = (props) => {
                   onChange={e => selectAll(e.target.checked)}
                   checked={fieldsToDownload.PREDICTION && fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED}
                 />
-                <span id="checkbox-text">Select All</span>
+                <span className="checkbox-text">Select All</span>
               </label>
             </div>
           </div>
           <div id="selection-types">
-            <div id="data-checkbox">
+            <div>
               <label htmlFor="prediction-data">
                 <input
                   type="checkbox"
@@ -189,10 +195,10 @@ const DownloadTrapping = (props) => {
                   onChange={addFieldToDownload('PREDICTION')}
                   checked={fieldsToDownload.PREDICTION}
                 />
-                <span id="checkbox-text">Prediction data</span>
+                <span className="checkbox-text">Prediction data</span>
               </label>
             </div>
-            <div id="data-checkbox">
+            <div>
               <label htmlFor="summarized-data">
                 <input
                   type="checkbox"
@@ -200,10 +206,10 @@ const DownloadTrapping = (props) => {
                   onChange={addFieldToDownload('SUMMARIZED')}
                   checked={fieldsToDownload.SUMMARIZED}
                 />
-                <span id="checkbox-text">Summarized data</span>
+                <span className="checkbox-text">Summarized data</span>
               </label>
             </div>
-            <div id="data-checkbox">
+            <div>
               <label htmlFor="unsummarized-data">
                 <input
                   type="checkbox"
@@ -211,7 +217,7 @@ const DownloadTrapping = (props) => {
                   onChange={addFieldToDownload('UNSUMMARIZED')}
                   checked={fieldsToDownload.UNSUMMARIZED}
                 />
-                <span id="checkbox-text">Unsummarized data</span>
+                <span className="checkbox-text">Unsummarized data</span>
               </label>
             </div>
           </div>
@@ -223,7 +229,7 @@ const DownloadTrapping = (props) => {
                 onChange={addFieldToDownload('HELPER')}
                 checked={fieldsToDownload.HELPER}
               />
-              <span id="checkbox-text">Include helper data*</span>
+              <span className="checkbox-text">Include helper data*</span>
             </label>
           </div>
           <div>
