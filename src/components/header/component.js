@@ -27,7 +27,9 @@ const Header = (props) => {
       <div className="container">
         <div id="title-area">
           <div id="logo">
-            <Link to="/"><img src={pineBeetleImage} alt="logo" /></Link>
+            <Link to={ROUTES.HOME}>
+              <img src={pineBeetleImage} alt="logo" />
+            </Link>
             <Link to={ROUTES.HOME} className={`nav-button ${(useLocation().pathname === '/') ? 'active-nav' : 'inactive-nav'}`}>
               Home
             </Link>
