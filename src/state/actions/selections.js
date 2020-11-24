@@ -1,5 +1,10 @@
 import { DATA_MODES } from '../../constants';
 
+import {
+  setChartModeInStorage,
+  setDataModeInStorage,
+} from '../../utils';
+
 export const ActionTypes = {
   SET_YEAR: 'SET_YEAR',
   SET_YEAR_RANGE: 'SET_YEAR_RANGE',
@@ -11,6 +16,7 @@ export const ActionTypes = {
   SET_ALL_COUNTIES: 'SET_ALL_COUNTIES',
   SET_ALL_RANGER_DISTRICTS: 'SET_ALL_RANGER_DISTRICTS',
   SET_DATA_MODE: 'SET_DATA_MODE',
+  SET_CHART_MODE: 'SET_CHART_MODE',
 };
 
 /**
@@ -84,13 +90,16 @@ export const setAllYears = () => {
     const { trappingData } = attachData(getState());
     const years = trappingData.map(({ year }) => year);
 
+    const startYear = Math.min(...years);
+    const endYear = Math.max(...years);
+
     dispatch({
       type: ActionTypes.SET_YEAR_RANGE,
       payload: {
         ...getState().selections,
         yearRange: {
-          startYear: Math.min(...years),
-          endYear: Math.max(...years),
+          startYear,
+          endYear,
         },
       },
     });
@@ -163,6 +172,8 @@ export const clearSelections = () => {
  */
 export const setDataMode = (mode) => {
   return (dispatch, getState) => {
+    setDataModeInStorage(mode);
+
     const data = attachData(getState(), mode);
 
     dispatch({
@@ -185,6 +196,20 @@ export const setDataMode = (mode) => {
         ...getState().selections,
         year: endYear,
       },
+    });
+  };
+};
+
+/**
+ * @description action creator for setting chart mode
+ */
+export const setChartMode = (mode) => {
+  return (dispatch) => {
+    setChartModeInStorage(mode);
+
+    dispatch({
+      type: ActionTypes.SET_CHART_MODE,
+      payload: mode,
     });
   };
 };

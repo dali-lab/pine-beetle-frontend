@@ -15,8 +15,7 @@ const stateAbbrevToStateName = require('./state-abbreviations.json');
 const stateAbbrevToStateId = require('./state-ids.json');
 const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 
-const AUTH_TOKEN_KEY = 'DALI_PB_AUTH_TOKEN';
-const AUTH_USER_ID = 'DALI_PB_AUTH_USER_ID';
+const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
 const getServerUrl = () => {
   switch (window.location.origin) {
@@ -50,9 +49,21 @@ const getAutomationServerUrl = () => {
   }
 };
 
+const LOCAL_STORAGE_KEYS = {
+  AUTH_TOKEN: 'DALI_PB_AUTH_TOKEN',
+  CHART_MODE: 'DALI_PB_CHART_MODE',
+  DATA_MODE: 'DALI_PB_DATA_MODE',
+  USER_ID: 'DALI_PB_AUTH_USER_ID',
+};
+
 const DATA_MODES = {
   COUNTY: 'COUNTY',
   RANGER_DISTRICT: 'RANGER_DISTRICT',
+};
+
+const CHART_MODES = {
+  MAP: 'MAP',
+  GRAPH: 'GRAPH',
 };
 
 const ROUTES = {
@@ -73,16 +84,17 @@ const DOWNLOAD_DATA_ROUTES = {
 };
 
 export {
-  AUTH_TOKEN_KEY,
-  AUTH_USER_ID,
   AUTOMATION_SERVER_ENDPOINTS,
+  CHART_MODES,
   DATA_MODES,
   DOWNLOAD_DATA_ROUTES,
-  SERVER_ENDPOINTS,
   getAutomationServerUrl,
   getServerUrl,
-  stateAbbrevToStateName,
-  stateAbbrevToStateId,
-  stateAbbrevToZoomLevel,
+  LOCAL_STORAGE_KEYS,
   ROUTES,
+  SERVER_ENDPOINTS,
+  stateAbbrevToStateId,
+  stateAbbrevToStateName,
+  stateAbbrevToZoomLevel,
+  stateNameToAbbrev,
 };

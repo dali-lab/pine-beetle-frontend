@@ -7,8 +7,9 @@ import {
   getCountyTrapping,
   getRangerDistrictPredictions,
   getRangerDistrictTrapping,
-  setDataMode,
   getUserFromStorage,
+  setChartMode,
+  setDataMode,
 } from './state/actions';
 
 import {
@@ -26,6 +27,7 @@ import {
 } from './components';
 
 import {
+  CHART_MODES,
   DATA_MODES,
   getServerUrl,
   ROUTES,
@@ -33,6 +35,8 @@ import {
 
 import {
   getAuthTokenFromStorage,
+  getChartModeFromStorage,
+  getDataModeFromStorage,
   getUserIdFromStorage,
 } from './utils';
 
@@ -60,11 +64,14 @@ const App = (props) => {
     if (getAuthTokenFromStorage() && getUserIdFromStorage()) {
       loginUserFromStorage();
     }
+
+    // set chart mode if persist in browser
+    props.setChartMode(getChartModeFromStorage() || CHART_MODES.GRAPH);
   }, []);
 
   // set all trapping/prediction all fields to county once we get them
   useEffect(() => {
-    props.setDataMode(DATA_MODES.COUNTY); // note that this can be driven by a local storage cookie in the future
+    props.setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
   }, [countyPredictions, countyTrapping]);
 
   return (
@@ -100,8 +107,8 @@ const mapStateToProps = (state) => {
   } = state;
 
   return {
-    countyTrapping,
     countyPredictions,
+    countyTrapping,
   };
 };
 
@@ -121,6 +128,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     loginUserFromStorage: () => {
       dispatch(getUserFromStorage());
+    },
+    setChartMode: (mode) => {
+      dispatch(setChartMode(mode));
     },
     setDataMode: (mode) => {
       dispatch(setDataMode(mode));

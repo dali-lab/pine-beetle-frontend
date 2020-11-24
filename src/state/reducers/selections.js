@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import { ActionTypes } from '../actions';
-import { DATA_MODES } from '../../constants';
+import { DATA_MODES, CHART_MODES } from '../../constants';
 
 const initialState = {
   year: new Date().getFullYear(),
@@ -12,6 +12,7 @@ const initialState = {
   county: '',
   rangerDistrict: '',
   dataMode: DATA_MODES.COUNTY,
+  chartMode: CHART_MODES.GRAPH,
 };
 
 const SelectionsReducer = (state = initialState, action) => {
@@ -67,6 +68,9 @@ const SelectionsReducer = (state = initialState, action) => {
         ...initialState,
         year,
       };
+
+    case ActionTypes.SET_CHART_MODE:
+      return { ...state, chartMode: action.payload };
 
     default:
       return state;
