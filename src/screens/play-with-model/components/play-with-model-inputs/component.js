@@ -71,7 +71,7 @@ const PlayWithModelInputs = (props) => {
   const selectionInput = (isTrueFalseSelection, value, setValue) => {
     if (!isTrueFalseSelection) {
       return (
-        <form>
+        <form onKeyPress={e => e.key === 'Enter' && e.preventDefault()}>
           <input
             type="number"
             min="0"
@@ -82,7 +82,7 @@ const PlayWithModelInputs = (props) => {
       );
     } else {
       return (
-        <form onSubmit={e => e.preventDefault()}>
+        <form onKeyPress={e => e.key === 'Enter' && e.preventDefault()}>
           <div className="checkboxes">
             <div className="endobrev-checkbox" onClick={() => setValue(true)}>
               <label htmlFor="yes-endobrev">
