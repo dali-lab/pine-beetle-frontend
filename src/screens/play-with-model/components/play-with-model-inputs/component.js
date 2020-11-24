@@ -118,7 +118,7 @@ const PlayWithModelInputs = (props) => {
         <div id="change-fields-title">
           <p>Change numbers in any of the fields below to gauge effect on predicted risks at right</p>
         </div>
-        {Object.values(INPUT_INFORMATION).map((inputInfo) => {
+        {Object.entries(INPUT_INFORMATION).map(([key, inputInfo]) => {
           const {
             text,
             icon,
@@ -130,7 +130,7 @@ const PlayWithModelInputs = (props) => {
           } = inputInfo;
 
           return (
-            <div className="field">
+            <div className="field" key={key}>
               <div className="icon-text-container">
                 <img
                   className="icon"
