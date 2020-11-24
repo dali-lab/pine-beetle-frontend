@@ -1,6 +1,7 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
+import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
@@ -11,6 +12,11 @@ import {
 } from '../../../../utils';
 
 import './style.scss';
+
+const questionIcon = require('../../../../assets/icons/help-circle.png');
+
+const helpText = `Please use Chrome, Firefox,<br />
+or Edge to download map.`;
 
 const thresholds = ['0-100', '101-500', '501-1000', '1001-5000', '5001-10000', '>10000'];
 const colors = ['#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
@@ -308,7 +314,7 @@ const HistoricalMap = (props) => {
       const layer = curr;
       const color = colors[index];
       const spanString = `
-          <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${color};display: 
+          <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${color};display:
           inline-block;border-radius: 20%;width: 20px;height: 20px;margin-right: 5px;margin-left: 5px;"></div><span>${layer}</span>`;
       return acc.concat(spanString);
     }, '');
@@ -316,7 +322,7 @@ const HistoricalMap = (props) => {
     return (
       `
           <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
-              <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 
+              <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height:
               14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Average spots per year:</p>
               <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 90%;margin: auto;margin-bottom: 10px;">
                   ${legendString}
@@ -324,14 +330,14 @@ const HistoricalMap = (props) => {
               <div id="spacer" style="height: 50px;"></div>
               <h2 style="font-family: 'Open Sans', arial, serif;margin-bottom: 16px;margin-top: 16px;">${title}</h2>
               <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">
-              The SPB prediction project is supported by USDA Forest Service: Science and Technology 
+              The SPB prediction project is supported by USDA Forest Service: Science and Technology
               Development Program (STDP)
               </p>
               <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">Contact: Matthew P. Ayres - matthew.p.ayres@dartmouth.edu; Carissa F. Aoki - caoki@bates.edu
               </p>
               <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 14px;width: 53%;
-              margin: auto;margin-bottom: 16px;font-size: 14px;">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN, 
-              GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, © OpenStreetMap 
+              margin: auto;margin-bottom: 16px;font-size: 14px;">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN,
+              GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, © OpenStreetMap
               contributors, andthe GIS User Community</p>
           </div>
           `
@@ -447,6 +453,15 @@ const HistoricalMap = (props) => {
       <div id="map" />
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
+        <div>
+          <img id="icon-small"
+            data-tip={helpText}
+            src={questionIcon}
+            alt="Help"
+          />
+          <ReactTooltip multiline place="right" />
+        </div>
+
       </div>
       <div className="map-overlay-legend" id="legend">
         <div className="legend-key-title">Average Number of Spots</div>

@@ -448,7 +448,7 @@ const PredictionMap = (props) => {
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
         <div>
-          <img id="icon"
+          <img id="icon-small"
             data-tip={helpText}
             src={questionIcon}
             alt="Help"
