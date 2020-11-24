@@ -103,6 +103,11 @@
     border: none;
     padding: 3px 0px 4px 10px;
     margin-left: 5px;
+    cursor: pointer;
+
+    * {
+        cursor: pointer,
+    }
 }
 
 #run-button {

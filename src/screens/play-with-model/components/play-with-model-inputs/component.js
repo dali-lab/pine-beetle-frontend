@@ -84,23 +84,23 @@ const PlayWithModelInputs = (props) => {
       return (
         <form onSubmit={e => e.preventDefault()}>
           <div className="checkboxes">
-            <div className="endobrev-checkbox">
+            <div className="endobrev-checkbox" onClick={() => setValue(true)}>
               <label htmlFor="yes-endobrev">
                 <input
                   type="checkbox"
                   id="yes-endobrev"
-                  onChange={e => setValue((e.target.checked))}
+                  onChange={() => setValue(true)}
                   checked={value}
                 />
                 <span>Yes</span>
               </label>
             </div>
-            <div className="endobrev-checkbox">
+            <div className="endobrev-checkbox" onClick={() => setValue(false)}>
               <label htmlFor="no-endobrev" className="no-endobrev-checkbox">
                 <input
                   type="checkbox"
                   id="no-endobrev"
-                  onChange={e => setValue(!e.target.checked)}
+                  onChange={() => setValue(false)}
                   checked={!value}
                 />
                 <span>No</span>
