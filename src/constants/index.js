@@ -15,12 +15,6 @@ const stateAbbrevToStateName = require('./state-abbreviations.json');
 const stateAbbrevToStateId = require('./state-ids.json');
 const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 
-const AUTH_TOKEN_KEY = 'DALI_PB_AUTH_TOKEN';
-const AUTH_USER_ID = 'DALI_PB_AUTH_USER_ID';
-
-const DATA_MODE_KEY = 'DALI_PB_DATA_MODE';
-const CHART_MODE_KEY = 'DALI_PB_CHART_MODE';
-
 const getServerUrl = () => {
   switch (window.location.origin) {
     case 'http://localhost:8080':
@@ -53,6 +47,19 @@ const getAutomationServerUrl = () => {
   }
 };
 
+const LOCAL_STORAGE_KEYS = {
+  AUTH_TOKEN: 'DALI_PB_AUTH_TOKEN',
+  CHART_MODE: 'DALI_PB_CHART_MODE',
+  COUNTY: 'DALI_PB_COUNTY',
+  DATA_MODE: 'DALI_PB_DATA_MODE',
+  END_YEAR: 'DALI_PB_YEAR_RANGE_MAX',
+  RANGER_DISTRICT: 'DALI_PB_RANGER_DISTRICT',
+  START_YEAR: 'DALI_PB_YEAR_RANGE_MIN',
+  STATE: 'DALI_PB_STATE',
+  USER_ID: 'DALI_PB_AUTH_USER_ID',
+  YEAR: 'DALI_PB_YEAR',
+};
+
 const DATA_MODES = {
   COUNTY: 'COUNTY',
   RANGER_DISTRICT: 'RANGER_DISTRICT',
@@ -81,16 +88,13 @@ const DOWNLOAD_DATA_ROUTES = {
 };
 
 export {
-  AUTH_TOKEN_KEY,
-  AUTH_USER_ID,
   AUTOMATION_SERVER_ENDPOINTS,
-  CHART_MODE_KEY,
   CHART_MODES,
-  DATA_MODE_KEY,
   DATA_MODES,
   DOWNLOAD_DATA_ROUTES,
   getAutomationServerUrl,
   getServerUrl,
+  LOCAL_STORAGE_KEYS,
   ROUTES,
   SERVER_ENDPOINTS,
   stateAbbrevToStateId,

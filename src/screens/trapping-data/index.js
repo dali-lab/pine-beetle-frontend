@@ -33,8 +33,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setChartMode: () => {
-      dispatch(setChartMode());
+    setChartMode: (mode) => {
+      dispatch(setChartMode(mode));
     },
   };
 };

@@ -1,8 +1,19 @@
 import { DATA_MODES } from '../../constants';
 
 import {
-  setDataModeInStorage,
+  removeCountyFromStorage,
+  removeEndYearFromStorage,
+  removeRangerDistrictFromStorage,
+  removeStartYearFromStorage,
+  removeStateFromStorage,
   setChartModeInStorage,
+  setCountyInStorage,
+  setDataModeInStorage,
+  setEndYearInStorage,
+  setRangerDistrictInStorage,
+  setStartYearInStorage,
+  setStateInStorage,
+  setYearInStorage,
 } from '../../utils';
 
 export const ActionTypes = {
@@ -52,6 +63,8 @@ const attachData = (store, mode) => {
  */
 export const setYear = (year) => {
   return (dispatch, getState) => {
+    setYearInStorage(year);
+
     dispatch({
       type: ActionTypes.SET_YEAR,
       payload: {
@@ -67,6 +80,9 @@ export const setYear = (year) => {
  */
 export const setYearRange = (startYear, endYear) => {
   return (dispatch, getState) => {
+    if (startYear) setStartYearInStorage(startYear);
+    if (endYear) setEndYearInStorage(endYear);
+
     dispatch({
       type: ActionTypes.SET_YEAR_RANGE,
       payload: {
@@ -90,13 +106,19 @@ export const setAllYears = () => {
     const { trappingData } = attachData(getState());
     const years = trappingData.map(({ year }) => year);
 
+    const startYear = Math.min(...years);
+    const endYear = Math.max(...years);
+
+    setStartYearInStorage(startYear);
+    setEndYearInStorage(endYear);
+
     dispatch({
       type: ActionTypes.SET_YEAR_RANGE,
       payload: {
         ...getState().selections,
         yearRange: {
-          startYear: Math.min(...years),
-          endYear: Math.max(...years),
+          startYear,
+          endYear,
         },
       },
     });
@@ -108,6 +130,8 @@ export const setAllYears = () => {
  */
 export const setState = (state) => {
   return (dispatch, getState) => {
+    setStateInStorage(state);
+
     dispatch({
       type: ActionTypes.SET_STATE,
       payload: {
@@ -124,6 +148,8 @@ export const setState = (state) => {
  */
 export const setCounty = (county) => {
   return (dispatch, getState) => {
+    setCountyInStorage(county);
+
     dispatch({
       type: ActionTypes.SET_COUNTY,
       payload: {
@@ -139,6 +165,8 @@ export const setCounty = (county) => {
  */
 export const setRangerDistrict = (rangerDistrict) => {
   return (dispatch, getState) => {
+    setRangerDistrictInStorage(rangerDistrict);
+
     dispatch({
       type: ActionTypes.SET_RANGER_DISTRICT,
       payload: {
@@ -154,6 +182,12 @@ export const setRangerDistrict = (rangerDistrict) => {
  */
 export const clearSelections = () => {
   return (dispatch, getState) => {
+    removeCountyFromStorage();
+    removeRangerDistrictFromStorage();
+    removeStateFromStorage();
+    removeStartYearFromStorage();
+    removeEndYearFromStorage();
+
     dispatch({
       type: ActionTypes.CLEAR_SELECTIONS,
       payload: {
@@ -177,23 +211,24 @@ export const setDataMode = (mode) => {
       type: ActionTypes.SET_DATA_MODE,
       payload: {
         ...data,
+        ...getState().selections,
         mode,
       },
     });
 
-    // find last year in dataset
-    const endYear = data.trappingData.reduce((prev, curr) => (
-      prev.year > curr.year ? prev : curr
-    ), {})?.year || getState().selections.yearRange.endYear;
+    // // find last year in dataset
+    // const endYear = data.trappingData.reduce((prev, curr) => (
+    //   prev.year > curr.year ? prev : curr
+    // ), {})?.year || getState().selections.yearRange.endYear;
 
-    // explicitly set the year (to trigger filtering)
-    dispatch({
-      type: ActionTypes.SET_YEAR,
-      payload: {
-        ...getState().selections,
-        year: endYear,
-      },
-    });
+    // // explicitly set the year (to trigger filtering)
+    // dispatch({
+    //   type: ActionTypes.SET_YEAR,
+    //   payload: {
+    //     ...getState().selections,
+    //     year: endYear,
+    //   },
+    // });
   };
 };
 

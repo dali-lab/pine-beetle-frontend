@@ -28,7 +28,7 @@ const TrappingData = (props) => {
 
   const isGraphView = chartMode === CHART_MODES.GRAPH;
   const setGraphView = () => setChartMode(CHART_MODES.GRAPH);
-  const setMapView = () => setChartMode(CHART_MODES.GRAPH);
+  const setMapView = () => setChartMode(CHART_MODES.MAP);
 
   return (
     <div>

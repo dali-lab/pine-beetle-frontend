@@ -32,7 +32,10 @@ const TrappingReducer = (state = initialState, action) => {
       return { ...state, fetchingRangerDistrict: action.payload };
 
     case ActionTypes.SET_DATA_MODE:
-      return { ...state, data: action.payload.mode === DATA_MODES.COUNTY ? state.county : state.rangerDistrict };
+      const rawData = action.payload.mode === DATA_MODES.COUNTY ? state.county : state.rangerDistrict;
+      const data = filterYearRange(filterLocation(rawData, action), action);
+
+      return { ...state, data };
 
     case ActionTypes.SET_YEAR:
       return state;

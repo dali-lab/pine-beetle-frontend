@@ -9,7 +9,12 @@ import {
   getRangerDistrictTrapping,
   getUserFromStorage,
   setChartMode,
+  setCounty,
   setDataMode,
+  setRangerDistrict,
+  setState,
+  setYear,
+  setYearRange,
 } from './state/actions';
 
 import {
@@ -36,8 +41,14 @@ import {
 import {
   getAuthTokenFromStorage,
   getChartModeFromStorage,
+  getCountyFromStorage,
   getDataModeFromStorage,
+  getEndYearFromStorage,
+  getRangerDistrictFromStorage,
+  getStartYearFromStorage,
+  getStateFromStorage,
   getUserIdFromStorage,
+  getYearFromStorage,
 } from './utils';
 
 const FallBack = () => {
@@ -46,9 +57,15 @@ const FallBack = () => {
 
 const App = (props) => {
   const {
+    county,
     countyPredictions,
     countyTrapping,
+    endYear,
     loginUserFromStorage,
+    rangerDistrict,
+    selectedState,
+    startYear,
+    year,
   } = props;
 
   useEffect(() => {
@@ -65,8 +82,13 @@ const App = (props) => {
       loginUserFromStorage();
     }
 
-    // set chart mode if persist in browser
+    // set selections if persist in browser
     props.setChartMode(getChartModeFromStorage() || CHART_MODES.GRAPH);
+    props.setState(getStateFromStorage() || selectedState);
+    props.setCounty(getCountyFromStorage() || county);
+    props.setRangerDistrict(getRangerDistrictFromStorage() || rangerDistrict);
+    props.setYear(parseInt(getYearFromStorage(), 10) || year);
+    props.setYearRange(parseInt(getStartYearFromStorage(), 10) || startYear, parseInt(getEndYearFromStorage(), 10) || endYear);
   }, []);
 
   // set all trapping/prediction all fields to county once we get them
@@ -104,11 +126,27 @@ const mapStateToProps = (state) => {
     predictions: {
       county: countyPredictions,
     },
+    selections: {
+      state: selectedState,
+      county,
+      rangerDistrict,
+      year,
+      yearRange: {
+        startYear,
+        endYear,
+      },
+    },
   } = state;
 
   return {
-    countyTrapping,
+    county,
     countyPredictions,
+    countyTrapping,
+    endYear,
+    rangerDistrict,
+    selectedState,
+    startYear,
+    year,
   };
 };
 
@@ -134,6 +172,21 @@ const mapDispatchToProps = (dispatch) => {
     },
     setDataMode: (mode) => {
       dispatch(setDataMode(mode));
+    },
+    setState: (state) => {
+      dispatch(setState(state));
+    },
+    setCounty: (county) => {
+      dispatch(setCounty(county));
+    },
+    setRangerDistrict: (rangerDistrict) => {
+      dispatch(setRangerDistrict(rangerDistrict));
+    },
+    setYear: (year) => {
+      dispatch(setYear(year));
+    },
+    setYearRange: (startYear, endYear) => {
+      dispatch(setYearRange(startYear, endYear));
     },
   };
 };
