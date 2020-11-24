@@ -40,10 +40,7 @@ const PredictionsReducer = (state = initialState, action) => {
       return { ...state, fetchingCustomPrediction: action.payload };
 
     case ActionTypes.SET_DATA_MODE:
-      const rawData = action.payload.mode === DATA_MODES.COUNTY ? state.county : state.rangerDistrict;
-      const data = filterYear(filterLocation(rawData, action), action);
-
-      return { ...state, data };
+      return { ...state, data: action.payload.mode === DATA_MODES.COUNTY ? state.county : state.rangerDistrict };
 
     case ActionTypes.SET_YEAR:
       return {
