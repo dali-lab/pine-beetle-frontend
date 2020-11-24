@@ -84,7 +84,7 @@ export const runCustomPrediction = (cleridst1, spotst1, spotst2, SPB, endobrev) 
         type: ActionTypes.SET_CUSTOM_PREDICTION_ERROR,
         payload: {
           error,
-          text: 'Failed to fetch custom prediction',
+          text: 'Failed to run custom prediction',
           input: {
             cleridst1, spotst1, spotst2, SPB, endobrev,
           },
