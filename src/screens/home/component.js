@@ -13,14 +13,14 @@ const zeroIcon = require('../../assets/icons/zero.png');
 const Home = (_props) => {
   return (
     <div className="container" id="home-container">
-      <div className="title-area">
+      <div id="beetle-background">
         <img src={beetleIcon} alt="beetle" />
-        <div className="title-words">
-          <div id="big-title">Pine Beetle</div>
-          <div id="subtitle">Outbreak Prediction</div>
-          <div id="title-description">
-            This website predicts the likelihood of a summer outbreak based on spring trapping data, with the goal of assisting forest managers as they make resource allocation decisions.
-          </div>
+      </div>
+      <div className="title-words">
+        <div id="big-title">Pine Beetle</div>
+        <div id="subtitle">Outbreak Prediction</div>
+        <div id="title-description">
+          This website predicts the likelihood of a summer outbreak based on spring trapping data, with the goal of assisting forest managers as they make resource allocation decisions.
         </div>
       </div>
       <div className="pages">
