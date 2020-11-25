@@ -51,17 +51,20 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    // margin-top: -52px;
 }
 
 .page-container {
     height: auto;
-    padding: 24px 31px 90px 32px;
+    padding: 30px;
     border-radius: 20px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: #ffffff;
     text-align: left;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
 .pages #left-page-container {
@@ -86,17 +89,12 @@
 }
 
 #click-to {
-    border: none;
-    cursor: pointer;
-    padding: 0.86vw;
+    padding: 10px;
     border-radius: 6px;
     background-color: #424755;
-    font-size: 1.3vw;
+    font-size: 18px;
     font-weight: 500;
     color: #ffffff;
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 38px;
     text-decoration: none;
 }
 
