@@ -7,8 +7,6 @@ import {
   SelectionBar,
 } from './components';
 
-import { Loading } from '../../components';
-
 import { DATA_MODES } from '../../constants';
 
 const PlayWithModel = (props) => {
@@ -18,7 +16,6 @@ const PlayWithModel = (props) => {
     countyTrappingsData,
     dataMode,
     isError, // whether or not an error occurred
-    isLoading,
     rangerDistrict,
     rangerDistrictTrappingsData,
     runCustomPrediction, // function to call for running the prediction
@@ -100,7 +97,6 @@ const PlayWithModel = (props) => {
 
   return (
     <div>
-      {isLoading && <Loading />}
       <OverviewText />
       <SelectionBar />
       <div className="container" id="play-with-model-inputs-container">
