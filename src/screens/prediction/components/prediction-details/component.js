@@ -1,10 +1,14 @@
 import React from 'react';
+import ReactTooltip from 'react-tooltip';
+
 import './style.scss';
 
 import { DATA_MODES } from '../../../../constants';
 
 const trapIcon = require('../../../../assets/icons/trap.png');
 const cleridIcon = require('../../../../assets/icons/clerids.png');
+
+const tooltipText = 'per two weeks, averaged across traps';
 
 const PredictionDetails = (props) => {
   const {
@@ -71,7 +75,8 @@ const PredictionDetails = (props) => {
                         src={cleridIcon}
                         alt="clerids"
                       />
-                      <div className="content-text">{Math.round(data[0].cleridst1)} <u>clerids</u></div>
+                      <div className="content-text" data-tip={tooltipText}>{Math.round(data[0].cleridst1)} <u>clerids</u></div>
+                      <ReactTooltip multiline place="right" />
                     </div>
                   </div>
                   <div className="yeart1-spots" id="spots">
@@ -95,7 +100,8 @@ const PredictionDetails = (props) => {
                         src={cleridIcon}
                         alt="spb"
                       />
-                      <div className="content-text">{Math.round(data[0].SPB)} <u>SPB</u></div>
+                      <div className="content-text" data-tip={tooltipText}>{Math.round(data[0].SPB)} <u>SPB</u></div>
+                      <ReactTooltip multiline place="right" />
                     </div>
                   </div>
                   <div className="curr-endobrev" id="endobrev">
