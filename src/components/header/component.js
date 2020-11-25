@@ -43,12 +43,14 @@ const Header = (props) => {
               ))}
               <div id="data-mode-toggle-container">
                 <button
+                  id="data-mode-county"
                   className={`data-mode-button ${dataMode === DATA_MODES.COUNTY ? 'selected' : 'unselected'}`}
                   type="button"
                   onClick={setCountyMode}
                 >County
                 </button>
                 <button
+                  id="data-mode-rangerdistrict"
                   className={`data-mode-button ${dataMode === DATA_MODES.RANGER_DISTRICT ? 'selected' : 'unselected'}`}
                   type="button"
                   onClick={setRangerDistrictMode}
