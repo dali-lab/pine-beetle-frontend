@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-scroll';
 
 import {
@@ -29,13 +29,18 @@ const Prediction = (props) => {
   } = props;
 
   const [showAnimation, setShowAnimation] = useState(true);
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 1100 || (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-      setShowAnimation(false);
-    } else {
-      setShowAnimation(true);
-    }
-  });
+  useEffect(() => {
+    const listener = () => {
+      if (window.scrollY > 1100 || (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        setShowAnimation(false);
+      } else {
+        setShowAnimation(true);
+      }
+    };
+
+    window.addEventListener('scroll', listener);
+    return () => window.removeEventListener('scroll', listener);
+  }, []);
 
   const getHistogram = (predProb50) => {
     if (predProb50 < 0.025) {

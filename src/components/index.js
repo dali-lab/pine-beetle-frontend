@@ -1,6 +1,6 @@
 import Footer from './footer';
 import Header from './header';
-import Loading from './loading/index';
+import Loading from './loading';
 import ScrollIcon from './scroll-icon';
 import ScrollToTop from './scroll-to-top';
 

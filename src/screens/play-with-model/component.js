@@ -18,6 +18,7 @@ const PlayWithModel = (props) => {
     countyTrappingsData,
     dataMode,
     isError, // whether or not an error occurred
+    isLoading,
     rangerDistrict,
     rangerDistrictTrappingsData,
     runCustomPrediction, // function to call for running the prediction
