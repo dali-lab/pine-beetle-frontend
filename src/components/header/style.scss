@@ -4,74 +4,127 @@
     background-color: #FBFBFD;
 
     #title-area {
-        margin-top: 0px;
-        margin-bottom: 0px;
-        height: auto;
-        background-color: #FBFBFD;
         display: flex;
         justify-content: space-between;
-    }
-    
-    #title-area a {
-        text-decoration: none;
-        color: #000000;
-    }
-    
-    #title-area img {
-        height: 55px;
-        width: 55px;
-    }
-    
-    #title-area h1 {
-        padding-bottom: 0px;
-    }
+        align-items: center;
+        background-color: #FBFBFD;
 
-    #logo img {
-        margin-left: 35px;
-        margin-top: 13px;
-        width: 26px;
-        height: 32px;
-    }
-    
-    #nav-button-area {
-        margin: auto;
-        margin-right: 100px;
-    }
-    
-    #nav-buttons p {
-        color: #000000;
-        float: left;
-        padding: 15px;
-        padding-top: 18px;
-        font-size: 16px;
-        cursor: pointer;
-        text-decoration: none;
-        font-family: "Inter";
-        font-style: normal;
-        line-height: 24px;
-        letter-spacing: 0em;
-        text-align: left;
-    
-        -o-transition: 0.3s;
-        -ms-transition: 0.3s;
-        -moz-transition: 0.3s;
-        -webkit-transition: 0.3s;
-        transition: 0.3s;
-    }
-    
-    #nav-buttons p:hover {
-        text-decoration: underline;
-    }
-    
-    #middle {
-        margin: 0px 10px;
-    }
-    
-    #nav-active {
-        text-decoration: underline !important;
-    }
+        a {
+            text-decoration: none;
+            color: #000000;
+        }
 
-    .current-nav {
-        font-weight: bold;
+        img {
+            height: 55px;
+            width: 55px;
+        }
+
+        h1 {
+            padding-bottom: 0px;
+        }
+
+        #logo {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+
+            img {
+                margin-left: 35px;
+                margin-top: 13px;
+                width: 26px;
+                height: 32px;
+            }
+
+            a {
+                margin-left: 25px;
+            }
+        }
+
+        #nav-button-area {
+            margin: auto;
+            margin-right: 100px;
+        }
+
+        #nav-buttons {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+
+            #data-mode-toggle-container {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+
+                background-color: white;
+                padding: 5px;
+                border-radius: 5px;
+                margin-left: 10px;
+
+                button {
+                    border: none;
+                    border-radius: 10px;
+                    padding: 8px 13px 7px 15px;
+                    margin-left: 5px;
+                    margin-right: 5px;
+                    font-family: "Inter";
+                }
+
+                button:hover {
+                    cursor: pointer;
+                }
+
+                .selected {
+                    background-color: #c9cdd9;
+                    font-weight: bold;
+                }
+
+                .unselected {
+                    background-color: white;
+                    border: solid 1.5px #edf0f6;
+                }
+
+                #data-mode-county {
+                    width: 76px;
+                }
+
+                #data-mode-rangerdistrict {
+                    width: 126px;
+                }
+            }
+        }
+
+        .nav-button {
+            padding: 15px;
+            padding-top: 18px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: "Inter";
+            font-style: normal;
+            line-height: 24px;
+            letter-spacing: 0em;
+            text-align: left;
+
+            -o-transition: 0.3s;
+            -ms-transition: 0.3s;
+            -moz-transition: 0.3s;
+            -webkit-transition: 0.3s;
+            transition: 0.3s;
+        }
+
+        #middle {
+            margin: 0px 10px;
+        }
+
+        .active-nav {
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .inactive-nav {
+            color: #73767e;
+        }
     }
 }

@@ -71,7 +71,7 @@ const PlayWithModelInputs = (props) => {
   const selectionInput = (isTrueFalseSelection, value, setValue) => {
     if (!isTrueFalseSelection) {
       return (
-        <form>
+        <form onKeyPress={e => e.key === 'Enter' && e.preventDefault()}>
           <input
             type="number"
             min="0"
@@ -82,25 +82,25 @@ const PlayWithModelInputs = (props) => {
       );
     } else {
       return (
-        <form>
+        <form onKeyPress={e => e.key === 'Enter' && e.preventDefault()}>
           <div className="checkboxes">
-            <div className="endobrev-checkbox">
+            <div className="endobrev-checkbox" onClick={() => setValue(true)}>
               <label htmlFor="yes-endobrev">
                 <input
                   type="checkbox"
                   id="yes-endobrev"
-                  onChange={e => setValue((e.target.checked))}
+                  onChange={() => setValue(true)}
                   checked={value}
                 />
                 <span>Yes</span>
               </label>
             </div>
-            <div className="endobrev-checkbox">
+            <div className="endobrev-checkbox" onClick={() => setValue(false)}>
               <label htmlFor="no-endobrev" className="no-endobrev-checkbox">
                 <input
                   type="checkbox"
                   id="no-endobrev"
-                  onChange={e => setValue(!e.target.checked)}
+                  onChange={() => setValue(false)}
                   checked={!value}
                 />
                 <span>No</span>
@@ -118,7 +118,7 @@ const PlayWithModelInputs = (props) => {
         <div id="change-fields-title">
           <p>Change numbers in any of the fields below to gauge effect on predicted risks at right</p>
         </div>
-        {Object.values(INPUT_INFORMATION).map((inputInfo) => {
+        {Object.entries(INPUT_INFORMATION).map(([key, inputInfo]) => {
           const {
             text,
             icon,
@@ -130,7 +130,7 @@ const PlayWithModelInputs = (props) => {
           } = inputInfo;
 
           return (
-            <div className="field">
+            <div className="field" key={key}>
               <div className="icon-text-container">
                 <img
                   className="icon"

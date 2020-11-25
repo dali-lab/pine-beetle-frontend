@@ -1,0 +1,68 @@
+#predictions-output {
+    display: flex;
+
+    #vl {
+        border-left: 2px dashed #d7dae4;
+        height: auto;
+        margin-right: 30px;
+        margin-left: 30px;
+    }
+
+    #predictions-generated-title {
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #3c4253;
+        text-align: left;
+
+        p {
+            height: 56px;
+        }
+    }
+
+    .predictions-generated {
+        width: 250px;
+        margin-left: 20px;
+        margin-right: 20px;
+
+        #prob-spots, #prob-spots-disabled,
+        #prob-outbreak, #prob-outbreak-disabled {
+            width: 11vw;
+            max-width: 150px;
+            padding: 14px 48px 14px 49px;
+            border-radius: 12px;
+        }
+
+        #prob-spots, #prob-spots-disabled {
+            box-shadow: 0 18px 50px 0 rgba(255, 193, 72, 0.4);
+            background-color: #ffc148;
+            margin-top: 35px;
+        }
+
+        #prob-outbreak,  #prob-outbreak-disabled {
+            box-shadow: 0 18px 50px 0 rgba(134, 204, 255, 0.4);
+            background-color: #86ccff;
+            margin-top: 50px;
+        }
+
+        #prob-outbreak-disabled, #prob-spots-disabled {
+            box-shadow: 0 18px 50px 0 rgba(49, 57, 85, 0.04);
+            background-color: #c9cdd9;
+        }
+    }
+
+    #percent {
+        font-size: 30px;
+        font-weight: 900;
+        text-align: center;
+        color: #3c4253;
+        margin-bottom: 10px;
+    }
+
+    #prob-text {
+        font-size: 12px;
+        line-height: 1.31;
+        text-align: center;
+        color: #17191f;
+    }
+}
