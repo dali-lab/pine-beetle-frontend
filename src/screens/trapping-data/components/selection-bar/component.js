@@ -80,7 +80,7 @@ const SelectionBar = (props) => {
           />
         </div>
       </div>
-      <button id="reset-current-data-button" className="submit static-button clear-button animed-button" onClick={clearAllSelections} type="button">Clear Filters</button>
+      <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections} type="button">Clear Filters</button>
     </div>
   );
 };

@@ -29,7 +29,7 @@ const Home = (_props) => {
           <div id="summary">
             Predictions are updated weekly as trapping data are entered, and can be viewed by counties within states, as well as by USFS ranger districts within National Forests.
           </div>
-          <Link to={ROUTES.PREDICTIONS} className="click-to">
+          <Link to={ROUTES.PREDICTIONS} className="animated-button" id="click-to">
             View predictions
           </Link>
         </div>
@@ -38,7 +38,7 @@ const Home = (_props) => {
           <div id="summary">
             Trapping data collected since 2011 were used to build the prediction model on this website. View and download the data here. Data can be filtered by years and/or locations.
           </div>
-          <Link to={ROUTES.TRAPPING_DATA} className="click-to">
+          <Link to={ROUTES.TRAPPING_DATA} className="animated-button" id="click-to">
             View trapping data
           </Link>
         </div>
@@ -47,7 +47,7 @@ const Home = (_props) => {
           <div id="summary">
             Trapping data collected since 2011 were used to build the prediction model on this website. View and download the data here with years and/or location filters.
           </div>
-          <Link to={ROUTES.PLAY_WITH_MODEL} className="click-to">
+          <Link to={ROUTES.PLAY_WITH_MODEL} className="animated-button" id="click-to">
             Play with the model
           </Link>
         </div>
