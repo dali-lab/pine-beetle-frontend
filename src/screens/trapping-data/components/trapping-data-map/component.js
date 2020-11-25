@@ -18,7 +18,7 @@ const questionIcon = require('../../../../assets/icons/help-circle.png');
 const helpText = `Please use Chrome, Firefox,<br />
 or Edge to download map.`;
 
-const thresholds = ['0-100', '101-500', '501-1000', '1001-5000', '5001-10000', '>10000'];
+const thresholds = ['0-9', '10-19', '20-49', '50-99', '100-249', '>249'];
 const colors = ['#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
 
 const MAP_SOURCES = {
@@ -255,15 +255,15 @@ const HistoricalMap = (props) => {
 
       let color;
 
-      if (spots <= 100) {
+      if (spots < 10) {
         color = colors[0];
-      } else if (spots > 100 && spots <= 500) {
+      } else if (spots < 20) {
         color = colors[1];
-      } else if (spots > 500 && spots <= 1000) {
+      } else if (spots < 50) {
         color = colors[2];
-      } else if (spots > 1000 && spots <= 5000) {
+      } else if (spots < 100) {
         color = colors[3];
-      } else if (spots > 5000 && spots <= 10000) {
+      } else if (spots < 250) {
         color = colors[4];
       } else {
         color = colors[5];
