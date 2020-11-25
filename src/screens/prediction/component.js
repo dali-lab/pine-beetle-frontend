@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-scroll';
 
 import {
   AboutPredictions,
@@ -8,6 +8,8 @@ import {
   PredictionMap,
   SelectionBar,
 } from './components';
+
+import { Loading, ScrollIcon } from '../../components';
 
 import './style.scss';
 
@@ -25,6 +27,15 @@ const Prediction = (props) => {
     predictionsErrorText,
     selectedState,
   } = props;
+
+  const [showAnimation, setShowAnimation] = useState(true);
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 1100 || (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      setShowAnimation(false);
+    } else {
+      setShowAnimation(true);
+    }
+  });
 
   const getHistogram = (predProb50) => {
     if (predProb50 < 0.025) {
@@ -47,30 +58,39 @@ const Prediction = (props) => {
     const predProb50 = predictionData[0].prediction['prob.Spots>53'];
     const histogram = getHistogram(predProb50);
     return (
-      <div className="container">
-        <PredictionDetails data={predictionData} />
-        <div className="prediction-bottom">
-          <div className="histogram">
-            <div id="histogram-title">
-              <span>
-                Predicted vs. Observed Outcomes for All Data, 1987-2019 (n=2,978)
-              </span>
+      <>
+        <div className="container" id="scroll-to">
+          <PredictionDetails data={predictionData} />
+          <div className="prediction-bottom">
+            <div className="histogram">
+              <div id="histogram-title">
+                <span>
+                  Predicted vs. Observed Outcomes for All Data, 1987-2019 (n=2,978)
+                </span>
+              </div>
+              <img
+                src={histogram}
+                alt="Histogram for Predicted % Chance of >50 Spots"
+              />
             </div>
-            <img
-              src={histogram}
-              alt="Histogram for Predicted % Chance of >50 Spots"
-            />
+            <AboutPredictions />
           </div>
-          <AboutPredictions />
         </div>
-      </div>
+        <Link
+          to="scroll-to"
+          smooth
+        >
+          <div id={showAnimation ? 'scroll-animation' : 'hidden-animation'}>
+            { ScrollIcon() }
+          </div>
+        </Link>
+      </>
     );
   };
 
   return (
     <div>
-      {/* TODO: make this a spinner */}
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Loading />}
       {predictionsErrorText.length > 0 && predictionsErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />

@@ -6,6 +6,8 @@ import {
   SelectionBar,
 } from './components';
 
+import { Loading } from '../../components';
+
 import { DATA_MODES } from '../../constants';
 
 const PlayWithModel = (props) => {
@@ -156,6 +158,7 @@ const PlayWithModel = (props) => {
 
   return (
     <div>
+      {isLoading && <Loading />}
       <OverviewText />
       <SelectionBar />
       <div className="container" id="play-with-model-inputs-container">

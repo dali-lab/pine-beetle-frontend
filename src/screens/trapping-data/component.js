@@ -10,6 +10,8 @@ import {
   SelectionBar,
 } from './components';
 
+import { Loading } from '../../components';
+
 const mapSelectedIcon = require('../../assets/icons/map-selected.png');
 const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
 const graphSelectedIcon = require('../../assets/icons/graph-selected.png');
@@ -26,8 +28,7 @@ const TrappingData = (props) => {
 
   return (
     <div>
-      {/* TODO: make this a spinner */}
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Loading />}
       {trappingErrorText.length > 0 && trappingErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />

@@ -1,6 +1,6 @@
 import React from 'react';
 import Lottie from 'react-lottie';
-import animationData from '../assets/animations/scroll-icon.json';
+import animationData from '../assets/animations/animation-arrow.json';
 
 const defaultOptions = {
   loop: true,
@@ -12,9 +12,9 @@ const defaultOptions = {
 };
 
 const ScrollIcon = () => (
-  <Lottie options={defaultOptions}
-    height={50}
-    width={75}
+  <Lottie
+    options={defaultOptions}
+    isClickToPauseDisabled
   />
 );
 
