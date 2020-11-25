@@ -8,7 +8,8 @@ import { DATA_MODES } from '../../../../constants';
 const trapIcon = require('../../../../assets/icons/trap.png');
 const cleridIcon = require('../../../../assets/icons/clerids.png');
 
-const tooltipText = 'per two weeks, averaged across traps';
+const spbText = 'SPB per two weeks, averaged across traps';
+const cleridText = 'clerids per two weeks, averaged across traps';
 
 const PredictionDetails = (props) => {
   const {
@@ -75,7 +76,7 @@ const PredictionDetails = (props) => {
                         src={cleridIcon}
                         alt="clerids"
                       />
-                      <div className="content-text" data-tip={tooltipText}>{Math.round(data[0].cleridst1)} <u>clerids</u></div>
+                      <div className="content-text" data-tip={cleridText}>{Math.round(data[0].cleridst1)} <u>clerids</u></div>
                       <ReactTooltip multiline place="right" />
                     </div>
                   </div>
@@ -100,7 +101,7 @@ const PredictionDetails = (props) => {
                         src={cleridIcon}
                         alt="spb"
                       />
-                      <div className="content-text" data-tip={tooltipText}>{Math.round(data[0].SPB)} <u>SPB</u></div>
+                      <div className="content-text" data-tip={spbText}>{Math.round(data[0].SPB)} <u>SPB</u></div>
                       <ReactTooltip multiline place="right" />
                     </div>
                   </div>
