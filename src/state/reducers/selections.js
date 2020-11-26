@@ -5,7 +5,7 @@ import { DATA_MODES, CHART_MODES } from '../../constants';
 const initialState = {
   year: new Date().getFullYear(),
   yearRange: {
-    startYear: 2011,
+    startYear: 2010,
     endYear: new Date().getFullYear(),
   },
   state: '',
