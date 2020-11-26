@@ -150,7 +150,7 @@ const PlayWithModelInputs = (props) => {
           );
         })}
       </div>
-      <button id="run-button" type="button" onClick={runModel}>
+      <button className="animated-button" id="run-button" type="button" onClick={runModel}>
         Run
       </button>
     </div>
