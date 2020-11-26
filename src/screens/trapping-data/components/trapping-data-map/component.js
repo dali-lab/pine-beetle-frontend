@@ -44,7 +44,8 @@ const HistoricalMap = (props) => {
   const {
     allCounties,
     allRangerDistricts,
-    allStates,
+    allSelectedStates,
+    allTotalStates,
     dataMode,
     endYear,
     selectedState,
@@ -72,19 +73,21 @@ const HistoricalMap = (props) => {
       layers: [VECTOR_LAYER],
     });
 
-    if (counties.length > 0 && counties[0] && counties[0].properties && counties[0].properties.forest) {
+    if (counties.length > 0 && counties[0]?.properties?.forest) {
       const { x, y } = e.point || {};
-      const { STATE: hoverState } = counties[0].properties;
 
-      let location;
+      const {
+        STATE: hoverState,
+        COUNTYNAME: hoverCounty,
+        forest: rawForest,
+      } = counties[0].properties;
 
-      if (mode === DATA_MODES.COUNTY) {
-        location = counties[0].properties.forest.slice(0, -3);
-      } else {
-        location = rangerDistricts.filter(rd => !!rd).find(rd => (
-          rd.includes(counties[0].properties.forest.replaceAll('  ', ' '))
-        ));
-      }
+      const hoverRD = rawForest.replaceAll('  ', ' ');
+
+      const location = mode === DATA_MODES.COUNTY
+        ? hoverCounty
+        : rangerDistricts.filter(rd => !!rd)
+          .find(rd => rd.includes(hoverRD));
 
       const data = trappings.filter((p) => {
         return (
@@ -119,24 +122,22 @@ const HistoricalMap = (props) => {
 
   // twice-curried function for generating click callback
   const createMapClickCallback = (states, counties, rangerDistricts, currentState, trappings, mode) => (e) => {
-    if (!e) return;
+    if (!e?.features[0]?.properties) return;
 
     const {
+      COUNTYNAME: county,
       forest: _forest,
       STATE: _state,
     } = e.features[0].properties;
 
-    const forest = _forest.slice(0, -3);
+    const clickRD = _forest.replace(' ', '');
 
-    const rangerDistrictToSet = rangerDistricts.find(district => (
-      district.includes(forest.replace(' ', ''))
-    ));
+    const rangerDistrictToSet = rangerDistricts.filter(rd => !!rd)
+      .find(district => district.includes(clickRD));
 
-    let state = _state;
-
-    if (!_state && mode === DATA_MODES.RANGER_DISTRICT) {
-      state = trappings.find(p => p.rangerDistrict === rangerDistrictToSet)?.state;
-    }
+    const state = !_state && mode === DATA_MODES.RANGER_DISTRICT
+      ? trappings.find(p => p.rangerDistrict === rangerDistrictToSet)?.state
+      : _state;
 
     // ensure clicked on valid state
     if (!states.includes(state)) return;
@@ -145,8 +146,8 @@ const HistoricalMap = (props) => {
     if (!currentState || state !== currentState) {
       setState(state);
       // select county otherwise
-    } else if (dataMode === DATA_MODES.COUNTY && counties.includes(forest)) {
-      setCounty(forest);
+    } else if (dataMode === DATA_MODES.COUNTY && counties.includes(county)) {
+      setCounty(county);
       // select rd otherwise
     } else if (rangerDistricts.includes(rangerDistrictToSet)) {
       setRangerDistrict(rangerDistrictToSet);
@@ -196,13 +197,13 @@ const HistoricalMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      const callback = createMapClickCallback(allStates, allCounties, allRangerDistricts, selectedState, trappingData, dataMode);
+      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, trappingData, dataMode);
       setMapClickCallback(() => callback);
       createdMap.on('click', VECTOR_LAYER, callback);
     }
 
     if (createdMap._listeners.mousemove === undefined) {
-      const callback = createMapHoverCallback(trappingData, allRangerDistricts, dataMode, selectedState, allStates, allCounties);
+      const callback = createMapHoverCallback(trappingData, allRangerDistricts, dataMode, selectedState, allSelectedStates, allCounties);
       setMapHoverCallback(callback);
       createdMap.on('mousemove', callback);
     }
@@ -244,18 +245,21 @@ const HistoricalMap = (props) => {
       return {
         ...acc,
         [localityDescription]: {
-          sum: ((acc[localityDescription] && acc[localityDescription].sum) || 0) + spots,
-          numEntries: ((acc[localityDescription] && acc[localityDescription].numEntries) || 0) + 1,
+          sum: (acc[localityDescription]?.sum || 0) + spots,
+          numEntries: (acc[localityDescription]?.numEntries || 0) + (spots !== null ? 1 : 0),
         },
       };
     }, {});
 
     Object.entries(trappingsByLocality).forEach(([localityDescription, spotData]) => {
-      const spots = spotData.sum / spotData.numEntries;
+      const { sum, numEntries } = spotData;
+      const spots = numEntries === 0 ? null : sum / numEntries;
 
       let color;
 
-      if (spots < 10) {
+      if (spots === null) {
+        color = '#d3d3d3'; // placeholder until we have a designed color
+      } else if (spots < 10) {
         color = colors[0];
       } else if (spots < 20) {
         color = colors[1];
@@ -430,23 +434,23 @@ const HistoricalMap = (props) => {
       if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
 
       // generate new callback
-      const callback = createMapHoverCallback(trappingData, allRangerDistricts, dataMode, selectedState, allStates, allCounties);
+      const callback = createMapHoverCallback(trappingData, allRangerDistricts, dataMode, selectedState, allSelectedStates, allCounties);
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
     }
-  }, [map, trappingData, allRangerDistricts, dataMode, selectedState, allStates, allCounties]);
+  }, [map, trappingData, allRangerDistricts, dataMode, selectedState, allSelectedStates, allCounties]);
 
   useEffect(() => {
-    if (map && allStates && allCounties && allRangerDistricts) {
+    if (map && allTotalStates && allCounties && allRangerDistricts) {
       // remove current callback
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
-      const callback = createMapClickCallback(allStates, allCounties, allRangerDistricts, selectedState, trappingData, dataMode);
+      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, trappingData, dataMode);
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
-  }, [map, allStates, allCounties, allRangerDistricts, selectedState, trappingData, dataMode]);
+  }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, trappingData, dataMode]);
 
   return (
     <div id="trapping-map-container">
