@@ -10,8 +10,7 @@
     text-align: left;
     display: flex;
     justify-content: space-between;
-    padding-left: 5vw;
-    padding-right: 5vw;
+    padding: 20px 40px;
 }
 
 .menuInstruction {
@@ -101,23 +100,19 @@
 
 #reset-current-data-button {
     background: #C9CDD9;
-    height: 43px;
-    font-family: 'Inter';
     font-size: 18px; 
-    width: 12vw;
-    max-width: 150px;
     border-radius: 10px;
     letter-spacing: 1.5px;
     color: #2F303A;
-    margin-left: 4.5vw;
-    margin-top: 10px;
+    margin-left: 4vw;
+    padding: 10px 30px;
 }
 
 // Hide short text by default (resolution > 1200px)
 .short-text { display: none; }
 
-// When resolution <= 1108px, hide full text and show short text
-@media (max-width: 1108px) {
+// When resolution <= 1200px, hide full text and show short text
+@media (max-width: 1200px) {
     .short-text { display: inline-block; }
     .full-text { display: none; }
 }

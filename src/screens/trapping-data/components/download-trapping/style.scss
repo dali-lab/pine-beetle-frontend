@@ -14,7 +14,7 @@
     background-color: #ced6fe;
     display: flex;
     margin-bottom: 90px;
-    margin-right: 40px;
+    margin-right: unquote("max(100px, 13%)");
 }
 
 #download-button img {

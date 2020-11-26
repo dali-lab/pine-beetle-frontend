@@ -40,7 +40,7 @@ const SelectionBar = (props) => {
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
   return (
-    <div id="predictionbar" className="container">
+    <div id="predictionbar-trapping" className="container">
       <div id="year-selection">
         <div id="start-year-selection"><TextInput instructions="Year" setValue={setStartYear} value={startYear} /></div>
         <div id="vl3" />
@@ -80,7 +80,7 @@ const SelectionBar = (props) => {
           />
         </div>
       </div>
-      <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections} type="button">Clear Filters</button>
+      <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections} type="button">Clear</button>
     </div>
   );
 };
