@@ -12,40 +12,96 @@
     #auth-header {
         text-align: center;
 
-        #sign-out {
-            font-style: italic;
-            color: darkgrey;
-        }
+        #header-options {
+            display: flex;
+            justify-content: center;
 
-        #sign-out:hover {
-            cursor: pointer;
-            text-decoration: underline;
+            p {
+                color: #2f303a;
+                text-decoration: underline;
+            }
+
+            p:hover {
+                cursor: pointer;
+            }
+
+            #vl {
+                border-left: 1px solid #2f303a;
+                height: auto;
+                margin-right: 15px;
+                margin-left: 15px;
+            }
         }
     }
 
-    #selection-container {
+    #dashboard-container{
         display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        margin-top: 50px;
+        padding: 37px;
+        border-radius: 26px;
+        box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+        background-color: #ffffff;
+        margin: 15px unquote("max(100px, 17%)") 100px;
+        height: 70vh;
 
-        #selected-option {
-            text-decoration: underline;
+        #upload-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: scroll;
+
+            div {
+                padding: 23px;
+                border-radius: 22px;
+                background-color: #f8f9ff;
+                flex: 1 1 auto;
+            }
+
+            * + * {
+                margin-top: 15px;
+            }
         }
 
-        .component-option {
-            margin-left: 10px;
-            margin-right: 10px;
-        }
+        #user-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: scroll;
+            margin-left: 20px;
 
-        .component-option:hover {
-            cursor: pointer;
-            text-decoration: underline;
+            div {
+                flex: 1 1 auto;
+                overflow: scroll;
+            }
+
+            * + * {
+                margin-top: 15px;
+            }
         }
     }
 
-    #component-container {
-        margin-bottom: 50px;
+    // #component-container {
+    //     display: flex;
+    //     flex-direction: row;
+    //     justify-content: center;
+    //     align-items: center;
+    //     margin-top: 50px;
+
+        // #selected-option {
+        //     text-decoration: underline;
+        // }
+
+        // .component-option {
+        //     margin-left: 10px;
+        //     margin-right: 10px;
+        // }
+
+        // .component-option:hover {
+        //     cursor: pointer;
+        //     text-decoration: underline;
+        // }
     }
-}
+
+    // #component-container {
+    //     margin-bottom: 50px;
+    // }
+// }

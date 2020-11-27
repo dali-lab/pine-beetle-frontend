@@ -1,75 +1,66 @@
 #sign-up-container {
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 15px;
+    padding: 16px 29px 14px 30px;
+    border-radius: 12px;
+    background-color: #f8f9ff;
+    overflow: scroll;
 
-    h2 {
-        margin-top: 35px;
-        margin-bottom: 10px;
-    }
+    // #sign-up-title {
+    //     font-size: 16px;
+    //     color: #2f303a;
+    // }
 
-    #login-button {
-        margin-bottom: 25px;
-        color: darkgray;
-        font-style: italic;
+    // #input-fields {
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: flex-start;
+    //     align-items: stretch;
+    //     margin-top: 15px;
 
-        a {
-            color: black;
-        }
-    }
+    //     #success-message {
+    //         color: green;
+    //         text-align: center;
+    //         width: 300px;
+    //         margin-bottom: 20px;
+    //     }
 
-    #input-fields {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        margin-top: 15px;
+    //     #input-names {
+    //         display: flex;
+    //     }
 
-        #success-message {
-            color: green;
-            text-align: center;
-            width: 300px;
-            margin-bottom: 20px;
-        }
+    //     .input-container {
+    //         margin-bottom: 20px;
 
-        .input-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-start;
-            margin-bottom: 20px;
+    //         input {
+    //             padding: 5px 10px;
+    //             border: none;
+    //             border-radius: 10px;
+    //             box-shadow: 0 6px 40px 0 rgba(0, 0, 0, 0.04);
+    //             background-color: #ffffff;
+    //             width: auto;
+    //         }
+    //     }
+    // }
 
-            p {
-                font-style: italic;
-                margin-bottom: 5px;
-            }
+    // #error-container {
+    //     p {
+    //         color: red;
+    //     }
+    // }
 
-            input {
-                padding: 5px 10px;  
-                width: 300px; 
-            }
-        }
-    }
+    // button {
+    //     width: 150px;
+    //     border: 1px solid rgba(0,0,0,0.5);
+    //     padding: 10px;
+    //     font-size: 18px;
+    //     font-weight: bold;
+    //     border-radius: 10px;
+    //     margin-top: 20px;
+    // }
 
-    #error-container {
-        p {
-            color: red;
-        }
-    }
-
-    button {
-        width: 150px;
-        border: 1px solid rgba(0,0,0,0.5);
-        padding: 10px;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 10px;
-        margin-top: 20px;
-    }
-
-    button:hover {
-        cursor: pointer;
-    }
+    // button:hover {
+    //     cursor: pointer;
+    // }
 }

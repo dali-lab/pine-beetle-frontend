@@ -19,6 +19,7 @@ const Login = (props) => {
   };
 
   const onLoginPress = () => {
+    if (!email && !password) return setError('Please enter an email and password');
     if (!email) return setError('Please enter an email');
     if (!password) return setError('Please enter a password');
 
@@ -30,34 +31,42 @@ const Login = (props) => {
 
   return (
     <div id="login-container">
-      <h1>Login</h1>
-      <div id="input-fields">
-        <div className="input-container">
-          <p>Email</p>
-          <input
-            value={email}
-            onChange={fieldSetter(setEmail)}
-          />
+      <h1>Admin Login</h1>
+      <div id="input-button-container">
+        <div id="input-fields">
+          <div className="input-container">
+            <p>Email</p>
+            <input
+              value={email}
+              onChange={fieldSetter(setEmail)}
+              id={error && !email && 'error-input'}
+            />
+          </div>
+          <div className="input-container">
+            <p>Password</p>
+            <input
+              type="password"
+              value={password}
+              onChange={fieldSetter(setPassword)}
+              id={error && !password && 'error-input'}
+            />
+          </div>
         </div>
-        <div className="input-container">
-          <p>Password</p>
-          <input
-            type="password"
-            value={password}
-            onChange={fieldSetter(setPassword)}
-          />
+        <div id="forgot-password">
+          <p>Forgot Password?</p>
         </div>
+        {error && (
+          <div id="error-container">
+            <p>{error}</p>
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={onLoginPress}
+          className="animated-button"
+        >Login
+        </button>
       </div>
-      {error && (
-        <div id="error-container">
-          <p>{error}</p>
-        </div>
-      )}
-      <button
-        type="button"
-        onClick={onLoginPress}
-      >Login
-      </button>
     </div>
   );
 };

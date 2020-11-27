@@ -1,0 +1,21 @@
+#users-container {
+    overflow: scroll;
+    padding: 15px 6px 6px 30px;
+    border-radius: 22px;
+    background-color: #f8f9ff;
+    flex: 1 1 auto;
+
+    #users-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #2f303a;
+    }
+
+    #user-info-container {
+        margin: 14px 17px 17px 0;
+        padding: 17px 2px 18px 22px;
+        border-radius: 12px;
+        box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.04);
+        background-color: #ffffff;
+    }
+}

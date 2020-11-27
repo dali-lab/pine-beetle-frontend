@@ -50,45 +50,48 @@ const AddUser = (props) => {
 
   return (
     <div id="sign-up-container">
+      <p id="sign-up-title">Add a new user</p>
       <div id="input-fields">
         {success && (
           <p id="success-message">Successfully added user</p>
         )}
+        <div id="input-names">
+          <div className="input-container">
+            <input
+              value={firstName}
+              onChange={fieldSetter(setFirstName)}
+              placeholder="Name"
+            />
+          </div>
+          <div className="input-container">
+            <input
+              value={lastName}
+              onChange={fieldSetter(setLastName)}
+              placeholder="Surname"
+            />
+          </div>
+        </div>
         <div className="input-container">
-          <p>Email: </p>
           <input
             value={email}
             onChange={fieldSetter(setEmail)}
+            placeholder="Email"
           />
         </div>
         <div className="input-container">
-          <p>First Name</p>
-          <input
-            value={firstName}
-            onChange={fieldSetter(setFirstName)}
-          />
-        </div>
-        <div className="input-container">
-          <p>Last Name</p>
-          <input
-            value={lastName}
-            onChange={fieldSetter(setLastName)}
-          />
-        </div>
-        <div className="input-container">
-          <p>Password</p>
           <input
             type="password"
             value={password}
             onChange={fieldSetter(setPassword)}
+            placeholder="Password"
           />
         </div>
         <div className="input-container">
-          <p>Confirm Password</p>
           <input
             type="password"
             value={confirmPassword}
             onChange={fieldSetter(setConfirmPassword)}
+            placeholder="Confirm Password"
           />
         </div>
       </div>
