@@ -38,7 +38,7 @@ const TrappingData = (props) => {
       {trappingErrorText.length > 0 && trappingErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
-      <div id="view-selections">
+      <div id="view-selections" className="container">
         <div id="selection" onClick={setGraphView}>
           <img
             src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
@@ -60,7 +60,7 @@ const TrappingData = (props) => {
           </p>
         </div>
       </div>
-      <div>
+      <div className="container">
         {isGraphView ? <LineChart data={trappingData} /> : <TrappingDataMap />}
       </div>
       <DownloadTrapping />

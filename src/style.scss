@@ -51,9 +51,8 @@ body img {
 }
 
 .content .container {
-    padding: 20px;
-    margin-left: 100px;
-    margin-right: 100px;
+    margin-left: unquote("max(100px, 13%)");
+    margin-right: unquote("max(100px, 13%)");
 }
 
 .flex-container {

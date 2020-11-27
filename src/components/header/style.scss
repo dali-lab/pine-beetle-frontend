@@ -77,12 +77,14 @@
 
                 .selected {
                     background-color: #c9cdd9;
-                    font-weight: bold;
+                    font-weight: 600;
+                    color: #2d2d2d;
                 }
 
                 .unselected {
                     background-color: white;
                     border: solid 1.5px #edf0f6;
+                    color: #9397a3;
                 }
 
                 #data-mode-county {
