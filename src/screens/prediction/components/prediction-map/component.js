@@ -136,10 +136,10 @@ const PredictionMap = (props) => {
       STATE: _state,
     } = e.features[0].properties;
 
-    const hoverRD = _forest.replace(' ', '');
+    const clickRD = _forest.slice(0, -3).replace(' ', '');
 
     const rangerDistrictToSet = rangerDistricts.filter(rd => !!rd)
-      .find(district => district.includes(hoverRD));
+      .find(district => district.includes(clickRD));
 
     const state = !_state && mode === DATA_MODES.RANGER_DISTRICT
       ? predictions.find(p => p.rangerDistrict === rangerDistrictToSet)?.state

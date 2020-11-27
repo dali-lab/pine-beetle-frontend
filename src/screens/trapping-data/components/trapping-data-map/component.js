@@ -130,7 +130,7 @@ const HistoricalMap = (props) => {
       STATE: _state,
     } = e.features[0].properties;
 
-    const clickRD = _forest.replace(' ', '');
+    const clickRD = _forest.slice(0, -3).replace(' ', '');
 
     const rangerDistrictToSet = rangerDistricts.filter(rd => !!rd)
       .find(district => district.includes(clickRD));
