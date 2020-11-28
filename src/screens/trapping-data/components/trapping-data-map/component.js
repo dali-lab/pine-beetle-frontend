@@ -18,8 +18,8 @@ const questionIcon = require('../../../../assets/icons/help-circle.png');
 const helpText = `Please use Chrome, Firefox,<br />
 or Edge to download map.`;
 
-const thresholds = ['0-9', '10-19', '20-49', '50-99', '100-249', '>249'];
-const colors = ['#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
+const thresholds = ['no spot data', '0-9', '10-19', '20-49', '50-99', '100-249', '>249'];
+const colors = ['#D3D3D3', '#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
 
 const MAP_SOURCES = {
   COUNTY: {
@@ -246,7 +246,7 @@ const HistoricalMap = (props) => {
         ...acc,
         [localityDescription]: {
           sum: (acc[localityDescription]?.sum || 0) + spots,
-          numEntries: (acc[localityDescription]?.numEntries || 0) + (spots !== null ? 1 : 0),
+          numEntries: (acc[localityDescription]?.numEntries || 0) + (spots !== null), // 0 if null, 1 otherwise
         },
       };
     }, {});
@@ -258,19 +258,19 @@ const HistoricalMap = (props) => {
       let color;
 
       if (spots === null) {
-        color = '#d3d3d3'; // placeholder until we have a designed color
-      } else if (spots < 10) {
         color = colors[0];
-      } else if (spots < 20) {
+      } else if (spots < 10) {
         color = colors[1];
-      } else if (spots < 50) {
+      } else if (spots < 20) {
         color = colors[2];
-      } else if (spots < 100) {
+      } else if (spots < 50) {
         color = colors[3];
-      } else if (spots < 250) {
+      } else if (spots < 100) {
         color = colors[4];
-      } else {
+      } else if (spots < 250) {
         color = colors[5];
+      } else {
+        color = colors[6];
       }
 
       fillExpression.push(localityDescription, color);
