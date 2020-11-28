@@ -25,7 +25,7 @@ const exampleUsers = [{
 
 const Users = (_props) => {
   return (
-    <div id="users-container">
+    <>
       <p id="users-title">Users</p>
       {exampleUsers.map(user => (
         <div id="user-info-container">
@@ -33,7 +33,7 @@ const Users = (_props) => {
           <p id="user-email">{user.email}</p>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

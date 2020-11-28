@@ -49,7 +49,7 @@ const AddUser = (props) => {
   };
 
   return (
-    <div id="sign-up-container">
+    <>
       <p id="sign-up-title">Add a new user</p>
       <div id="input-fields">
         {success && (
@@ -102,10 +102,12 @@ const AddUser = (props) => {
       )}
       <button
         type="button"
+        id="add-user-button"
+        className="animated-button"
         onClick={onSignUpPress}
-      >Add User
+      >Add
       </button>
-    </div>
+    </>
   );
 };
 

@@ -1,4 +1,14 @@
-#upload-button {
+#file-selected {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+input[type=file] {
+    display: none;
+}
+
+.custom-file-upload {
+    display: inline-block;
     padding: 6px 15px 5px;
     border-radius: 6px;
     background-color: #c9cdd9;
@@ -6,4 +16,5 @@
     line-height: 1.8;
     color: #000000;
     margin-top: 8px;
+    cursor: pointer;
 }

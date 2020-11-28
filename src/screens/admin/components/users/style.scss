@@ -1,9 +1,5 @@
 #users-container {
     overflow: scroll;
-    padding: 15px 6px 6px 30px;
-    border-radius: 22px;
-    background-color: #f8f9ff;
-    flex: 1 1 auto;
 
     #users-title {
         font-size: 18px;
@@ -12,10 +8,17 @@
     }
 
     #user-info-container {
-        margin: 14px 17px 17px 0;
+        margin-top: 14px;
         padding: 17px 2px 18px 22px;
         border-radius: 12px;
         box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.04);
         background-color: #ffffff;
+        overflow: scroll;
+
+        #user-email {
+            color: #545a6c;
+            font-size: 14px;
+            line-height: 1.51;
+        }
     }
 }

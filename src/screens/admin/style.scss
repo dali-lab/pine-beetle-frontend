@@ -6,15 +6,21 @@
 
     h1 {
         margin-top: 50px;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
     }
 
     #auth-header {
         text-align: center;
 
+        p {
+            font-size: 16px;
+            text-align: center;
+            color: #4d4f5f;
+        }
+
         #header-options {
             display: flex;
-            justify-content: center;
+            margin-top: 10px;
 
             p {
                 color: #2f303a;
@@ -25,83 +31,73 @@
                 cursor: pointer;
             }
 
-            #vl {
-                border-left: 1px solid #2f303a;
-                height: auto;
-                margin-right: 15px;
-                margin-left: 15px;
+            #sign-out {
+                margin-right: 30px;
             }
         }
     }
 
     #dashboard-container{
-        display: flex;
         padding: 37px;
         border-radius: 26px;
         box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
         background-color: #ffffff;
         margin: 15px unquote("max(100px, 17%)") 100px;
-        height: 70vh;
 
-        #upload-container {
+        #dashboard {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow: scroll;
+            height: 70vh;
 
-            div {
-                padding: 23px;
-                border-radius: 22px;
-                background-color: #f8f9ff;
+            #upload-container {
                 flex: 1 1 auto;
-            }
-
-            * + * {
-                margin-top: 15px;
-            }
-        }
-
-        #user-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow: scroll;
-            margin-left: 20px;
-
-            div {
-                flex: 1 1 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
                 overflow: scroll;
+
+                div {
+                    padding: 23px;
+                    border-radius: 22px;
+                    background-color: #f8f9ff;
+                    flex: 1 1 auto;
+                }
+
+                * + * {
+                    margin-top: 15px;
+                }
             }
 
-            * + * {
-                margin-top: 15px;
+            #user-container {
+                flex: 1 1 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                overflow: scroll;
+                margin-left: 20px;
+
+                #users-container, #add-users {
+                    flex: 1 1 auto;
+                    padding: 23px;
+                    border-radius: 22px;
+                    background-color: #f8f9ff;
+                }
+
+                #add-users {
+                    margin-top: 15px;
+                }
             }
         }
+
+        #rerun-button {
+            margin: 40px 346px 0 349px;
+            padding: 8px 34px 7px 35px;
+            border-radius: 6px;
+            background-color: #2f303a;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.8;
+            color: #ffffff;
+            white-space: nowrap;
+          }
     }
-
-    // #component-container {
-    //     display: flex;
-    //     flex-direction: row;
-    //     justify-content: center;
-    //     align-items: center;
-    //     margin-top: 50px;
-
-        // #selected-option {
-        //     text-decoration: underline;
-        // }
-
-        // .component-option {
-        //     margin-left: 10px;
-        //     margin-right: 10px;
-        // }
-
-        // .component-option:hover {
-        //     cursor: pointer;
-        //     text-decoration: underline;
-        // }
-    }
-
-    // #component-container {
-    //     margin-bottom: 50px;
-    // }
-// }
+}
