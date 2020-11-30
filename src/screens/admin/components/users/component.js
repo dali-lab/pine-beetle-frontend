@@ -1,34 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+import { getAllAdminUsers } from '../../../../services/admin';
 
 import './style.scss';
 
-// randomly generated example users, TODO: replace with actual users from db
-const exampleUsers = [{
-  name: 'Johnny Appleseed',
-  email: 'jappleseed@email.com',
-}, {
-  name: 'Edmund Brehmer',
-  email: 'EdmundMBrehmer@email.com',
-}, {
-  name: 'Floyd Weir',
-  email: 'FloydSWeir@email.com',
-}, {
-  name: 'Barbara Donnell',
-  email: 'BarbaraMODonnell@email.com',
-}, {
-  name: 'Barbara Donnell',
-  email: 'BarbaraMODonnell@email.com',
-}, {
-  name: 'Barbara Donnell',
-  email: 'BarbaraMODonnell@email.com',
-}];
+const Users = () => {
+  const [users, setUsers] = useState([]);
 
-const Users = (_props) => {
+  useEffect(() => {
+    (async () => {
+      const allUsers = await getAllAdminUsers();
+
+      setUsers(allUsers.map(user => ({
+        email: user.email,
+        name: `${user.first_name} ${user.last_name}`,
+      })));
+    })();
+  }, []);
+
   return (
     <>
       <p id="users-title">Users</p>
-      {exampleUsers.map(user => (
-        <div id="user-info-container">
+      {users.map(user => (
+        <div id="user-info-container" key={user.email}>
           <p id="user-name">{user.name}</p>
           <p id="user-email">{user.email}</p>
         </div>

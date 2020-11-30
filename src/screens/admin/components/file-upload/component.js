@@ -1,53 +1,99 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
+import {
+  uploadCountySpotCsv,
+  uploadRangerDistrictSpotCsv,
+  uploadSurvey123UnsummarizedCsv,
+} from '../../../../services/admin';
+
 import './style.scss';
 
 const FileUpload = () => {
-  const [countySpotFile, setCountySpotFile] = useState([]);
-  const [rdSpotFile, setRdCountySpotFile] = useState([]);
-  const [unsummarizedFile, setUnsummarizedFile] = useState([]);
+  const [countySpotFile, setCountySpotFile] = useState();
+  const [rdSpotFile, setRdCountySpotFile] = useState();
+  const [unsummarizedFile, setUnsummarizedFile] = useState();
+
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const [uploadingFileError, setUploadingFileError] = useState('');
+
+  const uploadFile = async (uploadFunction, file) => {
+    setIsUploadingFile(true);
+
+    try {
+      await uploadFunction(file);
+    } catch (err) {
+      setUploadingFileError(err?.response?.data?.error?.message || '');
+    } finally {
+      setIsUploadingFile(false);
+    }
+  };
 
   const componentsToRender = [{
     name: 'Upload File for County Spot Data',
     id: 'county-spot',
     file: countySpotFile,
-    uploadFile: (file) => { setCountySpotFile(file); },
+    selectFile: file => setCountySpotFile(file),
+    uploadFile: () => uploadFile(uploadCountySpotCsv, countySpotFile),
   }, {
     name: 'Upload File for Ranger District Spot Data',
     id: 'rd-spot',
     file: rdSpotFile,
-    uploadFile: (file) => { setRdCountySpotFile(file); },
+    selectFile: file => setRdCountySpotFile(file),
+    uploadFile: () => uploadFile(uploadRangerDistrictSpotCsv, rdSpotFile),
   }, {
     name: 'Upload File for Survey123 Unsummarized Data',
     id: 'unsummarized',
     file: unsummarizedFile,
-    uploadFile: (file) => { setUnsummarizedFile(file); },
+    selectFile: file => setUnsummarizedFile(file),
+    uploadFile: () => uploadFile(uploadSurvey123UnsummarizedCsv, unsummarizedFile),
   }];
 
-  useEffect(() => {
-    console.log(countySpotFile, rdSpotFile, unsummarizedFile);
-  }, [countySpotFile, rdSpotFile, unsummarizedFile]);
+  if (isUploadingFile) {
+    return <p>Uploading...</p>;
+  }
+
+  if (uploadingFileError) {
+    return (
+      <div id="uploading-error">
+        <p>{uploadingFileError}</p>
+        <button
+          type="button"
+          onClick={() => setUploadingFileError('')}
+        >Clear Error
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
       {componentsToRender.map(component => (
-        <div id={component.id}>
+        <div id={component.id} key={component.id}>
           <p>{component.name}</p>
           <p
             id="file-selected"
           >
-            {component.file[0] ? component.file[0].name : ''}
+            {component.file ? component.file.name : ''}
           </p>
-          <label htmlFor="file-upload" className="custom-file-upload">
-            <input
-              id="file-upload"
-              type="file"
-              accept=".csv"
-              // eslint-disable-next-line arrow-parens
-              onChange={(e) => component.uploadFile(e.target.files)}
-            />
-            File Upload
-          </label>
+          {component.file ? (
+            <button
+              className="custom-file-upload"
+              type="button"
+              onClick={() => component.uploadFile()}
+            >
+              Upload File
+            </button>
+          ) : (
+            <label htmlFor="file-upload" className="custom-file-upload">
+              <input
+                id="file-upload"
+                type="file"
+                accept=".csv"
+                onChange={e => component.selectFile(e.target.files[0])}
+              />
+              Select File
+            </label>
+          )}
         </div>
       ))}
     </>

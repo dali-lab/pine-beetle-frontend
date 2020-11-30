@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { signUp } from './user';
+import * as userService from './user';
 
 import {
   getAuthTokenFromStorage,
@@ -24,6 +24,8 @@ export const uploadCountySpotCsv = async (file) => {
 
   const formData = new FormData();
   formData.append('csv', file);
+
+  console.log(formData);
 
   try {
     const { data: { data } } = await axios.post(url, formData, {
@@ -93,7 +95,7 @@ export const uploadSurvey123UnsummarizedCsv = async (file) => {
 export const runPipeline = async (state, year) => {
   const queryParams = toQueryParams({ state, year });
 
-  const url = `${global.API_URL}/${SUBROUTES.PIPELINE}${state || year ? `?${queryParams}` : ''}`;
+  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.PIPELINE}${state || year ? `?${queryParams}` : ''}`;
   const token = getAuthTokenFromStorage();
 
   try {
@@ -120,6 +122,13 @@ export const runPipeline = async (state, year) => {
  * @param {String} lastName user last name
  */
 export const addAdminUser = async (email, password, firstName, lastName) => {
-  const { user } = await signUp(email, password, firstName, lastName);
+  const { user } = await userService.signUp(email, password, firstName, lastName);
   return user;
+};
+
+/**
+ * @description gets all admin users
+ */
+export const getAllAdminUsers = async () => {
+  return userService.getAllUsers();
 };

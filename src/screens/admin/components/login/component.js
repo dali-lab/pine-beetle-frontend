@@ -11,6 +11,8 @@ const Login = (props) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState();
 
+  const incorrectCredentials = error === 'Incorrect credentials';
+
   const clearError = () => setError();
 
   const fieldSetter = setter => (e) => {
@@ -39,7 +41,7 @@ const Login = (props) => {
             <input
               value={email}
               onChange={fieldSetter(setEmail)}
-              id={error && !email && 'error-input'}
+              id={error && (!email || incorrectCredentials) && 'error-input'}
             />
           </div>
           <div className="input-container">
@@ -48,7 +50,7 @@ const Login = (props) => {
               type="password"
               value={password}
               onChange={fieldSetter(setPassword)}
-              id={error && !password && 'error-input'}
+              id={error && (!password || incorrectCredentials) && 'error-input'}
             />
           </div>
         </div>
