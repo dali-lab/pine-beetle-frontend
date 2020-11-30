@@ -176,25 +176,37 @@ export const setDataMode = (mode) => {
 
     const data = attachData(getState(), mode);
 
+    const { state, year, yearRange } = getState().selections;
+
+    // determine if selections are in the new data we are using
+    const stateInData = [...new Set(data.trappingData.map(d => d.state))].includes(state);
+    const yearInData = [...new Set(data.trappingData.map(d => d.year))].includes(year);
+    const startYearInData = [...new Set(data.trappingData.map(d => d.year))].includes(yearRange.startYear);
+    const endYearInData = [...new Set(data.trappingData.map(d => d.year))].includes(yearRange.endYear);
+
+    // determine min and max year
+    const minYear = data.trappingData.reduce((prev, curr) => (prev.year < curr.year ? prev : curr), {})?.year || yearRange.startYear;
+    const maxYear = data.trappingData.reduce((prev, curr) => (prev.year > curr.year ? prev : curr), {})?.year || yearRange.endYear;
+
     dispatch({
       type: ActionTypes.SET_DATA_MODE,
       payload: {
         ...data,
-        mode,
-      },
-    });
-
-    // find last year in dataset
-    const endYear = data.trappingData.reduce((prev, curr) => (
-      prev.year > curr.year ? prev : curr
-    ), {})?.year || getState().selections.yearRange.endYear;
-
-    // explicitly set the year (to trigger filtering)
-    dispatch({
-      type: ActionTypes.SET_YEAR,
-      payload: {
         ...getState().selections,
-        year: endYear,
+        // update selections based on if we can keep or have to clear
+        year: yearInData ? year : maxYear,
+        yearRange: {
+          startYear: startYearInData ? yearRange.startYear : minYear,
+          endYear: endYearInData ? yearRange.endYear : maxYear,
+        },
+        state: stateInData ? state : '',
+        mode,
+        filtersToApply: {
+          endYearInData,
+          startYearInData,
+          stateInData,
+          yearInData,
+        },
       },
     });
   };

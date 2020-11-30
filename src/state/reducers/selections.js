@@ -21,7 +21,7 @@ const SelectionsReducer = (state = initialState, action) => {
       return { ...state, year: action.payload.year };
 
     case ActionTypes.SET_YEAR_RANGE:
-      let { startYear, endYear } = action.payload.yearRange;
+      const { startYear, endYear } = action.payload.yearRange;
 
       return {
         ...state,
@@ -41,19 +41,18 @@ const SelectionsReducer = (state = initialState, action) => {
       return { ...state, rangerDistrict: action.payload.rangerDistrict };
 
     case ActionTypes.SET_DATA_MODE:
-      const { trappingData, mode } = action.payload;
-
-      startYear = trappingData.reduce((prev, curr) => (prev.year < curr.year ? prev : curr), {})?.year || state.yearRange.startYear;
-      endYear = trappingData.reduce((prev, curr) => (prev.year > curr.year ? prev : curr), {})?.year || state.yearRange.endYear;
+      const {
+        mode,
+        state: newState,
+        year: newYear,
+        yearRange: newYearRange,
+      } = action.payload;
 
       return {
         ...state,
-        year: endYear,
-        yearRange: {
-          startYear,
-          endYear,
-        },
-        state: '',
+        year: newYear,
+        yearRange: newYearRange,
+        state: newState,
         county: '',
         rangerDistrict: '',
         dataMode: mode,
