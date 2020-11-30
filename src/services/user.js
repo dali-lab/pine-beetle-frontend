@@ -183,3 +183,23 @@ export const getAllUsers = async () => {
     throw error;
   }
 };
+
+/**
+ * @description sends user forgot password email
+ * @param {String} email user email
+ * @returns {Promise<Object>} API response
+ */
+export const sendForgotPasswordEmail = async (email) => {
+  const url = `${global.API_URL}/${SUBROUTE}/forgot-password/${email}`;
+
+  try {
+    const { data: response } = await axios.get(url);
+
+    const { data } = response;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

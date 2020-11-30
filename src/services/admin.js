@@ -22,6 +22,7 @@ const SUBROUTES = {
  */
 export const uploadCountySpotCsv = async (file) => {
   const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SPOT_DATA_COUNTY}/upload`;
+  const token = getAuthTokenFromStorage();
 
   const formData = new FormData();
   formData.append('csv', file);
@@ -29,6 +30,7 @@ export const uploadCountySpotCsv = async (file) => {
   try {
     const { data: { data } } = await axios.post(url, formData, {
       headers: {
+        authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
       },
     });
@@ -46,6 +48,7 @@ export const uploadCountySpotCsv = async (file) => {
  */
 export const uploadRangerDistrictSpotCsv = async (file) => {
   const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SPOT_DATA_RD}/upload`;
+  const token = getAuthTokenFromStorage();
 
   const formData = new FormData();
   formData.append('csv', file);
@@ -53,6 +56,7 @@ export const uploadRangerDistrictSpotCsv = async (file) => {
   try {
     const { data: { data } } = await axios.post(url, formData, {
       headers: {
+        authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
       },
     });
@@ -70,6 +74,7 @@ export const uploadRangerDistrictSpotCsv = async (file) => {
  */
 export const uploadSurvey123UnsummarizedCsv = async (file) => {
   const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SURVEY123}/upload`;
+  const token = getAuthTokenFromStorage();
 
   const formData = new FormData();
   formData.append('csv', file);
@@ -77,6 +82,7 @@ export const uploadSurvey123UnsummarizedCsv = async (file) => {
   try {
     const { data: { data } } = await axios.post(url, formData, {
       headers: {
+        authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
       },
     });
@@ -139,4 +145,13 @@ export const getAllAdminUsers = async () => {
  */
 export const updatePassword = async (password) => {
   return userService.updateUser(getUserIdFromStorage(), { password });
+};
+
+/**
+ * @description sends forgot password email
+ * @param {String} email user email to send to
+ * @returns {Promise<Object>} API response
+ */
+export const sendForgotPasswordEmail = async (email) => {
+  return userService.sendForgotPasswordEmail(email);
 };

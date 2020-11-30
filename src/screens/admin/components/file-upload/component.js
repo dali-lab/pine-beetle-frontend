@@ -10,17 +10,18 @@ import './style.scss';
 
 const FileUpload = () => {
   const [countySpotFile, setCountySpotFile] = useState();
-  const [rdSpotFile, setRdCountySpotFile] = useState();
+  const [rdSpotFile, setRdSpotFile] = useState();
   const [unsummarizedFile, setUnsummarizedFile] = useState();
 
   const [isUploadingFile, setIsUploadingFile] = useState(false);
   const [uploadingFileError, setUploadingFileError] = useState('');
 
-  const uploadFile = async (uploadFunction, file) => {
+  const uploadFile = async (uploadFunction, file, clearFile) => {
     setIsUploadingFile(true);
 
     try {
       await uploadFunction(file);
+      clearFile();
     } catch (err) {
       setUploadingFileError(err?.response?.data?.error?.message || '');
     } finally {
@@ -33,19 +34,19 @@ const FileUpload = () => {
     id: 'county-spot',
     file: countySpotFile,
     selectFile: setCountySpotFile,
-    uploadFile: () => uploadFile(uploadCountySpotCsv, countySpotFile),
+    uploadFile: () => uploadFile(uploadCountySpotCsv, countySpotFile, setCountySpotFile),
   }, {
     name: 'Upload File for Ranger District Spot Data',
     id: 'rd-spot',
     file: rdSpotFile,
-    selectFile: setRdCountySpotFile,
-    uploadFile: () => uploadFile(uploadRangerDistrictSpotCsv, rdSpotFile),
+    selectFile: setRdSpotFile,
+    uploadFile: () => uploadFile(uploadRangerDistrictSpotCsv, rdSpotFile, setRdSpotFile),
   }, {
     name: 'Upload File for Survey123 Unsummarized Data',
     id: 'unsummarized',
     file: unsummarizedFile,
     selectFile: setUnsummarizedFile,
-    uploadFile: () => uploadFile(uploadSurvey123UnsummarizedCsv, unsummarizedFile),
+    uploadFile: () => uploadFile(uploadSurvey123UnsummarizedCsv, unsummarizedFile, setUnsummarizedFile),
   }];
 
   if (isUploadingFile) {
@@ -79,14 +80,14 @@ const FileUpload = () => {
             <button
               className="custom-file-upload"
               type="button"
-              onClick={() => component.uploadFile()}
+              onClick={component.uploadFile}
             >
               Upload File
             </button>
           ) : (
-            <label htmlFor="file-upload" className="custom-file-upload">
+            <label htmlFor={`file-upload-${component.id}`} className="custom-file-upload">
               <input
-                id="file-upload"
+                id={`file-upload-${component.id}`}
                 type="file"
                 accept=".csv"
                 onChange={e => component.selectFile(e.target.files[0])}
