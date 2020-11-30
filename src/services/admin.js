@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { signUp } from './user';
+
 import {
   getAuthTokenFromStorage,
   toQueryParams,
@@ -108,4 +110,16 @@ export const runPipeline = async (state, year) => {
     console.log(error);
     throw error;
   }
+};
+
+/**
+ * @description add admin user to system
+ * @param {String} email user email
+ * @param {String} password user password (plain text)
+ * @param {String} firstName user first name
+ * @param {String} lastName user last name
+ */
+export const addAdminUser = async (email, password, firstName, lastName) => {
+  const { user } = await signUp(email, password, firstName, lastName);
+  return user;
 };
