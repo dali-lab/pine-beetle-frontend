@@ -4,6 +4,7 @@ import * as userService from './user';
 
 import {
   getAuthTokenFromStorage,
+  getUserIdFromStorage,
   toQueryParams,
 } from '../utils';
 
@@ -24,8 +25,6 @@ export const uploadCountySpotCsv = async (file) => {
 
   const formData = new FormData();
   formData.append('csv', file);
-
-  console.log(formData);
 
   try {
     const { data: { data } } = await axios.post(url, formData, {
@@ -131,4 +130,13 @@ export const addAdminUser = async (email, password, firstName, lastName) => {
  */
 export const getAllAdminUsers = async () => {
   return userService.getAllUsers();
+};
+
+/**
+ * @description updates user password
+ * @param {String} password user password
+ * @returns {Promise<Object>} API response
+ */
+export const updatePassword = async (password) => {
+  return userService.updateUser(getUserIdFromStorage(), { password });
 };
