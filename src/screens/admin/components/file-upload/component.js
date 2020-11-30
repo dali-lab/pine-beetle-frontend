@@ -32,19 +32,19 @@ const FileUpload = () => {
     name: 'Upload File for County Spot Data',
     id: 'county-spot',
     file: countySpotFile,
-    selectFile: file => setCountySpotFile(file),
+    selectFile: setCountySpotFile,
     uploadFile: () => uploadFile(uploadCountySpotCsv, countySpotFile),
   }, {
     name: 'Upload File for Ranger District Spot Data',
     id: 'rd-spot',
     file: rdSpotFile,
-    selectFile: file => setRdCountySpotFile(file),
+    selectFile: setRdCountySpotFile,
     uploadFile: () => uploadFile(uploadRangerDistrictSpotCsv, rdSpotFile),
   }, {
     name: 'Upload File for Survey123 Unsummarized Data',
     id: 'unsummarized',
     file: unsummarizedFile,
-    selectFile: file => setUnsummarizedFile(file),
+    selectFile: setUnsummarizedFile,
     uploadFile: () => uploadFile(uploadSurvey123UnsummarizedCsv, unsummarizedFile),
   }];
 
