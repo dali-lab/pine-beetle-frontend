@@ -61,24 +61,51 @@
             font-size: 13px;
             color: #3c4253;
             margin-top: 10px;
+            background-color: transparent;
+            border: 0;
         }
 
         #forgot-password:hover {
             cursor: pointer;
         }
 
-        #error-container {
-            margin-top: 10px;
+        #error-success-container {
+            margin-top: 15px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
 
             p {
-                color: #ff364e;
                 font-weight: bold;
                 text-align: center;
             }
+
+            #error {
+                color: #ff364e;
+            }
+
+            #success {
+                color: #86ccff;
+            }
         }
 
-        button {
+        #login-button {
             width: 150px;
+            border: none;
+            padding: 10px;
+            background-color: #c9cdd9;
+            font-size: 18px;
+            font-weight: 600;
+            color: #3c4253;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #reset-password-button {
+            width: 200px;
             border: none;
             padding: 10px;
             background-color: #c9cdd9;
