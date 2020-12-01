@@ -1,3 +1,5 @@
+const MIN_WIDTH_THRESHOLD = 725;
+
 const SERVER_ENDPOINTS = {
   LOCAL: 'http://localhost:9090/v2',
   DEV: 'https://pine-beetle-prediction-dev.herokuapp.com/v2',
@@ -91,6 +93,7 @@ export {
   getAutomationServerUrl,
   getServerUrl,
   LOCAL_STORAGE_KEYS,
+  MIN_WIDTH_THRESHOLD,
   ROUTES,
   SERVER_ENDPOINTS,
   stateAbbrevToStateId,
