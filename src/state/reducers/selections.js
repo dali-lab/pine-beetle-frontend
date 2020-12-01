@@ -66,6 +66,8 @@ const SelectionsReducer = (state = initialState, action) => {
       return {
         ...initialState,
         year,
+        dataMode: state.dataMode,
+        chartMode: state.chartMode,
       };
 
     case ActionTypes.SET_CHART_MODE:
