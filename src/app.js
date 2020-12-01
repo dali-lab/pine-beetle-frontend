@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -23,6 +23,7 @@ import {
 import {
   Header,
   Footer,
+  MobileOverlay,
   ScrollToTop,
 } from './components';
 
@@ -30,6 +31,7 @@ import {
   CHART_MODES,
   DATA_MODES,
   getServerUrl,
+  MIN_WIDTH_THRESHOLD,
   ROUTES,
 } from './constants';
 
@@ -51,6 +53,8 @@ const App = (props) => {
     loginUserFromStorage,
   } = props;
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
+
   useEffect(() => {
     global.API_URL = getServerUrl();
 
@@ -67,12 +71,19 @@ const App = (props) => {
 
     // set chart mode if persist in browser
     props.setChartMode(getChartModeFromStorage() || CHART_MODES.GRAPH);
+
+    const resizeListener = e => setIsMobile(e.target.innerWidth < MIN_WIDTH_THRESHOLD);
+    window.addEventListener('resize', resizeListener);
+
+    return () => window.removeEventListener('resize', resizeListener);
   }, []);
 
   // set all trapping/prediction all fields to county once we get them
   useEffect(() => {
     props.setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
   }, [countyPredictions, countyTrapping]);
+
+  if (isMobile) return <MobileOverlay />;
 
   return (
     <Router>
