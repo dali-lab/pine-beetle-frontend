@@ -4,7 +4,10 @@ import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
-import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
+import {
+  DATA_MODES,
+  stateAbbrevToZoomLevel,
+} from '../../../../constants';
 
 import {
   getMapboxRDNameFormat,
@@ -38,6 +41,7 @@ const SOURCE_LAYERS = {
 
 const MAP_SOURCE_NAME = 'counties';
 const VECTOR_LAYER = 'prediction-chloropleth-layer';
+const STATE_VECTOR_LAYER = 'states';
 
 const PredictionMap = (props) => {
   const {
@@ -61,6 +65,7 @@ const PredictionMap = (props) => {
   const [isDownloadingMap, setIsDownloadingMap] = useState(false);
   const [mapClickCallback, setMapClickCallback] = useState();
   const [mapHoverCallback, setMapHoverCallback] = useState();
+  const [mapStateClickCallback, setMapStateClickCallback] = useState();
 
   const mapboxHoverStyle = (x, y) => {
     if (x < 300 && y < 200) {
@@ -442,6 +447,24 @@ const PredictionMap = (props) => {
       map.on('click', VECTOR_LAYER, callback);
     }
   }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode]);
+
+  useEffect(() => {
+    if (map) {
+      // remove current callback
+      if (mapStateClickCallback) map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
+
+      // generate new callback
+      const callback = (e) => {
+        if (!e?.features[0]?.properties) return;
+
+        const { abbrev } = e?.features[0]?.properties;
+        if (abbrev && selectedState !== abbrev) setState(abbrev);
+      };
+
+      setMapStateClickCallback(() => callback);
+      map.on('click', STATE_VECTOR_LAYER, callback);
+    }
+  }, [map, selectedState]);
 
   useEffect(() => {
     if (predictionsData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {

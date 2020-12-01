@@ -39,6 +39,7 @@ const SOURCE_LAYERS = {
 
 const MAP_SOURCE_NAME = 'counties';
 const VECTOR_LAYER = 'prediction-chloropleth-layer';
+const STATE_VECTOR_LAYER = 'states';
 
 const HistoricalMap = (props) => {
   const {
@@ -64,6 +65,7 @@ const HistoricalMap = (props) => {
   const [isDownloadingMap, setIsDownloadingMap] = useState(false);
   const [mapClickCallback, setMapClickCallback] = useState();
   const [mapHoverCallback, setMapHoverCallback] = useState();
+  const [mapStateClickCallback, setMapStateClickCallback] = useState();
 
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (trappings, rangerDistricts, mode, state, availableStates) => (e) => {
@@ -451,6 +453,24 @@ const HistoricalMap = (props) => {
       map.on('click', VECTOR_LAYER, callback);
     }
   }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, trappingData, dataMode]);
+
+  useEffect(() => {
+    if (map) {
+      // remove current callback
+      if (mapStateClickCallback) map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
+
+      // generate new callback
+      const callback = (e) => {
+        if (!e?.features[0]?.properties) return;
+
+        const { abbrev } = e?.features[0]?.properties;
+        if (abbrev && selectedState !== abbrev) setState(abbrev);
+      };
+
+      setMapStateClickCallback(() => callback);
+      map.on('click', STATE_VECTOR_LAYER, callback);
+    }
+  }, [map, selectedState]);
 
   useEffect(() => {
     if (trappingData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
