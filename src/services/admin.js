@@ -140,10 +140,13 @@ export const getAllAdminUsers = async () => {
 
 /**
  * @description updates user password
- * @param {String} password user password
+ * @param {String} email current user email
+ * @param {String} currentPassord current user password
+ * @param {String} password new password to set
  * @returns {Promise<Object>} API response
  */
-export const updatePassword = async (password) => {
+export const updatePassword = async (email, currentPassword, password) => {
+  await userService.login(email, currentPassword);
   return userService.updateUser(getUserIdFromStorage(), { password });
 };
 
