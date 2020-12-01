@@ -455,9 +455,7 @@ const PredictionMap = (props) => {
 
       // generate new callback
       const callback = (e) => {
-        if (!e?.features[0]?.properties) return;
-
-        const { abbrev } = e?.features[0]?.properties;
+        const { abbrev } = e?.features[0]?.properties || {};
         if (abbrev && selectedState !== abbrev) setState(abbrev);
       };
 
