@@ -29,6 +29,7 @@ const Prediction = (props) => {
   } = props;
 
   const [showAnimation, setShowAnimation] = useState(true);
+
   useEffect(() => {
     const listener = () => {
       if (window.scrollY > 1100 || (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {

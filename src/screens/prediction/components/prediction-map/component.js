@@ -443,6 +443,12 @@ const PredictionMap = (props) => {
     }
   }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode]);
 
+  useEffect(() => {
+    if (predictionsData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
+      map.removeLayer(VECTOR_LAYER);
+    }
+  }, [predictionsData]);
+
   return (
     <div className="container flex-item-left" id="map-container">
       <div id="map" />
