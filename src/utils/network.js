@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import {
   DOWNLOAD_DATA_ROUTES,
-  getAutomationServerUrl,
 } from '../constants';
 
 /**
@@ -24,7 +23,7 @@ export const toQueryParams = obj => (
 export const downloadCsv = async (dataType, queryParams = {}) => {
   // generate url
   const query = toQueryParams(queryParams);
-  const url = `${getAutomationServerUrl()}${DOWNLOAD_DATA_ROUTES[dataType]}${query.length > 0 ? '?' : ''}${query}`;
+  const url = `${global.AUTOMATION_API_URL}${DOWNLOAD_DATA_ROUTES[dataType]}${query.length > 0 ? '?' : ''}${query}`;
 
   // download blob and create object url
   const { data } = await axios.get(url, { responseType: 'blob' });

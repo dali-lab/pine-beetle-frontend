@@ -30,6 +30,7 @@ import {
 import {
   CHART_MODES,
   DATA_MODES,
+  getAutomationServerUrl,
   getServerUrl,
   MIN_WIDTH_THRESHOLD,
   ROUTES,
@@ -57,6 +58,7 @@ const App = (props) => {
 
   useEffect(() => {
     global.API_URL = getServerUrl();
+    global.AUTOMATION_API_URL = getAutomationServerUrl();
 
     // fetch initial data
     props.getCountyTrapping();

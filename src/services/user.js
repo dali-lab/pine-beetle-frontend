@@ -159,3 +159,47 @@ export const updateUser = async (id, fields) => {
     throw error;
   }
 };
+
+/**
+ * @description retrieves all user info
+ * @returns {Promise<Object>} API response
+ */
+export const getAllUsers = async () => {
+  const url = `${global.API_URL}/${SUBROUTE}`;
+  const token = getAuthTokenFromStorage();
+
+  try {
+    const { data: response } = await axios.get(url, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    const { data } = response;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+/**
+ * @description sends user forgot password email
+ * @param {String} email user email
+ * @returns {Promise<Object>} API response
+ */
+export const sendForgotPasswordEmail = async (email) => {
+  const url = `${global.API_URL}/${SUBROUTE}/forgot-password/${email}`;
+
+  try {
+    const { data: response } = await axios.get(url);
+
+    const { data } = response;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

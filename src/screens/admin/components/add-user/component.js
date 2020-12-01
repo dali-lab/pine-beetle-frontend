@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 
+import { admin as adminService } from '../../../../services';
+
 import './style.scss';
 
-const AddUser = (props) => {
-  const {
-    addUser,
-  } = props;
-
+const AddUser = (_props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -23,7 +21,7 @@ const AddUser = (props) => {
     setSuccess(false);
   };
 
-  const onSignUpPress = () => {
+  const onSignUpPress = async () => {
     if (!email) return setError('Please enter an email');
     if (!password) return setError('Please enter a password');
     if (!confirmPassword) return setError('Please enter your password again in the confirm password field');
@@ -35,17 +33,11 @@ const AddUser = (props) => {
       return setError('Passwords must match');
     }
 
-    return addUser(email, password, firstName, lastName, () => {
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-      setFirstName('');
-      setLastName('');
-      setError();
-      setSuccess(true);
-    }, (err) => {
-      setError(err?.response?.data?.error?.message || '');
-    });
+    try {
+      return await adminService.addAdminUser(email, password, firstName, lastName);
+    } catch (err) {
+      return setError(err?.response?.data?.error?.message || '');
+    }
   };
 
   return (
@@ -60,14 +52,14 @@ const AddUser = (props) => {
             <input
               value={firstName}
               onChange={fieldSetter(setFirstName)}
-              placeholder="Name"
+              placeholder="First Name"
             />
           </div>
           <div className="input-container">
             <input
               value={lastName}
               onChange={fieldSetter(setLastName)}
-              placeholder="Surname"
+              placeholder="Last Name"
             />
           </div>
         </div>

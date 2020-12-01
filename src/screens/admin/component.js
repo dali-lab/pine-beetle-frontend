@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   AddUser,
@@ -6,6 +6,8 @@ import {
   Login,
   Users,
 } from './components';
+
+import { runPipeline } from '../../services/admin';
 
 import './style.scss';
 
@@ -20,6 +22,21 @@ const Admin = (props) => {
     first_name: firstName,
     last_name: lastName,
   } = user;
+
+  const [runningModels, setRunningModels] = useState(false);
+  const [modelError, setModelError] = useState('');
+
+  const runAllModels = async () => {
+    setRunningModels(true);
+
+    try {
+      await runPipeline();
+    } catch (err) {
+      setModelError(err?.response?.data?.error?.message || '');
+    } finally {
+      setRunningModels(false);
+    }
+  };
 
   if (!isLoggedIn) {
     return <Login />;
@@ -44,12 +61,19 @@ const Admin = (props) => {
             </div>
           </div>
           <button
-            type="button"
             className="animated-button"
+            disabled={runningModels}
             id="rerun-button"
+            onClick={runAllModels}
+            type="button"
           >
-            Rerun all models
+            {runningModels ? 'Running...' : 'Rerun all models'}
           </button>
+          {modelError && (
+            <div id="model-error-container">
+              <p>{modelError}</p>
+            </div>
+          )}
         </div>
       </div>
     );

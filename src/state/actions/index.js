@@ -3,7 +3,6 @@ import {
   getUserFromStorage,
   login,
   signOut,
-  signUp,
 } from './user';
 
 import {
@@ -60,5 +59,4 @@ export {
   setYear,
   setYearRange,
   signOut,
-  signUp,
 };

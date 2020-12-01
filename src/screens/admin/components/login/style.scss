@@ -51,7 +51,8 @@
 
                 input {
                     padding: 5px 10px;  
-                    width: 300px; 
+                    width: 300px;
+                    background-color: #f1f3f8;
                 }
             }
         }
@@ -67,11 +68,12 @@
         }
 
         #error-container {
-            margin-top: 3px;
+            margin-top: 10px;
 
             p {
-                color: #3c4253;
-                font-size: 11px;
+                color: #ff364e;
+                font-weight: bold;
+                text-align: center;
             }
         }
 
