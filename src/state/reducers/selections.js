@@ -32,7 +32,12 @@ const SelectionsReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.SET_STATE:
-      return { ...state, state: action.payload.state };
+      return {
+        ...state,
+        state: action.payload.state,
+        county: action.payload.state !== state.state ? '' : state.county,
+        rangerDistrict: action.payload.state !== state.state ? '' : state.rangerDistrict,
+      };
 
     case ActionTypes.SET_COUNTY:
       return { ...state, county: action.payload.county };
@@ -66,6 +71,8 @@ const SelectionsReducer = (state = initialState, action) => {
       return {
         ...initialState,
         year,
+        dataMode: state.dataMode,
+        chartMode: state.chartMode,
       };
 
     case ActionTypes.SET_CHART_MODE:

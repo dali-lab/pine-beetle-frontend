@@ -452,6 +452,12 @@ const HistoricalMap = (props) => {
     }
   }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, trappingData, dataMode]);
 
+  useEffect(() => {
+    if (trappingData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
+      map.removeLayer(VECTOR_LAYER);
+    }
+  }, [trappingData]);
+
   return (
     <div id="trapping-map-container">
       <div id="map" />
