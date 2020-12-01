@@ -94,7 +94,7 @@ const FileUpload = () => {
         <button
           type="button"
           onClick={clearError}
-        >Clear Error
+        >Try Again
         </button>
       </div>
     );
