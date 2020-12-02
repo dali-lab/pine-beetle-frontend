@@ -142,7 +142,7 @@ const HistoricalMap = (props) => {
       : _state;
 
     // ensure clicked on valid state
-    if (!states.includes(state)) return;
+    if (!states.includes(state) || !currentState) return;
 
     // select county or RD depending on mode
     if (dataMode === DATA_MODES.COUNTY && counties.includes(county)) {
@@ -458,13 +458,17 @@ const HistoricalMap = (props) => {
       // generate new callback
       const callback = (e) => {
         const { abbrev } = e?.features[0]?.properties || {};
-        if (abbrev && selectedState !== abbrev) setState(abbrev);
+
+        // state must exist, not be current selection and must be a valid state
+        if (abbrev && selectedState !== abbrev && allTotalStates.includes(abbrev)) {
+          setState(abbrev);
+        }
       };
 
       setMapStateClickCallback(() => callback);
       map.on('click', STATE_VECTOR_LAYER, callback);
     }
-  }, [map, selectedState]);
+  }, [map, allTotalStates, selectedState]);
 
   useEffect(() => {
     if (trappingData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
