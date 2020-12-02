@@ -52,6 +52,17 @@
             justify-content: flex-start;
             align-items: center;
 
+            #button-container {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+
+                .nav-button {
+                    width: 135px;
+                }
+            }
+
             #data-mode-toggle-container {
                 display: flex;
                 flex-direction: row;
@@ -107,7 +118,7 @@
             font-style: normal;
             line-height: 24px;
             letter-spacing: 0em;
-            text-align: left;
+            text-align: center;
 
             -o-transition: 0.3s;
             -ms-transition: 0.3s;
