@@ -8,7 +8,7 @@ import { DATA_MODES } from '../../../../constants';
 import {
   getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
-} from './utils';
+} from '../../../../utils';
 
 import './style.scss';
 
@@ -32,7 +32,7 @@ const SelectionBar = (props) => {
   const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))].sort() : [];
   const allRangerDistricts = selectedState ? [...new Set(predictionsData.map((obj => obj.rangerDistrict)))].sort() : [];
 
-  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev));
+  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
@@ -59,10 +59,11 @@ const SelectionBar = (props) => {
             onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
             className={(!countyMode) ? 'county-rd-selection' : null}
           >
-            Ranger District
+            <span className="full-text">Ranger District</span>
+            <span className="short-text">RD</span>
           </button>
         </div>
-        <div style={{ width: '50px' }}>
+        <div>
           <ChoiceInput
             // instructions={countyMode ? 'County' : 'RD'}
             value={countyMode ? county : rangerDistrict}
@@ -72,7 +73,7 @@ const SelectionBar = (props) => {
           />
         </div>
       </div>
-      <button id="reset-current-data-button" className="submit static-button clear-button" onClick={clearAllSelections}>Clear Filters</button>
+      <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections}>Clear</button>
     </div>
   );
 };

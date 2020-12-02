@@ -1,3 +1,5 @@
+const MIN_WIDTH_THRESHOLD = 725;
+
 const SERVER_ENDPOINTS = {
   LOCAL: 'http://localhost:9090/v2',
   DEV: 'https://pine-beetle-prediction-dev.herokuapp.com/v2',
@@ -15,7 +17,7 @@ const stateAbbrevToStateName = require('./state-abbreviations.json');
 const stateAbbrevToStateId = require('./state-ids.json');
 const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 
-const AUTH_TOKEN_KEY = 'DALI_PB_AUTH_TOKEN';
+const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
 const getServerUrl = () => {
   switch (window.location.origin) {
@@ -49,30 +51,53 @@ const getAutomationServerUrl = () => {
   }
 };
 
+const LOCAL_STORAGE_KEYS = {
+  AUTH_TOKEN: 'DALI_PB_AUTH_TOKEN',
+  CHART_MODE: 'DALI_PB_CHART_MODE',
+  DATA_MODE: 'DALI_PB_DATA_MODE',
+  USER_ID: 'DALI_PB_AUTH_USER_ID',
+};
+
 const DATA_MODES = {
   COUNTY: 'COUNTY',
   RANGER_DISTRICT: 'RANGER_DISTRICT',
 };
 
+const CHART_MODES = {
+  MAP: 'MAP',
+  GRAPH: 'GRAPH',
+};
+
 const ROUTES = {
-  ABOUT: '/about',
   ADMIN: '/admin',
-  HISTORICAL_DATA: '/historical-data',
+  TRAPPING_DATA: '/trapping-data',
   HOME: '/',
-  HOW_IT_WORKS: '/how-it-works',
   PLAY_WITH_MODEL: '/play-with-model',
-  PREDICTIONS: '/predictions',
+  PREDICTIONS: '/predict-outbreak',
+};
+
+const DOWNLOAD_DATA_ROUTES = {
+  UNSUMMARIZED: '/unsummarized-trapping/download',
+  SUMMARIZED_COUNTY: '/summarized-county-trapping/download',
+  SUMMARIZED_RD: '/summarized-rangerdistrict-trapping/download',
+  PREDICTION_COUNTY: '/county-prediction/download',
+  PREDICTION_RD: '/rd-prediction/download',
+  HELPER: '/data-download/helper-data',
 };
 
 export {
-  AUTH_TOKEN_KEY,
-  DATA_MODES,
   AUTOMATION_SERVER_ENDPOINTS,
-  SERVER_ENDPOINTS,
+  CHART_MODES,
+  DATA_MODES,
+  DOWNLOAD_DATA_ROUTES,
   getAutomationServerUrl,
   getServerUrl,
-  stateAbbrevToStateName,
-  stateAbbrevToStateId,
-  stateAbbrevToZoomLevel,
+  LOCAL_STORAGE_KEYS,
+  MIN_WIDTH_THRESHOLD,
   ROUTES,
+  SERVER_ENDPOINTS,
+  stateAbbrevToStateId,
+  stateAbbrevToStateName,
+  stateAbbrevToZoomLevel,
+  stateNameToAbbrev,
 };

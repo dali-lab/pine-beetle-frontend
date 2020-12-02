@@ -1,6 +1,13 @@
 import axios from 'axios';
 
-import { AUTH_TOKEN_KEY } from '../constants';
+import {
+  getAuthTokenFromStorage,
+  getUserIdFromStorage,
+  removeAuthTokenFromStorage,
+  removeUserIdFromStorage,
+  setAuthTokenInStorage,
+  setUserIdInStorage,
+} from '../utils';
 
 const SUBROUTE = 'user';
 
@@ -24,7 +31,8 @@ export const login = async (email, password) => {
     const { data } = response;
 
     if (data) {
-      localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+      setAuthTokenInStorage(data.token);
+      setUserIdInStorage(data.user._id);
     }
 
     return data;
@@ -44,16 +52,19 @@ export const login = async (email, password) => {
  */
 export const signUp = async (email, password, firstName, lastName) => {
   const url = `${global.API_URL}/${SUBROUTE}/sign-up`;
+  const token = getAuthTokenFromStorage();
 
   try {
-    const { data: response } = await axios.post(url, {
+    const { data: { data } } = await axios.post(url, {
       email,
       password,
       first_name: firstName,
       last_name: lastName,
+    }, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     });
-
-    const { data } = response;
 
     return data;
   } catch (error) {
@@ -66,7 +77,8 @@ export const signUp = async (email, password, firstName, lastName) => {
  * @description signs user out (clears storage token)
  */
 export const signOut = () => {
-  localStorage.removeItem(AUTH_TOKEN_KEY);
+  removeAuthTokenFromStorage();
+  removeUserIdFromStorage();
 };
 
 /**
@@ -76,7 +88,35 @@ export const signOut = () => {
  */
 export const getUser = async (id) => {
   const url = `${global.API_URL}/${SUBROUTE}/${id}`;
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  const token = getAuthTokenFromStorage();
+
+  try {
+    const { data: response } = await axios.get(url, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    const { data } = response;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+/**
+ * @description retrieves user info
+ * @returns {Promise<Object>} API response
+ */
+export const getUserFromStorage = async () => {
+  const id = getUserIdFromStorage();
+  const token = getAuthTokenFromStorage();
+
+  if (!id || !token) throw new Error('Missing user id or user token');
+
+  const url = `${global.API_URL}/${SUBROUTE}/${id}`;
 
   try {
     const { data: response } = await axios.get(url, {
@@ -102,7 +142,7 @@ export const getUser = async (id) => {
  */
 export const updateUser = async (id, fields) => {
   const url = `${global.API_URL}/${SUBROUTE}/${id}`;
-  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  const token = getAuthTokenFromStorage();
 
   try {
     const { data: response } = await axios.put(url, fields, {
@@ -110,6 +150,50 @@ export const updateUser = async (id, fields) => {
         authorization: `Bearer ${token}`,
       },
     });
+
+    const { data } = response;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+/**
+ * @description retrieves all user info
+ * @returns {Promise<Object>} API response
+ */
+export const getAllUsers = async () => {
+  const url = `${global.API_URL}/${SUBROUTE}`;
+  const token = getAuthTokenFromStorage();
+
+  try {
+    const { data: response } = await axios.get(url, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    const { data } = response;
+
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+/**
+ * @description sends user forgot password email
+ * @param {String} email user email
+ * @returns {Promise<Object>} API response
+ */
+export const sendForgotPasswordEmail = async (email) => {
+  const url = `${global.API_URL}/${SUBROUTE}/forgot-password/${email}`;
+
+  try {
+    const { data: response } = await axios.get(url);
 
     const { data } = response;
 

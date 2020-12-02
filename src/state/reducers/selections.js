@@ -1,17 +1,18 @@
 /* eslint-disable no-case-declarations */
 import { ActionTypes } from '../actions';
-import { DATA_MODES } from '../../constants';
+import { DATA_MODES, CHART_MODES } from '../../constants';
 
 const initialState = {
   year: new Date().getFullYear(),
   yearRange: {
-    startYear: 2011,
+    startYear: 2010,
     endYear: new Date().getFullYear(),
   },
   state: '',
   county: '',
   rangerDistrict: '',
   dataMode: DATA_MODES.COUNTY,
+  chartMode: CHART_MODES.GRAPH,
 };
 
 const SelectionsReducer = (state = initialState, action) => {
@@ -20,7 +21,7 @@ const SelectionsReducer = (state = initialState, action) => {
       return { ...state, year: action.payload.year };
 
     case ActionTypes.SET_YEAR_RANGE:
-      let { startYear, endYear } = action.payload.yearRange;
+      const { startYear, endYear } = action.payload.yearRange;
 
       return {
         ...state,
@@ -31,7 +32,12 @@ const SelectionsReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.SET_STATE:
-      return { ...state, state: action.payload.state };
+      return {
+        ...state,
+        state: action.payload.state,
+        county: action.payload.state !== state.state ? '' : state.county,
+        rangerDistrict: action.payload.state !== state.state ? '' : state.rangerDistrict,
+      };
 
     case ActionTypes.SET_COUNTY:
       return { ...state, county: action.payload.county };
@@ -40,19 +46,18 @@ const SelectionsReducer = (state = initialState, action) => {
       return { ...state, rangerDistrict: action.payload.rangerDistrict };
 
     case ActionTypes.SET_DATA_MODE:
-      const { trappingData, mode } = action.payload;
-
-      startYear = trappingData.reduce((prev, curr) => (prev.year < curr.year ? prev : curr), {})?.year || state.yearRange.startYear;
-      endYear = trappingData.reduce((prev, curr) => (prev.year > curr.year ? prev : curr), {})?.year || state.yearRange.endYear;
+      const {
+        mode,
+        state: newState,
+        year: newYear,
+        yearRange: newYearRange,
+      } = action.payload;
 
       return {
         ...state,
-        year: endYear,
-        yearRange: {
-          startYear,
-          endYear,
-        },
-        state: '',
+        year: newYear,
+        yearRange: newYearRange,
+        state: newState,
         county: '',
         rangerDistrict: '',
         dataMode: mode,
@@ -66,7 +71,12 @@ const SelectionsReducer = (state = initialState, action) => {
       return {
         ...initialState,
         year,
+        dataMode: state.dataMode,
+        chartMode: state.chartMode,
       };
+
+    case ActionTypes.SET_CHART_MODE:
+      return { ...state, chartMode: action.payload };
 
     default:
       return state;

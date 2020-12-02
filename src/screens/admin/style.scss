@@ -1,0 +1,104 @@
+#auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    h1 {
+        margin-top: 50px;
+        margin-bottom: 10px;
+    }
+
+    #auth-header {
+        text-align: center;
+
+        p {
+            font-size: 16px;
+            text-align: center;
+            color: #4d4f5f;
+        }
+
+        #header-options {
+            display: flex;
+            margin-top: 10px;
+
+            p {
+                color: #2f303a;
+                text-decoration: underline;
+            }
+
+            p:hover {
+                cursor: pointer;
+            }
+
+            #sign-out {
+                margin-right: 30px;
+            }
+        }
+    }
+
+    #dashboard-container{
+        padding: 37px;
+        border-radius: 26px;
+        box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+        background-color: #ffffff;
+        margin: 15px unquote("max(100px, 17%)") 100px;
+
+        #dashboard {
+            display: flex;
+            height: 70vh;
+
+            #upload-container {
+                flex: 1 1 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                overflow: scroll;
+
+                div {
+                    padding: 23px;
+                    border-radius: 22px;
+                    background-color: #f8f9ff;
+                    flex: 1 1 auto;
+                    width: 400px;
+                }
+
+                * + * {
+                    margin-top: 15px;
+                }
+            }
+
+            #user-container {
+                flex: 1 1 auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                overflow: scroll;
+                margin-left: 20px;
+
+                #users-container, #add-users {
+                    flex: 1 1 auto;
+                    padding: 23px;
+                    border-radius: 22px;
+                    background-color: #f8f9ff;
+                }
+
+                #add-users {
+                    margin-top: 15px;
+                }
+            }
+        }
+
+        #rerun-button {
+            margin: 40px 346px 0 349px;
+            padding: 8px 34px 7px 35px;
+            border-radius: 6px;
+            background-color: #2f303a;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.8;
+            color: #ffffff;
+            white-space: nowrap;
+          }
+    }
+}

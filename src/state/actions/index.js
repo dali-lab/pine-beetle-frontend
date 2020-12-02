@@ -1,12 +1,15 @@
 import {
   ActionTypes as userActionTypes,
+  getUserFromStorage,
   login,
-  signUp,
+  signOut,
 } from './user';
 
 import {
   ActionTypes as selectionActionTypes,
   clearSelections,
+  setAllYears,
+  setChartMode,
   setCounty,
   setDataMode,
   setRangerDistrict,
@@ -44,13 +47,16 @@ export {
   getCountyTrapping,
   getRangerDistrictPredictions,
   getRangerDistrictTrapping,
+  getUserFromStorage,
   login,
   runCustomPrediction,
+  setAllYears,
+  setChartMode,
   setCounty,
   setDataMode,
   setRangerDistrict,
   setState,
   setYear,
   setYearRange,
-  signUp,
+  signOut,
 };

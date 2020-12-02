@@ -1,5 +1,10 @@
 import { DATA_MODES } from '../../constants';
 
+import {
+  setChartModeInStorage,
+  setDataModeInStorage,
+} from '../../utils';
+
 export const ActionTypes = {
   SET_YEAR: 'SET_YEAR',
   SET_YEAR_RANGE: 'SET_YEAR_RANGE',
@@ -11,6 +16,7 @@ export const ActionTypes = {
   SET_ALL_COUNTIES: 'SET_ALL_COUNTIES',
   SET_ALL_RANGER_DISTRICTS: 'SET_ALL_RANGER_DISTRICTS',
   SET_DATA_MODE: 'SET_DATA_MODE',
+  SET_CHART_MODE: 'SET_CHART_MODE',
 };
 
 /**
@@ -70,6 +76,30 @@ export const setYearRange = (startYear, endYear) => {
           // whereas undefined is strictly when not provided (so we default to previous value in this case)
           startYear: startYear !== undefined ? startYear : getState().selections.yearRange.startYear,
           endYear: endYear !== undefined ? endYear : getState().selections.yearRange.endYear,
+        },
+      },
+    });
+  };
+};
+
+/**
+ * @description action creator for selecting from first year till onwards
+ */
+export const setAllYears = () => {
+  return (dispatch, getState) => {
+    const { trappingData } = attachData(getState());
+    const years = trappingData.map(({ year }) => year);
+
+    const startYear = Math.min(...years);
+    const endYear = Math.max(...years);
+
+    dispatch({
+      type: ActionTypes.SET_YEAR_RANGE,
+      payload: {
+        ...getState().selections,
+        yearRange: {
+          startYear,
+          endYear,
         },
       },
     });
@@ -142,28 +172,56 @@ export const clearSelections = () => {
  */
 export const setDataMode = (mode) => {
   return (dispatch, getState) => {
+    setDataModeInStorage(mode);
+
     const data = attachData(getState(), mode);
+
+    const { state, year, yearRange } = getState().selections;
+
+    // determine if selections are in the new data we are using
+    const stateInData = [...new Set(data.trappingData.map(d => d.state))].includes(state);
+    const yearInData = [...new Set(data.trappingData.map(d => d.year))].includes(year);
+    const startYearInData = [...new Set(data.trappingData.map(d => d.year))].includes(yearRange.startYear);
+    const endYearInData = [...new Set(data.trappingData.map(d => d.year))].includes(yearRange.endYear);
+
+    // determine min and max year
+    const minYear = data.trappingData.reduce((prev, curr) => (prev.year < curr.year ? prev : curr), {})?.year || yearRange.startYear;
+    const maxYear = data.trappingData.reduce((prev, curr) => (prev.year > curr.year ? prev : curr), {})?.year || yearRange.endYear;
 
     dispatch({
       type: ActionTypes.SET_DATA_MODE,
       payload: {
         ...data,
+        ...getState().selections,
+        // update selections based on if we can keep or have to clear
+        year: yearInData ? year : maxYear,
+        yearRange: {
+          startYear: startYearInData ? yearRange.startYear : minYear,
+          endYear: endYearInData ? yearRange.endYear : maxYear,
+        },
+        state: stateInData ? state : '',
         mode,
+        filtersToApply: {
+          endYearInData,
+          startYearInData,
+          stateInData,
+          yearInData,
+        },
       },
     });
+  };
+};
 
-    // find last year in dataset
-    const endYear = data.trappingData.reduce((prev, curr) => (
-      prev.year > curr.year ? prev : curr
-    ), {})?.year || getState().selections.yearRange.endYear;
+/**
+ * @description action creator for setting chart mode
+ */
+export const setChartMode = (mode) => {
+  return (dispatch) => {
+    setChartModeInStorage(mode);
 
-    // explicitly set the year (to trigger filtering)
     dispatch({
-      type: ActionTypes.SET_YEAR,
-      payload: {
-        ...getState().selections,
-        year: endYear,
-      },
+      type: ActionTypes.SET_CHART_MODE,
+      payload: mode,
     });
   };
 };

@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 import { toQueryParams } from '../utils';
-import { getAutomationServerUrl } from '../constants';
 
 const COUNTY_SUBROUTE = 'county-prediction';
 const RD_SUBROUTE = 'rd-prediction';
@@ -63,7 +62,7 @@ export const runCustomPrediction = async (cleridst1, spotst1, spotst2, SPB, endo
     spotst2,
   });
 
-  const url = `${getAutomationServerUrl()}/${R_MODEL_SUBROUTE}/${params ? `?${params}` : ''}`;
+  const url = `${global.AUTOMATION_API_URL}/${R_MODEL_SUBROUTE}/${params ? `?${params}` : ''}`;
 
   try {
     const { data: { data } } = await axios.get(url);

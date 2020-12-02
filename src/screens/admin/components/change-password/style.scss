@@ -1,0 +1,102 @@
+.change-password-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -75%);
+    max-width: 350px;
+    width: 40vw;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    // TODO: replace box shadow with grayer background later
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+
+    #change-password-content-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        #input-container-parent {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+
+            .input-container {
+                width: 100%;
+
+                #error-input {
+                    border: solid 2.5px #ff364e;
+                }
+                
+                input {
+                    width: calc(100% - 30px);
+                    height: 43px;
+                    border-radius: 8px;
+                    background-color: #f8f9ff;
+                    border: 0;
+                    font-family: "Inter";
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+
+        #error-success-container {
+            margin-top: 15px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+
+            p {
+                font-weight: bold;
+                text-align: left;
+                line-height: 20px;
+            }
+
+            #error {
+                color: #ff364e;
+            }
+
+            #success {
+                color: #86ccff;
+            }
+        }
+
+        button {
+            width: 93px;
+            margin: 14px 127px 0;
+            padding: 8px;
+            border-radius: 6px;
+            background-color: #c9cdd9;
+            border: 0;
+            font-family: "Inter";
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+// remove unnecessary blue outline from modal (does not impact accessibility)
+.change-password-modal:focus {
+    outline:0;
+}
+
+// https://stackoverflow.com/questions/58355628/animate-react-modal
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: all 150ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+    opacity: 0;
+}

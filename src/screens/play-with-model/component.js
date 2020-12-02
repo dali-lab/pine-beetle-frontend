@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import {
   PlayWithModelInputs,
+  PlayWithModelOutputs,
   OverviewText,
   SelectionBar,
 } from './components';
@@ -13,11 +14,8 @@ const PlayWithModel = (props) => {
     clearError, // function to clear the error
     county,
     countyTrappingsData,
-    customPrediction, // result of prediction output
     dataMode,
-    error, // error object if one occurred
     isError, // whether or not an error occurred
-    isLoading, // whether or not we are loading (i.e. running the model)
     rangerDistrict,
     rangerDistrictTrappingsData,
     runCustomPrediction, // function to call for running the prediction
@@ -97,61 +95,6 @@ const PlayWithModel = (props) => {
     }
   }, [year, selectedState, county, rangerDistrict, dataMode]);
 
-  const predictionOutputs = (haveCustomPredictions) => {
-    // eslint-disable-next-line no-restricted-globals
-    if (isNaN(customPrediction['prob.Spots>0']) || isNaN(customPrediction['prob.Spots>53'])) {
-      return (
-        <div className="predictions-generated">
-          <p>Please make sure inputted fields are valid.</p>
-        </div>
-      );
-    } else if (haveCustomPredictions) {
-      return (
-        <div className="predictions-generated">
-          <div id="predictions-generated-title">
-            <p>Predicted beetle risks in {year}</p>
-          </div>
-          <div id="prob-spots">
-            <div id="percent">
-              {(customPrediction['prob.Spots>0'] * 100).toFixed(1)}%
-            </div>
-            <div id="prob-text">
-              <p>Predicted % Chance of Any Spots ({'>'}0 spots)</p>
-            </div>
-          </div>
-          <div id="prob-outbreak">
-            <div id="percent">
-              {(customPrediction['prob.Spots>53'] * 100).toFixed(1)}%
-            </div>
-            <div id="prob-text">
-              <p>Predicted % Chance of Outbreak ({'>'}50 spots)</p>
-            </div>
-          </div>
-        </div>
-      );
-    } else if (isLoading) {
-      return (
-        <div className="predictions-generated">
-          <p>Generating predictions...</p>
-        </div>
-      );
-    } else if (isError) {
-      return (
-        <div className="predictions-generated">
-          <p>An error occured.</p>
-          <p>Error message: {error.text}</p>
-          <p>Please make sure all fields are inputted correctly.</p>
-        </div>
-      );
-    } else {
-      return (
-        <div className="predictions-generated">
-          <p>Please input desired fields and press run to generate predictions.</p>
-        </div>
-      );
-    }
-  };
-
   return (
     <div>
       <OverviewText />
@@ -162,8 +105,13 @@ const PlayWithModel = (props) => {
           runModel={runModel}
           updateModelInputs={updateModelInputs}
         />
-        <div id="vl" />
-        {predictionOutputs(Object.keys(customPrediction).length !== 0)}
+        <PlayWithModelOutputs
+          county={county}
+          dataMode={dataMode}
+          rangerDistrict={rangerDistrict}
+          selectedState={selectedState}
+          year={year}
+        />
       </div>
     </div>
   );

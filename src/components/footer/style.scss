@@ -2,26 +2,31 @@
     height: auto;
     margin: 0px 0px 0px 0px;
     padding: 0px 5px;
-    background-color: #F2F5E8;
+    background-color: #f1f1fb;
 
-    .container {
+    #footer-container {
         padding: 0px;
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        align-items: center;
+        padding-top: 32px;
+        padding-bottom: 30px;
     }
 
     p {
-        float: left;
-        font-style: italic;
-        margin-top: 22px;
-        margin-left: 22px;
+        text-align: center;
+        font-family: 'Open Sans', sans-serif;
+        color: #2f303a;
     }
 
-    img {
-        padding-top: 15px;
-        padding-bottom: 15px;
-    }
+    a {
+        position: absolute;
+        right: 45px;
 
-    #dali-logo {
-        float: right;
-        margin-right: 22px;
+        #dali-logo {
+            width: 80px;
+            height: 30px;
+        }
     }
 }

@@ -1,15 +1,24 @@
 /* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
+import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
-import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
+import {
+  DATA_MODES,
+  stateAbbrevToZoomLevel,
+} from '../../../../constants';
 
 import {
-  separatePascalCase,
+  getMapboxRDNameFormat,
 } from '../../../../utils';
 
 import './style.scss';
+
+const questionIcon = require('../../../../assets/icons/help-circle.png');
+
+const helpText = `Please use Chrome, Firefox,<br />
+or Edge to download map.`;
 
 const thresholds = ['0-2.5%', '2.5-5%', '5-15%', '15-25%', '25-40%', '40-100%'];
 const colors = ['#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
@@ -32,12 +41,14 @@ const SOURCE_LAYERS = {
 
 const MAP_SOURCE_NAME = 'counties';
 const VECTOR_LAYER = 'prediction-chloropleth-layer';
+const STATE_VECTOR_LAYER = 'states';
 
 const PredictionMap = (props) => {
   const {
     allCounties,
     allRangerDistricts,
-    allStates,
+    allSelectedStates,
+    allTotalStates,
     dataMode,
     predictionsData,
     selectedState,
@@ -54,6 +65,8 @@ const PredictionMap = (props) => {
   const [isDownloadingMap, setIsDownloadingMap] = useState(false);
   const [mapClickCallback, setMapClickCallback] = useState();
   const [mapHoverCallback, setMapHoverCallback] = useState();
+  const [mapStateClickCallback, setMapStateClickCallback] = useState();
+  const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
 
   const mapboxHoverStyle = (x, y) => {
     if (x < 300 && y < 200) {
@@ -69,27 +82,31 @@ const PredictionMap = (props) => {
 
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availableStates) => (e) => {
-    if (!map || !e) return;
+    if (!map || !e || !map.isStyleLoaded()) return;
 
     const counties = map.queryRenderedFeatures(e.point, {
       layers: [VECTOR_LAYER],
     });
 
-    if (counties.length > 0 && counties[0] && counties[0].properties && counties[0].properties.forest) {
-      const { x, y } = e.point;
-      const { STATE: hoverState } = counties[0].properties;
+    if (counties.length > 0 && counties[0]?.properties?.forest) {
+      const { x, y } = e.point || {};
 
-      let location;
+      const {
+        STATE: hoverState,
+        COUNTYNAME: hoverCounty,
+        forest: rawForest,
+      } = counties[0].properties;
 
-      if (mode === DATA_MODES.COUNTY) {
-        location = counties[0].properties.forest.slice(0, -3);
-      } else {
-        location = rangerDistricts.find(rd => rd.includes(counties[0].properties.forest.replaceAll(' ', '')));
-      }
+      const hoverRD = rawForest.replaceAll('  ', ' ');
+
+      const location = mode === DATA_MODES.COUNTY
+        ? hoverCounty
+        : rangerDistricts.filter(rd => !!rd)
+          .find(rd => rd.includes(hoverRD));
 
       const pred = predictions.find((p) => {
         return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availableStates.includes(hoverState)))
-        && ((p.county === location && mode === DATA_MODES.COUNTY)
+        && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState)
         || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
       });
 
@@ -117,35 +134,29 @@ const PredictionMap = (props) => {
 
   // twice-curried function for generating click callback
   const createMapClickCallback = (states, counties, rangerDistricts, currentState, predictions, mode) => (e) => {
-    if (!e) return;
+    if (!e?.features[0]?.properties) return;
 
     const {
+      COUNTYNAME: county,
       forest: _forest,
       STATE: _state,
     } = e.features[0].properties;
 
-    const forest = _forest.slice(0, -3);
+    const clickRD = _forest.slice(0, -3).replace(' ', '');
 
-    const rangerDistrictToSet = rangerDistricts.find(district => (
-      district.includes(forest.replace(' ', ''))
-    ));
+    const rangerDistrictToSet = rangerDistricts.filter(rd => !!rd)
+      .find(district => district.includes(clickRD));
 
-    let state = _state;
-
-    if (!_state && mode === DATA_MODES.RANGER_DISTRICT) {
-      state = predictions.find(p => p.rangerDistrict === rangerDistrictToSet)?.state;
-    }
+    const state = !_state && mode === DATA_MODES.RANGER_DISTRICT
+      ? predictions.find(p => p.rangerDistrict === rangerDistrictToSet)?.state
+      : _state;
 
     // ensure clicked on valid state
-    if (!states.includes(state)) return;
+    if (!states.includes(state) || !currentState) return;
 
-    // select state if no state selected (or click neighbor state)
-    if (!currentState || state !== currentState) {
-      setState(state);
-      // select county otherwise
-    } else if (dataMode === DATA_MODES.COUNTY && counties.includes(forest)) {
-      setCounty(forest);
-      // select rd otherwise
+    // select county or RD depending on mode
+    if (dataMode === DATA_MODES.COUNTY && counties.includes(county)) {
+      setCounty(county);
     } else if (rangerDistricts.includes(rangerDistrictToSet)) {
       setRangerDistrict(rangerDistrictToSet);
     }
@@ -164,12 +175,7 @@ const PredictionMap = (props) => {
       },
     });
 
-    if (!createdMap._controls) return;
-
-    // if we haven't added a navigation control, add one
-    if (createdMap._controls.length < 2) {
-      createdMap.addControl(new mapboxgl.NavigationControl());
-    }
+    createdMap.addControl(new mapboxgl.NavigationControl());
 
     // disable map zoom when using scroll
     createdMap.scrollZoom.disable();
@@ -179,8 +185,8 @@ const PredictionMap = (props) => {
 
       return (
         <div key={color}>
-          <span>{threshold}</span>
           <span className="legend-key" style={{ backgroundColor: color }} />
+          <span>{threshold}</span>
         </div>
       );
     });
@@ -199,13 +205,13 @@ const PredictionMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      const callback = createMapClickCallback(allStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode);
+      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode);
       setMapClickCallback(() => callback);
       createdMap.on('click', VECTOR_LAYER, callback);
     }
 
     if (createdMap._listeners.mousemove === undefined) {
-      const callback = createMapHoverCallback(predictionsData, allRangerDistricts, dataMode, selectedState, allStates);
+      const callback = createMapHoverCallback(predictionsData, allRangerDistricts, dataMode, selectedState, allSelectedStates);
       setMapHoverCallback(() => callback);
       createdMap.on('mousemove', callback);
     }
@@ -256,7 +262,7 @@ const PredictionMap = (props) => {
       }
 
       const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
-      const rangerDistrictFormatName = rangerDistrict ? separatePascalCase(rangerDistrict.split('_').pop()).toUpperCase() : '';
+      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict).toUpperCase() : '';
 
       const locationName = dataMode === DATA_MODES.COUNTY
         ? countyFormatName
@@ -311,7 +317,7 @@ const PredictionMap = (props) => {
       const layer = curr;
       const color = colors[index];
       const spanString = `
-          <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${color};display: 
+          <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${color};display:
           inline-block;border-radius: 20%;width: 20px;height: 20px;margin-right: 5px;margin-left: 5px;"></div><span>${layer}</span>`;
       return acc.concat(spanString);
     }, '');
@@ -319,27 +325,27 @@ const PredictionMap = (props) => {
     return (
       `
           <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
-              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 51%;margin: auto;margin-bottom: 10px;">
+              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 90%;margin: auto;margin-bottom: 10px;">
                   ${legendString}
               </div>
-              <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 
-              14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Note: Color ramp ascends with a constant factor of 
+              <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height:
+              14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Note: Color ramp ascends with a constant factor of
               increase in the probability of outcome.</p>
               <div id="spacer" style="height: 50px;"></div>
               <h2 style="font-family: 'Open Sans', arial, serif;margin-bottom: 16px;margin-top: 16px;">${title}</h2>
-              <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">Predictions are based on a zero-inflated Poisson model fit to historical data 
+              <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">Predictions are based on a zero-inflated Poisson model fit to historical data
               from 1988 – 2009 (Aoki 2017). The most important drivers of model predictions are
                SPB trap captures in the current spring and SPB spots the previous year.
               </p>
               <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">
-              The SPB prediction project is supported by USDA Forest Service: Science and Technology 
+              The SPB prediction project is supported by USDA Forest Service: Science and Technology
               Development Program (STDP)
               </p>
               <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">Contact: Matthew P. Ayres - matthew.p.ayres@dartmouth.edu; Carissa F. Aoki - caoki@bates.edu
               </p>
               <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 14px;width: 53%;
-              margin: auto;margin-bottom: 16px;font-size: 14px;">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN, 
-              GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, © OpenStreetMap 
+              margin: auto;margin-bottom: 16px;font-size: 14px;">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN,
+              GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, © OpenStreetMap
               contributors, andthe GIS User Community</p>
           </div>
           `
@@ -395,7 +401,7 @@ const PredictionMap = (props) => {
     if (year.toString().length === 4 && predictionsData.length > 0) colorPredictions(predictionsData);
 
     if (selectedState) {
-      const zoom = stateAbbrevToZoomLevel[selectedState];
+      const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
 
       map.flyTo({
         center: zoom[0],
@@ -420,33 +426,80 @@ const PredictionMap = (props) => {
       if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
 
       // generate new callback
-      const callback = createMapHoverCallback(predictionsData, allRangerDistricts, dataMode, selectedState, allStates);
+      const callback = createMapHoverCallback(predictionsData, allRangerDistricts, dataMode, selectedState, allSelectedStates);
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
     }
-  }, [map, predictionsData, allRangerDistricts, dataMode, selectedState, allStates]);
+  }, [map, predictionsData, allRangerDistricts, dataMode, selectedState, allSelectedStates]);
 
   // update the click callback handler when all RD or all states changes
   useEffect(() => {
-    if (map && allStates && allCounties && allRangerDistricts) {
+    if (map && allTotalStates && allCounties && allRangerDistricts) {
       // remove current callback
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
-      const callback = createMapClickCallback(allStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode);
+      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode);
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
-  }, [map, allStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode]);
+  }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode]);
+
+  useEffect(() => {
+    if (map) {
+      // remove current callback
+      if (mapStateClickCallback) map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
+
+      // generate new callback
+      const callback = (e) => {
+        const { abbrev } = e?.features[0]?.properties || {};
+
+        // state must exist, not be current selection and must be a valid state
+        if (abbrev && selectedState !== abbrev && allTotalStates.includes(abbrev)) {
+          setState(abbrev);
+        }
+      };
+
+      setMapStateClickCallback(() => callback);
+      map.on('click', STATE_VECTOR_LAYER, callback);
+    }
+  }, [map, allTotalStates, selectedState]);
+
+  useEffect(() => {
+    if (map) {
+      // remove current callback
+      if (mapLayerMouseLeaveCallback) map.off('click', VECTOR_LAYER, mapLayerMouseLeaveCallback);
+
+      // generate new callback
+      const callback = () => setPredictionHover(null);
+
+      setMapLayerMouseLeaveCallback(() => callback);
+      map.on('mouseleave', VECTOR_LAYER, callback);
+    }
+  }, [map]);
+
+  useEffect(() => {
+    if (predictionsData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
+      map.removeLayer(VECTOR_LAYER);
+    }
+  }, [predictionsData]);
 
   return (
     <div className="container flex-item-left" id="map-container">
       <div id="map" />
       <div id="map-overlay-download" onClick={downloadMap}>
-        <h4>{isDownloadingMap ? 'Downloading...' : 'Download'}</h4>
+        <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
+        <div>
+          <img id="icon-small"
+            data-tip={helpText}
+            src={questionIcon}
+            alt="Help"
+          />
+          <ReactTooltip multiline place="right" />
+        </div>
       </div>
       <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title"><strong>Probability of &gt;50 spots</strong></div>
+        <div className="legend-key-title">Probability of &gt;50 spots</div>
         {legendTags}
       </div>
       {predictionHover}

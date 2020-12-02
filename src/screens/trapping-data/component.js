@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+import { CHART_MODES } from '../../constants';
 
 import './style.scss';
 
 import {
+  DownloadTrapping,
   TrappingDataMap,
   LineChart,
   OverviewText,
   SelectionBar,
 } from './components';
+
+import { Loading } from '../../components';
 
 const mapSelectedIcon = require('../../assets/icons/map-selected.png');
 const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
@@ -16,60 +21,49 @@ const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
 
 const TrappingData = (props) => {
   const {
+    chartMode,
+    setChartMode,
     isLoading,
     trappingData,
     trappingErrorText,
   } = props;
 
-  const [chartMode, setChartMode] = useState(true);
+  const isGraphView = chartMode === CHART_MODES.GRAPH;
+  const setGraphView = () => setChartMode(CHART_MODES.GRAPH);
+  const setMapView = () => setChartMode(CHART_MODES.MAP);
 
   return (
     <div>
-      {/* TODO: make this a spinner */}
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Loading />}
       {trappingErrorText.length > 0 && trappingErrorText.map(t => <p>{t}</p>)}
-      {/* <div> */}
       <OverviewText />
       <SelectionBar />
-      <div className="container" id="view-selections">
-        <div id="selection">
+      <div id="view-selections" className="container">
+        <div id="selection" onClick={setGraphView}>
           <img
-            src={chartMode ? mapUnselectedIcon : mapSelectedIcon}
-            alt="Map View"
-            id={chartMode ? null : 'selected-view'}
-            onClick={() => setChartMode(false)}
-          />
-          <br />
-          <button
-            onClick={() => setChartMode(false)}
-            id={chartMode ? null : 'selected-view'}
-            className="view-selection-btn"
-            type="button"
-          >
-            Map View
-          </button>
-        </div>
-        <div id="selection">
-          <img
-            src={chartMode ? graphSelectedIcon : graphUnselectedIcon}
+            src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
             alt="Chart View"
-            id={chartMode ? 'selected-view' : null}
-            onClick={() => setChartMode(true)}
+            id={isGraphView ? 'selected-view' : null}
           />
-          <br />
-          <button
-            onClick={() => setChartMode(true)}
-            id={chartMode ? 'selected-view' : null}
-            className="view-selection-btn"
-            type="button"
-          >
+          <p id={isGraphView ? 'selected-view' : null} className="view-selection-btn">
             Graph View
-          </button>
+          </p>
+        </div>
+        <div id="selection" onClick={setMapView}>
+          <img
+            src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
+            alt="Map View"
+            id={isGraphView ? null : 'selected-view'}
+          />
+          <p id={isGraphView ? null : 'selected-view'} className="view-selection-btn">
+            Map View
+          </p>
         </div>
       </div>
-      <div>
-        {chartMode ? <LineChart data={trappingData} /> : <TrappingDataMap />}
+      <div className="container">
+        {isGraphView ? <LineChart data={trappingData} /> : <TrappingDataMap />}
       </div>
+      <DownloadTrapping />
     </div>
   );
 };

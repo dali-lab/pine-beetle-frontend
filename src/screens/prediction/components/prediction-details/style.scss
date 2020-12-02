@@ -23,18 +23,13 @@
     margin-bottom: 13px;
 }
 
-.prediction-title p {
-    font-family: Inter;
+#prediction-subtitle {
     font-size: 22px;
     font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
     line-height: 1.31;
-    letter-spacing: normal;
     text-align: left;
     color: #464756;
     margin-bottom: 24px;
-
 }
 
 .prediction-info {
@@ -98,6 +93,7 @@
 }
 
 .prediction-grid-container {
+    margin-top: -20px;
     display: flex;
 }
 
@@ -114,13 +110,13 @@
     height: 20px;
     line-height: 40px; 
     text-align: center; 
-    margin-top: 50px; 
+    margin-top: 45px; 
     background-color: #e9eaef; 
     z-index: 2;
 }
 
 .bullet:first-child {
-    margin-top: 0;
+    margin-top: 7px;
 }
 
 .bullet:before {
@@ -142,7 +138,6 @@
 
 .prediction-grid {
     display: grid;
-    // TODO: find out why second column is so shrunken, so you don't have to use this hacky way of solving spacing
     grid-template-columns: auto 150px auto;
     grid-template-areas: 
     'yeart2 yeart2 yeart2-spots'
@@ -160,16 +155,10 @@
 }
 
 .prediction-grid .year-title {
-    margin-top: 15px;
+    margin-top: 23px;
     font-size: 20px;
     font-weight: bold;
     color: #2f303a;
-}
-
-.prediction-grid .year-description {
-    font-size: 10px;
-    font-weight: 500;
-    color: #a3a3a3;
 }
 
 .yeart2 {
@@ -202,10 +191,6 @@
 
 .curr-endobrev {
     grid-area: curr-endobrev;
-}
-
-#spring-curr-year {
-    margin-top: 23px;
 }
 
 .content-container {

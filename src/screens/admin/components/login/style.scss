@@ -1,0 +1,127 @@
+#login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+
+    h1 {
+        margin-top: 35px;
+        margin-bottom: 35px;
+        letter-spacing: normal;
+        font-weight: 800;
+        color: #2f303a;
+    }
+
+    #sign-up-button {
+        margin-bottom: 25px;
+        color: darkgray;
+        font-style: italic;
+
+        a {
+            color: black;
+        }
+    }
+
+    #input-button-container {
+        padding: 19px 52px 53px;
+        border-radius: 26px;
+        box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+        background-color: #ffffff;
+
+        #input-fields {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+
+            .input-container {
+                margin-top: 20px;
+
+                #error-input {
+                    border: solid 2.5px #ff364e;
+                }
+
+                p {
+                    margin-bottom: 5px;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #3c4253;
+                }
+
+                input {
+                    padding: 5px 10px;  
+                    width: 300px;
+                    background-color: #f1f3f8;
+                }
+            }
+        }
+
+        #forgot-password {
+            font-size: 13px;
+            color: #3c4253;
+            margin-top: 10px;
+            background-color: transparent;
+            border: 0;
+        }
+
+        #forgot-password:hover {
+            cursor: pointer;
+        }
+
+        #error-success-container {
+            margin-top: 15px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+
+            p {
+                font-weight: bold;
+                text-align: left;
+                line-height: 20px;
+            }
+
+            #error {
+                color: #ff364e;
+            }
+
+            #success {
+                color: #86ccff;
+            }
+        }
+
+        #login-button {
+            width: 150px;
+            border: none;
+            padding: 10px;
+            background-color: #c9cdd9;
+            font-size: 18px;
+            font-weight: 600;
+            color: #3c4253;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #reset-password-button {
+            width: 200px;
+            border: none;
+            padding: 10px;
+            background-color: #c9cdd9;
+            font-size: 18px;
+            font-weight: 600;
+            color: #3c4253;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        button:hover {
+            cursor: pointer;
+        }
+    }
+}
