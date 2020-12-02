@@ -4,7 +4,10 @@ import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
-import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
+import {
+  DATA_MODES,
+  stateAbbrevToZoomLevel,
+} from '../../../../constants';
 
 import {
   getMapboxRDNameFormat,
@@ -38,6 +41,7 @@ const SOURCE_LAYERS = {
 
 const MAP_SOURCE_NAME = 'counties';
 const VECTOR_LAYER = 'prediction-chloropleth-layer';
+const STATE_VECTOR_LAYER = 'states';
 
 const PredictionMap = (props) => {
   const {
@@ -61,6 +65,8 @@ const PredictionMap = (props) => {
   const [isDownloadingMap, setIsDownloadingMap] = useState(false);
   const [mapClickCallback, setMapClickCallback] = useState();
   const [mapHoverCallback, setMapHoverCallback] = useState();
+  const [mapStateClickCallback, setMapStateClickCallback] = useState();
+  const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
 
   const mapboxHoverStyle = (x, y) => {
     if (x < 300 && y < 200) {
@@ -76,7 +82,7 @@ const PredictionMap = (props) => {
 
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availableStates) => (e) => {
-    if (!map || !e) return;
+    if (!map || !e || !map.isStyleLoaded()) return;
 
     const counties = map.queryRenderedFeatures(e.point, {
       layers: [VECTOR_LAYER],
@@ -146,15 +152,11 @@ const PredictionMap = (props) => {
       : _state;
 
     // ensure clicked on valid state
-    if (!states.includes(state)) return;
+    if (!states.includes(state) || !currentState) return;
 
-    // select state if no state selected (or click neighbor state)
-    if (!currentState || state !== currentState) {
-      setState(state);
-      // select county otherwise
-    } else if (dataMode === DATA_MODES.COUNTY && counties.includes(county)) {
+    // select county or RD depending on mode
+    if (dataMode === DATA_MODES.COUNTY && counties.includes(county)) {
       setCounty(county);
-      // select rd otherwise
     } else if (rangerDistricts.includes(rangerDistrictToSet)) {
       setRangerDistrict(rangerDistrictToSet);
     }
@@ -399,7 +401,7 @@ const PredictionMap = (props) => {
     if (year.toString().length === 4 && predictionsData.length > 0) colorPredictions(predictionsData);
 
     if (selectedState) {
-      const zoom = stateAbbrevToZoomLevel[selectedState];
+      const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
 
       map.flyTo({
         center: zoom[0],
@@ -442,6 +444,39 @@ const PredictionMap = (props) => {
       map.on('click', VECTOR_LAYER, callback);
     }
   }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode]);
+
+  useEffect(() => {
+    if (map) {
+      // remove current callback
+      if (mapStateClickCallback) map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
+
+      // generate new callback
+      const callback = (e) => {
+        const { abbrev } = e?.features[0]?.properties || {};
+
+        // state must exist, not be current selection and must be a valid state
+        if (abbrev && selectedState !== abbrev && allTotalStates.includes(abbrev)) {
+          setState(abbrev);
+        }
+      };
+
+      setMapStateClickCallback(() => callback);
+      map.on('click', STATE_VECTOR_LAYER, callback);
+    }
+  }, [map, allTotalStates, selectedState]);
+
+  useEffect(() => {
+    if (map) {
+      // remove current callback
+      if (mapLayerMouseLeaveCallback) map.off('click', VECTOR_LAYER, mapLayerMouseLeaveCallback);
+
+      // generate new callback
+      const callback = () => setPredictionHover(null);
+
+      setMapLayerMouseLeaveCallback(() => callback);
+      map.on('mouseleave', VECTOR_LAYER, callback);
+    }
+  }, [map]);
 
   useEffect(() => {
     if (predictionsData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
