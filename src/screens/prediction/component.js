@@ -96,7 +96,7 @@ const Prediction = (props) => {
 
   return (
     <div>
-      {isLoading && <Loading />}
+      <Loading visible={isLoading} />
       {predictionsErrorText.length > 0 && predictionsErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />

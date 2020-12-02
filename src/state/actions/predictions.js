@@ -35,7 +35,9 @@ export const getCountyPredictions = (filters = {}) => {
         },
       });
     } finally {
-      dispatch({ type: ActionTypes.FETCHING_COUNTY_PREDICTIONS, payload: false });
+      setTimeout(() => {
+        dispatch({ type: ActionTypes.FETCHING_COUNTY_PREDICTIONS, payload: false });
+      }, 1000);
     }
   };
 };
@@ -59,7 +61,9 @@ export const getRangerDistrictPredictions = (filters = {}) => {
         },
       });
     } finally {
-      dispatch({ type: ActionTypes.FETCHING_RANGER_DISTRICT_PREDICTIONS, payload: false });
+      setTimeout(() => {
+        dispatch({ type: ActionTypes.FETCHING_RANGER_DISTRICT_PREDICTIONS, payload: false });
+      }, 1000);
     }
   };
 };

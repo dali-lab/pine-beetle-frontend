@@ -30,7 +30,9 @@ export const getCountyTrapping = (filters = {}) => {
         },
       });
     } finally {
-      dispatch({ type: ActionTypes.FETCHING_COUNTY_TRAPPING, payload: false });
+      setTimeout(() => {
+        dispatch({ type: ActionTypes.FETCHING_COUNTY_TRAPPING, payload: false });
+      }, 1000);
     }
   };
 };
@@ -54,7 +56,9 @@ export const getRangerDistrictTrapping = (filters = {}) => {
         },
       });
     } finally {
-      dispatch({ type: ActionTypes.FETCHING_RANGER_DISTRICT_TRAPPING, payload: false });
+      setTimeout(() => {
+        dispatch({ type: ActionTypes.FETCHING_RANGER_DISTRICT_TRAPPING, payload: false });
+      }, 1000);
     }
   };
 };
