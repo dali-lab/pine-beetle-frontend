@@ -5,7 +5,7 @@ import './style.scss';
 const questionIcon = require('../../../../assets/icons/help-circle.png');
 
 const helpText = `Please select year, state, and<br />
-county/RD for historical data.<br />
+county/RD for trapping data.<br />
 You can switch between map or chart<br />
 view by toggling the button below.`;
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ROUTES } from '../../constants';
 import './style.scss';
 
-const beetleIcon = require('../../assets/icons/background-beetle.png');
+const beetleIcon = require('../../assets/icons/background-beetle-color.png');
 const howItWorksIcon = require('../../assets/icons/how-it-works.png');
 const modelOutbreakIcon = require('../../assets/icons/model-outbreaks.png');
 const testInputIcon = require('../../assets/icons/test-inputs.png');
