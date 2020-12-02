@@ -36,11 +36,13 @@ const Header = (props) => {
           </div>
           <div id="nav-button-area">
             <div id="nav-buttons">
-              {Object.entries(routes).map(([key, value]) => (
-                <Link to={key} key={key} className={`nav-button ${(useLocation().pathname === key) ? 'active-nav' : 'inactive-nav'}`}>
-                  {value}
-                </Link>
-              ))}
+              <div id="button-container">
+                {Object.entries(routes).map(([key, value]) => (
+                  <Link to={key} key={key} className={`nav-button ${(useLocation().pathname === key) ? 'active-nav' : 'inactive-nav'}`}>
+                    {value}
+                  </Link>
+                ))}
+              </div>
               <div id="data-mode-toggle-container">
                 <button
                   id="data-mode-county"
