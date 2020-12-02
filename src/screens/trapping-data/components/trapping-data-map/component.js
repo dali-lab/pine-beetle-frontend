@@ -66,10 +66,11 @@ const HistoricalMap = (props) => {
   const [mapClickCallback, setMapClickCallback] = useState();
   const [mapHoverCallback, setMapHoverCallback] = useState();
   const [mapStateClickCallback, setMapStateClickCallback] = useState();
+  const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
 
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (trappings, rangerDistricts, mode, state, availableStates) => (e) => {
-    if (!map || !e) return;
+    if (!map || !e || !map.isStyleLoaded()) return;
 
     const counties = map.queryRenderedFeatures(e.point, {
       layers: [VECTOR_LAYER],
@@ -407,7 +408,7 @@ const HistoricalMap = (props) => {
     if (year.toString().length === 4) colorFill(trappingData);
 
     if (selectedState) {
-      const zoom = stateAbbrevToZoomLevel[selectedState];
+      const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
 
       map.flyTo({
         center: zoom[0],
@@ -469,6 +470,19 @@ const HistoricalMap = (props) => {
       map.on('click', STATE_VECTOR_LAYER, callback);
     }
   }, [map, allTotalStates, selectedState]);
+
+  useEffect(() => {
+    if (map) {
+      // remove current callback
+      if (mapLayerMouseLeaveCallback) map.off('click', VECTOR_LAYER, mapLayerMouseLeaveCallback);
+
+      // generate new callback
+      const callback = () => setTrappingHover(null);
+
+      setMapLayerMouseLeaveCallback(() => callback);
+      map.on('mouseleave', VECTOR_LAYER, callback);
+    }
+  }, [map]);
 
   useEffect(() => {
     if (trappingData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
