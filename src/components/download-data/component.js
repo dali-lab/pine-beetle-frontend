@@ -49,6 +49,8 @@ const DownloadData = (props) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [isDownloading, setIsDownloading] = useState(false);
+
   // vars for selecting types of data in modal
   const [fieldsToDownload, setFieldsToDownload] = useState({
     PREDICTION: false,
@@ -74,19 +76,25 @@ const DownloadData = (props) => {
 
   // function for handling trapping data download
   const handleDownload = async () => {
-    Object.entries(fieldsToDownload).forEach(async ([fieldName, value]) => {
-      if (!value) return;
+    const promises = Object.entries(fieldsToDownload).map(async ([fieldName, value]) => {
+      if (!value) return null;
 
       const dataTypeName = countyMode ? 'COUNTY' : 'RD';
       const dataName = fieldName === 'PREDICTION' || fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
 
-      await downloadCsv(dataName, {
+      return downloadCsv(dataName, {
         state: selectedState,
         [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
         startYear,
         endYear,
       });
-    });
+    }).filter(f => !!f);
+
+    if (promises.length > 0) {
+      setIsDownloading(true);
+      await Promise.all(promises);
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -233,18 +241,24 @@ const DownloadData = (props) => {
             </label>
           </div>
           <div>
-            <button
-              type="button"
-              id="modal-submit-btn"
-              className="animated-button"
-              onClick={handleDownload}
-            >
-              <img
-                src={downloadIcon}
-                alt="download icon"
-              />
-              <p>Submit</p>
-            </button>
+            {isDownloading ? (
+              <div id="downloading-container">
+                <h4>Downloading...</h4>
+              </div>
+            ) : (
+              <button
+                className="animated-button"
+                id="modal-submit-btn"
+                onClick={handleDownload}
+                type="button"
+              >
+                <img
+                  src={downloadIcon}
+                  alt="download icon"
+                />
+                <p>Submit</p>
+              </button>
+            )}
           </div>
           <p id="modal-footnote">* helper data includes ranger district name mappings and state abbreviation mappings</p>
         </div>
