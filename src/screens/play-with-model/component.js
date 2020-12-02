@@ -7,6 +7,10 @@ import {
   SelectionBar,
 } from './components';
 
+import {
+  DownloadData,
+} from '../../components';
+
 import { DATA_MODES } from '../../constants';
 
 const PlayWithModel = (props) => {
@@ -113,6 +117,7 @@ const PlayWithModel = (props) => {
           year={year}
         />
       </div>
+      <DownloadData />
     </div>
   );
 };

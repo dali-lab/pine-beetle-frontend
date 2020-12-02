@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
-import { TextInput, ChoiceInput } from '../../../../components/input-components';
+import { TextInput, ChoiceInput } from '../input-components';
 
-import { DATA_MODES } from '../../../../constants';
+import { DATA_MODES } from '../../constants';
 
 import {
   downloadCsv,
   getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
-} from '../../../../utils';
+} from '../../utils';
 
 import './style.scss';
 
-const closeIcon = require('../../../../assets/icons/close.png');
-const downloadIcon = require('../../../../assets/icons/download.png');
+const closeIcon = require('../../assets/icons/close.png');
+const downloadIcon = require('../../assets/icons/download.png');
 
-const DownloadTrapping = (props) => {
+const DownloadData = (props) => {
   const {
     county,
     dataMode,
@@ -253,4 +253,4 @@ const DownloadTrapping = (props) => {
   );
 };
 
-export default DownloadTrapping;
+export default DownloadData;

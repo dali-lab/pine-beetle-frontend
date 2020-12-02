@@ -9,7 +9,11 @@ import {
   SelectionBar,
 } from './components';
 
-import { Loading, ScrollIcon } from '../../components';
+import {
+  DownloadData,
+  Loading,
+  ScrollIcon,
+} from '../../components';
 
 import './style.scss';
 
@@ -102,6 +106,9 @@ const Prediction = (props) => {
       <SelectionBar />
       <PredictionMap data={selectedState} />
       { predDetails(predictionData.length === 1) }
+      <div id="download-pred-data">
+        <DownloadData />
+      </div>
     </div>
   );
 };
