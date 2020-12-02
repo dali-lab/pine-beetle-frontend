@@ -5,14 +5,13 @@ import { CHART_MODES } from '../../constants';
 import './style.scss';
 
 import {
-  DownloadTrapping,
   TrappingDataMap,
   LineChart,
   OverviewText,
   SelectionBar,
 } from './components';
 
-import { Loading } from '../../components';
+import { DownloadData, Loading } from '../../components';
 
 const mapSelectedIcon = require('../../assets/icons/map-selected.png');
 const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
@@ -34,7 +33,7 @@ const TrappingData = (props) => {
 
   return (
     <div>
-      {isLoading && <Loading />}
+      <Loading visible={isLoading} />
       {trappingErrorText.length > 0 && trappingErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
@@ -63,7 +62,7 @@ const TrappingData = (props) => {
       <div className="container">
         {isGraphView ? <LineChart data={trappingData} /> : <TrappingDataMap />}
       </div>
-      <DownloadTrapping />
+      <DownloadData />
     </div>
   );
 };

@@ -9,7 +9,11 @@ import {
   SelectionBar,
 } from './components';
 
-import { Loading, ScrollIcon } from '../../components';
+import {
+  DownloadData,
+  Loading,
+  ScrollIcon,
+} from '../../components';
 
 import './style.scss';
 
@@ -96,12 +100,15 @@ const Prediction = (props) => {
 
   return (
     <div>
-      {isLoading && <Loading />}
+      <Loading visible={isLoading} />
       {predictionsErrorText.length > 0 && predictionsErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
       <PredictionMap data={selectedState} />
       { predDetails(predictionData.length === 1) }
+      <div id="download-pred-data">
+        <DownloadData />
+      </div>
     </div>
   );
 };

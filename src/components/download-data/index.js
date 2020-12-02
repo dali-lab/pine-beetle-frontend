@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import DownloadTrapping from './component';
+import DownloadData from './component';
 
 import {
   clearSelections,
@@ -10,7 +10,7 @@ import {
   setRangerDistrict,
   setState,
   setYearRange,
-} from '../../../../state/actions';
+} from '../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
@@ -72,4 +72,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DownloadTrapping);
+)(DownloadData);

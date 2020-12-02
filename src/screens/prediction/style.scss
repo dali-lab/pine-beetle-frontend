@@ -9,7 +9,7 @@
 .prediction-bottom {
     display: flex;
     margin-top: 75px;
-    margin-bottom: 100px;
+    margin-bottom: 30px;
 }
 
 .histogram {
@@ -50,4 +50,8 @@
     height: 0;
     width: 0;
     visibility: hidden;
+}
+
+#download-pred-data {
+    margin-top: 70px;
 }
