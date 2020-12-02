@@ -34,7 +34,7 @@ const TrappingData = (props) => {
 
   return (
     <div>
-      {isLoading && <Loading />}
+      <Loading visible={isLoading} />
       {trappingErrorText.length > 0 && trappingErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
