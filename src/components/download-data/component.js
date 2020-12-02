@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 
 import { TextInput, ChoiceInput } from '../input-components';
-import Loading from '../loading';
 
 import { DATA_MODES } from '../../constants';
 
@@ -244,7 +243,6 @@ const DownloadData = (props) => {
           <div>
             {isDownloading ? (
               <div id="downloading-container">
-                <Loading />
                 <h4>Downloading...</h4>
               </div>
             ) : (
