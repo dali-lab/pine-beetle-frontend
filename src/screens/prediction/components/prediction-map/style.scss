@@ -20,7 +20,8 @@
     justify-content: center;
     bottom: 0;
     right: 10;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(2px);
     font-family: 'Inter';
     border-radius: 3px;
     padding: 10px;
