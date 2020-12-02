@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import {
   AddUser,
+  ChangePassword,
   FileUpload,
   Login,
   Users,
@@ -23,6 +24,7 @@ const Admin = (props) => {
     last_name: lastName,
   } = user;
 
+  const [changePasswordVisible, setChangePasswordVisible] = useState(false);
   const [runningModels, setRunningModels] = useState(false);
   const [modelError, setModelError] = useState('');
 
@@ -48,8 +50,7 @@ const Admin = (props) => {
           <p>Hi, {lastName ? `${firstName} ${lastName}` : firstName}!</p>
           <div id="header-options">
             <p id="sign-out" onClick={signOut}>Sign Out</p>
-            {/* TODO: change password function */}
-            <p id="change-password">Change Password</p>
+            <p id="change-password" onClick={() => setChangePasswordVisible(true)}>Change Password</p>
           </div>
         </div>
         <div id="dashboard-container">
@@ -75,6 +76,11 @@ const Admin = (props) => {
             </div>
           )}
         </div>
+        <ChangePassword
+          close={() => setChangePasswordVisible(false)}
+          open={() => setChangePasswordVisible(true)}
+          visible={changePasswordVisible}
+        />
       </div>
     );
   }
