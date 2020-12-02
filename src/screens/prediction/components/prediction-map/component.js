@@ -153,13 +153,9 @@ const PredictionMap = (props) => {
     // ensure clicked on valid state
     if (!states.includes(state)) return;
 
-    // select state if no state selected (or click neighbor state)
-    if (!currentState || state !== currentState) {
-      setState(state);
-      // select county otherwise
-    } else if (dataMode === DATA_MODES.COUNTY && counties.includes(county)) {
+    // select county or RD depending on mode
+    if (dataMode === DATA_MODES.COUNTY && counties.includes(county)) {
       setCounty(county);
-      // select rd otherwise
     } else if (rangerDistricts.includes(rangerDistrictToSet)) {
       setRangerDistrict(rangerDistrictToSet);
     }
