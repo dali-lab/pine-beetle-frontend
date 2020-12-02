@@ -1,15 +1,51 @@
 #loading-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 20px;
+
+    p {
+        font-size: 20px;
+        margin-bottom: -10px;
+    }
+
+    #loading-animation {
+        width: 150px;
+        margin-top: -20px;
+        margin-bottom: -20px;
+    }
 }
 
-#loading-container p {
-    margin-left: 20px;
-    font-size: 20px;
+.loading-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 400px;
+    width: 40vw;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    // TODO: replace box shadow with grayer background later
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
 }
 
-#loading-animation {
-    height: auto;
-    width: 10vw;
+// remove unnecessary blue outline from modal (does not impact accessibility)
+.loading-modal:focus {
+    outline:0;
+}
+
+// https://stackoverflow.com/questions/58355628/animate-react-modal
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: all 150ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+}
+
+.ReactModal__Overlay--before-close {
+    opacity: 0;
 }

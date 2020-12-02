@@ -1,6 +1,9 @@
 import React from 'react';
 import Lottie from 'react-lottie';
+import Modal from 'react-modal';
+
 import animationData from '../../assets/animations/loading.json';
+
 import './style.scss';
 
 const defaultOptions = {
@@ -12,19 +15,25 @@ const defaultOptions = {
   },
 };
 
-const Loading = () => {
+const Loading = ({ visible }) => {
   return (
-    <div>
+    <Modal
+      ariaHideApp={false}
+      className="loading-modal"
+      closeTimeoutMS={150}
+      contentLabel="Loading Data Modal"
+      isOpen={visible}
+    >
       <div id="loading-container">
+        <p>Please wait while we load the data...</p>
         <div id="loading-animation">
           <Lottie
             options={defaultOptions}
             isClickToPauseDisabled
           />
         </div>
-        <p>Please wait while we load the data...</p>
       </div>
-    </div>
+    </Modal>
   );
 };
 
