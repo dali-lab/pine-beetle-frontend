@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactGA from 'react-ga';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
@@ -7,6 +8,12 @@ import reducers from './state/reducers';
 
 import App from './app';
 import './style.scss';
+
+// google analytics
+if (window.location.origin === 'https://pine-beetle-prediction.netlify.app') {
+  ReactGA.initialize('UA-133847731-1');
+  ReactGA.pageview(window.location.pathname + window.location.search);
+}
 
 // this creates the store with the reducers, and does some other stuff to initialize devtools
 // boilerplate to copy, don't have to know
