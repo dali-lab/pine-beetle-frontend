@@ -32,7 +32,15 @@ export const downloadCsv = async (dataType, queryParams = {}) => {
   // generate link for browser to click (allows us to set the name of the file)
   const link = document.createElement('a');
   link.href = objectUrl;
-  link.setAttribute('download', dataType === 'HELPER' ? `${dataType}.zip` : `${dataType}.csv`);
+
+  const dataTypeExtensions = {
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+    'application/zip': 'zip',
+    'text/csv': 'csv',
+  };
+
+  const fileExtension = dataTypeExtensions[data.type] || 'csv';
+  link.setAttribute('download', `${dataType}.${fileExtension}`);
 
   // trigger download then remove from DOM
   document.body.appendChild(link);

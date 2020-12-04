@@ -55,6 +55,7 @@ const DownloadData = (props) => {
     SUMMARIZED: false,
     UNSUMMARIZED: false,
     HELPER: false,
+    '1988-2009 DATA': false,
   });
 
   const addFieldToDownload = fieldName => e => setFieldsToDownload({
@@ -69,6 +70,7 @@ const DownloadData = (props) => {
       SUMMARIZED: selected,
       UNSUMMARIZED: selected,
       HELPER: selected,
+      '1988-2009 DATA': selected,
     });
   };
 
@@ -221,16 +223,29 @@ const DownloadData = (props) => {
               </label>
             </div>
           </div>
-          <div id="circle-checkbox">
-            <label htmlFor="include-helper">
-              <input
-                type="checkbox"
-                id="include-helper"
-                onChange={addFieldToDownload('HELPER')}
-                checked={fieldsToDownload.HELPER}
-              />
-              <span className="checkbox-text">Include helper data*</span>
-            </label>
+          <div id="extras-row">
+            <div id="circle-checkbox">
+              <label htmlFor="include-helper">
+                <input
+                  type="checkbox"
+                  id="include-helper"
+                  onChange={addFieldToDownload('HELPER')}
+                  checked={fieldsToDownload.HELPER}
+                />
+                <span className="checkbox-text">Include helper data*</span>
+              </label>
+            </div>
+            <div id="circle-checkbox">
+              <label htmlFor="include-old-data">
+                <input
+                  type="checkbox"
+                  id="include-old-data"
+                  onChange={addFieldToDownload('1988-2009 DATA')}
+                  checked={fieldsToDownload['1988-2009 DATA']}
+                />
+                <span className="checkbox-text">Include 1988-2009 data**</span>
+              </label>
+            </div>
           </div>
           <div>
             <button
@@ -246,7 +261,10 @@ const DownloadData = (props) => {
               <p>Submit</p>
             </button>
           </div>
-          <p id="modal-footnote">* helper data includes ranger district name mappings and state abbreviation mappings</p>
+          <div id="modal-footnote-container">
+            <p className="modal-footnote">* helper data includes ranger district name mappings and state abbreviation mappings</p>
+            <p className="modal-footnote">** 1988-2009 data is in an Excel workbook and is formatted differently than current data</p>
+          </div>
         </div>
       </Modal>
     </>

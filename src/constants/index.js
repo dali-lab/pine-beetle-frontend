@@ -77,12 +77,13 @@ const ROUTES = {
 };
 
 const DOWNLOAD_DATA_ROUTES = {
-  UNSUMMARIZED: '/unsummarized-trapping/download',
-  SUMMARIZED_COUNTY: '/summarized-county-trapping/download',
-  SUMMARIZED_RD: '/summarized-rangerdistrict-trapping/download',
+  '1988-2009 DATA': '/data-download/old-data',
+  HELPER: '/data-download/helper-data',
   PREDICTION_COUNTY: '/county-prediction/download',
   PREDICTION_RD: '/rd-prediction/download',
-  HELPER: '/data-download/helper-data',
+  SUMMARIZED_COUNTY: '/summarized-county-trapping/download',
+  SUMMARIZED_RD: '/summarized-rangerdistrict-trapping/download',
+  UNSUMMARIZED: '/unsummarized-trapping/download',
 };
 
 export {
