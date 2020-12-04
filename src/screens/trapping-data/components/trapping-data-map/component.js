@@ -129,11 +129,9 @@ const HistoricalMap = (props) => {
 
     const {
       COUNTYNAME: county,
-      forest: _forest,
+      forest: clickRD,
       STATE: _state,
     } = e.features[0].properties;
-
-    const clickRD = _forest.slice(0, -3).replace(' ', '');
 
     const rangerDistrictToSet = rangerDistricts.filter(rd => !!rd)
       .find(district => district.includes(clickRD));
@@ -341,7 +339,7 @@ const HistoricalMap = (props) => {
               <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 14px;width: 53%;
               margin: auto;margin-bottom: 16px;font-size: 14px;">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN,
               GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, © OpenStreetMap
-              contributors, andthe GIS User Community</p>
+              contributors, and the GIS User Community</p>
           </div>
           `
     );
