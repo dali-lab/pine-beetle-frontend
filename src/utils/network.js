@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import {
   DOWNLOAD_DATA_ROUTES,
+  DATA_TYPE_EXTENSIONS,
 } from '../constants';
 
 /**
@@ -32,7 +33,9 @@ export const downloadCsv = async (dataType, queryParams = {}) => {
   // generate link for browser to click (allows us to set the name of the file)
   const link = document.createElement('a');
   link.href = objectUrl;
-  link.setAttribute('download', dataType === 'HELPER' ? `${dataType}.zip` : `${dataType}.csv`);
+
+  const fileExtension = DATA_TYPE_EXTENSIONS[data.type] || 'csv';
+  link.setAttribute('download', `${dataType}.${fileExtension}`);
 
   // trigger download then remove from DOM
   document.body.appendChild(link);

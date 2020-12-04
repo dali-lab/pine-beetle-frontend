@@ -141,6 +141,16 @@
     margin-top: 20px;
 }
 
+#extras-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    label {
+        margin-right: 20px;
+    }
+}
+
 #modal-submit-btn {
     height: 43px;
     padding: 5px 52px 5px 22px;
@@ -165,8 +175,12 @@
     line-height: 1.8;
 }
 
-#modal-footnote {
+#modal-footnote-container {
     margin-top: 40px;
+
+    .modal-footnote {
+        
+    }
 }
 
 // https://stackoverflow.com/questions/58355628/animate-react-modal
