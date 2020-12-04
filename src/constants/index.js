@@ -86,10 +86,17 @@ const DOWNLOAD_DATA_ROUTES = {
   UNSUMMARIZED: '/unsummarized-trapping/download',
 };
 
+const DATA_TYPE_EXTENSIONS = {
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'xlsx',
+  'application/zip': 'zip',
+  'text/csv': 'csv',
+};
+
 export {
   AUTOMATION_SERVER_ENDPOINTS,
   CHART_MODES,
   DATA_MODES,
+  DATA_TYPE_EXTENSIONS,
   DOWNLOAD_DATA_ROUTES,
   getAutomationServerUrl,
   getServerUrl,
