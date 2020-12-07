@@ -1,183 +1,103 @@
-# Project Pine Beetle
-Last Updated: 11.20.2019
-## Table of Contents
-- Project Overview
-- Project Architecture
-- Developer Information
-- Project Status
-- Authors
-- Acknowledgements
+# Project Pine Beetle Frontend
+
+This is a React app for rendering the Pine Beetle Prediction client application.
 
 ## Project Overview
+
 Project Pine Beetle is a web application that visualizes data on Southern Pine Beetle outbreaks in 16 states across the US. This tool uses a predictive model to predict future outbreaks and movements of Southern Pine Beetles.
 
-On the front-end, this application provides valuable information for USFS researchers and state forest rangers to see information related to past outbreaks and predictions about future outbreaks. This application also provides information to the general public about threats facing their communities.
+On the frontend, this application provides valuable information for USFS researchers and state forest rangers to see information related to past outbreaks and predictions about future outbreaks. This application also provides information to the general public about threats facing their communities.
 
-On the back-end, this application aggregates data collected from USFS and state forest rangers on outbreaks and beetle counts, then uses those values to display historical data and future predictions. The predictive model used to generate predictions is written in R. All data is stored in a NoSQL database, allowing for easy pre and post-processing. Using an Express server, all calculations are made in JavaScript (outside of the predictive model), and all data is stored in JSON format.
+On the backend, this application aggregates data collected from USFS and state forest rangers on outbreaks and beetle counts, then uses those values to display historical data and future predictions. The predictive model used to generate predictions is written in R. All data is stored in a MongoDB database, allowing for easy pre and post-processing. Using an Express server, all calculations are made in JavaScript (outside of the predictive model and Mongo summarization/aggregation algorithms), and all data is stored in JSON format.
 
 Project Pine Beetle is a collaboration between Professor Matt Ayres of Dartmouth College, Professor Carissa Aoki of Bates College, the United States Forest Service (USFS), and the Dartmouth Applied Learning and Innovation (DALI) Lab.
 
-## Project Architecture
-### Front-end
-The front-end of this application is a public interface for users to view pine beetle infestation predictions and spot/trapping data from previous years. The data is visualized with a series of maps and graphs. Maps are generated using [Mapbox](https://www.mapbox.com/), and graphs are generated using [Chart.js](https://www.chartjs.org/).
+## Architecture
 
-The site can be viewed at https://pine-beetle-prediction.surge.sh. As of March 2019, the web application consists of four primary pages. With future development, we hope to expand the interface further to provide more functionality and data to users. These pages are as follows:
+This web site uses [React.js](https://reactjs.org/) bundled with [webpack](https://webpack.js.org/). We use [react-redux](https://react-redux.js.org/) for persistent state management, and [react-router](https://reactrouter.com/) for internal routing.
 
-#### Home Page:
-Simple landing page to direct users across the site.
+We have two backend servers that are used for handling various functionality. Our [main backend server](https://github.com/dali-lab/pine-beetle-backend) is used to perform CRUD operations with the database. It also handles all authentication processes. The frontend sends most requests to this server. Our [automation server](https://github.com/dali-lab/pine-beetle-automation) is used for aggregating data from the USFS and restructuring it to our data format. Data comes from the USFS via several webhooks from [Survey123](https://survey123.arcgis.com/). See each of these repositories for more information.
 
-#### About Page:
-Displays descriptions about the project and its partners, as well as high-level information about the risk of pine beetle outbreaks nationwide.
+## Setup
 
-#### Historical Data Page:
-Pulls data from the database for analysis and visualization. All data viewed on this page is on previous years. Users can filter by year range, state, and forest. Data visualiation is based on a geographic level as well as a year-by-year level. This page is mostly useful for viewing trends in beetle movements in previous years.
+You must have [Node](https://nodejs.org) and [yarn](https://yarnpkg.com/) installed to run this project.
 
-#### Predictive Model Page:
-Runs the predictive model to generate predictions about future outbreaks on a state and forest level. Users select a year to run the model on as well as a state. Predictions come in the following format: probability of seeing 0 spots (outbreaks), probability of at least 1 spot, probability of at least 20 spots, probability of at least 54 spots, probability of at least 148 spots, probability of at least 403 spots, and probability of at least 1096 spots. These values form a probabilistic distribution by an inverse logarithmic function. Predictions are generated with a linear regression forming a Poisson distribution.
+1. Clone the repository
+2. `yarn install`
+3. Add a `.env` file and paste in the necessary contents (see Handoff Document for this)
+4. `yarn start` to run in the local development environment
 
-Predictions come in for each forest in the state and can be viewed on a distribution plot as well as a choropleth map showing outbreaks by geographical forest/county.
+## Repository Structure
 
-### Back-end
-You can the back-end repository [here](https://github.com/dali-lab/pine-beetle-backend).
+```
+src/
+	assets/							[all assets]
+	components/						[reusable components across several screens]
+	constants/						[all constants and mapping files]
+	screens/						[containers for each screen]
+	services/						[service files for sending server requests]
+	state/							[all redux interactions]
+	utils/							[utility functions]
+.babelrc							[babel setup]
+.env.example						[structure of .env file]
+.eslintrc							[eslint setup]
+.env-setup.js						[script for injecting environment variables at build]
+package.json						[package]
+webpack.config.js					[webpack setup]
+```
 
-## Developer Information
-### Installation:
-#### Tools:
-- You will need [Node.js](https://nodejs.org/en/), [yarn](https://yarnpkg.com/en/), [mongo/mongoDB](https://www.mongodb.com/), and [heroku](https://www.heroku.com) installed locally in order to build, run and develop this project.
+### Componentization
 
-- Tool installation instructions (for mac, using homebrew)
-	- `brew install node` (you will need version >=9.x and <= 10.x)
-		- Note: for advanced usage, we also recommend installing Node.js via a version manager such as [nvm](https://github.com/creationix/nvm) instead of with homebrew. To do so, run `curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash`. Be sure to set your `.bash_profile` file by following the instructions listed in the [nvm repository](https://github.com/creationix/nvm).
-	- `brew install yarn`
-	- `brew install mongo`
-	- `brew install heroku/brew/heroku`
-	- `brew install python`
-	- `brew install R`
+This project uses file componentization as much as possible. Each screen or individual component is represented by a directory rather than a single file. Each component directory has the following files:
 
-#### Front-end repository:
-- For the front-end, run `git clone https://github.com/dali-lab/pine-beetle-frontend`.
-- `cd pine-beetle-frontend`. Then make sure you are on the master branch.
-- Install necessary packages and dependencies with `yarn install`.
+- `index.js` for connecting the component to the redux store and actions
+- `component.js` for the React component
+- `style.scss` for declaring styles
+- `components/` directory for any subcomponents
 
+The `component.js` file imports `style.scss` as well as any subcomponents from the `components/` directory. The `index.js` file imports `component.js`. It creates `mapStateToProps` and `mapDispatchToProps` functions and passes them to the `connect` function from `react-redux`, which returns a function that is immediately invoked on the component to pass all state variables and actions directly into the component props. This connected component is then exported in the `index.js` file, making it available for import from other files outside the directory.
 
-The front-end was scaffolded with Facebook's [Create React App](https://github.com/facebook/create-react-app). See below for the following available commands.
+### Data Flow
 
-##### `yarn start`
+Our data flow uses a combination of service files and redux actions. Each request to one of our servers is encapsulated in a function that is stored in a file in the `services/` directory. We use `axios` for sending all server requests. Most service functions are then imported into action files in the `state/actions/` directory. Within an action, we call the service function to fetch data or perform an action, then dispatch actions with the resulting data. The reducers in the `state/reducers/` directory then are invoked when the actions are dispatched, and they update the relevant state.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The data in our app is split between trapping data and predictions data. The trapping data page visualizes the trapping data, and the predictions page likewise visualizes the predictions data. Each are broken into data on the county level and data on the ranger district level. Each type of data (trapping or predictions) is formatted the same on the county and ranger district level, but the county data contains a `county` field and the ranger district data contains a `rangerDistrict` field.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+When the user switches their data mode (county or ranger district), our trapping and predictions reducers update their `data` field to be either the county level or ranger district level data for that data type. We keep the user's year/state selections if they are a valid filter within the new data.
 
-##### `yarn test`
+### Data Visualization
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+We use Mapbox GL for rendering the maps on the trapping and predictions pages. We have a Mapbox account (see Handoff Document for account details) where we generated a specific map style for the site. We also uploaded specific tilesets to this Mapbox account and style for the ranger district and county shapes. We use Mapbox click and hover events for rendering tooltips and making selections. Each click handler that must use data from redux has to be re-generated when data changes, in order for the function to be bound to the current value of the variable. We leverage the `useEffect` and `useState` hooks from React in our map components to achieve this.
 
-##### `yarn build`
+We use Chart.js for rendering the graph on the trapping data page. We use a line graph component with three segments to make this happen. Chart.js renders the data on a canvas layer and handles all internal animations.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Code Style
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+We use React functional components and hooks in all of our components. We leverage the `useState` and `useEffect` hooks throughout each of our components.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+We use async/await for all asynchronous functions.
 
-#### Learn More
+## Deployment
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Continuous deployment is setup with Netlify.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Merging a PR to the `dev` branch will trigger a new build in the dev environment. When the build passes, an update will be released at [https://pine-beetle-prediction-dev.netlify.app](https://pine-beetle-prediction-dev.netlify.app).
 
-### Front-end Repo Structure
+Merging a PR to the `release` branch will trigger a new build in the production environment. When the build passes, an update will be released at [https://pine-beetle-prediction.netlify.app](https://pine-beetle-prediction.netlify.app).
 
-The front-end is built with React.js and deployed with surge. Please contact pine-beetle@dali.dartmouth.edu for access to `.env` files. 
+Pull requests should always be first merged into the `dev` branch so they are staged in the development environment. After smoke testing the changes in the development environment, developers can then choose to release those changes into production by generating a `DEV TO RELEASE` pull request from the `dev` branch to the `release` branch. One this single PR is merged into `release`, the changes will be built into the production environment and will be viewable at the production URL [https://pine-beetle-prediction.netlify.app](https://pine-beetle-prediction.netlify.app).
 
-#### Contents
-- `src/components` contains all React components.
-- `src/styles` contains all CSS.
-- `src/assets` contains all images. 
-- `build` contains the production build of the site. Deploy from this directory after running `yarn build`
+## Contributors
 
-#### Deploying Changes
-- The frontend is deployed using surge. Make sure you install it if you don’t already have it: `npm install --global surge`
-- Next navigate to `build` and run `yarn build` then `surge --domain [insert domain name here]`. The CNAME file will automatically deploy to `pine-beetle-prediction.surge.sh`, but you must have permissions to deploy to this URL. Use `--domain` to override this and deploy to your own URL.
-- Visit https://pine-beetle-prediction.surge.sh/ to see project
+- Thomas Monfre
+- Jeff Liu
+- Angela Zhang
 
-## Project Status
-As of November 20th, 2019, Project Pine Beetle will not be under active development. It is intended to be under active development again starting in Winter 2020.
+### Past Project Members
 
-### Implemented: Fall, 2018
-- Database in MongoDB developed
-- Historical data (1986-2010) uploaded to DB
-- Pipeline constructed for uploading Survey123 data to DB
-- Frontend framework developed
-- Data retrieval from database implemented
-- Data handling on front-end implemented
-- User selection tools implemented
-- Rudimentary data visualization in map form implemented
-- Rudimentary data wrangling implemented
-- Predictive model implemented to run in R through JavaScript
-- Model updating process implemented
-
-### Implemented: Winter, 2019
-- Finalized data pipeline from Survey123 to MongoDB
-- Created numerous routes on the back-end to query and serve data to the front-end
-- Constructed capability to run R model using various feature inputs as well with a year/state/forest combination.
-- Created routes for running the R model and returning results to front-end
-- Converted front-end to React.js
-- Built full historical data visualization
-- Built full predictive model page
-- Implemented fresh redesigns
-- Constructed private capability for partners to pull Survey123 data to the database
-
-### Implemented: Fall, 2019
-#### Download Button
-We added a button to the map on the "Predictive Model" page that allows users to download the currently displayed map as a PDF. When the button is clicked, the current state and year selected in the dropdowns above the map will be displayed in the downloaded map and used to name the file. Currently, the only data that can be downloaded is the probability of any spots occuring in the selected states. This is reflected in the downloaded PDF title.
-
-The button itself is implemented as a mapbox control, which is added to the map in line 110 of `PredictiveMap.js` and is created in the `DownloadControl` function in the same file. When this button is clicked, it calls the `downloadMap` function written in `PredictiveMap.js` which makes necessary design changes to the existing map (adding county names, hiding city names, changing outline widths), uses a library ([mapbox-print-pdf](https://github.com/Eddie-Larsson/mapbox-print-pdf)) to download the map, then unmakes the changes so they are not displayed to the user on the website. This function makes use of `buildPrintMap`, `buildHeader`, and `buildFooter` to make the design changes to the map and create the HTML objects for the header and footer of the PDF.
-
-There is a small bug with this approach in that, if the download function takes a long time to run, the design changes briefly display on the website and then are quickly removed from the predictive model map. This could be fixed in the future by storing two separate maps in the react state and making sure that both the website map and the print map are updated on every zoom and dropdown selection change. The `downloadMap` function would then make the design changes to the print map and download the print map without ever changing the map shown on the website. 
-
-
-### Expected Implementation: Winter, 2020
-- Add in a user-flow to display different ranges of probabilities on the map, four steps will have to be accomplished:
-	- Add a dropdown next to the year, state, and county dropdowns (in PredictionsSelectionBar.js) that allows the user to select if
-they want to see the probability of any spots, over 50 spots, etc.
-	- Connect this data to the predictive model and use it to set the “probability” variable to the correct value in line 150 of PredictiveMap.js
-	- Make sure that this change appears in the map on the Predictive Model page and change any titles to make the category of the displayed data clear
-	- Make sure that the downloaded map’s title reflects the current category in buildMapHeader() in PredictiveMap.js
-
-### Future Directions
-This product illustrates the threats facing communities in a visual manner. It is well suited to visualize any epidemic or spreading threat. It could be generalized and implemented for visualizing risk of forest fires, spread of disease, genetic diversity, or any threat that is predictable, has the potential to propagate outward, and displays a set of observable qualities indicating risk. Southern Pine Beetles may be just the beginning to the uses of a tool like this.
-
-## Team Members
-
-### Fall 2019
-- Amanda Bak, Project Manager
-- Anuj Varma, Developer
-- Emma Langfitt, Developer
-
-### Fall 2018
-- Thomas Monfre, Project Manager
-- Madeline Hess, Developer
-- Isabel Hurley, Developer
-
-### Winter 2019
-- Mo Zhu, Project Manager
-- Thomas Monfre, Developer
-- Madeline Hess, Developer
-- Emi Hayakawa, Designer
-- Bella Jacoby, Designer
-
-## README Authors
-Amanda Bak, Anuj Varma, Emma Langfitt.
-
-## Acknowledgements
-- This project was built in partnership with Professor Carissa Aoki of Bates College and Professor Matt Ayres of Dartmouth College. We thank them for approaching the DALI Lab and cooperating with us to build this product.
-- We would like to thank many representatives from the US Forest Service and the Georgia Forestry Commission for their help, feedback and willingness to participate in user interviews. Particular thanks to Michael Torbett.
-- Thank you to Tim Tregubov, Lorie Loeb, Natalie Jung, and Erica Lobel for their help, guidance, and advice.
-- Shout out to Paula Mendoza for guiding us during the first part of this project. The direction of the final product is in large part the result of your positive, guiding influence. Thanks!
-- Model for writing up this README drawn from https://github.com/dartmouth-cs98/18w-si32
+- Nathan Schneider
+- John McCambridge
+- Madeline Hess
+- Isabel Hurley
+- Anuj Varma
+- Emma Langfitt
