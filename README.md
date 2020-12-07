@@ -24,7 +24,8 @@ You must have [Node](https://nodejs.org) and [yarn](https://yarnpkg.com/) instal
 
 1. Clone the repository
 2. `yarn install`
-3. `yarn start` to run in the local development environment
+3. Add a `.env` file and paste in the necessary contents (see Handoff Document for this)
+4. `yarn start` to run in the local development environment
 
 ## Repository Structure
 
