@@ -64,6 +64,12 @@ The data in our app is split between trapping data and predictions data. The tra
 
 When the user switches their data mode (county or ranger district), our trapping and predictions reducers update their `data` field to be either the county level or ranger district level data for that data type. We keep the user's year/state selections if they are a valid filter within the new data.
 
+### Data Visualization
+
+We use Mapbox GL for rendering the maps on the trapping and predictions pages. We have a Mapbox account (see Handoff Document for account details) where we generated a specific map style for the site. We also uploaded specific tilesets to this Mapbox account and style for the ranger district and county shapes. We use Mapbox click and hover events for rendering tooltips and making selections. Each click handler that must use data from redux has to be re-generated when data changes, in order for the function to be bound to the current value of the variable. We leverage the `useEffect` and `useState` hooks from React in our map components to achieve this.
+
+We use Chart.js for rendering the graph on the trapping data page. We use a line graph component with three segments to make this happen. Chart.js renders the data on a canvas layer and handles all internal animations.
+
 ## Code Style
 
 We use React functional components and hooks in all of our components. We leverage the `useState` and `useEffect` hooks throughout each of our components.
