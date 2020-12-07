@@ -79,7 +79,13 @@ We use async/await for all asynchronous functions.
 
 ## Deployment
 
-Continuous deployment is setup with Netlify. Merging a PR to the master branch will trigger a new build. When the build passes, an update will be released.
+Continuous deployment is setup with Netlify.
+
+Merging a PR to the `dev` branch will trigger a new build in the dev environment. When the build passes, an update will be released at [https://pine-beetle-prediction-dev.netlify.app](https://pine-beetle-prediction-dev.netlify.app).
+
+Merging a PR to the `release` branch will trigger a new build in the production environment. When the build passes, an update will be released at [https://pine-beetle-prediction.netlify.app](https://pine-beetle-prediction.netlify.app).
+
+Pull requests should always be first merged into the `dev` branch so they are staged in the development environment. After smoke testing the changes in the development environment, developers can then choose to release those changes into production by generating a `DEV TO RELEASE` pull request from the `dev` branch to the `release` branch. One this single PR is merged into `release`, the changes will be built into the production environment and will be viewable at the production URL [https://pine-beetle-prediction.netlify.app](https://pine-beetle-prediction.netlify.app).
 
 ## Contributors
 
