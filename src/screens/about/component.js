@@ -44,6 +44,17 @@ const About = (_props) => {
           John McCambridge, Developer; Madeline Hess, Developer; Isabel Hurley, Developer; Anuj Varma, Team Manager; Emma Langfitt, Designer and Developer.
         </p>
       </div>
+      <div className="about-content-container">
+        <h2>Contact Information</h2>
+        <h3>Questions about the program</h3>
+        <p>Carissa Aoki: <a href="mailto:caoki@bates.edu">caoki@bates.edu</a></p>
+        <p>Matthew Ayres: <a href="mailto:matthew.p.ayres@dartmouth.edu">matthew.p.ayres@dartmouth.edu</a>
+        </p>
+        <h3>Questions about local forests</h3>
+        <p>US Forest Service: (800) 832-1355</p>
+        <h3>Questions about the tool</h3>
+        <p>Dartmouth DALI Lab: <a href="mailto:pine-beetle@dali.dartmouth.edu">pine-beetle@dali.dartmouth.edu</a></p>
+      </div>
     </div>
   );
 };
