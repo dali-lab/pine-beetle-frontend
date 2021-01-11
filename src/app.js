@@ -13,6 +13,7 @@ import {
 } from './state/actions';
 
 import {
+  About,
   Admin,
   TrappingData,
   Home,
@@ -95,6 +96,7 @@ const App = (props) => {
           <div className="content">
             <Switch>
               <Route exact path={ROUTES.HOME} component={Home} />
+              <Route path={ROUTES.ABOUT} component={About} />
               <Route path={ROUTES.ADMIN} component={Admin} />
               <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
               <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModel} />

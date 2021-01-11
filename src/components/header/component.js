@@ -17,6 +17,7 @@ const Header = (props) => {
     [ROUTES.TRAPPING_DATA]: 'Trapping Data',
     [ROUTES.PREDICTIONS]: 'Predict Outbreak',
     [ROUTES.PLAY_WITH_MODEL]: 'Play With Model',
+    [ROUTES.ABOUT]: 'About',
   };
 
   const setCountyMode = () => setDataMode(DATA_MODES.COUNTY);
