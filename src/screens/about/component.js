@@ -39,7 +39,7 @@ const About = (_props) => {
         </p>
         <h3>DALI Lab:</h3>
         <p>Web design and development by the Dartmouth Applied Learning and Innovation (DALI) Lab at Dartmouth College.
-          Lorie Loeb, Director and Co-founder; Thomas Monfre, Developer; Jeff Liu, Developer; Angela Zhang, Developer; Hannah Utter, Team Manager;
+          Thomas Monfre, Developer; Jeff Liu, Developer; Angela Zhang, Developer; Hannah Utter, Team Manager;
           Barkin Cavdaroglu, Designer; Darley Sackitey, Designer and Animator. Project members from previous iterations: Nathan Schneider, Developer;
           John McCambridge, Developer; Madeline Hess, Developer; Isabel Hurley, Developer; Anuj Varma, Team Manager; Emma Langfitt, Designer and Developer.
         </p>
