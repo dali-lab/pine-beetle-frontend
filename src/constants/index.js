@@ -69,6 +69,7 @@ const CHART_MODES = {
 };
 
 const ROUTES = {
+  ABOUT: '/about',
   ADMIN: '/admin',
   TRAPPING_DATA: '/trapping-data',
   HOME: '/',
