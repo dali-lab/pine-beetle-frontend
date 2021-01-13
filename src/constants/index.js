@@ -30,6 +30,9 @@ const getServerUrl = () => {
     case 'https://pine-beetle-prediction.netlify.app':
       return SERVER_ENDPOINTS.PROD;
 
+    case 'https://www.spbpredict.com':
+      return SERVER_ENDPOINTS.PROD;
+
     default:
       return SERVER_ENDPOINTS.DEV;
   }
@@ -44,6 +47,9 @@ const getAutomationServerUrl = () => {
       return AUTOMATION_SERVER_ENDPOINTS.DEV;
 
     case 'https://pine-beetle-prediction.netlify.app':
+      return AUTOMATION_SERVER_ENDPOINTS.PROD;
+
+    case 'https://www.spbpredict.com':
       return AUTOMATION_SERVER_ENDPOINTS.PROD;
 
     default:
