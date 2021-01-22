@@ -12,6 +12,8 @@ import { runPipeline } from '../../services/admin';
 
 import './style.scss';
 
+const guideURL = 'https://docs.google.com/document/u/1/d/e/2PACX-1vS-VkOBKcB3_nAsyIYUU-ogG-zezQd-XZmDt5SFqMPd6OkrpRXGtoa1_Fr0gDL6LBIwzQI9A6Ix3JKr/pub';
+
 const Admin = (props) => {
   const {
     isLoggedIn,
@@ -48,6 +50,7 @@ const Admin = (props) => {
         <h1>Admin Dashboard</h1>
         <div id="auth-header">
           <p>Hi, {lastName ? `${firstName} ${lastName}` : firstName}!</p>
+          <p>Before uploading any data, please read <a href={guideURL} target="_blank" rel="noopener noreferrer">this guide</a>.</p>
           <div id="header-options">
             <p id="sign-out" onClick={signOut}>Sign Out</p>
             <p id="change-password" onClick={() => setChangePasswordVisible(true)}>Change Password</p>
@@ -55,7 +58,7 @@ const Admin = (props) => {
         </div>
         <div id="dashboard-container">
           <div id="dashboard">
-            <div id="upload-container"><FileUpload /></div>
+            <div id="upload-container"><FileUpload guideURL={guideURL} /></div>
             <div id="user-container">
               <div id="users-container"><Users /></div>
               <div id="add-users"><AddUser /></div>
