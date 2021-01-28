@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ROUTES } from '../../constants';
+import { ROUTES, VIDEO_URL } from '../../constants';
 import './style.scss';
 
 const beetleIcon = require('../../assets/icons/background-beetle-color.png');
@@ -52,7 +52,17 @@ const Home = (_props) => {
           </Link>
         </div>
       </div>
-      {/* <div className="video">Video here</div> */}
+      <div id="video-container">
+        <div id="video-wrapper">
+          <iframe
+            title="Pine Beetle Description Video"
+            src={VIDEO_URL}
+            frameBorder="0"
+            width="100%"
+            height="100%"
+          />
+        </div>
+      </div>
       <div className="how-it-works">
         <div id="how-it-works-title-container">
           <div id="icon0">
