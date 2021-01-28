@@ -99,6 +99,8 @@ const DATA_TYPE_EXTENSIONS = {
   'text/csv': 'csv',
 };
 
+const VIDEO_URL = 'https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/preview';
+
 export {
   AUTOMATION_SERVER_ENDPOINTS,
   CHART_MODES,
@@ -115,4 +117,5 @@ export {
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
+  VIDEO_URL,
 };
