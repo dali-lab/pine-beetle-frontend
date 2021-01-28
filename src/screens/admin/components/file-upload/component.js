@@ -8,7 +8,9 @@ import {
 
 import './style.scss';
 
-const FileUpload = () => {
+const FileUpload = (props) => {
+  const { guideURL } = props;
+
   const [countySpotFile, setCountySpotFile] = useState();
   const [rdSpotFile, setRdSpotFile] = useState();
   const [unsummarizedFile, setUnsummarizedFile] = useState();
@@ -90,7 +92,7 @@ const FileUpload = () => {
   if (uploadingFileError) {
     return (
       <div id="uploading-error-container" className="uploading-message-container">
-        <h3>{uploadingFileError}</h3>
+        <h3>{uploadingFileError} Please read <a href={guideURL} target="_blank" rel="noopener noreferrer">this guide</a> for uploading data.</h3>
         <button
           type="button"
           onClick={clearError}

@@ -39,7 +39,7 @@ const Header = (props) => {
             <div id="nav-buttons">
               <div id="button-container">
                 {Object.entries(routes).map(([key, value]) => (
-                  <Link to={key} key={key} className={`nav-button ${(useLocation().pathname === key) ? 'active-nav' : 'inactive-nav'}`}>
+                  <Link to={key} key={key} className={`${value === 'About' ? 'nav-button-short' : 'nav-button'} ${(useLocation().pathname === key) ? 'active-nav' : 'inactive-nav'}`}>
                     {value}
                   </Link>
                 ))}

@@ -106,7 +106,7 @@
     background-color: #ffffff;
     margin-left: -60px;
     margin-bottom: 48px;
-    margin-top: 110px;
+    margin-top: 50px;
     width: 370px;
 }
 
@@ -187,4 +187,21 @@
     border-radius: 0px 0px 26px 26px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: #ffffff;
+}
+
+#video-container {
+    margin-top: 50px;
+
+    #video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* aspect ratio 16:9 */ 
+    }
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 }
