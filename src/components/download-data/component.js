@@ -216,7 +216,7 @@ const DownloadData = (props) => {
                   onChange={addFieldToDownload('SUMMARIZED')}
                   checked={fieldsToDownload.SUMMARIZED}
                 />
-                <span className="checkbox-text">Model input trapping data</span>
+                <span className="checkbox-text">Model input trapping &amp; spot data</span>
               </label>
             </div>
             <div>
