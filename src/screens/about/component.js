@@ -45,6 +45,10 @@ const About = (_props) => {
         </p>
       </div>
       <div className="about-content-container">
+        <h2>Grant</h2>
+        <p>Supported by the National Science Foundation under Award ID 1917002.</p>
+      </div>
+      <div className="about-content-container">
         <h2>Contact Information</h2>
         <h3>Questions about the program</h3>
         <p>Carissa Aoki: <a href="mailto:caoki@bates.edu">caoki@bates.edu</a></p>
