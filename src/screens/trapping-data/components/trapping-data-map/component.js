@@ -235,7 +235,7 @@ const HistoricalMap = (props) => {
       } = curr;
 
       const countyFormatName = `${county} ${state}`.toUpperCase();
-      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict).toUpperCase() : '';
+      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict)?.toUpperCase() : '';
 
       const localityDescription = dataMode === DATA_MODES.COUNTY ? countyFormatName : rangerDistrictFormatName;
 
