@@ -12,7 +12,7 @@ view by toggling the button below.`;
 const OverviewText = _props => (
   <div className="container" id="overview-text">
     <h1 id="title">
-      Trapping &amp; Spot Data
+      Historical and Model Input Data
     </h1>
     <img id="icon"
       data-tip={helpText}

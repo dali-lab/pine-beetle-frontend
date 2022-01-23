@@ -14,7 +14,7 @@ const Header = (props) => {
   } = props;
 
   const routes = {
-    [ROUTES.TRAPPING_DATA]: 'Trapping Data',
+    [ROUTES.TRAPPING_DATA]: 'Historical and Model Input Data',
     [ROUTES.PREDICTIONS]: 'Predict Outbreak',
     [ROUTES.PLAY_WITH_MODEL]: 'Play With Model',
     [ROUTES.ABOUT]: 'About',
