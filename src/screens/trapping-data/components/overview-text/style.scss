@@ -5,11 +5,24 @@
     margin-bottom: 50px;
 }
 
+#overview-explanation {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
 #title {
     font-family: 'Inter';
     font-size: 44px;
     letter-spacing: 1;
     margin-right: 21px;
+}
+
+#explanatory-text{
+    font-family: 'Inter';
+    font-size: 15px;
+    margin-bottom: 15px;
 }
 
 #icon {
