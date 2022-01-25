@@ -15,8 +15,6 @@ const initialState = {
   chartMode: CHART_MODES.GRAPH,
 };
 
-const rangerList = [];
-const countyList = [];
 
 const SelectionsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -43,12 +41,10 @@ const SelectionsReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.SET_COUNTY:
-      countyList.push(action.payload.county); // keeping an array for multi-select
-      return { ...state, county: countyList };
+      return { ...state, county: state.county.push(action.payload.county) };
 
     case ActionTypes.SET_RANGER_DISTRICT:
-      rangerList.push(action.payload.rangerDistrict);
-      return { ...state, rangerDistrict: rangerList };
+      return { ...state, rangerDistrict: state.rangerDistrict.push(action.payload.rangerDistrict) };
 
     case ActionTypes.SET_DATA_MODE:
       const {
