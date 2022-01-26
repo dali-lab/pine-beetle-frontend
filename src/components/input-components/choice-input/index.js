@@ -16,15 +16,12 @@ const ChoiceInput = (props) => {
 
   const [firstOptionText, setFirstOptionText] = useState('');
 
-  const arr = [];
-
   const submit = (event) => {
     if (event.target.value === '') {
       setValue('');
       setFirstOptionText(initialFirstOptionText);
     } else {
-      arr.push(event.target.value);
-      setValue(arr);
+      setValue(event.target.value);
       setFirstOptionText(CLEAR_TEXT);
     }
   };
