@@ -10,7 +10,7 @@ import App from './app';
 import './style.scss';
 
 // google analytics
-if (window.location.origin === 'https://pine-beetle-prediction.netlify.app') {
+if (process.env.ANALYTICS_ENV === 'PROD') {
   ReactGA.initialize('UA-133847731-1');
   ReactGA.pageview(window.location.pathname + window.location.search);
 }

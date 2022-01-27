@@ -20,17 +20,14 @@ const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
 const getServerUrl = () => {
-  switch (window.location.origin) {
-    case 'http://localhost:8080':
-      return SERVER_ENDPOINTS.DEV; // could to LOCAL if running server locally
+  switch (process.env.MAIN_BACKEND_ENV) {
+    case 'LOCAL':
+      return SERVER_ENDPOINTS.LOCAL;
 
-    case 'https://pine-beetle-prediction-dev.netlify.app':
+    case 'DEV':
       return SERVER_ENDPOINTS.DEV;
 
-    case 'https://pine-beetle-prediction.netlify.app':
-      return SERVER_ENDPOINTS.PROD;
-
-    case 'https://www.spbpredict.com':
+    case 'PROD':
       return SERVER_ENDPOINTS.PROD;
 
     default:
@@ -39,17 +36,14 @@ const getServerUrl = () => {
 };
 
 const getAutomationServerUrl = () => {
-  switch (window.location.origin) {
-    case 'http://localhost:8080':
-      return AUTOMATION_SERVER_ENDPOINTS.DEV; // could to LOCAL if running server locally
+  switch (process.env.AUTOMATION_ENV) {
+    case 'LOCAL':
+      return AUTOMATION_SERVER_ENDPOINTS.LOCAL;
 
-    case 'https://pine-beetle-prediction-dev.netlify.app':
+    case 'DEV':
       return AUTOMATION_SERVER_ENDPOINTS.DEV;
 
-    case 'https://pine-beetle-prediction.netlify.app':
-      return AUTOMATION_SERVER_ENDPOINTS.PROD;
-
-    case 'https://www.spbpredict.com':
+    case 'PROD':
       return AUTOMATION_SERVER_ENDPOINTS.PROD;
 
     default:
@@ -77,7 +71,7 @@ const CHART_MODES = {
 const ROUTES = {
   ABOUT: '/about',
   ADMIN: '/admin',
-  TRAPPING_DATA: '/trapping-data',
+  TRAPPING_DATA: '/historical-and-model-input-data',
   HOME: '/',
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predict-outbreak',
