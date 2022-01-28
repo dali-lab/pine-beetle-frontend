@@ -41,10 +41,10 @@ const SelectionsReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.SET_COUNTY:
-      return { ...state, county: [...state.county, action.payload.county] };
+      return { ...state, county: action.payload.county };
 
     case ActionTypes.SET_RANGER_DISTRICT:
-      return { ...state, rangerDistrict: [...state.county, action.payload.county] };
+      return { ...state, rangerDistrict: action.payload.rangerDistrict };
 
     case ActionTypes.SET_DATA_MODE:
       const {
@@ -59,8 +59,8 @@ const SelectionsReducer = (state = initialState, action) => {
         year: newYear,
         yearRange: newYearRange,
         state: newState,
-        county: [],
-        rangerDistrict: [],
+        county: '',
+        rangerDistrict: '',
         dataMode: mode,
       };
 

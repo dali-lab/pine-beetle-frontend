@@ -33,7 +33,6 @@ const SelectionBar = (props) => {
 
   const allStates = [...new Set(trappingData.map(obj => obj.state))].sort();
   const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
-  console.log('States: ', trappingData);
   const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
 
   const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
@@ -49,7 +48,7 @@ const SelectionBar = (props) => {
         <div id="end-year-selection"><TextInput setValue={setEndYear} value={endYear} /></div>
       </div>
       <div id="vl1" />
-      <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
+      <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" isMulti={false} />
       <div id="vl1" />
       <div className="menuInstruction">
         <div id="mode-selection">
@@ -78,6 +77,7 @@ const SelectionBar = (props) => {
             setValue={countyMode ? setCounty : setRangerDistrict}
             options={countyMode ? allCounties : allRangerDistricts}
             firstOptionText={countyMode ? 'County' : 'Ranger District'}
+            isMulti
           />
         </div>
       </div>
