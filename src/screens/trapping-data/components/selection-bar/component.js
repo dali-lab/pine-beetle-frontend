@@ -33,6 +33,7 @@ const SelectionBar = (props) => {
 
   const allStates = [...new Set(trappingData.map(obj => obj.state))].sort();
   const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
+  console.log('States: ', trappingData);
   const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
 
   const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
