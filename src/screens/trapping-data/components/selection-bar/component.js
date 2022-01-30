@@ -20,7 +20,6 @@ const SelectionBar = (props) => {
     rangerDistrict,
     selectedState,
     setCounty,
-    setDataMode,
     setEndYear,
     setRangerDistrict,
     setStartYear,
@@ -48,36 +47,15 @@ const SelectionBar = (props) => {
         <div id="end-year-selection"><TextInput setValue={setEndYear} value={endYear} /></div>
       </div>
       <div id="vl1" />
-      <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" isMulti={false} />
+      <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
       <div id="vl1" />
       <div className="menuInstruction">
-        <div id="mode-selection">
-          <button
-            id="mode-btn"
-            onClick={() => { setDataMode(DATA_MODES.COUNTY); }}
-            className={(countyMode) ? 'county-rd-selection' : null}
-            type="button"
-          >
-            County
-          </button>
-          <div id="vl2" />
-          <button
-            id="mode-btn"
-            onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
-            className={(!countyMode) ? 'county-rd-selection' : null}
-            type="button"
-          >
-            <span className="full-text">Ranger District</span>
-            <span className="short-text">RD</span>
-          </button>
-        </div>
         <div>
           <ChoiceInput
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? setCounty : setRangerDistrict}
             options={countyMode ? allCounties : allRangerDistricts}
             firstOptionText={countyMode ? 'County' : 'Ranger District'}
-            isMulti
           />
         </div>
       </div>

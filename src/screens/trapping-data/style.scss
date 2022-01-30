@@ -5,6 +5,40 @@
     margin-top: 45px;
 }
 
+#selection-location {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 250px;
+    height: 50px;
+    background-color: #FFFFFF;
+    border-radius: 100px;
+    border: 1px solid #B7B7B7;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25);
+
+    #selected-location {
+        background-color: #DFFBFF;
+        border-radius: 100px;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        #selected-location-text {
+            font-weight: bold;
+            color: #020202;
+        }
+    }
+    #unselected-location {
+        padding-left: 15px;
+        padding-right: 15px;
+        cursor: pointer;
+
+        #unselected-location-text {
+            color: #93949B;
+        }
+    }
+}
+
 #selection {
     text-align: right;
     margin-left: 30px;

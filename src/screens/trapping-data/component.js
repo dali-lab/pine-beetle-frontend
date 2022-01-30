@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CHART_MODES } from '../../constants';
+import { CHART_MODES, DATA_MODES } from '../../constants';
 
 import './style.scss';
 
@@ -22,6 +22,8 @@ const TrappingData = (props) => {
   const {
     chartMode,
     setChartMode,
+    setDataMode,
+    dataMode,
     isLoading,
     trappingData,
     trappingErrorText,
@@ -38,6 +40,24 @@ const TrappingData = (props) => {
       <OverviewText />
       <SelectionBar />
       <div id="view-selections" className="container">
+        <div id="selection-location">
+          <div
+            id={dataMode === DATA_MODES.COUNTY ? 'selected-location' : 'unselected-location'}
+            onClick={() => { setDataMode(DATA_MODES.COUNTY); }}
+          >
+            <p id={dataMode === DATA_MODES.COUNTY ? 'selected-location-text' : 'unselected-location-text'}>
+              Counties
+            </p>
+          </div>
+          <div
+            id={dataMode !== DATA_MODES.COUNTY ? 'selected-location' : 'unselected-location'}
+            onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
+          >
+            <p id={dataMode !== DATA_MODES.COUNTY ? 'selected-location-text' : 'unselected-location-text'}>
+              Federal Land
+            </p>
+          </div>
+        </div>
         <div id="selection" onClick={setGraphView}>
           <img
             src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
