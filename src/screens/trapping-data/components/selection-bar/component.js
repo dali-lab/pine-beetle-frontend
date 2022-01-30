@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { TextInput, ChoiceInput } from '../../../../components/input-components';
+// import { TextInput, ChoiceInput, MultiSelectInput } from '../../../../components/input-components';
+import { TextInput, MultiSelectInput } from '../../../../components/input-components';
 
 import { DATA_MODES } from '../../../../constants';
 
@@ -46,10 +47,17 @@ const SelectionBar = (props) => {
         {/* TODO: "to" */}
         <div id="end-year-selection"><TextInput setValue={setEndYear} value={endYear} /></div>
       </div>
-      <div id="vl1" />
-      <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
-      <div id="vl1" />
-      <div className="menuInstruction">
+      <MultiSelectInput
+        title="Locations"
+        type={countyMode ? 'Counties' : 'Federal land'}
+        valueParent={selectedStateName}
+        valueChildren={countyMode ? county : rangerDistrict}
+        setValueParent={setStateAbbrev}
+        setValueChildren={countyMode ? setCounty : setRangerDistrict}
+        optionsParent={statesMappedToNames}
+        optionsChildren={countyMode ? allCounties : allRangerDistricts}
+      />
+      {/* <div className="menuInstruction">
         <div>
           <ChoiceInput
             value={countyMode ? county : rangerDistrict}
@@ -58,7 +66,7 @@ const SelectionBar = (props) => {
             firstOptionText={countyMode ? 'County' : 'Ranger District'}
           />
         </div>
-      </div>
+      </div> */}
       <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections} type="button">Clear</button>
     </div>
   );

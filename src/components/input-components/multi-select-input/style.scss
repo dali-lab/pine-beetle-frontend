@@ -1,0 +1,35 @@
+.multi-select-container {
+    background-color: #F5F5F5;
+    .input-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #FFFFFF;
+
+        .location-type {
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-right: 1vw;
+            width: 150px;
+        }
+        .separation-line {
+            width: 5px;
+            background-color: #F5F5F5;
+        }
+        .location-wrapper {
+            width: 300px;
+            
+            .location-list {
+                position: absolute;
+
+                .location-list-item {
+                    background-color: #FFFFFF;
+                    width: 300px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+    }
+}
