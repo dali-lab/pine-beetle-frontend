@@ -5,26 +5,28 @@ import Prediction from './component';
 const mapStateToProps = (state) => {
   const {
     error: {
-      predictionsError: {
-        text: predictionsErrorText,
+      fetchError: {
+        text: fetchErrorText,
       },
     },
-    predictions: {
-      data: predictionData,
+    data: {
+      data,
       fetchingCounty,
       fetchingRangerDistrict,
     },
     selections: {
       state: selectedState,
+      endYear,
     },
   } = state;
 
   const isLoading = fetchingCounty && fetchingRangerDistrict;
+  const predictionData = data.filter(({ isValidForPrediction, year }) => !!isValidForPrediction && year === endYear);
 
   return {
+    data: predictionData,
+    fetchErrorText,
     isLoading,
-    predictionData,
-    predictionsErrorText,
     selectedState,
   };
 };

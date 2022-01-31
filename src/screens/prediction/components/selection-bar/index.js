@@ -14,16 +14,18 @@ import {
 const mapStateToProps = (state) => {
   const {
     selections: {
-      year,
+      endYear: year,
       state: selectedState,
       county,
       rangerDistrict,
       dataMode,
     },
-    predictions: {
-      data: predictionsData,
+    data: {
+      data,
     },
   } = state;
+
+  const predictionsData = data.filter(({ isValidForPrediction }) => !!isValidForPrediction);
 
   return {
     county,

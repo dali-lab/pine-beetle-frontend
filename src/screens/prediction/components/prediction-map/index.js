@@ -17,18 +17,20 @@ const mapStateToProps = (state) => {
       dataMode,
       rangerDistrict,
       state: selectedState,
-      year,
+      endYear: year,
     },
-    predictions: {
+    data: {
       county: allCountyData,
-      data: predictionsData,
+      data: rawData,
       rangerDistrict: allRangerDistrictData,
     },
   } = state;
 
-  const allCounties = [...new Set(predictionsData.map(obj => obj.county))];
+  const data = rawData.filter(doc => !!doc.isValidForPrediction && doc.year === year);
+
+  const allCounties = [...new Set(data.map(obj => obj.county))];
   const allRangerDistricts = [...new Set(allRangerDistrictData.map(obj => obj.rangerDistrict))];
-  const allSelectedStates = [...new Set(predictionsData.map(obj => obj.state))];
+  const allSelectedStates = [...new Set(data.map(obj => obj.state))];
 
   const allRelevantData = dataMode === DATA_MODES.COUNTY ? allCountyData : allRangerDistrictData;
   const allTotalStates = [...new Set(allRelevantData.filter(obj => obj.year === year).map(obj => obj.state))];
@@ -40,7 +42,7 @@ const mapStateToProps = (state) => {
     allTotalStates,
     county,
     dataMode,
-    predictionsData,
+    data,
     rangerDistrict,
     selectedState,
     year,

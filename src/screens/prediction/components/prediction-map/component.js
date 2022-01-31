@@ -49,8 +49,8 @@ const PredictionMap = (props) => {
     allRangerDistricts,
     allSelectedStates,
     allTotalStates,
+    data,
     dataMode,
-    predictionsData,
     selectedState,
     setCounty,
     setRangerDistrict,
@@ -113,10 +113,8 @@ const PredictionMap = (props) => {
       if (pred && x && y) {
         const {
           county: countyName,
-          prediction: {
-            'prob.Spots>0': probAny,
-            'prob.Spots>53': probOutbreak,
-          },
+          probSpotsGT0: probAny,
+          probSpotsGT50: probOutbreak,
         } = pred;
 
         setPredictionHover((
@@ -203,13 +201,13 @@ const PredictionMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode);
+      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, data, dataMode);
       setMapClickCallback(() => callback);
       createdMap.on('click', VECTOR_LAYER, callback);
     }
 
     if (createdMap._listeners.mousemove === undefined) {
-      const callback = createMapHoverCallback(predictionsData, allRangerDistricts, dataMode, selectedState, allSelectedStates);
+      const callback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, allSelectedStates);
       setMapHoverCallback(() => callback);
       createdMap.on('mousemove', callback);
     }
@@ -237,12 +235,10 @@ const PredictionMap = (props) => {
 
     predictions.forEach(({
       county,
-      prediction,
+      probSpotsGT50: fillProb,
       rangerDistrict,
       state,
     }) => {
-      const fillProb = prediction['prob.Spots>53'];
-
       let color;
 
       if (fillProb <= 0.025) {
@@ -396,7 +392,7 @@ const PredictionMap = (props) => {
   useEffect(() => {
     if (!map) return;
 
-    if (year.toString().length === 4 && predictionsData.length > 0) colorPredictions(predictionsData);
+    if (year.toString().length === 4 && data.length > 0) colorPredictions(data);
 
     if (selectedState) {
       const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
@@ -411,24 +407,24 @@ const PredictionMap = (props) => {
         zoom: 4.8,
       });
     }
-  }, [predictionsData, selectedState, map]);
+  }, [data, selectedState, map]);
 
   useEffect(() => {
-    if (!initialFill && map && predictionsData.length > 0) {
-      colorPredictions(predictionsData);
+    if (!initialFill && map && data.length > 0) {
+      colorPredictions(data);
       setInitialFill(true);
     }
 
-    if (map && predictionsData) {
+    if (map && data) {
       // remove current callback
       if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
 
       // generate new callback
-      const callback = createMapHoverCallback(predictionsData, allRangerDistricts, dataMode, selectedState, allSelectedStates);
+      const callback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, allSelectedStates);
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
     }
-  }, [map, predictionsData, allRangerDistricts, dataMode, selectedState, allSelectedStates]);
+  }, [map, data, allRangerDistricts, dataMode, selectedState, allSelectedStates]);
 
   // update the click callback handler when all RD or all states changes
   useEffect(() => {
@@ -437,11 +433,11 @@ const PredictionMap = (props) => {
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
-      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode);
+      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, data, dataMode);
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
-  }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode]);
+  }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, data, dataMode]);
 
   useEffect(() => {
     if (map) {
@@ -477,10 +473,10 @@ const PredictionMap = (props) => {
   }, [map]);
 
   useEffect(() => {
-    if (predictionsData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
+    if (data.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
       map.removeLayer(VECTOR_LAYER);
     }
-  }, [predictionsData]);
+  }, [data]);
 
   return (
     <div className="container flex-item-left" id="map-container">

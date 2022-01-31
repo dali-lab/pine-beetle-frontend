@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 
 import { TextInput, ChoiceInput } from '../input-components';
@@ -19,6 +19,7 @@ const downloadIcon = require('../../assets/icons/download.png');
 const DownloadData = (props) => {
   const {
     county,
+    data,
     dataMode,
     endYear,
     rangerDistrict,
@@ -31,14 +32,20 @@ const DownloadData = (props) => {
     setStartYear,
     setState,
     startYear,
-    trappingData,
   } = props;
 
   // vars for year, county, rd selections
   const countyMode = dataMode === DATA_MODES.COUNTY;
-  const allStates = [...new Set(trappingData.map(obj => obj.state))].sort();
-  const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
-  const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
+
+  const [allStates, setAllStates] = useState([]);
+  const [allCounties, setAllCounties] = useState([]);
+  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
+
+  useEffect(() => {
+    setAllStates([...new Set(data.map(obj => obj.state))].sort());
+    setAllCounties(selectedState ? [...new Set(data.map((obj => obj.county)))].sort() : []);
+    setAllRangerDistricts(selectedState ? [...new Set(data.map((obj => obj.rangerDistrict)))].sort() : []);
+  }, [data]);
 
   const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
@@ -53,11 +60,9 @@ const DownloadData = (props) => {
 
   // vars for selecting types of data in modal
   const [fieldsToDownload, setFieldsToDownload] = useState({
-    PREDICTION: false,
     SUMMARIZED: false,
     UNSUMMARIZED: false,
     HELPER: false,
-    '1988-2009 DATA': false,
   });
 
   const addFieldToDownload = fieldName => e => setFieldsToDownload({
@@ -68,11 +73,9 @@ const DownloadData = (props) => {
   const selectAll = (selected) => {
     setFieldsToDownload({
       ...fieldsToDownload,
-      PREDICTION: selected,
       SUMMARIZED: selected,
       UNSUMMARIZED: selected,
       HELPER: selected,
-      '1988-2009 DATA': selected,
     });
   };
 
@@ -82,7 +85,7 @@ const DownloadData = (props) => {
       if (!value) return null;
 
       const dataTypeName = countyMode ? 'COUNTY' : 'RD';
-      const dataName = fieldName === 'PREDICTION' || fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
+      const dataName = fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
 
       return downloadCsv(dataName, {
         state: selectedState,
@@ -190,24 +193,13 @@ const DownloadData = (props) => {
                   type="checkbox"
                   id="select-all"
                   onChange={e => selectAll(e.target.checked)}
-                  checked={fieldsToDownload.PREDICTION && fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED}
+                  checked={fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED}
                 />
                 <span className="checkbox-text">Select All</span>
               </label>
             </div>
           </div>
           <div id="selection-types">
-            <div>
-              <label htmlFor="prediction-data">
-                <input
-                  type="checkbox"
-                  id="prediction-data"
-                  onChange={addFieldToDownload('PREDICTION')}
-                  checked={fieldsToDownload.PREDICTION}
-                />
-                <span className="checkbox-text">Predictions</span>
-              </label>
-            </div>
             <div>
               <label htmlFor="summarized-data">
                 <input
@@ -216,7 +208,7 @@ const DownloadData = (props) => {
                   onChange={addFieldToDownload('SUMMARIZED')}
                   checked={fieldsToDownload.SUMMARIZED}
                 />
-                <span className="checkbox-text">Model input trapping &amp; spot data</span>
+                <span className="checkbox-text">Summarized data by year/location</span>
               </label>
             </div>
             <div>
@@ -243,17 +235,6 @@ const DownloadData = (props) => {
                 <span className="checkbox-text">Include helper data*</span>
               </label>
             </div>
-            <div id="circle-checkbox">
-              <label htmlFor="include-old-data">
-                <input
-                  type="checkbox"
-                  id="include-old-data"
-                  onChange={addFieldToDownload('1988-2009 DATA')}
-                  checked={fieldsToDownload['1988-2009 DATA']}
-                />
-                <span className="checkbox-text">Include 1988-2009 data**</span>
-              </label>
-            </div>
           </div>
           <div>
             {isDownloading ? (
@@ -277,7 +258,6 @@ const DownloadData = (props) => {
           </div>
           <div id="modal-footnote-container">
             <p className="modal-footnote">* helper data includes ranger district name mappings and state abbreviation mappings</p>
-            <p className="modal-footnote">** 1988-2009 data is in an Excel workbook and is formatted differently than current data</p>
           </div>
         </div>
       </Modal>

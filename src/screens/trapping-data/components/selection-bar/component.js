@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { TextInput, ChoiceInput } from '../../../../components/input-components';
 
@@ -13,8 +13,9 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    clearAllSelections,
+    clearSelections,
     county,
+    data,
     dataMode,
     endYear,
     rangerDistrict,
@@ -26,14 +27,19 @@ const SelectionBar = (props) => {
     setStartYear,
     setState,
     startYear,
-    trappingData,
   } = props;
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const allStates = [...new Set(trappingData.map(obj => obj.state))].sort();
-  const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
-  const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
+  const [allStates, setAllStates] = useState([]);
+  const [allCounties, setAllCounties] = useState([]);
+  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
+
+  useEffect(() => {
+    setAllStates([...new Set(data.map(obj => obj.state))].sort());
+    setAllCounties(selectedState ? [...new Set(data.map((obj => obj.county)))].sort() : []);
+    setAllRangerDistricts(selectedState ? [...new Set(data.map((obj => obj.rangerDistrict)))].sort() : []);
+  }, [data]);
 
   const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
@@ -80,7 +86,7 @@ const SelectionBar = (props) => {
           />
         </div>
       </div>
-      <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections} type="button">Clear</button>
+      <button id="reset-current-data-button" className="animated-button" onClick={clearSelections} type="button">Clear</button>
     </div>
   );
 };

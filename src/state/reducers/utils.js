@@ -39,8 +39,8 @@ export const filterLocation = (array, action) => (
  * @param {Array<Object>} array array of objects to filter
  * @param {Object} action redux action
  */
-export const filterYear = (array, action) => (
-  array.filter((obj) => {
+export const filterYear = (array, action) => {
+  return array.filter((obj) => {
     const { year } = action.payload;
 
     if (year) {
@@ -48,17 +48,17 @@ export const filterYear = (array, action) => (
     } else {
       return true;
     }
-  })
-);
+  });
+};
 
 /**
  * @description filters array of objects based on year range filters
  * @param {Array<Object>} array array of objects to filter
  * @param {Object} action redux action
  */
-export const filterYearRange = (array, action) => (
-  array.filter((obj) => {
-    const { startYear, endYear } = action.payload.yearRange;
+export const filterYearRange = (array, action) => {
+  return array.filter((obj) => {
+    const { startYear, endYear } = action.payload;
 
     if (startYear && endYear) {
       return obj.year >= startYear && obj.year <= endYear;
@@ -69,5 +69,5 @@ export const filterYearRange = (array, action) => (
     } else {
       return true;
     }
-  })
-);
+  });
+};

@@ -3,10 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import {
-  getCountyPredictions,
-  getCountyTrapping,
-  getRangerDistrictPredictions,
-  getRangerDistrictTrapping,
+  getCountyData,
+  getRangerDistrictData,
   getUserFromStorage,
   setChartMode,
   setDataMode,
@@ -50,8 +48,7 @@ const FallBack = () => {
 
 const App = (props) => {
   const {
-    countyPredictions,
-    countyTrapping,
+    countyData,
     loginUserFromStorage,
   } = props;
 
@@ -62,10 +59,8 @@ const App = (props) => {
     global.AUTOMATION_API_URL = getAutomationServerUrl();
 
     // fetch initial data
-    props.getCountyTrapping();
-    props.getRangerDistrictTrapping();
-    props.getCountyPredictions();
-    props.getRangerDistrictPredictions();
+    props.getCountyData();
+    props.getRangerDistrictData();
 
     // fetch user data if persist in browser
     if (getAuthTokenFromStorage() && getUserIdFromStorage()) {
@@ -84,7 +79,7 @@ const App = (props) => {
   // set all trapping/prediction all fields to county once we get them
   useEffect(() => {
     props.setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
-  }, [countyPredictions, countyTrapping]);
+  }, [countyData]);
 
   if (isMobile) return <MobileOverlay />;
 
@@ -113,33 +108,23 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
   const {
-    trappings: {
-      county: countyTrapping,
-    },
-    predictions: {
-      county: countyPredictions,
+    data: {
+      county: countyData,
     },
   } = state;
 
   return {
-    countyPredictions,
-    countyTrapping,
+    countyData,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCountyPredictions: (filters) => {
-      dispatch(getCountyPredictions(filters));
+    getCountyData: (filters) => {
+      dispatch(getCountyData(filters));
     },
-    getCountyTrapping: (filters) => {
-      dispatch(getCountyTrapping(filters));
-    },
-    getRangerDistrictPredictions: (filters) => {
-      dispatch(getRangerDistrictPredictions(filters));
-    },
-    getRangerDistrictTrapping: (filters) => {
-      dispatch(getRangerDistrictTrapping(filters));
+    getRangerDistrictData: (filters) => {
+      dispatch(getRangerDistrictData(filters));
     },
     loginUserFromStorage: () => {
       dispatch(getUserFromStorage());

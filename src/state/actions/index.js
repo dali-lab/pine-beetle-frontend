@@ -12,30 +12,24 @@ import {
   setChartMode,
   setCounty,
   setDataMode,
+  setEndYear,
   setRangerDistrict,
+  setStartYear,
   setState,
   setYear,
-  setYearRange,
 } from './selections';
 
 import {
-  ActionTypes as trappingActionTypes,
-  getCountyTrapping,
-  getRangerDistrictTrapping,
-} from './trapping';
-
-import {
-  ActionTypes as predictionActionTypes,
-  clearCustomPredictionError,
-  getCountyPredictions,
-  getRangerDistrictPredictions,
+  ActionTypes as dataActionTypes,
+  getCountyData,
+  getRangerDistrictData,
   runCustomPrediction,
-} from './predictions';
+  clearCustomPredictionError,
+} from './data';
 
 const ActionTypes = {
-  ...predictionActionTypes,
+  ...dataActionTypes,
   ...selectionActionTypes,
-  ...trappingActionTypes,
   ...userActionTypes,
 };
 
@@ -43,10 +37,8 @@ export {
   ActionTypes,
   clearCustomPredictionError,
   clearSelections,
-  getCountyPredictions,
-  getCountyTrapping,
-  getRangerDistrictPredictions,
-  getRangerDistrictTrapping,
+  getCountyData,
+  getRangerDistrictData,
   getUserFromStorage,
   login,
   runCustomPrediction,
@@ -54,9 +46,10 @@ export {
   setChartMode,
   setCounty,
   setDataMode,
+  setEndYear,
   setRangerDistrict,
+  setStartYear,
   setState,
   setYear,
-  setYearRange,
   signOut,
 };

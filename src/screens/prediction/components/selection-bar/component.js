@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { TextInput, ChoiceInput } from '../../../../components/input-components';
 
@@ -28,9 +28,15 @@ const SelectionBar = (props) => {
     year,
   } = props;
 
-  const allStates = [...new Set(predictionsData.map(obj => obj.state))].sort();
-  const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))].sort() : [];
-  const allRangerDistricts = selectedState ? [...new Set(predictionsData.map((obj => obj.rangerDistrict)))].sort() : [];
+  const [allStates, setAllStates] = useState([]);
+  const [allCounties, setAllCounties] = useState([]);
+  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
+
+  useEffect(() => {
+    setAllStates([...new Set(predictionsData.map(obj => obj.state))].sort());
+    setAllCounties(selectedState ? [...new Set(predictionsData.map((obj => obj.county)))].sort() : []);
+    setAllRangerDistricts(selectedState ? [...new Set(predictionsData.map((obj => obj.rangerDistrict)))].sort() : []);
+  }, [predictionsData]);
 
   const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);

@@ -3,11 +3,8 @@ import { ActionTypes } from '../actions';
 import { DATA_MODES, CHART_MODES } from '../../constants';
 
 const initialState = {
-  year: new Date().getFullYear(),
-  yearRange: {
-    startYear: 2010,
-    endYear: new Date().getFullYear(),
-  },
+  startYear: 1988,
+  endYear: new Date().getFullYear(),
   state: '',
   county: '',
   rangerDistrict: '',
@@ -18,18 +15,13 @@ const initialState = {
 const SelectionsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.SET_YEAR:
-      return { ...state, year: action.payload.year };
+      return { ...state, startYear: action.payload.year, endYear: action.payload.year };
 
-    case ActionTypes.SET_YEAR_RANGE:
-      const { startYear, endYear } = action.payload.yearRange;
+    case ActionTypes.SET_START_YEAR:
+      return { ...state, startYear: action.payload.startYear };
 
-      return {
-        ...state,
-        yearRange: {
-          startYear: startYear === '' ? '' : (startYear || state.yearRange.startYear),
-          endYear: endYear === '' ? '' : (endYear || state.yearRange.endYear),
-        },
-      };
+    case ActionTypes.SET_END_YEAR:
+      return { ...state, endYear: action.payload.endYear };
 
     case ActionTypes.SET_STATE:
       return {
@@ -49,14 +41,14 @@ const SelectionsReducer = (state = initialState, action) => {
       const {
         mode,
         state: newState,
-        year: newYear,
-        yearRange: newYearRange,
+        startYear,
+        endYear,
       } = action.payload;
 
       return {
         ...state,
-        year: newYear,
-        yearRange: newYearRange,
+        startYear,
+        endYear,
         state: newState,
         county: '',
         rangerDistrict: '',
@@ -64,13 +56,18 @@ const SelectionsReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.CLEAR_SELECTIONS:
-      const year = action.payload.trappingData.reduce((prev, curr) => (
-        prev.year > curr.year ? prev : curr
-      ), {})?.year || state.yearRange.endYear;
+      const {
+        startYear: dataStartYear,
+        endYear: dataEndYear,
+      } = action.payload.data.reduce((prev, curr) => ({
+        startYear: (!prev.startYear || prev.startYear > curr.year) ? curr.year : prev.startYear,
+        endYear: (!prev.endYear || prev.endYear < curr.year) ? curr.year : prev.endYear,
+      }), { startYear: null, endYear: null });
 
       return {
         ...initialState,
-        year,
+        startYear: dataStartYear,
+        endYear: dataEndYear,
         dataMode: state.dataMode,
         chartMode: state.chartMode,
       };

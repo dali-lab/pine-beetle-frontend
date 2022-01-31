@@ -7,7 +7,8 @@ import {
 
 export const ActionTypes = {
   SET_YEAR: 'SET_YEAR',
-  SET_YEAR_RANGE: 'SET_YEAR_RANGE',
+  SET_START_YEAR: 'SET_START_YEAR',
+  SET_END_YEAR: 'SET_END_YEAR',
   SET_STATE: 'SET_STATE',
   SET_COUNTY: 'SET_COUNTY',
   SET_RANGER_DISTRICT: 'SET_RANGER_DISTRICT',
@@ -20,19 +21,15 @@ export const ActionTypes = {
 };
 
 /**
- * @description returns object of trapping and prediction data
+ * @description returns object of data
  * @param {Object} store redux store
  * @param {String} [mode] data mode (optional)
  */
 const attachData = (store, mode) => {
   const {
-    trappings: {
-      county: countyTrappings,
-      rangerDistrict: rdTrappings,
-    },
-    predictions: {
-      county: countyPredictions,
-      rangerDistrict: rdPredictions,
+    data: {
+      county,
+      rangerDistrict,
     },
     selections: {
       dataMode,
@@ -42,8 +39,7 @@ const attachData = (store, mode) => {
   const modeToCompare = mode || dataMode;
 
   return {
-    trappingData: modeToCompare === DATA_MODES.COUNTY ? countyTrappings : rdTrappings,
-    predictionData: modeToCompare === DATA_MODES.COUNTY ? countyPredictions : rdPredictions,
+    data: modeToCompare === DATA_MODES.COUNTY ? county : rangerDistrict,
   };
 };
 
@@ -52,6 +48,8 @@ const attachData = (store, mode) => {
  */
 export const setYear = (year) => {
   return (dispatch, getState) => {
+    // TODO: here should send a new request to the backend for data, filtering on the provided year and location information in redux
+
     dispatch({
       type: ActionTypes.SET_YEAR,
       payload: {
@@ -63,20 +61,34 @@ export const setYear = (year) => {
 };
 
 /**
- * @description action creator for setting end year
+ * @description action creator for setting start year
  */
-export const setYearRange = (startYear, endYear) => {
+export const setStartYear = (startYear) => {
   return (dispatch, getState) => {
+    // TODO: here should send a new request to the backend for data, filtering on the provided year and location information in redux
+
     dispatch({
-      type: ActionTypes.SET_YEAR_RANGE,
+      type: ActionTypes.SET_START_YEAR,
       payload: {
         ...getState().selections,
-        yearRange: {
-          // explicit check against undefined instead of falsey value because empty string is valid input for nothing,
-          // whereas undefined is strictly when not provided (so we default to previous value in this case)
-          startYear: startYear !== undefined ? startYear : getState().selections.yearRange.startYear,
-          endYear: endYear !== undefined ? endYear : getState().selections.yearRange.endYear,
-        },
+        startYear,
+      },
+    });
+  };
+};
+
+/**
+ * @description action creator for setting start year
+ */
+export const setEndYear = (endYear) => {
+  return (dispatch, getState) => {
+    // TODO: here should send a new request to the backend for data, filtering on the provided year and location information in redux
+
+    dispatch({
+      type: ActionTypes.SET_END_YEAR,
+      payload: {
+        ...getState().selections,
+        endYear,
       },
     });
   };
@@ -87,21 +99,22 @@ export const setYearRange = (startYear, endYear) => {
  */
 export const setAllYears = () => {
   return (dispatch, getState) => {
-    const { trappingData } = attachData(getState());
-    const years = trappingData.map(({ year }) => year);
+    const { data } = attachData(getState());
+    const years = data.map(({ year }) => year);
 
     const startYear = Math.min(...years);
     const endYear = Math.max(...years);
 
+    // TODO: here should send a new request to the backend for data, filtering on the provided year and location information in redux
+
     dispatch({
-      type: ActionTypes.SET_YEAR_RANGE,
-      payload: {
-        ...getState().selections,
-        yearRange: {
-          startYear,
-          endYear,
-        },
-      },
+      type: ActionTypes.SET_START_YEAR,
+      payload: { ...getState().selections, startYear },
+    });
+
+    dispatch({
+      type: ActionTypes.SET_END_YEAR,
+      payload: { ...getState().selections, endYear },
     });
   };
 };
@@ -111,6 +124,8 @@ export const setAllYears = () => {
  */
 export const setState = (state) => {
   return (dispatch, getState) => {
+    // TODO: here should send a new request to the backend for data, filtering on the provided state and year information in redux
+
     dispatch({
       type: ActionTypes.SET_STATE,
       payload: {
@@ -127,6 +142,8 @@ export const setState = (state) => {
  */
 export const setCounty = (county) => {
   return (dispatch, getState) => {
+    // TODO: here should send a new request to the backend for data, filtering on the provided county and state/year information in redux
+
     dispatch({
       type: ActionTypes.SET_COUNTY,
       payload: {
@@ -142,6 +159,8 @@ export const setCounty = (county) => {
  */
 export const setRangerDistrict = (rangerDistrict) => {
   return (dispatch, getState) => {
+    // TODO: here should send a new request to the backend for data, filtering on the provided ranger district and state/year information in redux
+
     dispatch({
       type: ActionTypes.SET_RANGER_DISTRICT,
       payload: {
@@ -157,6 +176,8 @@ export const setRangerDistrict = (rangerDistrict) => {
  */
 export const clearSelections = () => {
   return (dispatch, getState) => {
+    // TODO: here should send a new request to the backend for all data
+
     dispatch({
       type: ActionTypes.CLEAR_SELECTIONS,
       payload: {
@@ -172,40 +193,36 @@ export const clearSelections = () => {
  */
 export const setDataMode = (mode) => {
   return (dispatch, getState) => {
+    // TODO: here should send a new request to the backend for all data of the new mode and should clear out other data
+
     setDataModeInStorage(mode);
 
-    const data = attachData(getState(), mode);
-
-    const { state, year, yearRange } = getState().selections;
+    const { data } = attachData(getState(), mode);
+    const { state, startYear, endYear } = getState().selections;
 
     // determine if selections are in the new data we are using
-    const stateInData = [...new Set(data.trappingData.map(d => d.state))].includes(state);
-    const yearInData = [...new Set(data.trappingData.map(d => d.year))].includes(year);
-    const startYearInData = [...new Set(data.trappingData.map(d => d.year))].includes(yearRange.startYear);
-    const endYearInData = [...new Set(data.trappingData.map(d => d.year))].includes(yearRange.endYear);
+    const stateInData = [...new Set(data.map(d => d.state))].includes(state);
+    const startYearInData = [...new Set(data.map(d => d.year))].includes(startYear);
+    const endYearInData = [...new Set(data.map(d => d.year))].includes(endYear);
 
     // determine min and max year
-    const minYear = data.trappingData.reduce((prev, curr) => (prev.year < curr.year ? prev : curr), {})?.year || yearRange.startYear;
-    const maxYear = data.trappingData.reduce((prev, curr) => (prev.year > curr.year ? prev : curr), {})?.year || yearRange.endYear;
+    const minYear = data.reduce((prev, curr) => (prev.year < curr.year ? prev : curr), {})?.year || startYear;
+    const maxYear = data.reduce((prev, curr) => (prev.year > curr.year ? prev : curr), {})?.year || endYear;
 
     dispatch({
       type: ActionTypes.SET_DATA_MODE,
       payload: {
-        ...data,
+        data,
         ...getState().selections,
         // update selections based on if we can keep or have to clear
-        year: yearInData ? year : maxYear,
-        yearRange: {
-          startYear: startYearInData ? yearRange.startYear : minYear,
-          endYear: endYearInData ? yearRange.endYear : maxYear,
-        },
+        startYear: startYearInData ? startYear : minYear,
+        endYear: endYearInData ? endYear : maxYear,
         state: stateInData ? state : '',
         mode,
         filtersToApply: {
           endYearInData,
           startYearInData,
           stateInData,
-          yearInData,
         },
       },
     });

@@ -2,16 +2,16 @@ import axios from 'axios';
 
 import { toQueryParams } from '../utils';
 
-const COUNTY_SUBROUTE = 'county-prediction';
-const RD_SUBROUTE = 'rd-prediction';
+const COUNTY_SUBROUTE = 'summarized-county';
+const RANGERDISTRICT_SUBROUTE = 'summarized-rangerdistrict';
 const R_MODEL_SUBROUTE = 'r-model';
 
 /**
- * @description retrieves all county prediction data
+ * @description retrieves all summarized county data
  * @param {Object} filters optional filters
  * @returns {Promise<Object>} API response
  */
-export const getAllCountyData = async (filters) => {
+export async function getAllCountyData(filters) {
   const params = toQueryParams(filters);
 
   const url = `${global.API_URL}/${COUNTY_SUBROUTE}/${params ? `?${params}` : ''}`;
@@ -23,17 +23,17 @@ export const getAllCountyData = async (filters) => {
     console.log(error);
     throw error;
   }
-};
+}
 
 /**
- * @description retrieves all ranger district prediction data
+ * @description retrieves all summarized ranger district data
  * @param {Object} filters optional filters
  * @returns {Promise<Object>} API response
  */
-export const getAllRDData = async (filters) => {
+export async function getAllRangerDistrictData(filters) {
   const params = toQueryParams(filters);
 
-  const url = `${global.API_URL}/${RD_SUBROUTE}/${params ? `?${params}` : ''}`;
+  const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/${params ? `?${params}` : ''}`;
 
   try {
     const { data: { data } } = await axios.get(url);
@@ -42,7 +42,8 @@ export const getAllRDData = async (filters) => {
     console.log(error);
     throw error;
   }
-};
+}
+
 
 /**
  * @description runs R model on custom input
@@ -53,7 +54,7 @@ export const getAllRDData = async (filters) => {
  * @param {Number|Boolean} endobrev whether or not endobrev was used
  * @returns {Promise<Object>} model results
  */
-export const runCustomPrediction = async (cleridst1, spotst1, spotst2, SPB, endobrev) => {
+export async function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev) {
   const params = toQueryParams({
     cleridst1,
     endobrev: +endobrev, // note: this casts true to 1 and false to 0 if it is a boolean
@@ -71,4 +72,4 @@ export const runCustomPrediction = async (cleridst1, spotst1, spotst2, SPB, endo
     console.log(error);
     throw error;
   }
-};
+}

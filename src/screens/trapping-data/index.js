@@ -7,27 +7,25 @@ import TrappingData from './component';
 const mapStateToProps = (state) => {
   const {
     error: {
-      trappingError: {
-        text: trappingErrorText,
+      fetchError: {
+        text: errorText,
       },
     },
     selections: {
       chartMode,
     },
-    trappings: {
-      data: trappingData,
+    data: {
       fetchingCounty,
       fetchingRangerDistrict,
     },
   } = state;
 
-  const isLoading = fetchingCounty && fetchingRangerDistrict;
+  const isLoading = fetchingCounty || fetchingRangerDistrict;
 
   return {
     chartMode,
     isLoading,
-    trappingData,
-    trappingErrorText,
+    errorText,
   };
 };
 

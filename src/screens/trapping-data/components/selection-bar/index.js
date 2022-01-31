@@ -6,49 +6,48 @@ import {
   clearSelections,
   setCounty,
   setDataMode,
+  setEndYear,
   setRangerDistrict,
+  setStartYear,
   setState,
-  setYearRange,
 } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
     selections: {
-      yearRange: {
-        startYear,
-        endYear,
-      },
+      startYear,
+      endYear,
       state: selectedState,
       county,
       rangerDistrict,
       dataMode,
     },
-    trappings: {
-      data: trappingData,
+    data: {
+      data,
     },
   } = state;
 
   return {
     county,
+    data,
+    dataMode,
     endYear,
     rangerDistrict,
     selectedState,
     startYear,
-    trappingData,
-    dataMode,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearAllSelections: () => {
+    clearSelections: () => {
       dispatch(clearSelections());
     },
     setStartYear: (startYear) => {
-      dispatch(setYearRange(startYear, undefined));
+      dispatch(setStartYear(startYear));
     },
     setEndYear: (endYear) => {
-      dispatch(setYearRange(undefined, endYear));
+      dispatch(setEndYear(endYear));
     },
     setCounty: (county) => {
       dispatch(setCounty(county));

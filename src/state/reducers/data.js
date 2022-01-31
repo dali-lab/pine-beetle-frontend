@@ -6,46 +6,56 @@ import {
   getFullDataArray,
   filterLocation,
   filterYearRange,
+  filterYear,
 } from './utils';
 
 const initialState = {
   data: [], // current data (changes when user updates data mode, components should import this)
   county: [], // the county data
   rangerDistrict: [], // the ranger district data
+  customPrediction: {},
 
   fetchingCounty: false,
   fetchingRangerDistrict: false,
+  fetchingCustomPrediction: false,
 };
 
 const TrappingReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.SET_COUNTY_TRAPPING:
+    case ActionTypes.SET_COUNTY_DATA:
       return { ...state, county: action.payload };
 
-    case ActionTypes.SET_RANGER_DISTRICT_TRAPPING:
+    case ActionTypes.SET_RANGERDISTRICT_DATA:
       return { ...state, rangerDistrict: action.payload };
 
-    case ActionTypes.FETCHING_COUNTY_TRAPPING:
+    case ActionTypes.SET_CUSTOM_PREDICTION:
+      return { ...state, customPrediction: action.payload };
+
+    case ActionTypes.FETCHING_COUNTY_DATA:
       return { ...state, fetchingCounty: action.payload };
 
-    case ActionTypes.FETCHING_RANGER_DISTRICT_TRAPPING:
+    case ActionTypes.FETCHING_RANGERDISTRICT_DATA:
       return { ...state, fetchingRangerDistrict: action.payload };
+
+    case ActionTypes.FETCHING_CUSTOM_PREDICTION:
+      return { ...state, fetchingCustomPrediction: action.payload };
 
     case ActionTypes.SET_DATA_MODE:
       return { ...state, data: filterYearRange(filterLocation(getFullDataArray(action.payload.mode, state), action), action) };
 
     case ActionTypes.SET_YEAR:
-      return state;
+      return {
+        ...state,
+        data: filterYear(filterLocation(getFullDataArray(action.payload.dataMode, state), action), action),
+      };
 
-      // keeping this in case we want trapping data to filter on year (likely not)
-      // return {
-      //   ...state,
-      //   data: filterLocation(getFullDataArray(action.payload.dataMode, state).filter(obj => (
-      //     obj.year === action.payload.year
-      //   )), action),
-      // };
+    case ActionTypes.SET_START_YEAR:
+      return {
+        ...state,
+        data: filterYearRange(filterLocation(getFullDataArray(action.payload.dataMode, state), action), action),
+      };
 
-    case ActionTypes.SET_YEAR_RANGE:
+    case ActionTypes.SET_END_YEAR:
       return {
         ...state,
         data: filterYearRange(filterLocation(getFullDataArray(action.payload.dataMode, state), action), action),

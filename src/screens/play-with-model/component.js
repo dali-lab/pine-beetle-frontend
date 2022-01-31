@@ -17,11 +17,10 @@ const PlayWithModel = (props) => {
   const {
     clearError, // function to clear the error
     county,
-    countyTrappingsData,
     dataMode,
+    fullData,
     isError, // whether or not an error occurred
     rangerDistrict,
-    rangerDistrictTrappingsData,
     runCustomPrediction, // function to call for running the prediction
     selectedState,
     year,
@@ -50,8 +49,8 @@ const PlayWithModel = (props) => {
   };
 
   useEffect(() => {
-    const sublocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
-    const dataArray = dataMode === DATA_MODES.COUNTY ? countyTrappingsData : rangerDistrictTrappingsData;
+    const sublocation = dataMode === DATA_MODES.COUNTY ? 'county' : 'rangerDistrict';
+    const selectedSubLocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
 
     // sets input fields to 0 if selection cleared
     if (!selectedState && !sublocation) {
@@ -64,11 +63,10 @@ const PlayWithModel = (props) => {
       });
     } else if (year && selectedState && sublocation) {
       // filter to find relevant data fields
-      const relevantData = dataArray
+      const relevantData = fullData
         .filter(obj => (
           obj.state === selectedState
-          && ((dataMode === DATA_MODES.COUNTY && obj.county === county)
-            || (dataMode === DATA_MODES.RANGER_DISTRICT && obj.rangerDistrict === rangerDistrict))
+          && obj[sublocation] === selectedSubLocation
           && (obj.year === year || obj.year === year - 1)
         ));
 
@@ -85,7 +83,7 @@ const PlayWithModel = (props) => {
       } = currentYearObject;
 
       const {
-        cleridPer2Weeks,
+        cleridsPer2Weeks,
       } = previousYearObject;
 
       // update the state
@@ -94,7 +92,7 @@ const PlayWithModel = (props) => {
         spotst2: (spotst2 || 0),
         spb: (spbPer2Weeks || 0),
         endobrev: (endobrev || 0),
-        cleridst1: (cleridPer2Weeks || 0),
+        cleridst1: (cleridsPer2Weeks || 0),
       });
     }
   }, [year, selectedState, county, rangerDistrict, dataMode]);
