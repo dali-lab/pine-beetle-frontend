@@ -5,68 +5,71 @@
     margin-top: 45px;
 }
 
-#selection-location {
+.selection {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
     width: 300px;
-    height: 50px;
+    height: 40px;
     background-color: #FFFFFF;
     border-radius: 100px;
     border: 1px solid #B7B7B7;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25);
+    margin-left: 2vw;
 
-    #selected-location {
+    .selected-option {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         background-color: #DFFBFF;
         border-radius: 100px;
         padding-left: 25px;
         padding-right: 25px;
 
-        #selected-location-text {
+        .selected-option-text {
             font-weight: bold;
             color: #020202;
         }
+        img {
+            height: 20px;
+            width: 20px;
+        }
     }
-    #unselected-location {
+    .selected-option-2 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #F1E0FE;
+        border-radius: 100px;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        .selected-option-text {
+            font-weight: bold;
+            color: #020202;
+        }
+        img {
+            height: 20px;
+            width: 20px;
+            margin-right: 10px;
+        }
+    }
+    .unselected-option {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         padding-left: 15px;
         padding-right: 15px;
         cursor: pointer;
 
-        #unselected-location-text {
+        .unselected-option-text {
             color: #93949B;
         }
+        img {
+            height: 20px;
+            width: 20px;
+            margin-right: 10px;
+        }
     }
-}
-
-#selection {
-    text-align: right;
-    margin-left: 30px;
-    cursor: pointer;
-}
-
-#selection img {
-    height: 20px;
-    width: 20px;
-}
-
-#selected-view {
-    color: black;
-    font-weight: medium;
-}
-
-.view-selection-btn {
-    border: none;
-    cursor: pointer;   
-    background-color: #FBFBFD;
-    font-family: 'Inter';
-    font-weight: normal;
-    font-size: 21px;
-    text-align: right;
-    color: #7c7c96;
-}
-
-.view-selection-btn img { 
-    width: 20px;
-    height: 20px;
 }
