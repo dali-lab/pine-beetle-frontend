@@ -109,6 +109,7 @@ const DownloadData = (props) => {
           className="animated-button"
         >
           <img
+            id="download-icon"
             src={downloadIcon}
             alt="download icon"
           />

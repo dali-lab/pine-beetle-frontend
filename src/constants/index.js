@@ -71,7 +71,7 @@ const CHART_MODES = {
 const ROUTES = {
   ABOUT: '/about',
   ADMIN: '/admin',
-  TRAPPING_DATA: '/historical-and-model-input-data',
+  TRAPPING_DATA: '/historical-data',
   HOME: '/',
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predict-outbreak',

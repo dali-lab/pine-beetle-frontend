@@ -1,6 +1,7 @@
 #download-button-container {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
 
 #download-button img {
@@ -13,19 +14,19 @@
     border-radius: 6px;
     background-color: #ced6fe;
     display: flex;
-    margin-bottom: 90px;
-    margin-right: unquote("max(100px, 13%)");
 }
 
-#download-button img {
-    width: 24px;
-    height: 24px;
+#download-icon{
+    width: 22px !important; //overrides image styling from title-area of header
+    height: 22px !important;
+    margin-right: 7px !important;
 }
+
 
 #download-button p {
-    margin-left: 20px;
-    font-size: 18px;
+    font-size: 15px;
     text-align: left;
+    white-space: nowrap;
     color: #000000;
 }
 
