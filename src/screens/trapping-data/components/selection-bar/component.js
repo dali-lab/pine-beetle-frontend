@@ -28,7 +28,7 @@ const SelectionBar = (props) => {
     trappingData,
   } = props;
 
-  function generateYearOptions() {
+  const yearOptions = () => {
     const max = year;
     const min = 1988;
     const years = [];
@@ -37,7 +37,7 @@ const SelectionBar = (props) => {
       years.push(i);
     }
     return years;
-  }
+  };
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
@@ -53,13 +53,13 @@ const SelectionBar = (props) => {
   return (
     <div id="predictionbar-trapping" className="container">
       <div id="year-selection">
-        <div id="start-year-selection"><ChoiceInput instructions="Year" setValue={setStartYear} options={generateYearOptions()} /></div>
+        <div id="start-year-selection"><ChoiceInput instructions="Year" setValue={setStartYear} options={yearOptions()} /></div>
         <div id="vl3" />
         {/* TODO: "to" */}
-        <div id="end-year-selection"><ChoiceInput setValue={setEndYear} options={generateYearOptions()} /></div>
+        <div id="end-year-selection"><ChoiceInput setValue={setEndYear} options={yearOptions()} /></div>
       </div>
       <div id="vl1" />
-      <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" isMulti={false} />
+      <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
       <div id="vl1" />
       <div className="menuInstruction">
         <div id="mode-selection">
@@ -88,7 +88,6 @@ const SelectionBar = (props) => {
             setValue={countyMode ? setCounty : setRangerDistrict}
             options={countyMode ? allCounties : allRangerDistricts}
             firstOptionText={countyMode ? 'County' : 'Ranger District'}
-            isMulti
           />
         </div>
       </div>
