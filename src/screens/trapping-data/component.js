@@ -11,7 +11,7 @@ import {
   SelectionBar,
 } from './components';
 
-import { DownloadData, Loading } from '../../components';
+import { Loading } from '../../components';
 
 const mapSelectedIcon = require('../../assets/icons/map-selected.png');
 const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
@@ -90,7 +90,6 @@ const TrappingData = (props) => {
       <div className="container">
         {isGraphView ? <LineChart data={trappingData} /> : <TrappingDataMap />}
       </div>
-      <DownloadData />
     </div>
   );
 };
