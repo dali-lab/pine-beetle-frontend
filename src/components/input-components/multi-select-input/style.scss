@@ -5,6 +5,8 @@
         flex-direction: row;
         align-items: center;
         background-color: #FFFFFF;
+        height: 40px;
+        border-radius: 10px;
 
         .location-type {
             padding-left: 20px;
@@ -18,16 +20,48 @@
         }
         .location-wrapper {
             width: 300px;
+            cursor: pointer;
             
             .location-list {
                 position: absolute;
+                max-height: 325px;
+                overflow-y: scroll;
 
                 .location-list-item {
-                    background-color: #FFFFFF;
+                    background-color: #F3F3F3;
                     width: 300px;
-                    height: 40px;
                     display: flex;
-                    align-items: center;
+                    flex-direction: column;
+
+                    .location-list-item-select {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        height: 40px;
+
+                        .location-list-item-select-checkbox {
+                            margin-left: 10px;
+                            margin-right: 10px;
+                        }
+                    }
+
+                    .children-list {
+                        position: relative;
+                        margin-left: 50px;
+        
+                        .children-list-item {
+                            background-color: #F3F3F3;
+                            width: 250px;
+                            height: 40px;
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+
+                            .location-list-item-select-checkbox {
+                                margin-right: 10px;
+                            }
+                        }
+                    }
                 }
             }
         }

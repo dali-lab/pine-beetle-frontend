@@ -3,7 +3,7 @@ import React from 'react';
 // import { TextInput, ChoiceInput, MultiSelectInput } from '../../../../components/input-components';
 import { TextInput, MultiSelectInput } from '../../../../components/input-components';
 
-import { DATA_MODES } from '../../../../constants';
+import { DATA_MODES, allStates } from '../../../../constants';
 
 import {
   getStateNameFromAbbreviation,
@@ -31,13 +31,15 @@ const SelectionBar = (props) => {
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const allStates = [...new Set(trappingData.map(obj => obj.state))].sort();
+  const states = [...new Set(trappingData.map(obj => obj.state))].sort();
   const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
   const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
 
-  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const statesMappedToNames = states.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
+
+  console.log('allStates: ', statesMappedToNames);
 
   return (
     <div id="predictionbar-trapping" className="container">
@@ -54,19 +56,9 @@ const SelectionBar = (props) => {
         valueChildren={countyMode ? county : rangerDistrict}
         setValueParent={setStateAbbrev}
         setValueChildren={countyMode ? setCounty : setRangerDistrict}
-        optionsParent={statesMappedToNames}
+        optionsParent={allStates}
         optionsChildren={countyMode ? allCounties : allRangerDistricts}
       />
-      {/* <div className="menuInstruction">
-        <div>
-          <ChoiceInput
-            value={countyMode ? county : rangerDistrict}
-            setValue={countyMode ? setCounty : setRangerDistrict}
-            options={countyMode ? allCounties : allRangerDistricts}
-            firstOptionText={countyMode ? 'County' : 'Ranger District'}
-          />
-        </div>
-      </div> */}
       <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections} type="button">Clear</button>
     </div>
   );
