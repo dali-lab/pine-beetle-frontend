@@ -39,7 +39,6 @@ const SelectionBar = (props) => {
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
-  console.log(statesMappedToNames);
 
   return (
     <div id="predictionbar-trapping" className="container">
