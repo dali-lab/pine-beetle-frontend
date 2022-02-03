@@ -14,6 +14,7 @@ import {
 const mapStateToProps = (state) => {
   const {
     selections: {
+      year,
       yearRange: {
         startYear,
         endYear,
@@ -29,6 +30,7 @@ const mapStateToProps = (state) => {
   } = state;
 
   return {
+    year,
     county,
     endYear,
     rangerDistrict,
