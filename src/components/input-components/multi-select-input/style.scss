@@ -52,10 +52,11 @@
                         .children-list-item {
                             background-color: #F3F3F3;
                             width: 250px;
-                            height: 40px;
+                            min-height: 40px;
                             display: flex;
                             flex-direction: row;
                             align-items: center;
+                            word-break:break-all;
 
                             .location-list-item-select-checkbox {
                                 margin-right: 10px;

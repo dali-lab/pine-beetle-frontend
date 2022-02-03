@@ -10,7 +10,9 @@ export const ActionTypes = {
   SET_YEAR_RANGE: 'SET_YEAR_RANGE',
   SET_STATE: 'SET_STATE',
   SET_COUNTY: 'SET_COUNTY',
+  SET_COUNTIES: 'SET_COUNTIES',
   SET_RANGER_DISTRICT: 'SET_RANGER_DISTRICT',
+  SET_FEDERAL_LANDS: 'SET_FEDERAL_LANDS',
   CLEAR_SELECTIONS: 'CLEAR_SELECTIONS',
   SET_ALL_STATES: 'SET_ALL_STATES',
   SET_ALL_COUNTIES: 'SET_ALL_COUNTIES',
@@ -26,7 +28,7 @@ export const ActionTypes = {
  */
 const attachData = (store, mode) => {
   const {
-    trappings: {
+    trappings: { // might want to modify how we attach data with multiple counties/RDs
       county: countyTrappings,
       rangerDistrict: rdTrappings,
     },
@@ -138,6 +140,21 @@ export const setCounty = (county) => {
 };
 
 /**
+ * @description action creator for setting multiple counties
+ */
+export const setCounties = (counties) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: ActionTypes.SET_COUNTIES,
+      payload: {
+        ...getState().selections,
+        counties,
+      },
+    });
+  };
+};
+
+/**
  * @description action creator for setting ranger district
  */
 export const setRangerDistrict = (rangerDistrict) => {
@@ -147,6 +164,21 @@ export const setRangerDistrict = (rangerDistrict) => {
       payload: {
         ...getState().selections,
         rangerDistrict,
+      },
+    });
+  };
+};
+
+/**
+ * @description action creator for setting multiple federal lands
+ */
+export const setFederalLands = (federalLands) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: ActionTypes.SET_FEDERAL_LANDS,
+      payload: {
+        ...getState().selections,
+        federalLands,
       },
     });
   };

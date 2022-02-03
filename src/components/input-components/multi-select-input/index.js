@@ -17,47 +17,26 @@ const MultiSelectInput = (props) => {
     valueParent,
     valueChildren,
     setValueParent,
-    // setValueChildren,
+    setValueChildren,
     optionsParent,
     optionsChildren,
   } = props;
 
   const [statusText, setStatusText] = useState('');
   const [isListOpen, setIsListOpen] = useState(false);
-  const [parent, setParent] = useState('');
-  const [selectedValues, setSelectedValues] = useState([]);
-
-  // const submit = (event) => {
-  //   if (event.target.value === '') {
-  //     setValue('');
-  //     setFirstOptionText(initialFirstOptionText);
-  //   } else {
-  //     setValue(event.target.value);
-  //     setFirstOptionText(CLEAR_TEXT);
-  //   }
-  // };
-
-  // const optsParent = [
-  //   ...optionsParent.filter(op => !!op).map(op => (
-  //     <option value={op} key={op}>{op}</option>
-  //   )),
-  // ];
-
-  // const optsChildren = [
-  //   ...optionsChildren.filter(op => !!op).map(op => (
-  //     <option value={op} key={op}>{op}</option>
-  //   )),
-  // ];
-
 
   useEffect(() => {
     setStatusText(valueParent ? 'some selected' : CLEAR_TEXT);
-  }, [valueParent, valueChildren]);
+  }, [valueChildren]);
+
+  useEffect(() => {
+    setValueChildren([]);
+  }, [valueParent]);
 
   const handleRemove = (element) => {
-    const newValueList = selectedValues.filter(e => e !== element);
-    setSelectedValues(newValueList);
-    // setValueChildren(newValueList);
+    const newValueList = valueChildren.filter(e => e !== element);
+    // setSelectedValues(newValueList);
+    setValueChildren(newValueList);
   };
 
   console.log('Counties: ', optionsChildren);
@@ -86,36 +65,35 @@ const MultiSelectInput = (props) => {
                   <div
                     className="location-list-item-select"
                     onClick={() => {
-                      setParent(parent === item ? '' : item); // local
-                      setValueParent(parent === item ? '' : item); // redux
+                      setValueParent(valueParent === item ? '' : item); // redux
                     }}
                   >
                     <img
-                      src={parent === item ? dashCheckbox : emptyCheckbox}
+                      src={valueParent === item ? dashCheckbox : emptyCheckbox}
                       alt="Parent checkbox"
                       className="location-list-item-select-checkbox"
                     />
                     {item}
                   </div>
                   {/* Second dropdown displaying all children data of a selected parent (e.g. counties of a state) */}
-                  {parent === item && (
+                  {valueParent === item && (
                   <div className="children-list">
                     {optionsChildren.map(child => (
                       <div
                         className="children-list-item"
                         key={child}
                         onClick={() => {
-                          if (selectedValues.indexOf(child) > -1) {
+                          if (valueChildren.indexOf(child) > -1) {
                             handleRemove(child);
                           } else {
-                            setSelectedValues([...selectedValues, child]);
-                            // setValueChildren([...selectedValues, child]);
+                            // setSelectedValues([...selectedValues, child]);
+                            setValueChildren([...valueChildren, child]);
                           }
-                          console.log('Selected values: ', selectedValues);
+                          // console.log('Selected values: ', selectedValues);
                         }}
                       >
                         <img
-                          src={(selectedValues.indexOf(child) > -1) ? selectedCheckbox : emptyCheckbox}
+                          src={(valueChildren.indexOf(child) > -1) ? selectedCheckbox : emptyCheckbox}
                           alt="Child checkbox"
                           className="location-list-item-select-checkbox"
                         />
@@ -136,7 +114,3 @@ const MultiSelectInput = (props) => {
 };
 
 export default MultiSelectInput;
-
-/* <select className="selection-no-button" onChange={submit} value={value}>
-{opts}
-</select> */

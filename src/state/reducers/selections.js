@@ -9,8 +9,10 @@ const initialState = {
     endYear: new Date().getFullYear(),
   },
   state: '',
-  county: [], // change to array for multi-select
-  rangerDistrict: [], // change to array for multi-select
+  county: '',
+  counties: [], // for multi-select purposes
+  rangerDistrict: '',
+  federalLands: [], // for multi-select purposes
   dataMode: DATA_MODES.COUNTY,
   chartMode: CHART_MODES.GRAPH,
 };
@@ -43,8 +45,14 @@ const SelectionsReducer = (state = initialState, action) => {
     case ActionTypes.SET_COUNTY:
       return { ...state, county: action.payload.county };
 
+    case ActionTypes.SET_COUNTIES:
+      return { ...state, counties: action.payload.counties };
+
     case ActionTypes.SET_RANGER_DISTRICT:
       return { ...state, rangerDistrict: action.payload.rangerDistrict };
+
+    case ActionTypes.SET_FEDERAL_LANDS:
+      return { ...state, federalLands: action.payload.federalLands };
 
     case ActionTypes.SET_DATA_MODE:
       const {

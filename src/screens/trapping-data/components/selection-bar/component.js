@@ -15,14 +15,14 @@ import './style.scss';
 const SelectionBar = (props) => {
   const {
     clearAllSelections,
-    county,
+    counties,
     dataMode,
     endYear,
-    rangerDistrict,
+    federalLands,
     selectedState,
-    setCounty,
+    setCounties,
     setEndYear,
-    setRangerDistrict,
+    setFederalLands,
     setStartYear,
     setState,
     startYear,
@@ -53,9 +53,9 @@ const SelectionBar = (props) => {
         title="Locations"
         type={countyMode ? 'Counties' : 'Federal land'}
         valueParent={selectedStateName}
-        valueChildren={countyMode ? county : rangerDistrict}
+        valueChildren={countyMode ? counties : federalLands}
         setValueParent={setStateAbbrev}
-        setValueChildren={countyMode ? setCounty : setRangerDistrict}
+        setValueChildren={countyMode ? setCounties : setFederalLands}
         optionsParent={allStates}
         optionsChildren={countyMode ? allCounties : allRangerDistricts}
       />
