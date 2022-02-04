@@ -14,7 +14,7 @@ import {
 import './style.scss';
 
 const closeIcon = require('../../assets/icons/close.png');
-const downloadIcon = require('../../assets/icons/download.png');
+const downloadIcon = require('../../assets/icons/download-white.png');
 
 const DownloadData = (props) => {
   const {
@@ -108,11 +108,13 @@ const DownloadData = (props) => {
           id="download-button"
           className="animated-button"
         >
+          <p>Download Data</p>
           <img
+            id="download-icon"
             src={downloadIcon}
             alt="download icon"
           />
-          <p>Download Data</p>
+
         </button>
       </div>
 

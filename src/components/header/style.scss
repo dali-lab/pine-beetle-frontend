@@ -5,7 +5,7 @@
 
     #title-area {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         background-color: #FBFBFD;
 
@@ -67,49 +67,14 @@
                 }
             }
 
-            #data-mode-toggle-container {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
+        }
 
-                background-color: white;
-                padding: 5px;
-                border-radius: 5px;
-                margin-left: 10px;
-
-                button {
-                    border: none;
-                    border-radius: 10px;
-                    padding: 8px 13px 7px 15px;
-                    margin-left: 5px;
-                    margin-right: 5px;
-                    font-family: "Inter";
-                }
-
-                button:hover {
-                    cursor: pointer;
-                }
-
-                .selected {
-                    background-color: #c9cdd9;
-                    font-weight: 600;
-                    color: #2d2d2d;
-                }
-
-                .unselected {
-                    background-color: white;
-                    border: solid 1.5px #edf0f6;
-                    color: #9397a3;
-                }
-
-                #data-mode-county {
-                    width: 76px;
-                }
-
-                #data-mode-rangerdistrict {
-                    width: 126px;
-                }
-            }
+        #download-button-area {
+            display: flex;
+            background-color: white;
+            padding: 5px;
+            justify-content: center;
+            align-content: center;
         }
 
         .nav-button {
