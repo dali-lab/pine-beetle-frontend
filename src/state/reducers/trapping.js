@@ -79,6 +79,20 @@ const TrappingReducer = (state = initialState, action) => {
         }),
       };
 
+    case ActionTypes.SET_COUNTIES:
+      if (action.payload.dataMode !== DATA_MODES.COUNTY) return state;
+
+      return {
+        ...state,
+        data: filterYearRange(getFullDataArray(action.payload.dataMode, state), action).filter((obj) => {
+          if (action.payload.counties.length > 0) {
+            return obj.state === action.payload.state && action.payload.counties.indexOf(obj.county) > -1;
+          } else {
+            return obj.state === action.payload.state;
+          }
+        }),
+      };
+
     case ActionTypes.SET_RANGER_DISTRICT:
       if (action.payload.dataMode !== DATA_MODES.RANGER_DISTRICT) return state;
 

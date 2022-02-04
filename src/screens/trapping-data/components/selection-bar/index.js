@@ -28,6 +28,8 @@ const mapStateToProps = (state) => {
     },
     trappings: {
       data: trappingData,
+      county: countyData,
+      rangerDistrict: federalLandData,
     },
   } = state;
 
@@ -40,6 +42,8 @@ const mapStateToProps = (state) => {
     selectedState,
     startYear,
     trappingData,
+    countyData,
+    federalLandData,
     dataMode,
   };
 };

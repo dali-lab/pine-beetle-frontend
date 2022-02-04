@@ -16,9 +16,11 @@ const SelectionBar = (props) => {
   const {
     clearAllSelections,
     counties,
+    countyData,
     dataMode,
     endYear,
     federalLands,
+    federalLandData,
     selectedState,
     setCounties,
     setEndYear,
@@ -26,20 +28,22 @@ const SelectionBar = (props) => {
     setStartYear,
     setState,
     startYear,
-    trappingData,
+    // trappingData,
   } = props;
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const states = [...new Set(trappingData.map(obj => obj.state))].sort();
-  const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
-  const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
+  // const states = [...new Set(trappingData.map(obj => obj.state))].sort();
+  // const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
+  // const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
 
-  const statesMappedToNames = states.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  // counties/FLs for the selected state (pass to Multi select child options to not lose them)
+  const selectedCounties = selectedState ? [...new Set(countyData.filter(obj => obj.state === selectedState).map((obj => obj.county)))].sort() : [];
+  const selectedFederalLand = selectedState ? [...new Set(federalLandData.filter(obj => obj.state === selectedState).map((obj => obj.rangerDistrict)))].sort() : [];
+
+  // const statesMappedToNames = states.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
-
-  console.log('allStates: ', statesMappedToNames);
 
   return (
     <div id="predictionbar-trapping" className="container">
@@ -57,7 +61,7 @@ const SelectionBar = (props) => {
         setValueParent={setStateAbbrev}
         setValueChildren={countyMode ? setCounties : setFederalLands}
         optionsParent={allStates}
-        optionsChildren={countyMode ? allCounties : allRangerDistricts}
+        optionsChildren={countyMode ? selectedCounties : selectedFederalLand}
       />
       <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections} type="button">Clear</button>
     </div>
