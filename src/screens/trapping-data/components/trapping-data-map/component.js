@@ -42,11 +42,8 @@ const STATE_VECTOR_LAYER = 'states';
 
 const HistoricalMap = (props) => {
   const {
-    allCounties,
-    allRangerDistricts,
-    allSelectedStates,
-    allTotalStates,
-    data: rawData,
+    availableStates,
+    availableSublocations,
     dataMode,
     endYear,
     selectedState,
@@ -54,6 +51,7 @@ const HistoricalMap = (props) => {
     setRangerDistrict,
     setState,
     startYear,
+    sublocationData: rawData,
   } = props;
 
   const [map, setMap] = useState();
@@ -67,7 +65,7 @@ const HistoricalMap = (props) => {
   const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
 
   // twice-curried function for generating hover callback
-  const createMapHoverCallback = (allData, rangerDistricts, mode, state, availableStates) => (e) => {
+  const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => (e) => {
     if (!map || !e || !map.isStyleLoaded()) return;
 
     const counties = map.queryRenderedFeatures(e.point, {
@@ -92,7 +90,7 @@ const HistoricalMap = (props) => {
 
       const data = allData.filter((p) => {
         return (
-          (mode === DATA_MODES.RANGER_DISTRICT || ((p.state === hoverState && p.state === state) || (!state && availableStates.includes(hoverState))))
+          (mode === DATA_MODES.RANGER_DISTRICT || ((p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState))))
           && ((p.county === location && mode === DATA_MODES.COUNTY)
         || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT))
         );
@@ -101,18 +99,19 @@ const HistoricalMap = (props) => {
       if (data && data.length > 0 && x && y) {
         const countyName = data.find(t => t.county) ? data.find(t => t.county).county : '';
 
-        const avgSpbPer2Weeks = data.reduce((acc, curr) => (acc + curr.spbPer2Weeks), 0) / data.length;
-        const avgCleridsPer2Weeks = data.reduce((acc, curr) => (acc + curr.cleridsPer2Weeks), 0) / data.length;
-
-        const spots = data.map(obj => obj.spots).filter(s => s !== null && s !== undefined);
-        const spotRange = { max: parseInt(Math.max(...spots), 10), min: parseInt(Math.min(...spots), 10) };
+        const {
+          avgSpbPer2Weeks,
+          avgCleridsPer2Weeks,
+          minSpotst0,
+          maxSpotst0,
+        } = data[0];
 
         setTrappingHover((
           <div id="trapping-hover" style={{ left: `${x + 10}px`, top: `${y - 140}px` }}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
             <p>Average SPB Per 2 Weeks: {Number.isNaN(avgSpbPer2Weeks) ? 'null' : avgSpbPer2Weeks.toFixed(2)}</p>
             <p>Average Clerids Per 2 Weeks: {Number.isNaN(avgCleridsPer2Weeks) ? 'null' : avgCleridsPer2Weeks.toFixed(2)}</p>
-            {!Number.isNaN(spotRange.min) && !Number.isNaN(spotRange.max) ? <p>Spot Range: [{spotRange.min}, {spotRange.max}]</p> : null}
+            {!Number.isNaN(minSpotst0) && !Number.isNaN(maxSpotst0) ? <p>Spot Range: [{minSpotst0}, {maxSpotst0}]</p> : null}
           </div>
         ));
       } else {
@@ -192,13 +191,13 @@ const HistoricalMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, rawData, dataMode);
+      const callback = createMapClickCallback(availableStates, availableSublocations, availableSublocations, selectedState, rawData, dataMode);
       setMapClickCallback(() => callback);
       createdMap.on('click', VECTOR_LAYER, callback);
     }
 
     if (createdMap._listeners.mousemove === undefined) {
-      const callback = createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, allSelectedStates, allCounties);
+      const callback = createMapHoverCallback(rawData, availableSublocations, dataMode, selectedState, availableStates);
       setMapHoverCallback(callback);
       createdMap.on('mousemove', callback);
     }
@@ -206,11 +205,11 @@ const HistoricalMap = (props) => {
     setMap(createdMap);
   };
 
-  const colorFill = (trappings) => {
+  const colorFill = (d) => {
     // keep trying until map styles are loaded
     if (!map.isStyleLoaded()) {
       setTimeout(() => {
-        colorFill(trappings);
+        colorFill(d);
       }, 1000);
 
       return;
@@ -224,12 +223,12 @@ const HistoricalMap = (props) => {
     const fillExpression = ['match', ['upcase', ['get', 'forest']]];
     const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
 
-    const trappingsByLocality = trappings.reduce((acc, curr) => {
+    const trappingsByLocality = d.reduce((acc, curr) => {
       const {
         county,
         rangerDistrict,
         state,
-        spotst0,
+        sumSpotst0,
       } = curr;
 
       const countyFormatName = `${county} ${state}`.toUpperCase();
@@ -239,30 +238,24 @@ const HistoricalMap = (props) => {
 
       return {
         ...acc,
-        [localityDescription]: {
-          sum: (acc[localityDescription]?.sum || 0) + spotst0,
-          numEntries: (acc[localityDescription]?.numEntries || 0) + (spotst0 !== null), // 0 if null, 1 otherwise
-        },
+        [localityDescription]: sumSpotst0,
       };
     }, {});
 
-    Object.entries(trappingsByLocality).forEach(([localityDescription, spotData]) => {
-      const { sum, numEntries } = spotData;
-      const spotst0 = numEntries === 0 ? null : sum / numEntries;
-
+    Object.entries(trappingsByLocality).forEach(([localityDescription, sumSpotst0]) => {
       let color;
 
-      if (spotst0 === null) {
+      if (sumSpotst0 === null) {
         color = colors[0];
-      } else if (spotst0 < 10) {
+      } else if (sumSpotst0 < 10) {
         color = colors[1];
-      } else if (spotst0 < 20) {
+      } else if (sumSpotst0 < 20) {
         color = colors[2];
-      } else if (spotst0 < 50) {
+      } else if (sumSpotst0 < 50) {
         color = colors[3];
-      } else if (spotst0 < 100) {
+      } else if (sumSpotst0 < 100) {
         color = colors[4];
-      } else if (spotst0 < 250) {
+      } else if (sumSpotst0 < 250) {
         color = colors[5];
       } else {
         color = colors[6];
@@ -429,23 +422,23 @@ const HistoricalMap = (props) => {
       if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
 
       // generate new callback
-      const callback = createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, allSelectedStates, allCounties);
+      const callback = createMapHoverCallback(rawData, availableSublocations, dataMode, selectedState, availableStates);
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
     }
-  }, [map, rawData, allRangerDistricts, dataMode, selectedState, allSelectedStates, allCounties]);
+  }, [map, rawData, availableSublocations, dataMode, selectedState, availableStates]);
 
   useEffect(() => {
-    if (map && allTotalStates && allCounties && allRangerDistricts) {
+    if (map && availableStates && availableSublocations) {
       // remove current callback
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
-      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, rawData, dataMode);
+      const callback = createMapClickCallback(availableStates, availableSublocations, availableSublocations, selectedState, rawData, dataMode);
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
-  }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, rawData, dataMode]);
+  }, [map, availableStates, availableSublocations, availableSublocations, selectedState, rawData, dataMode]);
 
   useEffect(() => {
     if (map) {
@@ -457,7 +450,7 @@ const HistoricalMap = (props) => {
         const { abbrev } = e?.features[0]?.properties || {};
 
         // state must exist, not be current selection and must be a valid state
-        if (abbrev && selectedState !== abbrev && allTotalStates.includes(abbrev)) {
+        if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
           setState(abbrev);
         }
       };
@@ -465,7 +458,7 @@ const HistoricalMap = (props) => {
       setMapStateClickCallback(() => callback);
       map.on('click', STATE_VECTOR_LAYER, callback);
     }
-  }, [map, allTotalStates, selectedState]);
+  }, [map, availableStates, selectedState]);
 
   useEffect(() => {
     if (map) {

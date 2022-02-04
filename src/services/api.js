@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { DATA_MODES } from '../constants';
 import { toQueryParams } from '../utils';
 
 const COUNTY_SUBROUTE = 'summarized-county';
@@ -11,7 +12,7 @@ const R_MODEL_SUBROUTE = 'r-model';
  * @param {Object} filters optional filters
  * @returns {Promise<Object>} API response
  */
-export async function getAllCountyData(filters) {
+export async function getCountyData(filters) {
   const params = toQueryParams(filters);
 
   const url = `${global.API_URL}/${COUNTY_SUBROUTE}/${params ? `?${params}` : ''}`;
@@ -30,7 +31,7 @@ export async function getAllCountyData(filters) {
  * @param {Object} filters optional filters
  * @returns {Promise<Object>} API response
  */
-export async function getAllRangerDistrictData(filters) {
+export async function getRangerDistrictData(filters) {
   const params = toQueryParams(filters);
 
   const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/${params ? `?${params}` : ''}`;
@@ -177,6 +178,62 @@ export async function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endo
   });
 
   const url = `${global.AUTOMATION_API_URL}/${R_MODEL_SUBROUTE}/${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
+ * @description retrieves all available years based on data mode
+ * @param {String} dataMode the current data mode
+ * @returns {Promise<Object>} API response
+ */
+export async function getAvailableYears(dataMode) {
+  const url = `${global.API_URL}/${dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE}/years/list`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+
+/**
+ * @description retrieves all available states based on data mode
+ * @param {String} dataMode the current data mode
+ * @returns {Promise<Object>} API response
+ */
+export async function getAvailableStates(dataMode) {
+  const url = `${global.API_URL}/${dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE}/states/list`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
+ * @description retrieves all available counties or RDs based on data mode
+ * @param {String} dataMode the current data mode
+ * @param {String} state the state to search on
+ * @returns {Promise<Object>} API response
+ */
+export async function getAvailableSublocations(dataMode, state) {
+  const subroute = dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE;
+  const path = dataMode === DATA_MODES.COUNTY ? 'counties' : 'rangerDistricts';
+
+  const url = `${global.API_URL}/${subroute}/${path}/list?state=${state}`;
 
   try {
     const { data: { data } } = await axios.get(url);

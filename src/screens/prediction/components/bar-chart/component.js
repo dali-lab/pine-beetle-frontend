@@ -57,10 +57,10 @@ const BarChart = (props) => {
 
   useEffect(() => {
     const updatedInputData = [
-      data[0].prediction.probSpotsGT0,
-      data[0].prediction.probSpotsGT20,
-      data[0].prediction.probSpotsGT50,
-      data[0].prediction.probSpotsGT150,
+      data[0].probSpotsGT0,
+      data[0].probSpotsGT20,
+      data[0].probSpotsGT50,
+      data[0].probSpotsGT150,
     ];
     setInputData(updatedInputData);
   }, [data]);

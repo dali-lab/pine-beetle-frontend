@@ -8,8 +8,6 @@ import {
   setState,
 } from '../../../../state/actions';
 
-import { DATA_MODES } from '../../../../constants';
-
 const mapStateToProps = (state) => {
   const {
     selections: {
@@ -19,33 +17,24 @@ const mapStateToProps = (state) => {
       state: selectedState,
       startYear,
       endYear,
+      availableStates,
+      availableSublocations,
     },
     data: {
-      county: allCountyData,
-      data,
-      rangerDistrict: allRangerDistrictData,
+      sublocationData,
     },
   } = state;
 
-  const allCounties = [...new Set(data.map((obj => obj.county)))];
-  const allRangerDistricts = [...new Set(allRangerDistrictData.map((obj => obj.rangerDistrict)))];
-  const allSelectedStates = [...new Set(data.map((obj => obj.state)))];
-
-  const allRelevantData = dataMode === DATA_MODES.COUNTY ? allCountyData : allRangerDistrictData;
-  const allTotalStates = [...new Set(allRelevantData.filter(obj => obj.year >= startYear && obj.year <= endYear).map(obj => obj.state))];
-
   return {
-    allCounties,
-    allRangerDistricts,
-    allSelectedStates,
-    allTotalStates,
+    availableStates,
+    availableSublocations,
     county,
-    data,
     dataMode,
     endYear,
     rangerDistrict,
     selectedState,
     startYear,
+    sublocationData,
   };
 };
 

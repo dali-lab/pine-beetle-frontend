@@ -10,24 +10,19 @@ const mapStateToProps = (state) => {
       },
     },
     data: {
-      data,
-      fetchingCounty,
-      fetchingRangerDistrict,
-    },
-    selections: {
-      state: selectedState,
-      endYear,
+      predictions,
+      fetchingPredictions,
     },
   } = state;
 
-  const isLoading = fetchingCounty && fetchingRangerDistrict;
-  const predictionData = data.filter(({ isValidForPrediction, year }) => !!isValidForPrediction && year === endYear);
+  const isLoading = fetchingPredictions;
+
+  const predictionData = predictions.filter(({ isValidForPrediction }) => !!isValidForPrediction);
 
   return {
     data: predictionData,
     fetchErrorText,
     isLoading,
-    selectedState,
   };
 };
 

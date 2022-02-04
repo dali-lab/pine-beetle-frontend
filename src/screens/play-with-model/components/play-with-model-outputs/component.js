@@ -15,10 +15,10 @@ const PlayWithModelOutputs = (props) => {
     year,
   } = props;
 
-  const probSpots = customPrediction?.['prob.Spots>0'];
-  const probOutbreak = customPrediction?.['prob.Spots>53'];
-  // eslint-disable-next-line no-restricted-globals
-  const validCustomPredictions = !isError && !isLoading && !isNaN(probSpots) && !isNaN(probOutbreak);
+  const probSpots = customPrediction.probSpotsGT0;
+  const probOutbreak = customPrediction.probSpotsGT50;
+
+  const validCustomPredictions = !isError && !isLoading && !Number.isNaN(probSpots) && !Number.isNaN(probOutbreak);
 
   const [showPredictions, setShowPredictions] = useState(false);
 

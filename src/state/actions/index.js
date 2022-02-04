@@ -21,8 +21,10 @@ import {
 
 import {
   ActionTypes as dataActionTypes,
-  getCountyData,
-  getRangerDistrictData,
+  getAggregateYearData,
+  getAggregateStateData,
+  getAggregateLocationData,
+  getPredictions,
   runCustomPrediction,
   clearCustomPredictionError,
 } from './data';
@@ -37,8 +39,10 @@ export {
   ActionTypes,
   clearCustomPredictionError,
   clearSelections,
-  getCountyData,
-  getRangerDistrictData,
+  getAggregateLocationData,
+  getAggregateStateData,
+  getAggregateYearData,
+  getPredictions,
   getUserFromStorage,
   login,
   runCustomPrediction,

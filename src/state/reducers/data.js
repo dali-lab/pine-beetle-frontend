@@ -1,114 +1,57 @@
-/* eslint-disable no-case-declarations */
 import { ActionTypes } from '../actions';
-import { DATA_MODES } from '../../constants';
-
-import {
-  getFullDataArray,
-  filterLocation,
-  filterYearRange,
-  filterYear,
-} from './utils';
 
 const initialState = {
-  data: [], // current data (changes when user updates data mode, components should import this)
-  county: [], // the county data
-  rangerDistrict: [], // the ranger district data
+  predictions: [], // predictions for a single year
+  yearData: [], // data aggregated by year
+  stateData: [], // data aggregated by state
+  sublocationData: [], // data aggregated by county/ranger district
   customPrediction: {},
 
-  fetchingCounty: false,
-  fetchingRangerDistrict: false,
+  fetchingPredictions: false,
+  fetchingAggregateYearData: false,
+  fetchingAggregateStateData: false,
+  fetchingAggregateLocationData: false,
   fetchingCustomPrediction: false,
 };
 
-const TrappingReducer = (state = initialState, action) => {
+const DataReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.SET_COUNTY_DATA:
-      return { ...state, county: action.payload };
+    case ActionTypes.SET_PREDICTIONS:
+      return { ...state, predictions: action.payload };
 
-    case ActionTypes.SET_RANGERDISTRICT_DATA:
-      return { ...state, rangerDistrict: action.payload };
+    case ActionTypes.SET_AGGREGATE_YEAR_DATA:
+      return { ...state, yearData: action.payload };
+
+    case ActionTypes.SET_AGGREGATE_STATE_DATA:
+      return { ...state, stateData: action.payload };
+
+    case ActionTypes.SET_AGGREGATE_LOCATION_DATA:
+      return { ...state, sublocationData: action.payload };
 
     case ActionTypes.SET_CUSTOM_PREDICTION:
       return { ...state, customPrediction: action.payload };
 
-    case ActionTypes.FETCHING_COUNTY_DATA:
-      return { ...state, fetchingCounty: action.payload };
+    case ActionTypes.FETCHING_PREDICTIONS:
+      return { ...state, fetchingPredictions: action.payload };
 
-    case ActionTypes.FETCHING_RANGERDISTRICT_DATA:
-      return { ...state, fetchingRangerDistrict: action.payload };
+    case ActionTypes.FETCHING_AGGREGATE_YEAR_DATA:
+      return { ...state, fetchingAggregateYearData: action.payload };
+
+    case ActionTypes.FETCHING_AGGREGATE_STATE_DATA:
+      return { ...state, fetchingAggregateStateData: action.payload };
+
+    case ActionTypes.FETCHING_AGGREGATE_LOCATION_DATA:
+      return { ...state, fetchingAggregateLocationData: action.payload };
 
     case ActionTypes.FETCHING_CUSTOM_PREDICTION:
       return { ...state, fetchingCustomPrediction: action.payload };
 
-    case ActionTypes.SET_DATA_MODE:
-      return { ...state, data: filterYearRange(filterLocation(getFullDataArray(action.payload.mode, state), action), action) };
-
-    case ActionTypes.SET_YEAR:
-      return {
-        ...state,
-        data: filterYear(filterLocation(getFullDataArray(action.payload.dataMode, state), action), action),
-      };
-
-    case ActionTypes.SET_START_YEAR:
-      return {
-        ...state,
-        data: filterYearRange(filterLocation(getFullDataArray(action.payload.dataMode, state), action), action),
-      };
-
-    case ActionTypes.SET_END_YEAR:
-      return {
-        ...state,
-        data: filterYearRange(filterLocation(getFullDataArray(action.payload.dataMode, state), action), action),
-      };
-
-    case ActionTypes.SET_STATE:
-      const filteredData = filterYearRange(getFullDataArray(action.payload.dataMode, state), action).filter((obj) => {
-        if (action.payload.state.length > 0) {
-          return obj.state === action.payload.state;
-        } else {
-          return true;
-        }
-      });
-
-      return {
-        ...state,
-        data: filteredData,
-      };
-
-    case ActionTypes.SET_COUNTY:
-      if (action.payload.dataMode !== DATA_MODES.COUNTY) return state;
-
-      return {
-        ...state,
-        data: filterYearRange(getFullDataArray(action.payload.dataMode, state), action).filter((obj) => {
-          if (action.payload.county.length > 0) {
-            return obj.state === action.payload.state && obj.county === action.payload.county;
-          } else {
-            return obj.state === action.payload.state;
-          }
-        }),
-      };
-
-    case ActionTypes.SET_RANGER_DISTRICT:
-      if (action.payload.dataMode !== DATA_MODES.RANGER_DISTRICT) return state;
-
-      return {
-        ...state,
-        data: filterYearRange(getFullDataArray(action.payload.dataMode, state), action).filter((obj) => {
-          if (action.payload.rangerDistrict.length > 0) {
-            return obj.state === action.payload.state && obj.rangerDistrict === action.payload.rangerDistrict;
-          } else {
-            return obj.state === action.payload.state;
-          }
-        }),
-      };
-
     case ActionTypes.CLEAR_SELECTIONS:
-      return { ...state, data: action.payload.dataMode === DATA_MODES.COUNTY ? state.county : state.rangerDistrict };
+      return { ...state, predictions: [] };
 
     default:
       return state;
   }
 };
 
-export default TrappingReducer;
+export default DataReducer;

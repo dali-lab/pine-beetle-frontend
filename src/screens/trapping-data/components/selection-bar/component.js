@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { debounce } from 'debounce';
 
 import { TextInput, ChoiceInput } from '../../../../components/input-components';
 
@@ -13,9 +14,11 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
+    // availableYears,
+    availableStates,
+    availableSublocations,
     clearSelections,
     county,
-    data,
     dataMode,
     endYear,
     rangerDistrict,
@@ -31,27 +34,43 @@ const SelectionBar = (props) => {
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const [allStates, setAllStates] = useState([]);
-  const [allCounties, setAllCounties] = useState([]);
-  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
-
-  useEffect(() => {
-    setAllStates([...new Set(data.map(obj => obj.state))].sort());
-    setAllCounties(selectedState ? [...new Set(data.map((obj => obj.county)))].sort() : []);
-    setAllRangerDistricts(selectedState ? [...new Set(data.map((obj => obj.rangerDistrict)))].sort() : []);
-  }, [data]);
-
-  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
+
+  const [newStartYear, setNewStartYear] = useState(startYear);
+  const [newEndYear, setNewEndYear] = useState(endYear);
+
+  // immediately updates UI with new user selection, but doesn't update redux until 1s debounce
+  const setStartYearDebounced = (year) => {
+    setNewStartYear(year);
+
+    if (year.toString().length === 4) {
+      debounce(setStartYear, 1000)(year);
+    }
+  };
+
+  // immediately updates UI with new user selection, but doesn't update redux until 1s debounce
+  const setEndYearDebounced = (year) => {
+    setNewEndYear(year);
+
+    if (year.toString().length === 4) {
+      debounce(setEndYear, 1000)(year);
+    }
+  };
+
+  useEffect(() => {
+    setNewStartYear(startYear);
+    setNewEndYear(endYear);
+  }, [startYear, endYear]);
 
   return (
     <div id="predictionbar-trapping" className="container">
       <div id="year-selection">
-        <div id="start-year-selection"><TextInput instructions="Year" setValue={setStartYear} value={startYear} /></div>
+        <div id="start-year-selection"><TextInput instructions="Year" setValue={setStartYearDebounced} value={newStartYear} /></div>
         <div id="vl3" />
         {/* TODO: "to" */}
-        <div id="end-year-selection"><TextInput setValue={setEndYear} value={endYear} /></div>
+        <div id="end-year-selection"><TextInput setValue={setEndYearDebounced} value={newEndYear} /></div>
       </div>
       <div id="vl1" />
       <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
@@ -81,7 +100,7 @@ const SelectionBar = (props) => {
           <ChoiceInput
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? setCounty : setRangerDistrict}
-            options={countyMode ? allCounties : allRangerDistricts}
+            options={availableSublocations}
             firstOptionText={countyMode ? 'County' : 'Ranger District'}
           />
         </div>

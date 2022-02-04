@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import { ActionTypes } from '../actions';
 import { DATA_MODES, CHART_MODES } from '../../constants';
 
@@ -10,6 +9,10 @@ const initialState = {
   rangerDistrict: '',
   dataMode: DATA_MODES.COUNTY,
   chartMode: CHART_MODES.GRAPH,
+
+  availableYears: [],
+  availableStates: [],
+  availableSublocations: [],
 };
 
 const SelectionsReducer = (state = initialState, action) => {
@@ -38,42 +41,46 @@ const SelectionsReducer = (state = initialState, action) => {
       return { ...state, rangerDistrict: action.payload.rangerDistrict };
 
     case ActionTypes.SET_DATA_MODE:
-      const {
-        mode,
-        state: newState,
-        startYear,
-        endYear,
-      } = action.payload;
-
       return {
         ...state,
-        startYear,
-        endYear,
-        state: newState,
+        dataMode: action.payload.mode,
+        state: '',
         county: '',
         rangerDistrict: '',
-        dataMode: mode,
       };
 
     case ActionTypes.CLEAR_SELECTIONS:
-      const {
-        startYear: dataStartYear,
-        endYear: dataEndYear,
-      } = action.payload.data.reduce((prev, curr) => ({
-        startYear: (!prev.startYear || prev.startYear > curr.year) ? curr.year : prev.startYear,
-        endYear: (!prev.endYear || prev.endYear < curr.year) ? curr.year : prev.endYear,
-      }), { startYear: null, endYear: null });
-
       return {
         ...initialState,
-        startYear: dataStartYear,
-        endYear: dataEndYear,
+        availableYears: state.availableYears,
+        availableStates: state.availableStates,
         dataMode: state.dataMode,
         chartMode: state.chartMode,
       };
 
     case ActionTypes.SET_CHART_MODE:
       return { ...state, chartMode: action.payload };
+
+    case ActionTypes.SET_AGGREGATE_YEAR_DATA:
+      return {
+        ...state,
+        startYear: Math.min(...action.payload.map(({ year }) => year)) || initialState.startYear,
+        endYear: Math.max(...action.payload.map(({ year }) => year)) || initialState.endYear,
+      };
+
+    case ActionTypes.SET_AVAILABLE_YEARS:
+      return {
+        ...state,
+        availableYears: action.payload,
+        startYear: Math.min(action.payload) || initialState.startYear,
+        endYear: Math.max(action.payload) || initialState.endYear,
+      };
+
+    case ActionTypes.SET_AVAILABLE_STATES:
+      return { ...state, availableStates: action.payload };
+
+    case ActionTypes.SET_AVAILABLE_SUBLOCATIONS:
+      return { ...state, availableSublocations: action.payload };
 
     default:
       return state;

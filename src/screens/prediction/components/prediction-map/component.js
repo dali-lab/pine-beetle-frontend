@@ -45,10 +45,8 @@ const STATE_VECTOR_LAYER = 'states';
 
 const PredictionMap = (props) => {
   const {
-    allCounties,
-    allRangerDistricts,
-    allSelectedStates,
-    allTotalStates,
+    availableStates,
+    availableSublocations,
     data,
     dataMode,
     selectedState,
@@ -81,7 +79,7 @@ const PredictionMap = (props) => {
   };
 
   // twice-curried function for generating hover callback
-  const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availableStates) => (e) => {
+  const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availStates) => (e) => {
     if (!map || !e || !map.isStyleLoaded()) return;
 
     const counties = map.queryRenderedFeatures(e.point, {
@@ -105,7 +103,7 @@ const PredictionMap = (props) => {
           .find(rd => rd.includes(hoverRD));
 
       const pred = predictions.find((p) => {
-        return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availableStates.includes(hoverState)))
+        return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState)))
         && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState)
         || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
       });
@@ -201,13 +199,13 @@ const PredictionMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, data, dataMode);
+      const callback = createMapClickCallback(availableStates, availableSublocations, availableSublocations, selectedState, data, dataMode);
       setMapClickCallback(() => callback);
       createdMap.on('click', VECTOR_LAYER, callback);
     }
 
     if (createdMap._listeners.mousemove === undefined) {
-      const callback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, allSelectedStates);
+      const callback = createMapHoverCallback(data, availableSublocations, dataMode, selectedState, availableStates);
       setMapHoverCallback(() => callback);
       createdMap.on('mousemove', callback);
     }
@@ -420,24 +418,24 @@ const PredictionMap = (props) => {
       if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
 
       // generate new callback
-      const callback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, allSelectedStates);
+      const callback = createMapHoverCallback(data, availableSublocations, dataMode, selectedState, availableStates);
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
     }
-  }, [map, data, allRangerDistricts, dataMode, selectedState, allSelectedStates]);
+  }, [map, data, availableSublocations, dataMode, selectedState, availableStates]);
 
   // update the click callback handler when all RD or all states changes
   useEffect(() => {
-    if (map && allTotalStates && allCounties && allRangerDistricts) {
+    if (map && availableStates && availableSublocations) {
       // remove current callback
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
-      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, data, dataMode);
+      const callback = createMapClickCallback(availableStates, availableSublocations, availableSublocations, selectedState, data, dataMode);
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
-  }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, data, dataMode]);
+  }, [map, availableStates, availableSublocations, selectedState, data, dataMode]);
 
   useEffect(() => {
     if (map) {
@@ -449,7 +447,7 @@ const PredictionMap = (props) => {
         const { abbrev } = e?.features[0]?.properties || {};
 
         // state must exist, not be current selection and must be a valid state
-        if (abbrev && selectedState !== abbrev && allTotalStates.includes(abbrev)) {
+        if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
           setState(abbrev);
         }
       };
@@ -457,7 +455,7 @@ const PredictionMap = (props) => {
       setMapStateClickCallback(() => callback);
       map.on('click', STATE_VECTOR_LAYER, callback);
     }
-  }, [map, allTotalStates, selectedState]);
+  }, [map, availableStates, selectedState]);
 
   useEffect(() => {
     if (map) {

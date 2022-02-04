@@ -3,8 +3,10 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import {
-  getCountyData,
-  getRangerDistrictData,
+  getAggregateYearData,
+  getAggregateStateData,
+  getAggregateLocationData,
+  getPredictions,
   getUserFromStorage,
   setChartMode,
   setDataMode,
@@ -48,8 +50,8 @@ const FallBack = () => {
 
 const App = (props) => {
   const {
-    countyData,
     loginUserFromStorage,
+    yearData,
   } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
@@ -58,17 +60,19 @@ const App = (props) => {
     global.API_URL = getServerUrl();
     global.AUTOMATION_API_URL = getAutomationServerUrl();
 
-    // fetch initial data
-    props.getCountyData();
-    props.getRangerDistrictData();
-
     // fetch user data if persist in browser
     if (getAuthTokenFromStorage() && getUserIdFromStorage()) {
       loginUserFromStorage();
     }
 
-    // set chart mode if persist in browser
+    // set data/chart mode if persist in browser
+    props.setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
     props.setChartMode(getChartModeFromStorage() || CHART_MODES.GRAPH);
+
+    // fetch initial data
+    props.getAggregateYearData();
+    props.getAggregateStateData();
+    props.getAggregateLocationData();
 
     const resizeListener = e => setIsMobile(e.target.innerWidth < MIN_WIDTH_THRESHOLD);
     window.addEventListener('resize', resizeListener);
@@ -76,10 +80,9 @@ const App = (props) => {
     return () => window.removeEventListener('resize', resizeListener);
   }, []);
 
-  // set all trapping/prediction all fields to county once we get them
   useEffect(() => {
-    props.setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
-  }, [countyData]);
+    props.getPredictions(Math.max(...yearData.map(({ year }) => year)));
+  }, [yearData]);
 
   if (isMobile) return <MobileOverlay />;
 
@@ -109,22 +112,28 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   const {
     data: {
-      county: countyData,
+      yearData,
     },
   } = state;
 
   return {
-    countyData,
+    yearData,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCountyData: (filters) => {
-      dispatch(getCountyData(filters));
+    getAggregateYearData: () => {
+      dispatch(getAggregateYearData());
     },
-    getRangerDistrictData: (filters) => {
-      dispatch(getRangerDistrictData(filters));
+    getAggregateStateData: () => {
+      dispatch(getAggregateStateData());
+    },
+    getAggregateLocationData: () => {
+      dispatch(getAggregateLocationData());
+    },
+    getPredictions: (year) => {
+      dispatch(getPredictions(year));
     },
     loginUserFromStorage: () => {
       dispatch(getUserFromStorage());

@@ -2,8 +2,6 @@ import { connect } from 'react-redux';
 
 import { clearCustomPredictionError, runCustomPrediction } from '../../state/actions';
 
-import { DATA_MODES } from '../../constants';
-
 import PlayWithModel from './component';
 
 const mapStateToProps = (state) => {
@@ -16,8 +14,6 @@ const mapStateToProps = (state) => {
       endYear: year,
     },
     data: {
-      county: countyData,
-      rangerDistrict: rangerDistrictData,
       customPrediction,
       fetchingCustomPrediction,
     },
@@ -27,14 +23,12 @@ const mapStateToProps = (state) => {
   } = state;
 
   const isError = customPredictionError.error.length > 0;
-  const fullData = dataMode === DATA_MODES.COUNTY ? countyData : rangerDistrictData;
 
   return {
     county,
     customPrediction,
     dataMode,
     error: customPredictionError,
-    fullData,
     isError,
     isLoading: fetchingCustomPrediction,
     rangerDistrict,

@@ -19,19 +19,19 @@ const mapStateToProps = (state) => {
       county,
       rangerDistrict,
       dataMode,
-    },
-    data: {
-      data,
+      availableYears,
+      availableStates,
+      availableSublocations,
     },
   } = state;
 
-  const predictionsData = data.filter(({ isValidForPrediction }) => !!isValidForPrediction);
-
   return {
+    availableYears,
+    availableStates,
+    availableSublocations,
     county,
     rangerDistrict,
     selectedState,
-    predictionsData,
     dataMode,
     year,
   };

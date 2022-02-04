@@ -78,7 +78,6 @@ const ROUTES = {
 };
 
 const DOWNLOAD_DATA_ROUTES = {
-  HELPER: '/data-download/helper-data',
   SUMMARIZED_COUNTY: '/summarized-county/download',
   SUMMARIZED_RD: '/summarized-rangerdistrict/download',
   UNSUMMARIZED: '/unsummarized-trapping/download',

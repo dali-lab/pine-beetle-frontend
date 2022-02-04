@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 
 import { TextInput, ChoiceInput } from '../input-components';
@@ -18,8 +18,10 @@ const downloadIcon = require('../../assets/icons/download.png');
 
 const DownloadData = (props) => {
   const {
+    // availableYears,
+    availableStates,
+    availableSublocations,
     county,
-    data,
     dataMode,
     endYear,
     rangerDistrict,
@@ -37,17 +39,7 @@ const DownloadData = (props) => {
   // vars for year, county, rd selections
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const [allStates, setAllStates] = useState([]);
-  const [allCounties, setAllCounties] = useState([]);
-  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
-
-  useEffect(() => {
-    setAllStates([...new Set(data.map(obj => obj.state))].sort());
-    setAllCounties(selectedState ? [...new Set(data.map((obj => obj.county)))].sort() : []);
-    setAllRangerDistricts(selectedState ? [...new Set(data.map((obj => obj.rangerDistrict)))].sort() : []);
-  }, [data]);
-
-  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
@@ -62,7 +54,6 @@ const DownloadData = (props) => {
   const [fieldsToDownload, setFieldsToDownload] = useState({
     SUMMARIZED: false,
     UNSUMMARIZED: false,
-    HELPER: false,
   });
 
   const addFieldToDownload = fieldName => e => setFieldsToDownload({
@@ -75,7 +66,6 @@ const DownloadData = (props) => {
       ...fieldsToDownload,
       SUMMARIZED: selected,
       UNSUMMARIZED: selected,
-      HELPER: selected,
     });
   };
 
@@ -178,7 +168,7 @@ const DownloadData = (props) => {
               <ChoiceInput
                 value={countyMode ? county : rangerDistrict}
                 setValue={countyMode ? setCounty : setRangerDistrict}
-                options={countyMode ? allCounties : allRangerDistricts}
+                options={availableSublocations}
                 firstOptionText={countyMode ? 'County' : 'Ranger District'}
               />
             </div>
@@ -223,7 +213,7 @@ const DownloadData = (props) => {
               </label>
             </div>
           </div>
-          <div id="extras-row">
+          {/* <div id="extras-row">
             <div id="circle-checkbox">
               <label htmlFor="include-helper">
                 <input
@@ -235,7 +225,7 @@ const DownloadData = (props) => {
                 <span className="checkbox-text">Include helper data*</span>
               </label>
             </div>
-          </div>
+          </div> */}
           <div>
             {isDownloading ? (
               <div id="downloading-container">
@@ -256,9 +246,9 @@ const DownloadData = (props) => {
               </button>
             )}
           </div>
-          <div id="modal-footnote-container">
+          {/* <div id="modal-footnote-container">
             <p className="modal-footnote">* helper data includes ranger district name mappings and state abbreviation mappings</p>
-          </div>
+          </div> */}
         </div>
       </Modal>
     </>

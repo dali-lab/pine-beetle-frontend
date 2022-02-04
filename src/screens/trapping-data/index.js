@@ -15,12 +15,13 @@ const mapStateToProps = (state) => {
       chartMode,
     },
     data: {
-      fetchingCounty,
-      fetchingRangerDistrict,
+      fetchingAggregateYearData,
+      fetchingAggregateStateData,
+      fetchingAggregateLocationData,
     },
   } = state;
 
-  const isLoading = fetchingCounty || fetchingRangerDistrict;
+  const isLoading = fetchingAggregateYearData || fetchingAggregateStateData || fetchingAggregateLocationData;
 
   return {
     chartMode,

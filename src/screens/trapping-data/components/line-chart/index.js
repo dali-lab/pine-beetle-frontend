@@ -5,7 +5,7 @@ import LineChart from './component';
 const mapStateToProps = (state) => {
   const {
     data: {
-      data,
+      yearData,
     },
     selections: {
       startYear,
@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
   } = state;
 
   return {
-    data,
+    yearData,
     startYear,
     endYear,
   };

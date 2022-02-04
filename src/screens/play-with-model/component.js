@@ -18,7 +18,6 @@ const PlayWithModel = (props) => {
     clearError, // function to clear the error
     county,
     dataMode,
-    fullData,
     isError, // whether or not an error occurred
     rangerDistrict,
     runCustomPrediction, // function to call for running the prediction
@@ -50,7 +49,7 @@ const PlayWithModel = (props) => {
 
   useEffect(() => {
     const sublocation = dataMode === DATA_MODES.COUNTY ? 'county' : 'rangerDistrict';
-    const selectedSubLocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
+    // const selectedSubLocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
 
     // sets input fields to 0 if selection cleared
     if (!selectedState && !sublocation) {
@@ -62,38 +61,40 @@ const PlayWithModel = (props) => {
         spotst2: 0,
       });
     } else if (year && selectedState && sublocation) {
-      // filter to find relevant data fields
-      const relevantData = fullData
-        .filter(obj => (
-          obj.state === selectedState
-          && obj[sublocation] === selectedSubLocation
-          && (obj.year === year || obj.year === year - 1)
-        ));
+      // TODO: will need to send request to backend here to get model inputs for the user's selection
 
-      // grab current and previous year objects
-      const currentYearObject = relevantData.find(obj => obj.year === year) || {};
-      const previousYearObject = relevantData.find(obj => obj.year === year - 1) || {};
+      // // filter to find relevant data fields
+      // const relevantData = fullData
+      //   .filter(obj => (
+      //     obj.state === selectedState
+      //     && obj[sublocation] === selectedSubLocation
+      //     && (obj.year === year || obj.year === year - 1)
+      //   ));
 
-      // grab the model input values for this selection
-      const {
-        spotst1,
-        spotst2,
-        spbPer2Weeks,
-        endobrev,
-      } = currentYearObject;
+      // // grab current and previous year objects
+      // const currentYearObject = relevantData.find(obj => obj.year === year) || {};
+      // const previousYearObject = relevantData.find(obj => obj.year === year - 1) || {};
 
-      const {
-        cleridsPer2Weeks,
-      } = previousYearObject;
+      // // grab the model input values for this selection
+      // const {
+      //   spotst1,
+      //   spotst2,
+      //   spbPer2Weeks,
+      //   endobrev,
+      // } = currentYearObject;
 
-      // update the state
-      updateModelInputs({
-        spotst1: (spotst1 || 0),
-        spotst2: (spotst2 || 0),
-        spb: (spbPer2Weeks || 0),
-        endobrev: (endobrev || 0),
-        cleridst1: (cleridsPer2Weeks || 0),
-      });
+      // const {
+      //   cleridsPer2Weeks,
+      // } = previousYearObject;
+
+      // // update the state
+      // updateModelInputs({
+      //   spotst1: (spotst1 || 0),
+      //   spotst2: (spotst2 || 0),
+      //   spb: (spbPer2Weeks || 0),
+      //   endobrev: (endobrev || 0),
+      //   cleridst1: (cleridsPer2Weeks || 0),
+      // });
     }
   }, [year, selectedState, county, rangerDistrict, dataMode]);
 

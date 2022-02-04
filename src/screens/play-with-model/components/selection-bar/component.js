@@ -14,10 +14,12 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
+    // availableYears,
+    availableStates,
+    availableSublocations,
     clearAllSelections,
     county,
     dataMode,
-    predictionsData,
     rangerDistrict,
     selectedState,
     setCounty,
@@ -28,11 +30,7 @@ const SelectionBar = (props) => {
     year,
   } = props;
 
-  const allStates = [...new Set(predictionsData.map(obj => obj.state))].sort();
-  const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))].sort() : [];
-  const allRangerDistricts = selectedState ? [...new Set(predictionsData.map((obj => obj.rangerDistrict)))].sort() : [];
-
-  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
@@ -68,7 +66,7 @@ const SelectionBar = (props) => {
             // instructions={countyMode ? 'County' : 'RD'}
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? setCounty : setRangerDistrict}
-            options={countyMode ? allCounties : allRangerDistricts}
+            options={availableSublocations}
             firstOptionText={countyMode ? 'County' : 'Ranger District'}
           />
         </div>

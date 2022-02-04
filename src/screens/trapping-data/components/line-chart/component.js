@@ -7,7 +7,7 @@ import './style.scss';
 
 const LineChart = (props) => {
   const {
-    data = [],
+    yearData = [],
     startYear,
     endYear,
   } = props;
@@ -139,27 +139,24 @@ const LineChart = (props) => {
       ...chartOptions,
     };
 
-    // sort data array
-    const sortedData = data.sort((a, b) => (a.year > b.year ? 1 : -1));
-
     updatedChartData.labels = getYearRange(startYear, endYear);
 
-    // sum up spots by year
-    const spotMap = sortedData.reduce((acc, curr) => ({
+    // get sum of spots by year
+    const spotMap = yearData.reduce((acc, { year, sumSpotst0 }) => ({
       ...acc,
-      [curr.year]: curr.spotst0 ? curr.spotst0 + acc[curr.year] : acc[curr.year],
+      [year]: sumSpotst0,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    // sum up spb by year
-    const spbMap = sortedData.reduce((acc, curr) => ({
+    // get sum of spb by year
+    const spbMap = yearData.reduce((acc, { year, sumSpbPer2Weeks }) => ({
       ...acc,
-      [curr.year]: curr.spbPer2Weeks ? curr.spbPer2Weeks + acc[curr.year] : acc[curr.year],
+      [year]: sumSpbPer2Weeks,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    // sum up clerids by year
-    const cleridMap = sortedData.reduce((acc, curr) => ({
+    // get sum of clerids by year
+    const cleridMap = yearData.reduce((acc, { year, sumCleridsPer2Weeks }) => ({
       ...acc,
-      [curr.year]: curr.cleridsPer2Weeks ? curr.cleridsPer2Weeks + acc[curr.year] : acc[curr.year],
+      [year]: sumCleridsPer2Weeks,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
     // update chartData
@@ -179,7 +176,7 @@ const LineChart = (props) => {
 
     setChartData(updatedChartData);
     setChartOptions(updatedChartOptions);
-  }, [data]);
+  }, [yearData]);
 
   return (
     <div id="chart">
