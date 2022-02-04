@@ -5,15 +5,16 @@ import { DATA_MODES, CHART_MODES } from '../../constants';
 const initialState = {
   year: new Date().getFullYear(),
   yearRange: {
-    startYear: 2010,
+    startYear: 1988,
     endYear: new Date().getFullYear(),
   },
   state: '',
-  county: '',
-  rangerDistrict: '',
+  county: [], // change to array for multi-select
+  rangerDistrict: [], // change to array for multi-select
   dataMode: DATA_MODES.COUNTY,
   chartMode: CHART_MODES.GRAPH,
 };
+
 
 const SelectionsReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -35,8 +36,8 @@ const SelectionsReducer = (state = initialState, action) => {
       return {
         ...state,
         state: action.payload.state,
-        county: action.payload.state !== state.state ? '' : state.county,
-        rangerDistrict: action.payload.state !== state.state ? '' : state.rangerDistrict,
+        county: action.payload.state !== state.state ? [] : state.county,
+        rangerDistrict: action.payload.state !== state.state ? [] : state.rangerDistrict,
       };
 
     case ActionTypes.SET_COUNTY:
