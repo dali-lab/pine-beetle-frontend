@@ -107,6 +107,20 @@ const TrappingReducer = (state = initialState, action) => {
         }),
       };
 
+    case ActionTypes.SET_FEDERAL_LANDS:
+      if (action.payload.dataMode !== DATA_MODES.RANGER_DISTRICT) return state;
+
+      return {
+        ...state,
+        data: filterYearRange(getFullDataArray(action.payload.dataMode, state), action).filter((obj) => {
+          if (action.payload.federalLands.length > 0) {
+            return obj.state === action.payload.state && action.payload.federalLands.indexOf(obj.rangerDistrict) > -1;
+          } else {
+            return obj.state === action.payload.state;
+          }
+        }),
+      };
+
     case ActionTypes.CLEAR_SELECTIONS:
       return { ...state, data: action.payload.dataMode === DATA_MODES.COUNTY ? state.county : state.rangerDistrict };
 
