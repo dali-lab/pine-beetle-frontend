@@ -44,6 +44,119 @@ export async function getAllRangerDistrictData(filters) {
   }
 }
 
+/**
+ * @description retrieves sum of spb, clerids, and spots by year
+ * @param {Object} [filters={}] optional filters (startYear, endYear, state, county)
+ * @returns {Promise<Object>} API response
+ */
+export async function countyAggregateByYear(filters = {}) {
+  const params = toQueryParams(filters);
+
+  const url = `${global.API_URL}/${COUNTY_SUBROUTE}/aggregate/year${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
+ * @description retrieves sum of spb, clerids, and spots by state
+ * @param {Object} [filters={}] optional filters (startYear, endYear, state, county)
+ * @returns {Promise<Object>} API response
+ */
+export async function countyAggregateByState(filters = {}) {
+  const params = toQueryParams(filters);
+
+  const url = `${global.API_URL}/${COUNTY_SUBROUTE}/aggregate/state${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
+ * @description retrieves sum of spb, clerids, and spots by county, should provide a state filter for this
+ * @param {Object} [filters={}] optional filters (startYear, endYear, state, county)
+ * @returns {Promise<Object>} API response
+ */
+export async function countyAggregateByCounty(filters = {}) {
+  const params = toQueryParams(filters);
+
+  const url = `${global.API_URL}/${COUNTY_SUBROUTE}/aggregate/county${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
+ * @description retrieves sum of spb, clerids, and spots by year
+ * @param {Object} [filters={}] optional filters (startYear, endYear, state, rangerDistrict)
+ * @returns {Promise<Object>} API response
+ */
+export async function rangerDistrictAggregateByYear(filters = {}) {
+  const params = toQueryParams(filters);
+
+  const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/aggregate/year${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
+ * @description retrieves sum of spb, clerids, and spots by state
+ * @param {Object} [filters={}] optional filters (startYear, endYear, state, rangerDistrict)
+ * @returns {Promise<Object>} API response
+ */
+export async function rangerDistrictAggregateByState(filters = {}) {
+  const params = toQueryParams(filters);
+
+  const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/aggregate/state${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
+ * @description retrieves sum of spb, clerids, and spots by RD, should provide a state filter for this
+ * @param {Object} [filters={}] optional filters (startYear, endYear, state, rangerDistrict)
+ * @returns {Promise<Object>} API response
+ */
+export async function rangerDistrictAggregateByRangerDistrict(filters = {}) {
+  const params = toQueryParams(filters);
+
+  const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/aggregate/rangerDistrict${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
 
 /**
  * @description runs R model on custom input
