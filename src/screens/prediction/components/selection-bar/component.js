@@ -1,8 +1,7 @@
 /* eslint-disable react/button-has-type */
-import React, { useState, useEffect } from 'react';
-import { debounce } from 'debounce';
+import React from 'react';
 
-import { TextInput, ChoiceInput } from '../../../../components/input-components';
+import { ChoiceInput } from '../../../../components/input-components';
 
 import { DATA_MODES } from '../../../../constants';
 
@@ -15,7 +14,7 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    // availableYears,
+    availableYears,
     availableStates,
     availableSublocations,
     clearAllSelections,
@@ -37,24 +36,9 @@ const SelectionBar = (props) => {
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const [newYear, setNewYear] = useState(year);
-
-  // immediately updates UI with new user selection, but doesn't update redux until 1s debounce
-  const setYearDebounced = (yr) => {
-    setNewYear(yr);
-
-    if (yr.toString().length === 4) {
-      debounce(setYear, 1000)(yr);
-    }
-  };
-
-  useEffect(() => {
-    setNewYear(year);
-  }, [year]);
-
   return (
     <div id="predictionbar" className="container">
-      <TextInput instructions="Year" setValue={setYearDebounced} value={newYear} />
+      <ChoiceInput instructions="End Year" setValue={setYear} options={availableYears} value={year} />
       <div id="vl1" />
       <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
       <div id="vl1" />

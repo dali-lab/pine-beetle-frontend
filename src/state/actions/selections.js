@@ -192,10 +192,10 @@ export const setCounty = (county) => {
     // TODO: generate new array for multi-counties (when support multi-select) and pass to below function calls
 
     // fetch new data
-    dispatch(getAggregateYearData({ county }));
-    dispatch(getAggregateStateData({ county }));
-    dispatch(getAggregateLocationData({ county }));
-    dispatch(getPredictions(getState().selections.endYear), { county });
+    dispatch(getAggregateYearData({ county: [county] }));
+    dispatch(getAggregateStateData({ county: [county] }));
+    dispatch(getAggregateLocationData({ county: [county] }));
+    dispatch(getPredictions(getState().selections.endYear), { county: [county] });
   };
 };
 
@@ -210,10 +210,10 @@ export const setRangerDistrict = (rangerDistrict) => {
     // TODO: generate new array for multi-rangerdistricts (when support multi-select) and pass to below function calls
 
     // fetch new data
-    dispatch(getAggregateYearData({ rangerDistrict }));
-    dispatch(getAggregateStateData({ rangerDistrict }));
-    dispatch(getAggregateLocationData({ rangerDistrict }));
-    dispatch(getPredictions(getState().selections.endYear), { rangerDistrict });
+    dispatch(getAggregateYearData({ rangerDistrict: [rangerDistrict] }));
+    dispatch(getAggregateStateData({ rangerDistrict: [rangerDistrict] }));
+    dispatch(getAggregateLocationData({ rangerDistrict: [rangerDistrict] }));
+    dispatch(getPredictions(getState().selections.endYear), { rangerDistrict: [rangerDistrict] });
   };
 };
 

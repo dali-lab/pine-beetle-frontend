@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
-import { TextInput, ChoiceInput } from '../input-components';
+import { ChoiceInput } from '../input-components';
 
 import { DATA_MODES } from '../../constants';
 
@@ -18,7 +18,7 @@ const downloadIcon = require('../../assets/icons/download-white.png');
 
 const DownloadData = (props) => {
   const {
-    // availableYears,
+    availableYears,
     availableStates,
     availableSublocations,
     county,
@@ -126,10 +126,10 @@ const DownloadData = (props) => {
         <div id="modal-title">Download Data</div>
         <div id="modal-year">
           <div id="year-selection">
-            <div id="start-year-selection"><TextInput instructions="Year" setValue={setStartYear} value={startYear} /></div>
+            <div id="start-year-selection"><ChoiceInput instructions="Start Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
             <div id="vl3" />
             {/* TODO: "to" */}
-            <div id="end-year-selection"><TextInput setValue={setEndYear} value={endYear} /></div>
+            <div id="end-year-selection"><ChoiceInput instructions="End Year" setValue={setEndYear} options={availableYears} value={endYear} /></div>
           </div>
           <div>
             <button

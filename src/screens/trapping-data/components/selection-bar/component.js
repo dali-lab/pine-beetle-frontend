@@ -40,10 +40,10 @@ const SelectionBar = (props) => {
   return (
     <div id="predictionbar-trapping" className="container">
       <div id="year-selection">
-        <div id="start-year-selection"><ChoiceInput instructions="End Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
+        <div id="start-year-selection"><ChoiceInput instructions="Start Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
         <div id="vl3" />
         {/* TODO: "to" */}
-        <div id="end-year-selection"><ChoiceInput instructions="Start Year" setValue={setEndYear} options={availableYears} value={endYear} /></div>
+        <div id="end-year-selection"><ChoiceInput instructions="End Year" setValue={setEndYear} options={availableYears} value={endYear} /></div>
       </div>
       <div id="vl1" />
       <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />

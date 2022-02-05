@@ -15,8 +15,8 @@ const R_MODEL_SUBROUTE = 'r-model';
 export async function getCountyData(filters) {
   const params = toQueryParams({
     ...filters,
-    ...(filters.county ? { county: filters.county.join(',') } : {}),
-    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
   });
 
   const url = `${global.API_URL}/${COUNTY_SUBROUTE}/${params ? `?${params}` : ''}`;
@@ -38,8 +38,8 @@ export async function getCountyData(filters) {
 export async function getRangerDistrictData(filters) {
   const params = toQueryParams({
     ...filters,
-    ...(filters.county ? { county: filters.county.join(',') } : {}),
-    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
   });
 
   const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/${params ? `?${params}` : ''}`;
@@ -61,8 +61,8 @@ export async function getRangerDistrictData(filters) {
 export async function countyAggregateByYear(filters = {}) {
   const params = toQueryParams({
     ...filters,
-    ...(filters.county ? { county: filters.county.join(',') } : {}),
-    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
   });
 
   const url = `${global.API_URL}/${COUNTY_SUBROUTE}/aggregate/year${params ? `?${params}` : ''}`;
@@ -84,8 +84,8 @@ export async function countyAggregateByYear(filters = {}) {
 export async function countyAggregateByState(filters = {}) {
   const params = toQueryParams({
     ...filters,
-    ...(filters.county ? { county: filters.county.join(',') } : {}),
-    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
   });
 
   const url = `${global.API_URL}/${COUNTY_SUBROUTE}/aggregate/state${params ? `?${params}` : ''}`;
@@ -107,8 +107,8 @@ export async function countyAggregateByState(filters = {}) {
 export async function countyAggregateByCounty(filters = {}) {
   const params = toQueryParams({
     ...filters,
-    ...(filters.county ? { county: filters.county.join(',') } : {}),
-    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
   });
 
   const url = `${global.API_URL}/${COUNTY_SUBROUTE}/aggregate/county${params ? `?${params}` : ''}`;
@@ -130,8 +130,8 @@ export async function countyAggregateByCounty(filters = {}) {
 export async function rangerDistrictAggregateByYear(filters = {}) {
   const params = toQueryParams({
     ...filters,
-    ...(filters.county ? { county: filters.county.join(',') } : {}),
-    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
   });
 
   const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/aggregate/year${params ? `?${params}` : ''}`;
@@ -153,8 +153,8 @@ export async function rangerDistrictAggregateByYear(filters = {}) {
 export async function rangerDistrictAggregateByState(filters = {}) {
   const params = toQueryParams({
     ...filters,
-    ...(filters.county ? { county: filters.county.join(',') } : {}),
-    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
   });
 
   const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/aggregate/state${params ? `?${params}` : ''}`;
@@ -176,8 +176,8 @@ export async function rangerDistrictAggregateByState(filters = {}) {
 export async function rangerDistrictAggregateByRangerDistrict(filters = {}) {
   const params = toQueryParams({
     ...filters,
-    ...(filters.county ? { county: filters.county.join(',') } : {}),
-    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
   });
 
   const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/aggregate/rangerDistrict${params ? `?${params}` : ''}`;

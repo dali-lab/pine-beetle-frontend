@@ -10,7 +10,6 @@ import {
 } from './components';
 
 import {
-  DownloadData,
   Loading,
   ScrollIcon,
 } from '../../components';
@@ -105,9 +104,6 @@ const Prediction = (props) => {
       <SelectionBar />
       <PredictionMap />
       { predDetails(data.length === 1) }
-      <div id="download-pred-data">
-        <DownloadData />
-      </div>
     </div>
   );
 };
