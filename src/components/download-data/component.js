@@ -215,19 +215,6 @@ const DownloadData = (props) => {
               </label>
             </div>
           </div>
-          {/* <div id="extras-row">
-            <div id="circle-checkbox">
-              <label htmlFor="include-helper">
-                <input
-                  type="checkbox"
-                  id="include-helper"
-                  onChange={addFieldToDownload('HELPER')}
-                  checked={fieldsToDownload.HELPER}
-                />
-                <span className="checkbox-text">Include helper data*</span>
-              </label>
-            </div>
-          </div> */}
           <div>
             {isDownloading ? (
               <div id="downloading-container">
@@ -248,9 +235,6 @@ const DownloadData = (props) => {
               </button>
             )}
           </div>
-          {/* <div id="modal-footnote-container">
-            <p className="modal-footnote">* helper data includes ranger district name mappings and state abbreviation mappings</p>
-          </div> */}
         </div>
       </Modal>
     </>
