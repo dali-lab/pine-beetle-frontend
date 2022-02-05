@@ -5,40 +5,24 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
 import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
+import { getMapboxRDNameFormat } from '../../../../utils';
+import { api } from '../../../../services';
 
 import {
-  getMapboxRDNameFormat,
-} from '../../../../utils';
+  thresholds,
+  colors,
+  MAP_SOURCES,
+  SOURCE_LAYERS,
+  MAP_SOURCE_NAME,
+  VECTOR_LAYER,
+  STATE_VECTOR_LAYER,
+} from './utils';
 
 import './style.scss';
 
 const questionIcon = require('../../../../assets/icons/help-circle.png');
 
-const helpText = `Please use Chrome, Firefox,<br />
-or Edge to download map.`;
-
-const thresholds = ['no spot data', '0-9', '10-19', '20-49', '50-99', '100-249', '>249'];
-const colors = ['#D3D3D3', '#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
-
-const MAP_SOURCES = {
-  COUNTY: {
-    type: 'vector',
-    url: 'mapbox://pine-beetle-prediction.1be58pyi',
-  },
-  RANGER_DISTRICT: {
-    type: 'vector',
-    url: 'mapbox://pine-beetle-prediction.0tor8eeq',
-  },
-};
-
-const SOURCE_LAYERS = {
-  COUNTY: 'US_Counties_updated',
-  RANGER_DISTRICT: 'RD_SPB_NE',
-};
-
-const MAP_SOURCE_NAME = 'counties';
-const VECTOR_LAYER = 'prediction-chloropleth-layer';
-const STATE_VECTOR_LAYER = 'states';
+const helpText = 'Please use Chrome, Firefox,<br />\nor Edge to download map.';
 
 const HistoricalMap = (props) => {
   const {
@@ -63,6 +47,15 @@ const HistoricalMap = (props) => {
   const [mapHoverCallback, setMapHoverCallback] = useState();
   const [mapStateClickCallback, setMapStateClickCallback] = useState();
   const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
+  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
+
+  useEffect(() => {
+    if (dataMode === DATA_MODES.RANGER_DISTRICT) {
+      api.getAvailableSublocations(dataMode)
+        .then(setAllRangerDistricts)
+        .catch(console.log);
+    }
+  }, [dataMode]);
 
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => (e) => {
@@ -88,30 +81,34 @@ const HistoricalMap = (props) => {
         : rangerDistricts.filter(rd => !!rd)
           .find(rd => rd.includes(hoverRD));
 
+      const sublocation = mode === DATA_MODES.COUNTY ? 'county' : 'rangerDistrict';
+
       const data = allData.filter((p) => {
         return (
+          // either ranger district mode or have a matching state
           (mode === DATA_MODES.RANGER_DISTRICT || ((p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState))))
-          && ((p.county === location && mode === DATA_MODES.COUNTY)
-        || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT))
+          // and sublocation matches
+          && ((p[sublocation] === location))
         );
       }).filter(p => p.state === hoverState || mode === DATA_MODES.RANGER_DISTRICT);
 
       if (data && data.length > 0 && x && y) {
-        const countyName = data.find(t => t.county) ? data.find(t => t.county).county : '';
-
         const {
           avgSpbPer2Weeks,
           avgCleridsPer2Weeks,
           minSpotst0,
           maxSpotst0,
+          county: countyName,
         } = data[0];
+
+        const isInvalidNumber = num => Number.isNaN(num) || num === null || num === undefined;
 
         setTrappingHover((
           <div id="trapping-hover" style={{ left: `${x + 10}px`, top: `${y - 140}px` }}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
-            <p>Average SPB Per 2 Weeks: {Number.isNaN(avgSpbPer2Weeks) ? 'null' : avgSpbPer2Weeks.toFixed(2)}</p>
-            <p>Average Clerids Per 2 Weeks: {Number.isNaN(avgCleridsPer2Weeks) ? 'null' : avgCleridsPer2Weeks.toFixed(2)}</p>
-            {!Number.isNaN(minSpotst0) && !Number.isNaN(maxSpotst0) ? <p>Spot Range: [{minSpotst0}, {maxSpotst0}]</p> : null}
+            <p>Average SPB Per 2 Weeks: {isInvalidNumber(avgSpbPer2Weeks) ? 'null' : avgSpbPer2Weeks.toFixed(2)}</p>
+            <p>Average Clerids Per 2 Weeks: {isInvalidNumber(avgCleridsPer2Weeks) ? 'null' : avgCleridsPer2Weeks.toFixed(2)}</p>
+            {!isInvalidNumber(minSpotst0) && !isInvalidNumber(maxSpotst0) ? <p>Spot Range: [{minSpotst0}, {maxSpotst0}]</p> : null}
           </div>
         ));
       } else {
@@ -121,33 +118,34 @@ const HistoricalMap = (props) => {
   };
 
   // twice-curried function for generating click callback
-  const createMapClickCallback = (states, counties, rangerDistricts, currentState, data, mode) => (e) => {
+  const createMapClickCallback = (states, sublocations, currentState, data, mode) => (e) => {
     if (!e?.features[0]?.properties) return;
 
     const {
       COUNTYNAME: county,
       forest: clickRD,
-      STATE: _state,
+      STATE: mapboxState,
     } = e.features[0].properties;
 
-    const rangerDistrictToSet = rangerDistricts.filter(rd => !!rd)
+    const rangerDistrictToSet = sublocations.filter(rd => !!rd)
       .find(district => district.includes(clickRD));
 
-    const state = !_state && mode === DATA_MODES.RANGER_DISTRICT
+    const state = !mapboxState && mode === DATA_MODES.RANGER_DISTRICT
       ? data.find(p => p.rangerDistrict === rangerDistrictToSet)?.state
-      : _state;
+      : mapboxState;
 
     // ensure clicked on valid state
     if (!states.includes(state) || !currentState) return;
 
     // select county or RD depending on mode
-    if (dataMode === DATA_MODES.COUNTY && counties.includes(county)) {
+    if (dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
       setCounty(county);
-    } else if (rangerDistricts.includes(rangerDistrictToSet)) {
+    } else if (sublocations.includes(rangerDistrictToSet)) {
       setRangerDistrict(rangerDistrictToSet);
     }
   };
 
+  // creates the initial map
   const generateMap = (forceRegenerate) => {
     if (map && !forceRegenerate) return;
 
@@ -191,13 +189,13 @@ const HistoricalMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      const callback = createMapClickCallback(availableStates, availableSublocations, availableSublocations, selectedState, rawData, dataMode);
+      const callback = createMapClickCallback(availableStates, availableSublocations, selectedState, rawData, dataMode);
       setMapClickCallback(() => callback);
       createdMap.on('click', VECTOR_LAYER, callback);
     }
 
     if (createdMap._listeners.mousemove === undefined) {
-      const callback = createMapHoverCallback(rawData, availableSublocations, dataMode, selectedState, availableStates);
+      const callback = createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, availableStates);
       setMapHoverCallback(callback);
       createdMap.on('mousemove', callback);
     }
@@ -365,9 +363,7 @@ const HistoricalMap = (props) => {
         pdf.save(mapName);
         setIsDownloadingMap(false);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(console.log);
   };
 
   useEffect(() => {
@@ -422,11 +418,11 @@ const HistoricalMap = (props) => {
       if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
 
       // generate new callback
-      const callback = createMapHoverCallback(rawData, availableSublocations, dataMode, selectedState, availableStates);
+      const callback = createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, availableStates);
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
     }
-  }, [map, rawData, availableSublocations, dataMode, selectedState, availableStates]);
+  }, [map, rawData, allRangerDistricts, availableSublocations, dataMode, selectedState, availableStates]);
 
   useEffect(() => {
     if (map && availableStates && availableSublocations) {
@@ -434,7 +430,7 @@ const HistoricalMap = (props) => {
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
-      const callback = createMapClickCallback(availableStates, availableSublocations, availableSublocations, selectedState, rawData, dataMode);
+      const callback = createMapClickCallback(availableStates, availableSublocations, selectedState, rawData, dataMode);
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }

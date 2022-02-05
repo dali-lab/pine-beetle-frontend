@@ -232,8 +232,9 @@ export async function getAvailableStates(dataMode) {
 export async function getAvailableSublocations(dataMode, state) {
   const subroute = dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE;
   const path = dataMode === DATA_MODES.COUNTY ? 'counties' : 'rangerDistricts';
+  const queryParams = state ? `?state=${state}` : '';
 
-  const url = `${global.API_URL}/${subroute}/${path}/list?state=${state}`;
+  const url = `${global.API_URL}/${subroute}/${path}/list${queryParams}`;
 
   try {
     const { data: { data } } = await axios.get(url);
