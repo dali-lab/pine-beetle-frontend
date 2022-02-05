@@ -108,6 +108,5 @@ export {
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
-  // yearsOptions,
   VIDEO_URL,
 };
