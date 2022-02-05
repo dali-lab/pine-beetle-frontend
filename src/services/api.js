@@ -13,7 +13,11 @@ const R_MODEL_SUBROUTE = 'r-model';
  * @returns {Promise<Object>} API response
  */
 export async function getCountyData(filters) {
-  const params = toQueryParams(filters);
+  const params = toQueryParams({
+    ...filters,
+    ...(filters.county ? { county: filters.county.join(',') } : {}),
+    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+  });
 
   const url = `${global.API_URL}/${COUNTY_SUBROUTE}/${params ? `?${params}` : ''}`;
 
@@ -32,7 +36,11 @@ export async function getCountyData(filters) {
  * @returns {Promise<Object>} API response
  */
 export async function getRangerDistrictData(filters) {
-  const params = toQueryParams(filters);
+  const params = toQueryParams({
+    ...filters,
+    ...(filters.county ? { county: filters.county.join(',') } : {}),
+    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+  });
 
   const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/${params ? `?${params}` : ''}`;
 
@@ -51,7 +59,11 @@ export async function getRangerDistrictData(filters) {
  * @returns {Promise<Object>} API response
  */
 export async function countyAggregateByYear(filters = {}) {
-  const params = toQueryParams(filters);
+  const params = toQueryParams({
+    ...filters,
+    ...(filters.county ? { county: filters.county.join(',') } : {}),
+    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+  });
 
   const url = `${global.API_URL}/${COUNTY_SUBROUTE}/aggregate/year${params ? `?${params}` : ''}`;
 
@@ -70,7 +82,11 @@ export async function countyAggregateByYear(filters = {}) {
  * @returns {Promise<Object>} API response
  */
 export async function countyAggregateByState(filters = {}) {
-  const params = toQueryParams(filters);
+  const params = toQueryParams({
+    ...filters,
+    ...(filters.county ? { county: filters.county.join(',') } : {}),
+    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+  });
 
   const url = `${global.API_URL}/${COUNTY_SUBROUTE}/aggregate/state${params ? `?${params}` : ''}`;
 
@@ -89,7 +105,11 @@ export async function countyAggregateByState(filters = {}) {
  * @returns {Promise<Object>} API response
  */
 export async function countyAggregateByCounty(filters = {}) {
-  const params = toQueryParams(filters);
+  const params = toQueryParams({
+    ...filters,
+    ...(filters.county ? { county: filters.county.join(',') } : {}),
+    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+  });
 
   const url = `${global.API_URL}/${COUNTY_SUBROUTE}/aggregate/county${params ? `?${params}` : ''}`;
 
@@ -108,7 +128,11 @@ export async function countyAggregateByCounty(filters = {}) {
  * @returns {Promise<Object>} API response
  */
 export async function rangerDistrictAggregateByYear(filters = {}) {
-  const params = toQueryParams(filters);
+  const params = toQueryParams({
+    ...filters,
+    ...(filters.county ? { county: filters.county.join(',') } : {}),
+    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+  });
 
   const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/aggregate/year${params ? `?${params}` : ''}`;
 
@@ -127,7 +151,11 @@ export async function rangerDistrictAggregateByYear(filters = {}) {
  * @returns {Promise<Object>} API response
  */
 export async function rangerDistrictAggregateByState(filters = {}) {
-  const params = toQueryParams(filters);
+  const params = toQueryParams({
+    ...filters,
+    ...(filters.county ? { county: filters.county.join(',') } : {}),
+    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+  });
 
   const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/aggregate/state${params ? `?${params}` : ''}`;
 
@@ -146,7 +174,11 @@ export async function rangerDistrictAggregateByState(filters = {}) {
  * @returns {Promise<Object>} API response
  */
 export async function rangerDistrictAggregateByRangerDistrict(filters = {}) {
-  const params = toQueryParams(filters);
+  const params = toQueryParams({
+    ...filters,
+    ...(filters.county ? { county: filters.county.join(',') } : {}),
+    ...(filters.rangerDistrict ? { county: filters.rangerDistrict.join(',') } : {}),
+  });
 
   const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/aggregate/rangerDistrict${params ? `?${params}` : ''}`;
 

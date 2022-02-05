@@ -25,13 +25,13 @@ const mapStateToProps = (state) => {
   const isError = customPredictionError.error.length > 0;
 
   return {
-    county,
+    county: county[0],
     customPrediction,
     dataMode,
     error: customPredictionError,
     isError,
     isLoading: fetchingCustomPrediction,
-    rangerDistrict,
+    rangerDistrict: rangerDistrict[0],
     selectedState,
     year,
   };

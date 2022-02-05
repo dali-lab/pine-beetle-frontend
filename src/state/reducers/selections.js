@@ -6,7 +6,7 @@ const initialState = {
   endYear: new Date().getFullYear(),
   state: '',
   county: [],
-  rangerDistrict: '',
+  rangerDistrict: [],
   dataMode: DATA_MODES.COUNTY,
   chartMode: CHART_MODES.MAP,
 
@@ -35,10 +35,10 @@ const SelectionsReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.SET_COUNTY:
-      return { ...state, county: action.payload.county };
+      return { ...state, county: [action.payload.county] };
 
     case ActionTypes.SET_RANGER_DISTRICT:
-      return { ...state, rangerDistrict: action.payload.rangerDistrict };
+      return { ...state, rangerDistrict: [action.payload.rangerDistrict] };
 
     case ActionTypes.SET_DATA_MODE:
       return {

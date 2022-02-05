@@ -189,6 +189,8 @@ export const setCounty = (county) => {
   return (dispatch, getState) => {
     dispatch({ type: ActionTypes.SET_COUNTY, payload: { county } });
 
+    // TODO: generate new array for multi-counties (when support multi-select) and pass to below function calls
+
     // fetch new data
     dispatch(getAggregateYearData({ county }));
     dispatch(getAggregateStateData({ county }));
@@ -204,6 +206,8 @@ export const setCounty = (county) => {
 export const setRangerDistrict = (rangerDistrict) => {
   return (dispatch, getState) => {
     dispatch({ type: ActionTypes.SET_RANGER_DISTRICT, payload: { rangerDistrict } });
+
+    // TODO: generate new array for multi-rangerdistricts (when support multi-select) and pass to below function calls
 
     // fetch new data
     dispatch(getAggregateYearData({ rangerDistrict }));
