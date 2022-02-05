@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 import React from 'react';
 
-import { TextInput, ChoiceInput } from '../../../../components/input-components';
+import { ChoiceInput } from '../../../../components/input-components';
 
 import { DATA_MODES } from '../../../../constants';
 
@@ -14,7 +14,7 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    // availableYears,
+    availableYears,
     availableStates,
     availableSublocations,
     clearAllSelections,
@@ -38,7 +38,7 @@ const SelectionBar = (props) => {
 
   return (
     <div id="predictionbar" className="container">
-      <TextInput instructions="Year" setValue={setYear} value={year} />
+      <ChoiceInput instructions="Year" setValue={setYear} value={year} options={availableYears} firstOptionText="Year" />
       <div id="vl1" />
       <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
       <div id="vl1" />
