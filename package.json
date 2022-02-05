@@ -47,7 +47,6 @@
     "canvg": "^3.0.9",
     "chart.js": "^2.9.4",
     "chartjs-top-round-bar": "^1.0.1",
-    "debounce": "^1.2.1",
     "dotenv-safe": "^8.2.0",
     "mapbox": "^1.0.0-beta10",
     "mapbox-gl": "^1.12.0",
@@ -67,6 +66,8 @@
     "react-lottie": "^1.2.3",
     "react-map-gl": "^5.2.8",
     "react-modal": "^3.11.2",
+    "react-multi-select-component": "^4.2.1",
+    "react-read-more-read-less": "^1.0.7",
     "react-redux": "^7.0.2",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
@@ -76,6 +77,7 @@
     "react-transition-group": "^4.3.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "sass-loader": "^10",
     "webpack-dotenv-plugin": "^2.1.0",
     "yarn": "^1.22.4"
   }

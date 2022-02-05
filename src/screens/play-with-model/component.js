@@ -7,10 +7,6 @@ import {
   SelectionBar,
 } from './components';
 
-import {
-  DownloadData,
-} from '../../components';
-
 import { DATA_MODES } from '../../constants';
 
 import { api } from '../../services';
@@ -109,7 +105,6 @@ const PlayWithModel = (props) => {
           year={year}
         />
       </div>
-      <DownloadData />
     </div>
   );
 };

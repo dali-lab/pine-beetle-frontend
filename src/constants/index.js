@@ -17,6 +17,7 @@ const stateAbbrevToStateName = require('./state-abbreviations.json');
 const stateAbbrevToStateId = require('./state-ids.json');
 const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 
+
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
 const getServerUrl = () => {
@@ -71,7 +72,7 @@ const CHART_MODES = {
 const ROUTES = {
   ABOUT: '/about',
   ADMIN: '/admin',
-  TRAPPING_DATA: '/historical-and-model-input-data',
+  TRAPPING_DATA: '/historical-data',
   HOME: '/',
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predict-outbreak',
@@ -107,5 +108,6 @@ export {
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
+  // yearsOptions,
   VIDEO_URL,
 };

@@ -15,6 +15,7 @@ const initialState = {
   availableSublocations: [],
 };
 
+
 const SelectionsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.SET_YEAR:
@@ -30,8 +31,8 @@ const SelectionsReducer = (state = initialState, action) => {
       return {
         ...state,
         state: action.payload.state,
-        county: action.payload.state !== state.state ? '' : state.county,
-        rangerDistrict: action.payload.state !== state.state ? '' : state.rangerDistrict,
+        county: action.payload.state !== state.state ? [] : state.county,
+        rangerDistrict: action.payload.state !== state.state ? [] : state.rangerDistrict,
       };
 
     case ActionTypes.SET_COUNTY:

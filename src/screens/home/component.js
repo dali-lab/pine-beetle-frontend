@@ -34,7 +34,7 @@ const Home = (_props) => {
           </Link>
         </div>
         <div className="page-container">
-          <div id="page-name">Historical and Model Input Data</div>
+          <div id="page-name">Historical Data</div>
           <div id="summary">
             Trapping data collected since 1988 were used to build the prediction model on this website. View and download the data here. Data can be filtered by years and/or locations.
           </div>

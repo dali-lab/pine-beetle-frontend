@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { debounce } from 'debounce';
+import React from 'react';
 
-import { TextInput, ChoiceInput } from '../../../../components/input-components';
+import { ChoiceInput } from '../../../../components/input-components';
 
 import { DATA_MODES } from '../../../../constants';
 
@@ -14,9 +13,9 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    // availableYears,
     availableStates,
     availableSublocations,
+    availableYears,
     clearSelections,
     county,
     dataMode,
@@ -38,39 +37,13 @@ const SelectionBar = (props) => {
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
-  const [newStartYear, setNewStartYear] = useState(startYear);
-  const [newEndYear, setNewEndYear] = useState(endYear);
-
-  // immediately updates UI with new user selection, but doesn't update redux until 1s debounce
-  const setStartYearDebounced = (year) => {
-    setNewStartYear(year);
-
-    if (year.toString().length === 4) {
-      debounce(setStartYear, 1000)(year);
-    }
-  };
-
-  // immediately updates UI with new user selection, but doesn't update redux until 1s debounce
-  const setEndYearDebounced = (year) => {
-    setNewEndYear(year);
-
-    if (year.toString().length === 4) {
-      debounce(setEndYear, 1000)(year);
-    }
-  };
-
-  useEffect(() => {
-    setNewStartYear(startYear);
-    setNewEndYear(endYear);
-  }, [startYear, endYear]);
-
   return (
     <div id="predictionbar-trapping" className="container">
       <div id="year-selection">
-        <div id="start-year-selection"><TextInput instructions="Year" setValue={setStartYearDebounced} value={newStartYear} /></div>
+        <div id="start-year-selection"><ChoiceInput instructions="End Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
         <div id="vl3" />
         {/* TODO: "to" */}
-        <div id="end-year-selection"><TextInput setValue={setEndYearDebounced} value={newEndYear} /></div>
+        <div id="end-year-selection"><ChoiceInput instructions="Start Year" setValue={setEndYear} options={availableYears} value={endYear} /></div>
       </div>
       <div id="vl1" />
       <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
