@@ -17,10 +17,8 @@ const mapStateToProps = (state) => {
 
   const isLoading = fetchingPredictions;
 
-  const predictionData = predictions.filter(({ isValidForPrediction }) => !!isValidForPrediction);
-
   return {
-    data: predictionData,
+    data: predictions,
     fetchErrorText,
     isLoading,
   };

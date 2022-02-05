@@ -170,7 +170,7 @@ export async function rangerDistrictAggregateByRangerDistrict(filters = {}) {
  */
 export async function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev) {
   const params = toQueryParams({
-    cleridst1,
+    ...(cleridst1 ? { cleridst1 } : {}),
     endobrev: +endobrev, // note: this casts true to 1 and false to 0 if it is a boolean
     SPB,
     spotst1,

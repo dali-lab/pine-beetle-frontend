@@ -21,6 +21,11 @@ export const ActionTypes = {
   CLEAR_CUSTOM_PREDICTION_ERROR: 'CLEAR_CUSTOM_PREDICTION_ERROR',
 };
 
+/**
+ * @description action creator that fetches data with predictions for given filter
+ * @param {Number} year year to fetch predictions on
+ * @param {Object} [overrideFilter={}] optional filter for startYear, endYear, state, etc.
+ */
 export function getPredictions(year = new Date().getFullYear(), overrideFilter = {}) {
   return async (dispatch, getState) => {
     const {
@@ -37,6 +42,7 @@ export function getPredictions(year = new Date().getFullYear(), overrideFilter =
       county,
       rangerDistrict,
       ...overrideFilter,
+      isValidForPrediction: 1,
     }).reduce((acc, [key, val]) => ({
       ...acc,
       ...(val ? { [key]: val } : {}),

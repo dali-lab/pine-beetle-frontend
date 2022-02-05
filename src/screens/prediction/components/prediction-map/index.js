@@ -24,14 +24,12 @@ const mapStateToProps = (state) => {
     },
   } = state;
 
-  const data = predictions.filter(doc => !!doc.isValidForPrediction);
-
   return {
     availableStates,
     availableSublocations,
     county,
     dataMode,
-    data,
+    data: predictions,
     rangerDistrict,
     selectedState,
     year,

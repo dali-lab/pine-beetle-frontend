@@ -13,6 +13,8 @@ import {
 
 import { DATA_MODES } from '../../constants';
 
+import { api } from '../../services';
+
 const PlayWithModel = (props) => {
   const {
     clearError, // function to clear the error
@@ -49,7 +51,7 @@ const PlayWithModel = (props) => {
 
   useEffect(() => {
     const sublocation = dataMode === DATA_MODES.COUNTY ? 'county' : 'rangerDistrict';
-    // const selectedSubLocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
+    const selectedSubLocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
 
     // sets input fields to 0 if selection cleared
     if (!selectedState && !sublocation) {
@@ -60,41 +62,32 @@ const PlayWithModel = (props) => {
         spotst1: 0,
         spotst2: 0,
       });
-    } else if (year && selectedState && sublocation) {
-      // TODO: will need to send request to backend here to get model inputs for the user's selection
+    } else if (year && selectedState && selectedSubLocation) {
+      // send request to backend to get model inputs for this selection
+      const fetcher = dataMode === DATA_MODES.COUNTY ? api.getCountyData : api.getRangerDistrictData;
 
-      // // filter to find relevant data fields
-      // const relevantData = fullData
-      //   .filter(obj => (
-      //     obj.state === selectedState
-      //     && obj[sublocation] === selectedSubLocation
-      //     && (obj.year === year || obj.year === year - 1)
-      //   ));
+      fetcher({ year, state: selectedState, [sublocation]: selectedSubLocation })
+        .then((data) => {
+          const {
+            spotst1 = 0,
+            spotst2 = 0,
+            spbPer2Weeks = 0,
+            endobrev = 1,
+            cleridst1,
+          } = data[0] || {};
 
-      // // grab current and previous year objects
-      // const currentYearObject = relevantData.find(obj => obj.year === year) || {};
-      // const previousYearObject = relevantData.find(obj => obj.year === year - 1) || {};
-
-      // // grab the model input values for this selection
-      // const {
-      //   spotst1,
-      //   spotst2,
-      //   spbPer2Weeks,
-      //   endobrev,
-      // } = currentYearObject;
-
-      // const {
-      //   cleridsPer2Weeks,
-      // } = previousYearObject;
-
-      // // update the state
-      // updateModelInputs({
-      //   spotst1: (spotst1 || 0),
-      //   spotst2: (spotst2 || 0),
-      //   spb: (spbPer2Weeks || 0),
-      //   endobrev: (endobrev || 0),
-      //   cleridst1: (cleridsPer2Weeks || 0),
-      // });
+          // update the state
+          updateModelInputs({
+            spotst1,
+            spotst2,
+            spb: spbPer2Weeks,
+            endobrev,
+            cleridst1,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, [year, selectedState, county, rangerDistrict, dataMode]);
 

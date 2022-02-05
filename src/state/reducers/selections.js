@@ -5,10 +5,10 @@ const initialState = {
   startYear: 1988,
   endYear: new Date().getFullYear(),
   state: '',
-  county: '',
+  county: [],
   rangerDistrict: '',
   dataMode: DATA_MODES.COUNTY,
-  chartMode: CHART_MODES.GRAPH,
+  chartMode: CHART_MODES.MAP,
 
   availableYears: [],
   availableStates: [],
