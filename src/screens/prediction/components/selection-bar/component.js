@@ -38,7 +38,7 @@ const SelectionBar = (props) => {
 
   return (
     <div id="predictionbar" className="container">
-      <ChoiceInput instructions="End Year" setValue={setYear} options={availableYears} value={year} />
+      <ChoiceInput instructions="Year" setValue={setYear} options={availableYears} value={year} />
       <div id="vl1" />
       <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
       <div id="vl1" />

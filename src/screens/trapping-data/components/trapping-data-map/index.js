@@ -17,8 +17,8 @@ const mapStateToProps = (state) => {
       state: selectedState,
       startYear,
       endYear,
-      availableStates,
-      availableSublocations,
+      availableHistoricalStates,
+      availableHistoricalSublocations,
     },
     data: {
       sublocationData,
@@ -26,8 +26,8 @@ const mapStateToProps = (state) => {
   } = state;
 
   return {
-    availableStates,
-    availableSublocations,
+    availableStates: availableHistoricalStates,
+    availableSublocations: availableHistoricalSublocations,
     county: county[0],
     dataMode,
     endYear,

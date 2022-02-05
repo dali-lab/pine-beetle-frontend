@@ -26,9 +26,13 @@ export const ActionTypes = {
   SET_ALL_RANGER_DISTRICTS: 'SET_ALL_RANGER_DISTRICTS',
   SET_DATA_MODE: 'SET_DATA_MODE',
   SET_CHART_MODE: 'SET_CHART_MODE',
-  SET_AVAILABLE_YEARS: 'SET_AVAILABLE_YEARS',
-  SET_AVAILABLE_STATES: 'SET_AVAILABLE_STATES',
-  SET_AVAILABLE_SUBLOCATIONS: 'SET_AVAILABLE_SUBLOCATIONS',
+
+  SET_AVAILABLE_YEARS_HISTORICAL: 'SET_AVAILABLE_YEARS_HISTORICAL',
+  SET_AVAILABLE_STATES_HISTORICAL: 'SET_AVAILABLE_STATES_HISTORICAL',
+  SET_AVAILABLE_SUBLOCATIONS_HISTORICAL: 'SET_AVAILABLE_SUBLOCATIONS_HISTORICAL',
+  SET_AVAILABLE_YEARS_PREDICTION: 'SET_AVAILABLE_YEARS_PREDICTION',
+  SET_AVAILABLE_STATES_PREDICTION: 'SET_AVAILABLE_STATES_PREDICTION',
+  SET_AVAILABLE_SUBLOCATIONS_PREDICTION: 'SET_AVAILABLE_SUBLOCATIONS_PREDICTION',
 };
 
 /**
@@ -39,8 +43,11 @@ export function getAvailableYears() {
     const { dataMode } = getState().selections;
 
     try {
-      const response = await api.getAvailableYears(dataMode);
-      dispatch({ type: ActionTypes.SET_AVAILABLE_YEARS, payload: response });
+      const historicalYears = await api.getAvailableYears(dataMode, { isHistorical: true });
+      const predictionYears = await api.getAvailableYears(dataMode, { isPrediction: true });
+
+      dispatch({ type: ActionTypes.SET_AVAILABLE_YEARS_HISTORICAL, payload: historicalYears });
+      dispatch({ type: ActionTypes.SET_AVAILABLE_YEARS_PREDICTION, payload: predictionYears });
     } catch (error) {
       dispatch({
         type: ActionTypes.SET_DATA_FETCH_ERROR,
@@ -61,8 +68,11 @@ export function getAvailableStates() {
     const { dataMode } = getState().selections;
 
     try {
-      const response = await api.getAvailableStates(dataMode);
-      dispatch({ type: ActionTypes.SET_AVAILABLE_STATES, payload: response });
+      const historicalStates = await api.getAvailableStates(dataMode, { isHistorical: true });
+      const predictionStates = await api.getAvailableStates(dataMode, { isPrediction: true });
+
+      dispatch({ type: ActionTypes.SET_AVAILABLE_STATES_HISTORICAL, payload: historicalStates });
+      dispatch({ type: ActionTypes.SET_AVAILABLE_STATES_PREDICTION, payload: predictionStates });
     } catch (error) {
       dispatch({
         type: ActionTypes.SET_DATA_FETCH_ERROR,
@@ -83,8 +93,11 @@ export function getAvailableSublocations(state) {
     const { dataMode } = getState().selections;
 
     try {
-      const response = await api.getAvailableSublocations(dataMode, state);
-      dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS, payload: response });
+      const historicalSublocations = await api.getAvailableSublocations(dataMode, state, { isHistorical: true });
+      const predictionSublocations = await api.getAvailableSublocations(dataMode, state, { isPrediction: true });
+
+      dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_HISTORICAL, payload: historicalSublocations });
+      dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION, payload: predictionSublocations });
     } catch (error) {
       dispatch({
         type: ActionTypes.SET_DATA_FETCH_ERROR,
@@ -279,7 +292,8 @@ export const setDataMode = (mode) => {
     // fetch new selection criteria
     dispatch(getAvailableYears());
     dispatch(getAvailableStates());
-    dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS, payload: [] });
+    dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_HISTORICAL, payload: [] });
+    dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION, payload: [] });
   };
 };
 

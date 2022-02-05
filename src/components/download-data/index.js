@@ -22,16 +22,16 @@ const mapStateToProps = (state) => {
       county,
       rangerDistrict,
       dataMode,
-      availableYears,
-      availableStates,
-      availableSublocations,
+      availableHistoricalYears,
+      availableHistoricalStates,
+      availableHistoricalSublocations,
     },
   } = state;
 
   return {
-    availableYears,
-    availableStates,
-    availableSublocations,
+    availableYears: availableHistoricalYears,
+    availableStates: availableHistoricalStates,
+    availableSublocations: availableHistoricalSublocations,
     county: county[0],
     endYear,
     rangerDistrict: rangerDistrict[0],

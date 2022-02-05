@@ -10,9 +10,12 @@ const initialState = {
   dataMode: DATA_MODES.COUNTY,
   chartMode: CHART_MODES.MAP,
 
-  availableYears: [],
-  availableStates: [],
-  availableSublocations: [],
+  availableHistoricalYears: [],
+  availableHistoricalStates: [],
+  availableHistoricalSublocations: [],
+  availablePredictionYears: [],
+  availablePredictionStates: [],
+  availablePredictionSublocations: [],
 };
 
 
@@ -69,19 +72,33 @@ const SelectionsReducer = (state = initialState, action) => {
         endYear: Math.max(...action.payload.map(({ year }) => year)) || initialState.endYear,
       };
 
-    case ActionTypes.SET_AVAILABLE_YEARS:
+    case ActionTypes.SET_AVAILABLE_YEARS_HISTORICAL:
       return {
         ...state,
-        availableYears: action.payload,
+        availableHistoricalYears: action.payload,
         startYear: Math.min(action.payload) || initialState.startYear,
         endYear: Math.max(action.payload) || initialState.endYear,
       };
 
-    case ActionTypes.SET_AVAILABLE_STATES:
-      return { ...state, availableStates: action.payload };
+    case ActionTypes.SET_AVAILABLE_STATES_HISTORICAL:
+      return { ...state, availableHistoricalStates: action.payload };
 
-    case ActionTypes.SET_AVAILABLE_SUBLOCATIONS:
-      return { ...state, availableSublocations: action.payload };
+    case ActionTypes.SET_AVAILABLE_SUBLOCATIONS_HISTORICAL:
+      return { ...state, availableHistoricalSublocations: action.payload };
+
+    case ActionTypes.SET_AVAILABLE_YEARS_PREDICTION:
+      return {
+        ...state,
+        availablePredictionYears: action.payload,
+        startYear: Math.min(action.payload) || initialState.startYear,
+        endYear: Math.max(action.payload) || initialState.endYear,
+      };
+
+    case ActionTypes.SET_AVAILABLE_STATES_PREDICTION:
+      return { ...state, availablePredictionStates: action.payload };
+
+    case ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION:
+      return { ...state, availablePredictionSublocations: action.payload };
 
     default:
       return state;

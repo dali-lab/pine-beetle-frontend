@@ -223,10 +223,16 @@ export async function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endo
 /**
  * @description retrieves all available years based on data mode
  * @param {String} dataMode the current data mode
+ * @param {Boolean} isHistorical signifies if query should be for historical data
  * @returns {Promise<Object>} API response
  */
-export async function getAvailableYears(dataMode) {
-  const url = `${global.API_URL}/${dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE}/years/list`;
+export async function getAvailableYears(dataMode, { isHistorical, isPrediction }) {
+  const params = toQueryParams({
+    ...(isHistorical ? { isHistorical: 1 } : {}),
+    ...(isPrediction ? { isPrediction: 1 } : {}),
+  });
+
+  const url = `${global.API_URL}/${dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE}/years/list${params ? `?${params}` : ''}`;
 
   try {
     const { data: { data } } = await axios.get(url);
@@ -243,8 +249,13 @@ export async function getAvailableYears(dataMode) {
  * @param {String} dataMode the current data mode
  * @returns {Promise<Object>} API response
  */
-export async function getAvailableStates(dataMode) {
-  const url = `${global.API_URL}/${dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE}/states/list`;
+export async function getAvailableStates(dataMode, { isHistorical, isPrediction }) {
+  const params = toQueryParams({
+    ...(isHistorical ? { isHistorical: 1 } : {}),
+    ...(isPrediction ? { isPrediction: 1 } : {}),
+  });
+
+  const url = `${global.API_URL}/${dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE}/states/list${params ? `?${params}` : ''}`;
 
   try {
     const { data: { data } } = await axios.get(url);
@@ -261,12 +272,17 @@ export async function getAvailableStates(dataMode) {
  * @param {String} state the state to search on
  * @returns {Promise<Object>} API response
  */
-export async function getAvailableSublocations(dataMode, state) {
+export async function getAvailableSublocations(dataMode, state, { isHistorical, isPrediction }) {
   const subroute = dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE;
   const path = dataMode === DATA_MODES.COUNTY ? 'counties' : 'rangerDistricts';
-  const queryParams = state ? `?state=${state}` : '';
 
-  const url = `${global.API_URL}/${subroute}/${path}/list${queryParams}`;
+  const params = toQueryParams({
+    ...(isHistorical ? { isHistorical: 1 } : {}),
+    ...(isPrediction ? { isPrediction: 1 } : {}),
+    ...(state ? { state } : {}),
+  });
+
+  const url = `${global.API_URL}/${subroute}/${path}/list${params ? `?${params}` : ''}`;
 
   try {
     const { data: { data } } = await axios.get(url);
