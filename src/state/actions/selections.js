@@ -1,4 +1,5 @@
 import {
+  clearData,
   getAggregateYearData,
   getAggregateStateData,
   getAggregateLocationData,
@@ -104,6 +105,9 @@ export const setYear = (year) => {
   return (dispatch) => {
     dispatch({ type: ActionTypes.SET_YEAR, payload: { year } });
 
+    // clear out existing data
+    dispatch(clearData());
+
     // fetch new data
     dispatch(getAggregateYearData({ startYear: year, endYear: year }));
     dispatch(getAggregateStateData({ startYear: year, endYear: year }));
@@ -120,6 +124,9 @@ export const setStartYear = (startYear) => {
   return (dispatch) => {
     dispatch({ type: ActionTypes.SET_START_YEAR, payload: { startYear } });
 
+    // clear out existing data
+    dispatch(clearData());
+
     // fetch new data
     dispatch(getAggregateYearData({ startYear }));
     dispatch(getAggregateStateData({ startYear }));
@@ -134,6 +141,9 @@ export const setStartYear = (startYear) => {
 export const setEndYear = (endYear) => {
   return (dispatch) => {
     dispatch({ type: ActionTypes.SET_END_YEAR, payload: { endYear } });
+
+    // clear out existing data
+    dispatch(clearData());
 
     // fetch new data
     dispatch(getAggregateYearData({ endYear }));
@@ -156,6 +166,9 @@ export const setAllYears = () => {
     dispatch({ type: ActionTypes.SET_START_YEAR, payload: { startYear } });
     dispatch({ type: ActionTypes.SET_END_YEAR, payload: { endYear } });
 
+    // clear out existing data
+    dispatch(clearData());
+
     // fetch new data
     dispatch(getAggregateYearData({ startYear, endYear }));
     dispatch(getAggregateStateData({ startYear, endYear }));
@@ -171,6 +184,9 @@ export const setAllYears = () => {
 export const setState = (state) => {
   return (dispatch, getState) => {
     dispatch({ type: ActionTypes.SET_STATE, payload: { state } });
+
+    // clear out existing data
+    dispatch(clearData());
 
     // fetch new data
     dispatch(getAggregateYearData({ state }));
@@ -188,6 +204,9 @@ export const setState = (state) => {
 export const setCounty = (county) => {
   return (dispatch, getState) => {
     dispatch({ type: ActionTypes.SET_COUNTY, payload: { county } });
+
+    // clear out existing data
+    dispatch(clearData());
 
     // TODO: generate new array for multi-counties (when support multi-select) and pass to below function calls
 
@@ -207,6 +226,9 @@ export const setRangerDistrict = (rangerDistrict) => {
   return (dispatch, getState) => {
     dispatch({ type: ActionTypes.SET_RANGER_DISTRICT, payload: { rangerDistrict } });
 
+    // clear out existing data
+    dispatch(clearData());
+
     // TODO: generate new array for multi-rangerdistricts (when support multi-select) and pass to below function calls
 
     // fetch new data
@@ -223,6 +245,9 @@ export const setRangerDistrict = (rangerDistrict) => {
 export const clearSelections = () => {
   return (dispatch) => {
     dispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+
+    // clear out existing data
+    dispatch(clearData());
 
     // fetch new data
     dispatch(getAggregateYearData());
@@ -241,6 +266,9 @@ export const setDataMode = (mode) => {
   return (dispatch, getState) => {
     setDataModeInStorage(mode);
     dispatch({ type: ActionTypes.SET_DATA_MODE, payload: { mode } });
+
+    // clear out existing data
+    dispatch(clearData());
 
     // fetch new data
     dispatch(getAggregateYearData());

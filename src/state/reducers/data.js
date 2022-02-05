@@ -46,6 +46,16 @@ const DataReducer = (state = initialState, action) => {
     case ActionTypes.FETCHING_CUSTOM_PREDICTION:
       return { ...state, fetchingCustomPrediction: action.payload };
 
+    case ActionTypes.CLEAR_DATA:
+      return {
+        ...state,
+        predictions: initialState.predictions,
+        yearData: initialState.yearData,
+        stateData: initialState.stateData,
+        sublocationData: initialState.sublocationData,
+        customPrediction: initialState.customPrediction,
+      };
+
     case ActionTypes.CLEAR_SELECTIONS:
       return { ...state, predictions: [] };
 

@@ -17,6 +17,7 @@ export const ActionTypes = {
   SET_DATA_FETCH_ERROR: 'SET_DATA_FETCH_ERROR',
   SET_CUSTOM_PREDICTION_ERROR: 'SET_CUSTOM_PREDICTION_ERROR',
 
+  CLEAR_DATA: 'CLEAR_DATA',
   CLEAR_DATA_FETCH_ERROR: 'CLEAR_DATA_FETCH_ERROR',
   CLEAR_CUSTOM_PREDICTION_ERROR: 'CLEAR_CUSTOM_PREDICTION_ERROR',
 };
@@ -232,6 +233,15 @@ export function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev) 
     }
   };
 }
+
+/**
+   * @description action creator for clearing all data
+   */
+export const clearData = () => {
+  return (dispatch) => {
+    dispatch({ type: ActionTypes.CLEAR_DATA });
+  };
+};
 
 /**
    * @description action creator for clearing all selections

@@ -21,12 +21,13 @@ import {
 
 import {
   ActionTypes as dataActionTypes,
-  getAggregateYearData,
-  getAggregateStateData,
+  clearCustomPredictionError,
+  clearData,
   getAggregateLocationData,
+  getAggregateStateData,
+  getAggregateYearData,
   getPredictions,
   runCustomPrediction,
-  clearCustomPredictionError,
 } from './data';
 
 const ActionTypes = {
@@ -38,6 +39,7 @@ const ActionTypes = {
 export {
   ActionTypes,
   clearCustomPredictionError,
+  clearData,
   clearSelections,
   getAggregateLocationData,
   getAggregateStateData,
