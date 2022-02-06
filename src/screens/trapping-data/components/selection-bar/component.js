@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ChoiceInput } from '../../../../components/input-components';
 
-import { DATA_MODES, getYearRange } from '../../../../constants';
+import { DATA_MODES } from '../../../../constants';
 
 import {
   getStateNameFromAbbreviation,

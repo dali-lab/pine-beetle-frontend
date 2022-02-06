@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
 
-import { getYearRange } from '../../../../constants';
-
 import LineChart from './component';
 
 const mapStateToProps = (state) => {
