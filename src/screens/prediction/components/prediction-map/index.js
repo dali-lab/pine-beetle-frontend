@@ -13,9 +13,9 @@ import { DATA_MODES } from '../../../../constants';
 const mapStateToProps = (state) => {
   const {
     selections: {
-      county,
+      county: countySelected,
       dataMode,
-      rangerDistrict,
+      rangerDistrict: rangerDistrictSelected,
       state: selectedState,
       year,
     },
@@ -38,10 +38,10 @@ const mapStateToProps = (state) => {
     allRangerDistricts,
     allSelectedStates,
     allTotalStates,
-    county,
+    countySelected,
     dataMode,
     predictionsData,
-    rangerDistrict,
+    rangerDistrictSelected,
     selectedState,
     year,
   };
