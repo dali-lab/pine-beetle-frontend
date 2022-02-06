@@ -31,7 +31,6 @@ const PredictionMap = (props) => {
     data,
     dataMode,
     selectedState,
-    rangerDistrictSelected,
     setCounty,
     setRangerDistrict,
     setState,
@@ -143,25 +142,10 @@ const PredictionMap = (props) => {
     if (!states.includes(state) || !currentState) return;
 
     // select county or RD depending on mode
-<<<<<<< HEAD
-    if (dataMode === DATA_MODES.COUNTY && counties.includes(county)) {
-      if (countySelected) { // if a county is already selected, click again to clear selection
-        setCounty('');
-      } else {
-        setCounty(county);
-      }
-    } else if (rangerDistricts.includes(rangerDistrictToSet)) {
-      if (rangerDistrictSelected) { // if a ranger district is already selected, click again to clear selection
-        setRangerDistrict('');
-      } else {
-        setRangerDistrict(rangerDistrictToSet);
-      }
-=======
     if (dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
       setCounty(county);
     } else if (sublocations.includes(rangerDistrictToSet)) {
       setRangerDistrict(rangerDistrictToSet);
->>>>>>> 3973b844c5f5c2dd23a8094585bfa1ac4d74cc8c
     }
   };
 
