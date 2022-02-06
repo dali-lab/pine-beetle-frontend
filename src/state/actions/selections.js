@@ -90,6 +90,7 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
     const filters = {
       startYear,
       endYear,
+      predictionYear,
       ...overrideFilter,
     };
 
@@ -103,8 +104,8 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
         const predictionStates = await api.getAvailableStates(dataMode, {
           ...filters,
           isPrediction: true,
-          startYear: predictionYear,
-          endYear: predictionYear,
+          startYear: filters.predictionYear,
+          endYear: filters.predictionYear,
         });
         dispatch({ type: ActionTypes.SET_AVAILABLE_STATES_PREDICTION, payload: predictionStates });
       }
@@ -137,6 +138,7 @@ export function getAvailableSublocations(state, overrideFilter = {}, { historica
     const filters = {
       startYear,
       endYear,
+      predictionYear,
       ...overrideFilter,
       state,
     };
@@ -151,8 +153,8 @@ export function getAvailableSublocations(state, overrideFilter = {}, { historica
         const predictionSublocations = await api.getAvailableSublocations(dataMode, {
           ...filters,
           isPrediction: true,
-          startYear: predictionYear,
-          endYear: predictionYear,
+          startYear: filters.predictionYear,
+          endYear: filters.predictionYear,
         });
 
         dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION, payload: predictionSublocations });

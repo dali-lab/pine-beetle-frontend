@@ -6,6 +6,7 @@ import {
   getAggregateYearData,
   getAggregateStateData,
   getAggregateLocationData,
+  getAvailableStates,
   getPredictions,
   getUserFromStorage,
   setChartMode,
@@ -82,6 +83,7 @@ const App = (props) => {
 
   useEffect(() => {
     props.getPredictions(predictionYear);
+    props.getAvailableStates({ predictionYear });
   }, [predictionYear]);
 
   if (isMobile) return <MobileOverlay />;
@@ -131,6 +133,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getAggregateLocationData: () => {
       dispatch(getAggregateLocationData());
+    },
+    getAvailableStates: (overrideFilter) => {
+      dispatch(getAvailableStates(overrideFilter));
     },
     getPredictions: (year) => {
       dispatch(getPredictions(year));
