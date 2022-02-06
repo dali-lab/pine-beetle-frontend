@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ChoiceInput } from '../../../../components/input-components';
 
-import { DATA_MODES } from '../../../../constants';
+import { DATA_MODES, getYearRange } from '../../../../constants';
 
 import {
   getStateNameFromAbbreviation,
@@ -28,16 +28,16 @@ const SelectionBar = (props) => {
     trappingData,
   } = props;
 
-  const yearOptions = () => {
-    const max = year;
-    const min = 1988;
-    const years = [];
+  // const yearOptions = () => {
+  //   const max = year;
+  //   const min = 1988;
+  //   const years = [];
 
-    for (let i = max; i >= min; i -= 1) {
-      years.push(i);
-    }
-    return years;
-  };
+  //   for (let i = max; i >= min; i -= 1) {
+  //     years.push(i);
+  //   }
+  //   return years;
+  // };
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
@@ -53,10 +53,10 @@ const SelectionBar = (props) => {
   return (
     <div id="predictionbar-trapping" className="container">
       <div id="year-selection">
-        <div id="start-year-selection"><ChoiceInput instructions="Year" setValue={setStartYear} options={yearOptions()} /></div>
+        <div id="start-year-selection"><ChoiceInput instructions="Year" setValue={setStartYear} options={getYearRange(1988, year)} /></div>
         <div id="vl3" />
         {/* TODO: "to" */}
-        <div id="end-year-selection"><ChoiceInput setValue={setEndYear} options={yearOptions()} /></div>
+        <div id="end-year-selection"><ChoiceInput setValue={setEndYear} options={getYearRange(1988, year)} /></div>
       </div>
       <div id="vl1" />
       <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />

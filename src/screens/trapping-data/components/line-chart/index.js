@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { getYearRange } from './utils';
+import { getYearRange } from '../../../../constants';
 
 import './style.scss';
 
@@ -122,14 +122,14 @@ const LineChart = (props) => {
           lineTension: 0,
           borderDash: [5, 1],
         },
-        // {
-        //   data: [],
-        //   label: 'Clerids Per Two Weeks',
-        //   borderColor: '#ffc148',
-        //   backgroundColor: '#ffc148',
-        //   fill: false,
-        //   lineTension: 0,
-        // },
+        {
+          data: [],
+          label: 'Clerids Per Two Weeks',
+          borderColor: '#ffc148',
+          backgroundColor: '#ffc148',
+          fill: false,
+          lineTension: 0,
+        },
       ],
     };
 
@@ -159,21 +159,21 @@ const LineChart = (props) => {
     }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
 
     // sum up clerids by year
-    // const cleridMap = sortedData.reduce((acc, curr) => ({
-    //   ...acc,
-    //   [curr.year]: curr.cleridPer2Weeks + acc[curr.year],
-    // }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
+    const cleridMap = sortedData.reduce((acc, curr) => ({
+      ...acc,
+      [curr.year]: curr.cleridPer2Weeks + acc[curr.year],
+    }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
 
     // update chartData
     updatedChartData.datasets[0].data = Object.values(spotMap);
     updatedChartData.datasets[1].data = Object.values(spbMap);
-    // updatedChartData.datasets[2].data = Object.values(cleridMap);
+    updatedChartData.datasets[2].data = Object.values(cleridMap);
 
     // maximum value found in the array
     const max = Math.max(...[
       ...updatedChartData.datasets[0].data,
       ...updatedChartData.datasets[1].data,
-      // ...updatedChartData.datasets[2].data,
+      ...updatedChartData.datasets[2].data,
     ]);
 
     // set new y-axis height
