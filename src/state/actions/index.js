@@ -13,10 +13,10 @@ import {
   setCounty,
   setDataMode,
   setEndYear,
+  setPredictionYear,
   setRangerDistrict,
   setStartYear,
   setState,
-  setYear,
 } from './selections';
 
 import {
@@ -53,9 +53,9 @@ export {
   setCounty,
   setDataMode,
   setEndYear,
+  setPredictionYear,
   setRangerDistrict,
   setStartYear,
   setState,
-  setYear,
   signOut,
 };

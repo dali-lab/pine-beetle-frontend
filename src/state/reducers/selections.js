@@ -4,6 +4,7 @@ import { DATA_MODES, CHART_MODES } from '../../constants';
 const initialState = {
   startYear: 1988,
   endYear: new Date().getFullYear(),
+  predictionYear: new Date().getFullYear(),
   state: '',
   county: [],
   rangerDistrict: [],
@@ -21,14 +22,14 @@ const initialState = {
 
 const SelectionsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.SET_YEAR:
-      return { ...state, startYear: action.payload.year, endYear: action.payload.year };
-
     case ActionTypes.SET_START_YEAR:
-      return { ...state, startYear: action.payload.startYear };
+      return { ...state, startYear: parseInt(action.payload.startYear, 10) };
 
     case ActionTypes.SET_END_YEAR:
-      return { ...state, endYear: action.payload.endYear };
+      return { ...state, endYear: parseInt(action.payload.endYear, 10) };
+
+    case ActionTypes.SET_PREDICTION_YEAR:
+      return { ...state, predictionYear: parseInt(action.payload.year, 10) };
 
     case ActionTypes.SET_STATE:
       return {
@@ -68,16 +69,16 @@ const SelectionsReducer = (state = initialState, action) => {
     case ActionTypes.SET_AGGREGATE_YEAR_DATA:
       return {
         ...state,
-        startYear: Math.min(...action.payload.map(({ year }) => year)) || initialState.startYear,
-        endYear: Math.max(...action.payload.map(({ year }) => year)) || initialState.endYear,
+        startYear: action.payload.map(({ year }) => year).includes(state.startYear) ? parseInt(state.startYear, 10) : parseInt(Math.min(...action.payload.map(({ year }) => year)), 10),
+        endYear: action.payload.map(({ year }) => year).includes(state.endYear) ? parseInt(state.endYear, 10) : parseInt(Math.max(...action.payload.map(({ year }) => year)), 10),
       };
 
     case ActionTypes.SET_AVAILABLE_YEARS_HISTORICAL:
       return {
         ...state,
         availableHistoricalYears: action.payload,
-        startYear: Math.min(action.payload) || initialState.startYear,
-        endYear: Math.max(action.payload) || initialState.endYear,
+        startYear: action.payload.includes(state.startYear) ? parseInt(state.startYear, 10) : parseInt(Math.min(...action.payload), 10),
+        endYear: action.payload.includes(state.endYear) ? parseInt(state.endYear, 10) : parseInt(Math.max(...action.payload), 10),
       };
 
     case ActionTypes.SET_AVAILABLE_STATES_HISTORICAL:
@@ -90,8 +91,7 @@ const SelectionsReducer = (state = initialState, action) => {
       return {
         ...state,
         availablePredictionYears: action.payload,
-        startYear: Math.min(action.payload) || initialState.startYear,
-        endYear: Math.max(action.payload) || initialState.endYear,
+        predictionYear: action.payload.includes(state.predictionYear) ? parseInt(state.predictionYear, 10) : parseInt(Math.max(...action.payload), 10),
       };
 
     case ActionTypes.SET_AVAILABLE_STATES_PREDICTION:

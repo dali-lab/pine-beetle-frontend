@@ -51,7 +51,7 @@ const FallBack = () => {
 const App = (props) => {
   const {
     loginUserFromStorage,
-    yearData,
+    predictionYear,
   } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
@@ -81,8 +81,8 @@ const App = (props) => {
   }, []);
 
   useEffect(() => {
-    props.getPredictions(Math.max(...yearData.map(({ year }) => year)));
-  }, [yearData]);
+    props.getPredictions(predictionYear);
+  }, [predictionYear]);
 
   if (isMobile) return <MobileOverlay />;
 
@@ -111,13 +111,13 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
   const {
-    data: {
-      yearData,
+    selections: {
+      predictionYear,
     },
   } = state;
 
   return {
-    yearData,
+    predictionYear,
   };
 };
 

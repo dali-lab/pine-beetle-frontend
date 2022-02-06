@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
       dataMode,
       rangerDistrict,
       state: selectedState,
-      endYear: year,
+      predictionYear: year,
     },
     data: {
       customPrediction,

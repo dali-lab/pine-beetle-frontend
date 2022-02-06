@@ -14,9 +14,9 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    availableYears,
     availableStates,
     availableSublocations,
+    availableYears,
     clearAllSelections,
     county,
     dataMode,
@@ -24,9 +24,9 @@ const SelectionBar = (props) => {
     selectedState,
     setCounty,
     setDataMode,
+    setPredictionYear,
     setRangerDistrict,
     setState,
-    setYear,
     year,
   } = props;
 
@@ -38,7 +38,7 @@ const SelectionBar = (props) => {
 
   return (
     <div id="predictionbar" className="container">
-      <ChoiceInput instructions="Year" setValue={setYear} options={availableYears} value={year} />
+      <ChoiceInput instructions="Year" setValue={setPredictionYear} options={availableYears} value={year} />
       <div id="vl1" />
       <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
       <div id="vl1" />

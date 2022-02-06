@@ -223,13 +223,16 @@ export async function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endo
 /**
  * @description retrieves all available years based on data mode
  * @param {String} dataMode the current data mode
- * @param {Boolean} isHistorical signifies if query should be for historical data
+ * @param {Object} [filters={}] optional filters
  * @returns {Promise<Object>} API response
  */
-export async function getAvailableYears(dataMode, { isHistorical, isPrediction }) {
+export async function getAvailableYears(dataMode, filters = {}) {
   const params = toQueryParams({
-    ...(isHistorical ? { isHistorical: 1 } : {}),
-    ...(isPrediction ? { isPrediction: 1 } : {}),
+    ...filters,
+    ...(filters.isHistorical ? { isHistorical: 1 } : {}),
+    ...(filters.isPrediction ? { isPrediction: 1 } : {}),
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
   });
 
   const url = `${global.API_URL}/${dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE}/years/list${params ? `?${params}` : ''}`;
@@ -247,12 +250,14 @@ export async function getAvailableYears(dataMode, { isHistorical, isPrediction }
 /**
  * @description retrieves all available states based on data mode
  * @param {String} dataMode the current data mode
+ * @param {Object} [filters={}] optional filters
  * @returns {Promise<Object>} API response
  */
-export async function getAvailableStates(dataMode, { isHistorical, isPrediction }) {
+export async function getAvailableStates(dataMode, filters = {}) {
   const params = toQueryParams({
-    ...(isHistorical ? { isHistorical: 1 } : {}),
-    ...(isPrediction ? { isPrediction: 1 } : {}),
+    ...filters,
+    ...(filters.isHistorical ? { isHistorical: 1 } : {}),
+    ...(filters.isPrediction ? { isPrediction: 1 } : {}),
   });
 
   const url = `${global.API_URL}/${dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE}/states/list${params ? `?${params}` : ''}`;
@@ -269,17 +274,17 @@ export async function getAvailableStates(dataMode, { isHistorical, isPrediction 
 /**
  * @description retrieves all available counties or RDs based on data mode
  * @param {String} dataMode the current data mode
- * @param {String} state the state to search on
+ * @param {Object} [filters={}] optional filters
  * @returns {Promise<Object>} API response
  */
-export async function getAvailableSublocations(dataMode, state, { isHistorical, isPrediction }) {
+export async function getAvailableSublocations(dataMode, filters = {}) {
   const subroute = dataMode === DATA_MODES.COUNTY ? COUNTY_SUBROUTE : RANGERDISTRICT_SUBROUTE;
   const path = dataMode === DATA_MODES.COUNTY ? 'counties' : 'rangerDistricts';
 
   const params = toQueryParams({
-    ...(isHistorical ? { isHistorical: 1 } : {}),
-    ...(isPrediction ? { isPrediction: 1 } : {}),
-    ...(state ? { state } : {}),
+    ...filters,
+    ...(filters.isHistorical ? { isHistorical: 1 } : {}),
+    ...(filters.isPrediction ? { isPrediction: 1 } : {}),
   });
 
   const url = `${global.API_URL}/${subroute}/${path}/list${params ? `?${params}` : ''}`;
