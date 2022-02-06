@@ -25,10 +25,9 @@ const histogrambin6 = require('../../assets/images/spb-histogram-bin6.png');
 
 const Prediction = (props) => {
   const {
+    data,
+    fetchErrorText,
     isLoading,
-    predictionData,
-    predictionsErrorText,
-    selectedState,
   } = props;
 
   const [showAnimation, setShowAnimation] = useState(true);
@@ -46,16 +45,16 @@ const Prediction = (props) => {
     return () => window.removeEventListener('scroll', listener);
   }, []);
 
-  const getHistogram = (predProb50) => {
-    if (predProb50 < 0.025) {
+  const getHistogram = (probSpotsGT50) => {
+    if (probSpotsGT50 < 0.025) {
       return histogrambin1;
-    } else if (predProb50 < 0.05) {
+    } else if (probSpotsGT50 < 0.05) {
       return histogrambin2;
-    } else if (predProb50 < 0.15) {
+    } else if (probSpotsGT50 < 0.15) {
       return histogrambin3;
-    } else if (predProb50 < 0.25) {
+    } else if (probSpotsGT50 < 0.25) {
       return histogrambin4;
-    } else if (predProb50 < 0.4) {
+    } else if (probSpotsGT50 < 0.4) {
       return histogrambin5;
     } else {
       return histogrambin6;
@@ -64,12 +63,12 @@ const Prediction = (props) => {
 
   const predDetails = (hasPredData) => {
     if (!hasPredData) return null;
-    const predProb50 = predictionData[0].prediction['prob.Spots>53'];
-    const histogram = getHistogram(predProb50);
+    const { probSpotsGT50 } = data[0];
+    const histogram = getHistogram(probSpotsGT50);
     return (
       <>
         <div className="container" id="scroll-to">
-          <PredictionDetails data={predictionData} />
+          <PredictionDetails data={data} />
           <div className="prediction-bottom">
             <div className="histogram">
               <div id="histogram-title">
@@ -100,11 +99,11 @@ const Prediction = (props) => {
   return (
     <div>
       <Loading visible={isLoading} />
-      {predictionsErrorText.length > 0 && predictionsErrorText.map(t => <p>{t}</p>)}
+      {fetchErrorText.length > 0 && fetchErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
-      <PredictionMap data={selectedState} />
-      { predDetails(predictionData.length === 1) }
+      <PredictionMap />
+      { predDetails(data.length === 1) }
     </div>
   );
 };
