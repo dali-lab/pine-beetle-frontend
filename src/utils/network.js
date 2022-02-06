@@ -10,17 +10,11 @@ import {
  * @param {Object} obj generic object to cast
  * @returns {String} string of query params from object
  */
-export const toQueryParams = (obj) => {
-  // filter out any null/undefined values
-  const cleanedObj = Object.entries(obj).reduce((acc, [key, val]) => ({
-    ...acc,
-    ...(val ? { [key]: val } : {}),
-  }), {});
-
-  return Object.entries(cleanedObj).map(([key, value]) => {
+export const toQueryParams = obj => (
+  Object.entries(obj).map(([key, value]) => {
     return `${key}=${value}`;
-  }).join('&');
-};
+  }).join('&')
+);
 
 /**
  * @description downloads trapping data as csv

@@ -8,6 +8,8 @@ import {
   setState,
 } from '../../../../state/actions';
 
+import { DATA_MODES } from '../../../../constants';
+
 const mapStateToProps = (state) => {
   const {
     selections: {
@@ -15,26 +17,39 @@ const mapStateToProps = (state) => {
       dataMode,
       rangerDistrict,
       state: selectedState,
-      startYear,
-      endYear,
-      availableHistoricalStates,
-      availableHistoricalSublocations,
+      year,
+      yearRange: {
+        startYear,
+        endYear,
+      },
     },
-    data: {
-      sublocationData,
+    trappings: {
+      county: allCountyData,
+      data: trappingData,
+      rangerDistrict: allRangerDistrictData,
     },
   } = state;
 
+  const allCounties = [...new Set(trappingData.map((obj => obj.county)))];
+  const allRangerDistricts = [...new Set(allRangerDistrictData.map((obj => obj.rangerDistrict)))];
+  const allSelectedStates = [...new Set(trappingData.map((obj => obj.state)))];
+
+  const allRelevantData = dataMode === DATA_MODES.COUNTY ? allCountyData : allRangerDistrictData;
+  const allTotalStates = [...new Set(allRelevantData.filter(obj => obj.year >= startYear && obj.year <= endYear).map(obj => obj.state))];
+
   return {
-    availableStates: availableHistoricalStates,
-    availableSublocations: availableHistoricalSublocations,
-    county: county[0],
+    allCounties,
+    allRangerDistricts,
+    allSelectedStates,
+    allTotalStates,
+    county,
     dataMode,
     endYear,
-    rangerDistrict: rangerDistrict[0],
+    rangerDistrict,
     selectedState,
     startYear,
-    sublocationData,
+    trappingData,
+    year,
   };
 };
 

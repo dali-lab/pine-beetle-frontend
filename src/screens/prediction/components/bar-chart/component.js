@@ -1,6 +1,9 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chartjs-top-round-bar';
+
+// import { getFullYear } from './utils';
 
 import './style.scss';
 
@@ -57,10 +60,10 @@ const BarChart = (props) => {
 
   useEffect(() => {
     const updatedInputData = [
-      data[0].probSpotsGT0,
-      data[0].probSpotsGT20,
-      data[0].probSpotsGT50,
-      data[0].probSpotsGT150,
+      data[0].prediction['prob.Spots>0'],
+      data[0].prediction['prob.Spots>19'],
+      data[0].prediction['prob.Spots>53'],
+      data[0].prediction['prob.Spots>147'],
     ];
     setInputData(updatedInputData);
   }, [data]);

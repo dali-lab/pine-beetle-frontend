@@ -13,13 +13,10 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    availableStates,
-    availableSublocations,
-    availableYears,
-    clearSelections,
+    clearAllSelections,
     county,
     dataMode,
-    endYear,
+    year,
     rangerDistrict,
     selectedState,
     setCounty,
@@ -28,22 +25,38 @@ const SelectionBar = (props) => {
     setRangerDistrict,
     setStartYear,
     setState,
-    startYear,
+    trappingData,
   } = props;
+
+  const yearOptions = () => {
+    const max = year;
+    const min = 1988;
+    const years = [];
+
+    for (let i = max; i >= min; i -= 1) {
+      years.push(i);
+    }
+    return years;
+  };
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const allStates = [...new Set(trappingData.map(obj => obj.state))].sort();
+  const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
+  const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
+
+  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
+
 
   return (
     <div id="predictionbar-trapping" className="container">
       <div id="year-selection">
-        <div id="start-year-selection"><ChoiceInput instructions="Start Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
+        <div id="start-year-selection"><ChoiceInput instructions="Year" setValue={setStartYear} options={yearOptions()} /></div>
         <div id="vl3" />
         {/* TODO: "to" */}
-        <div id="end-year-selection"><ChoiceInput instructions="End Year" setValue={setEndYear} options={availableYears} value={endYear} /></div>
+        <div id="end-year-selection"><ChoiceInput setValue={setEndYear} options={yearOptions()} /></div>
       </div>
       <div id="vl1" />
       <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
@@ -73,12 +86,12 @@ const SelectionBar = (props) => {
           <ChoiceInput
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? setCounty : setRangerDistrict}
-            options={availableSublocations}
+            options={countyMode ? allCounties : allRangerDistricts}
             firstOptionText={countyMode ? 'County' : 'Ranger District'}
           />
         </div>
       </div>
-      <button id="reset-current-data-button" className="animated-button" onClick={clearSelections} type="button">Clear</button>
+      <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections} type="button">Clear</button>
     </div>
   );
 };

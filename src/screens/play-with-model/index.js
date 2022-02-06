@@ -11,27 +11,33 @@ const mapStateToProps = (state) => {
       dataMode,
       rangerDistrict,
       state: selectedState,
-      endYear: year,
+      year,
     },
-    data: {
-      customPrediction,
-      fetchingCustomPrediction,
+    trappings: {
+      county: countyTrappingsData,
+      rangerDistrict: rangerDistrictTrappingsData,
     },
     error: {
       customPredictionError,
+    },
+    predictions: {
+      customPrediction,
+      fetchingCustomPrediction,
     },
   } = state;
 
   const isError = customPredictionError.error.length > 0;
 
   return {
-    county: county[0],
+    county,
+    countyTrappingsData,
     customPrediction,
     dataMode,
     error: customPredictionError,
     isError,
     isLoading: fetchingCustomPrediction,
-    rangerDistrict: rangerDistrict[0],
+    rangerDistrict,
+    rangerDistrictTrappingsData,
     selectedState,
     year,
   };

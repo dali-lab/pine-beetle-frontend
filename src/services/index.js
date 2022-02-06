@@ -1,9 +1,11 @@
 import * as admin from './admin';
-import * as api from './api';
+import * as predictions from './predictions';
+import * as trapping from './trapping';
 import * as user from './user';
 
 export {
   admin,
-  api,
+  predictions,
+  trapping,
   user,
 };

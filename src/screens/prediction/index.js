@@ -5,22 +5,27 @@ import Prediction from './component';
 const mapStateToProps = (state) => {
   const {
     error: {
-      fetchError: {
-        text: fetchErrorText,
+      predictionsError: {
+        text: predictionsErrorText,
       },
     },
-    data: {
-      predictions,
-      fetchingPredictions,
+    predictions: {
+      data: predictionData,
+      fetchingCounty,
+      fetchingRangerDistrict,
+    },
+    selections: {
+      state: selectedState,
     },
   } = state;
 
-  const isLoading = fetchingPredictions;
+  const isLoading = fetchingCounty && fetchingRangerDistrict;
 
   return {
-    data: predictions,
-    fetchErrorText,
     isLoading,
+    predictionData,
+    predictionsErrorText,
+    selectedState,
   };
 };
 

@@ -14,24 +14,22 @@ import {
 const mapStateToProps = (state) => {
   const {
     selections: {
-      endYear: year,
+      year,
       state: selectedState,
       county,
       rangerDistrict,
       dataMode,
-      availablePredictionYears,
-      availablePredictionStates,
-      availablePredictionSublocations,
+    },
+    predictions: {
+      data: predictionsData,
     },
   } = state;
 
   return {
-    availableYears: availablePredictionYears,
-    availableStates: availablePredictionStates,
-    availableSublocations: availablePredictionSublocations,
-    county: county[0],
-    rangerDistrict: rangerDistrict[0],
+    county,
+    rangerDistrict,
     selectedState,
+    predictionsData,
     dataMode,
     year,
   };

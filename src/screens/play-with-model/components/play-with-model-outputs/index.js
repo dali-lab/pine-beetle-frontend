@@ -7,7 +7,7 @@ const mapStateToProps = (state) => {
     error: {
       customPredictionError,
     },
-    data: {
+    predictions: {
       customPrediction,
       fetchingCustomPrediction,
     },
