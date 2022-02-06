@@ -5,7 +5,7 @@ import PlayWithModelInputs from './component';
 const mapStateToProps = (state) => {
   const {
     selections: {
-      year,
+      predictionYear: year,
     },
   } = state;
 

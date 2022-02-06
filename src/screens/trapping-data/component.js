@@ -11,7 +11,7 @@ import {
   SelectionBar,
 } from './components';
 
-import { DownloadData, Loading } from '../../components';
+import { Loading } from '../../components';
 
 const mapSelectedIcon = require('../../assets/icons/map-selected.png');
 const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
@@ -21,10 +21,9 @@ const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
 const TrappingData = (props) => {
   const {
     chartMode,
-    setChartMode,
+    errorText,
     isLoading,
-    trappingData,
-    trappingErrorText,
+    setChartMode,
   } = props;
 
   const isGraphView = chartMode === CHART_MODES.GRAPH;
@@ -34,7 +33,7 @@ const TrappingData = (props) => {
   return (
     <div>
       <Loading visible={isLoading} />
-      {trappingErrorText.length > 0 && trappingErrorText.map(t => <p>{t}</p>)}
+      {errorText.length > 0 && errorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
       <div id="view-selections" className="container">
@@ -60,9 +59,8 @@ const TrappingData = (props) => {
         </div>
       </div>
       <div className="container">
-        {isGraphView ? <LineChart data={trappingData} /> : <TrappingDataMap />}
+        {isGraphView ? <LineChart /> : <TrappingDataMap />}
       </div>
-      <DownloadData />
     </div>
   );
 };

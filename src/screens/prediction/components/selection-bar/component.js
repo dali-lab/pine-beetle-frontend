@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 import React from 'react';
 
-import { TextInput, ChoiceInput } from '../../../../components/input-components';
+import { ChoiceInput } from '../../../../components/input-components';
 
 import { DATA_MODES } from '../../../../constants';
 
@@ -14,25 +14,23 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
+    availableStates,
+    availableSublocations,
+    availableYears,
     clearAllSelections,
     county,
     dataMode,
-    predictionsData,
     rangerDistrict,
     selectedState,
     setCounty,
     setDataMode,
+    setPredictionYear,
     setRangerDistrict,
     setState,
-    setYear,
     year,
   } = props;
 
-  const allStates = [...new Set(predictionsData.map(obj => obj.state))].sort();
-  const allCounties = selectedState ? [...new Set(predictionsData.map((obj => obj.county)))].sort() : [];
-  const allRangerDistricts = selectedState ? [...new Set(predictionsData.map((obj => obj.rangerDistrict)))].sort() : [];
-
-  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
@@ -40,7 +38,7 @@ const SelectionBar = (props) => {
 
   return (
     <div id="predictionbar" className="container">
-      <TextInput instructions="Year" setValue={setYear} value={year} />
+      <ChoiceInput instructions="Year" setValue={setPredictionYear} options={availableYears} value={year} />
       <div id="vl1" />
       <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
       <div id="vl1" />
@@ -67,7 +65,7 @@ const SelectionBar = (props) => {
           <ChoiceInput
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? setCounty : setRangerDistrict}
-            options={countyMode ? allCounties : allRangerDistricts}
+            options={availableSublocations}
             firstOptionText={countyMode ? 'County' : 'Ranger District'}
           />
         </div>

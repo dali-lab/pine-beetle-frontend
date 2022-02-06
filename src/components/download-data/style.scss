@@ -1,6 +1,7 @@
 #download-button-container {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
 
 #download-button img {
@@ -8,25 +9,27 @@
 }
 
 #download-button {
-    height: 43px;
-    padding: 6px 21px 5px;
+    height: 35px;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-top: 5px;
     border-radius: 6px;
-    background-color: #ced6fe;
+    background-color: #4CD791;
     display: flex;
-    margin-bottom: 90px;
-    margin-right: unquote("max(100px, 13%)");
 }
 
-#download-button img {
-    width: 24px;
-    height: 24px;
+#download-icon{
+    width: 20px !important; //overrides image styling from title-area of header
+    height: 20px !important;
+    margin-left: 9px !important;
 }
+
 
 #download-button p {
-    margin-left: 20px;
-    font-size: 18px;
-    text-align: left;
-    color: #000000;
+    font-size: 15px;
+    text-align: center;
+    white-space: nowrap;
+    color: #ffffff;
 }
 
 #downloading-container {

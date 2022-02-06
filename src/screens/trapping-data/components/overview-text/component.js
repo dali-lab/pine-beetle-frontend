@@ -20,7 +20,7 @@ const OverviewText = _props => (
   <div className="container" id="overview-explanation">
     <div className="container" id="overview-text">
       <h1 id="title">
-        Historical and Model Input Data
+        Historical Data
       </h1>
       <img id="icon"
         data-tip={helpText}
