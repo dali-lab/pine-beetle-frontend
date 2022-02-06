@@ -3,10 +3,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import {
-  getCountyPredictions,
-  getCountyTrapping,
-  getRangerDistrictPredictions,
-  getRangerDistrictTrapping,
+  getAggregateYearData,
+  getAggregateStateData,
+  getAggregateLocationData,
+  getAvailableStates,
+  getPredictions,
   getUserFromStorage,
   setChartMode,
   setDataMode,
@@ -50,9 +51,8 @@ const FallBack = () => {
 
 const App = (props) => {
   const {
-    countyPredictions,
-    countyTrapping,
     loginUserFromStorage,
+    predictionYear,
   } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
@@ -61,19 +61,19 @@ const App = (props) => {
     global.API_URL = getServerUrl();
     global.AUTOMATION_API_URL = getAutomationServerUrl();
 
-    // fetch initial data
-    props.getCountyTrapping();
-    props.getRangerDistrictTrapping();
-    props.getCountyPredictions();
-    props.getRangerDistrictPredictions();
-
     // fetch user data if persist in browser
     if (getAuthTokenFromStorage() && getUserIdFromStorage()) {
       loginUserFromStorage();
     }
 
-    // set chart mode if persist in browser
-    props.setChartMode(getChartModeFromStorage() || CHART_MODES.GRAPH);
+    // set data/chart mode if persist in browser
+    props.setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
+    props.setChartMode(getChartModeFromStorage() || CHART_MODES.MAP);
+
+    // fetch initial data
+    props.getAggregateYearData();
+    props.getAggregateStateData();
+    props.getAggregateLocationData();
 
     const resizeListener = e => setIsMobile(e.target.innerWidth < MIN_WIDTH_THRESHOLD);
     window.addEventListener('resize', resizeListener);
@@ -81,10 +81,10 @@ const App = (props) => {
     return () => window.removeEventListener('resize', resizeListener);
   }, []);
 
-  // set all trapping/prediction all fields to county once we get them
   useEffect(() => {
-    props.setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
-  }, [countyPredictions, countyTrapping]);
+    props.getPredictions(predictionYear);
+    props.getAvailableStates({ predictionYear });
+  }, [predictionYear]);
 
   if (isMobile) return <MobileOverlay />;
 
@@ -113,33 +113,32 @@ const App = (props) => {
 
 const mapStateToProps = (state) => {
   const {
-    trappings: {
-      county: countyTrapping,
-    },
-    predictions: {
-      county: countyPredictions,
+    selections: {
+      predictionYear,
     },
   } = state;
 
   return {
-    countyPredictions,
-    countyTrapping,
+    predictionYear,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCountyPredictions: (filters) => {
-      dispatch(getCountyPredictions(filters));
+    getAggregateYearData: () => {
+      dispatch(getAggregateYearData());
     },
-    getCountyTrapping: (filters) => {
-      dispatch(getCountyTrapping(filters));
+    getAggregateStateData: () => {
+      dispatch(getAggregateStateData());
     },
-    getRangerDistrictPredictions: (filters) => {
-      dispatch(getRangerDistrictPredictions(filters));
+    getAggregateLocationData: () => {
+      dispatch(getAggregateLocationData());
     },
-    getRangerDistrictTrapping: (filters) => {
-      dispatch(getRangerDistrictTrapping(filters));
+    getAvailableStates: (overrideFilter) => {
+      dispatch(getAvailableStates(overrideFilter));
+    },
+    getPredictions: (year) => {
+      dispatch(getPredictions(year));
     },
     loginUserFromStorage: () => {
       dispatch(getUserFromStorage());

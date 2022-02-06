@@ -32,13 +32,13 @@ const PredictionDetails = (props) => {
               <div className="percentages">
                 <div className="prediction-circle">
                   <div className="circle" id="any-spots">
-                    <div id="percent">{((data[0].prediction['prob.Spots>0']) * 100).toFixed(1)}%</div>
+                    <div id="percent">{((data[0].probSpotsGT0) * 100).toFixed(1)}%</div>
                     <p>Predicted % Chance of Any Spots ({'>'}0 spots)</p>
                   </div>
                 </div>
                 <div className="prediction-circle">
                   <div className="circle" id="outbreak">
-                    <div id="percent">{((data[0].prediction['prob.Spots>53']) * 100).toFixed(1)}%</div>
+                    <div id="percent">{((data[0].probSpotsGT50) * 100).toFixed(1)}%</div>
                     <p>Predicted % Chance of Outbreak ({'>'}50 spots)</p>
                   </div>
                 </div>
@@ -76,7 +76,8 @@ const PredictionDetails = (props) => {
                         src={cleridIcon}
                         alt="clerids"
                       />
-                      <div className="content-text" data-tip={cleridText}>{Math.round(data[0].cleridst1)} <u>clerids</u></div>
+                      {/* note: model uses 77 for cleridst1 if it is null */}
+                      <div className="content-text" data-tip={cleridText}>{Math.round(data[0].cleridst1) || 'null'} <u>clerids</u></div>
                       <ReactTooltip multiline place="right" />
                     </div>
                   </div>
@@ -101,7 +102,7 @@ const PredictionDetails = (props) => {
                         src={cleridIcon}
                         alt="spb"
                       />
-                      <div className="content-text" data-tip={spbText}>{Math.round(data[0].SPB)} <u>SPB</u></div>
+                      <div className="content-text" data-tip={spbText}>{Math.round(data[0].spbPer2Weeks)} <u>SPB</u></div>
                       <ReactTooltip multiline place="right" />
                     </div>
                   </div>

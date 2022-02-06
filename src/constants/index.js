@@ -1,15 +1,15 @@
 const MIN_WIDTH_THRESHOLD = 725;
 
 const SERVER_ENDPOINTS = {
-  LOCAL: 'http://localhost:9090/v2',
-  DEV: 'https://pine-beetle-prediction-dev.herokuapp.com/v2',
-  PROD: 'https://pine-beetle-prediction.herokuapp.com/v2',
+  LOCAL: 'http://localhost:9090/v3',
+  DEV: 'https://pine-beetle-prediction-dev.herokuapp.com/v3',
+  PROD: 'https://pine-beetle-prediction.herokuapp.com/v3',
 };
 
 const AUTOMATION_SERVER_ENDPOINTS = {
-  LOCAL: 'http://localhost:9091/v2',
-  DEV: 'https://pine-beetle-automation-dev.herokuapp.com/v2',
-  PROD: 'https://pine-beetle-automation.herokuapp.com/v2',
+  LOCAL: 'http://localhost:9091/v3',
+  DEV: 'https://pine-beetle-automation-dev.herokuapp.com/v3',
+  PROD: 'https://pine-beetle-automation.herokuapp.com/v3',
 };
 
 // map of state abbreviations to their names
@@ -79,12 +79,8 @@ const ROUTES = {
 };
 
 const DOWNLOAD_DATA_ROUTES = {
-  '1988-2009 DATA': '/data-download/old-data',
-  HELPER: '/data-download/helper-data',
-  PREDICTION_COUNTY: '/county-prediction/download',
-  PREDICTION_RD: '/rd-prediction/download',
-  SUMMARIZED_COUNTY: '/summarized-county-trapping/download',
-  SUMMARIZED_RD: '/summarized-rangerdistrict-trapping/download',
+  SUMMARIZED_COUNTY: '/summarized-county/download',
+  SUMMARIZED_RD: '/summarized-rangerdistrict/download',
   UNSUMMARIZED: '/unsummarized-trapping/download',
 };
 
@@ -112,6 +108,5 @@ export {
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
-  // yearsOptions,
   VIDEO_URL,
 };
