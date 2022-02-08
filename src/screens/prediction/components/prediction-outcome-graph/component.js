@@ -5,13 +5,14 @@ import { getYearRange } from './utils';
 
 import './style.scss';
 
-const LineChart = (props) => {
+const PredictionChart = (props) => {
   const {
     yearData = [],
-    startYear,
-    endYear,
+    startYear = 1988, // hard coded for now to avoid utils.js array errors
+    endYear = 2018, // ask for help
   } = props;
 
+  // eslint-disable-next-line no-unused-vars
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -180,9 +181,9 @@ const LineChart = (props) => {
 
   return (
     <div id="chart">
-      <Line data={chartData} height={400} options={chartOptions} />
+      <Line height={400} options={chartOptions} />
     </div>
   );
 };
 
-export default LineChart;
+export default PredictionChart;

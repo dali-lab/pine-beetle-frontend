@@ -9,7 +9,6 @@ import {
   setPredictionYear,
   setRangerDistrict,
   setState,
-  setChartMode,
 } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
@@ -20,7 +19,6 @@ const mapStateToProps = (state) => {
       county,
       rangerDistrict,
       dataMode,
-      chartMode,
       availablePredictionYears,
       availablePredictionStates,
       availablePredictionSublocations,
@@ -35,7 +33,6 @@ const mapStateToProps = (state) => {
     rangerDistrict: rangerDistrict[0],
     selectedState,
     dataMode,
-    chartMode,
     year,
   };
 };
@@ -53,9 +50,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     setDataMode: (dataMode) => {
       dispatch(setDataMode(dataMode));
-    },
-    setChartMode: (mode) => {
-      dispatch(setChartMode(mode));
     },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));

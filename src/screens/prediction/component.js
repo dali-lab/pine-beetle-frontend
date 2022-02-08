@@ -14,7 +14,16 @@ import {
   ScrollIcon,
 } from '../../components';
 
+import { CHART_MODES } from '../../constants';
+
+import PredictionChart from './components/prediction-outcome-graph/component';
+
 import './style.scss';
+
+const mapSelectedIcon = require('../../assets/icons/map-selected.png');
+const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
+const graphSelectedIcon = require('../../assets/icons/graph-selected.png');
+const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
 
 const histogrambin1 = require('../../assets/images/spb-histogram-bin1.png');
 const histogrambin2 = require('../../assets/images/spb-histogram-bin2.png');
@@ -28,9 +37,14 @@ const Prediction = (props) => {
     data,
     fetchErrorText,
     isLoading,
+    chartMode,
+    setChartMode,
   } = props;
 
   const [showAnimation, setShowAnimation] = useState(true);
+  const isGraphView = chartMode === CHART_MODES.GRAPH;
+  const setGraphView = () => setChartMode(CHART_MODES.GRAPH);
+  const setMapView = () => setChartMode(CHART_MODES.MAP);
 
   useEffect(() => {
     const listener = () => {
@@ -102,7 +116,37 @@ const Prediction = (props) => {
       {fetchErrorText.length > 0 && fetchErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
-      <PredictionMap />
+      <div className="selection-p">
+        <div
+          className={isGraphView ? 'selected-option-2-p' : 'unselected-option-p'}
+          onClick={setGraphView}
+        >
+          <img
+            src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
+            alt="Chart View"
+            className={isGraphView ? 'selected-view-p' : 'unselected-view-p'}
+          />
+          <p className={isGraphView ? 'selected-option-text-p' : 'unselected-option-text-p'}>
+            Graph View
+          </p>
+        </div>
+        <div
+          className={isGraphView ? 'unselected-option-p' : 'selected-option-2-p'}
+          onClick={setMapView}
+        >
+          <img
+            src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
+            alt="Map View"
+            className={isGraphView ? 'unselected-view-p' : 'selected-view-p'}
+          />
+          <p className={isGraphView ? 'unselected-option-text-p' : 'selected-option-text-p'}>
+            Map View
+          </p>
+        </div>
+      </div>
+      <div className="container">
+        {isGraphView ? <PredictionChart /> : <PredictionMap />}
+      </div>
       { predDetails(data.length === 1) }
     </div>
   );

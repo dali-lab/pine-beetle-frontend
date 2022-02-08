@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import LineChart from './component';
+import PredictionChart from './component';
 
 const mapStateToProps = (state) => {
   const {
@@ -27,4 +27,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(LineChart);
+)(PredictionChart);
