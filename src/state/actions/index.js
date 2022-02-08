@@ -19,11 +19,7 @@ import {
   setEndYear,
   setPredictionYear,
   setRangerDistrict,
-<<<<<<< HEAD
-  setFederalLands,
-=======
   setStartYear,
->>>>>>> 3973b844c5f5c2dd23a8094585bfa1ac4d74cc8c
   setState,
 } from './selections';
 
@@ -67,11 +63,7 @@ export {
   setEndYear,
   setPredictionYear,
   setRangerDistrict,
-<<<<<<< HEAD
-  setFederalLands,
-=======
   setStartYear,
->>>>>>> 3973b844c5f5c2dd23a8094585bfa1ac4d74cc8c
   setState,
   signOut,
 };

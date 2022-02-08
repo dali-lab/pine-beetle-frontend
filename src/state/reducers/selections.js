@@ -6,15 +6,8 @@ const initialState = {
   endYear: new Date().getFullYear(),
   predictionYear: new Date().getFullYear(),
   state: '',
-<<<<<<< HEAD
-  county: '',
-  counties: [], // for multi-select purposes
-  rangerDistrict: '',
-  federalLands: [], // for multi-select purposes
-=======
   county: [],
   rangerDistrict: [],
->>>>>>> 3973b844c5f5c2dd23a8094585bfa1ac4d74cc8c
   dataMode: DATA_MODES.COUNTY,
   chartMode: CHART_MODES.MAP,
 

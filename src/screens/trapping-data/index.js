@@ -26,6 +26,7 @@ const mapStateToProps = (state) => {
 
   return {
     chartMode,
+    dataMode,
     isLoading,
     errorText,
   };

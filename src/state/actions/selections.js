@@ -128,23 +128,9 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
  * @param {Object} [overrideFilter={}] optional filter to override selection values in redux
  * @param {Object} [levels={}] optional ability to not query on historical or prediction levels
  */
-<<<<<<< HEAD
-const attachData = (store, mode) => {
-  const {
-    trappings: { // might want to modify how we attach data with multiple counties/RDs
-      county: countyTrappings,
-      rangerDistrict: rdTrappings,
-    },
-    predictions: {
-      county: countyPredictions,
-      rangerDistrict: rdPredictions,
-    },
-    selections: {
-=======
 export function getAvailableSublocations(state, overrideFilter = {}, { historical = true, prediction = true } = {}) {
   return async (dispatch, getState) => {
     const {
->>>>>>> 3973b844c5f5c2dd23a8094585bfa1ac4d74cc8c
       dataMode,
       endYear,
       startYear,

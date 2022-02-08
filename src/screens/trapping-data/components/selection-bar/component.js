@@ -1,8 +1,6 @@
 import React from 'react';
 
-// import { TextInput, ChoiceInput, MultiSelectInput } from '../../../../components/input-components';
-import { TextInput, MultiSelectInput } from '../../../../components/input-components';
-import { ChoiceInput } from '../../../../components/input-components';
+import { MultiSelectInput, ChoiceInput } from '../../../../components/input-components';
 
 import { DATA_MODES, allStates } from '../../../../constants';
 
@@ -15,13 +13,13 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    availableStates,
-    availableSublocations,
+    // availableStates,
+    // availableSublocations,
     availableYears,
     clearSelections,
     counties,
     countyData,
-    county,
+    // county,
     dataMode,
     endYear,
     federalLands,
@@ -38,7 +36,7 @@ const SelectionBar = (props) => {
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  // const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
@@ -63,7 +61,7 @@ const SelectionBar = (props) => {
         optionsParent={allStates}
         optionsChildren={countyMode ? selectedCounties : selectedFederalLand}
       />
-      <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections} type="button">Clear</button>
+      <button id="reset-current-data-button" className="animated-button" onClick={clearSelections} type="button">Clear</button>
     </div>
   );
 };

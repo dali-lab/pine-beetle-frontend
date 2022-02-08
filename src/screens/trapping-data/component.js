@@ -21,9 +21,11 @@ const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
 const TrappingData = (props) => {
   const {
     chartMode,
+    dataMode,
     errorText,
     isLoading,
     setChartMode,
+    setDataMode,
   } = props;
 
   const isGraphView = chartMode === CHART_MODES.GRAPH;

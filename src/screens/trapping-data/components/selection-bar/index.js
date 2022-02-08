@@ -5,7 +5,7 @@ import SelectionBar from './component';
 import {
   clearSelections,
   setCounty,
-  setDataMode,
+  // setDataMode,
   setEndYear,
   setRangerDistrict,
   setStartYear,
@@ -25,9 +25,9 @@ const mapStateToProps = (state) => {
       dataMode,
     },
     trappings: {
-      data: trappingData,
-      county: countyData,
-      rangerDistrict: federalLandData,
+      // data: trappingData,
+      // county: countyData,
+      // rangerDistrict: federalLandData,
       availableHistoricalYears,
       availableHistoricalStates,
       availableHistoricalSublocations,
@@ -63,15 +63,15 @@ const mapDispatchToProps = (dispatch) => {
     setCounty: (county) => {
       dispatch(setCounty(county));
     },
-    setCounties: (counties) => {
-      dispatch(setCounties(counties));
-    },
+    // setCounties: (counties) => {
+    //   dispatch(setCounties(counties));
+    // },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));
     },
-    setFederalLands: (federalLands) => {
-      dispatch(setFederalLands(federalLands));
-    },
+    // setFederalLands: (federalLands) => {
+    //   dispatch(setFederalLands(federalLands));
+    // },
     setState: (state) => {
       dispatch(setState(state));
     },
