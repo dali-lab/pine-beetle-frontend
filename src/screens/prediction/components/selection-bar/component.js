@@ -2,8 +2,9 @@
 import React from 'react';
 
 import { ChoiceInput } from '../../../../components/input-components';
+import { CHART_MODES } from '../../../../constants';
 
-import { DATA_MODES } from '../../../../constants';
+// import { DATA_MODES } from '../../../../constants';
 
 import {
   getStateNameFromAbbreviation,
@@ -12,20 +13,20 @@ import {
 
 import './style.scss';
 
+const mapSelectedIcon = require('../../../../assets/icons/map-selected.png');
+const mapUnselectedIcon = require('../../../../assets/icons/map-unselected.png');
+const graphSelectedIcon = require('../../../../assets/icons/graph-selected.png');
+const graphUnselectedIcon = require('../../../../assets/icons/graph-unselected.png');
+
 const SelectionBar = (props) => {
   const {
     availableStates,
-    availableSublocations,
     availableYears,
     clearAllSelections,
-    county,
-    dataMode,
-    rangerDistrict,
+    chartMode,
+    setChartMode,
     selectedState,
-    setCounty,
-    setDataMode,
     setPredictionYear,
-    setRangerDistrict,
     setState,
     year,
   } = props;
@@ -34,43 +35,50 @@ const SelectionBar = (props) => {
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
-  const countyMode = dataMode === DATA_MODES.COUNTY;
+  const isGraphView = chartMode === CHART_MODES.GRAPH;
+  const setGraphView = () => setChartMode(CHART_MODES.GRAPH);
+  const setMapView = () => setChartMode(CHART_MODES.MAP);
+
+  // const countyMode = dataMode === DATA_MODES.COUNTY;
 
   return (
-    <div id="predictionbar" className="container">
-      <ChoiceInput instructions="Year" setValue={setPredictionYear} options={availableYears} value={year} />
-      <div id="vl1" />
-      <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
-      <div id="vl1" />
-      <div className="menuInstruction">
-        <div id="mode-selection">
-          <button
-            id="mode-btn"
-            onClick={() => { setDataMode(DATA_MODES.COUNTY); }}
-            className={(countyMode) ? 'county-rd-selection' : null}
-          >
-            County
-          </button>
-          <div id="vl2" />
-          <button
-            id="mode-btn"
-            onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
-            className={(!countyMode) ? 'county-rd-selection' : null}
-          >
-            <span className="full-text">Ranger District</span>
-            <span className="short-text">RD</span>
-          </button>
-        </div>
-        <div>
-          <ChoiceInput
-            value={countyMode ? county : rangerDistrict}
-            setValue={countyMode ? setCounty : setRangerDistrict}
-            options={availableSublocations}
-            firstOptionText={countyMode ? 'County' : 'Ranger District'}
+    <div>
+      <div id="predictionbar" className="container">
+        <ChoiceInput instructions="Year" setValue={setPredictionYear} options={availableYears} value={year} />
+        <div id="vl1" />
+        <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
+        <div id="vl1" />
+        <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections}>Clear</button>
+      </div>
+
+      <div className="selection-p">
+        <div
+          className={isGraphView ? 'selected-option-2-p' : 'unselected-option-p'}
+          onClick={setGraphView}
+        >
+          <img
+            src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
+            alt="Chart View"
+            className={isGraphView ? 'selected-view-p' : 'unselected-view-p'}
           />
+          <p className={isGraphView ? 'selected-option-text-p' : 'unselected-option-text-p'}>
+            Graph View
+          </p>
+        </div>
+        <div
+          className={isGraphView ? 'unselected-option-p' : 'selected-option-2-p'}
+          onClick={setMapView}
+        >
+          <img
+            src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
+            alt="Map View"
+            className={isGraphView ? 'unselected-view-p' : 'selected-view-p'}
+          />
+          <p className={isGraphView ? 'unselected-option-text-p' : 'selected-option-text-p'}>
+            Map View
+          </p>
         </div>
       </div>
-      <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections}>Clear</button>
     </div>
   );
 };
