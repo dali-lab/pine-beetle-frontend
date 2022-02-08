@@ -39,7 +39,6 @@ const MultiSelectInput = (props) => {
     setValueChildren(newValueList);
   };
 
-  console.log('Counties: ', optionsChildren);
   return (
     <div className="multi-select-container">
       <label>{title}</label>
@@ -83,17 +82,15 @@ const MultiSelectInput = (props) => {
                         className="children-list-item"
                         key={child}
                         onClick={() => {
-                          if (valueChildren.indexOf(child) > -1) {
+                          if (valueChildren && valueChildren.indexOf(child) > -1) {
                             handleRemove(child);
                           } else {
-                            // setSelectedValues([...selectedValues, child]);
                             setValueChildren([...valueChildren, child]);
                           }
-                          // console.log('Selected values: ', selectedValues);
                         }}
                       >
                         <img
-                          src={(valueChildren.indexOf(child) > -1) ? selectedCheckbox : emptyCheckbox}
+                          src={(valueChildren && valueChildren.indexOf(child) > -1) ? selectedCheckbox : emptyCheckbox}
                           alt="Child checkbox"
                           className="location-list-item-select-checkbox"
                         />

@@ -19,9 +19,7 @@ export const ActionTypes = {
   SET_PREDICTION_YEAR: 'SET_PREDICTION_YEAR',
   SET_STATE: 'SET_STATE',
   SET_COUNTY: 'SET_COUNTY',
-  SET_COUNTIES: 'SET_COUNTIES',
   SET_RANGER_DISTRICT: 'SET_RANGER_DISTRICT',
-  SET_FEDERAL_LANDS: 'SET_FEDERAL_LANDS',
   CLEAR_SELECTIONS: 'CLEAR_SELECTIONS',
   SET_ALL_STATES: 'SET_ALL_STATES',
   SET_ALL_COUNTIES: 'SET_ALL_COUNTIES',
@@ -306,28 +304,13 @@ export const setCounty = (county) => {
     // TODO: generate new array for multi-counties (when support multi-select) and pass to below function calls
 
     // fetch new data
-    dispatch(getAggregateYearData({ county: [county] }));
-    dispatch(getAggregateStateData({ county: [county] }));
-    dispatch(getAggregateLocationData({ county: [county] }));
-    dispatch(getPredictions(getState().selections.predictionYear), { county: [county] });
+    dispatch(getAggregateYearData({ county }));
+    dispatch(getAggregateStateData({ county }));
+    dispatch(getAggregateLocationData({ county }));
+    dispatch(getPredictions(getState().selections.predictionYear), { county });
 
     // fetch new drop down values
     dispatch(getAvailableYears({ county }));
-  };
-};
-
-/**
- * @description action creator for setting multiple counties
- */
-export const setCounties = (counties) => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: ActionTypes.SET_COUNTIES,
-      payload: {
-        ...getState().selections,
-        counties,
-      },
-    });
   };
 };
 
@@ -352,21 +335,6 @@ export const setRangerDistrict = (rangerDistrict) => {
 
     // fetch new drop down values
     dispatch(getAvailableYears({ rangerDistrict }));
-  };
-};
-
-/**
- * @description action creator for setting multiple federal lands
- */
-export const setFederalLands = (federalLands) => {
-  return (dispatch, getState) => {
-    dispatch({
-      type: ActionTypes.SET_FEDERAL_LANDS,
-      payload: {
-        ...getState().selections,
-        federalLands,
-      },
-    });
   };
 };
 

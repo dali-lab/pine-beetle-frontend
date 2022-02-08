@@ -19,15 +19,8 @@ const mapStateToProps = (state) => {
       endYear,
       state: selectedState,
       county,
-      counties,
       rangerDistrict,
-      federalLands,
       dataMode,
-    },
-    trappings: {
-      // data: trappingData,
-      // county: countyData,
-      // rangerDistrict: federalLandData,
       availableHistoricalYears,
       availableHistoricalStates,
       availableHistoricalSublocations,
@@ -39,8 +32,6 @@ const mapStateToProps = (state) => {
     availableStates: availableHistoricalStates,
     availableSublocations: availableHistoricalSublocations,
     county: county[0],
-    counties,
-    federalLands,
     dataMode,
     endYear,
     rangerDistrict: rangerDistrict[0],
@@ -63,15 +54,9 @@ const mapDispatchToProps = (dispatch) => {
     setCounty: (county) => {
       dispatch(setCounty(county));
     },
-    // setCounties: (counties) => {
-    //   dispatch(setCounties(counties));
-    // },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));
     },
-    // setFederalLands: (federalLands) => {
-    //   dispatch(setFederalLands(federalLands));
-    // },
     setState: (state) => {
       dispatch(setState(state));
     },
