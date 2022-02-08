@@ -4,53 +4,32 @@ import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
-import {
-  DATA_MODES,
-  stateAbbrevToZoomLevel,
-} from '../../../../constants';
+import { DATA_MODES, stateAbbrevToZoomLevel } from '../../../../constants';
+import { getMapboxRDNameFormat } from '../../../../utils';
+import { api } from '../../../../services';
 
 import {
-  getMapboxRDNameFormat,
-} from '../../../../utils';
+  thresholds,
+  colors,
+  MAP_SOURCES,
+  SOURCE_LAYERS,
+  MAP_SOURCE_NAME,
+  VECTOR_LAYER,
+  STATE_VECTOR_LAYER,
+} from './utils';
 
 import './style.scss';
 
 const questionIcon = require('../../../../assets/icons/help-circle.png');
 
-const helpText = `Please use Chrome, Firefox,<br />
-or Edge to download map.`;
-
-const thresholds = ['0-2.5%', '2.5-5%', '5-15%', '15-25%', '25-40%', '40-100%'];
-const colors = ['#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38'];
-
-const MAP_SOURCES = {
-  COUNTY: {
-    type: 'vector',
-    url: 'mapbox://pine-beetle-prediction.1be58pyi',
-  },
-  RANGER_DISTRICT: {
-    type: 'vector',
-    url: 'mapbox://pine-beetle-prediction.0tor8eeq',
-  },
-};
-
-const SOURCE_LAYERS = {
-  COUNTY: 'US_Counties_updated',
-  RANGER_DISTRICT: 'RD_SPB_NE',
-};
-
-const MAP_SOURCE_NAME = 'counties';
-const VECTOR_LAYER = 'prediction-chloropleth-layer';
-const STATE_VECTOR_LAYER = 'states';
+const helpText = 'Please use Chrome, Firefox,<br />\nor Edge to download map.';
 
 const PredictionMap = (props) => {
   const {
-    allCounties,
-    allRangerDistricts,
-    allSelectedStates,
-    allTotalStates,
+    availableStates,
+    availableSublocations,
+    data,
     dataMode,
-    predictionsData,
     selectedState,
     setCounty,
     setRangerDistrict,
@@ -67,6 +46,15 @@ const PredictionMap = (props) => {
   const [mapHoverCallback, setMapHoverCallback] = useState();
   const [mapStateClickCallback, setMapStateClickCallback] = useState();
   const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
+  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
+
+  useEffect(() => {
+    if (dataMode === DATA_MODES.RANGER_DISTRICT) {
+      api.getAvailableSublocations(dataMode)
+        .then(setAllRangerDistricts)
+        .catch(console.log);
+    }
+  }, [dataMode]);
 
   const mapboxHoverStyle = (x, y) => {
     if (x < 300 && y < 200) {
@@ -81,7 +69,7 @@ const PredictionMap = (props) => {
   };
 
   // twice-curried function for generating hover callback
-  const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availableStates) => (e) => {
+  const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availStates) => (e) => {
     if (!map || !e || !map.isStyleLoaded()) return;
 
     const counties = map.queryRenderedFeatures(e.point, {
@@ -105,25 +93,26 @@ const PredictionMap = (props) => {
           .find(rd => rd.includes(hoverRD));
 
       const pred = predictions.find((p) => {
-        return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availableStates.includes(hoverState)))
-        && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState)
-        || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
+        // either ranger district mode or have a matching state
+        return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState)))
+        // and sublocation matches
+        && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState) || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
       });
 
       if (pred && x && y) {
         const {
           county: countyName,
-          prediction: {
-            'prob.Spots>0': probAny,
-            'prob.Spots>53': probOutbreak,
-          },
+          probSpotsGT0: probAny,
+          probSpotsGT50: probOutbreak,
         } = pred;
+
+        const isInvalidNumber = num => Number.isNaN(num) || num === null || num === undefined;
 
         setPredictionHover((
           <div id="prediction-hover" style={mapboxHoverStyle(x, y)}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
-            <p>Probability of any spots: {(probAny * 100).toFixed(1)}%</p>
-            <p>Probability of an outbreak: {(probOutbreak * 100).toFixed(1)}%</p>
+            <p>Probability of any spots: {isInvalidNumber(probAny) ? 'null' : (probAny * 100).toFixed(1)}%</p>
+            <p>Probability of an outbreak: {isInvalidNumber(probOutbreak) ? 'null' : (probOutbreak * 100).toFixed(1)}%</p>
           </div>
         ));
       } else {
@@ -133,7 +122,7 @@ const PredictionMap = (props) => {
   };
 
   // twice-curried function for generating click callback
-  const createMapClickCallback = (states, counties, rangerDistricts, currentState, predictions, mode) => (e) => {
+  const createMapClickCallback = (states, sublocations, currentState, predictions, mode) => (e) => {
     if (!e?.features[0]?.properties) return;
 
     const {
@@ -142,7 +131,7 @@ const PredictionMap = (props) => {
       STATE: _state,
     } = e.features[0].properties;
 
-    const rangerDistrictToSet = rangerDistricts.filter(rd => !!rd)
+    const rangerDistrictToSet = sublocations.filter(rd => !!rd)
       .find(district => district.includes(clickRD));
 
     const state = !_state && mode === DATA_MODES.RANGER_DISTRICT
@@ -153,9 +142,9 @@ const PredictionMap = (props) => {
     if (!states.includes(state) || !currentState) return;
 
     // select county or RD depending on mode
-    if (dataMode === DATA_MODES.COUNTY && counties.includes(county)) {
+    if (dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
       setCounty(county);
-    } else if (rangerDistricts.includes(rangerDistrictToSet)) {
+    } else if (sublocations.includes(rangerDistrictToSet)) {
       setRangerDistrict(rangerDistrictToSet);
     }
   };
@@ -203,13 +192,13 @@ const PredictionMap = (props) => {
 
     // select county/RD when user clicks on it
     if (!createdMap._listeners.click) {
-      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode);
+      const callback = createMapClickCallback(availableStates, availableSublocations, selectedState, data, dataMode);
       setMapClickCallback(() => callback);
       createdMap.on('click', VECTOR_LAYER, callback);
     }
 
     if (createdMap._listeners.mousemove === undefined) {
-      const callback = createMapHoverCallback(predictionsData, allRangerDistricts, dataMode, selectedState, allSelectedStates);
+      const callback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates);
       setMapHoverCallback(() => callback);
       createdMap.on('mousemove', callback);
     }
@@ -237,12 +226,10 @@ const PredictionMap = (props) => {
 
     predictions.forEach(({
       county,
-      prediction,
+      probSpotsGT50: fillProb,
       rangerDistrict,
       state,
     }) => {
-      const fillProb = prediction['prob.Spots>53'];
-
       let color;
 
       if (fillProb <= 0.025) {
@@ -396,7 +383,7 @@ const PredictionMap = (props) => {
   useEffect(() => {
     if (!map) return;
 
-    if (year.toString().length === 4 && predictionsData.length > 0) colorPredictions(predictionsData);
+    if (year.toString().length === 4 && data.length > 0) colorPredictions(data);
 
     if (selectedState) {
       const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
@@ -411,37 +398,37 @@ const PredictionMap = (props) => {
         zoom: 4.8,
       });
     }
-  }, [predictionsData, selectedState, map]);
+  }, [data, selectedState, map]);
 
   useEffect(() => {
-    if (!initialFill && map && predictionsData.length > 0) {
-      colorPredictions(predictionsData);
+    if (!initialFill && map && data.length > 0) {
+      colorPredictions(data);
       setInitialFill(true);
     }
 
-    if (map && predictionsData) {
+    if (map && data) {
       // remove current callback
       if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
 
       // generate new callback
-      const callback = createMapHoverCallback(predictionsData, allRangerDistricts, dataMode, selectedState, allSelectedStates);
+      const callback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates);
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
     }
-  }, [map, predictionsData, allRangerDistricts, dataMode, selectedState, allSelectedStates]);
+  }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates]);
 
   // update the click callback handler when all RD or all states changes
   useEffect(() => {
-    if (map && allTotalStates && allCounties && allRangerDistricts) {
+    if (map && availableStates && availableSublocations) {
       // remove current callback
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
-      const callback = createMapClickCallback(allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode);
+      const callback = createMapClickCallback(availableStates, availableSublocations, selectedState, data, dataMode);
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
-  }, [map, allTotalStates, allCounties, allRangerDistricts, selectedState, predictionsData, dataMode]);
+  }, [map, availableStates, availableSublocations, selectedState, data, dataMode]);
 
   useEffect(() => {
     if (map) {
@@ -453,7 +440,7 @@ const PredictionMap = (props) => {
         const { abbrev } = e?.features[0]?.properties || {};
 
         // state must exist, not be current selection and must be a valid state
-        if (abbrev && selectedState !== abbrev && allTotalStates.includes(abbrev)) {
+        if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
           setState(abbrev);
         }
       };
@@ -461,7 +448,7 @@ const PredictionMap = (props) => {
       setMapStateClickCallback(() => callback);
       map.on('click', STATE_VECTOR_LAYER, callback);
     }
-  }, [map, allTotalStates, selectedState]);
+  }, [map, availableStates, selectedState]);
 
   useEffect(() => {
     if (map) {
@@ -477,10 +464,10 @@ const PredictionMap = (props) => {
   }, [map]);
 
   useEffect(() => {
-    if (predictionsData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
+    if (data.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
       map.removeLayer(VECTOR_LAYER);
     }
-  }, [predictionsData]);
+  }, [data]);
 
   return (
     <div className="container flex-item-left" id="map-container">

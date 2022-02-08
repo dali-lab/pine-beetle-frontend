@@ -1,11 +1,15 @@
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { Line } from 'react-chartjs-2';
 
-import LineChart from './component';
+import { getYearRange } from './utils';
 
-const mapStateToProps = (state) => {
+import './style.scss';
+
+const LineChart = (props) => {
   const {
-<<<<<<< HEAD
-    data = [],
+    yearData = [],
+    startYear,
+    endYear,
   } = props;
 
   const [chartData, setChartData] = useState({
@@ -18,14 +22,14 @@ const mapStateToProps = (state) => {
       },
       {
         data: [],
-        label: 'Total SPB',
+        label: 'SPB Per 2 Weeks',
         fill: false,
       },
-      // {
-      //   data: [],
-      //   label: 'Total Clerids',
-      //   fill: false,
-      // },
+      {
+        data: [],
+        label: 'Clerids Per 2 Weeks',
+        fill: false,
+      },
     ],
   });
 
@@ -91,16 +95,11 @@ const mapStateToProps = (state) => {
           else return `${label}: ${value.toFixed(2)}`;
         },
       },
-=======
-    data: {
-      yearData,
->>>>>>> 3973b844c5f5c2dd23a8094585bfa1ac4d74cc8c
     },
-    selections: {
-      startYear,
-      endYear,
+    legend: {
+      display: true,
+      position: 'top',
     },
-<<<<<<< HEAD
   });
 
   useEffect(() => {
@@ -118,21 +117,21 @@ const mapStateToProps = (state) => {
         },
         {
           data: [],
-          label: 'SPB Per Two Weeks',
+          label: 'SPB Per 2 Weeks',
           borderColor: '#ff525c',
           backgroundColor: '#ff525c',
           fill: false,
           lineTension: 0,
           borderDash: [5, 1],
         },
-        // {
-        //   data: [],
-        //   label: 'Clerids Per Two Weeks',
-        //   borderColor: '#ffc148',
-        //   backgroundColor: '#ffc148',
-        //   fill: false,
-        //   lineTension: 0,
-        // },
+        {
+          data: [],
+          label: 'Clerids Per 2 Weeks',
+          borderColor: '#ffc148',
+          backgroundColor: '#ffc148',
+          fill: false,
+          lineTension: 0,
+        },
       ],
     };
 
@@ -140,43 +139,36 @@ const mapStateToProps = (state) => {
       ...chartOptions,
     };
 
-    // sort data array
-    const sortedData = data.sort((a, b) => (a.year > b.year ? 1 : -1));
+    updatedChartData.labels = getYearRange(startYear, endYear);
 
-    // initialize start and end date
-    const startDate = sortedData.reduce((p, c) => (p.year < c.year ? p : c), {})?.year || 2011;
-    const endDate = sortedData.reduce((p, c) => (p.year > c.year ? p : c), {})?.year || new Date().getFullYear();
-
-    updatedChartData.labels = getYearRange(startDate, endDate);
-
-    // sum up spots by year
-    const spotMap = sortedData.reduce((acc, curr) => ({
+    // get sum of spots by year
+    const spotMap = yearData.reduce((acc, { year, sumSpotst0 }) => ({
       ...acc,
-      [curr.year]: curr.spots + acc[curr.year],
-    }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
+      [year]: sumSpotst0,
+    }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    // sum up spb by year
-    const spbMap = sortedData.reduce((acc, curr) => ({
+    // get sum of spb by year
+    const spbMap = yearData.reduce((acc, { year, sumSpbPer2Weeks }) => ({
       ...acc,
-      [curr.year]: curr.spbPer2Weeks + acc[curr.year],
-    }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
+      [year]: sumSpbPer2Weeks,
+    }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    // sum up clerids by year
-    // const cleridMap = sortedData.reduce((acc, curr) => ({
-    //   ...acc,
-    //   [curr.year]: curr.cleridPer2Weeks + acc[curr.year],
-    // }), getYearRange(startDate, endDate).reduce((p, c) => ({ ...p, [c]: 0 }), {}));
+    // get sum of clerids by year
+    const cleridMap = yearData.reduce((acc, { year, sumCleridsPer2Weeks }) => ({
+      ...acc,
+      [year]: sumCleridsPer2Weeks,
+    }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
     // update chartData
     updatedChartData.datasets[0].data = Object.values(spotMap);
     updatedChartData.datasets[1].data = Object.values(spbMap);
-    // updatedChartData.datasets[2].data = Object.values(cleridMap);
+    updatedChartData.datasets[2].data = Object.values(cleridMap);
 
     // maximum value found in the array
     const max = Math.max(...[
       ...updatedChartData.datasets[0].data,
       ...updatedChartData.datasets[1].data,
-      // ...updatedChartData.datasets[2].data,
+      ...updatedChartData.datasets[2].data,
     ]);
 
     // set new y-axis height
@@ -184,23 +176,13 @@ const mapStateToProps = (state) => {
 
     setChartData(updatedChartData);
     setChartOptions(updatedChartOptions);
-  }, [data]);
-=======
-  } = state;
+  }, [yearData]);
 
-  return {
-    yearData,
-    startYear,
-    endYear,
-  };
-};
->>>>>>> 3973b844c5f5c2dd23a8094585bfa1ac4d74cc8c
-
-const mapDispatchToProps = (dispatch) => {
-  return {};
+  return (
+    <div id="chart">
+      <Line data={chartData} height={400} options={chartOptions} />
+    </div>
+  );
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(LineChart);
+export default LineChart;

@@ -35,8 +35,12 @@
         "jsx-a11y/no-noninteractive-element-interactions": 0,
         "react/jsx-one-expression-per-line":0,
         "no-useless-escape": 0,
+<<<<<<< HEAD
         "jsx-a11y/no-static-element-interactions": 0,
         //"linebreak-style": ["error", "windows"]
+=======
+        "jsx-a11y/no-static-element-interactions": 0
+>>>>>>> 3973b844c5f5c2dd23a8094585bfa1ac4d74cc8c
     },
     "plugins": [
         "react"

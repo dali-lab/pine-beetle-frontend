@@ -1,6 +1,6 @@
 {
-  "name": "pb-frontend",
-  "version": "1.1.0",
+  "name": "pine-beetle-frontend",
+  "version": "3.0.0",
   "description": "Pine Beetle Prediction",
   "main": "src/index.js",
   "repository": "https://github.com/dali-lab/pine-beetle-frontend",
@@ -66,6 +66,7 @@
     "react-lottie": "^1.2.3",
     "react-map-gl": "^5.2.8",
     "react-modal": "^3.11.2",
+    "react-read-more-read-less": "^1.0.7",
     "react-redux": "^7.0.2",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",

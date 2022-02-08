@@ -21,12 +21,9 @@ const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
 const TrappingData = (props) => {
   const {
     chartMode,
-    setChartMode,
-    setDataMode,
-    dataMode,
+    errorText,
     isLoading,
-    trappingData,
-    trappingErrorText,
+    setChartMode,
   } = props;
 
   const isGraphView = chartMode === CHART_MODES.GRAPH;
@@ -36,7 +33,7 @@ const TrappingData = (props) => {
   return (
     <div>
       <Loading visible={isLoading} />
-      {trappingErrorText.length > 0 && trappingErrorText.map(t => <p>{t}</p>)}
+      {errorText.length > 0 && errorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
       <div id="view-selections" className="container">
@@ -88,7 +85,7 @@ const TrappingData = (props) => {
         </div>
       </div>
       <div className="container">
-        {isGraphView ? <LineChart data={trappingData} /> : <TrappingDataMap />}
+        {isGraphView ? <LineChart /> : <TrappingDataMap />}
       </div>
     </div>
   );

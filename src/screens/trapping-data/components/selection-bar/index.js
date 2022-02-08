@@ -5,20 +5,18 @@ import SelectionBar from './component';
 import {
   clearSelections,
   setCounty,
-  setCounties,
+  setDataMode,
+  setEndYear,
   setRangerDistrict,
-  setFederalLands,
+  setStartYear,
   setState,
-  setYearRange,
 } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
     selections: {
-      yearRange: {
-        startYear,
-        endYear,
-      },
+      startYear,
+      endYear,
       state: selectedState,
       county,
       counties,
@@ -30,34 +28,37 @@ const mapStateToProps = (state) => {
       data: trappingData,
       county: countyData,
       rangerDistrict: federalLandData,
+      availableHistoricalYears,
+      availableHistoricalStates,
+      availableHistoricalSublocations,
     },
   } = state;
 
   return {
-    county,
+    availableYears: availableHistoricalYears,
+    availableStates: availableHistoricalStates,
+    availableSublocations: availableHistoricalSublocations,
+    county: county[0],
     counties,
-    endYear,
-    rangerDistrict,
     federalLands,
+    dataMode,
+    endYear,
+    rangerDistrict: rangerDistrict[0],
     selectedState,
     startYear,
-    trappingData,
-    countyData,
-    federalLandData,
-    dataMode,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearAllSelections: () => {
+    clearSelections: () => {
       dispatch(clearSelections());
     },
     setStartYear: (startYear) => {
-      dispatch(setYearRange(startYear, undefined));
+      dispatch(setStartYear(startYear));
     },
     setEndYear: (endYear) => {
-      dispatch(setYearRange(undefined, endYear));
+      dispatch(setEndYear(endYear));
     },
     setCounty: (county) => {
       dispatch(setCounty(county));
