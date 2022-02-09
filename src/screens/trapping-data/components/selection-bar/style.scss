@@ -1,5 +1,5 @@
 #predictionbar-trapping {
-    background: #FFFFFF;
+    background: #F5F5F5;
     box-shadow: 0px 12px 30px -5px rgba(77, 81, 94, 0.04);
     border-radius: 18px;
     font-family: 'Inter';
@@ -55,13 +55,15 @@
 }
 
 .selection {
-    background: #FFFFFF;
+    font-weight: bold;
 }
 
 .selection label {
     color: #7c7c96;
     background: #FFFFFF;
 }
+
+
 
 .selection-no-button {
     padding-left: 20px;

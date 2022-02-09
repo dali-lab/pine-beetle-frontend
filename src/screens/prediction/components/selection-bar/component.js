@@ -36,9 +36,11 @@ const SelectionBar = (props) => {
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
+  const revYears = [...availableYears].reverse();
+
   return (
     <div id="predictionbar" className="container">
-      <ChoiceInput instructions="Year" setValue={setPredictionYear} options={availableYears} value={year} />
+      <ChoiceInput instructions="Year" setValue={setPredictionYear} options={revYears} value={year} />
       <div id="vl1" />
       <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
       <div id="vl1" />
