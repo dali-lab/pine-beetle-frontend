@@ -35,28 +35,26 @@ const SelectionBar = (props) => {
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
   return (
-    <div className="container">
-      <div className="trapbar-container">
-        <div className="trapbar-year-selection">
-          <p className="trapbar-year-selection-title">Year range</p>
-          <div className="trapbar-year-selection-options">
-            <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} />
-            <ChoiceInput setValue={setEndYear} options={availableYears} value={endYear} />
-          </div>
+    <div id="historicalbar" className="container">
+      <div className="historicalbar-year-selection">
+        <p className="historicalbar-year-selection-title">Year range</p>
+        <div className="historicalbar-year-selection-options">
+          <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} />
+          <ChoiceInput setValue={setEndYear} options={availableYears} value={endYear} />
         </div>
-        <div className="trapbar-location-selection">
-          <p className="trapbar-location-selection-title">Locations</p>
-          <MultiSelectInput
-            valueParent={selectedStateName}
-            valueChildren={countyMode ? county : rangerDistrict}
-            setValueParent={setStateAbbrev}
-            setValueChildren={countyMode ? setCounty : setRangerDistrict}
-            optionsParent={allStates}
-            optionsChildren={availableSublocations}
-          />
-        </div>
-        <button className="trapbar-clear-button" onClick={clearSelections} type="button">Clear</button>
       </div>
+      <div className="historicalbar-location-selection">
+        <p className="historicalbar-location-selection-title">Locations</p>
+        <MultiSelectInput
+          valueParent={selectedStateName}
+          valueChildren={countyMode ? county : rangerDistrict}
+          setValueParent={setStateAbbrev}
+          setValueChildren={countyMode ? setCounty : setRangerDistrict}
+          optionsParent={allStates}
+          optionsChildren={availableSublocations}
+        />
+      </div>
+      <button className="historicalbar-clear-button" onClick={clearSelections} type="button">Clear</button>
     </div>
   );
 };

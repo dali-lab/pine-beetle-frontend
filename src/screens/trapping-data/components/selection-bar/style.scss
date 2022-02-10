@@ -1,4 +1,4 @@
-.trapbar-container {
+#historicalbar {
     background: #F5F5F5;
     box-shadow: 0px 12px 30px -5px rgba(77, 81, 94, 0.04);
     border-radius: 18px;
@@ -14,37 +14,37 @@
     align-items: center;
     padding: 20px;
 
-    .trapbar-year-selection {
+    .historicalbar-year-selection {
         display: flex;
         flex-direction: column;
 
-        .trapbar-year-selection-title {
+        .historicalbar-year-selection-title {
             margin-top: 0.5vh;
             font-weight: bold;
 
         }
 
-        .trapbar-year-selection-options {
+        .historicalbar-year-selection-options {
             display: flex;
             flex-direction: row;
 
-            .trapbar-year-selection-option {
+            .historicalbar-year-selection-option {
                 font-size: 16px;
             }
         }
     }
 
-    .trapbar-location-selection {
+    .historicalbar-location-selection {
         display: flex;
         flex-direction: column;
 
-        .trapbar-location-selection-title {
+        .historicalbar-location-selection-title {
             font-weight: bold;
 
         }
     }
 
-    .trapbar-clear-button {
+    .historicalbar-clear-button {
         background: #505050;
         font-size: 18px; 
         border-radius: 10px;
