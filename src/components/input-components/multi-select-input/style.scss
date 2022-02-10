@@ -5,22 +5,26 @@
         flex-direction: row;
         align-items: center;
         background-color: #FFFFFF;
-        height: 40px;
-        border-radius: 10px;
+        height: 45px;
+        padding-left: 10px;
 
-        .location-type {
-            padding-left: 20px;
-            padding-right: 20px;
-            margin-right: 1vw;
-            width: 150px;
+        .location-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            .location-header-arrow {
+                width: 12px;
+                height: 8px;
+                margin-right: 10px;     
+            }
         }
-        .separation-line {
-            width: 5px;
-            background-color: #F5F5F5;
-        }
+
         .location-wrapper {
             width: 300px;
             cursor: pointer;
+            z-index: 1;
             
             .location-list {
                 position: absolute;

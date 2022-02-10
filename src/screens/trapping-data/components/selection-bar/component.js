@@ -35,24 +35,28 @@ const SelectionBar = (props) => {
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
   return (
-    <div id="predictionbar-trapping" className="container">
-      <div id="year-selection">
-        <div id="start-year-selection"><ChoiceInput instructions="Start Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
-        <div id="vl3" />
-        {/* TODO: "to" */}
-        <div id="end-year-selection"><ChoiceInput instructions="End Year" setValue={setEndYear} options={availableYears} value={endYear} /></div>
+    <div className="container">
+      <div className="trapbar-container">
+        <div className="trapbar-year-selection">
+          <p className="trapbar-year-selection-title">Year range</p>
+          <div className="trapbar-year-selection-options">
+            <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} />
+            <ChoiceInput setValue={setEndYear} options={availableYears} value={endYear} />
+          </div>
+        </div>
+        <div className="trapbar-location-selection">
+          <p className="trapbar-location-selection-title">Locations</p>
+          <MultiSelectInput
+            valueParent={selectedStateName}
+            valueChildren={countyMode ? county : rangerDistrict}
+            setValueParent={setStateAbbrev}
+            setValueChildren={countyMode ? setCounty : setRangerDistrict}
+            optionsParent={allStates}
+            optionsChildren={availableSublocations}
+          />
+        </div>
+        <button className="trapbar-clear-button" onClick={clearSelections} type="button">Clear</button>
       </div>
-      <MultiSelectInput
-        title="Locations"
-        type={countyMode ? 'Counties' : 'Federal land'}
-        valueParent={selectedStateName}
-        valueChildren={countyMode ? county : rangerDistrict}
-        setValueParent={setStateAbbrev}
-        setValueChildren={countyMode ? setCounty : setRangerDistrict}
-        optionsParent={allStates}
-        optionsChildren={availableSublocations}
-      />
-      <button id="reset-current-data-button" className="animated-button" onClick={clearSelections} type="button">Clear</button>
     </div>
   );
 };

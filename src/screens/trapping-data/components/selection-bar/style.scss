@@ -1,4 +1,4 @@
-#predictionbar-trapping {
+.trapbar-container {
     background: #F5F5F5;
     box-shadow: 0px 12px 30px -5px rgba(77, 81, 94, 0.04);
     border-radius: 18px;
@@ -9,134 +9,50 @@
     letter-spacing: 0em;
     text-align: left;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
     padding: 20px;
-}
 
-.menuInstruction {
-    background: #FFFFFF;
-}
+    .trapbar-year-selection {
+        display: flex;
+        flex-direction: column;
 
-.menuInstruction label {
-    background: #FFFFFF;
-    color: #7c7c96;
-}
+        .trapbar-year-selection-title {
+            margin-top: 0.5vh;
+            font-weight: bold;
 
-.menuInstruction .input {
-    padding-left: 25px;
-    background: #EDEDEE;
-    height: 43px;
-    font-family: 'Inter';
-    font-size: 18px; 
-    width: 8vw;
-    max-width: 150px;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    letter-spacing: 1.5px;
-}
+        }
 
-#year-selection {
-    display: flex;
-    justify-content: flex-start;
-}
+        .trapbar-year-selection-options {
+            display: flex;
+            flex-direction: row;
 
-#start-year-selection .input {
-    border-radius: 6px 0px 0px 6px;
-    width: 7vw !important;
-}
+            .trapbar-year-selection-option {
+                font-size: 16px;
+            }
+        }
+    }
 
-#end-year-selection .input {
-    border-radius: 0px 6px 6px 0px;
-    width: 7vw !important;
-}
+    .trapbar-location-selection {
+        display: flex;
+        flex-direction: column;
 
-.selection {
-    background: #FFFFFF;
-}
+        .trapbar-location-selection-title {
+            font-weight: bold;
 
-.selection label {
-    color: #7c7c96;
-    background: #FFFFFF;
-}
+        }
+    }
 
-.selection-no-button {
-    padding-left: 20px;
-    background: #EDEDEE;
-    height: 43px;
-    font-family: 'Inter';
-    font-size: 18px; 
-    width: 15vw;
-    max-width: 200px;
-    border-radius: 6px;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    letter-spacing: 1.5px;
-}
-
-#vl1 {
-    border-left: 2px solid #f9f9f9;
-    height: 72px;
-    margin-left: 2vw;
-    margin-right: 2vw;
-}
-
-#vl2 {
-    border-left: 2px solid #f9f9f9;
-    height: 24px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
-#vl3 {
-    border-left: 1px solid #656565;
-    height: 43px;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-top: 21px;
-}
-
-.county-rd-selection {
-    color: #2d2d2d;
-    font-weight: 600;
-}
-
-#mode-selection {
-    display: flex;
-    height: 0px;
-}
-
-#mode-selection button {
-    background-color: transparent;
-    background-repeat: no-repeat;
-    border: none;
-    cursor:pointer;
-    outline: none; 
-    color: #84848a;
-    font-size: 18px;
-}
-
-// Hide short text by default (resolution > 1200px)
-.short-text { display: none; }
-
-// When resolution <= 1200px, hide full text and show short text
-@media (max-width: 1200px) {
-    .short-text { display: inline-block; }
-    .full-text { display: none; }
-}
-
-#reset-current-data-button {
-    background: #C9CDD9;
-    font-size: 18px; 
-    border-radius: 10px;
-    letter-spacing: 1.5px;
-    color: #2F303A;
-    margin-left: 4vw;
-    padding: 10px 30px;
+    .trapbar-clear-button {
+        background: #505050;
+        font-size: 18px; 
+        border-radius: 10px;
+        letter-spacing: 1.5px;
+        color: #FFFFFF;
+        border: 0;
+        margin-top: 4vh;
+        height: 45px;
+        padding: 0px 60px;
+    }
 }

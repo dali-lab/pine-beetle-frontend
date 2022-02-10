@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
-// import ArrowDown from '../../../assets/icons/arrow_down.svg';
 import './style.scss';
 
+const arrowDown = require('../../../assets/icons/arrow-down.png');
 const emptyCheckbox = require('../../../assets/icons/empty_checkbox.png');
 const dashCheckbox = require('../../../assets/icons/dash_checkbox.png');
 const selectedCheckbox = require('../../../assets/icons/selected_checkbox.png');
@@ -12,8 +12,6 @@ const CLEAR_TEXT = 'Select locations';
 
 const MultiSelectInput = (props) => {
   const {
-    title,
-    type,
     valueParent,
     valueChildren,
     setValueParent,
@@ -35,25 +33,20 @@ const MultiSelectInput = (props) => {
 
   const handleRemove = (element) => {
     const newValueList = valueChildren.filter(e => e !== element);
-    // setSelectedValues(newValueList);
     setValueChildren(newValueList);
   };
 
-  console.log('Children: ', valueChildren);
-
   return (
-    <div className="multi-select-container">
-      <label>{title}</label>
-      <br />
+    <div className="multi-select-container"> {/* Clean CSS */}
       <div className="input-container">
-        {/* Displays current type being displayed for children (e.g. counties or federal land) */}
-        <div className="location-type">
-          <p>{type}</p>
-        </div>
-        <div className="separation-line" />
         <div className="location-wrapper">
           <div className="location-header" onClick={() => { setIsListOpen(!isListOpen); }}>
             <div className="location-header-title">{statusText}</div>
+            <img
+              src={arrowDown}
+              alt="Arrow down"
+              className="location-header-arrow"
+            />
           </div>
           {/* Initial dropdown displaying all parent data (e.g. all states) */}
           {isListOpen && (
