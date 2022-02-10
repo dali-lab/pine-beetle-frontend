@@ -13,7 +13,6 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    // availableStates,
     availableSublocations,
     availableYears,
     clearSelections,
@@ -28,17 +27,12 @@ const SelectionBar = (props) => {
     setStartYear,
     setState,
     startYear,
-    // trappingData
   } = props;
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  // const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
-
-  // const selectedCounties = selectedState ? [...new Set(countyData.filter(obj => obj.state === selectedState).map((obj => obj.county)))].sort() : [];
-  // const selectedFederalLand = selectedState ? [...new Set(federalLandData.filter(obj => obj.state === selectedState).map((obj => obj.rangerDistrict)))].sort() : [];
 
   return (
     <div id="predictionbar-trapping" className="container">
