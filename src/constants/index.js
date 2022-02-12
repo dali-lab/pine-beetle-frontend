@@ -95,6 +95,10 @@ const DATA_TYPE_EXTENSIONS = {
 
 const VIDEO_URL = 'https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/preview';
 
+const getYearRange = (start, end) => {
+  return Array(end - start + 1).fill().map((_, idx) => start + idx);
+};
+
 export {
   AUTOMATION_SERVER_ENDPOINTS,
   allStates,
@@ -112,5 +116,6 @@ export {
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
+  getYearRange,
   VIDEO_URL,
 };

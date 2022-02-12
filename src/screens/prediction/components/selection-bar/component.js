@@ -31,13 +31,14 @@ const SelectionBar = (props) => {
 
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
+  const revYears = [...availableYears].reverse();
 
   return (
     <div id="predictionbar" className="container">
       <div className="predictionbar-year-selection">
         <p className="predictionbar-year-selection-title">Year</p>
         <div className="predictionbar-year-selection-options">
-          <ChoiceInput setValue={setPredictionYear} options={availableYears} value={year} />
+          <ChoiceInput setValue={setPredictionYear} options={revYears} value={year} />
         </div>
       </div>
       <div className="predictionbar-location-selection">

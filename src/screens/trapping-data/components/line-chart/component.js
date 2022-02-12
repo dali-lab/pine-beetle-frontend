@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 
-import { getYearRange } from './utils';
+import { getYearRange } from '../../../../constants';
 
 import './style.scss';
 

@@ -32,13 +32,15 @@ const SelectionBar = (props) => {
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
+  const revYears = [...availableYears].reverse();
+
   return (
     <div id="historicalbar" className="container">
       <div className="historicalbar-year-selection">
         <p className="historicalbar-year-selection-title">Year range</p>
         <div className="historicalbar-year-selection-options">
           <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} />
-          <ChoiceInput setValue={setEndYear} options={availableYears} value={endYear} />
+          <ChoiceInput setValue={setEndYear} options={revYears} value={endYear} />
         </div>
       </div>
       <div className="historicalbar-location-selection">
