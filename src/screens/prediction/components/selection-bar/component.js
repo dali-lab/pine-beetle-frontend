@@ -32,8 +32,6 @@ const SelectionBar = (props) => {
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
-  const countyMode = dataMode === DATA_MODES.COUNTY;
-
   return (
     <div id="predictionbar" className="container">
       <div className="predictionbar-year-selection">
@@ -46,9 +44,9 @@ const SelectionBar = (props) => {
         <p className="predictionbar-location-selection-title">Locations</p>
         <MultiSelectInput
           valueParent={selectedStateName}
-          valueChildren={countyMode ? county : rangerDistrict}
+          valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
           setValueParent={setStateAbbrev}
-          setValueChildren={countyMode ? setCounty : setRangerDistrict}
+          setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
           optionsParent={allStates}
           optionsChildren={availableSublocations}
         />

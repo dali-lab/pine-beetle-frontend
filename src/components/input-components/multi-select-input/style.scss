@@ -31,9 +31,17 @@
                 margin-top: 10px;
                 max-height: 325px;
                 overflow-y: scroll;
+                border-radius: 10px;
+
+                .location-list-instructions {
+                    background-color: #F3F3F3;
+                    color: #434754;
+                    padding: 5px 10px;
+                }
 
                 .location-list-item {
                     background-color: #F3F3F3;
+                    color: #434754;
                     width: 300px;
                     display: flex;
                     flex-direction: column;
@@ -48,6 +56,12 @@
                             margin-left: 10px;
                             margin-right: 10px;
                         }
+
+                        .location-list-item-select-status {
+                            font-size: 14px;
+                            color: #BEBEBE;
+                            margin-left: 5px;
+                        }
                     }
 
                     .children-list {
@@ -56,6 +70,7 @@
         
                         .children-list-item {
                             background-color: #F3F3F3;
+                            color: #434754;
                             width: 250px;
                             min-height: 40px;
                             display: flex;

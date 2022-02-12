@@ -29,8 +29,6 @@ const SelectionBar = (props) => {
     startYear,
   } = props;
 
-  const countyMode = dataMode === DATA_MODES.COUNTY;
-
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
 
@@ -47,9 +45,9 @@ const SelectionBar = (props) => {
         <p className="historicalbar-location-selection-title">Locations</p>
         <MultiSelectInput
           valueParent={selectedStateName}
-          valueChildren={countyMode ? county : rangerDistrict}
+          valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
           setValueParent={setStateAbbrev}
-          setValueChildren={countyMode ? setCounty : setRangerDistrict}
+          setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
           optionsParent={allStates}
           optionsChildren={availableSublocations}
         />

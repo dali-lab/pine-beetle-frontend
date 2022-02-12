@@ -24,7 +24,7 @@ const MultiSelectInput = (props) => {
   const [isListOpen, setIsListOpen] = useState(false);
 
   useEffect(() => {
-    setStatusText(valueParent ? 'some selected' : CLEAR_TEXT);
+    setStatusText(valueParent ? 'Some locations selected' : CLEAR_TEXT);
   }, [valueChildren]);
 
   useEffect(() => {
@@ -35,6 +35,8 @@ const MultiSelectInput = (props) => {
     const newValueList = valueChildren.filter(e => e !== element);
     setValueChildren(newValueList);
   };
+
+  console.log('Value children: ', valueChildren);
 
   return (
     <div className="multi-select-container"> {/* Clean CSS */}
@@ -51,6 +53,7 @@ const MultiSelectInput = (props) => {
           {/* Initial dropdown displaying all parent data (e.g. all states) */}
           {isListOpen && (
             <div className="location-list">
+              <p className="location-list-instructions">Select location(s)</p>
               {optionsParent.map(item => (
                 <div
                   className="location-list-item"
@@ -68,6 +71,7 @@ const MultiSelectInput = (props) => {
                       className="location-list-item-select-checkbox"
                     />
                     {item}
+                    {valueParent === item && <span className="location-list-item-select-status">({valueChildren.length} selected)</span>}
                   </div>
                   {/* Second dropdown displaying all children data of a selected parent (e.g. counties of a state) */}
                   {valueParent === item && (
