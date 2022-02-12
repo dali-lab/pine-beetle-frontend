@@ -329,10 +329,10 @@ export const setRangerDistrict = (rangerDistrict) => {
     // TODO: generate new array for multi-rangerdistricts (when support multi-select) and pass to below function calls
 
     // fetch new data
-    dispatch(getAggregateYearData({ rangerDistrict: [rangerDistrict] }));
-    dispatch(getAggregateStateData({ rangerDistrict: [rangerDistrict] }));
-    dispatch(getAggregateLocationData({ rangerDistrict: [rangerDistrict] }));
-    dispatch(getPredictions(getState().selections.predictionYear), { rangerDistrict: [rangerDistrict] });
+    dispatch(getAggregateYearData({ rangerDistrict }));
+    dispatch(getAggregateStateData({ rangerDistrict }));
+    dispatch(getAggregateLocationData({ rangerDistrict }));
+    dispatch(getPredictions(getState().selections.predictionYear), { rangerDistrict });
 
     // fetch new drop down values
     dispatch(getAvailableYears({ rangerDistrict }));
