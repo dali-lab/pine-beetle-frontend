@@ -5,7 +5,6 @@ import SelectionBar from './component';
 import {
   clearSelections,
   setCounty,
-  setDataMode,
   setPredictionYear,
   setRangerDistrict,
   setState,
@@ -47,9 +46,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     setCounty: (county) => {
       dispatch(setCounty(county));
-    },
-    setDataMode: (dataMode) => {
-      dispatch(setDataMode(dataMode));
     },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { ChoiceInput, MultiSelectInput } from '../../../../components/input-components';
 
-import { DATA_MODES, allStates } from '../../../../constants';
+import { DATA_MODES } from '../../../../constants';
 
 import {
   getStateNameFromAbbreviation,
@@ -14,6 +14,7 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
+    availableStates,
     availableSublocations,
     availableYears,
     clearAllSelections,
@@ -22,13 +23,13 @@ const SelectionBar = (props) => {
     rangerDistrict,
     selectedState,
     setCounty,
-    // setDataMode,
     setPredictionYear,
     setRangerDistrict,
     setState,
     year,
   } = props;
 
+  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
   const revYears = [...availableYears].reverse();
@@ -48,7 +49,7 @@ const SelectionBar = (props) => {
           valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
           setValueParent={setStateAbbrev}
           setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
-          optionsParent={allStates}
+          optionsParent={statesMappedToNames}
           optionsChildren={availableSublocations}
         />
       </div>
