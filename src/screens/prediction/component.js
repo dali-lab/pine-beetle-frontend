@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-modal';
 import { Link } from 'react-scroll';
 
 import {
@@ -16,6 +17,7 @@ import {
 
 import './style.scss';
 
+const closeIcon = require('../../assets/icons/close.png');
 const histogrambin1 = require('../../assets/images/spb-histogram-bin1.png');
 const histogrambin2 = require('../../assets/images/spb-histogram-bin2.png');
 const histogrambin3 = require('../../assets/images/spb-histogram-bin3.png');
@@ -32,6 +34,11 @@ const Prediction = (props) => {
 
   const [showAnimation, setShowAnimation] = useState(true);
 
+  // functions for showing modal
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   useEffect(() => {
     const listener = () => {
       if (window.scrollY > 1100 || (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
@@ -44,6 +51,13 @@ const Prediction = (props) => {
     window.addEventListener('scroll', listener);
     return () => window.removeEventListener('scroll', listener);
   }, []);
+
+  useEffect(() => {
+    if (data.length === 1) {
+      console.log('SHOW');
+      handleShow();
+    }
+  }, [data]);
 
   const getHistogram = (probSpotsGT50) => {
     if (probSpotsGT50 < 0.025) {
@@ -96,6 +110,44 @@ const Prediction = (props) => {
     );
   };
 
+  const predModal = () => {
+    if (data.length !== 1) return null;
+    // const { probSpotsGT50 } = data[0];
+    // const histogram = getHistogram(probSpotsGT50);
+    return (
+      <Modal
+        isOpen={show}
+        onAfterOpen={handleShow}
+        onRequestClose={handleClose}
+        contentLabel="Show Prediction Data"
+        className="modal"
+        ariaHideApp={false}
+        closeTimeoutMS={150}
+      >
+        <div id="close-icon">
+          <img src={closeIcon} alt="close icon" onClick={handleClose} />
+        </div>
+        <div className="container" id="scroll-to">
+          <PredictionDetails data={data} />
+          {/* <div className="prediction-bottom">
+            <div className="histogram">
+              <div id="histogram-title">
+                <span>
+                  Predicted vs. Observed Outcomes for All Data, 1987-2019 (n=2,978)
+                </span>
+              </div>
+              <img
+                src={histogram}
+                alt="Histogram for Predicted % Chance of >50 Spots"
+              />
+            </div>
+            <AboutPredictions />
+          </div> */}
+        </div>
+      </Modal>
+    );
+  };
+
   return (
     <div>
       <Loading visible={isLoading} />
@@ -103,6 +155,7 @@ const Prediction = (props) => {
       <OverviewText />
       <SelectionBar />
       <PredictionMap />
+      {predModal()}
       { predDetails(data.length === 1) }
     </div>
   );
