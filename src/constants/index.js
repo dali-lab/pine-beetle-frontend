@@ -20,9 +20,6 @@ const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
-const allStates = ['Alabama', 'Arkansas', 'Delaware', 'Florida', 'Georgia', 'Kentucky', 'Louisiana', 'Maryland', 'Mississippi',
-  'North Carolina', 'New Jersey', 'Oklahoma', 'South Carolina', 'Tennessee', 'Texas', 'Virginia'];
-
 const getServerUrl = () => {
   switch (process.env.MAIN_BACKEND_ENV) {
     case 'LOCAL':
@@ -101,7 +98,6 @@ const getYearRange = (start, end) => {
 
 export {
   AUTOMATION_SERVER_ENDPOINTS,
-  allStates,
   CHART_MODES,
   DATA_MODES,
   DATA_TYPE_EXTENSIONS,

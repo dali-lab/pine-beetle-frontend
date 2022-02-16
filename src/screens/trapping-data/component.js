@@ -42,7 +42,7 @@ const TrappingData = (props) => {
         <div className="selection">
           <div
             className={dataMode === DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
-            onClick={() => { setDataMode(DATA_MODES.COUNTY); }}
+            onClick={() => setDataMode(DATA_MODES.COUNTY)}
           >
             <p className={dataMode === DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
               Counties
@@ -50,7 +50,7 @@ const TrappingData = (props) => {
           </div>
           <div
             className={dataMode !== DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
-            onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
+            onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
           >
             <p className={dataMode !== DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
               Federal Land

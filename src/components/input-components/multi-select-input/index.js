@@ -24,7 +24,7 @@ const MultiSelectInput = (props) => {
   const [isListOpen, setIsListOpen] = useState(false);
 
   useEffect(() => {
-    setStatusText(valueParent ? 'Some locations selected' : CLEAR_TEXT);
+    setStatusText(valueParent ? `${valueChildren.length} locations selected` : CLEAR_TEXT);
   }, [valueChildren]);
 
   useEffect(() => {
@@ -32,11 +32,8 @@ const MultiSelectInput = (props) => {
   }, [valueParent]);
 
   const handleRemove = (element) => {
-    const newValueList = valueChildren.filter(e => e !== element);
-    setValueChildren(newValueList);
+    setValueChildren(valueChildren.filter(e => e !== element));
   };
-
-  console.log('Value children: ', valueChildren);
 
   return (
     <div className="multi-select-container"> {/* Clean CSS */}
@@ -61,9 +58,7 @@ const MultiSelectInput = (props) => {
                 >
                   <div
                     className="location-list-item-select"
-                    onClick={() => {
-                      setValueParent(valueParent === item ? '' : item); // redux
-                    }}
+                    onClick={() => setValueParent(valueParent === item ? '' : item)}
                   >
                     <img
                       src={valueParent === item ? dashCheckbox : emptyCheckbox}

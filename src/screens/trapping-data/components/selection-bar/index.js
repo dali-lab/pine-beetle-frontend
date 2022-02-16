@@ -5,7 +5,6 @@ import SelectionBar from './component';
 import {
   clearSelections,
   setCounty,
-  // setDataMode,
   setEndYear,
   setRangerDistrict,
   setStartYear,
