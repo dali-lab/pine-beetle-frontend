@@ -4,6 +4,7 @@ import { Link } from 'react-scroll';
 import {
   AboutPredictions,
   OverviewText,
+  PredictionChart,
   PredictionDetails,
   PredictionMap,
   SelectionBar,
@@ -15,8 +16,6 @@ import {
 } from '../../components';
 
 import { CHART_MODES } from '../../constants';
-
-import PredictionChart from './components/prediction-outcome-graph/component';
 
 import './style.scss';
 
