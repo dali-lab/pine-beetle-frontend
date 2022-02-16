@@ -7,7 +7,6 @@ import {
 } from './data';
 
 import {
-  setChartModeInStorage,
   setDataModeInStorage,
 } from '../../utils';
 
@@ -393,7 +392,6 @@ export const setDataMode = (mode) => {
  */
 export const setChartMode = (mode) => {
   return (dispatch) => {
-    setChartModeInStorage(mode);
     dispatch({ type: ActionTypes.SET_CHART_MODE, payload: mode });
   };
 };
