@@ -8,22 +8,22 @@ import './style.scss';
 const PredictionChart = (props) => {
   const {
     yearData = [],
+    predictions,
     startYear,
     endYear,
   } = props;
 
-  // eslint-disable-next-line no-unused-vars
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
       {
         data: [],
-        label: 'Predictions',
+        label: 'Outcomes',
         fill: false,
       },
       {
         data: [],
-        label: 'Outcomes',
+        label: 'Predictions',
         fill: false,
       },
     ],
@@ -51,7 +51,7 @@ const PredictionChart = (props) => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Count',
+          labelString: 'Number of Spots',
           fontColor: '#7c7c96',
           fontFamily: 'Inter',
           fontSize: '22',
@@ -130,22 +130,25 @@ const PredictionChart = (props) => {
 
     updatedChartData.labels = getYearRange(startYear, endYear);
 
-    // get sum of spots by year
+    // get sum of spots by year - outcomes
     const spotMap = yearData.reduce((acc, { year, sumSpotst0 }) => ({
       ...acc,
       [year]: sumSpotst0,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    // get sum of spb by year
-    const spbMap = yearData.reduce((acc, { year, sumSpbPer2Weeks }) => ({
+    console.log(predictions); // sometimes null, sometimes not?
+    // get predictions to compare
+    const predictionData = predictions.reduce((acc, { year, expSpotsIfOutbreak }) => ({
       ...acc,
-      [year]: sumSpbPer2Weeks,
+      [year]: expSpotsIfOutbreak,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
+
+    console.log('spbMap', predictionData); // results in this sometimes being null
 
 
     // update chartData
     updatedChartData.datasets[0].data = Object.values(spotMap);
-    updatedChartData.datasets[1].data = Object.values(spbMap);
+    updatedChartData.datasets[1].data = Object.values(predictionData);
 
     // maximum value found in the array
     const max = Math.max(...[

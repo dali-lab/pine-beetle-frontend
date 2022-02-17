@@ -5,7 +5,9 @@ import PredictionChart from './component';
 const mapStateToProps = (state) => {
   const {
     data: {
+      predictions,
       yearData,
+
     },
     selections: {
       startYear,
@@ -15,6 +17,7 @@ const mapStateToProps = (state) => {
 
   return {
     yearData,
+    predictions,
     startYear,
     endYear,
   };

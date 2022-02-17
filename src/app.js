@@ -53,6 +53,7 @@ const App = (props) => {
   const {
     loginUserFromStorage,
     predictionYear,
+    startYear,
   } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
@@ -82,9 +83,9 @@ const App = (props) => {
   }, []);
 
   useEffect(() => {
-    props.getPredictions(predictionYear);
+    props.getPredictions(startYear, predictionYear);
     props.getAvailableStates({ predictionYear });
-  }, [predictionYear]);
+  }, [startYear, predictionYear]);
 
   if (isMobile) return <MobileOverlay />;
 
@@ -137,8 +138,8 @@ const mapDispatchToProps = (dispatch) => {
     getAvailableStates: (overrideFilter) => {
       dispatch(getAvailableStates(overrideFilter));
     },
-    getPredictions: (year) => {
-      dispatch(getPredictions(year));
+    getPredictions: (startYear, endYear) => {
+      dispatch(getPredictions(startYear, endYear));
     },
     loginUserFromStorage: () => {
       dispatch(getUserFromStorage());
