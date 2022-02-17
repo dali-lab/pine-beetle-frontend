@@ -16,6 +16,8 @@ const initialState = {
 
 const DataReducer = (state = initialState, action) => {
   switch (action.type) {
+    // case ActionTypes.SET_START_YEAR:
+    // break;
     case ActionTypes.SET_PREDICTIONS:
       return { ...state, predictions: action.payload };
 

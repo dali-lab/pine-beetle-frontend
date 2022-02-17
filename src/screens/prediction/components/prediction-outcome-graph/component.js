@@ -8,8 +8,8 @@ import './style.scss';
 const PredictionChart = (props) => {
   const {
     yearData = [],
-    startYear = 1999,
-    endYear = 2014,
+    startYear,
+    endYear,
   } = props;
 
   // eslint-disable-next-line no-unused-vars
@@ -157,9 +157,9 @@ const PredictionChart = (props) => {
     updatedChartOptions.scales.yAxes[0].ticks.max = max;
 
 
-    // setChartData(updatedChartData);
-    // setChartOptions(updatedChartOptions);
-  }, [yearData]);
+    setChartData(updatedChartData);
+    setChartOptions(updatedChartOptions);
+  }, [endYear, startYear]);
 
   return (
     <div id="chart">

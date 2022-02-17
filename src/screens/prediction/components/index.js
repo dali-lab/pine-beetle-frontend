@@ -3,7 +3,7 @@ import BarChart from './bar-chart';
 import OverviewText from './overview-text';
 import PredictionDetails from './prediction-details';
 import PredictionMap from './prediction-map';
-import PredictionChart from './prediction-outcome-graph/component';
+import PredictionChart from './prediction-outcome-graph';
 import SelectionBar from './selection-bar';
 
 export {
