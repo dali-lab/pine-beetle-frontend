@@ -10,7 +10,8 @@ const PredictionChart = (props) => {
     yearData = [],
     predictions,
     startYear,
-    endYear,
+    // endYear,
+    predictionYear,
   } = props;
 
   const [chartData, setChartData] = useState({
@@ -105,7 +106,7 @@ const PredictionChart = (props) => {
       datasets: [
         {
           data: [],
-          label: 'Predictions',
+          label: 'Outcomes',
           borderColor: '#5383ff',
           backgroundColor: '#5383ff',
           fill: false,
@@ -114,7 +115,7 @@ const PredictionChart = (props) => {
         },
         {
           data: [],
-          label: 'Outcomes',
+          label: 'Predictions',
           borderColor: '#ff525c',
           backgroundColor: '#ff525c',
           fill: false,
@@ -128,22 +129,23 @@ const PredictionChart = (props) => {
       ...chartOptions,
     };
 
-    updatedChartData.labels = getYearRange(startYear, endYear);
-
+    updatedChartData.labels = getYearRange(startYear, predictionYear);
+    console.log('getYearRange:', getYearRange(startYear, predictionYear));
+    console.log('yearData: ', yearData);
     // get sum of spots by year - outcomes
-    const spotMap = yearData.reduce((acc, { year, sumSpotst0 }) => ({
+    const spotMap = yearData.reduce((acc, { year, avgSpotst0 }) => ({
       ...acc,
-      [year]: sumSpotst0,
-    }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
+      [year]: avgSpotst0,
+    }), getYearRange(startYear, predictionYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    console.log(predictions); // sometimes null, sometimes not?
+    console.log('spotMap: ', spotMap); // sometimes null, sometimes not?
     // get predictions to compare
     const predictionData = predictions.reduce((acc, { year, expSpotsIfOutbreak }) => ({
       ...acc,
       [year]: expSpotsIfOutbreak,
-    }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
+    }), getYearRange(startYear, predictionYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    console.log('spbMap', predictionData); // results in this sometimes being null
+    console.log('predictionDataFiltered', predictionData); // results in this sometimes being null
 
 
     // update chartData
@@ -162,7 +164,7 @@ const PredictionChart = (props) => {
 
     setChartData(updatedChartData);
     setChartOptions(updatedChartOptions);
-  }, [endYear, startYear]);
+  }, [predictionYear, startYear]);
 
   return (
     <div id="chart">

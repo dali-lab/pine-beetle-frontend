@@ -37,6 +37,8 @@ const PredictionMap = (props) => {
     year,
   } = props;
 
+  console.log('mapdata', data);
+
   const [map, setMap] = useState();
   const [initialFill, setInitialFill] = useState(false);
   const [legendTags, setLegendTags] = useState([]);

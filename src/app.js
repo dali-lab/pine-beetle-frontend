@@ -115,11 +115,13 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   const {
     selections: {
+      startYear,
       predictionYear,
     },
   } = state;
 
   return {
+    startYear,
     predictionYear,
   };
 };

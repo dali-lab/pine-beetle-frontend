@@ -22,8 +22,8 @@ const SelectionBar = (props) => {
     setState,
     startYear,
     setStartYear,
-    setEndYear,
-    endYear,
+    // setEndYear,
+    // endYear,
     year,
     chartMode,
   } = props;
@@ -40,7 +40,7 @@ const SelectionBar = (props) => {
           <div id="year-selection">
             <div id="start-year-selection"><ChoiceInput instructions="Start Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
             <div id="vl3" />
-            <div id="end-year-selection"><ChoiceInput instructions="End Year" setValue={setEndYear} options={availableYears} value={endYear} /></div>
+            <div id="end-year-selection"><ChoiceInput instructions="End Year" setValue={setPredictionYear} options={availableYears} value={year} /></div>
           </div>
           <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
           <div id="vl1" />

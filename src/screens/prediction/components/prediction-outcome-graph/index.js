@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     selections: {
       startYear,
       endYear,
+      predictionYear,
     },
   } = state;
 
@@ -20,6 +21,7 @@ const mapStateToProps = (state) => {
     predictions,
     startYear,
     endYear,
+    predictionYear,
   };
 };
 
