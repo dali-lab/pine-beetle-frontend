@@ -47,7 +47,7 @@
     }
 }
 
-.modal {
+.download-modal {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -62,7 +62,7 @@
 }
 
 // remove unnecessary blue outline from modal (does not impact accessibility)
-.modal:focus {
+.download-modal:focus {
     outline:0;
 }
 

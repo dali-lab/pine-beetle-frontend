@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
-import { Link } from 'react-scroll';
 
 import {
   AboutPredictions,
@@ -12,7 +11,6 @@ import {
 
 import {
   Loading,
-  ScrollIcon,
 } from '../../components';
 
 import './style.scss';
@@ -32,25 +30,10 @@ const Prediction = (props) => {
     isLoading,
   } = props;
 
-  const [showAnimation, setShowAnimation] = useState(true);
-
   // functions for showing modal
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  useEffect(() => {
-    const listener = () => {
-      if (window.scrollY > 1100 || (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        setShowAnimation(false);
-      } else {
-        setShowAnimation(true);
-      }
-    };
-
-    window.addEventListener('scroll', listener);
-    return () => window.removeEventListener('scroll', listener);
-  }, []);
 
   useEffect(() => {
     if (data.length === 1) {
@@ -75,12 +58,23 @@ const Prediction = (props) => {
     }
   };
 
-  const predDetails = (hasPredData) => {
-    if (!hasPredData) return null;
+  const predModal = () => {
+    if (data.length !== 1) return null;
     const { probSpotsGT50 } = data[0];
     const histogram = getHistogram(probSpotsGT50);
     return (
-      <>
+      <Modal
+        isOpen={show}
+        onAfterOpen={handleShow}
+        onRequestClose={handleClose}
+        contentLabel="Show Prediction Data"
+        className="modal"
+        ariaHideApp={false}
+        closeTimeoutMS={150}
+      >
+        <div id="close-icon">
+          <img src={closeIcon} alt="close icon" onClick={handleClose} />
+        </div>
         <div className="container" id="scroll-to">
           <PredictionDetails data={data} />
           <div className="prediction-bottom">
@@ -98,52 +92,6 @@ const Prediction = (props) => {
             <AboutPredictions />
           </div>
         </div>
-        <Link
-          to="scroll-to"
-          smooth
-        >
-          <div id={showAnimation ? 'scroll-animation' : 'hidden-animation'}>
-            { ScrollIcon() }
-          </div>
-        </Link>
-      </>
-    );
-  };
-
-  const predModal = () => {
-    if (data.length !== 1) return null;
-    // const { probSpotsGT50 } = data[0];
-    // const histogram = getHistogram(probSpotsGT50);
-    return (
-      <Modal
-        isOpen={show}
-        onAfterOpen={handleShow}
-        onRequestClose={handleClose}
-        contentLabel="Show Prediction Data"
-        className="modal"
-        ariaHideApp={false}
-        closeTimeoutMS={150}
-      >
-        <div id="close-icon">
-          <img src={closeIcon} alt="close icon" onClick={handleClose} />
-        </div>
-        <div className="container" id="scroll-to">
-          <PredictionDetails data={data} />
-          {/* <div className="prediction-bottom">
-            <div className="histogram">
-              <div id="histogram-title">
-                <span>
-                  Predicted vs. Observed Outcomes for All Data, 1987-2019 (n=2,978)
-                </span>
-              </div>
-              <img
-                src={histogram}
-                alt="Histogram for Predicted % Chance of >50 Spots"
-              />
-            </div>
-            <AboutPredictions />
-          </div> */}
-        </div>
       </Modal>
     );
   };
@@ -156,7 +104,6 @@ const Prediction = (props) => {
       <SelectionBar />
       <PredictionMap />
       {predModal()}
-      { predDetails(data.length === 1) }
     </div>
   );
 };

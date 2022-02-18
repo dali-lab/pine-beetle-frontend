@@ -116,7 +116,7 @@ const DownloadData = (props) => {
         onAfterOpen={handleShow}
         onRequestClose={handleClose}
         contentLabel="Download Data Modal"
-        className="modal"
+        className="download-modal"
         ariaHideApp={false}
         closeTimeoutMS={150}
       >
