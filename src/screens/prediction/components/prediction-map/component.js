@@ -480,6 +480,23 @@ const PredictionMap = (props) => {
   return (
     <div className="container flex-item-left" id="map-container">
       <div id="map" />
+      <div className="map-overlay-data" id="data">
+        <h3 className="data-title">Select county or federal land on the map to view prediction data</h3>
+        <div className="data-info">
+          <div className="data-info-section">
+            <div className="circle" id="any-spots">
+              {data[0] ? <div id="percent">{((data[0].probSpotsGT0) * 100).toFixed(1)}%</div> : <div id="percent" />}
+            </div>
+            <p>Predicted % Chance of Any Spots ({'>'}0 spots)</p>
+          </div>
+          <div className="data-info-section">
+            <div className="circle" id="outbreak">
+              {data[0] ? <div id="percent">{((data[0].probSpotsGT50) * 100).toFixed(1)}%</div> : <div id="percent" />}
+            </div>
+            <p>Predicted % Chance of Outbreak ({'>'}50 spots)</p>
+          </div>
+        </div>
+      </div>
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
         <div>
