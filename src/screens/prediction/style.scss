@@ -1,6 +1,7 @@
 .about-predictions {
     margin-top: 20px;
-    margin-left: 85px;
+    margin-left: 20px;
+    margin-right: 20px;
 
     ul {
         margin-left: 20px;
@@ -9,9 +10,8 @@
 
 .prediction-bottom {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 75px;
+    flex-direction: row;
+    margin-top: 25px;
 }
 
 .histogram {
@@ -32,29 +32,7 @@
 }
 
 .histogram img {
-    width: 50vw;
-}
-
-#scroll-animation {
-    height: 125px;
-    width: 125px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    position: fixed;
-    cursor: pointer;
-}
-
-#hidden-animation {
-    height: 0;
-    width: 0;
-    visibility: hidden;
-}
-
-#download-pred-data {
-    margin-top: 70px;
+    width: 45vw;
 }
 
 .modal {
@@ -63,7 +41,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 1200px;
-    max-height: 60vh;
+    max-height: 65vh;
     width: 70vw;
     padding: 50px;
     border-radius: 20px;
