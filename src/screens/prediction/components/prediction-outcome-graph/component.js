@@ -130,22 +130,17 @@ const PredictionChart = (props) => {
     };
 
     updatedChartData.labels = getYearRange(startYear, predictionYear);
-    console.log('getYearRange:', getYearRange(startYear, predictionYear));
-    console.log('yearData: ', yearData);
     // get sum of spots by year - outcomes
     const spotMap = yearData.reduce((acc, { year, avgSpotst0 }) => ({
       ...acc,
       [year]: avgSpotst0,
     }), getYearRange(startYear, predictionYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    console.log('spotMap: ', spotMap); // sometimes null, sometimes not?
     // get predictions to compare
     const predictionData = predictions.reduce((acc, { year, expSpotsIfOutbreak }) => ({
       ...acc,
       [year]: expSpotsIfOutbreak,
     }), getYearRange(startYear, predictionYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
-
-    console.log('predictionDataFiltered', predictionData); // results in this sometimes being null
 
 
     // update chartData
