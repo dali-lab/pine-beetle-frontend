@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Modal from 'react-modal';
 
 import {
@@ -28,19 +28,13 @@ const Prediction = (props) => {
     data,
     fetchErrorText,
     isLoading,
+    predictionModal,
+    setPredictionModal,
   } = props;
 
   // functions for showing modal
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  useEffect(() => {
-    if (data.length === 1) {
-      console.log('SHOW');
-      handleShow();
-    }
-  }, [data]);
+  const handleClose = () => setPredictionModal(false);
+  const handleShow = () => setPredictionModal(true);
 
   const getHistogram = (probSpotsGT50) => {
     if (probSpotsGT50 < 0.025) {
@@ -59,12 +53,12 @@ const Prediction = (props) => {
   };
 
   const predModal = () => {
-    if (data.length !== 1) return null;
+    if (!predictionModal) return null;
     const { probSpotsGT50 } = data[0];
     const histogram = getHistogram(probSpotsGT50);
     return (
       <Modal
-        isOpen={show}
+        isOpen={predictionModal}
         onAfterOpen={handleShow}
         onRequestClose={handleClose}
         contentLabel="Show Prediction Data"

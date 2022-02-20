@@ -33,6 +33,8 @@ export const ActionTypes = {
   SET_AVAILABLE_YEARS_PREDICTION: 'SET_AVAILABLE_YEARS_PREDICTION',
   SET_AVAILABLE_STATES_PREDICTION: 'SET_AVAILABLE_STATES_PREDICTION',
   SET_AVAILABLE_SUBLOCATIONS_PREDICTION: 'SET_AVAILABLE_SUBLOCATIONS_PREDICTION',
+
+  SET_PREDICTION_MODAL: 'SET_PREDICTION_MODAL',
 };
 
 /**
@@ -395,5 +397,11 @@ export const setChartMode = (mode) => {
   return (dispatch) => {
     setChartModeInStorage(mode);
     dispatch({ type: ActionTypes.SET_CHART_MODE, payload: mode });
+  };
+};
+
+export const setPredictionModal = (show) => {
+  return (dispatch) => {
+    dispatch({ type: ActionTypes.SET_PREDICTION_MODAL, payload: show });
   };
 };

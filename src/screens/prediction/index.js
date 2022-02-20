@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { setPredictionModal } from '../../state/actions';
 
 import Prediction from './component';
 
@@ -13,6 +14,9 @@ const mapStateToProps = (state) => {
       predictions,
       fetchingPredictions,
     },
+    selections: {
+      predictionModal,
+    },
   } = state;
 
   const isLoading = fetchingPredictions;
@@ -21,11 +25,16 @@ const mapStateToProps = (state) => {
     data: predictions,
     fetchErrorText,
     isLoading,
+    predictionModal,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setPredictionModal: (show) => {
+      dispatch(setPredictionModal(show));
+    },
+  };
 };
 
 export default connect(

@@ -10,6 +10,7 @@ const initialState = {
   rangerDistrict: [],
   dataMode: DATA_MODES.COUNTY,
   chartMode: CHART_MODES.MAP,
+  predictionModal: false,
 
   availableHistoricalYears: [],
   availableHistoricalStates: [],
@@ -99,6 +100,9 @@ const SelectionsReducer = (state = initialState, action) => {
 
     case ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION:
       return { ...state, availablePredictionSublocations: action.payload };
+
+    case ActionTypes.SET_PREDICTION_MODAL:
+      return { ...state, predictionModal: action.payload };
 
     default:
       return state;

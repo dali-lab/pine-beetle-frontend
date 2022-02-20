@@ -6,6 +6,7 @@ import {
   setCounty,
   setRangerDistrict,
   setState,
+  setPredictionModal,
 } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
@@ -46,6 +47,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setState: (state) => {
       dispatch(setState(state));
+    },
+    setPredictionModal: (show) => {
+      dispatch(setPredictionModal(show));
     },
   };
 };
