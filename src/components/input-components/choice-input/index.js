@@ -8,7 +8,6 @@ const CLEAR_TEXT = 'Clear Selection';
 const ChoiceInput = (props) => {
   const {
     options,
-    instructions,
     setValue,
     value,
     firstOptionText: initialFirstOptionText,
@@ -38,10 +37,8 @@ const ChoiceInput = (props) => {
   }, [value, initialFirstOptionText]);
 
   return (
-    <div className="selection">
-      <label>{instructions}</label>
-      <br />
-      <select className="selection-no-button" onChange={submit} value={value}>
+    <div className="selection-container">
+      <select className="selection-button" onChange={submit} value={value}>
         {opts}
       </select>
     </div>

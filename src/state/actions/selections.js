@@ -7,7 +7,6 @@ import {
 } from './data';
 
 import {
-  setChartModeInStorage,
   setDataModeInStorage,
 } from '../../utils';
 
@@ -26,6 +25,7 @@ export const ActionTypes = {
   SET_ALL_RANGER_DISTRICTS: 'SET_ALL_RANGER_DISTRICTS',
   SET_DATA_MODE: 'SET_DATA_MODE',
   SET_CHART_MODE: 'SET_CHART_MODE',
+  SET_DATA_FETCH_ERROR: 'SET_DATA_FETCH_ERROR',
 
   SET_AVAILABLE_YEARS_HISTORICAL: 'SET_AVAILABLE_YEARS_HISTORICAL',
   SET_AVAILABLE_STATES_HISTORICAL: 'SET_AVAILABLE_STATES_HISTORICAL',
@@ -393,7 +393,6 @@ export const setDataMode = (mode) => {
  */
 export const setChartMode = (mode) => {
   return (dispatch) => {
-    setChartModeInStorage(mode);
     dispatch({ type: ActionTypes.SET_CHART_MODE, payload: mode });
   };
 };

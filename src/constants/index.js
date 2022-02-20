@@ -82,6 +82,8 @@ const DOWNLOAD_DATA_ROUTES = {
   SUMMARIZED_COUNTY: '/summarized-county/download',
   SUMMARIZED_RD: '/summarized-rangerdistrict/download',
   UNSUMMARIZED: '/unsummarized-trapping/download',
+  PREDICTED_COUNTY: '/summarized-county/download-predict',
+  PREDICTED_RD: '/summarized-rangerdistrict/download-predict',
 };
 
 const DATA_TYPE_EXTENSIONS = {

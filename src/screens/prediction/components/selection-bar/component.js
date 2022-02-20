@@ -1,9 +1,9 @@
 /* eslint-disable react/button-has-type */
 import React from 'react';
 
-import { ChoiceInput } from '../../../../components/input-components';
+import { ChoiceInput, MultiSelectInput } from '../../../../components/input-components';
 
-import { CHART_MODES } from '../../../../constants';
+import { CHART_MODES, DATA_MODES } from '../../../../constants';
 
 import {
   getStateNameFromAbbreviation,
@@ -16,8 +16,14 @@ const SelectionBar = (props) => {
   const {
     availableStates,
     availableYears,
+    availableSublocations,
     clearAllSelections,
     selectedState,
+    dataMode,
+    county,
+    rangerDistrict,
+    setRangerDistrict,
+    setCounty,
     setPredictionYear,
     setState,
     startYear,
@@ -32,19 +38,28 @@ const SelectionBar = (props) => {
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
   const isGraphView = chartMode === CHART_MODES.GRAPH;
+  const revYears = [...availableYears].reverse();
 
   if (isGraphView) {
     return (
       <div>
         <div id="predictionbar" className="container">
-          <div id="year-selection">
-            <div id="start-year-selection"><ChoiceInput instructions="Start Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
-            <div id="vl3" />
-            <div id="end-year-selection"><ChoiceInput instructions="End Year" setValue={setPredictionYear} options={availableYears} value={year} /></div>
+          <div id="predictionbar-year-selection-options">
+            <div><ChoiceInput instructions="Start Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
+            <div><ChoiceInput instructions="End Year" setValue={setPredictionYear} options={availableYears} value={year} /></div>
           </div>
-          <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
-          <div id="vl1" />
-          <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections}>Clear</button>
+          <div className="predictionbar-location-selection">
+            <p className="predictionbar-location-selection-title">Locations</p>
+            <MultiSelectInput
+              valueParent={selectedStateName}
+              valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
+              setValueParent={setStateAbbrev}
+              setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
+              optionsParent={statesMappedToNames}
+              optionsChildren={availableSublocations}
+            />
+          </div>
+          <button className="predictionbar-clear-button" onClick={clearAllSelections}>Clear</button>
         </div>
       </div>
     );
@@ -52,11 +67,24 @@ const SelectionBar = (props) => {
     return (
       <div>
         <div id="predictionbar" className="container">
-          <ChoiceInput instructions="Year" setValue={setPredictionYear} options={availableYears} value={year} />
-          <div id="vl1" />
-          <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
-          <div id="vl1" />
-          <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections}>Clear</button>
+          <div className="predictionbar-year-selection">
+            <p className="predictionbar-year-selection-title">Year</p>
+            <div className="predictionbar-year-selection-options">
+              <ChoiceInput setValue={setPredictionYear} options={revYears} value={year} />
+            </div>
+          </div>
+          <div className="predictionbar-location-selection">
+            <p className="predictionbar-location-selection-title">Locations</p>
+            <MultiSelectInput
+              valueParent={selectedStateName}
+              valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
+              setValueParent={setStateAbbrev}
+              setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
+              optionsParent={statesMappedToNames}
+              optionsChildren={availableSublocations}
+            />
+          </div>
+          <button className="predictionbar-clear-button" onClick={clearAllSelections} type="button">Clear</button>
         </div>
       </div>
     );
