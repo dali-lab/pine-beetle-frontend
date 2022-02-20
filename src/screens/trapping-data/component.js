@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CHART_MODES } from '../../constants';
+import { CHART_MODES, DATA_MODES } from '../../constants';
 
 import './style.scss';
 
@@ -21,9 +21,11 @@ const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
 const TrappingData = (props) => {
   const {
     chartMode,
+    dataMode,
     errorText,
     isLoading,
     setChartMode,
+    setDataMode,
   } = props;
 
   const isGraphView = chartMode === CHART_MODES.GRAPH;
@@ -37,25 +39,51 @@ const TrappingData = (props) => {
       <OverviewText />
       <SelectionBar />
       <div id="view-selections" className="container">
-        <div id="selection" onClick={setGraphView}>
-          <img
-            src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
-            alt="Chart View"
-            id={isGraphView ? 'selected-view' : null}
-          />
-          <p id={isGraphView ? 'selected-view' : null} className="view-selection-btn">
-            Graph View
-          </p>
+        <div className="selection">
+          <div
+            className={dataMode === DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
+            onClick={() => setDataMode(DATA_MODES.COUNTY)}
+          >
+            <p className={dataMode === DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
+              Counties
+            </p>
+          </div>
+          <div
+            className={dataMode !== DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
+            onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
+          >
+            <p className={dataMode !== DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
+              Federal Land
+            </p>
+          </div>
         </div>
-        <div id="selection" onClick={setMapView}>
-          <img
-            src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
-            alt="Map View"
-            id={isGraphView ? null : 'selected-view'}
-          />
-          <p id={isGraphView ? null : 'selected-view'} className="view-selection-btn">
-            Map View
-          </p>
+        <div className="selection">
+          <div
+            className={isGraphView ? 'selected-option-2' : 'unselected-option'}
+            onClick={setGraphView}
+          >
+            <img
+              src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
+              alt="Chart View"
+              className={isGraphView ? 'selected-view' : 'unselected-view'}
+            />
+            <p className={isGraphView ? 'selected-option-text' : 'unselected-option-text'}>
+              Graph View
+            </p>
+          </div>
+          <div
+            className={isGraphView ? 'unselected-option' : 'selected-option-2'}
+            onClick={setMapView}
+          >
+            <img
+              src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
+              alt="Map View"
+              className={isGraphView ? 'unselected-view' : 'selected-view'}
+            />
+            <p className={isGraphView ? 'unselected-option-text' : 'selected-option-text'}>
+              Map View
+            </p>
+          </div>
         </div>
       </div>
       <div className="container">

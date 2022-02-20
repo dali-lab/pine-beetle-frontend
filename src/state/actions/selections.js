@@ -25,6 +25,7 @@ export const ActionTypes = {
   SET_ALL_RANGER_DISTRICTS: 'SET_ALL_RANGER_DISTRICTS',
   SET_DATA_MODE: 'SET_DATA_MODE',
   SET_CHART_MODE: 'SET_CHART_MODE',
+  SET_DATA_FETCH_ERROR: 'SET_DATA_FETCH_ERROR',
 
   SET_AVAILABLE_YEARS_HISTORICAL: 'SET_AVAILABLE_YEARS_HISTORICAL',
   SET_AVAILABLE_STATES_HISTORICAL: 'SET_AVAILABLE_STATES_HISTORICAL',
@@ -303,10 +304,10 @@ export const setCounty = (county) => {
     // TODO: generate new array for multi-counties (when support multi-select) and pass to below function calls
 
     // fetch new data
-    dispatch(getAggregateYearData({ county: [county] }));
-    dispatch(getAggregateStateData({ county: [county] }));
-    dispatch(getAggregateLocationData({ county: [county] }));
-    dispatch(getPredictions(getState().selections.predictionYear), { county: [county] });
+    dispatch(getAggregateYearData({ county }));
+    dispatch(getAggregateStateData({ county }));
+    dispatch(getAggregateLocationData({ county }));
+    dispatch(getPredictions(getState().selections.predictionYear), { county });
 
     // fetch new drop down values
     dispatch(getAvailableYears({ county }));
@@ -327,10 +328,10 @@ export const setRangerDistrict = (rangerDistrict) => {
     // TODO: generate new array for multi-rangerdistricts (when support multi-select) and pass to below function calls
 
     // fetch new data
-    dispatch(getAggregateYearData({ rangerDistrict: [rangerDistrict] }));
-    dispatch(getAggregateStateData({ rangerDistrict: [rangerDistrict] }));
-    dispatch(getAggregateLocationData({ rangerDistrict: [rangerDistrict] }));
-    dispatch(getPredictions(getState().selections.predictionYear), { rangerDistrict: [rangerDistrict] });
+    dispatch(getAggregateYearData({ rangerDistrict }));
+    dispatch(getAggregateStateData({ rangerDistrict }));
+    dispatch(getAggregateLocationData({ rangerDistrict }));
+    dispatch(getPredictions(getState().selections.predictionYear), { rangerDistrict });
 
     // fetch new drop down values
     dispatch(getAvailableYears({ rangerDistrict }));

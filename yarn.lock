@@ -6448,11 +6448,6 @@ react-modal@^3.11.2:
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
 
-react-multi-select-component@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.npmjs.org/react-multi-select-component/-/react-multi-select-component-4.2.1.tgz"
-  integrity sha512-wRteBq1pqKLlYX/ob8I1aBapPokQiRzOJzVqJDVVTHb0Ap/QWXVE4OXE2xwhVf3qmmYvOguvOKQQbQiEYxhONA==
-
 react-read-more-read-less@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/react-read-more-read-less/-/react-read-more-read-less-1.0.7.tgz#85d9964eea7ee4e4af781ec77d97eee64227dd3e"

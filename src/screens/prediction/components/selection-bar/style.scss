@@ -1,5 +1,5 @@
 #predictionbar {
-    background: #FFFFFF;
+    background: #F5F5F5;
     box-shadow: 0px 12px 30px -5px rgba(77, 81, 94, 0.04);
     border-radius: 18px;
     font-family: 'Inter';
@@ -9,110 +9,50 @@
     letter-spacing: 0em;
     text-align: left;
     display: flex;
-    justify-content: space-between;
-    padding: 20px 40px;
-}
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px;
 
-.menuInstruction {
-    background: #FFFFFF;
-}
+    .predictionbar-year-selection {
+        display: flex;
+        flex-direction: column;
 
-.menuInstruction label {
-    background: #FFFFFF;
-    color: #7c7c96;
-}
+        .predictionbar-year-selection-title {
+            margin-top: 0.5vh;
+            font-weight: bold;
 
-.menuInstruction .input {
-    padding-left: 20px;
-    background: #EDEDEE;
-    height: 43px;
-    font-family: 'Inter';
-    font-size: 18px; 
-    width: 10vw !important;
-    max-width: 200px;
-    border-radius: 6px;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    letter-spacing: 1.5px;
-}
+        }
 
-.selection {
-    background: #FFFFFF;
-}
+        .predictionbar-year-selection-options {
+            display: flex;
+            flex-direction: row;
 
-.selection label {
-    color: #7c7c96;
-    background: #FFFFFF;
-}
+            .predictionbar-year-selection-option {
+                font-size: 16px;
+            }
+        }
+    }
 
-.selection-no-button {
-    padding-left: 20px;
-    background: #EDEDEE;
-    height: 43px;
-    font-family: 'Inter';
-    font-size: 18px; 
-    width: 15vw;
-    max-width: 220px;
-    border-radius: 6px;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    letter-spacing: 1.5px;
-}
+    .predictionbar-location-selection {
+        display: flex;
+        flex-direction: column;
 
-#vl1 {
-    border-left: 2px solid #f9f9f9;
-    height: 72px;
-    margin-left: 2vw;
-    margin-right: 2vw;
-}
+        .predictionbar-location-selection-title {
+            font-weight: bold;
 
-#vl2 {
-    border-left: 2px solid #f9f9f9;
-    height: 24px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
+        }
+    }
 
-.county-rd-selection {
-    color: #2d2d2d;
-}
-
-#mode-selection {
-    display: flex;
-    height: 0px;
-}
-
-#mode-selection button {
-    background-color: transparent;
-    background-repeat: no-repeat;
-    border: none;
-    cursor:pointer;
-    outline: none; 
-    color: #84848a;
-    font-size: 18px;
-}
-
-#reset-current-data-button {
-    background: #C9CDD9;
-    font-size: 18px; 
-    border-radius: 10px;
-    letter-spacing: 1.5px;
-    color: #2F303A;
-    margin-left: 4vw;
-    padding: 10px 30px;
-}
-
-// Hide short text by default (resolution > 1200px)
-.short-text { display: none; }
-
-// When resolution <= 1200px, hide full text and show short text
-@media (max-width: 1200px) {
-    .short-text { display: inline-block; }
-    .full-text { display: none; }
+    .predictionbar-clear-button {
+        background: #505050;
+        font-size: 18px; 
+        border-radius: 10px;
+        letter-spacing: 1.5px;
+        color: #FFFFFF;
+        border: 0;
+        margin-top: 4vh;
+        height: 45px;
+        padding: 0px 60px;
+    }
 }
