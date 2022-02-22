@@ -10,7 +10,6 @@ const PredictionChart = (props) => {
     yearData = [],
     predictions,
     startYear,
-    // endYear,
     predictionYear,
   } = props;
 
@@ -163,7 +162,7 @@ const PredictionChart = (props) => {
 
   return (
     <div id="chart">
-      <Line data={chartData} height={400} options={chartOptions} />
+      <Line data={chartData} height={500} options={chartOptions} />
     </div>
   );
 };

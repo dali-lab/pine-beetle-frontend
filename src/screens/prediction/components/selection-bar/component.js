@@ -44,9 +44,12 @@ const SelectionBar = (props) => {
     return (
       <div>
         <div id="predictionbar" className="container">
-          <div id="predictionbar-year-selection-options">
-            <div><ChoiceInput instructions="Start Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
-            <div><ChoiceInput instructions="End Year" setValue={setPredictionYear} options={availableYears} value={year} /></div>
+          <div className="predictionbar-year-selection">
+            <p className="predictionbar-year-selection-title">Years</p>
+            <div className="predictionbar-year-selection-options">
+              <div><ChoiceInput instructions="Start Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
+              <div><ChoiceInput instructions="End Year" setValue={setPredictionYear} options={availableYears} value={year} /></div>
+            </div>
           </div>
           <div className="predictionbar-location-selection">
             <p className="predictionbar-location-selection-title">Locations</p>
