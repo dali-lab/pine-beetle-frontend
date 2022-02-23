@@ -57,6 +57,11 @@ const HistoricalMap = (props) => {
     }
   }, [dataMode]);
 
+  // for the data window once we select a county/RD
+  const windowTitle = () => {
+    return dataMode === DATA_MODES.COUNTY ? `${rawData[0].county} County` : rawData[0].rangerDistrict;
+  };
+
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => (e) => {
     if (!map || !e || !map.isStyleLoaded()) return;
@@ -486,6 +491,55 @@ const HistoricalMap = (props) => {
   return (
     <div id="trapping-map-container">
       <div id="map" />
+      <div className="map-overlay-data" id="data">
+        <h3 className="data-title">{rawData.length === 1
+          ? windowTitle()
+          : 'Select county or federal land on the map to view historical data'
+        }
+        </h3>
+        {rawData.length === 1
+          && <p>{startYear}-{endYear}</p>
+        }
+        <div className="data-info-historical ">
+          <div className="data-info-section">
+            {rawData.length === 1
+              ? (
+                <div className="circle" id="spbs">
+                  <div id="percent">{rawData[0].avgSpbPer2Weeks ? rawData[0].avgSpbPer2Weeks.toFixed(2) : 'n/a'}</div>
+                </div>
+              )
+              : <div className="circle" id="empty" />
+            }
+            <p>Average SPB per 2 weeks</p>
+          </div>
+          <div className="data-info-section">
+            {rawData.length === 1
+              ? (
+                <div className="circle" id="clerid">
+                  {rawData[0] ? (
+                    <div id="percent">{rawData[0].avgCleridsPer2Weeks ? rawData[0].avgCleridsPer2Weeks.toFixed(2) : 'n/a'
+                  }
+                    </div>
+                  ) : <div id="percent" />}
+                </div>
+              )
+              : <div className="circle" id="empty" />
+              }
+            <p>Average clerids per 2 weeks</p>
+          </div>
+          <div className="data-info-section">
+            {rawData.length === 1
+              ? (
+                <div className="circle" id="spots">
+                  {rawData[0] ? <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div> : <div id="percent" />}
+                </div>
+              )
+              : <div className="circle" id="empty" />
+              }
+            <p>Average number of spots</p>
+          </div>
+        </div>
+      </div>
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
         <div>
