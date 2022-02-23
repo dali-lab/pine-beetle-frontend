@@ -62,6 +62,25 @@ const HistoricalMap = (props) => {
     return dataMode === DATA_MODES.COUNTY ? `${rawData[0].county} County` : rawData[0].rangerDistrict;
   };
 
+  // determines style of the data overlay spots circle based on the number of spots
+  const overlaySpotsColor = (spots) => {
+    if (spots === null) {
+      return 'spots-null';
+    } else if (spots < 10) {
+      return 'spots-10';
+    } else if (spots < 20) {
+      return 'spots-20';
+    } else if (spots < 50) {
+      return 'spots-50';
+    } else if (spots < 100) {
+      return 'spots-100';
+    } else if (spots < 250) {
+      return 'spots-250';
+    } else {
+      return 'spots-more';
+    }
+  };
+
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => (e) => {
     if (!map || !e || !map.isStyleLoaded()) return;
@@ -516,11 +535,7 @@ const HistoricalMap = (props) => {
             {rawData.length === 1
               ? (
                 <div className="circle" id="clerid">
-                  {rawData[0] ? (
-                    <div id="percent">{rawData[0].avgCleridsPer2Weeks ? rawData[0].avgCleridsPer2Weeks.toFixed(2) : 'n/a'
-                  }
-                    </div>
-                  ) : <div id="percent" />}
+                  <div id="percent">{rawData[0].avgCleridsPer2Weeks ? rawData[0].avgCleridsPer2Weeks.toFixed(2) : 'n/a'}</div>
                 </div>
               )
               : <div className="circle" id="empty" />
@@ -530,8 +545,8 @@ const HistoricalMap = (props) => {
           <div className="data-info-section">
             {rawData.length === 1
               ? (
-                <div className="circle" id="spots">
-                  {rawData[0] ? <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div> : <div id="percent" />}
+                <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0)}>
+                  <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div>
                 </div>
               )
               : <div className="circle" id="empty" />
