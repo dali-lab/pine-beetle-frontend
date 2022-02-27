@@ -101,13 +101,24 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
         dispatch({ type: ActionTypes.SET_AVAILABLE_STATES_HISTORICAL, payload: historicalStates });
       }
 
-      if (prediction) {
-        const predictionStates = await api.getAvailableStates(dataMode, {
-          ...filters,
-          isPrediction: true,
-          startYear: filters.predictionYear,
-          endYear: filters.predictionYear,
-        });
+      if (prediction) { // need to make if statements here?
+        let predictionStates = [];
+        if (getState().selections.chartMode === CHART_MODES.MAP) {
+          predictionStates = await api.getAvailableStates(dataMode, {
+            ...filters,
+            isPrediction: true,
+            startYear: filters.predictionYear,
+            endYear: filters.predictionYear,
+          });
+        } else {
+          predictionStates = await api.getAvailableStates(dataMode, {
+            ...filters,
+            isPrediction: true,
+            startYear: filters.startYear,
+            endYear: filters.predictionYear,
+          });
+        }
+        console.log('prediction states: ', predictionStates);
         dispatch({ type: ActionTypes.SET_AVAILABLE_STATES_PREDICTION, payload: predictionStates });
       }
     } catch (error) {

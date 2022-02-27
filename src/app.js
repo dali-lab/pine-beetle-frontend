@@ -53,6 +53,7 @@ const App = (props) => {
     loginUserFromStorage,
     predictionYear,
     startYear,
+    chartMode,
   } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
@@ -82,9 +83,15 @@ const App = (props) => {
   }, []);
 
   useEffect(() => {
-    props.getPredictions(startYear, predictionYear);
-    props.getAvailableStates({ predictionYear });
-  }, [startYear, predictionYear]);
+    console.log('chartMode: ', chartMode);
+    if (chartMode === CHART_MODES.GRAPH) {
+      props.getPredictions(startYear, predictionYear);
+      props.getAvailableStates({ predictionYear });
+    } else {
+      props.getPredictions(predictionYear, predictionYear);
+      props.getAvailableStates({ predictionYear });
+    }
+  }, [startYear, predictionYear, chartMode]);
 
   if (isMobile) return <MobileOverlay />;
 
@@ -116,12 +123,14 @@ const mapStateToProps = (state) => {
     selections: {
       startYear,
       predictionYear,
+      chartMode,
     },
   } = state;
 
   return {
     startYear,
     predictionYear,
+    chartMode,
   };
 };
 
