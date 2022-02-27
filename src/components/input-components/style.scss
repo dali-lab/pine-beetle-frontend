@@ -1,5 +1,15 @@
-select {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+.selection-container {
+
+    .selection-button {
+        padding-left: 20px;
+        background: #EDEDEE;
+        height: 43px;
+        font-family: 'Inter';
+        font-size: 18px; 
+        width: 15vw;
+        max-width: 125px;
+        border: none;
+        cursor: pointer;
+        letter-spacing: 1.5px;
+    }
 }

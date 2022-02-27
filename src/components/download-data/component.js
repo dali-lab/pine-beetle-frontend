@@ -54,6 +54,7 @@ const DownloadData = (props) => {
   const [fieldsToDownload, setFieldsToDownload] = useState({
     SUMMARIZED: false,
     UNSUMMARIZED: false,
+    PREDICTED: false,
   });
 
   const addFieldToDownload = fieldName => e => setFieldsToDownload({
@@ -66,6 +67,7 @@ const DownloadData = (props) => {
       ...fieldsToDownload,
       SUMMARIZED: selected,
       UNSUMMARIZED: selected,
+      PREDICTED: selected,
     });
   };
 
@@ -75,7 +77,7 @@ const DownloadData = (props) => {
       if (!value) return null;
 
       const dataTypeName = countyMode ? 'COUNTY' : 'RD';
-      const dataName = fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
+      const dataName = fieldName === 'UNSUMMARIZED' ? fieldName : `${fieldName}_${dataTypeName}`;
 
       return downloadCsv(dataName, {
         state: selectedState,
@@ -185,13 +187,24 @@ const DownloadData = (props) => {
                   type="checkbox"
                   id="select-all"
                   onChange={e => selectAll(e.target.checked)}
-                  checked={fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED}
+                  checked={fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED && fieldsToDownload.PREDICTED}
                 />
                 <span className="checkbox-text">Select All</span>
               </label>
             </div>
           </div>
           <div id="selection-types">
+            <div>
+              <label htmlFor="summarized-data">
+                <input
+                  type="checkbox"
+                  id="summarized-data"
+                  onChange={addFieldToDownload('PREDICTED')}
+                  checked={fieldsToDownload.PREDICTED}
+                />
+                <span className="checkbox-text">Predicted data</span>
+              </label>
+            </div>
             <div>
               <label htmlFor="summarized-data">
                 <input

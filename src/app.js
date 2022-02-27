@@ -40,7 +40,6 @@ import {
 
 import {
   getAuthTokenFromStorage,
-  getChartModeFromStorage,
   getDataModeFromStorage,
   getUserIdFromStorage,
 } from './utils';
@@ -68,7 +67,7 @@ const App = (props) => {
 
     // set data/chart mode if persist in browser
     props.setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
-    props.setChartMode(getChartModeFromStorage() || CHART_MODES.MAP);
+    props.setChartMode(CHART_MODES.MAP);
 
     // fetch initial data
     props.getAggregateYearData();
