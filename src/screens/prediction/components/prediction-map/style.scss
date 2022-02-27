@@ -123,7 +123,7 @@
     margin-right: 20px;
     font-family: 'Inter';
     overflow: auto;
-    width: 350px;
+    width: 400px;
     max-height: 300px;
     padding: 20px 10px 25px 15px;
     border-radius: 12px;
@@ -141,12 +141,14 @@
     flex-direction: row;
     justify-content: center;
     margin-top: 10px;
+    margin-right: 10px;
     
     .data-info-section {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        margin-left: 10px;
 
         .circle {
             display: flex;
@@ -167,10 +169,14 @@
             background-color: #95ACFC;
         }
 
+        #convergence {
+            background-color: #94CBFB;
+        }
+
         p {
             margin-top: 10px;
             line-height: 1;
-            width: 150px;
+            width: 120px;
             font-size: 12px;
         }
     }

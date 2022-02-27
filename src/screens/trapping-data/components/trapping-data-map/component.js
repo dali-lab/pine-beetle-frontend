@@ -510,7 +510,7 @@ const HistoricalMap = (props) => {
   return (
     <div id="trapping-map-container">
       <div id="map" />
-      <div className="map-overlay-data" id="data">
+      <div className="map-overlay-data" id="historical-data-overlay">
         <h3 className="data-title">{rawData.length === 1
           ? windowTitle()
           : 'Select county or federal land on the map to view historical data'
@@ -519,7 +519,7 @@ const HistoricalMap = (props) => {
         {rawData.length === 1
           && <p>{startYear}-{endYear}</p>
         }
-        <div className="data-info-historical ">
+        <div className="data-info-historical">
           <div className="data-info-section">
             {rawData.length === 1
               ? (
