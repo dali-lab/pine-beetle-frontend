@@ -24,7 +24,7 @@ const MultiSelectInput = (props) => {
   const [isListOpen, setIsListOpen] = useState(false);
 
   useEffect(() => {
-    setStatusText(valueParent ? `${valueChildren.length} locations selected` : CLEAR_TEXT);
+    setStatusText(valueParent && valueChildren ? `${valueChildren.length} locations selected` : CLEAR_TEXT);
   }, [valueChildren]);
 
   useEffect(() => {

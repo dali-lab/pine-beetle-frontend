@@ -166,13 +166,13 @@ const HistoricalMap = (props) => {
       if (props.county) { // remove selection if user clicks selected county
         setCounty('');
       } else {
-        setCounty(county);
+        setCounty([county]);
       }
     } else if (sublocations.includes(rangerDistrictToSet)) {
       if (props.rangerDistrict) { // remove selection if user clicks selected ranger district
         setRangerDistrict('');
       } else {
-        setRangerDistrict(rangerDistrictToSet);
+        setRangerDistrict([rangerDistrictToSet]);
       }
     }
   };

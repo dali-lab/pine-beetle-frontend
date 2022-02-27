@@ -40,32 +40,6 @@
     letter-spacing: 1.5px;
 }
 
-.selection {
-    background: #FFFFFF;
-}
-
-.selection label {
-    color: #7c7c96;
-    background: #FFFFFF;
-}
-
-.selection-no-button {
-    padding-left: 20px;
-    background: #EDEDEE;
-    height: 43px;
-    font-family: 'Inter';
-    font-size: 18px; 
-    width: 15vw;
-    max-width: 220px;
-    border-radius: 6px;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    letter-spacing: 1.5px;
-}
-
 #vl1 {
     border-left: 2px solid #f9f9f9;
     height: 72px;
@@ -87,7 +61,8 @@
 
 #mode-selection {
     display: flex;
-    height: 0px;
+    flex-direction: row;
+    margin-top: 0.5vh;
 }
 
 #mode-selection button {

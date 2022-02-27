@@ -33,16 +33,27 @@ const SelectionBar = (props) => {
   const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
+  const revYears = [...availableYears].reverse();
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
   return (
     <div id="predictionbar" className="container">
-      <ChoiceInput instructions="Year" setValue={setPredictionYear} value={year} options={availableYears} firstOptionText="Year" />
+      <div className="predictionbar-year-selection">
+        <p className="predictionbar-year-selection-title">Year</p>
+        <div className="predictionbar-year-selection-options">
+          <ChoiceInput setValue={setPredictionYear} value={year} options={revYears} />
+        </div>
+      </div>
       <div id="vl1" />
-      <ChoiceInput instructions="State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
+      <div className="predictionbar-year-selection">
+        <p className="predictionbar-year-selection-title">State</p>
+        <div className="predictionbar-year-selection-options">
+          <ChoiceInput value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
+        </div>
+      </div>
       <div id="vl1" />
-      <div className="menuInstruction">
+      <div className="predictionbar-year-selection">
         <div id="mode-selection">
           <button
             id="mode-btn"
@@ -63,7 +74,6 @@ const SelectionBar = (props) => {
         </div>
         <div>
           <ChoiceInput
-            // instructions={countyMode ? 'County' : 'RD'}
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? setCounty : setRangerDistrict}
             options={availableSublocations}
