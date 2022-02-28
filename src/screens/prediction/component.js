@@ -38,6 +38,7 @@ const Prediction = (props) => {
     isLoading,
     chartMode,
     setChartMode,
+    clearAllSelections,
   } = props;
 
   const [showAnimation, setShowAnimation] = useState(true);
@@ -119,7 +120,7 @@ const Prediction = (props) => {
         <div className="selection-p">
           <div
             className={isGraphView ? 'selected-option-2-p' : 'unselected-option-p'}
-            onClick={setGraphView}
+            onClick={() => { setGraphView(); clearAllSelections(); }}
           >
             <img
               src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
@@ -132,7 +133,7 @@ const Prediction = (props) => {
           </div>
           <div
             className={isGraphView ? 'unselected-option-p' : 'selected-option-2-p'}
-            onClick={setMapView}
+            onClick={() => { setMapView(); clearAllSelections(); }}
           >
             <img
               src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}

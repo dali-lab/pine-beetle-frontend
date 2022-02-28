@@ -2,7 +2,10 @@ import { connect } from 'react-redux';
 
 import Prediction from './component';
 
-import { setChartMode } from '../../state/actions';
+import {
+  setChartMode,
+  clearSelections,
+} from '../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
@@ -32,6 +35,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    clearAllSelections: () => {
+      dispatch(clearSelections());
+    },
     setChartMode: (mode) => {
       dispatch(setChartMode(mode));
     },
