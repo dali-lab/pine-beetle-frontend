@@ -83,7 +83,6 @@ const App = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log('chartMode: ', chartMode);
     if (chartMode === CHART_MODES.GRAPH) {
       props.getPredictions(startYear, predictionYear);
       props.getAvailableStates({ predictionYear });
@@ -105,7 +104,7 @@ const App = (props) => {
               <Route exact path={ROUTES.HOME} component={Home} />
               <Route path={ROUTES.ABOUT} component={About} />
               <Route path={ROUTES.ADMIN} component={Admin} />
-              <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
+              <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} onEnter={() => console.log('switch')} />
               <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModel} />
               <Route path={ROUTES.PREDICTIONS} component={Prediction} />
               <Route component={FallBack} />

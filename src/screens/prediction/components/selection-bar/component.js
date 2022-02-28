@@ -28,8 +28,6 @@ const SelectionBar = (props) => {
     setState,
     startYear,
     setStartYear,
-    // setEndYear,
-    // endYear,
     year,
     chartMode,
   } = props;

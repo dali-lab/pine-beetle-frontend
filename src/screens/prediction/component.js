@@ -47,6 +47,7 @@ const Prediction = (props) => {
   const setMapView = () => setChartMode(CHART_MODES.MAP);
 
   useEffect(() => {
+    clearAllSelections(); // clears selections initially when switching to this tab
     const listener = () => {
       if (window.scrollY > 1100 || (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
         setShowAnimation(false);

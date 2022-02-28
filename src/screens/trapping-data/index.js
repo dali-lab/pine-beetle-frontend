@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { setChartMode, setDataMode } from '../../state/actions';
+import { setChartMode, setDataMode, clearSelections } from '../../state/actions';
 
 import TrappingData from './component';
 
@@ -34,6 +34,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    clearAllSelections: () => {
+      dispatch(clearSelections());
+    },
     setChartMode: (mode) => {
       dispatch(setChartMode(mode));
     },
