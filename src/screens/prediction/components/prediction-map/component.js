@@ -523,7 +523,7 @@ const PredictionMap = (props) => {
               ? (
                 <div className="circle" id={data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak ? 'convergence' : 'empty'}>
                   {data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak
-                    ? <div id="percent">{((data[0].expSpotsIfOutbreak - data[0].spotst0) / 100).toFixed(1)}%</div>
+                    ? <div id="percent">{(((data[0].spotst0 - data[0].expSpotsIfOutbreak) / data[0].expSpotsIfOutbreak) * 100).toFixed(0)}%</div>
                     : <div id="percent">n/a</div>
                   }
                 </div>
