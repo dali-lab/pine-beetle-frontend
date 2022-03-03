@@ -31,17 +31,13 @@ const DownloadData = (props) => {
     startYear,
     // setAllYears,
     setCounty,
-    // setDataMode,
+    setDataMode,
     setRangerDistrict,
     setState,
     // trappingData,
   } = props;
 
-  // vars for year, county, rd selections
   const countyMode = dataMode === DATA_MODES.COUNTY;
-  // const allStates = [...new Set(trappingData.map(obj => obj.state))].sort();
-  // const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
-  // const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
 
   const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
@@ -85,9 +81,14 @@ const DownloadData = (props) => {
       const dataTypeName = countyMode ? 'COUNTY' : 'RD';
       const dataName = fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
 
+      // to allow multiple counties/RD
+      const countyString = county.join('&county=');
+      const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
+
       return downloadCsv(dataName, {
         state: selectedState,
-        [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
+        // [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
+        [countyMode ? 'county' : 'rangerDistrict']: countyMode ? countyString : rangerDistrictString,
         startYear,
         endYear,
       });
@@ -139,6 +140,24 @@ const DownloadData = (props) => {
               <div id="year-selection">
                 <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} />
                 <ChoiceInput setValue={setEndYear} options={revYears} value={endYear} />
+              </div>
+            </div>
+            <div className="selection">
+              <div
+                className={dataMode === DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
+                onClick={() => setDataMode(DATA_MODES.COUNTY)}
+              >
+                <p className={dataMode === DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
+                  Counties
+                </p>
+              </div>
+              <div
+                className={dataMode !== DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
+                onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
+              >
+                <p className={dataMode !== DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
+                  Federal Land
+                </p>
               </div>
             </div>
             <h4 id="subtitle">Location(s)</h4>
