@@ -27,7 +27,7 @@ export const ActionTypes = {
  * @param {Number} year year to fetch predictions on
  * @param {Object} [overrideFilter={}] optional filter for startYear, endYear, state, etc.
  */
-export function getPredictions(year = new Date().getFullYear(), overrideFilter = {}) {
+export function getPredictions(startYear = new Date().getFullYear(), endYear = new Date().getFullYear(), overrideFilter = {}) {
   return async (dispatch, getState) => {
     const {
       county,
@@ -37,8 +37,8 @@ export function getPredictions(year = new Date().getFullYear(), overrideFilter =
     } = getState().selections;
 
     const filters = Object.entries({
-      startYear: year,
-      endYear: year,
+      startYear,
+      endYear,
       state,
       county,
       rangerDistrict,

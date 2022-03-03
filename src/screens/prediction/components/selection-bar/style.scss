@@ -25,15 +25,11 @@
         }
 
         .predictionbar-year-selection-options {
-            display: flex;
-            flex-direction: row;
+            display: flex !important;
+            flex-direction: row !important;
 
             .selection-button {
                 width: 9vw;
-            }
-
-            .predictionbar-year-selection-option {
-                font-size: 16px;
             }
         }
     }

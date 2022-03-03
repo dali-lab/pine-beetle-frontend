@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { CHART_MODES, DATA_MODES } from '../../constants';
 
@@ -26,11 +26,16 @@ const TrappingData = (props) => {
     isLoading,
     setChartMode,
     setDataMode,
+    clearAllSelections,
   } = props;
 
   const isGraphView = chartMode === CHART_MODES.GRAPH;
   const setGraphView = () => setChartMode(CHART_MODES.GRAPH);
   const setMapView = () => setChartMode(CHART_MODES.MAP);
+
+  useEffect(() => {
+    clearAllSelections(); // clears selections initially when switching to this tab
+  }, []);
 
   return (
     <div>
