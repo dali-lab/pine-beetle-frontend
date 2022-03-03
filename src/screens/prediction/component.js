@@ -15,7 +15,7 @@ import {
   ScrollIcon,
 } from '../../components';
 
-import { CHART_MODES } from '../../constants';
+import { CHART_MODES, DATA_MODES } from '../../constants';
 
 import './style.scss';
 
@@ -37,7 +37,9 @@ const Prediction = (props) => {
     fetchErrorText,
     isLoading,
     chartMode,
+    dataMode,
     setChartMode,
+    setDataMode,
     clearAllSelections,
   } = props;
 
@@ -118,6 +120,24 @@ const Prediction = (props) => {
       <OverviewText />
       <SelectionBar />
       <div id="toggles-overlay">
+        <div className="selection-p">
+          <div
+            className={dataMode === DATA_MODES.COUNTY ? 'selected-option-p' : 'unselected-option-p'}
+            onClick={() => setDataMode(DATA_MODES.COUNTY)}
+          >
+            <p className={dataMode === DATA_MODES.COUNTY ? 'selected-option-text-p' : 'unselected-option-text-p'}>
+              Counties
+            </p>
+          </div>
+          <div
+            className={dataMode !== DATA_MODES.COUNTY ? 'selected-option-p' : 'unselected-option-p'}
+            onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
+          >
+            <p className={dataMode !== DATA_MODES.COUNTY ? 'selected-option-text-p' : 'unselected-option-text-p'}>
+              Federal Land
+            </p>
+          </div>
+        </div>
         <div className="selection-p">
           <div
             className={isGraphView ? 'selected-option-2-p' : 'unselected-option-p'}

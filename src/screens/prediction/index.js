@@ -5,6 +5,7 @@ import Prediction from './component';
 import {
   setChartMode,
   clearSelections,
+  setDataMode,
 } from '../../state/actions';
 
 const mapStateToProps = (state) => {
@@ -20,6 +21,7 @@ const mapStateToProps = (state) => {
     },
     selections: {
       chartMode,
+      dataMode,
     },
   } = state;
 
@@ -30,6 +32,7 @@ const mapStateToProps = (state) => {
     fetchErrorText,
     isLoading,
     chartMode,
+    dataMode,
   };
 };
 
@@ -40,6 +43,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setChartMode: (mode) => {
       dispatch(setChartMode(mode));
+    },
+    setDataMode: (mode) => {
+      dispatch(setDataMode(mode));
     },
   };
 };

@@ -158,7 +158,7 @@ const PredictionChart = (props) => {
 
     setChartData(updatedChartData);
     setChartOptions(updatedChartOptions);
-  }, [predictionYear, startYear]);
+  }, [predictionYear, startYear, predictions]);
 
   return (
     <div id="chart">
