@@ -10,11 +10,10 @@ county/RD for trapping data.<br />
 You can switch between map or chart<br />
 view by toggling the button below.`;
 
-const explanatoryText = `Southern pine beetle trapping data has been collected across the Southeast since 1988,
-and now,increasingly, in the Mid-Atlantic and Northeast. All historical data is collected here in one place for 
-researchers, forest resource managers, and the general public to access. [Insert explanation here for all the 
-different ways the data can be downloaded, so users know that ALL forms of the data, both raw (weekly) and 
-summarized (every two weeks; the input version used for the model) are available.`;
+const explanatoryText = `Southern pine beetle trapping data have been collected across the southeast since 1988, 
+and now, increasingly, in the mid-Atlantic and northeast. All historical data are collected here in one place 
+for researchers, forest resource managers, and the general public to access. You can select the year range and 
+location, and you can switch between map and graph view by toggling the button below.`;
 
 const OverviewText = _props => (
   <div className="container" id="overview-explanation">
