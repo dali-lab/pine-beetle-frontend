@@ -21,6 +21,7 @@ const DownloadData = (props) => {
     availableYears,
     availableStates,
     availableSublocations,
+    clearAllSelections,
     county,
     dataMode,
     endYear,
@@ -142,33 +143,36 @@ const DownloadData = (props) => {
                 <ChoiceInput setValue={setEndYear} options={revYears} value={endYear} />
               </div>
             </div>
-            <div className="selection">
-              <div
-                className={dataMode === DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
-                onClick={() => setDataMode(DATA_MODES.COUNTY)}
-              >
-                <p className={dataMode === DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
-                  Counties
-                </p>
-              </div>
-              <div
-                className={dataMode !== DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
-                onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
-              >
-                <p className={dataMode !== DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
-                  Federal Land
-                </p>
-              </div>
-            </div>
             <h4 id="subtitle">Location(s)</h4>
-            <MultiSelectInput
-              valueParent={selectedStateName}
-              valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
-              setValueParent={setStateAbbrev}
-              setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
-              optionsParent={statesMappedToNames}
-              optionsChildren={availableSublocations}
-            />
+            <div id="location-select">
+              <div className="selection-mode">
+                <div
+                  className={countyMode ? 'selected-option-2-p' : 'unselected-option-p'}
+                  onClick={() => { setDataMode(DATA_MODES.COUNTY); clearAllSelections(); }}
+                >
+                  <p className={countyMode ? 'selected-option-text-p' : 'unselected-option-text-p'}>
+                    By County
+                  </p>
+                </div>
+                <div
+                  className={countyMode ? 'unselected-option-p' : 'selected-option-2-p'}
+                  onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); clearAllSelections(); }}
+                >
+                  <p className={countyMode ? 'unselected-option-text-p' : 'selected-option-text-p'}>
+                    By Federal land
+                  </p>
+                </div>
+              </div>
+              <MultiSelectInput
+                valueParent={selectedStateName}
+                valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
+                setValueParent={setStateAbbrev}
+                setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
+                optionsParent={statesMappedToNames}
+                optionsChildren={availableSublocations}
+                listOnly
+              />
+            </div>
           </div>
           <div id="divider-line" />
           <div id="modal-download-selection">
