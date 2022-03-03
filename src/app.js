@@ -52,6 +52,8 @@ const App = (props) => {
   const {
     loginUserFromStorage,
     predictionYear,
+    startYear,
+    chartMode,
   } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
@@ -81,9 +83,14 @@ const App = (props) => {
   }, []);
 
   useEffect(() => {
-    props.getPredictions(predictionYear);
-    props.getAvailableStates({ predictionYear });
-  }, [predictionYear]);
+    if (chartMode === CHART_MODES.GRAPH) {
+      props.getPredictions(startYear, predictionYear);
+      props.getAvailableStates({ predictionYear });
+    } else {
+      props.getPredictions(predictionYear, predictionYear);
+      props.getAvailableStates({ predictionYear });
+    }
+  }, [startYear, predictionYear, chartMode]);
 
   if (isMobile) return <MobileOverlay />;
 
@@ -113,12 +120,16 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   const {
     selections: {
+      startYear,
       predictionYear,
+      chartMode,
     },
   } = state;
 
   return {
+    startYear,
     predictionYear,
+    chartMode,
   };
 };
 
@@ -136,8 +147,8 @@ const mapDispatchToProps = (dispatch) => {
     getAvailableStates: (overrideFilter) => {
       dispatch(getAvailableStates(overrideFilter));
     },
-    getPredictions: (year) => {
-      dispatch(getPredictions(year));
+    getPredictions: (startYear, endYear) => {
+      dispatch(getPredictions(startYear, endYear));
     },
     loginUserFromStorage: () => {
       dispatch(getUserFromStorage());

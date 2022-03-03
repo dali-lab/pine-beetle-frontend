@@ -2,6 +2,12 @@ import { connect } from 'react-redux';
 
 import Prediction from './component';
 
+import {
+  setChartMode,
+  clearSelections,
+  setDataMode,
+} from '../../state/actions';
+
 const mapStateToProps = (state) => {
   const {
     error: {
@@ -13,6 +19,10 @@ const mapStateToProps = (state) => {
       predictions,
       fetchingPredictions,
     },
+    selections: {
+      chartMode,
+      dataMode,
+    },
   } = state;
 
   const isLoading = fetchingPredictions;
@@ -21,11 +31,23 @@ const mapStateToProps = (state) => {
     data: predictions,
     fetchErrorText,
     isLoading,
+    chartMode,
+    dataMode,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    clearAllSelections: () => {
+      dispatch(clearSelections());
+    },
+    setChartMode: (mode) => {
+      dispatch(setChartMode(mode));
+    },
+    setDataMode: (mode) => {
+      dispatch(setDataMode(mode));
+    },
+  };
 };
 
 export default connect(
