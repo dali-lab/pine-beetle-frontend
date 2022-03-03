@@ -27,9 +27,9 @@ const MultiSelectInput = (props) => {
 
   useEffect(() => {
     if (valueChildren.length === 0) {
-      setStatusText(valueParent ? 'all locations selected' : CLEAR_TEXT);
+      setStatusText(valueParent ? `${valueParent} selected` : CLEAR_TEXT);
     } else {
-      setStatusText(valueParent ? `${valueChildren.length} locations selected` : CLEAR_TEXT);
+      setStatusText(valueParent ? `${valueParent}: ${valueChildren.length} selected` : CLEAR_TEXT);
     }
   }, [valueChildren]);
 
