@@ -57,6 +57,30 @@ const HistoricalMap = (props) => {
     }
   }, [dataMode]);
 
+  // for the data window once we select a county/RD
+  const windowTitle = () => {
+    return dataMode === DATA_MODES.COUNTY ? `${rawData[0].county} County` : rawData[0].rangerDistrict;
+  };
+
+  // determines style of the data overlay spots circle based on the number of spots
+  const overlaySpotsColor = (spots) => {
+    if (spots === null) {
+      return 'spots-null';
+    } else if (spots < 10) {
+      return 'spots-10';
+    } else if (spots < 20) {
+      return 'spots-20';
+    } else if (spots < 50) {
+      return 'spots-50';
+    } else if (spots < 100) {
+      return 'spots-100';
+    } else if (spots < 250) {
+      return 'spots-250';
+    } else {
+      return 'spots-more';
+    }
+  };
+
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => (e) => {
     if (!map || !e || !map.isStyleLoaded()) return;
@@ -142,13 +166,13 @@ const HistoricalMap = (props) => {
       if (props.county) { // remove selection if user clicks selected county
         setCounty('');
       } else {
-        setCounty(county);
+        setCounty([county]);
       }
     } else if (sublocations.includes(rangerDistrictToSet)) {
       if (props.rangerDistrict) { // remove selection if user clicks selected ranger district
         setRangerDistrict('');
       } else {
-        setRangerDistrict(rangerDistrictToSet);
+        setRangerDistrict([rangerDistrictToSet]);
       }
     }
   };
@@ -486,6 +510,51 @@ const HistoricalMap = (props) => {
   return (
     <div id="trapping-map-container">
       <div id="map" />
+      <div className="map-overlay-data" id="historical-data-overlay">
+        <h3 className="data-title">{rawData.length === 1
+          ? windowTitle()
+          : 'Select county or federal land on the map to view historical data'
+        }
+        </h3>
+        {rawData.length === 1
+          && <p>{startYear}-{endYear}</p>
+        }
+        <div className="data-info-historical">
+          <div className="data-info-section">
+            {rawData.length === 1
+              ? (
+                <div className="circle" id="spbs">
+                  <div id="percent">{rawData[0].avgSpbPer2Weeks ? rawData[0].avgSpbPer2Weeks.toFixed(2) : 'n/a'}</div>
+                </div>
+              )
+              : <div className="circle" id="empty" />
+            }
+            <p>Average SPB per 2 weeks</p>
+          </div>
+          <div className="data-info-section">
+            {rawData.length === 1
+              ? (
+                <div className="circle" id="clerid">
+                  <div id="percent">{rawData[0].avgCleridsPer2Weeks ? rawData[0].avgCleridsPer2Weeks.toFixed(2) : 'n/a'}</div>
+                </div>
+              )
+              : <div className="circle" id="empty" />
+              }
+            <p>Average clerids per 2 weeks</p>
+          </div>
+          <div className="data-info-section">
+            {rawData.length === 1
+              ? (
+                <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0)}>
+                  <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div>
+                </div>
+              )
+              : <div className="circle" id="empty" />
+              }
+            <p>Average number of spots</p>
+          </div>
+        </div>
+      </div>
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
         <div>

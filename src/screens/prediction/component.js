@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-scroll';
+import React, { useEffect } from 'react';
+import Modal from 'react-modal';
 
 import {
   AboutPredictions,
@@ -12,13 +12,13 @@ import {
 
 import {
   Loading,
-  ScrollIcon,
 } from '../../components';
 
 import { CHART_MODES, DATA_MODES } from '../../constants';
 
 import './style.scss';
 
+const closeIcon = require('../../assets/icons/close.png');
 const mapSelectedIcon = require('../../assets/icons/map-selected.png');
 const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
 const graphSelectedIcon = require('../../assets/icons/graph-selected.png');
@@ -36,6 +36,8 @@ const Prediction = (props) => {
     data,
     fetchErrorText,
     isLoading,
+    predictionModal,
+    setPredictionModal,
     chartMode,
     dataMode,
     setChartMode,
@@ -43,23 +45,16 @@ const Prediction = (props) => {
     clearAllSelections,
   } = props;
 
-  const [showAnimation, setShowAnimation] = useState(true);
+  // functions for showing modal
+  const handleClose = () => setPredictionModal(false);
+  const handleShow = () => setPredictionModal(true);
+
   const isGraphView = chartMode === CHART_MODES.GRAPH;
   const setGraphView = () => setChartMode(CHART_MODES.GRAPH);
   const setMapView = () => setChartMode(CHART_MODES.MAP);
 
   useEffect(() => {
     clearAllSelections(); // clears selections initially when switching to this tab
-    const listener = () => {
-      if (window.scrollY > 1100 || (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        setShowAnimation(false);
-      } else {
-        setShowAnimation(true);
-      }
-    };
-
-    window.addEventListener('scroll', listener);
-    return () => window.removeEventListener('scroll', listener);
   }, []);
 
   const getHistogram = (probSpotsGT50) => {
@@ -78,12 +73,23 @@ const Prediction = (props) => {
     }
   };
 
-  const predDetails = (hasPredData) => {
-    if (!hasPredData) return null;
+  const predModal = () => {
+    if (!predictionModal) return null;
     const { probSpotsGT50 } = data[0];
     const histogram = getHistogram(probSpotsGT50);
     return (
-      <>
+      <Modal
+        isOpen={predictionModal}
+        onAfterOpen={handleShow}
+        onRequestClose={handleClose}
+        contentLabel="Show Prediction Data"
+        className="modal"
+        ariaHideApp={false}
+        closeTimeoutMS={150}
+      >
+        <div id="close-icon">
+          <img src={closeIcon} alt="close icon" onClick={handleClose} />
+        </div>
         <div className="container" id="scroll-to">
           <PredictionDetails data={data} />
           <div className="prediction-bottom">
@@ -101,15 +107,7 @@ const Prediction = (props) => {
             <AboutPredictions />
           </div>
         </div>
-        <Link
-          to="scroll-to"
-          smooth
-        >
-          <div id={showAnimation ? 'scroll-animation' : 'hidden-animation'}>
-            { ScrollIcon() }
-          </div>
-        </Link>
-      </>
+      </Modal>
     );
   };
 
@@ -170,7 +168,7 @@ const Prediction = (props) => {
       <div className="container">
         {isGraphView ? <PredictionChart /> : <PredictionMap />}
       </div>
-      { predDetails(data.length === 1) }
+      {predModal()}
     </div>
   );
 };

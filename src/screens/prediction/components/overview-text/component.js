@@ -21,7 +21,7 @@ const OverviewText = _props => (
   <div className="container" id="overview-explanation">
     <div className="container" id="overview-text">
       <h1 id="title">
-        Historical Data
+        Predict Outbreak
       </h1>
       <img id="icon"
         data-tip={helpText}

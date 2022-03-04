@@ -33,7 +33,6 @@ const SelectionBar = (props) => {
   const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
-
   const revYears = [...availableYears].reverse();
 
   return (

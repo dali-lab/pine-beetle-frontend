@@ -7,13 +7,14 @@
         align-items: center;
         background-color: #FFFFFF;
         height: 45px;
-        padding-left: 10px;
+        border-radius: 10px;
 
         .location-header {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
+            padding-left: 10px;
 
             .location-header-arrow {
                 width: 12px;
@@ -34,10 +35,22 @@
                 overflow-y: scroll;
                 border-radius: 10px;
 
-                .location-list-instructions {
+                .location-list-header {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
                     background-color: #F3F3F3;
-                    color: #434754;
-                    padding: 5px 10px;
+
+                    .location-list-instructions {
+                        color: #434754;
+                        padding: 5px 10px;
+                    }
+                    .location-list-clear {
+                        color: #2656B5;
+                        font-size: 15px;
+                        padding: 5px 10px;
+                    }
                 }
 
                 .location-list-item {
@@ -88,4 +101,10 @@
             }
         }
     }
+}
+
+#separation-line {
+    width: 300px;
+    height: 0px;
+    border: 1px solid #CBCBCB;
 }

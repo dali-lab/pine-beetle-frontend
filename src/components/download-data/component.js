@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
-import { ChoiceInput } from '../input-components';
+import { ChoiceInput, MultiSelectInput } from '../input-components';
 
 import { DATA_MODES } from '../../constants';
 
@@ -21,27 +21,29 @@ const DownloadData = (props) => {
     availableYears,
     availableStates,
     availableSublocations,
+    clearAllSelections,
     county,
     dataMode,
     endYear,
     rangerDistrict,
     selectedState,
-    setAllYears,
+    setEndYear,
+    setStartYear,
+    startYear,
+    // setAllYears,
     setCounty,
     setDataMode,
-    setEndYear,
     setRangerDistrict,
-    setStartYear,
     setState,
-    startYear,
+    // trappingData,
   } = props;
 
-  // vars for year, county, rd selections
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
   const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
+  const revYears = [...availableYears].reverse();
 
   // functions for showing modal
   const [show, setShow] = useState(false);
@@ -54,7 +56,6 @@ const DownloadData = (props) => {
   const [fieldsToDownload, setFieldsToDownload] = useState({
     SUMMARIZED: false,
     UNSUMMARIZED: false,
-    PREDICTED: false,
   });
 
   const addFieldToDownload = fieldName => e => setFieldsToDownload({
@@ -62,14 +63,16 @@ const DownloadData = (props) => {
     [fieldName]: e.target.checked,
   });
 
-  const selectAll = (selected) => {
-    setFieldsToDownload({
-      ...fieldsToDownload,
-      SUMMARIZED: selected,
-      UNSUMMARIZED: selected,
-      PREDICTED: selected,
-    });
-  };
+  // const selectAll = (selected) => {
+  //   setFieldsToDownload({
+  //     ...fieldsToDownload,
+  //     PREDICTION: selected,
+  //     SUMMARIZED: selected,
+  //     UNSUMMARIZED: selected,
+  //     HELPER: selected,
+  //     '1988-2009 DATA': selected,
+  //   });
+  // };
 
   // function for handling trapping data download
   const handleDownload = async () => {
@@ -77,11 +80,16 @@ const DownloadData = (props) => {
       if (!value) return null;
 
       const dataTypeName = countyMode ? 'COUNTY' : 'RD';
-      const dataName = fieldName === 'UNSUMMARIZED' ? fieldName : `${fieldName}_${dataTypeName}`;
+      const dataName = fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
+
+      // to allow multiple counties/RD
+      const countyString = county.join('&county=');
+      const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
 
       return downloadCsv(dataName, {
         state: selectedState,
-        [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
+        // [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
+        [countyMode ? 'county' : 'rangerDistrict']: countyMode ? countyString : rangerDistrictString,
         startYear,
         endYear,
       });
@@ -118,7 +126,7 @@ const DownloadData = (props) => {
         onAfterOpen={handleShow}
         onRequestClose={handleClose}
         contentLabel="Download Data Modal"
-        className="modal"
+        className="download-modal"
         ariaHideApp={false}
         closeTimeoutMS={150}
       >
@@ -126,128 +134,121 @@ const DownloadData = (props) => {
           <img src={closeIcon} alt="close icon" onClick={handleClose} />
         </div>
         <div id="modal-title">Download Data</div>
-        <div id="modal-year">
-          <div id="year-selection">
-            <div id="start-year-selection"><ChoiceInput instructions="Start Year" setValue={setStartYear} options={availableYears} value={startYear} /></div>
-            <div id="vl3" />
-            {/* TODO: "to" */}
-            <div id="end-year-selection"><ChoiceInput instructions="End Year" setValue={setEndYear} options={availableYears} value={endYear} /></div>
-          </div>
+        <div className="modal-divide-flex">
           <div>
-            <button
-              type="button"
-              onClick={setAllYears}
-              id="all-years-button"
-              className="animated-button"
-            >
-              Select all years
-            </button>
-          </div>
-        </div>
-        <div id="modal-state-county-rd">
-          <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
-          <div id="vl1" />
-          <div className="menuInstruction">
-            <div id="mode-selection">
-              <button
-                id="mode-btn"
-                onClick={() => setDataMode(DATA_MODES.COUNTY)}
-                className={(countyMode) ? 'county-rd-selection' : null}
-                type="button"
-              >
-                County
-              </button>
-              <div id="vl2" />
-              <button
-                id="mode-btn"
-                onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
-                className={(!countyMode) ? 'county-rd-selection' : null}
-                type="button"
-              >
-                <span className="full-text">Ranger District</span>
-                <span className="short-text">RD</span>
-              </button>
+            <h4 id="subtitle">Year(s)</h4>
+            <div id="modal-year">
+              <div id="year-selection">
+                <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} />
+                <ChoiceInput setValue={setEndYear} options={revYears} value={endYear} />
+              </div>
             </div>
-            <div>
-              <ChoiceInput
-                value={countyMode ? county : rangerDistrict}
-                setValue={countyMode ? setCounty : setRangerDistrict}
-                options={availableSublocations}
-                firstOptionText={countyMode ? 'County' : 'Ranger District'}
+            <h4 id="subtitle">Location(s)</h4>
+            <div id="location-select">
+              <div className="selection-mode">
+                <div
+                  className={countyMode ? 'selected-option-2-p' : 'unselected-option-p'}
+                  onClick={() => { setDataMode(DATA_MODES.COUNTY); clearAllSelections(); }}
+                >
+                  <p className={countyMode ? 'selected-option-text-p' : 'unselected-option-text-p'}>
+                    By County
+                  </p>
+                </div>
+                <div
+                  className={countyMode ? 'unselected-option-p' : 'selected-option-2-p'}
+                  onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); clearAllSelections(); }}
+                >
+                  <p className={countyMode ? 'unselected-option-text-p' : 'selected-option-text-p'}>
+                    By Federal land
+                  </p>
+                </div>
+              </div>
+              <MultiSelectInput
+                valueParent={selectedStateName}
+                valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
+                setValueParent={setStateAbbrev}
+                setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
+                optionsParent={statesMappedToNames}
+                optionsChildren={availableSublocations}
+                listOnly
               />
             </div>
           </div>
-        </div>
-        <div id="modal-download-selection">
-          <div id="question">
-            <h4>What type of data would you like to download?</h4>
-            <div>
-              <label htmlFor="select-all">
-                <input
-                  type="checkbox"
-                  id="select-all"
-                  onChange={e => selectAll(e.target.checked)}
-                  checked={fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED && fieldsToDownload.PREDICTED}
-                />
-                <span className="checkbox-text">Select All</span>
-              </label>
+          <div id="divider-line" />
+          <div id="modal-download-selection">
+            <div id="question">
+              <h4>Options</h4>
             </div>
-          </div>
-          <div id="selection-types">
-            <div>
-              <label htmlFor="summarized-data">
-                <input
-                  type="checkbox"
-                  id="summarized-data"
-                  onChange={addFieldToDownload('PREDICTED')}
-                  checked={fieldsToDownload.PREDICTED}
-                />
-                <span className="checkbox-text">Predicted data</span>
-              </label>
-            </div>
-            <div>
-              <label htmlFor="summarized-data">
-                <input
-                  type="checkbox"
-                  id="summarized-data"
-                  onChange={addFieldToDownload('SUMMARIZED')}
-                  checked={fieldsToDownload.SUMMARIZED}
-                />
-                <span className="checkbox-text">Summarized data by year/location</span>
-              </label>
-            </div>
-            <div>
-              <label htmlFor="unsummarized-data">
-                <input
-                  type="checkbox"
-                  id="unsummarized-data"
-                  onChange={addFieldToDownload('UNSUMMARIZED')}
-                  checked={fieldsToDownload.UNSUMMARIZED}
-                />
-                <span className="checkbox-text">Raw trapping data</span>
-              </label>
-            </div>
-          </div>
-          <div>
-            {isDownloading ? (
-              <div id="downloading-container">
-                <h4>Downloading...</h4>
+            <div id="selection-types">
+              {/* <div>
+                <label htmlFor="select-all">
+                  <input
+                    type="checkbox"
+                    id="select-all"
+                    onChange={e => selectAll(e.target.checked)}
+                    checked={fieldsToDownload.PREDICTION && fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED}
+                  />
+                  <span className="checkbox-text">Select All</span>
+                </label>
+              </div> */}
+              <div>
+                <label htmlFor="prediction-data">
+                  <input
+                    type="checkbox"
+                    id="prediction-data"
+                    onChange={addFieldToDownload('PREDICTION')}
+                    checked={fieldsToDownload.PREDICTION}
+                  />
+                  <span className="checkbox-text">Unsummarized historical data</span>
+                </label>
               </div>
-            ) : (
-              <button
-                className="animated-button"
-                id="modal-submit-btn"
-                onClick={handleDownload}
-                type="button"
-              >
-                <img
-                  src={downloadIcon}
-                  alt="download icon"
-                />
-                <p>Submit</p>
-              </button>
-            )}
+              <div>
+                <label htmlFor="summarized-data">
+                  <input
+                    type="checkbox"
+                    id="summarized-data"
+                    onChange={addFieldToDownload('SUMMARIZED')}
+                    checked={fieldsToDownload.SUMMARIZED}
+                  />
+                  <span className="checkbox-text">Model input historical data</span>
+                </label>
+              </div>
+              <div>
+                <label htmlFor="unsummarized-data">
+                  <input
+                    type="checkbox"
+                    id="unsummarized-data"
+                    onChange={addFieldToDownload('UNSUMMARIZED')}
+                    checked={fieldsToDownload.UNSUMMARIZED}
+                  />
+                  <span className="checkbox-text">Predictions vs outcomes</span>
+                </label>
+              </div>
+            </div>
+            <div id="modal-footnote-container">
+              <p className="modal-footnote">* helper data includes ranger district name mappings and state abbreviation mappings</p>
+              <p className="modal-footnote">** Downloads include both trap (beetle) and spot data, per county/federal unit.
+                Trap data are uploaded from approximately March through June of each trapping year, and spot data are uploaded
+                for that season by the following January.
+              </p>
+            </div>
           </div>
+        </div>
+        <div>
+          {isDownloading ? (
+            <div id="downloading-container">
+              <h4>Downloading...</h4>
+            </div>
+          ) : (
+            <button
+              className="animated-button"
+              id="modal-submit-btn"
+              onClick={handleDownload}
+              type="button"
+            >
+              <p>Download</p>
+            </button>
+          )}
         </div>
       </Modal>
     </>

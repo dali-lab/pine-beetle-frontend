@@ -6,6 +6,7 @@ import {
   setChartMode,
   clearSelections,
   setDataMode,
+  setPredictionModal,
 } from '../../state/actions';
 
 const mapStateToProps = (state) => {
@@ -20,6 +21,7 @@ const mapStateToProps = (state) => {
       fetchingPredictions,
     },
     selections: {
+      predictionModal,
       chartMode,
       dataMode,
     },
@@ -31,6 +33,7 @@ const mapStateToProps = (state) => {
     data: predictions,
     fetchErrorText,
     isLoading,
+    predictionModal,
     chartMode,
     dataMode,
   };
@@ -38,6 +41,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setPredictionModal: (show) => {
+      dispatch(setPredictionModal(show));
+    },
     clearAllSelections: () => {
       dispatch(clearSelections());
     },

@@ -20,6 +20,7 @@ import {
   setRangerDistrict,
   setStartYear,
   setState,
+  setPredictionModal,
 } from './selections';
 
 import {
@@ -63,5 +64,6 @@ export {
   setRangerDistrict,
   setStartYear,
   setState,
+  setPredictionModal,
   signOut,
 };

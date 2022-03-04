@@ -27,6 +27,10 @@
         .predictionbar-year-selection-options {
             display: flex !important;
             flex-direction: row !important;
+
+            .selection-button {
+                width: 9vw;
+            }
         }
     }
 
@@ -51,4 +55,9 @@
         height: 45px;
         padding: 0px 60px;
     }
+}
+
+.selection-button {
+    width: 15vw;
+    //max-width: 125px;
 }

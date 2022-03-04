@@ -1,5 +1,7 @@
 .about-predictions {
     margin-top: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
 
     ul {
         margin-left: 20px;
@@ -8,8 +10,8 @@
 
 .prediction-bottom {
     display: flex;
-    margin-top: 75px;
-    margin-bottom: 30px;
+    flex-direction: row;
+    margin-top: 25px;
 }
 
 #toggles-overlay{
@@ -95,7 +97,6 @@
     border-radius: 26px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: #ffffff;
-    margin-right: 45px;
     height: 0%;
 }
 
@@ -109,27 +110,38 @@
 }
 
 .histogram img {
-    width: 50vw;
+    width: 45vw;
 }
 
-#scroll-animation {
-    height: 125px;
-    width: 125px;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
+.modal {
     position: fixed;
-    cursor: pointer;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 1200px;
+    max-height: 65vh;
+    width: 70vw;
+    padding: 50px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    // TODO: replace box shadow with grayer background later
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+    overflow-y: scroll;
 }
 
-#hidden-animation {
-    height: 0;
-    width: 0;
-    visibility: hidden;
+// remove unnecessary blue outline from modal (does not impact accessibility)
+.modal:focus {
+    outline:0;
 }
 
-#download-pred-data {
-    margin-top: 70px;
+// https://stackoverflow.com/questions/58355628/animate-react-modal
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: all 150ms ease-in-out;
+    z-index: 2;
+}
+
+.ReactModal__Overlay--after-open {
+    opacity: 1;
+    z-index: 2;
 }
