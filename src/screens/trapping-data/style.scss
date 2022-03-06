@@ -2,7 +2,15 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-top: 45px;
+    margin-top: 0px;
+}
+
+#toggles-overlay-h{
+    display: flex;
+    position: absolute;
+    margin-top: 5px;
+    left: 31vw;
+    z-index: 1;
 }
 
 .selection {
