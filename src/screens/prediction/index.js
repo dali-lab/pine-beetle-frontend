@@ -1,7 +1,13 @@
 import { connect } from 'react-redux';
-import { setPredictionModal } from '../../state/actions';
 
 import Prediction from './component';
+
+import {
+  setChartMode,
+  clearSelections,
+  setDataMode,
+  setPredictionModal,
+} from '../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
@@ -16,6 +22,8 @@ const mapStateToProps = (state) => {
     },
     selections: {
       predictionModal,
+      chartMode,
+      dataMode,
     },
   } = state;
 
@@ -26,6 +34,8 @@ const mapStateToProps = (state) => {
     fetchErrorText,
     isLoading,
     predictionModal,
+    chartMode,
+    dataMode,
   };
 };
 
@@ -33,6 +43,15 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setPredictionModal: (show) => {
       dispatch(setPredictionModal(show));
+    },
+    clearAllSelections: () => {
+      dispatch(clearSelections());
+    },
+    setChartMode: (mode) => {
+      dispatch(setChartMode(mode));
+    },
+    setDataMode: (mode) => {
+      dispatch(setDataMode(mode));
     },
   };
 };
