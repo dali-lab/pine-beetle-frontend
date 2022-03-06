@@ -49,6 +49,8 @@ const HistoricalMap = (props) => {
   const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
   const [allRangerDistricts, setAllRangerDistricts] = useState([]);
 
+  const numYears = endYear - startYear + 1;
+
   useEffect(() => {
     if (dataMode === DATA_MODES.RANGER_DISTRICT) {
       api.getAvailableSublocations(dataMode)
@@ -524,7 +526,7 @@ const HistoricalMap = (props) => {
             {rawData.length === 1
               ? (
                 <div className="circle" id="spbs">
-                  <div id="percent">{rawData[0].avgSpbPer2Weeks ? rawData[0].avgSpbPer2Weeks.toFixed(2) : 'n/a'}</div>
+                  <div id="percent">{rawData[0].avgSpbPer2Weeks ? (rawData[0].avgSpbPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
                 </div>
               )
               : <div className="circle" id="empty" />
@@ -535,7 +537,7 @@ const HistoricalMap = (props) => {
             {rawData.length === 1
               ? (
                 <div className="circle" id="clerid">
-                  <div id="percent">{rawData[0].avgCleridsPer2Weeks ? rawData[0].avgCleridsPer2Weeks.toFixed(2) : 'n/a'}</div>
+                  <div id="percent">{rawData[0].avgCleridsPer2Weeks ? (rawData[0].avgCleridsPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
                 </div>
               )
               : <div className="circle" id="empty" />
@@ -551,7 +553,7 @@ const HistoricalMap = (props) => {
               )
               : <div className="circle" id="empty" />
               }
-            <p>Average number of spots</p>
+            <p>Total number of spots</p>
           </div>
         </div>
       </div>

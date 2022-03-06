@@ -499,29 +499,29 @@ const PredictionMap = (props) => {
           <div className="data-info-section">
             {data.length === 1
               ? (
-                <div className="circle" id="any-spots">
-                  <div id="percent">{((data[0].probSpotsGT0) * 100).toFixed(1)}%</div>
+                <div className="circle" id="data-spots">
+                  <div id="percent">{((data[0].probSpotsGT0) * 100).toFixed(0)}%</div>
                 </div>
               )
               : <div className="circle" id="empty" />
             }
-            <p>Predicted % Chance of Any Spots ({'>'}0 spots)</p>
+            <p>Probability of any spots</p>
           </div>
           <div className="data-info-section">
             {data.length === 1
               ? (
-                <div className="circle" id="outbreak">
-                  <div id="percent">{((data[0].probSpotsGT50) * 100).toFixed(1)}%</div>
+                <div className="circle" id="data-outbreak">
+                  <div id="percent">{((data[0].probSpotsGT50) * 100).toFixed(0)}%</div>
                 </div>
               )
               : <div className="circle" id="empty" />
               }
-            <p>Predicted % Chance of Outbreak ({'>'}50 spots)</p>
+            <p>Probability of a spot outbreak</p>
           </div>
-          <div className="data-info-section">
+          <div className="data-info-section" id="divergence-section">
             {data.length === 1
               ? (
-                <div className="circle" id={data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak ? 'convergence' : 'empty'}>
+                <div className="circle" id={data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak ? 'data-divergence' : 'empty'}>
                   {data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak
                     ? <div id="percent">{(((data[0].spotst0 - data[0].expSpotsIfOutbreak) / data[0].expSpotsIfOutbreak) * 100).toFixed(0)}%</div>
                     : <div id="percent">n/a</div>
@@ -530,7 +530,7 @@ const PredictionMap = (props) => {
               )
               : <div className="circle" id="empty" />
               }
-            <p>% Divergence of outcome from prediction</p>
+            <p>Spot divergence of outcomes from prediction</p>
           </div>
         </div>
         {data.length === 1
