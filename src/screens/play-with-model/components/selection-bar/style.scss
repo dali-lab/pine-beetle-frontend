@@ -76,13 +76,16 @@
 }
 
 #reset-current-data-button {
-    background: #C9CDD9;
+    background: #505050;
     font-size: 18px; 
     border-radius: 10px;
     letter-spacing: 1.5px;
-    color: #2F303A;
-    margin-left: 4vw;
-    padding: 10px 30px;
+    color: #FFFFFF;
+    border: 0;
+    margin-top: 4vh;
+    height: 45px;
+    padding: 0px 60px;
+    margin-left: 2vw;
 }
 
 // Hide short text by default (resolution > 1200px)
