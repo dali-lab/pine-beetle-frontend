@@ -487,17 +487,17 @@ const PredictionMap = (props) => {
     <div className="container flex-item-left" id="map-container">
       <div id="map" />
       <div className="map-overlay-data" id="data">
-        <h3 className="data-title">{data.length === 1
+        <h3 className="data-title">{data?.length === 1
           ? windowTitle()
           : 'Select county or federal land on the map to view prediction data'
         }
         </h3>
-        {data.length === 1
+        {data?.length === 1
           && <p>{year} Prediction</p>
         }
         <div className="data-info">
           <div className="data-info-section">
-            {data.length === 1
+            {data?.length === 1
               ? (
                 <div className="circle" id="any-spots">
                   <div id="percent">{((data[0].probSpotsGT0) * 100).toFixed(1)}%</div>
@@ -508,7 +508,7 @@ const PredictionMap = (props) => {
             <p>Predicted % Chance of Any Spots ({'>'}0 spots)</p>
           </div>
           <div className="data-info-section">
-            {data.length === 1
+            {data?.length === 1
               ? (
                 <div className="circle" id="outbreak">
                   <div id="percent">{((data[0].probSpotsGT50) * 100).toFixed(1)}%</div>
@@ -519,7 +519,7 @@ const PredictionMap = (props) => {
             <p>Predicted % Chance of Outbreak ({'>'}50 spots)</p>
           </div>
           <div className="data-info-section">
-            {data.length === 1
+            {data?.length === 1
               ? (
                 <div className="circle" id={data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak ? 'convergence' : 'empty'}>
                   {data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak
@@ -533,7 +533,7 @@ const PredictionMap = (props) => {
             <p>% Divergence of outcome from prediction</p>
           </div>
         </div>
-        {data.length === 1
+        {data?.length === 1
           && (
           <div className="data-button" onClick={() => setPredictionModal(true)}>
             <p>View details</p>
