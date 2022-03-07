@@ -48,6 +48,9 @@ const FallBack = () => {
   return <div>URL not found</div>;
 };
 
+global.API_URL = getServerUrl();
+global.AUTOMATION_API_URL = getAutomationServerUrl();
+
 const App = (props) => {
   const {
     loginUserFromStorage,

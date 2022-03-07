@@ -511,17 +511,17 @@ const HistoricalMap = (props) => {
     <div id="trapping-map-container">
       <div id="map" />
       <div className="map-overlay-data" id="historical-data-overlay">
-        <h3 className="data-title">{rawData.length === 1
+        <h3 className="data-title">{rawData?.length === 1
           ? windowTitle()
           : 'Select county or federal land on the map to view historical data'
         }
         </h3>
-        {rawData.length === 1
+        {rawData?.length === 1
           && <p>{startYear}-{endYear}</p>
         }
         <div className="data-info-historical">
           <div className="data-info-section">
-            {rawData.length === 1
+            {rawData?.length === 1
               ? (
                 <div className="circle" id="spbs">
                   <div id="percent">{rawData[0].avgSpbPer2Weeks ? rawData[0].avgSpbPer2Weeks.toFixed(2) : 'n/a'}</div>
@@ -532,7 +532,7 @@ const HistoricalMap = (props) => {
             <p>Average SPB per 2 weeks</p>
           </div>
           <div className="data-info-section">
-            {rawData.length === 1
+            {rawData?.length === 1
               ? (
                 <div className="circle" id="clerid">
                   <div id="percent">{rawData[0].avgCleridsPer2Weeks ? rawData[0].avgCleridsPer2Weeks.toFixed(2) : 'n/a'}</div>
@@ -543,7 +543,7 @@ const HistoricalMap = (props) => {
             <p>Average clerids per 2 weeks</p>
           </div>
           <div className="data-info-section">
-            {rawData.length === 1
+            {rawData?.length === 1
               ? (
                 <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0)}>
                   <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div>
