@@ -139,8 +139,8 @@ const DownloadData = (props) => {
             <h4 id="subtitle">Year(s)</h4>
             <div id="modal-year">
               <div id="year-selection">
-                <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} />
-                <ChoiceInput setValue={setEndYear} options={revYears} value={endYear} />
+                <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} firstOptionText="Year" />
+                <ChoiceInput setValue={setEndYear} options={revYears} value={endYear} firstOptionText="Year" />
               </div>
             </div>
             <h4 id="subtitle">Location(s)</h4>

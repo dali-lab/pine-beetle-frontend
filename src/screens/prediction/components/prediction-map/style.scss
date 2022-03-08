@@ -127,7 +127,7 @@
     margin-right: 20px;
     font-family: 'Inter';
     overflow: auto;
-    width: 400px;
+    width: 350px;
     max-height: 300px;
     padding: 20px 10px 25px 15px;
     border-radius: 12px;
@@ -169,21 +169,32 @@
             background-color: #DBDBDB;
         }
 
-        #any-spots {
-            background-color: #95ACFC;
+        #data-divergence {
+            background-color: #94CBFB;
+            box-shadow: none;
         }
 
-        #convergence {
-            background-color: #94CBFB;
+        #data-spots {
+            background-color: #FFE0B0;
+            box-shadow: none;
+        }
+
+        #data-outbreak {
+            background-color: #F9A0A1;
+            box-shadow: none;
         }
 
         p {
             margin-top: 10px;
             line-height: 1;
-            width: 120px;
+            width: 100px;
             font-size: 12px;
         }
     }
+}
+
+#divergence-section {
+    margin-top: 10px;
 }
 
 .data-button {

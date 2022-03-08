@@ -40,7 +40,7 @@ const SelectionBar = (props) => {
       <div className="historicalbar-year-selection">
         <p className="historicalbar-year-selection-title">Year range</p>
         <div className="historicalbar-year-selection-options">
-          <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} />
+          <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} firstOptionText="Year" />
           <ChoiceInput setValue={setEndYear} options={revYears} value={endYear} />
         </div>
       </div>
