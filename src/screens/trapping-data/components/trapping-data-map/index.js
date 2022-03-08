@@ -28,10 +28,10 @@ const mapStateToProps = (state) => {
   return {
     availableStates: availableHistoricalStates,
     availableSublocations: availableHistoricalSublocations,
-    county: county[0],
+    county,
     dataMode,
     endYear,
-    rangerDistrict: rangerDistrict[0],
+    rangerDistrict,
     selectedState,
     startYear,
     sublocationData,

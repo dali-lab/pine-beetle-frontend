@@ -165,14 +165,14 @@ const HistoricalMap = (props) => {
 
     // select county or RD depending on mode
     if (dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
-      if (props.county) { // remove selection if user clicks selected county
-        setCounty('');
+      if (props.county.length > 0) { // remove selection if user clicks selected county
+        setCounty([]);
       } else {
         setCounty([county]);
       }
     } else if (sublocations.includes(rangerDistrictToSet)) {
-      if (props.rangerDistrict) { // remove selection if user clicks selected ranger district
-        setRangerDistrict('');
+      if (props.rangerDistrict.length > 0) { // remove selection if user clicks selected ranger district
+        setRangerDistrict([]);
       } else {
         setRangerDistrict([rangerDistrictToSet]);
       }
