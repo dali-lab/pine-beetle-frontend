@@ -49,9 +49,13 @@ const MultiSelectInput = (props) => {
     }
   }, [valueChildren]);
 
+  // useEffect(() => {
+  //   setValueChildren(optionsChildren);
+  // }, [optionsChildren]);
+
   useEffect(() => {
-    setValueChildren(optionsChildren);
-  }, [optionsChildren]);
+    setValueChildren([]);
+  }, [valueParent]);
 
   const handleRemove = (element) => {
     setValueChildren(valueChildren.filter(e => e !== element));
