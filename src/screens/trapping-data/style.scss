@@ -2,7 +2,15 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-top: 45px;
+    margin-top: 0px;
+}
+
+#toggles-overlay-h{
+    display: flex;
+    position: absolute;
+    margin-top: 5px;
+    left: 31vw;
+    z-index: 1;
 }
 
 .selection {
@@ -22,14 +30,13 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        background-color: #DFFBFF;
+        background-color: #505050;
         border-radius: 100px;
         padding-left: 25px;
         padding-right: 25px;
 
         .selected-option-text {
-            font-weight: bold;
-            color: #020202;
+            color: #ffffff;
         }
         img {
             height: 20px;
@@ -40,14 +47,13 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        background-color: #F1E0FE;
+        background-color: #505050;
         border-radius: 100px;
         padding-left: 15px;
         padding-right: 15px;
 
         .selected-option-text {
-            font-weight: bold;
-            color: #020202;
+            color: #ffffff;
         }
         img {
             height: 20px;
@@ -61,6 +67,8 @@
         align-items: center;
         padding-left: 15px;
         padding-right: 15px;
+        box-shadow: 1px 1.5px 4px grey inset;
+        border-radius: 100px;
         cursor: pointer;
 
         .unselected-option-text {

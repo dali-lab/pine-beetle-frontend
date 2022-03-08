@@ -138,19 +138,6 @@ const Prediction = (props) => {
         </div>
         <div className="selection-p">
           <div
-            className={isGraphView ? 'selected-option-2-p' : 'unselected-option-p'}
-            onClick={() => { setGraphView(); clearAllSelections(); }}
-          >
-            <img
-              src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
-              alt="Chart View"
-              className={isGraphView ? 'selected-view-p' : 'unselected-view-p'}
-            />
-            <p className={isGraphView ? 'selected-option-text-p' : 'unselected-option-text-p'}>
-              Graph View
-            </p>
-          </div>
-          <div
             className={isGraphView ? 'unselected-option-p' : 'selected-option-2-p'}
             onClick={() => { setMapView(); clearAllSelections(); }}
           >
@@ -161,6 +148,19 @@ const Prediction = (props) => {
             />
             <p className={isGraphView ? 'unselected-option-text-p' : 'selected-option-text-p'}>
               Map View
+            </p>
+          </div>
+          <div
+            className={isGraphView ? 'selected-option-2-p' : 'unselected-option-p'}
+            onClick={() => { setGraphView(); clearAllSelections(); }}
+          >
+            <img
+              src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
+              alt="Chart View"
+              className={isGraphView ? 'selected-view-p' : 'unselected-view-p'}
+            />
+            <p className={isGraphView ? 'selected-option-text-p' : 'unselected-option-text-p'}>
+              Graph View
             </p>
           </div>
         </div>
