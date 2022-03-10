@@ -84,7 +84,7 @@ const MultiSelectInput = (props) => {
       <div className="location-list">
         <div className="location-list-header">
           <p className="location-list-instructions">Select location(s)</p>
-          <div className="location-list-clear" onClick={() => clearAllSelections()}>clear</div>
+          <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
         </div>
         {optionsParent.map(item => (
           <div

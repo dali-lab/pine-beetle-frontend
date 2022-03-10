@@ -88,6 +88,7 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
       endYear,
       startYear,
       predictionYear,
+      chartMode,
     } = getState().selections;
 
     const filters = {
@@ -105,7 +106,7 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
 
       if (prediction) {
         let predictionStates = [];
-        if (getState().selections.chartMode === CHART_MODES.MAP) {
+        if (chartMode === CHART_MODES.MAP) {
           predictionStates = await api.getAvailableStates(dataMode, {
             ...filters,
             isPrediction: true,
