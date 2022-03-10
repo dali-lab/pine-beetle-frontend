@@ -3,8 +3,8 @@ import { DATA_MODES, CHART_MODES } from '../../constants';
 
 const initialState = {
   startYear: 1988,
-  endYear: new Date().getFullYear(),
-  predictionYear: new Date().getFullYear(),
+  endYear: 2021,
+  predictionYear: 2021, // new Date().getFullYear() was 2022, leading to empty state data for now
   state: '',
   county: [],
   rangerDistrict: [],
