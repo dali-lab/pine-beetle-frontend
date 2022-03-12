@@ -24,6 +24,7 @@ const MultiSelectInput = (props) => {
 
   const ref = useRef();
   const [statusText, setStatusText] = useState('');
+  const [allSelected, setAllSelected] = useState(false);
   const [isListOpen, setIsListOpen] = useState(false);
 
   // close dropdown when clicking outside the component
@@ -63,6 +64,7 @@ const MultiSelectInput = (props) => {
 
   // set the parent and auto select all its children
   const selectParent = (parent) => {
+    setAllSelected(false);
     if (valueParent === parent) {
       setValueParent('');
     } else {
@@ -83,7 +85,15 @@ const MultiSelectInput = (props) => {
     return (
       <div className="location-list">
         <div className="location-list-header">
-          <p className="location-list-instructions" />
+          <button type="button"
+            className="location-list-instructions"
+            onClick={() => {
+              setAllSelected(!allSelected);
+              setValueParent('');
+            }}
+          >
+            {allSelected ? 'Unselect all' : 'Select all'}
+          </button>
           <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
         </div>
         {optionsParent.map(item => (
@@ -96,7 +106,7 @@ const MultiSelectInput = (props) => {
               onClick={() => selectParent(item)}
             >
               <img
-                src={valueParent === item ? selectedCheckbox : emptyCheckbox}
+                src={(valueParent === item || allSelected) ? selectedCheckbox : emptyCheckbox}
                 alt="Parent checkbox"
                 className="location-list-item-select-checkbox"
               />
