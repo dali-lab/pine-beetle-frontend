@@ -5,7 +5,6 @@ import './style.scss';
 
 const arrowDown = require('../../../assets/icons/arrow-down.png');
 const emptyCheckbox = require('../../../assets/icons/empty_checkbox.png');
-// const dashCheckbox = require('../../../assets/icons/dash_checkbox.png');
 const selectedCheckbox = require('../../../assets/icons/selected_checkbox.png');
 
 const CLEAR_TEXT = 'Select location(s)';
@@ -49,10 +48,6 @@ const MultiSelectInput = (props) => {
       setStatusText(valueParent ? `${valueParent} (${valueChildren.length} selected)` : CLEAR_TEXT);
     }
   }, [valueChildren, optionsChildren]);
-
-  // useEffect(() => {
-  //   setValueChildren(optionsChildren);
-  // }, [optionsChildren]);
 
   useEffect(() => {
     setValueChildren([]);
