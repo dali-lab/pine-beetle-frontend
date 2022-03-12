@@ -5,10 +5,10 @@ import './style.scss';
 
 const arrowDown = require('../../../assets/icons/arrow-down.png');
 const emptyCheckbox = require('../../../assets/icons/empty_checkbox.png');
-const dashCheckbox = require('../../../assets/icons/dash_checkbox.png');
+// const dashCheckbox = require('../../../assets/icons/dash_checkbox.png');
 const selectedCheckbox = require('../../../assets/icons/selected_checkbox.png');
 
-const CLEAR_TEXT = '';
+const CLEAR_TEXT = 'Select location(s)';
 
 const MultiSelectInput = (props) => {
   const {
@@ -43,11 +43,11 @@ const MultiSelectInput = (props) => {
 
   useEffect(() => {
     if (valueChildren.length === 0) {
-      setStatusText(valueParent ? `${valueParent} selected` : CLEAR_TEXT);
+      setStatusText(valueParent ? `${valueParent} (${optionsChildren.length} selected)` : CLEAR_TEXT);
     } else {
-      setStatusText(valueParent ? `${valueParent}: ${valueChildren.length} selected` : CLEAR_TEXT);
+      setStatusText(valueParent ? `${valueParent} (${valueChildren.length} selected)` : CLEAR_TEXT);
     }
-  }, [valueChildren]);
+  }, [valueChildren, optionsChildren]);
 
   // useEffect(() => {
   //   setValueChildren(optionsChildren);
@@ -83,7 +83,7 @@ const MultiSelectInput = (props) => {
     return (
       <div className="location-list">
         <div className="location-list-header">
-          <p className="location-list-instructions">Select location(s)</p>
+          <p className="location-list-instructions" />
           <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
         </div>
         {optionsParent.map(item => (
@@ -96,12 +96,18 @@ const MultiSelectInput = (props) => {
               onClick={() => selectParent(item)}
             >
               <img
-                src={valueParent === item ? dashCheckbox : emptyCheckbox}
+                src={valueParent === item ? selectedCheckbox : emptyCheckbox}
                 alt="Parent checkbox"
                 className="location-list-item-select-checkbox"
               />
               {item}
-              {valueParent === item && <span className="location-list-item-select-status">({valueChildren.length} selected)</span>}
+              {valueParent === item && (
+              <span className="location-list-item-select-status">({valueChildren.length === 0
+                ? optionsChildren.length
+                : valueChildren.length
+            } selected)
+              </span>
+              )}
             </div>
             {/* Second dropdown displaying all children data of a selected parent (e.g. counties of a state) */}
             {valueParent === item && (
@@ -113,7 +119,7 @@ const MultiSelectInput = (props) => {
                   onClick={() => selectChildren(child)}
                 >
                   <img
-                    src={(valueChildren.indexOf(child) > -1) ? selectedCheckbox : emptyCheckbox}
+                    src={(valueChildren.indexOf(child) > -1 || valueChildren.length === 0) ? selectedCheckbox : emptyCheckbox}
                     alt="Child checkbox"
                     className="location-list-item-select-checkbox"
                   />
