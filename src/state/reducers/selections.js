@@ -3,8 +3,8 @@ import { DATA_MODES, CHART_MODES } from '../../constants';
 
 const initialState = {
   startYear: 1988,
-  endYear: 2021,
-  predictionYear: 2021, // new Date().getFullYear() was 2022, leading to empty state data for now
+  endYear: new Date().getFullYear(),
+  predictionYear: new Date().getFullYear(),
   state: '',
   county: [],
   rangerDistrict: [],
@@ -96,10 +96,18 @@ const SelectionsReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.SET_AVAILABLE_STATES_PREDICTION:
-      return { ...state, availablePredictionStates: action.payload };
+      if (action.payload.length !== 0) {
+        return { ...state, availablePredictionStates: action.payload };
+      } else {
+        return state;
+      }
 
     case ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION:
-      return { ...state, availablePredictionSublocations: action.payload };
+      if (action.payload.length !== 0) {
+        return { ...state, availablePredictionSublocations: action.payload };
+      } else {
+        return state;
+      }
 
     case ActionTypes.SET_PREDICTION_MODAL:
       return { ...state, predictionModal: action.payload };
