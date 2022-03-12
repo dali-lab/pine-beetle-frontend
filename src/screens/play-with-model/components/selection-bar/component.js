@@ -42,7 +42,7 @@ const SelectionBar = (props) => {
       <div className="predictionbar-year-selection">
         <p className="predictionbar-year-selection-title">Year</p>
         <div className="predictionbar-year-selection-options">
-          <ChoiceInput setValue={setPredictionYear} value={year} options={revYears} />
+          <ChoiceInput setValue={setPredictionYear} value={year} options={revYears} firstOptionText="Year" />
         </div>
       </div>
       <div id="vl1" />

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './style.scss';
 
 const arrowDown = require('../../../assets/icons/arrow-down.png');
@@ -8,7 +8,7 @@ const emptyCheckbox = require('../../../assets/icons/empty_checkbox.png');
 const dashCheckbox = require('../../../assets/icons/dash_checkbox.png');
 const selectedCheckbox = require('../../../assets/icons/selected_checkbox.png');
 
-const CLEAR_TEXT = 'Select locations';
+const CLEAR_TEXT = '';
 
 const MultiSelectInput = (props) => {
   const {
@@ -22,16 +22,36 @@ const MultiSelectInput = (props) => {
     listOnly,
   } = props;
 
+  const ref = useRef();
   const [statusText, setStatusText] = useState('');
   const [isListOpen, setIsListOpen] = useState(false);
 
+  // close dropdown when clicking outside the component
+  useEffect(() => {
+    const checkIfClickedOutside = (e) => {
+      if (isListOpen && ref.current && !ref.current.contains(e.target)) {
+        setIsListOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', checkIfClickedOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', checkIfClickedOutside);
+    };
+  }, [isListOpen]);
+
   useEffect(() => {
     if (valueChildren.length === 0) {
-      setStatusText(valueParent ? 'all locations selected' : CLEAR_TEXT);
+      setStatusText(valueParent ? `${valueParent} selected` : CLEAR_TEXT);
     } else {
-      setStatusText(valueParent ? `${valueChildren.length} locations selected` : CLEAR_TEXT);
+      setStatusText(valueParent ? `${valueParent}: ${valueChildren.length} selected` : CLEAR_TEXT);
     }
   }, [valueChildren]);
+
+  // useEffect(() => {
+  //   setValueChildren(optionsChildren);
+  // }, [optionsChildren]);
 
   useEffect(() => {
     setValueChildren([]);
@@ -41,12 +61,30 @@ const MultiSelectInput = (props) => {
     setValueChildren(valueChildren.filter(e => e !== element));
   };
 
+  // set the parent and auto select all its children
+  const selectParent = (parent) => {
+    if (valueParent === parent) {
+      setValueParent('');
+    } else {
+      setValueParent(parent);
+    }
+  };
+
+  // add children to value list or remove it if previously selected
+  const selectChildren = (child) => {
+    if (valueChildren.indexOf(child) > -1) {
+      handleRemove(child);
+    } else {
+      setValueChildren([...valueChildren, child]);
+    }
+  };
+
   const locationList = () => {
     return (
       <div className="location-list">
         <div className="location-list-header">
           <p className="location-list-instructions">Select location(s)</p>
-          <div className="location-list-clear" onClick={() => clearAllSelections()}>clear</div>
+          <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
         </div>
         {optionsParent.map(item => (
           <div
@@ -55,7 +93,7 @@ const MultiSelectInput = (props) => {
           >
             <div
               className="location-list-item-select"
-              onClick={() => setValueParent(valueParent === item ? '' : item)}
+              onClick={() => selectParent(item)}
             >
               <img
                 src={valueParent === item ? dashCheckbox : emptyCheckbox}
@@ -72,13 +110,7 @@ const MultiSelectInput = (props) => {
                 <div
                   className="children-list-item"
                   key={child}
-                  onClick={() => {
-                    if (valueChildren.indexOf(child) > -1) {
-                      handleRemove(child);
-                    } else {
-                      setValueChildren([...valueChildren, child]);
-                    }
-                  }}
+                  onClick={() => selectChildren(child)}
                 >
                   <img
                     src={(valueChildren.indexOf(child) > -1) ? selectedCheckbox : emptyCheckbox}
@@ -110,7 +142,7 @@ const MultiSelectInput = (props) => {
     );
   } else {
     return (
-      <div className="multi-select-container">
+      <div className="multi-select-container" ref={ref}>
         <div className="input-container">
           <div className="location-wrapper">
             <div className="location-header" onClick={() => setIsListOpen(!isListOpen)}>
