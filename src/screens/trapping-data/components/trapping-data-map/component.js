@@ -276,18 +276,19 @@ const HistoricalMap = (props) => {
 
     Object.entries(trappingsByLocality).forEach(([localityDescription, sumSpotst0]) => {
       let color;
+      const avgSpots = sumSpotst0 / numYears;
 
-      if (sumSpotst0 === null) {
+      if (avgSpots === null) {
         color = colors[0];
-      } else if (sumSpotst0 < 10) {
+      } else if (avgSpots < 10) {
         color = colors[1];
-      } else if (sumSpotst0 < 20) {
+      } else if (avgSpots < 20) {
         color = colors[2];
-      } else if (sumSpotst0 < 50) {
+      } else if (avgSpots < 50) {
         color = colors[3];
-      } else if (sumSpotst0 < 100) {
+      } else if (avgSpots < 100) {
         color = colors[4];
-      } else if (sumSpotst0 < 250) {
+      } else if (avgSpots < 250) {
         color = colors[5];
       } else {
         color = colors[6];
@@ -526,7 +527,7 @@ const HistoricalMap = (props) => {
             {rawData?.length === 1
               ? (
                 <div className="circle" id="spbs">
-                  <div id="percent">{rawData[0].avgSpbPer2Weeks ? (rawData[0].avgSpbPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
+                  <div id="percent">{rawData[0].sumSpbPer2Weeks ? (rawData[0].sumSpbPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
                 </div>
               )
               : <div className="circle" id="empty" />
@@ -537,7 +538,7 @@ const HistoricalMap = (props) => {
             {rawData?.length === 1
               ? (
                 <div className="circle" id="clerid">
-                  <div id="percent">{rawData[0].avgCleridsPer2Weeks ? (rawData[0].avgCleridsPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
+                  <div id="percent">{rawData[0].sumCleridsPer2Weeks ? (rawData[0].sumCleridsPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
                 </div>
               )
               : <div className="circle" id="empty" />
@@ -547,7 +548,7 @@ const HistoricalMap = (props) => {
           <div className="data-info-section">
             {rawData?.length === 1
               ? (
-                <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0)}>
+                <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0 / numYears)}>
                   <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div>
                 </div>
               )
