@@ -145,7 +145,7 @@ const DownloadData = (props) => {
             </div>
             <h4 id="subtitle">Location(s)</h4>
             <div id="location-select">
-              <div className="selection-mode">
+              <div className="selection-p" id="selection-download">
                 <div
                   className={countyMode ? 'selected-option-2-p' : 'unselected-option-p'}
                   onClick={() => { setDataMode(DATA_MODES.COUNTY); clearAllSelections(); }}

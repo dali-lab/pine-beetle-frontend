@@ -55,10 +55,6 @@
     border-radius: 10px;
     width: 302px;
 
-    .selection-mode {
-        margin-top: 2vh;
-    }
-
     .input-container {
         background-color: #F3F3F3;
         height: 30px;
@@ -67,6 +63,10 @@
     .location-list {
         max-height: 200px;
     }
+}
+
+#selection-download {
+    margin-top: 2vh;
 }
 
 .selection-mode {
