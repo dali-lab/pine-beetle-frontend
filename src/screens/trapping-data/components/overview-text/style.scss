@@ -5,6 +5,13 @@
     margin-bottom: 50px;
 }
 
+#overview-explanation {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
 #title {
     font-family: 'Inter';
     font-size: 44px;
@@ -12,8 +19,20 @@
     margin-right: 21px;
 }
 
+#explanatory-text{
+    font-family: 'Inter';
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
 #icon {
     width: 36px;
     height: 36px;
     margin-top: 8px;
+}
+
+.read-more-less--more,
+.read-more-less--less {
+  color: #000;
+  font-weight: bold;
 }

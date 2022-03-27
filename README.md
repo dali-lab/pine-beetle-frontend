@@ -91,10 +91,13 @@ Pull requests should always be first merged into the `dev` branch so they are st
 
 - Thomas Monfre
 - Jeff Liu
-- Angela Zhang
+- Alejandro Lopez
+- Grace Wang
+- Maria Cristoforo
 
 ### Past Project Members
 
+- Angela Zhang
 - Nathan Schneider
 - John McCambridge
 - Madeline Hess

@@ -6,30 +6,32 @@ import {
   clearSelections,
   setCounty,
   setDataMode,
+  setPredictionYear,
   setRangerDistrict,
   setState,
-  setYear,
 } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
     selections: {
-      year,
+      predictionYear: year,
       state: selectedState,
       county,
       rangerDistrict,
       dataMode,
-    },
-    predictions: {
-      data: predictionsData,
+      availablePredictionYears,
+      availablePredictionStates,
+      availablePredictionSublocations,
     },
   } = state;
 
   return {
-    county,
-    rangerDistrict,
+    availableYears: availablePredictionYears,
+    availableStates: availablePredictionStates,
+    availableSublocations: availablePredictionSublocations,
+    county: county.length === 1 ? county[0] : county,
+    rangerDistrict: rangerDistrict.length === 1 ? rangerDistrict[0] : rangerDistrict,
     selectedState,
-    predictionsData,
     dataMode,
     year,
   };
@@ -40,8 +42,8 @@ const mapDispatchToProps = (dispatch) => {
     clearAllSelections: () => {
       dispatch(clearSelections());
     },
-    setYear: (year) => {
-      dispatch(setYear(year));
+    setPredictionYear: (year) => {
+      dispatch(setPredictionYear(year));
     },
     setCounty: (county) => {
       dispatch(setCounty(county));

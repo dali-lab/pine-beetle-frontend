@@ -3,25 +3,20 @@ import { Link, useLocation } from 'react-router-dom';
 
 import './style.scss';
 
-import { ROUTES, DATA_MODES } from '../../constants';
+import { ROUTES } from '../../constants';
+// eslint-disable-next-line import/no-cycle
+import { DownloadData } from '..';
 
 const pineBeetleImage = require('../../assets/icons/black-beetle-logo.png');
 
 const Header = (props) => {
-  const {
-    dataMode,
-    setDataMode,
-  } = props;
-
   const routes = {
-    [ROUTES.TRAPPING_DATA]: 'Trapping Data',
     [ROUTES.PREDICTIONS]: 'Predict Outbreak',
+    [ROUTES.TRAPPING_DATA]: 'Historical Data',
     [ROUTES.PLAY_WITH_MODEL]: 'Play With Model',
     [ROUTES.ABOUT]: 'About',
   };
 
-  const setCountyMode = () => setDataMode(DATA_MODES.COUNTY);
-  const setRangerDistrictMode = () => setDataMode(DATA_MODES.RANGER_DISTRICT);
 
   return (
     <div id="header">
@@ -44,21 +39,8 @@ const Header = (props) => {
                   </Link>
                 ))}
               </div>
-              <div id="data-mode-toggle-container">
-                <button
-                  id="data-mode-county"
-                  className={`data-mode-button ${dataMode === DATA_MODES.COUNTY ? 'selected' : 'unselected'}`}
-                  type="button"
-                  onClick={setCountyMode}
-                >County
-                </button>
-                <button
-                  id="data-mode-rangerdistrict"
-                  className={`data-mode-button ${dataMode === DATA_MODES.RANGER_DISTRICT ? 'selected' : 'unselected'}`}
-                  type="button"
-                  onClick={setRangerDistrictMode}
-                >Ranger District
-                </button>
+              <div id="download-button-area">
+                <DownloadData />
               </div>
             </div>
           </div>

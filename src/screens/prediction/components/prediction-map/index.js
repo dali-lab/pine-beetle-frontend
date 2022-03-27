@@ -6,9 +6,8 @@ import {
   setCounty,
   setRangerDistrict,
   setState,
+  setPredictionModal,
 } from '../../../../state/actions';
-
-import { DATA_MODES } from '../../../../constants';
 
 const mapStateToProps = (state) => {
   const {
@@ -17,30 +16,21 @@ const mapStateToProps = (state) => {
       dataMode,
       rangerDistrict,
       state: selectedState,
-      year,
+      predictionYear: year,
+      availablePredictionStates,
+      availablePredictionSublocations,
     },
-    predictions: {
-      county: allCountyData,
-      data: predictionsData,
-      rangerDistrict: allRangerDistrictData,
+    data: {
+      predictions,
     },
   } = state;
 
-  const allCounties = [...new Set(predictionsData.map(obj => obj.county))];
-  const allRangerDistricts = [...new Set(allRangerDistrictData.map(obj => obj.rangerDistrict))];
-  const allSelectedStates = [...new Set(predictionsData.map(obj => obj.state))];
-
-  const allRelevantData = dataMode === DATA_MODES.COUNTY ? allCountyData : allRangerDistrictData;
-  const allTotalStates = [...new Set(allRelevantData.filter(obj => obj.year === year).map(obj => obj.state))];
-
   return {
-    allCounties,
-    allRangerDistricts,
-    allSelectedStates,
-    allTotalStates,
+    availableStates: availablePredictionStates,
+    availableSublocations: availablePredictionSublocations,
     county,
     dataMode,
-    predictionsData,
+    data: predictions,
     rangerDistrict,
     selectedState,
     year,
@@ -57,6 +47,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setState: (state) => {
       dispatch(setState(state));
+    },
+    setPredictionModal: (show) => {
+      dispatch(setPredictionModal(show));
     },
   };
 };

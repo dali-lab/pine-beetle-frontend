@@ -1,6 +1,7 @@
 #download-button-container {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
 
 #download-button img {
@@ -8,25 +9,27 @@
 }
 
 #download-button {
-    height: 43px;
-    padding: 6px 21px 5px;
+    height: 35px;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-top: 5px;
     border-radius: 6px;
-    background-color: #ced6fe;
+    background-color: #4CD791;
     display: flex;
-    margin-bottom: 90px;
-    margin-right: unquote("max(100px, 13%)");
 }
 
-#download-button img {
-    width: 24px;
-    height: 24px;
+#download-icon{
+    width: 20px !important; //overrides image styling from title-area of header
+    height: 20px !important;
+    margin-left: 9px !important;
 }
+
 
 #download-button p {
-    margin-left: 20px;
-    font-size: 18px;
-    text-align: left;
-    color: #000000;
+    font-size: 15px;
+    text-align: center;
+    white-space: nowrap;
+    color: #ffffff;
 }
 
 #downloading-container {
@@ -39,23 +42,119 @@
     margin-top: 55px;
     text-align: center;
 
-    h4 {
-        margin-right: 25px;
+
+}
+
+#location-select {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #F3F3F3;
+    margin-top: 1vh;
+    border-radius: 10px;
+    width: 302px;
+
+    .input-container {
+        background-color: #F3F3F3;
+        height: 30px;
+    }
+
+    .location-list {
+        max-height: 200px;
     }
 }
 
-.modal {
+#selection-download {
+    margin-top: 2vh;
+}
+
+.selection-mode {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 300px;
+    height: 40px;
+    background-color: #FFFFFF;
+    border-radius: 100px;
+    border: 1px solid #B7B7B7;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25);
+    margin-top: 5vh;
+
+    .selected-option-p {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #DFFBFF;
+        border-radius: 100px;
+        padding-left: 25px;
+        padding-right: 25px;
+
+        .selected-option-text-p {
+            color: #ffffff;
+        }
+        img {
+            height: 20px;
+            width: 20px;
+        }
+    }
+    .selected-option-2-p {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #505050;
+        border-radius: 100px;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        .selected-option-text-p {
+            color: #ffffff;
+        }
+        img {
+            height: 20px;
+            width: 20px;
+            margin-right: 10px;
+        }
+    }
+    .unselected-option-p {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 15px;
+        padding-right: 15px;
+        box-shadow: 1px 1.5px 4px grey inset;
+        border-radius: 100px;
+        cursor: pointer;
+
+        .unselected-option-text-p {
+            color: #93949B;
+        }
+        img {
+            height: 20px;
+            width: 20px;
+            margin-right: 10px;
+        }
+    }
+}
+
+.download-modal {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 720px;
-    width: 60vw;
+    width: 55vw;
+    height: 70vh;
     padding: 50px;
     border-radius: 20px;
     background-color: #ffffff;
     // TODO: replace box shadow with grayer background later
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+
+    .selection-button {
+        width: 9vw;
+        background-color: #F3F3F3;
+    }
 }
 
 // remove unnecessary blue outline from modal (does not impact accessibility)
@@ -88,36 +187,56 @@
     color: #1e1e1e;
 }
 
+
 #modal-year {
     display: flex;
-    margin-top: 35px;
+    margin-top: 5px;
 }
 
 #modal-year #year-selection {
-    margin-right: 52px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    padding: 0;
 }
 
-#modal-year #all-years-button {
-    padding: 7px 15px;
-    margin-top: 25px;
-    border-radius: 6px;
-    background-color: #c9cdd9;
-    font-family: "Inter";
-    font-size: 14px;
-    font-weight: 500;
-    color: #2f303a;
+#modal-year #start-year-selection{
+    margin-right: 5px;
+}
+
+#subtitle{
+    font-size: 18px;
+    margin-top: 25px; //to match "options" section
+    padding: 0;
 }
 
 #modal-state-county-rd {
-    margin-top: 20px;
-    margin-right: 25px;
+    width: 20vw;
+    height: 25vh;
+    margin-top: 10px;
     display: flex;
+    border-radius: 5px;
+    background-color: #F3F3F3;
+    padding: 5px;
 }
 
 #modal-download-selection #question {
-    margin-top: 60px;
+    margin-top: 30px;
     display: flex;
     align-items: center;
+}
+
+.modal-divide-flex{
+    display: flex;
+    flex-direction: row;
+}
+
+#divider-line{
+    border-left: 1px solid #AEAEAE;
+    height: 54vh;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 25px;
 }
 
 #modal-download-selection #question h4 {
@@ -126,14 +245,24 @@
 }
 
 #selection-types {
-    margin-top: 25px;
+    margin-top: 15px;
+    width: 18vw;
+    height: 15vh;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    margin-right: 78px;
+    gap: 10px;
+    background-color: #F3F3F3;
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 6px;
+    margin-right: 20px;
 }
 
 .checkbox-text {
-    font-size: 18px;
+    font-size: 14px;
     margin-left: 10px;
 }
 
@@ -154,11 +283,11 @@
 
 #modal-submit-btn {
     height: 43px;
-    padding: 5px 52px 5px 22px;
-    margin-left: 35%;
-    margin-top: 55px;
-    border-radius: 6px;
-    background-color: #ced6fe;
+    padding: 5px 25px 5px 25px;
+    margin-left: 82%;
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color: #434754;
     display: flex;
     border: none;
     text-align: center;
@@ -172,16 +301,19 @@
 }
 
 #modal-submit-btn p {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.8;
+    color: #ffffff;
 }
 
 #modal-footnote-container {
-    margin-top: 40px;
+    margin-top: 20px;
+}
 
-    .modal-footnote {
-        
-    }
+.modal-footnote{
+    font-size: 11px;
+    color: #AEAEAE;
+    margin-bottom: 5px;
 }
 
 // https://stackoverflow.com/questions/58355628/animate-react-modal

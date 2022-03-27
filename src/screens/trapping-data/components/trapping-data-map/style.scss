@@ -8,7 +8,7 @@
 #trapping-map-container {
     position: relative;
     margin-bottom: 100px;
-    margin-top: 30px;
+    margin-top: 0px;
     flex: 1.1 !important;
     border-radius: 20px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
@@ -76,6 +76,84 @@
     display: inline-block;
     width: 100%;
     line-height: 1.1;
+}
+
+#historical-data-overlay {
+    width: 350px;
+}
+
+.data-info-historical {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 10px;
+    
+    .data-info-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .circle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0px;
+            width: 75px;
+            height: 75px;
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        #empty {
+            background-color: #DBDBDB;
+        }
+
+        #spbs {
+            background-color: #ACA0F9;
+        }
+
+        #clerid {
+            background-color: #E4C89D;
+        }
+
+        #spots-null {
+            background-color: #D3D3D3;
+        }
+
+        #spots-10 {
+            background-color: #86CCFF;
+        }
+
+        #spots-20 {
+            background-color: #FFC148;
+        }
+
+        #spots-50 {
+            background-color: #FFA370;
+        }
+
+        #spots-100 {
+            background-color: #FF525C;
+        }
+
+        #spots-250 {
+            background-color: #CB4767;
+            color: #FFFFFF;
+        }
+
+        #spots-more {
+            background-color: #6B1B38;
+            color: #FFFFFF;
+        }
+
+        p {
+            margin-top: 10px;
+            line-height: 1;
+            width: 100px;
+            font-size: 12px;
+        }
+    }
 }
 
 
@@ -172,6 +250,7 @@
 }
 
 #trapping-hover {
+    display: none;
     position: absolute;
     background-color: rgba(17, 18, 22, 0.75);
     padding: 15px;
@@ -189,8 +268,8 @@
 
 #map-overlay-download {
     position: absolute;
-    bottom: 0;
-    right: 10;
+    bottom: 10px;
+    right: 40px;
     background: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(2px);
     font-family: 'Inter';

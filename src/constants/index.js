@@ -1,15 +1,15 @@
 const MIN_WIDTH_THRESHOLD = 725;
 
 const SERVER_ENDPOINTS = {
-  LOCAL: 'http://localhost:9090/v2',
-  DEV: 'https://pine-beetle-prediction-dev.herokuapp.com/v2',
-  PROD: 'https://pine-beetle-prediction.herokuapp.com/v2',
+  LOCAL: 'http://localhost:9090/v3',
+  DEV: 'https://pine-beetle-prediction-dev.herokuapp.com/v3',
+  PROD: 'https://pine-beetle-prediction.herokuapp.com/v3',
 };
 
 const AUTOMATION_SERVER_ENDPOINTS = {
-  LOCAL: 'http://localhost:9091/v2',
-  DEV: 'https://pine-beetle-automation-dev.herokuapp.com/v2',
-  PROD: 'https://pine-beetle-automation.herokuapp.com/v2',
+  LOCAL: 'http://localhost:9091/v3',
+  DEV: 'https://pine-beetle-automation-dev.herokuapp.com/v3',
+  PROD: 'https://pine-beetle-automation.herokuapp.com/v3',
 };
 
 // map of state abbreviations to their names
@@ -17,20 +17,18 @@ const stateAbbrevToStateName = require('./state-abbreviations.json');
 const stateAbbrevToStateId = require('./state-ids.json');
 const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 
+
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
 const getServerUrl = () => {
-  switch (window.location.origin) {
-    case 'http://localhost:8080':
-      return SERVER_ENDPOINTS.DEV; // could to LOCAL if running server locally
+  switch (process.env.MAIN_BACKEND_ENV) {
+    case 'LOCAL':
+      return SERVER_ENDPOINTS.LOCAL;
 
-    case 'https://pine-beetle-prediction-dev.netlify.app':
+    case 'DEV':
       return SERVER_ENDPOINTS.DEV;
 
-    case 'https://pine-beetle-prediction.netlify.app':
-      return SERVER_ENDPOINTS.PROD;
-
-    case 'https://www.spbpredict.com':
+    case 'PROD':
       return SERVER_ENDPOINTS.PROD;
 
     default:
@@ -39,17 +37,14 @@ const getServerUrl = () => {
 };
 
 const getAutomationServerUrl = () => {
-  switch (window.location.origin) {
-    case 'http://localhost:8080':
-      return AUTOMATION_SERVER_ENDPOINTS.DEV; // could to LOCAL if running server locally
+  switch (process.env.AUTOMATION_ENV) {
+    case 'LOCAL':
+      return AUTOMATION_SERVER_ENDPOINTS.LOCAL;
 
-    case 'https://pine-beetle-prediction-dev.netlify.app':
+    case 'DEV':
       return AUTOMATION_SERVER_ENDPOINTS.DEV;
 
-    case 'https://pine-beetle-prediction.netlify.app':
-      return AUTOMATION_SERVER_ENDPOINTS.PROD;
-
-    case 'https://www.spbpredict.com':
+    case 'PROD':
       return AUTOMATION_SERVER_ENDPOINTS.PROD;
 
     default:
@@ -77,20 +72,18 @@ const CHART_MODES = {
 const ROUTES = {
   ABOUT: '/about',
   ADMIN: '/admin',
-  TRAPPING_DATA: '/trapping-data',
+  TRAPPING_DATA: '/historical-data',
   HOME: '/',
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predict-outbreak',
 };
 
 const DOWNLOAD_DATA_ROUTES = {
-  '1988-2009 DATA': '/data-download/old-data',
-  HELPER: '/data-download/helper-data',
-  PREDICTION_COUNTY: '/county-prediction/download',
-  PREDICTION_RD: '/rd-prediction/download',
-  SUMMARIZED_COUNTY: '/summarized-county-trapping/download',
-  SUMMARIZED_RD: '/summarized-rangerdistrict-trapping/download',
+  SUMMARIZED_COUNTY: '/summarized-county/download',
+  SUMMARIZED_RD: '/summarized-rangerdistrict/download',
   UNSUMMARIZED: '/unsummarized-trapping/download',
+  PREDICTED_COUNTY: '/summarized-county/download-predict',
+  PREDICTED_RD: '/summarized-rangerdistrict/download-predict',
 };
 
 const DATA_TYPE_EXTENSIONS = {
@@ -100,6 +93,10 @@ const DATA_TYPE_EXTENSIONS = {
 };
 
 const VIDEO_URL = 'https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/preview';
+
+const getYearRange = (start, end) => {
+  return Array(end - start + 1).fill().map((_, idx) => start + idx);
+};
 
 export {
   AUTOMATION_SERVER_ENDPOINTS,
@@ -117,5 +114,6 @@ export {
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
+  getYearRange,
   VIDEO_URL,
 };

@@ -2,35 +2,58 @@ import { connect } from 'react-redux';
 
 import Prediction from './component';
 
+import {
+  setChartMode,
+  clearSelections,
+  setDataMode,
+  setPredictionModal,
+} from '../../state/actions';
+
 const mapStateToProps = (state) => {
   const {
     error: {
-      predictionsError: {
-        text: predictionsErrorText,
+      fetchError: {
+        text: fetchErrorText,
       },
     },
-    predictions: {
-      data: predictionData,
-      fetchingCounty,
-      fetchingRangerDistrict,
+    data: {
+      predictions,
+      fetchingPredictions,
     },
     selections: {
-      state: selectedState,
+      predictionModal,
+      chartMode,
+      dataMode,
     },
   } = state;
 
-  const isLoading = fetchingCounty && fetchingRangerDistrict;
+  const isLoading = fetchingPredictions;
 
   return {
+    data: predictions,
+    fetchErrorText,
     isLoading,
-    predictionData,
-    predictionsErrorText,
-    selectedState,
+    predictionModal,
+    chartMode,
+    dataMode,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setPredictionModal: (show) => {
+      dispatch(setPredictionModal(show));
+    },
+    clearAllSelections: () => {
+      dispatch(clearSelections());
+    },
+    setChartMode: (mode) => {
+      dispatch(setChartMode(mode));
+    },
+    setDataMode: (mode) => {
+      dispatch(setDataMode(mode));
+    },
+  };
 };
 
 export default connect(

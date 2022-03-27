@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TextInput, ChoiceInput } from '../../../../components/input-components';
+import { MultiSelectInput, ChoiceInput } from '../../../../components/input-components';
 
 import { DATA_MODES } from '../../../../constants';
 
@@ -13,74 +13,49 @@ import './style.scss';
 
 const SelectionBar = (props) => {
   const {
-    clearAllSelections,
+    availableStates,
+    availableSublocations,
+    availableYears,
+    clearSelections,
     county,
     dataMode,
     endYear,
     rangerDistrict,
     selectedState,
     setCounty,
-    setDataMode,
     setEndYear,
     setRangerDistrict,
     setStartYear,
     setState,
     startYear,
-    trappingData,
   } = props;
 
-  const countyMode = dataMode === DATA_MODES.COUNTY;
-
-  const allStates = [...new Set(trappingData.map(obj => obj.state))].sort();
-  const allCounties = selectedState ? [...new Set(trappingData.map((obj => obj.county)))].sort() : [];
-  const allRangerDistricts = selectedState ? [...new Set(trappingData.map((obj => obj.rangerDistrict)))].sort() : [];
-
-  const statesMappedToNames = allStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
+  const revYears = [...availableYears].reverse();
 
   return (
-    <div id="predictionbar-trapping" className="container">
-      <div id="year-selection">
-        <div id="start-year-selection"><TextInput instructions="Year" setValue={setStartYear} value={startYear} /></div>
-        <div id="vl3" />
-        {/* TODO: "to" */}
-        <div id="end-year-selection"><TextInput setValue={setEndYear} value={endYear} /></div>
-      </div>
-      <div id="vl1" />
-      <ChoiceInput instructions="Select State" value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
-      <div id="vl1" />
-      <div className="menuInstruction">
-        <div id="mode-selection">
-          <button
-            id="mode-btn"
-            onClick={() => { setDataMode(DATA_MODES.COUNTY); }}
-            className={(countyMode) ? 'county-rd-selection' : null}
-            type="button"
-          >
-            County
-          </button>
-          <div id="vl2" />
-          <button
-            id="mode-btn"
-            onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
-            className={(!countyMode) ? 'county-rd-selection' : null}
-            type="button"
-          >
-            <span className="full-text">Ranger District</span>
-            <span className="short-text">RD</span>
-          </button>
-        </div>
-        <div>
-          <ChoiceInput
-            value={countyMode ? county : rangerDistrict}
-            setValue={countyMode ? setCounty : setRangerDistrict}
-            options={countyMode ? allCounties : allRangerDistricts}
-            firstOptionText={countyMode ? 'County' : 'Ranger District'}
-          />
+    <div id="historicalbar" className="container">
+      <div className="historicalbar-year-selection">
+        <p className="historicalbar-year-selection-title">Year range</p>
+        <div className="historicalbar-year-selection-options">
+          <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} firstOptionText="Year" />
+          <ChoiceInput setValue={setEndYear} options={revYears} value={endYear} />
         </div>
       </div>
-      <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections} type="button">Clear</button>
+      <div className="historicalbar-location-selection">
+        <p className="historicalbar-location-selection-title">Locations</p>
+        <MultiSelectInput
+          valueParent={selectedStateName}
+          valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
+          setValueParent={setStateAbbrev}
+          setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
+          optionsParent={statesMappedToNames}
+          optionsChildren={availableSublocations}
+        />
+      </div>
+      <button className="historicalbar-clear-button" onClick={clearSelections} type="button">Clear</button>
     </div>
   );
 };

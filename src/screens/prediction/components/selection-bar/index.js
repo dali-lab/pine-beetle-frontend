@@ -5,33 +5,42 @@ import SelectionBar from './component';
 import {
   clearSelections,
   setCounty,
-  setDataMode,
+  setPredictionYear,
+  setStartYear,
+  setEndYear,
   setRangerDistrict,
   setState,
-  setYear,
 } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
     selections: {
-      year,
+      predictionYear: year,
       state: selectedState,
+      startYear,
+      endYear,
+      chartMode,
       county,
       rangerDistrict,
       dataMode,
-    },
-    predictions: {
-      data: predictionsData,
+      availablePredictionYears,
+      availablePredictionStates,
+      availablePredictionSublocations,
     },
   } = state;
 
   return {
+    availableYears: availablePredictionYears,
+    availableStates: availablePredictionStates,
+    availableSublocations: availablePredictionSublocations,
     county,
     rangerDistrict,
     selectedState,
-    predictionsData,
     dataMode,
     year,
+    startYear,
+    endYear,
+    chartMode,
   };
 };
 
@@ -40,14 +49,17 @@ const mapDispatchToProps = (dispatch) => {
     clearAllSelections: () => {
       dispatch(clearSelections());
     },
-    setYear: (year) => {
-      dispatch(setYear(year));
+    setPredictionYear: (year) => {
+      dispatch(setPredictionYear(year));
+    },
+    setStartYear: (startYear) => {
+      dispatch(setStartYear(startYear));
+    },
+    setEndYear: (endYear) => {
+      dispatch(setEndYear(endYear));
     },
     setCounty: (county) => {
       dispatch(setCounty(county));
-    },
-    setDataMode: (dataMode) => {
-      dispatch(setDataMode(dataMode));
     },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));

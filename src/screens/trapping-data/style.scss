@@ -2,37 +2,85 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin-top: 45px;
+    margin-top: 0px;
 }
 
-#selection {
-    text-align: right;
-    margin-left: 30px;
-    cursor: pointer;
+#toggles-overlay-h{
+    display: flex;
+    position: absolute;
+    margin-top: 5px;
+    left: 35vw;
+    z-index: 1;
 }
 
-#selection img {
-    height: 20px;
-    width: 20px;
-}
+.selection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
+    background-color: #F4F4F4;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25), 1px 1.5px 4px grey inset;
+    border-radius: 100px;
+    border: 4px solid #FFFFFF;
+    margin-top: 2vh;
+    margin-left: 1vw;
 
-#selected-view {
-    color: black;
-    font-weight: medium;
-}
+    .selected-option {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #505050;
+        border-radius: 100px;
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-top: 1.4px;
+        padding-bottom: 1.4px;
 
-.view-selection-btn {
-    border: none;
-    cursor: pointer;   
-    background-color: #FBFBFD;
-    font-family: 'Inter';
-    font-weight: normal;
-    font-size: 21px;
-    text-align: right;
-    color: #7c7c96;
-}
+        .selected-option-text {
+            color: #ffffff;
+        }
+        img {
+            height: 20px;
+            width: 20px;
+        }
+    }
+    .selected-option-2 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        background-color: #505050;
+        border-radius: 100px;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 1.4px;
+        padding-bottom: 1.4px;
 
-.view-selection-btn img { 
-    width: 20px;
-    height: 20px;
+        .selected-option-text {
+            color: #ffffff;
+        }
+        img {
+            height: 20px;
+            width: 20px;
+            margin-right: 10px;
+        }
+    }
+    .unselected-option {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding-left: 15px;
+        padding-right: 15px;
+        border-radius: 100px;
+        cursor: pointer;
+
+        .unselected-option-text {
+            color: #93949B;
+        }
+        img {
+            height: 20px;
+            width: 20px;
+            margin-right: 10px;
+        }
+    }
 }

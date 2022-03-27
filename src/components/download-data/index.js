@@ -7,35 +7,36 @@ import {
   setAllYears,
   setCounty,
   setDataMode,
+  setEndYear,
   setRangerDistrict,
+  setStartYear,
   setState,
-  setYearRange,
 } from '../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
     selections: {
-      yearRange: {
-        startYear,
-        endYear,
-      },
+      startYear,
+      endYear,
       state: selectedState,
       county,
       rangerDistrict,
       dataMode,
-    },
-    trappings: {
-      data: trappingData,
+      availableHistoricalYears,
+      availableHistoricalStates,
+      availableHistoricalSublocations,
     },
   } = state;
 
   return {
+    availableYears: availableHistoricalYears,
+    availableStates: availableHistoricalStates,
+    availableSublocations: availableHistoricalSublocations,
     county,
     endYear,
     rangerDistrict,
     selectedState,
     startYear,
-    trappingData,
     dataMode,
   };
 };
@@ -49,10 +50,10 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(setAllYears());
     },
     setStartYear: (startYear) => {
-      dispatch(setYearRange(startYear, undefined));
+      dispatch(setStartYear(startYear));
     },
     setEndYear: (endYear) => {
-      dispatch(setYearRange(undefined, endYear));
+      dispatch(setEndYear(endYear));
     },
     setCounty: (county) => {
       dispatch(setCounty(county));

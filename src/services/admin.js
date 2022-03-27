@@ -10,9 +10,9 @@ import {
 
 const SUBROUTES = {
   PIPELINE: 'pipeline',
-  SPOT_DATA_COUNTY: 'spot-data-county',
-  SPOT_DATA_RD: 'spot-data-rangerdistrict',
-  SURVEY123: 'survey123',
+  SPOT_DATA_COUNTY: 'summarized-county/spots/upload',
+  SPOT_DATA_RD: 'summarized-rangerdistrict/spots/upload',
+  SURVEY123: 'survey123/upload',
 };
 
 /**
@@ -21,7 +21,7 @@ const SUBROUTES = {
  * @returns {Promise<Object>} API response
  */
 export const uploadCountySpotCsv = async (file) => {
-  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SPOT_DATA_COUNTY}/upload`;
+  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SPOT_DATA_COUNTY}`;
   const token = getAuthTokenFromStorage();
 
   const formData = new FormData();
@@ -47,7 +47,7 @@ export const uploadCountySpotCsv = async (file) => {
  * @returns {Promise<Object>} API response
  */
 export const uploadRangerDistrictSpotCsv = async (file) => {
-  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SPOT_DATA_RD}/upload`;
+  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SPOT_DATA_RD}`;
   const token = getAuthTokenFromStorage();
 
   const formData = new FormData();
@@ -73,7 +73,7 @@ export const uploadRangerDistrictSpotCsv = async (file) => {
  * @returns {Promise<Object>} API response
  */
 export const uploadSurvey123UnsummarizedCsv = async (file) => {
-  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SURVEY123}/upload`;
+  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SURVEY123}`;
   const token = getAuthTokenFromStorage();
 
   const formData = new FormData();

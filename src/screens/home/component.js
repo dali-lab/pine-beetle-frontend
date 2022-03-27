@@ -34,9 +34,9 @@ const Home = (_props) => {
           </Link>
         </div>
         <div className="page-container">
-          <div id="page-name">Trapping data</div>
+          <div id="page-name">Historical Data</div>
           <div id="summary">
-            Trapping data collected since 2011 were used to build the prediction model on this website. View and download the data here. Data can be filtered by years and/or locations.
+            Trapping data collected since 1988 were used to build the prediction model on this website. View and download the data here. Data can be filtered by years and/or locations.
           </div>
           <Link to={ROUTES.TRAPPING_DATA} className="animated-button" id="click-to">
             View trapping data
@@ -45,7 +45,7 @@ const Home = (_props) => {
         <div className="page-container" id="right-page-container">
           <div id="page-name">Play with the model</div>
           <div id="summary">
-            Trapping data collected since 2011 were used to build the prediction model on this website. View and download the data here with years and/or location filters.
+            Trapping data collected since 1988 were used to build the prediction model on this website. View and download the data here with years and/or location filters.
           </div>
           <Link to={ROUTES.PLAY_WITH_MODEL} className="animated-button" id="click-to">
             Play with the model

@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-scroll';
+import React, { useEffect } from 'react';
+import Modal from 'react-modal';
 
 import {
   AboutPredictions,
   OverviewText,
+  PredictionChart,
   PredictionDetails,
   PredictionMap,
   SelectionBar,
 } from './components';
 
 import {
-  DownloadData,
   Loading,
-  ScrollIcon,
 } from '../../components';
 
+import { CHART_MODES, DATA_MODES } from '../../constants';
+
 import './style.scss';
+
+const closeIcon = require('../../assets/icons/close.png');
+const mapSelectedIcon = require('../../assets/icons/map-selected.png');
+const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
+const graphSelectedIcon = require('../../assets/icons/graph-selected.png');
+const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
 
 const histogrambin1 = require('../../assets/images/spb-histogram-bin1.png');
 const histogrambin2 = require('../../assets/images/spb-histogram-bin2.png');
@@ -26,51 +33,65 @@ const histogrambin6 = require('../../assets/images/spb-histogram-bin6.png');
 
 const Prediction = (props) => {
   const {
+    data,
+    fetchErrorText,
     isLoading,
-    predictionData,
-    predictionsErrorText,
-    selectedState,
+    predictionModal,
+    setPredictionModal,
+    chartMode,
+    dataMode,
+    setChartMode,
+    setDataMode,
+    clearAllSelections,
   } = props;
 
-  const [showAnimation, setShowAnimation] = useState(true);
+  // functions for showing modal
+  const handleClose = () => setPredictionModal(false);
+  const handleShow = () => setPredictionModal(true);
+
+  const isGraphView = chartMode === CHART_MODES.GRAPH;
+  const setGraphView = () => setChartMode(CHART_MODES.GRAPH);
+  const setMapView = () => setChartMode(CHART_MODES.MAP);
 
   useEffect(() => {
-    const listener = () => {
-      if (window.scrollY > 1100 || (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        setShowAnimation(false);
-      } else {
-        setShowAnimation(true);
-      }
-    };
-
-    window.addEventListener('scroll', listener);
-    return () => window.removeEventListener('scroll', listener);
+    clearAllSelections(); // clears selections initially when switching to this tab
   }, []);
 
-  const getHistogram = (predProb50) => {
-    if (predProb50 < 0.025) {
+  const getHistogram = (probSpotsGT50) => {
+    if (probSpotsGT50 < 0.025) {
       return histogrambin1;
-    } else if (predProb50 < 0.05) {
+    } else if (probSpotsGT50 < 0.05) {
       return histogrambin2;
-    } else if (predProb50 < 0.15) {
+    } else if (probSpotsGT50 < 0.15) {
       return histogrambin3;
-    } else if (predProb50 < 0.25) {
+    } else if (probSpotsGT50 < 0.25) {
       return histogrambin4;
-    } else if (predProb50 < 0.4) {
+    } else if (probSpotsGT50 < 0.4) {
       return histogrambin5;
     } else {
       return histogrambin6;
     }
   };
 
-  const predDetails = (hasPredData) => {
-    if (!hasPredData) return null;
-    const predProb50 = predictionData[0].prediction['prob.Spots>53'];
-    const histogram = getHistogram(predProb50);
+  const predModal = () => {
+    if (!predictionModal) return null;
+    const { probSpotsGT50 } = data[0];
+    const histogram = getHistogram(probSpotsGT50);
     return (
-      <>
+      <Modal
+        isOpen={predictionModal}
+        onAfterOpen={handleShow}
+        onRequestClose={handleClose}
+        contentLabel="Show Prediction Data"
+        className="modal"
+        ariaHideApp={false}
+        closeTimeoutMS={150}
+      >
+        <div id="close-icon">
+          <img src={closeIcon} alt="close icon" onClick={handleClose} />
+        </div>
         <div className="container" id="scroll-to">
-          <PredictionDetails data={predictionData} />
+          <PredictionDetails data={data} />
           <div className="prediction-bottom">
             <div className="histogram">
               <div id="histogram-title">
@@ -86,29 +107,68 @@ const Prediction = (props) => {
             <AboutPredictions />
           </div>
         </div>
-        <Link
-          to="scroll-to"
-          smooth
-        >
-          <div id={showAnimation ? 'scroll-animation' : 'hidden-animation'}>
-            { ScrollIcon() }
-          </div>
-        </Link>
-      </>
+      </Modal>
     );
   };
 
   return (
     <div>
       <Loading visible={isLoading} />
-      {predictionsErrorText.length > 0 && predictionsErrorText.map(t => <p>{t}</p>)}
+      {fetchErrorText.length > 0 && fetchErrorText.map(t => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
-      <PredictionMap data={selectedState} />
-      { predDetails(predictionData.length === 1) }
-      <div id="download-pred-data">
-        <DownloadData />
+      <div id="toggles-overlay">
+        <div className="selection-p">
+          <div
+            className={dataMode === DATA_MODES.COUNTY ? 'selected-option-p' : 'unselected-option-p'}
+            onClick={() => setDataMode(DATA_MODES.COUNTY)}
+          >
+            <p className={dataMode === DATA_MODES.COUNTY ? 'selected-option-text-p' : 'unselected-option-text-p'}>
+              Counties
+            </p>
+          </div>
+          <div
+            className={dataMode !== DATA_MODES.COUNTY ? 'selected-option-p' : 'unselected-option-p'}
+            onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
+          >
+            <p className={dataMode !== DATA_MODES.COUNTY ? 'selected-option-text-p' : 'unselected-option-text-p'}>
+              Federal Land
+            </p>
+          </div>
+        </div>
+        <div className="selection-p">
+          <div
+            className={isGraphView ? 'unselected-option-p' : 'selected-option-2-p'}
+            onClick={() => { setMapView(); clearAllSelections(); }}
+          >
+            <img
+              src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
+              alt="Map View"
+              className={isGraphView ? 'unselected-view-p' : 'selected-view-p'}
+            />
+            <p className={isGraphView ? 'unselected-option-text-p' : 'selected-option-text-p'}>
+              Map View
+            </p>
+          </div>
+          <div
+            className={isGraphView ? 'selected-option-2-p' : 'unselected-option-p'}
+            onClick={() => { setGraphView(); clearAllSelections(); }}
+          >
+            <img
+              src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
+              alt="Chart View"
+              className={isGraphView ? 'selected-view-p' : 'unselected-view-p'}
+            />
+            <p className={isGraphView ? 'selected-option-text-p' : 'unselected-option-text-p'}>
+              Graph View
+            </p>
+          </div>
+        </div>
       </div>
+      <div className="container">
+        {isGraphView ? <PredictionChart /> : <PredictionMap />}
+      </div>
+      {predModal()}
     </div>
   );
 };
