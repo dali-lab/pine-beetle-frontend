@@ -30,12 +30,10 @@ const DownloadData = (props) => {
     setEndYear,
     setStartYear,
     startYear,
-    // setAllYears,
     setCounty,
     setDataMode,
     setRangerDistrict,
     setState,
-    // trappingData,
   } = props;
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
@@ -62,17 +60,6 @@ const DownloadData = (props) => {
     ...fieldsToDownload,
     [fieldName]: e.target.checked,
   });
-
-  // const selectAll = (selected) => {
-  //   setFieldsToDownload({
-  //     ...fieldsToDownload,
-  //     PREDICTION: selected,
-  //     SUMMARIZED: selected,
-  //     UNSUMMARIZED: selected,
-  //     HELPER: selected,
-  //     '1988-2009 DATA': selected,
-  //   });
-  // };
 
   // function for handling trapping data download
   const handleDownload = async () => {
