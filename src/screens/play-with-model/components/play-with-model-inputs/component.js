@@ -2,9 +2,9 @@ import React from 'react';
 
 import './style.scss';
 
-const trapIcon = require('../../../../assets/icons/trap.png');
-const cleridsIcon = require('../../../../assets/icons/clerids.png');
-const endobrevIcon = require('../../../../assets/icons/endobrev.png');
+import trapIcon from '../../../../assets/icons/trap.png';
+import cleridsIcon from '../../../../assets/icons/clerids.png';
+import endobrevIcon from '../../../../assets/icons/endobrev.png';
 
 const PlayWithModelInputs = (props) => {
   const {

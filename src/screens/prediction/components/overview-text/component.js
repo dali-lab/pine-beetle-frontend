@@ -3,7 +3,7 @@ import ReactTooltip from 'react-tooltip';
 import ReactReadMoreReadLess from 'react-read-more-read-less';
 import './style.scss';
 
-const questionIcon = require('../../../../assets/icons/help-circle.png');
+import questionIcon from '../../../../assets/icons/help-circle.png';
 
 const helpText = `Please select year, state, and county/RD for predictions.<br />
 After selecting a specific county or RD,<br />

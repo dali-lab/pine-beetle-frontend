@@ -1,3 +1,8 @@
+// map of state abbreviations to their names
+import stateAbbrevToStateName from './state-abbreviations.json';
+import stateAbbrevToStateId from './state-ids.json';
+import stateAbbrevToZoomLevel from './state-zoom-levels.json';
+
 const MIN_WIDTH_THRESHOLD = 725;
 
 const SERVER_ENDPOINTS = {
@@ -11,11 +16,6 @@ const AUTOMATION_SERVER_ENDPOINTS = {
   DEV: 'https://pine-beetle-automation-dev.herokuapp.com/v3',
   PROD: 'https://pine-beetle-automation.herokuapp.com/v3',
 };
-
-// map of state abbreviations to their names
-const stateAbbrevToStateName = require('./state-abbreviations.json');
-const stateAbbrevToStateId = require('./state-ids.json');
-const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 

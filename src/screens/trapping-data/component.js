@@ -13,10 +13,10 @@ import {
 
 import { Loading } from '../../components';
 
-const mapSelectedIcon = require('../../assets/icons/map-selected.png');
-const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
-const graphSelectedIcon = require('../../assets/icons/graph-selected.png');
-const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
+import mapSelectedIcon from '../../assets/icons/map-selected.png';
+import mapUnselectedIcon from '../../assets/icons/map-unselected.png';
+import graphSelectedIcon from '../../assets/icons/graph-selected.png';
+import graphUnselectedIcon from '../../assets/icons/graph-unselected.png';
 
 const TrappingData = (props) => {
   const {

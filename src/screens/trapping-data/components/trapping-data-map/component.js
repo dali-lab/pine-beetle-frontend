@@ -20,7 +20,7 @@ import {
 
 import './style.scss';
 
-const questionIcon = require('../../../../assets/icons/help-circle.png');
+import questionIcon from '../../../../assets/icons/help-circle.png';
 
 const helpText = 'Please use Chrome, Firefox,<br />\nor Edge to download map.';
 

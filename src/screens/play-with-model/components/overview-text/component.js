@@ -2,7 +2,7 @@ import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import './style.scss';
 
-const questionIcon = require('../../../../assets/icons/help-circle.png');
+import questionIcon from '../../../../assets/icons/help-circle.png';
 
 const helpText = `Pick a year, state and<br />
 county/ranger district to<br />

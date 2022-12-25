@@ -18,18 +18,18 @@ import { CHART_MODES, DATA_MODES } from '../../constants';
 
 import './style.scss';
 
-const closeIcon = require('../../assets/icons/close.png');
-const mapSelectedIcon = require('../../assets/icons/map-selected.png');
-const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
-const graphSelectedIcon = require('../../assets/icons/graph-selected.png');
-const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
+import closeIcon from '../../assets/icons/close.png';
+import mapSelectedIcon from '../../assets/icons/map-selected.png';
+import mapUnselectedIcon from '../../assets/icons/map-unselected.png';
+import graphSelectedIcon from '../../assets/icons/graph-selected.png';
+import graphUnselectedIcon from '../../assets/icons/graph-unselected.png';
 
-const histogrambin1 = require('../../assets/images/spb-histogram-bin1.png');
-const histogrambin2 = require('../../assets/images/spb-histogram-bin2.png');
-const histogrambin3 = require('../../assets/images/spb-histogram-bin3.png');
-const histogrambin4 = require('../../assets/images/spb-histogram-bin4.png');
-const histogrambin5 = require('../../assets/images/spb-histogram-bin5.png');
-const histogrambin6 = require('../../assets/images/spb-histogram-bin6.png');
+import histogrambin1 from '../../assets/images/spb-histogram-bin1.png';
+import histogrambin2 from '../../assets/images/spb-histogram-bin2.png';
+import histogrambin3 from '../../assets/images/spb-histogram-bin3.png';
+import histogrambin4 from '../../assets/images/spb-histogram-bin4.png';
+import histogrambin5 from '../../assets/images/spb-histogram-bin5.png';
+import histogrambin6 from '../../assets/images/spb-histogram-bin6.png';
 
 const Prediction = (props) => {
   const {

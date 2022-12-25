@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.scss';
 
-const daliLogo = require('../../assets/icons/dali_dark.png');
+import daliLogo from '../../assets/icons/dali_dark.png';
 
 const Footer = () => (
   <div id="footer">

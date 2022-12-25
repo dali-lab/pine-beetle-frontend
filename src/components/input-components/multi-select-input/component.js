@@ -3,9 +3,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './style.scss';
 
-const arrowDown = require('../../../assets/icons/arrow-down.png');
-const emptyCheckbox = require('../../../assets/icons/empty_checkbox.png');
-const selectedCheckbox = require('../../../assets/icons/selected_checkbox.png');
+import arrowDown from '../../../assets/icons/arrow-down.png';
+import emptyCheckbox from '../../../assets/icons/empty_checkbox.png';
+import selectedCheckbox from '../../../assets/icons/selected_checkbox.png';
 
 const CLEAR_TEXT = 'Select location(s)';
 

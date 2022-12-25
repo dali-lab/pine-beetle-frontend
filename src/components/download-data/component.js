@@ -13,8 +13,8 @@ import {
 
 import './style.scss';
 
-const closeIcon = require('../../assets/icons/close.png');
-const downloadIcon = require('../../assets/icons/download-white.png');
+import closeIcon from '../../assets/icons/close.png';
+import downloadIcon from '../../assets/icons/download-white.png';
 
 const DownloadData = (props) => {
   const {
