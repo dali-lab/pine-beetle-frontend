@@ -95,14 +95,14 @@ const PredictionMap = (props) => {
 
       const location = mode === DATA_MODES.COUNTY
         ? hoverCounty
-        : rangerDistricts.filter(rd => !!rd)
-          .find(rd => rd.includes(hoverRD));
+        : rangerDistricts.filter((rd) => !!rd)
+          .find((rd) => rd.includes(hoverRD));
 
       const pred = predictions.find((p) => {
         // either ranger district mode or have a matching state
         return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState)))
-        // and sublocation matches
-        && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState) || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
+          // and sublocation matches
+          && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState) || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
       });
 
       if (pred && x && y) {
@@ -112,7 +112,7 @@ const PredictionMap = (props) => {
           probSpotsGT50: probOutbreak,
         } = pred;
 
-        const isInvalidNumber = num => Number.isNaN(num) || num === null || num === undefined;
+        const isInvalidNumber = (num) => Number.isNaN(num) || num === null || num === undefined;
 
         setPredictionHover((
           <div id="prediction-hover" style={mapboxHoverStyle(x, y)}>
@@ -137,11 +137,11 @@ const PredictionMap = (props) => {
       STATE: _state,
     } = e.features[0].properties;
 
-    const rangerDistrictToSet = sublocations.filter(rd => !!rd)
-      .find(district => district.includes(clickRD));
+    const rangerDistrictToSet = sublocations.filter((rd) => !!rd)
+      .find((district) => district.includes(clickRD));
 
     const state = !_state && mode === DATA_MODES.RANGER_DISTRICT
-      ? predictions.find(p => p.rangerDistrict === rangerDistrictToSet)?.state
+      ? predictions.find((p) => p.rangerDistrict === rangerDistrictToSet)?.state
       : _state;
 
     // ensure clicked on valid state
@@ -487,58 +487,67 @@ const PredictionMap = (props) => {
     <div className="container flex-item-left" id="map-container">
       <div id="map" />
       <div className="map-overlay-data" id="data">
-        <h3 className="data-title">{data?.length === 1
-          ? windowTitle()
-          : 'Select county or federal land on the map to view prediction data'
-        }
+        <h3 className="data-title">
+          {
+            data?.length === 1
+              ? windowTitle()
+              : 'Select county or federal land on the map to view prediction data'
+          }
         </h3>
-        {data?.length === 1
+        {
+          data?.length === 1
           && <p>{year} Prediction</p>
         }
         <div className="data-info">
           <div className="data-info-section">
-            {data?.length === 1
-              ? (
-                <div className="circle" id="data-spots">
-                  <div id="percent">{((data[0].probSpotsGT0) * 100).toFixed(0)}%</div>
-                </div>
-              )
-              : <div className="circle" id="empty" />
+            {
+              data?.length === 1
+                ? (
+                  <div className="circle" id="data-spots">
+                    <div id="percent">{((data[0].probSpotsGT0) * 100).toFixed(0)}%</div>
+                  </div>
+                )
+                : <div className="circle" id="empty" />
             }
             <p>Probability of any spots</p>
           </div>
           <div className="data-info-section">
-            {data?.length === 1
-              ? (
-                <div className="circle" id="data-outbreak">
-                  <div id="percent">{((data[0].probSpotsGT50) * 100).toFixed(0)}%</div>
-                </div>
-              )
-              : <div className="circle" id="empty" />
-              }
+            {
+              data?.length === 1
+                ? (
+                  <div className="circle" id="data-outbreak">
+                    <div id="percent">{((data[0].probSpotsGT50) * 100).toFixed(0)}%</div>
+                  </div>
+                )
+                : <div className="circle" id="empty" />
+            }
             <p>Probability of a spot outbreak</p>
           </div>
           <div className="data-info-section" id="divergence-section">
-            {data?.length === 1
-              ? (
-                <div className="circle" id={data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak ? 'data-divergence' : 'empty'}>
-                  {data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak
-                    ? <div id="percent">{(((data[0].spotst0 - data[0].expSpotsIfOutbreak) / data[0].expSpotsIfOutbreak) * 100).toFixed(0)}%</div>
-                    : <div id="percent">n/a</div>
-                  }
-                </div>
-              )
-              : <div className="circle" id="empty" />
-              }
+            {
+              data?.length === 1
+                ? (
+                  <div className="circle" id={data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak ? 'data-divergence' : 'empty'}>
+                    {
+                      data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak
+                        ? <div id="percent">{(((data[0].spotst0 - data[0].expSpotsIfOutbreak) / data[0].expSpotsIfOutbreak) * 100).toFixed(0)}%</div>
+                        : <div id="percent">n/a</div>
+                    }
+                  </div>
+                )
+                : <div className="circle" id="empty" />
+            }
             <p>Spot divergence of outcomes from prediction</p>
           </div>
         </div>
-        {data?.length === 1
+        {
+          data?.length === 1
           && (
-          <div className="data-button" onClick={() => setPredictionModal(true)}>
-            <p>View details</p>
-          </div>
-          )}
+            <div className="data-button" onClick={() => setPredictionModal(true)}>
+              <p>View details</p>
+            </div>
+          )
+        }
       </div>
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>

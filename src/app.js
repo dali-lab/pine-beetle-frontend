@@ -79,7 +79,7 @@ const App = (props) => {
     props.getAggregateStateData();
     props.getAggregateLocationData();
 
-    const resizeListener = e => setIsMobile(e.target.innerWidth < MIN_WIDTH_THRESHOLD);
+    const resizeListener = (e) => setIsMobile(e.target.innerWidth < MIN_WIDTH_THRESHOLD);
     window.addEventListener('resize', resizeListener);
 
     return () => window.removeEventListener('resize', resizeListener);

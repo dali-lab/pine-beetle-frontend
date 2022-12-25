@@ -38,9 +38,9 @@ const DownloadData = (props) => {
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const statesMappedToNames = availableStates.map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
-  const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
+  const setStateAbbrev = (stateName) => setState(getStateAbbreviationFromStateName(stateName));
   const revYears = [...availableYears].reverse();
 
   // functions for showing modal
@@ -56,7 +56,7 @@ const DownloadData = (props) => {
     UNSUMMARIZED: false,
   });
 
-  const addFieldToDownload = fieldName => e => setFieldsToDownload({
+  const addFieldToDownload = (fieldName) => (e) => setFieldsToDownload({
     ...fieldsToDownload,
     [fieldName]: e.target.checked,
   });
@@ -80,7 +80,7 @@ const DownloadData = (props) => {
         startYear,
         endYear,
       });
-    }).filter(f => !!f);
+    }).filter((f) => !!f);
 
     if (promises.length > 0) {
       setIsDownloading(true);

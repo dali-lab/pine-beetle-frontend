@@ -18,7 +18,7 @@ const TextInput = (props) => {
         className="input"
         type="text"
         value={value}
-        onChange={e => setValue(parseInt(e.target.value, 10) || '')}
+        onChange={(e) => setValue(parseInt(e.target.value, 10) || '')}
       />
     </div>
   );

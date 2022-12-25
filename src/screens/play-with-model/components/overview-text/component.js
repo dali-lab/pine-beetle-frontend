@@ -9,7 +9,7 @@ county/ranger district to<br />
 prepopulate the fields based<br />
 on historical data.`;
 
-const OverviewText = _props => (
+const OverviewText = (_props) => (
   <div className="container" id="overview-text">
     <h1 id="title">
       Play with the Model

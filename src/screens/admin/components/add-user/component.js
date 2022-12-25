@@ -15,7 +15,7 @@ const AddUser = (_props) => {
 
   const clearError = () => setError();
 
-  const fieldSetter = setter => (e) => {
+  const fieldSetter = (setter) => (e) => {
     setter(e.target.value);
     clearError();
     setSuccess(false);

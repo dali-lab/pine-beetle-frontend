@@ -54,7 +54,7 @@ const MultiSelectInput = (props) => {
   }, [valueParent]);
 
   const handleRemove = (element) => {
-    setValueChildren(valueChildren.filter(e => e !== element));
+    setValueChildren(valueChildren.filter((e) => e !== element));
   };
 
   // set the parent and auto select all its children
@@ -91,51 +91,59 @@ const MultiSelectInput = (props) => {
           </button>
           <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
         </div>
-        {optionsParent.map(item => (
-          <div
-            className="location-list-item"
-            key={item}
-          >
+        {
+          optionsParent.map((item) => (
             <div
-              className="location-list-item-select"
-              onClick={() => selectParent(item)}
+              className="location-list-item"
+              key={item}
             >
-              <img
-                src={(valueParent === item || allSelected) ? selectedCheckbox : emptyCheckbox}
-                alt="Parent checkbox"
-                className="location-list-item-select-checkbox"
-              />
-              {item}
-              {valueParent === item && (
-              <span className="location-list-item-select-status">({valueChildren.length === 0
-                ? optionsChildren.length
-                : valueChildren.length
-            } selected)
-              </span>
-              )}
+              <div
+                className="location-list-item-select"
+                onClick={() => selectParent(item)}
+              >
+                <img
+                  src={(valueParent === item || allSelected) ? selectedCheckbox : emptyCheckbox}
+                  alt="Parent checkbox"
+                  className="location-list-item-select-checkbox"
+                />
+                {item}
+                {valueParent === item && (
+                  <span className="location-list-item-select-status">(
+                    {
+                      valueChildren.length === 0
+                        ? optionsChildren.length
+                        : valueChildren.length
+                    } selected)
+                  </span>
+                )}
+              </div>
+              {/* Second dropdown displaying all children data of a selected parent (e.g. counties of a state) */}
+              {
+                valueParent === item && (
+                  <div className="children-list">
+                    {
+                      optionsChildren.map((child) => (
+                        <div
+                          className="children-list-item"
+                          key={child}
+                          onClick={() => selectChildren(child)}
+                        >
+                          <img
+                            src={(valueChildren.indexOf(child) > -1 || valueChildren.length === 0) ? selectedCheckbox : emptyCheckbox}
+                            alt="Child checkbox"
+                            className="location-list-item-select-checkbox"
+                          />
+                          {child}
+                          {' '}
+                        </div>
+                      ))
+                    }
+                  </div>
+                )
+              }
             </div>
-            {/* Second dropdown displaying all children data of a selected parent (e.g. counties of a state) */}
-            {valueParent === item && (
-            <div className="children-list">
-              {optionsChildren.map(child => (
-                <div
-                  className="children-list-item"
-                  key={child}
-                  onClick={() => selectChildren(child)}
-                >
-                  <img
-                    src={(valueChildren.indexOf(child) > -1 || valueChildren.length === 0) ? selectedCheckbox : emptyCheckbox}
-                    alt="Child checkbox"
-                    className="location-list-item-select-checkbox"
-                  />
-                  {child}
-                  {' '}
-                </div>
-              ))}
-            </div>
-            )}
-          </div>
-        ))}
+          ))
+        }
       </div>
     );
   };

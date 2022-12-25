@@ -141,7 +141,6 @@ const PredictionChart = (props) => {
       [year]: expSpotsIfOutbreak,
     }), getYearRange(startYear, predictionYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-
     // update chartData
     updatedChartData.datasets[0].data = Object.values(spotMap);
     updatedChartData.datasets[1].data = Object.values(predictionData);
@@ -154,7 +153,6 @@ const PredictionChart = (props) => {
 
     // set new y-axis height
     updatedChartOptions.scales.yAxes[0].ticks.max = max;
-
 
     setChartData(updatedChartData);
     setChartOptions(updatedChartOptions);

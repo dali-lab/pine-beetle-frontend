@@ -15,7 +15,7 @@ and now, increasingly, in the mid-Atlantic and northeast. All historical data ar
 for researchers, forest resource managers, and the general public to access. You can select the year range and 
 location, and you can switch between map and graph view by toggling the button below.`;
 
-const OverviewText = _props => (
+const OverviewText = (_props) => (
   <div className="container" id="overview-explanation">
     <div className="container" id="overview-text">
       <h1 id="title">

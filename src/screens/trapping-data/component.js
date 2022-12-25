@@ -40,7 +40,7 @@ const TrappingData = (props) => {
   return (
     <div>
       <Loading visible={isLoading} />
-      {errorText.length > 0 && errorText.map(t => <p>{t}</p>)}
+      {errorText.length > 0 && errorText.map((t) => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
       <div id="view-selections" className="container">

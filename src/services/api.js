@@ -246,7 +246,6 @@ export async function getAvailableYears(dataMode, filters = {}) {
   }
 }
 
-
 /**
  * @description retrieves all available states based on data mode
  * @param {String} dataMode the current data mode

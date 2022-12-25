@@ -114,7 +114,7 @@ const Prediction = (props) => {
   return (
     <div>
       <Loading visible={isLoading} />
-      {fetchErrorText.length > 0 && fetchErrorText.map(t => <p>{t}</p>)}
+      {fetchErrorText.length > 0 && fetchErrorText.map((t) => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
       <div id="toggles-overlay">

@@ -17,7 +17,6 @@ const stateAbbrevToStateName = require('./state-abbreviations.json');
 const stateAbbrevToStateId = require('./state-ids.json');
 const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
 
-
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
 const getServerUrl = () => {

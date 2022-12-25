@@ -104,7 +104,7 @@ const FileUpload = (props) => {
 
   return (
     <>
-      {componentsToRender.map(component => (
+      {componentsToRender.map((component) => (
         <div id={component.id} key={component.id}>
           <p>{component.name}</p>
           <p id="file-selected">
@@ -129,7 +129,7 @@ const FileUpload = (props) => {
                   id={`file-upload-${component.id}`}
                   type="file"
                   accept=".csv"
-                  onChange={e => component.selectFile(e.target.files[0]) && clearSuccessMessage()}
+                  onChange={(e) => component.selectFile(e.target.files[0]) && clearSuccessMessage()}
                 />
                 Select File
               </label>

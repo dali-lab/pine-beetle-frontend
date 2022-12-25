@@ -17,7 +17,7 @@ location becomes available on this page. Observed outcome data is usually upload
 summer season. At that point predictions vs. outcomes can be viewed visually here and also become available 
 for download.`;
 
-const OverviewText = _props => (
+const OverviewText = (_props) => (
   <div className="container" id="overview-explanation">
     <div className="container" id="overview-text">
       <h1 id="title">
