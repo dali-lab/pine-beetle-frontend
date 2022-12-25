@@ -5,8 +5,8 @@ import './style.scss';
 
 import { DATA_MODES } from '../../../../constants';
 
-const trapIcon = require('../../../../assets/icons/trap.png');
-const cleridIcon = require('../../../../assets/icons/clerids.png');
+import trapIcon from '../../../../assets/icons/trap.png';
+import cleridIcon from '../../../../assets/icons/clerids.png';
 
 const spbText = 'SPB per two weeks, averaged across traps';
 const cleridText = 'clerids per two weeks, averaged across traps';

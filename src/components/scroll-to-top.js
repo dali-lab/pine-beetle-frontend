@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react';
+import { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 
 // adopted from: https://stackoverflow.com/questions/36904185/react-router-scroll-to-top-on-every-transition
@@ -12,7 +12,7 @@ function ScrollToTop({ history, children }) {
     };
   }, []);
 
-  return <Fragment>{children}</Fragment>;
+  return children;
 }
 
 export default withRouter(ScrollToTop);

@@ -7,7 +7,7 @@ import { ROUTES } from '../../constants';
 // eslint-disable-next-line import/no-cycle
 import { DownloadData } from '..';
 
-const pineBeetleImage = require('../../assets/icons/black-beetle-logo.png');
+import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
 
 const Header = (props) => {
   const routes = {
@@ -16,7 +16,6 @@ const Header = (props) => {
     [ROUTES.PLAY_WITH_MODEL]: 'Play With Model',
     [ROUTES.ABOUT]: 'About',
   };
-
 
   return (
     <div id="header">

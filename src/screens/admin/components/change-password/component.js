@@ -20,7 +20,7 @@ const ChangePassword = (props) => {
   const [errorText, setErrorText] = useState('');
   const [successText, setSuccessText] = useState('');
 
-  const fieldSetter = setter => (e) => {
+  const fieldSetter = (setter) => (e) => {
     setter(e.target.value);
     setSuccessText('');
     setErrorText('');

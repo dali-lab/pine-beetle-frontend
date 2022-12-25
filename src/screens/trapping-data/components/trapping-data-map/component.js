@@ -20,7 +20,7 @@ import {
 
 import './style.scss';
 
-const questionIcon = require('../../../../assets/icons/help-circle.png');
+import questionIcon from '../../../../assets/icons/help-circle.png';
 
 const helpText = 'Please use Chrome, Firefox,<br />\nor Edge to download map.';
 
@@ -104,8 +104,8 @@ const HistoricalMap = (props) => {
 
       const location = mode === DATA_MODES.COUNTY
         ? hoverCounty
-        : rangerDistricts.filter(rd => !!rd)
-          .find(rd => rd.includes(hoverRD));
+        : rangerDistricts.filter((rd) => !!rd)
+          .find((rd) => rd.includes(hoverRD));
 
       const sublocation = mode === DATA_MODES.COUNTY ? 'county' : 'rangerDistrict';
 
@@ -116,7 +116,7 @@ const HistoricalMap = (props) => {
           // and sublocation matches
           && ((p[sublocation] === location))
         );
-      }).filter(p => p.state === hoverState || mode === DATA_MODES.RANGER_DISTRICT);
+      }).filter((p) => p.state === hoverState || mode === DATA_MODES.RANGER_DISTRICT);
 
       if (data && data.length > 0 && x && y) {
         const {
@@ -127,7 +127,7 @@ const HistoricalMap = (props) => {
           county: countyName,
         } = data[0];
 
-        const isInvalidNumber = num => Number.isNaN(num) || num === null || num === undefined;
+        const isInvalidNumber = (num) => Number.isNaN(num) || num === null || num === undefined;
 
         setTrappingHover((
           <div id="trapping-hover" style={{ left: `${x + 10}px`, top: `${y - 140}px` }}>
@@ -153,11 +153,11 @@ const HistoricalMap = (props) => {
       STATE: mapboxState,
     } = e.features[0].properties;
 
-    const rangerDistrictToSet = sublocations.filter(rd => !!rd)
-      .find(district => district.includes(clickRD));
+    const rangerDistrictToSet = sublocations.filter((rd) => !!rd)
+      .find((district) => district.includes(clickRD));
 
     const state = !mapboxState && mode === DATA_MODES.RANGER_DISTRICT
-      ? data.find(p => p.rangerDistrict === rangerDistrictToSet)?.state
+      ? data.find((p) => p.rangerDistrict === rangerDistrictToSet)?.state
       : mapboxState;
 
     // ensure clicked on valid state
@@ -516,44 +516,47 @@ const HistoricalMap = (props) => {
       <div className="map-overlay-data" id="historical-data-overlay">
         <h3 className="data-title">{rawData?.length === 1
           ? windowTitle()
-          : 'Select county or federal land on the map to view historical data'
-        }
+          : 'Select county or federal land on the map to view historical data'}
         </h3>
-        {rawData?.length === 1
+        {
+          rawData?.length === 1
           && <p>{startYear}-{endYear}</p>
         }
         <div className="data-info-historical">
           <div className="data-info-section">
-            {rawData?.length === 1
-              ? (
-                <div className="circle" id="spbs">
-                  <div id="percent">{rawData[0].sumSpbPer2Weeks ? (rawData[0].sumSpbPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
-                </div>
-              )
-              : <div className="circle" id="empty" />
+            {
+              rawData?.length === 1
+                ? (
+                  <div className="circle" id="spbs">
+                    <div id="percent">{rawData[0].sumSpbPer2Weeks ? (rawData[0].sumSpbPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
+                  </div>
+                )
+                : <div className="circle" id="empty" />
             }
             <p>Average SPB per 2 weeks</p>
           </div>
           <div className="data-info-section">
-            {rawData?.length === 1
-              ? (
-                <div className="circle" id="clerid">
-                  <div id="percent">{rawData[0].sumCleridsPer2Weeks ? (rawData[0].sumCleridsPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
-                </div>
-              )
-              : <div className="circle" id="empty" />
-              }
+            {
+              rawData?.length === 1
+                ? (
+                  <div className="circle" id="clerid">
+                    <div id="percent">{rawData[0].sumCleridsPer2Weeks ? (rawData[0].sumCleridsPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
+                  </div>
+                )
+                : <div className="circle" id="empty" />
+            }
             <p>Average clerids per 2 weeks</p>
           </div>
           <div className="data-info-section">
-            {rawData?.length === 1
-              ? (
-                <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0 / numYears)}>
-                  <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div>
-                </div>
-              )
-              : <div className="circle" id="empty" />
-              }
+            {
+              rawData?.length === 1
+                ? (
+                  <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0 / numYears)}>
+                    <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div>
+                  </div>
+                )
+                : <div className="circle" id="empty" />
+            }
             <p>Total number of spots</p>
           </div>
         </div>

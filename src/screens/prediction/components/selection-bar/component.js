@@ -32,9 +32,9 @@ const SelectionBar = (props) => {
     chartMode,
   } = props;
 
-  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const statesMappedToNames = availableStates.map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
-  const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
+  const setStateAbbrev = (stateName) => setState(getStateAbbreviationFromStateName(stateName));
   const isGraphView = chartMode === CHART_MODES.GRAPH;
   const revYears = [...availableYears].reverse();
 
