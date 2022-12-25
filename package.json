@@ -10,8 +10,7 @@
     "start": "NODE_ENV=development webpack serve",
     "test": "eslint src",
     "build": "yarn clean; NODE_ENV=production webpack --color --progress; cp src/_redirects dist/_redirects",
-    "clean": "rimraf dist",
-    "deploy": "yarn build; netlify deploy --dir=dist; yarn clean"
+    "clean": "rimraf dist"
   },
   "devDependencies": {
     "@babel/cli": "^7.20.7",
