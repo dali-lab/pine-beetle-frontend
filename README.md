@@ -31,13 +31,13 @@ You must have [Node](https://nodejs.org) and [yarn](https://yarnpkg.com/) instal
 
 ```
 src/
-	assets/                     [all assets]
-	components/                 [reusable components across several screens]
-	constants/                  [all constants and mapping files]
-	screens/                    [containers for each screen]
-	services/                   [service files for sending server requests]
-	state/                      [all redux interactions]
-	utils/                      [utility functions]
+    assets/                     [all assets]
+    components/                 [reusable components across several screens]
+    constants/                  [all constants and mapping files]
+    screens/                    [containers for each screen]
+    services/                   [service files for sending server requests]
+    state/                      [all redux interactions]
+    utils/                      [utility functions]
 .babelrc                        [babel setup]
 .env.example                    [structure of .env file]
 .eslintrc.json                  [eslint setup]
