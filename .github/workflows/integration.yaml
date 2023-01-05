@@ -1,19 +1,40 @@
-name: Continuous Integration
-on: [push, pull_request]
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+on:
+  push:
+    branches:
+      - dev # beta
+      - release # gamma
+  pull_request:
+    branches:
+      - "*" # modify this to only run on certain branches
 
 jobs:
-  test_pull_request:
+  test:
+
     runs-on: ubuntu-latest
 
     strategy:
-      matrix:
-        node-version: [14.x]
+      matrix: # runs a test for each item in strategy matrix
+        node-version: [16.x, 18.x] # needs to be updated to fit project standard
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    env: # uncomment if env vars needed for build step
+      MAPBOX_ACCESS_TOKEN: $${ secrets.MAPBOX_ACCESS_TOKEN }}
+      ANALYTICS_ENV: $${ secrets.ANALYTICS_ENV }}
+      MAIN_BACKEND_ENV: $${ secrets.MAIN_BACKEND_ENV }}
+      AUTOMATION_ENV: $${ secrets.AUTOMATION_ENV }}
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: yarn install
-      - run: yarn test
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: yarn
+    - run: yarn install --frozen-lockfile
+    - run: npm run ci:lint
+    - run: npm run build --if-present
+    # - run: npm run test
