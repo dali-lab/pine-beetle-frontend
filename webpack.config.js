@@ -87,5 +87,10 @@ module.exports = {
   devServer: {
     hot: true,
     historyApiFallback: true,
+    client: {
+      overlay: {
+        warnings: false,
+      },
+    },
   },
 };

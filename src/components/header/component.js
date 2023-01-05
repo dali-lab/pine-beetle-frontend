@@ -17,6 +17,8 @@ const Header = (props) => {
     [ROUTES.ABOUT]: 'About',
   };
 
+  const urlPath = useLocation().pathname;
+
   return (
     <div id="header">
       <div className="container">
@@ -25,7 +27,7 @@ const Header = (props) => {
             <Link to={ROUTES.HOME}>
               <img src={pineBeetleImage} alt="logo" />
             </Link>
-            <Link to={ROUTES.HOME} className={`nav-button ${(useLocation().pathname === '/') ? 'active-nav' : 'inactive-nav'}`}>
+            <Link to={ROUTES.HOME} className={`nav-button ${(urlPath === '/') ? 'active-nav' : 'inactive-nav'}`}>
               Home
             </Link>
           </div>
@@ -33,7 +35,7 @@ const Header = (props) => {
             <div id="nav-buttons">
               <div id="button-container">
                 {Object.entries(routes).map(([key, value]) => (
-                  <Link to={key} key={key} className={`${value === 'About' ? 'nav-button-short' : 'nav-button'} ${(useLocation().pathname === key) ? 'active-nav' : 'inactive-nav'}`}>
+                  <Link to={key} key={key} className={`${value === 'About' ? 'nav-button-short' : 'nav-button'} ${(urlPath === key) ? 'active-nav' : 'inactive-nav'}`}>
                     {value}
                   </Link>
                 ))}
