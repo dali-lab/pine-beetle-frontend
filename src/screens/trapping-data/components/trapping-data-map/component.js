@@ -551,10 +551,15 @@ const HistoricalMap = (props) => {
             {
               rawData?.length === 1
                 ? (
-                  <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0 / numYears)}>
-                    <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div>
+                  <div className="circle" id={rawData[0].hasSpotst0 === 1 ? overlaySpotsColor(rawData[0].sumSpotst0 / numYears) : overlaySpotsColor(null)}>
+                    {
+                      rawData[0].hasSpotst0 === 1
+                        ? <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div>
+                        : <div id="percent">n/a</div>
+                    }
                   </div>
                 )
+
                 : <div className="circle" id="empty" />
             }
             <p>Total number of spots</p>
