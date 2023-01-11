@@ -1,9 +1,17 @@
 {
-  "plugins": ["@babel/plugin-proposal-class-properties", "@babel/plugin-proposal-object-rest-spread"],
-  "presets": [
-    ["@babel/react"],
-    ["@babel/preset-env", {
-      "targets": "> 0.25%, not dead"
-    }]
-  ]
+    "plugins": [
+        '@babel/plugin-transform-runtime',
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-object-rest-spread",
+    ],
+    "presets": [
+        // Enable development transform of React with new automatic runtime
+        ['@babel/preset-react'],
+        [
+            "@babel/preset-env",
+            {
+                "targets": "> 0.25%, not dead"
+            }
+        ]
+    ]
 }

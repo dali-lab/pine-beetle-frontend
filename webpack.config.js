@@ -15,7 +15,7 @@ const postcssPresets = require('postcss-preset-env');
 module.exports = {
   mode: env,
   output: { publicPath: '/' },
-  entry: ['babel-polyfill', './src'], // this is where our app lives
+  entry: ['./src'], // this is where our app lives
   devtool: 'source-map', // this enables debugging with source in chrome devtools
   module: {
     rules: [
