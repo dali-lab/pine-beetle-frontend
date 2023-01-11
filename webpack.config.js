@@ -91,7 +91,7 @@ module.exports = {
       systemvars: true,
     }),
     env === 'development' && new ReactRefreshWebpackPlugin(),
-  ],
+  ].filter(Boolean),
   devServer: {
     hot: true,
     historyApiFallback: true,
