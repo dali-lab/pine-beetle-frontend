@@ -12,10 +12,12 @@ const DotenvPlugin = require('dotenv-webpack');
 
 const postcssPresets = require('postcss-preset-env');
 
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
 module.exports = {
   mode: env,
   output: { publicPath: '/' },
-  entry: ['babel-polyfill', './src'], // this is where our app lives
+  entry: ['./src'], // this is where our app lives
   devtool: 'source-map', // this enables debugging with source in chrome devtools
   module: {
     rules: [
@@ -23,7 +25,12 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: [
-          { loader: 'babel-loader' },
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: [env === 'development' && 'react-refresh/babel'].filter(Boolean),
+            },
+          },
         ],
       },
       {
@@ -83,7 +90,8 @@ module.exports = {
       safe: true,
       systemvars: true,
     }),
-  ],
+    env === 'development' && new ReactRefreshWebpackPlugin(),
+  ].filter(Boolean),
   devServer: {
     hot: true,
     historyApiFallback: true,
