@@ -12,6 +12,8 @@ const DotenvPlugin = require('dotenv-webpack');
 
 const postcssPresets = require('postcss-preset-env');
 
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
 module.exports = {
   mode: env,
   output: { publicPath: '/' },
@@ -23,7 +25,12 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: [
-          { loader: 'babel-loader' },
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: [env === 'development' && 'react-refresh/babel'].filter(Boolean),
+            },
+          },
         ],
       },
       {
@@ -83,6 +90,7 @@ module.exports = {
       safe: true,
       systemvars: true,
     }),
+    env === 'development' && new ReactRefreshWebpackPlugin(),
   ],
   devServer: {
     hot: true,
