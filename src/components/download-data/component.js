@@ -50,6 +50,8 @@ const DownloadData = (props) => {
 
   const [isDownloading, setIsDownloading] = useState(false);
 
+  const [error, setError] = useState('');
+
   // vars for selecting types of data in modal
   const [fieldsToDownload, setFieldsToDownload] = useState({
     SUMMARIZED: false,
@@ -63,29 +65,36 @@ const DownloadData = (props) => {
 
   // function for handling trapping data download
   const handleDownload = async () => {
-    const promises = Object.entries(fieldsToDownload).map(async ([fieldName, value]) => {
-      if (!value) return null;
+    try {
+      const promises = Object.entries(fieldsToDownload).map(async ([fieldName, value]) => {
+        if (!value) return null;
 
-      const dataTypeName = countyMode ? 'COUNTY' : 'RD';
-      const dataName = fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
+        const dataTypeName = countyMode ? 'COUNTY' : 'RD';
+        const dataName = fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
 
-      // to allow multiple counties/RD
-      const countyString = county.join('&county=');
-      const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
+        // to allow multiple counties/RD
+        const countyString = county.join('&county=');
+        const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
 
-      return downloadCsv(dataName, {
-        state: selectedState,
-        // [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
-        [countyMode ? 'county' : 'rangerDistrict']: countyMode ? countyString : rangerDistrictString,
-        startYear,
-        endYear,
-      });
-    }).filter((f) => !!f);
+        return downloadCsv(dataName, {
+          state: selectedState,
+          // [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
+          [countyMode ? 'county' : 'rangerDistrict']: countyMode ? countyString : rangerDistrictString,
+          startYear,
+          endYear,
+        });
+      }).filter((f) => !!f);
 
-    if (promises.length > 0) {
-      setIsDownloading(true);
-      await Promise.all(promises);
+      if (promises.length > 0) {
+        setIsDownloading(true);
+        await Promise.all(promises);
+        setIsDownloading(false);
+      }
+    } catch (err) {
       setIsDownloading(false);
+      // const { data } = err?.response || {};
+      // const strippedError = data?.error.toString().replace('Error: ', '');
+      setError(err);
     }
   };
 
@@ -236,6 +245,9 @@ const DownloadData = (props) => {
               <p>Download</p>
             </button>
           )}
+        </div>
+        <div>
+          {error}
         </div>
       </Modal>
     </>
