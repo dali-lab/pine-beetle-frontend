@@ -35,7 +35,7 @@ const TrappingData = (props) => {
 
   useEffect(() => {
     clearAllSelections(); // clears selections initially when switching to this tab
-  }, []);
+  }, [clearAllSelections]);
 
   return (
     <div>

@@ -2,12 +2,14 @@ import { ActionTypes } from '../actions';
 
 const initialState = {
   predictions: [], // predictions for a single year
+  sparseData: [],
   yearData: [], // data aggregated by year
   stateData: [], // data aggregated by state
   sublocationData: [], // data aggregated by county/ranger district
   customPrediction: {},
 
   fetchingPredictions: false,
+  fetchingSparseData: false,
   fetchingAggregateYearData: false,
   fetchingAggregateStateData: false,
   fetchingAggregateLocationData: false,
@@ -18,6 +20,9 @@ const DataReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.SET_PREDICTIONS:
       return { ...state, predictions: action.payload };
+
+    case ActionTypes.SET_SPARSE_DATA:
+      return { ...state, sparseData: action.payload };
 
     case ActionTypes.SET_AGGREGATE_YEAR_DATA:
       return { ...state, yearData: action.payload };
@@ -33,6 +38,9 @@ const DataReducer = (state = initialState, action) => {
 
     case ActionTypes.FETCHING_PREDICTIONS:
       return { ...state, fetchingPredictions: action.payload };
+
+    case ActionTypes.FETCHING_SPARSE_DATA:
+      return { ...state, fetchingSparseData: action.payload };
 
     case ActionTypes.FETCHING_AGGREGATE_YEAR_DATA:
       return { ...state, fetchingAggregateYearData: action.payload };
@@ -50,6 +58,7 @@ const DataReducer = (state = initialState, action) => {
       return {
         ...state,
         predictions: initialState.predictions,
+        sparseData: initialState.sparseData,
         yearData: initialState.yearData,
         stateData: initialState.stateData,
         sublocationData: initialState.sublocationData,

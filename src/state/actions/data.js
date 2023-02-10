@@ -3,12 +3,14 @@ import { DATA_MODES } from '../../constants';
 
 export const ActionTypes = {
   SET_PREDICTIONS: 'SET_PREDICTIONS', // predictions for single year
+  SET_SPARSE_DATA: 'SET_SPARSE_DATA',
   SET_AGGREGATE_YEAR_DATA: 'SET_AGGREGATE_YEAR_DATA', // data grouped by year
   SET_AGGREGATE_STATE_DATA: 'SET_AGGREGATE_STATE_DATA', // data grouped by state
   SET_AGGREGATE_LOCATION_DATA: 'SET_AGGREGATE_LOCATION_DATA', // data grouped by county/RD
   SET_CUSTOM_PREDICTION: 'SET_CUSTOM_PREDICTION',
 
   FETCHING_PREDICTIONS: 'FETCHING_PREDICTIONS',
+  FETCHING_SPARSE_DATA: 'FETCHING_SPARSE_DATA',
   FETCHING_AGGREGATE_YEAR_DATA: 'FETCHING_AGGREGATE_YEAR_DATA',
   FETCHING_AGGREGATE_STATE_DATA: 'FETCHING_AGGREGATE_STATE_DATA',
   FETCHING_AGGREGATE_LOCATION_DATA: 'FETCHING_AGGREGATE_LOCATION_DATA',
@@ -65,6 +67,50 @@ export function getPredictions(startYear = new Date().getFullYear(), endYear = n
     } finally {
       setTimeout(() => {
         dispatch({ type: ActionTypes.FETCHING_PREDICTIONS, payload: false });
+      }, 1000);
+    }
+  };
+}
+
+/**
+ * @description action creator for setting aggregate year data
+ */
+export function getSparseData(overrideFilter = {}) {
+  return async (dispatch, getState) => {
+    const {
+      county,
+      dataMode,
+      endYear,
+      rangerDistrict,
+      startYear,
+      state,
+    } = getState().selections;
+
+    const filters = {
+      startYear,
+      endYear,
+      state,
+      county,
+      rangerDistrict,
+      ...overrideFilter,
+    };
+
+    dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: true });
+
+    try {
+      const response = await (dataMode === DATA_MODES.COUNTY ? api.getSparseCountyData(filters) : api.getSparseRangerDistrictData(filters));
+      dispatch({ type: ActionTypes.SET_SPARSE_DATA, payload: response });
+    } catch (error) {
+      dispatch({
+        type: ActionTypes.SET_DATA_FETCH_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch sparsedata',
+        },
+      });
+    } finally {
+      setTimeout(() => {
+        dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: false });
       }, 1000);
     }
   };

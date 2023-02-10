@@ -52,6 +52,7 @@ const App = (props) => {
     getAggregateLocationData,
     getPredictions,
     getAvailableStates,
+    getSparseData,
   } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
@@ -80,10 +81,12 @@ const App = (props) => {
     getAggregateYearData();
     getAggregateStateData();
     getAggregateLocationData();
+    getSparseData();
   }, [
     getAggregateLocationData,
     getAggregateStateData,
     getAggregateYearData,
+    getSparseData,
     loginUserFromStorage,
     setChartMode,
     setDataMode,
