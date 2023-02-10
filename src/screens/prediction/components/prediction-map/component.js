@@ -1,7 +1,7 @@
 /* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
 import { DATA_MODES, stateAbbrevToZoomLevel } from '../../../../constants';
