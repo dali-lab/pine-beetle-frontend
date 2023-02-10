@@ -4,6 +4,7 @@ import {
   getAggregateStateData,
   getAggregateLocationData,
   getPredictions,
+  getSparseData,
 } from './data';
 
 import {
@@ -222,6 +223,7 @@ export const setStartYear = (startYear) => {
 
     // fetch new data
     dispatch(getAggregateYearData({ startYear }));
+    dispatch(getSparseData({ startYear }));
     dispatch(getAggregateStateData({ startYear }));
     dispatch(getAggregateLocationData({ startYear }));
 
@@ -245,6 +247,7 @@ export const setEndYear = (endYear) => {
     dispatch(clearData());
 
     // fetch new data
+    dispatch(getSparseData({ endYear }));
     dispatch(getAggregateYearData({ endYear }));
     dispatch(getAggregateStateData({ endYear }));
     dispatch(getAggregateLocationData({ endYear }));
@@ -273,6 +276,7 @@ export const setAllYears = () => {
     dispatch(clearData());
 
     // fetch new data
+    dispatch(getSparseData({ startYear, endYear }));
     dispatch(getAggregateYearData({ startYear, endYear }));
     dispatch(getAggregateStateData({ startYear, endYear }));
     dispatch(getAggregateLocationData({ startYear, endYear }));
@@ -296,6 +300,7 @@ export const setState = (state) => {
     dispatch(clearData());
 
     // fetch new data
+    dispatch(getSparseData({ state }));
     dispatch(getAggregateYearData({ state }));
     dispatch(getAggregateStateData({ state }));
     dispatch(getAggregateLocationData({ state }));
@@ -322,9 +327,8 @@ export const setCounty = (county) => {
     // clear out existing data
     dispatch(clearData());
 
-    // TODO: generate new array for multi-counties (when support multi-select) and pass to below function calls
-
     // fetch new data
+    dispatch(getSparseData({ county }));
     dispatch(getAggregateYearData({ county }));
     dispatch(getAggregateStateData({ county }));
     dispatch(getAggregateLocationData({ county }));
@@ -349,9 +353,8 @@ export const setRangerDistrict = (rangerDistrict) => {
     // clear out existing data
     dispatch(clearData());
 
-    // TODO: generate new array for multi-rangerdistricts (when support multi-select) and pass to below function calls
-
     // fetch new data
+    dispatch(getSparseData({ rangerDistrict }));
     dispatch(getAggregateYearData({ rangerDistrict }));
     dispatch(getAggregateStateData({ rangerDistrict }));
     dispatch(getAggregateLocationData({ rangerDistrict }));
@@ -376,6 +379,7 @@ export const clearSelections = () => {
     dispatch(clearData());
 
     // fetch new data
+    dispatch(getSparseData());
     dispatch(getAggregateYearData());
     dispatch(getAggregateStateData());
     dispatch(getAggregateLocationData());
@@ -401,6 +405,7 @@ export const setDataMode = (mode) => {
     dispatch(clearData());
 
     // fetch new data
+    dispatch(getSparseData());
     dispatch(getAggregateYearData());
     dispatch(getAggregateStateData());
     dispatch(getAggregateLocationData());

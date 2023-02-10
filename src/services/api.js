@@ -31,6 +31,29 @@ export async function getCountyData(filters) {
 }
 
 /**
+ * @description retrieves sparse fields in summarized county data
+ * @param {Object} filters optional filters
+ * @returns {Promise<Object>} API response
+ */
+export async function getSparseCountyData(filters) {
+  const params = toQueryParams({
+    ...filters,
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
+  });
+
+  const url = `${global.API_URL}/${COUNTY_SUBROUTE}/sparse${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
  * @description retrieves all summarized ranger district data
  * @param {Object} filters optional filters
  * @returns {Promise<Object>} API response
@@ -43,6 +66,29 @@ export async function getRangerDistrictData(filters) {
   });
 
   const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
+ * @description retrieves sprase fields in ranger district data
+ * @param {Object} filters optional filters
+ * @returns {Promise<Object>} API response
+ */
+export async function getSparseRangerDistrictData(filters) {
+  const params = toQueryParams({
+    ...filters,
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
+  });
+
+  const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/sparse${params ? `?${params}` : ''}`;
 
   try {
     const { data: { data } } = await axios.get(url);
