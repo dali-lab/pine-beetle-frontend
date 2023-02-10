@@ -31,6 +31,7 @@ import {
   getAggregateStateData,
   getAggregateYearData,
   getPredictions,
+  getSparseData,
   runCustomPrediction,
 } from './data';
 
@@ -51,6 +52,7 @@ export {
   getAvailableStates,
   getAvailableSublocations,
   getAvailableYears,
+  getSparseData,
   getPredictions,
   getUserFromStorage,
   login,

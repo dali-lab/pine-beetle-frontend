@@ -5,6 +5,7 @@ import {
   getAggregateStateData,
   getAggregateLocationData,
   getAvailableStates,
+  getSparseData,
   getPredictions,
   getUserFromStorage,
   setChartMode,
@@ -42,6 +43,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getAvailableStates: (overrideFilter) => {
       dispatch(getAvailableStates(overrideFilter));
+    },
+    getSparseData: (overrideFilter) => {
+      dispatch(getSparseData(overrideFilter));
     },
     getPredictions: (startYear, endYear) => {
       dispatch(getPredictions(startYear, endYear));
