@@ -1,7 +1,7 @@
 /* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
 import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
@@ -440,7 +440,7 @@ const HistoricalMap = (props) => {
         zoom: 4.8,
       });
     }
-  }, [rawData, selectedState, map]);
+  }, [rawData, selectedState, map]); // endYear can prob be added. colorFill needs useCallback
 
   useEffect(() => {
     if (!initialFill && map && rawData.length > 0) {
@@ -457,7 +457,15 @@ const HistoricalMap = (props) => {
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
     }
-  }, [map, rawData, allRangerDistricts, availableSublocations, dataMode, selectedState, availableStates]);
+  }, [
+    map,
+    rawData,
+    allRangerDistricts,
+    availableSublocations,
+    dataMode,
+    selectedState,
+    availableStates,
+  ]); // same thing with colorFill, createMapHoverCallback complicated
 
   useEffect(() => {
     if (map && availableStates && availableSublocations) {
@@ -469,7 +477,15 @@ const HistoricalMap = (props) => {
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
-  }, [map, availableStates, availableSublocations, availableSublocations, selectedState, rawData, dataMode]);
+  }, [
+    map,
+    availableStates,
+    availableSublocations,
+    availableSublocations,
+    selectedState,
+    rawData,
+    dataMode,
+  ]);
 
   useEffect(() => {
     if (map) {
