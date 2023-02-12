@@ -71,7 +71,9 @@ const DownloadData = (props) => {
         if (!value) return null;
 
         const dataTypeName = countyMode ? 'COUNTY' : 'RD';
-        const dataName = fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
+        const dataName = fieldName === 'SUMMARIZED' || fieldName === 'PREDICTED'
+          ? `${fieldName}_${dataTypeName}`
+          : fieldName;
 
         // to allow multiple counties/RD
         const countyString = county.join('&county=');
@@ -176,24 +178,13 @@ const DownloadData = (props) => {
               <h4>Options</h4>
             </div>
             <div id="selection-types">
-              {/* <div>
-                <label htmlFor="select-all">
-                  <input
-                    type="checkbox"
-                    id="select-all"
-                    onChange={e => selectAll(e.target.checked)}
-                    checked={fieldsToDownload.PREDICTION && fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED}
-                  />
-                  <span className="checkbox-text">Select All</span>
-                </label>
-              </div> */}
               <div>
-                <label htmlFor="prediction-data">
+                <label htmlFor="unsummarized-data">
                   <input
                     type="checkbox"
-                    id="prediction-data"
-                    onChange={addFieldToDownload('PREDICTION')}
-                    checked={fieldsToDownload.PREDICTION}
+                    id="unsummarized-data"
+                    onChange={addFieldToDownload('UNSUMMARIZED')}
+                    checked={fieldsToDownload.UNSUMMARIZED}
                   />
                   <span className="checkbox-text">Unsummarized historical data</span>
                 </label>
@@ -210,14 +201,14 @@ const DownloadData = (props) => {
                 </label>
               </div>
               <div>
-                <label htmlFor="unsummarized-data">
+                <label htmlFor="prediction-data">
                   <input
                     type="checkbox"
-                    id="unsummarized-data"
-                    onChange={addFieldToDownload('UNSUMMARIZED')}
-                    checked={fieldsToDownload.UNSUMMARIZED}
+                    id="prediction-data"
+                    onChange={addFieldToDownload('PREDICTED')}
+                    checked={fieldsToDownload.PREDICTED}
                   />
-                  <span className="checkbox-text">Predictions vs outcomes</span>
+                  <span className="checkbox-text">Prediction vs. outcomes</span>
                 </label>
               </div>
             </div>
