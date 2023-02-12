@@ -66,6 +66,7 @@ const DownloadData = (props) => {
   // function for handling trapping data download
   const handleDownload = async () => {
     try {
+      setError('');
       const promises = Object.entries(fieldsToDownload).map(async ([fieldName, value]) => {
         if (!value) return null;
 
@@ -92,9 +93,8 @@ const DownloadData = (props) => {
       }
     } catch (err) {
       setIsDownloading(false);
-      // const { data } = err?.response || {};
-      // const strippedError = data?.error.toString().replace('Error: ', '');
-      setError(err);
+      console.log(err);
+      setError('There was an error.');
     }
   };
 
@@ -247,7 +247,7 @@ const DownloadData = (props) => {
           )}
         </div>
         <div>
-          {error}
+          <p>{error}</p>
         </div>
       </Modal>
     </>
