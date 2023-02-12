@@ -31,12 +31,7 @@ export const downloadCsv = async (dataType, queryParams = {}) => {
   // generate url
   const query = toQueryParams(queryParams);
 
-  // const localApi = 'http://localhost:9091/v3';
   const url = `${global.AUTOMATION_API_URL}${DOWNLOAD_DATA_ROUTES[dataType]}${query.length > 0 ? '?' : ''}${query}`;
-  // const url = `${localApi}${DOWNLOAD_DATA_ROUTES[dataType]}${query.length > 0 ? '?' : ''}${query}`;
-  console.log('route', DOWNLOAD_DATA_ROUTES);
-  console.log('dataType', dataType);
-  console.log('url', url);
 
   // download blob and create object url
   const { data } = await axios.get(url, { responseType: 'blob' });
