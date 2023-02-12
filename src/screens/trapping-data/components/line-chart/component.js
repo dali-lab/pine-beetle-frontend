@@ -34,7 +34,7 @@ const LineChart = (props) => {
     ],
   });
 
-  const [cleridChartData, setCleridChartData] = useState({
+  const [avgProbChartData, setAvgProbChartData] = useState({
     labels: [],
     datasets: [
       {
@@ -181,7 +181,7 @@ const LineChart = (props) => {
     },
   });
 
-  const [cleridChartOptions, setCleridChartOptions] = useState({
+  const [avgProbChartOptions, setAvgProbChartOptions] = useState({
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
@@ -336,7 +336,7 @@ const LineChart = (props) => {
   }, [yearData]);
 
   useEffect(() => {
-    const updatedCleridChartData = {
+    const updatedAvgProbChartData = {
       labels: [],
       datasets: [
         {
@@ -351,30 +351,30 @@ const LineChart = (props) => {
     };
 
     const updatedChartOptions = {
-      ...cleridChartOptions,
+      ...avgProbChartOptions,
     };
 
-    updatedCleridChartData.labels = getYearRange(startYear, endYear);
+    updatedAvgProbChartData.labels = getYearRange(startYear, endYear);
 
     // get sum of clerids by year
-    const cleridMap = yearData.reduce((acc, { year, sumCleridsPer2Weeks }) => ({
+    const avgProbMap = yearData.reduce((acc, { year, avgProbGreater50 }) => ({
       ...acc,
-      [year]: sumCleridsPer2Weeks,
+      [year]: avgProbGreater50,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
     // update chartData
-    updatedCleridChartData.datasets[0].data = Object.values(cleridMap);
+    updatedAvgProbChartData.datasets[0].data = Object.values(avgProbMap);
 
     // maximum value found in the array
     const max = Math.max(...[
-      ...updatedCleridChartData.datasets[0].data,
+      ...updatedAvgProbChartData.datasets[0].data,
     ]);
 
     // set new y-axis height
     updatedChartOptions.scales.yAxes[0].ticks.max = max;
 
-    setCleridChartData(updatedCleridChartData);
-    setCleridChartOptions(updatedChartOptions);
+    setAvgProbChartData(updatedAvgProbChartData);
+    setAvgProbChartOptions(updatedChartOptions);
   }, [yearData]);
 
   return (
@@ -389,8 +389,8 @@ const LineChart = (props) => {
           <Line data={totalChartData} height={400} options={totalChartOptions} />
         </div>
         <div>
-          <h2 id="chart-title">Clerid Spots per 2 weeks per year in selected areas</h2>
-          <Line data={cleridChartData} height={400} options={cleridChartOptions} />
+          <h2 id="chart-title">Predicted probability of &gt; 50 spots</h2>
+          <Line data={avgProbChartData} height={400} options={avgProbChartOptions} />
         </div>
       </div>
     </div>
