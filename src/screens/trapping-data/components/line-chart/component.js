@@ -381,12 +381,12 @@ const LineChart = (props) => {
     <div>
       <div id="chart">
         <div>
-          <h2 id="chart-title">Total SPB Spots per year in selected areas</h2>
-          <Line data={totalChartData} height={400} options={totalChartOptions} />
+          <h2 id="chart-title">SPB ⋅ trap<sup>-1</sup> ⋅ 14 days <sup>-1</sup></h2>
+          <Line data={spbChartData} height={400} options={spbChartOptions} />
         </div>
         <div>
-          <h2 id="chart-title">SPB Spots per 2 weeks per year in selected areas</h2>
-          <Line data={spbChartData} height={400} options={spbChartOptions} />
+          <h2 id="chart-title">Total SPB Spots per year in selected areas</h2>
+          <Line data={totalChartData} height={400} options={totalChartOptions} />
         </div>
         <div>
           <h2 id="chart-title">Clerid Spots per 2 weeks per year in selected areas</h2>
