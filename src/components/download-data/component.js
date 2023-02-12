@@ -81,7 +81,6 @@ const DownloadData = (props) => {
 
         return downloadCsv(dataName, {
           state: selectedState,
-          // [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
           [countyMode ? 'county' : 'rangerDistrict']: countyMode ? countyString : rangerDistrictString,
           startYear,
           endYear,
