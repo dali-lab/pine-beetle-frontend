@@ -50,6 +50,8 @@ const DownloadData = (props) => {
 
   const [isDownloading, setIsDownloading] = useState(false);
 
+  const [error, setError] = useState('');
+
   // vars for selecting types of data in modal
   const [fieldsToDownload, setFieldsToDownload] = useState({
     SUMMARIZED: false,
@@ -63,29 +65,37 @@ const DownloadData = (props) => {
 
   // function for handling trapping data download
   const handleDownload = async () => {
-    const promises = Object.entries(fieldsToDownload).map(async ([fieldName, value]) => {
-      if (!value) return null;
+    try {
+      setError('');
+      const promises = Object.entries(fieldsToDownload).map(async ([fieldName, value]) => {
+        if (!value) return null;
 
-      const dataTypeName = countyMode ? 'COUNTY' : 'RD';
-      const dataName = fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
+        const dataTypeName = countyMode ? 'COUNTY' : 'RD';
+        const dataName = fieldName === 'SUMMARIZED' || fieldName === 'PREDICTED'
+          ? `${fieldName}_${dataTypeName}`
+          : fieldName;
 
-      // to allow multiple counties/RD
-      const countyString = county.join('&county=');
-      const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
+        // to allow multiple counties/RD
+        const countyString = county.join('&county=');
+        const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
 
-      return downloadCsv(dataName, {
-        state: selectedState,
-        // [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
-        [countyMode ? 'county' : 'rangerDistrict']: countyMode ? countyString : rangerDistrictString,
-        startYear,
-        endYear,
-      });
-    }).filter((f) => !!f);
+        return downloadCsv(dataName, {
+          state: selectedState,
+          [countyMode ? 'county' : 'rangerDistrict']: countyMode ? countyString : rangerDistrictString,
+          startYear,
+          endYear,
+        });
+      }).filter((f) => !!f);
 
-    if (promises.length > 0) {
-      setIsDownloading(true);
-      await Promise.all(promises);
+      if (promises.length > 0) {
+        setIsDownloading(true);
+        await Promise.all(promises);
+        setIsDownloading(false);
+      }
+    } catch (err) {
       setIsDownloading(false);
+      console.log(err);
+      setError('There was an error.');
     }
   };
 
@@ -167,24 +177,13 @@ const DownloadData = (props) => {
               <h4>Options</h4>
             </div>
             <div id="selection-types">
-              {/* <div>
-                <label htmlFor="select-all">
-                  <input
-                    type="checkbox"
-                    id="select-all"
-                    onChange={e => selectAll(e.target.checked)}
-                    checked={fieldsToDownload.PREDICTION && fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED}
-                  />
-                  <span className="checkbox-text">Select All</span>
-                </label>
-              </div> */}
               <div>
-                <label htmlFor="prediction-data">
+                <label htmlFor="unsummarized-data">
                   <input
                     type="checkbox"
-                    id="prediction-data"
-                    onChange={addFieldToDownload('PREDICTION')}
-                    checked={fieldsToDownload.PREDICTION}
+                    id="unsummarized-data"
+                    onChange={addFieldToDownload('UNSUMMARIZED')}
+                    checked={fieldsToDownload.UNSUMMARIZED}
                   />
                   <span className="checkbox-text">Unsummarized historical data</span>
                 </label>
@@ -201,14 +200,14 @@ const DownloadData = (props) => {
                 </label>
               </div>
               <div>
-                <label htmlFor="unsummarized-data">
+                <label htmlFor="prediction-data">
                   <input
                     type="checkbox"
-                    id="unsummarized-data"
-                    onChange={addFieldToDownload('UNSUMMARIZED')}
-                    checked={fieldsToDownload.UNSUMMARIZED}
+                    id="prediction-data"
+                    onChange={addFieldToDownload('PREDICTED')}
+                    checked={fieldsToDownload.PREDICTED}
                   />
-                  <span className="checkbox-text">Predictions vs outcomes</span>
+                  <span className="checkbox-text">Prediction vs. outcomes</span>
                 </label>
               </div>
             </div>
@@ -236,6 +235,9 @@ const DownloadData = (props) => {
               <p>Download</p>
             </button>
           )}
+        </div>
+        <div>
+          <p>{error}</p>
         </div>
       </Modal>
     </>
