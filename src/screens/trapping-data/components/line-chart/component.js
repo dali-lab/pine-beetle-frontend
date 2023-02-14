@@ -374,7 +374,7 @@ const LineChart = (props) => {
     <div>
       <div id="chart">
         <div>
-          <h2 id="chart-title">SPB ⋅ trap<sup>-1</sup> ⋅ 14 days <sup>-1</sup></h2>
+          <h2 id="chart-title">SPB ⋅ trap<sup>-1</sup> ⋅ 14 days<sup>-1</sup></h2>
           <Line data={spbChartData} height={400} options={spbChartOptions} />
         </div>
         <div>
