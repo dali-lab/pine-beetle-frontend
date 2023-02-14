@@ -104,7 +104,7 @@ const LineChart = (props) => {
       },
     },
     legend: {
-      display: false,
+      display: true,
     },
   });
 
@@ -171,7 +171,7 @@ const LineChart = (props) => {
       },
     },
     legend: {
-      display: false,
+      display: true,
     },
   });
 
@@ -238,7 +238,7 @@ const LineChart = (props) => {
       },
     },
     legend: {
-      display: false,
+      display: true,
     },
   });
 
