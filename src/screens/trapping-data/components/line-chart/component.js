@@ -17,7 +17,6 @@ const LineChart = (props) => {
     datasets: [
       {
         data: [],
-        label: 'Total Spots',
         fill: false,
       },
     ],
@@ -28,7 +27,6 @@ const LineChart = (props) => {
     datasets: [
       {
         data: [],
-        label: 'SPB Per 2 Weeks',
         fill: false,
       },
     ],
@@ -39,7 +37,6 @@ const LineChart = (props) => {
     datasets: [
       {
         data: [],
-        label: 'Clerid Per 2 Weeks',
         fill: false,
       },
     ],
@@ -102,14 +99,12 @@ const LineChart = (props) => {
           const { label } = d.datasets[tooltipItem.datasetIndex];
           const value = tooltipItem.yLabel;
 
-          if (label === 'Total Spots') return `${label}: ${value}`;
-          else return `${label}: ${value.toFixed(2)}`;
+          return `${label}: ${value}`;
         },
       },
     },
     legend: {
       display: false,
-      position: 'top',
     },
   });
 
@@ -176,8 +171,7 @@ const LineChart = (props) => {
       },
     },
     legend: {
-      display: true,
-      position: 'top',
+      display: false,
     },
   });
 
@@ -202,7 +196,7 @@ const LineChart = (props) => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Count',
+          labelString: 'Percent Probability',
           fontColor: '#7c7c96',
           fontFamily: 'Inter',
           fontSize: '22',
@@ -244,8 +238,7 @@ const LineChart = (props) => {
       },
     },
     legend: {
-      display: true,
-      position: 'top',
+      display: false,
     },
   });
 
@@ -341,7 +334,7 @@ const LineChart = (props) => {
       datasets: [
         {
           data: [],
-          label: 'Clerid Per 2 Weeks',
+          label: 'Average Probability > 50%',
           borderColor: '#ffc148',
           backgroundColor: '#ffc148',
           fill: false,
@@ -356,7 +349,7 @@ const LineChart = (props) => {
 
     updatedAvgProbChartData.labels = getYearRange(startYear, endYear);
 
-    // get sum of clerids by year
+    // get avg prob > 50 map
     const avgProbMap = yearData.reduce((acc, { year, avgProbGreater50 }) => ({
       ...acc,
       [year]: avgProbGreater50,
