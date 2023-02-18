@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom';
 
 import {
   About,
@@ -24,6 +29,8 @@ import {
   getServerUrl,
   MIN_WIDTH_THRESHOLD,
   ROUTES,
+  RESOURCE_ROUTES,
+  RESOURCE_REMOTE_URLS,
 } from '../constants';
 
 import {
@@ -123,6 +130,14 @@ const App = (props) => {
               <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
               <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModel} />
               <Route path={ROUTES.PREDICTIONS} component={Prediction} />
+              {Object.entries(RESOURCE_ROUTES).map(([TYPE, ROUTE]) => (
+                <Route path={ROUTE}
+                  render={() => {
+                    window.location.replace(RESOURCE_REMOTE_URLS[TYPE]);
+                    return (<Redirect to={{ pathname: ROUTES.HOME }} />);
+                  }}
+                />
+              ))}
               <Route component={FallBack} />
             </Switch>
           </div>

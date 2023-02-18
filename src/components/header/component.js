@@ -4,12 +4,11 @@ import { Link, useLocation } from 'react-router-dom';
 import './style.scss';
 
 import { ROUTES } from '../../constants';
-// eslint-disable-next-line import/no-cycle
-import { DownloadData } from '..';
+import DownloadData from '../download-data';
 
 import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
 
-const Header = (props) => {
+const Header = (_props) => {
   const routes = {
     [ROUTES.PREDICTIONS]: 'Predict Outbreak',
     [ROUTES.TRAPPING_DATA]: 'Historical Data',

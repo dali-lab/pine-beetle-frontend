@@ -26,6 +26,7 @@ jobs:
       ANALYTICS_ENV: $${ secrets.ANALYTICS_ENV }}
       MAIN_BACKEND_ENV: $${ secrets.MAIN_BACKEND_ENV }}
       AUTOMATION_ENV: $${ secrets.AUTOMATION_ENV }}
+      RESOURCE_ENV: $${ secrets.RESOURCE_ENV }}
 
     steps:
     - uses: actions/checkout@v3
