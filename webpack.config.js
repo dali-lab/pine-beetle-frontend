@@ -94,7 +94,9 @@ module.exports = {
   ].filter(Boolean),
   devServer: {
     hot: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
     client: {
       overlay: {
         warnings: false,

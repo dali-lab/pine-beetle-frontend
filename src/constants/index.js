@@ -71,10 +71,54 @@ const CHART_MODES = {
 const ROUTES = {
   ABOUT: '/about',
   ADMIN: '/admin',
-  TRAPPING_DATA: '/historical-data',
   HOME: '/',
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predict-outbreak',
+  TRAPPING_DATA: '/historical-data',
+};
+
+const RESOURCE_ROUTES = {
+  CODE: '/SPB.PredictionModel.2022.zip',
+  DISSERTATION: '/Aoki-Dissertation.pdf',
+  ANNUAL: 'SPB.southwide.Annual.1988-2021.zip',
+  WEEKLY_OLD: '/SPB.southwide.Weekly.1987-2011.zip',
+  WEEKLY: '/SPB.southwide.Weekly.2011-2017.zip',
+};
+
+const RESOURCE_LOCAL_URLS = {
+  CODE: window.location.hostname + RESOURCE_ROUTES.CODE,
+  DISSERTATION: window.location.hostname + RESOURCE_ROUTES.DISSERTATION,
+  ANNUAL: window.location.hostname + RESOURCE_ROUTES.ANNUAL,
+  WEEKLY_OLD: window.location.hostname + RESOURCE_ROUTES.WEEKLY_OLD,
+  WEEKLY: window.location.hostname + RESOURCE_ROUTES.WEEKLY,
+};
+
+const RESOURCE_REMOTE_ROOTS = {
+  DEV: 'https://raw.githubusercontent.com/dali-lab/pine-beetle-frontend/dev/downloads',
+  PROD: 'https://raw.githubusercontent.com/dali-lab/pine-beetle-frontend/release/downloads',
+};
+
+const getResourceRemoteRoot = () => {
+  switch (process.env.RESOURCE_ENV) {
+    case 'DEV':
+      return RESOURCE_REMOTE_ROOTS.DEV;
+
+    case 'PROD':
+      return RESOURCE_REMOTE_ROOTS.PROD;
+
+    default:
+      return RESOURCE_REMOTE_ROOTS.DEV;
+  }
+};
+
+const RESOURCE_REMOTE_ROOT = getResourceRemoteRoot();
+
+const RESOURCE_REMOTE_URLS = {
+  CODE: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.CODE,
+  DISSERTATION: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.DISSERTATION,
+  ANNUAL: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.ANNUAL,
+  WEEKLY_OLD: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.WEEKLY_OLD,
+  WEEKLY: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.WEEKLY,
 };
 
 const DOWNLOAD_DATA_ROUTES = {
@@ -114,5 +158,8 @@ export {
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
   getYearRange,
+  RESOURCE_ROUTES,
+  RESOURCE_REMOTE_URLS,
+  RESOURCE_LOCAL_URLS,
   VIDEO_URL,
 };
