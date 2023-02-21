@@ -41,7 +41,7 @@ const DownloadData = (props) => {
   const statesMappedToNames = availableStates.map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = (stateName) => setState(getStateAbbreviationFromStateName(stateName));
-  const revYears = [...availableYears].reverse();
+  const revYears = () => { availableYears.filter((n) => n > startYear); };
 
   // functions for showing modal
   const [show, setShow] = useState(false);
