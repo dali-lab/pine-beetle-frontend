@@ -80,21 +80,20 @@ const MultiSelectInput = (props) => {
 
   const locationList = () => {
     return (
-      <div>
-        <div className="location-list">
-          <div className="location-list-header">
-            <button type="button"
-              className="location-list-instructions"
-              onClick={() => {
-                setAllSelected(!allSelected);
-                setValueParent('');
-              }}
-            >
-              {allSelected ? 'Unselect all' : 'Select all'}
-            </button>
-            <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
-          </div>
-          {
+      <div className="location-list">
+        <div className="location-list-header">
+          <button type="button"
+            className="location-list-instructions"
+            onClick={() => {
+              setAllSelected(!allSelected);
+              setValueParent('');
+            }}
+          >
+            {allSelected ? 'Unselect all' : 'Select all'}
+          </button>
+          <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
+        </div>
+        {
           optionsParent.map((item) => (
             <div
               className="location-list-item"
@@ -147,7 +146,6 @@ const MultiSelectInput = (props) => {
             </div>
           ))
         }
-        </div>
       </div>
     );
   };
