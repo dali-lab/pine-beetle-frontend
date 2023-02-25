@@ -49,7 +49,7 @@ const HistoricalMap = (props) => {
   const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
   const [allRangerDistricts, setAllRangerDistricts] = useState([]);
 
-  const numYears = endYear - startYear + 1;
+  // const numYears = endYear - startYear + 1;
 
   useEffect(() => {
     if (dataMode === DATA_MODES.RANGER_DISTRICT) {
@@ -276,19 +276,19 @@ const HistoricalMap = (props) => {
 
     Object.entries(trappingsByLocality).forEach(([localityDescription, sumSpotst0]) => {
       let color;
-      const avgSpots = sumSpotst0 / numYears;
+      const totalSpots = sumSpotst0;
 
-      if (avgSpots === null) {
+      if (totalSpots === null || sumSpotst0 == null) {
         color = colors[0];
-      } else if (avgSpots < 10) {
+      } else if (totalSpots < 10) {
         color = colors[1];
-      } else if (avgSpots < 20) {
+      } else if (totalSpots < 20) {
         color = colors[2];
-      } else if (avgSpots < 50) {
+      } else if (totalSpots < 50) {
         color = colors[3];
-      } else if (avgSpots < 100) {
+      } else if (totalSpots < 100) {
         color = colors[4];
-      } else if (avgSpots < 250) {
+      } else if (totalSpots < 250) {
         color = colors[5];
       } else {
         color = colors[6];
@@ -348,7 +348,7 @@ const HistoricalMap = (props) => {
       `
           <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
               <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height:
-              14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Average spots per year:</p>
+              14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Total spots per year:</p>
               <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 90%;margin: auto;margin-bottom: 10px;">
                   ${legendString}
               </div>
@@ -528,30 +528,30 @@ const HistoricalMap = (props) => {
               rawData?.length === 1
                 ? (
                   <div className="circle" id="spbs">
-                    <div id="percent">{rawData[0].sumSpbPer2Weeks ? (rawData[0].sumSpbPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
+                    <div id="percent">{rawData[0].sumSpbPer2Weeks ? (rawData[0].sumSpbPer2Weeks).toFixed(0) : 'n/a'}</div>
                   </div>
                 )
                 : <div className="circle" id="empty" />
             }
-            <p>Average SPB per 2 weeks</p>
+            <p>Total SPB per 2 weeks</p>
           </div>
           <div className="data-info-section">
             {
               rawData?.length === 1
                 ? (
                   <div className="circle" id="clerid">
-                    <div id="percent">{rawData[0].sumCleridsPer2Weeks ? (rawData[0].sumCleridsPer2Weeks / numYears).toFixed(0) : 'n/a'}</div>
+                    <div id="percent">{rawData[0].sumCleridsPer2Weeks ? (rawData[0].sumCleridsPer2Weeks).toFixed(0) : 'n/a'}</div>
                   </div>
                 )
                 : <div className="circle" id="empty" />
             }
-            <p>Average clerids per 2 weeks</p>
+            <p>Total clerids per 2 weeks</p>
           </div>
           <div className="data-info-section">
             {
               rawData?.length === 1
                 ? (
-                  <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0 / numYears)}>
+                  <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0)}>
                     <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div>
                   </div>
                 )
@@ -574,7 +574,7 @@ const HistoricalMap = (props) => {
 
       </div>
       <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title">Average Number of Spots</div>
+        <div className="legend-key-title">Total Number of Spots</div>
         {legendTags}
       </div>
       {trappingHover}
