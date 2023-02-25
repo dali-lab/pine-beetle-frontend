@@ -6,6 +6,7 @@ import './style.scss';
 import arrowDown from '../../../assets/icons/arrow-down.png';
 import emptyCheckbox from '../../../assets/icons/empty_checkbox.png';
 import selectedCheckbox from '../../../assets/icons/selected_checkbox.png';
+// import { setAllStates } from '../../../state/actions';
 
 const CLEAR_TEXT = 'Select location(s)';
 
@@ -23,7 +24,7 @@ const MultiSelectInput = (props) => {
 
   const ref = useRef();
   const [statusText, setStatusText] = useState('');
-  const [allSelected, setAllSelected] = useState(false);
+  const [allSelected, setAllSelected] = useState(true);
   const [isListOpen, setIsListOpen] = useState(false);
 
   // close dropdown when clicking outside the component
@@ -69,6 +70,7 @@ const MultiSelectInput = (props) => {
 
   // add children to value list or remove it if previously selected
   const selectChildren = (child) => {
+    // if child has already been selected, then remove it
     if (valueChildren.indexOf(child) > -1) {
       handleRemove(child);
     } else {
@@ -78,20 +80,21 @@ const MultiSelectInput = (props) => {
 
   const locationList = () => {
     return (
-      <div className="location-list">
-        <div className="location-list-header">
-          <button type="button"
-            className="location-list-instructions"
-            onClick={() => {
-              setAllSelected(!allSelected);
-              setValueParent('');
-            }}
-          >
-            {allSelected ? 'Unselect all' : 'Select all'}
-          </button>
-          <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
-        </div>
-        {
+      <div>
+        <div className="location-list">
+          <div className="location-list-header">
+            <button type="button"
+              className="location-list-instructions"
+              onClick={() => {
+                setAllSelected(!allSelected);
+                setValueParent('');
+              }}
+            >
+              {allSelected ? 'Unselect all' : 'Select all'}
+            </button>
+            <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
+          </div>
+          {
           optionsParent.map((item) => (
             <div
               className="location-list-item"
@@ -144,6 +147,7 @@ const MultiSelectInput = (props) => {
             </div>
           ))
         }
+        </div>
       </div>
     );
   };
