@@ -55,8 +55,9 @@ const DownloadData = (props) => {
 
   // vars for selecting types of data in modal
   const [fieldsToDownload, setFieldsToDownload] = useState({
-    SUMMARIZED: false,
-    UNSUMMARIZED: false,
+    SUMMARIZED: true,
+    UNSUMMARIZED: true,
+    PREDICTED: true,
   });
 
   const addFieldToDownload = (fieldName) => (e) => setFieldsToDownload({
