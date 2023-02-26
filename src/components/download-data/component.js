@@ -76,9 +76,7 @@ const DownloadData = (props) => {
           : fieldName;
 
         // to allow multiple counties/RD
-        console.log(county);
         const countyString = county.join('&county=');
-        console.log(countyString);
         const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
 
         return downloadCsv(dataName, {
