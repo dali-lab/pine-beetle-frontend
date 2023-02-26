@@ -9,6 +9,7 @@ import {
 import {
   About,
   Admin,
+  Resources,
   TrappingData,
   Home,
   PlayWithModel,
@@ -127,6 +128,7 @@ const App = (props) => {
               <Route exact path={ROUTES.HOME} component={Home} />
               <Route path={ROUTES.ABOUT} component={About} />
               <Route path={ROUTES.ADMIN} component={Admin} />
+              <Route path={ROUTES.RESOURCES} component={Resources} />
               <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
               <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModel} />
               <Route path={ROUTES.PREDICTIONS} component={Prediction} />
@@ -134,7 +136,7 @@ const App = (props) => {
                 <Route path={ROUTE}
                   render={() => {
                     window.location.replace(RESOURCE_REMOTE_URLS[TYPE]);
-                    return (<Redirect to={{ pathname: ROUTES.HOME }} />);
+                    return (<Redirect to={{ pathname: ROUTES.RESOURCES }} />);
                   }}
                 />
               ))}
