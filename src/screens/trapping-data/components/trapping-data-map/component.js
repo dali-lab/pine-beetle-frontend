@@ -60,28 +60,28 @@ const HistoricalMap = (props) => {
   }, [dataMode]);
 
   // for the data window once we select a county/RD
-  const windowTitle = () => {
-    return dataMode === DATA_MODES.COUNTY ? `${rawData[0].county} County` : rawData[0].rangerDistrict;
-  };
+  // const windowTitle = () => {
+  //   return dataMode === DATA_MODES.COUNTY ? `${rawData[0].county} County` : rawData[0].rangerDistrict;
+  // };
 
   // determines style of the data overlay spots circle based on the number of spots
-  const overlaySpotsColor = (spots) => {
-    if (spots === null) {
-      return 'spots-null';
-    } else if (spots < 10) {
-      return 'spots-10';
-    } else if (spots < 20) {
-      return 'spots-20';
-    } else if (spots < 50) {
-      return 'spots-50';
-    } else if (spots < 100) {
-      return 'spots-100';
-    } else if (spots < 250) {
-      return 'spots-250';
-    } else {
-      return 'spots-more';
-    }
-  };
+  // const Color = (spots) => {
+  //   if (spots === null) {
+  //     return 'spots-null';
+  //   } else if (spots < 10) {
+  //     return 'spots-10';
+  //   } else if (spots < 20) {
+  //     return 'spots-20';
+  //   } else if (spots < 50) {
+  //     return 'spots-50';
+  //   } else if (spots < 100) {
+  //     return 'spots-100';
+  //   } else if (spots < 250) {
+  //     return 'spots-250';
+  //   } else {overlaySpots
+  //     return 'spots-more';
+  //   }
+  // };
 
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => (e) => {
@@ -513,7 +513,7 @@ const HistoricalMap = (props) => {
   return (
     <div id="trapping-map-container">
       <div id="map" />
-      <div className="map-overlay-data" id="historical-data-overlay">
+      {/* <div className="map-overlay-data" id="historical-data-overlay">
         <h3 className="data-title">{rawData?.length === 1
           ? windowTitle()
           : 'Select county or federal land on the map to view historical data'}
@@ -560,7 +560,7 @@ const HistoricalMap = (props) => {
             <p>Total number of spots</p>
           </div>
         </div>
-      </div>
+      </div> */}
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
         <div>
