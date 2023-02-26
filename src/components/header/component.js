@@ -10,9 +10,10 @@ import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
 
 const Header = (_props) => {
   const routes = {
-    [ROUTES.PREDICTIONS]: 'Predict Outbreak',
+    [ROUTES.PREDICTIONS]: 'Predictions',
     [ROUTES.TRAPPING_DATA]: 'Historical Data',
     [ROUTES.PLAY_WITH_MODEL]: 'Play With Model',
+    [ROUTES.RESOURCES]: 'Resources',
     [ROUTES.ABOUT]: 'About',
   };
 

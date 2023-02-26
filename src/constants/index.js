@@ -72,6 +72,7 @@ const ROUTES = {
   ABOUT: '/about',
   ADMIN: '/admin',
   HOME: '/',
+  RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predict-outbreak',
   TRAPPING_DATA: '/historical-data',
@@ -80,17 +81,37 @@ const ROUTES = {
 const RESOURCE_ROUTES = {
   CODE: '/SPB.PredictionModel.2022.zip',
   DISSERTATION: '/Aoki-Dissertation.pdf',
-  ANNUAL: 'SPB.southwide.Annual.1988-2021.zip',
+  ANNUAL: '/SPB.southwide.Annual.1988-2021.zip',
   WEEKLY_OLD: '/SPB.southwide.Weekly.1987-2011.zip',
   WEEKLY: '/SPB.southwide.Weekly.2011-2017.zip',
 };
 
+const RESOURCE_LOCAL_ROOTS = {
+  PROD: 'https://www.spbpredict.com',
+  DEV: 'https://pine-beetle-prediction.netlify.app',
+};
+
+const getResourceLocalRoot = () => {
+  switch (process.env.RESOURCE_ENV) {
+    case 'DEV':
+      return RESOURCE_LOCAL_ROOTS.DEV;
+
+    case 'PROD':
+      return RESOURCE_LOCAL_ROOTS.PROD;
+
+    default:
+      return RESOURCE_LOCAL_ROOTS.DEV;
+  }
+};
+
+const RESOURCE_LOCAL_ROOT = getResourceLocalRoot();
+
 const RESOURCE_LOCAL_URLS = {
-  CODE: window.location.hostname + RESOURCE_ROUTES.CODE,
-  DISSERTATION: window.location.hostname + RESOURCE_ROUTES.DISSERTATION,
-  ANNUAL: window.location.hostname + RESOURCE_ROUTES.ANNUAL,
-  WEEKLY_OLD: window.location.hostname + RESOURCE_ROUTES.WEEKLY_OLD,
-  WEEKLY: window.location.hostname + RESOURCE_ROUTES.WEEKLY,
+  CODE: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.CODE,
+  DISSERTATION: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.DISSERTATION,
+  ANNUAL: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.ANNUAL,
+  WEEKLY_OLD: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.WEEKLY_OLD,
+  WEEKLY: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.WEEKLY,
 };
 
 const RESOURCE_REMOTE_ROOTS = {
