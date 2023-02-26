@@ -523,22 +523,6 @@ const PredictionMap = (props) => {
             }
             <p>Probability of a spot outbreak</p>
           </div>
-          <div className="data-info-section" id="divergence-section">
-            {
-              data?.length === 1
-                ? (
-                  <div className="circle" id={data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak ? 'data-divergence' : 'empty'}>
-                    {
-                      data[0].hasSpotst0 === 1 && data[0].expSpotsIfOutbreak
-                        ? <div id="percent">{(((data[0].spotst0 - data[0].expSpotsIfOutbreak) / data[0].expSpotsIfOutbreak) * 100).toFixed(0)}%</div>
-                        : <div id="percent">n/a</div>
-                    }
-                  </div>
-                )
-                : <div className="circle" id="empty" />
-            }
-            <p>Spot divergence of outcomes from prediction</p>
-          </div>
         </div>
         {
           data?.length === 1
