@@ -7,7 +7,7 @@ import arrowDown from '../../../assets/icons/arrow-down.png';
 import emptyCheckbox from '../../../assets/icons/empty_checkbox.png';
 import selectedCheckbox from '../../../assets/icons/selected_checkbox.png';
 
-const CLEAR_TEXT = 'Select location(s)';
+const CLEAR_TEXT = 'All Locations';
 
 const MultiSelectInput = (props) => {
   const {
@@ -69,6 +69,7 @@ const MultiSelectInput = (props) => {
 
   // add children to value list or remove it if previously selected
   const selectChildren = (child) => {
+    // if child has already been selected, then remove it
     if (valueChildren.indexOf(child) > -1) {
       handleRemove(child);
     } else {

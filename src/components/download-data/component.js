@@ -41,7 +41,7 @@ const DownloadData = (props) => {
   const statesMappedToNames = availableStates.map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = (stateName) => setState(getStateAbbreviationFromStateName(stateName));
-  const revYears = [...availableYears].reverse();
+  const revYears = availableYears.filter((n) => n >= startYear);
 
   // functions for showing modal
   const [show, setShow] = useState(false);
@@ -54,8 +54,8 @@ const DownloadData = (props) => {
 
   // vars for selecting types of data in modal
   const [fieldsToDownload, setFieldsToDownload] = useState({
-    SUMMARIZED: false,
-    UNSUMMARIZED: false,
+    SUMMARIZED: true,
+    UNSUMMARIZED: true,
   });
 
   const addFieldToDownload = (fieldName) => (e) => setFieldsToDownload({
@@ -71,7 +71,7 @@ const DownloadData = (props) => {
         if (!value) return null;
 
         const dataTypeName = countyMode ? 'COUNTY' : 'RD';
-        const dataName = fieldName === 'SUMMARIZED' || fieldName === 'PREDICTED'
+        const dataName = fieldName === 'SUMMARIZED'
           ? `${fieldName}_${dataTypeName}`
           : fieldName;
 
@@ -185,7 +185,7 @@ const DownloadData = (props) => {
                     onChange={addFieldToDownload('UNSUMMARIZED')}
                     checked={fieldsToDownload.UNSUMMARIZED}
                   />
-                  <span className="checkbox-text">Unsummarized historical data</span>
+                  <span className="checkbox-text">Unsummarized data with weekly trap captures</span>
                 </label>
               </div>
               <div>
@@ -196,18 +196,7 @@ const DownloadData = (props) => {
                     onChange={addFieldToDownload('SUMMARIZED')}
                     checked={fieldsToDownload.SUMMARIZED}
                   />
-                  <span className="checkbox-text">Model input historical data</span>
-                </label>
-              </div>
-              <div>
-                <label htmlFor="prediction-data">
-                  <input
-                    type="checkbox"
-                    id="prediction-data"
-                    onChange={addFieldToDownload('PREDICTED')}
-                    checked={fieldsToDownload.PREDICTED}
-                  />
-                  <span className="checkbox-text">Prediction vs. outcomes</span>
+                  <span className="checkbox-text">Summarized data with one record per year for each county or federal parcel</span>
                 </label>
               </div>
             </div>
