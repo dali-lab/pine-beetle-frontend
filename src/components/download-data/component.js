@@ -41,8 +41,7 @@ const DownloadData = (props) => {
   const statesMappedToNames = availableStates.map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = (stateName) => setState(getStateAbbreviationFromStateName(stateName));
-  // const revYears = () => { availableYears.filter((n) => n > startYear); };
-  const revYears = [...availableYears].reverse();
+  const revYears = availableYears.filter((n) => n >= startYear);
 
   // functions for showing modal
   const [show, setShow] = useState(false);
@@ -72,12 +71,14 @@ const DownloadData = (props) => {
         if (!value) return null;
 
         const dataTypeName = countyMode ? 'COUNTY' : 'RD';
-        const dataName = fieldName === 'SUMMARIZED' // || fieldName === 'PREDICTED'
+        const dataName = fieldName === 'SUMMARIZED'
           ? `${fieldName}_${dataTypeName}`
           : fieldName;
 
         // to allow multiple counties/RD
+        console.log(county);
         const countyString = county.join('&county=');
+        console.log(countyString);
         const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
 
         return downloadCsv(dataName, {
@@ -200,17 +201,6 @@ const DownloadData = (props) => {
                   <span className="checkbox-text">Summarized data with one record per year for each county or federal parcel</span>
                 </label>
               </div>
-              {/* <div>
-                <label htmlFor="prediction-data">
-                  <input
-                    type="checkbox"
-                    id="prediction-data"
-                    onChange={addFieldToDownload('PREDICTED')}
-                    checked={fieldsToDownload.PREDICTED}
-                  />
-                  <span className="checkbox-text">Prediction vs. outcomes</span>
-                </label>
-              </div> */}
             </div>
             <div id="modal-footnote-container">
               <p className="modal-footnote">* helper data includes ranger district name mappings and state abbreviation mappings</p>

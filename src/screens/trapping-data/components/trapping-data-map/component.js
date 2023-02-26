@@ -49,8 +49,6 @@ const HistoricalMap = (props) => {
   const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
   const [allRangerDistricts, setAllRangerDistricts] = useState([]);
 
-  // const numYears = endYear - startYear + 1;
-
   useEffect(() => {
     if (dataMode === DATA_MODES.RANGER_DISTRICT) {
       api.getAvailableSublocations(dataMode)
@@ -58,30 +56,6 @@ const HistoricalMap = (props) => {
         .catch(console.log);
     }
   }, [dataMode]);
-
-  // for the data window once we select a county/RD
-  // const windowTitle = () => {
-  //   return dataMode === DATA_MODES.COUNTY ? `${rawData[0].county} County` : rawData[0].rangerDistrict;
-  // };
-
-  // determines style of the data overlay spots circle based on the number of spots
-  // const Color = (spots) => {
-  //   if (spots === null) {
-  //     return 'spots-null';
-  //   } else if (spots < 10) {
-  //     return 'spots-10';
-  //   } else if (spots < 20) {
-  //     return 'spots-20';
-  //   } else if (spots < 50) {
-  //     return 'spots-50';
-  //   } else if (spots < 100) {
-  //     return 'spots-100';
-  //   } else if (spots < 250) {
-  //     return 'spots-250';
-  //   } else {overlaySpots
-  //     return 'spots-more';
-  //   }
-  // };
 
   // twice-curried function for generating hover callback
   const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => (e) => {
@@ -276,19 +250,18 @@ const HistoricalMap = (props) => {
 
     Object.entries(trappingsByLocality).forEach(([localityDescription, sumSpotst0]) => {
       let color;
-      const totalSpots = sumSpotst0;
 
-      if (totalSpots === null || sumSpotst0 == null) {
+      if (sumSpotst0 === null) {
         color = colors[0];
-      } else if (totalSpots < 10) {
+      } else if (sumSpotst0 < 10) {
         color = colors[1];
-      } else if (totalSpots < 20) {
+      } else if (sumSpotst0 < 20) {
         color = colors[2];
-      } else if (totalSpots < 50) {
+      } else if (sumSpotst0 < 50) {
         color = colors[3];
-      } else if (totalSpots < 100) {
+      } else if (sumSpotst0 < 100) {
         color = colors[4];
-      } else if (totalSpots < 250) {
+      } else if (sumSpotst0 < 250) {
         color = colors[5];
       } else {
         color = colors[6];
@@ -513,54 +486,6 @@ const HistoricalMap = (props) => {
   return (
     <div id="trapping-map-container">
       <div id="map" />
-      {/* <div className="map-overlay-data" id="historical-data-overlay">
-        <h3 className="data-title">{rawData?.length === 1
-          ? windowTitle()
-          : 'Select county or federal land on the map to view historical data'}
-        </h3>
-        {
-          rawData?.length === 1
-          && <p>{startYear}-{endYear}</p>
-        }
-        <div className="data-info-historical">
-          <div className="data-info-section">
-            {
-              rawData?.length === 1
-                ? (
-                  <div className="circle" id="spbs">
-                    <div id="percent">{rawData[0].sumSpbPer2Weeks ? (rawData[0].sumSpbPer2Weeks).toFixed(0) : 'n/a'}</div>
-                  </div>
-                )
-                : <div className="circle" id="empty" />
-            }
-            <p>Total SPB per 2 weeks</p>
-          </div>
-          <div className="data-info-section">
-            {
-              rawData?.length === 1
-                ? (
-                  <div className="circle" id="clerid">
-                    <div id="percent">{rawData[0].sumCleridsPer2Weeks ? (rawData[0].sumCleridsPer2Weeks).toFixed(0) : 'n/a'}</div>
-                  </div>
-                )
-                : <div className="circle" id="empty" />
-            }
-            <p>Total clerids per 2 weeks</p>
-          </div>
-          <div className="data-info-section">
-            {
-              rawData?.length === 1
-                ? (
-                  <div className="circle" id={overlaySpotsColor(rawData[0].sumSpotst0)}>
-                    <div id="percent">{rawData[0].sumSpotst0.toFixed(0)}</div>
-                  </div>
-                )
-                : <div className="circle" id="empty" />
-            }
-            <p>Total number of spots</p>
-          </div>
-        </div>
-      </div> */}
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
         <div>

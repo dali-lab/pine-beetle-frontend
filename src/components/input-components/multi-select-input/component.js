@@ -6,9 +6,8 @@ import './style.scss';
 import arrowDown from '../../../assets/icons/arrow-down.png';
 import emptyCheckbox from '../../../assets/icons/empty_checkbox.png';
 import selectedCheckbox from '../../../assets/icons/selected_checkbox.png';
-// import { setAllStates } from '../../../state/actions';
 
-const CLEAR_TEXT = 'Select location(s)';
+const CLEAR_TEXT = 'All Locations';
 
 const MultiSelectInput = (props) => {
   const {
@@ -24,7 +23,7 @@ const MultiSelectInput = (props) => {
 
   const ref = useRef();
   const [statusText, setStatusText] = useState('');
-  const [allSelected, setAllSelected] = useState(true);
+  const [allSelected, setAllSelected] = useState(false);
   const [isListOpen, setIsListOpen] = useState(false);
 
   // close dropdown when clicking outside the component
