@@ -25,9 +25,8 @@ const ChoiceInput = (props) => {
 
   const opts = [
     <option value="" key={firstOptionText}>{firstOptionText}</option>,
-    ...options.filter((op) => !!op).map((op) => (
-      <option value={op} key={op}>{op}</option>
-    )),
+    ...options.filter((op) => !!op)
+      .map((op) => <option value={op} key={op}>{op}</option>),
   ];
 
   useEffect(() => {

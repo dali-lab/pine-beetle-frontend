@@ -133,7 +133,9 @@ const App = (props) => {
               <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModel} />
               <Route path={ROUTES.PREDICTIONS} component={Prediction} />
               {Object.entries(RESOURCE_ROUTES).map(([TYPE, ROUTE]) => (
-                <Route path={ROUTE}
+                <Route
+                  key={ROUTE}
+                  path={ROUTE}
                   render={() => {
                     window.location.replace(RESOURCE_REMOTE_URLS[TYPE]);
                     return (<Redirect to={{ pathname: ROUTES.RESOURCES }} />);
