@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 import React from 'react';
 
 import { ChoiceInput, MultiSelectInput } from '../../../../components/input-components';
@@ -60,7 +59,13 @@ const SelectionBar = (props) => {
               optionsChildren={availableSublocations}
             />
           </div>
-          <button className="predictionbar-clear-button" onClick={clearAllSelections}>Clear</button>
+          <button
+            type="button"
+            className="predictionbar-clear-button"
+            onClick={clearAllSelections}
+          >
+            Clear
+          </button>
         </div>
       </div>
     );

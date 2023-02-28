@@ -1,9 +1,7 @@
-/* eslint-disable jsx-a11y/label-has-for */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
 import '../style.scss';
 
-const CLEAR_TEXT = 'Clear Selection';
+const CLEAR_TEXT = 'Reset Year';
 
 const ChoiceInput = (props) => {
   const {

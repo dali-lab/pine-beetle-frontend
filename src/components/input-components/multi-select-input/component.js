@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-for */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect, useRef } from 'react';
 import './style.scss';
 
@@ -23,7 +21,7 @@ const MultiSelectInput = (props) => {
 
   const ref = useRef();
   const [statusText, setStatusText] = useState('');
-  const [allSelected, setAllSelected] = useState(false);
+  const [allSelected, setAllSelected] = useState(true);
   const [isListOpen, setIsListOpen] = useState(false);
 
   // close dropdown when clicking outside the component
@@ -47,11 +45,11 @@ const MultiSelectInput = (props) => {
     } else {
       setStatusText(valueParent ? `${valueParent} (${valueChildren.length} selected)` : CLEAR_TEXT);
     }
-  }, [valueChildren, optionsChildren]);
+  }, [valueChildren, optionsChildren, valueParent]);
 
   useEffect(() => {
     setValueChildren([]);
-  }, [valueParent]);
+  }, [setValueChildren]);
 
   const handleRemove = (element) => {
     setValueChildren(valueChildren.filter((e) => e !== element));
@@ -59,10 +57,11 @@ const MultiSelectInput = (props) => {
 
   // set the parent and auto select all its children
   const selectParent = (parent) => {
-    setAllSelected(false);
     if (valueParent === parent) {
+      setAllSelected(true);
       setValueParent('');
     } else {
+      setAllSelected(false);
       setValueParent(parent);
     }
   };
@@ -84,13 +83,15 @@ const MultiSelectInput = (props) => {
           <button type="button"
             className="location-list-instructions"
             onClick={() => {
-              setAllSelected(!allSelected);
+              setAllSelected(true);
               setValueParent('');
             }}
           >
-            {allSelected ? 'Unselect all' : 'Select all'}
+            Reset locations
           </button>
           <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
+          {/* TODO: Style this properly */}
+          <button type="button" style={{ 'margin-right': '20px' }} onClick={() => setIsListOpen(false)}>x</button>
         </div>
         {
           optionsParent.map((item) => (
@@ -135,7 +136,6 @@ const MultiSelectInput = (props) => {
                             className="location-list-item-select-checkbox"
                           />
                           {child}
-                          {' '}
                         </div>
                       ))
                     }

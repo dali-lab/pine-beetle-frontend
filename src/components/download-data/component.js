@@ -21,7 +21,6 @@ const DownloadData = (props) => {
     availableYears,
     availableStates,
     availableSublocations,
-    clearAllSelections,
     county,
     dataMode,
     endYear,
@@ -145,7 +144,7 @@ const DownloadData = (props) => {
               <div className="selection-p" id="selection-download">
                 <div
                   className={countyMode ? 'selected-option-2-p' : 'unselected-option-p'}
-                  onClick={() => { setDataMode(DATA_MODES.COUNTY); clearAllSelections(); }}
+                  onClick={() => setDataMode(DATA_MODES.COUNTY)}
                 >
                   <p className={countyMode ? 'selected-option-text-p' : 'unselected-option-text-p'}>
                     By County
@@ -153,7 +152,7 @@ const DownloadData = (props) => {
                 </div>
                 <div
                   className={countyMode ? 'unselected-option-p' : 'selected-option-2-p'}
-                  onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); clearAllSelections(); }}
+                  onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
                 >
                   <p className={countyMode ? 'unselected-option-text-p' : 'selected-option-text-p'}>
                     By Federal land

@@ -1,4 +1,3 @@
-/* eslint-disable react/button-has-type */
 import React from 'react';
 
 import { ChoiceInput } from '../../../../components/input-components';
@@ -56,6 +55,7 @@ const SelectionBar = (props) => {
       <div className="predictionbar-year-selection">
         <div id="mode-selection">
           <button
+            type="button"
             id="mode-btn"
             onClick={() => { setDataMode(DATA_MODES.COUNTY); }}
             className={(countyMode) ? 'county-rd-selection' : null}
@@ -64,6 +64,7 @@ const SelectionBar = (props) => {
           </button>
           <div id="vl2" />
           <button
+            type="button"
             id="mode-btn"
             onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
             className={(!countyMode) ? 'county-rd-selection' : null}
@@ -81,7 +82,14 @@ const SelectionBar = (props) => {
           />
         </div>
       </div>
-      <button id="reset-current-data-button" className="animated-button" onClick={clearAllSelections}>Clear</button>
+      <button
+        type="button"
+        id="reset-current-data-button"
+        className="animated-button"
+        onClick={clearAllSelections}
+      >
+        Clear
+      </button>
     </div>
   );
 };
