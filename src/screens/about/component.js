@@ -51,7 +51,7 @@ const About = (_props) => {
       <div className="about-content-container">
         <h2>Contact Information</h2>
         <h3>Questions about the program</h3>
-        <p>Carissa Aoki: <a href="mailto:caoki@bates.edu">caoki@bates.edu</a></p>
+        <p>Carissa Aoki: <a href="mailto:caoki@mica.edu">caoki@mica.edu</a></p>
         <p>Matthew Ayres: <a href="mailto:matthew.p.ayres@dartmouth.edu">matthew.p.ayres@dartmouth.edu</a>
         </p>
         <h3>Questions about local forests</h3>
