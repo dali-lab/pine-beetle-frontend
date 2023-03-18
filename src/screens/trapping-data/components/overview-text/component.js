@@ -5,10 +5,7 @@ import './style.scss';
 
 import questionIcon from '../../../../assets/icons/help-circle.png';
 
-const helpText = `Please select year, state, and<br />
-county/RD for trapping data.<br />
-You can switch between map or chart<br />
-view by toggling the button below.`;
+const helpText = 'Please select year, state, and<br />county/RD for trapping data.';
 
 const explanatoryText = `Southern pine beetle trapping data have been collected across the southeast since 1988, 
 and now, increasingly, in the mid-Atlantic and northeast. All historical data are collected here in one place 
