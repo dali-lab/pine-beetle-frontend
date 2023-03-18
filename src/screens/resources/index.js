@@ -1,12 +1,14 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import {
   RESOURCE_LOCAL_URLS,
   RESOURCE_ROUTES,
   VIDEO_URL,
 } from '../../constants';
 
+// this is blank; the page is just reusing 'About' page scss
 import './style.scss';
 
 const About = (_props) => {
@@ -17,9 +19,9 @@ const About = (_props) => {
       </div>
       <div className="about-content-container">
         <h3>Reliability and utility of prediction system</h3>
-        <p><a href={VIDEO_URL}>{VIDEO_URL}</a></p>
+        <p>SPB Monitoring and Prediction Team. 2021. Southern pine beetle prediction explainer video. <a href={VIDEO_URL}>{VIDEO_URL}</a></p>
         <br />
-        <p>link to written description that matt has</p>
+        <p>SPB Monitoring and Prediction Team. 2023. Utility and reliability of the southern pine beetle prediction system. <Link to={RESOURCE_ROUTES.UTILITY_RELIABILITY}>{RESOURCE_LOCAL_URLS.UTILITY_RELIABILITY}</Link></p>
         <br />
 
         <h3>Data</h3>
