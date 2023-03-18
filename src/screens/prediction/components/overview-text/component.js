@@ -3,7 +3,7 @@ import ReactTooltip from 'react-tooltip';
 import ReactReadMoreReadLess from 'react-read-more-read-less';
 import './style.scss';
 
-const questionIcon = require('../../../../assets/icons/help-circle.png');
+import questionIcon from '../../../../assets/icons/help-circle.png';
 
 const helpText = `Please select year, state, and county/RD for predictions.<br />
 After selecting a specific county or RD,<br />
@@ -17,7 +17,7 @@ location becomes available on this page. Observed outcome data is usually upload
 summer season. At that point predictions vs. outcomes can be viewed visually here and also become available 
 for download.`;
 
-const OverviewText = _props => (
+const OverviewText = (_props) => (
   <div className="container" id="overview-explanation">
     <div className="container" id="overview-text">
       <h1 id="title">

@@ -25,8 +25,7 @@ export const getStateAbbreviationFromStateName = (stateName) => {
  * @description maps ranger district name format in db to mapbox format
  * @param {String} rangerDistrict ranger district name
  */
-export const getMapboxRDNameFormat = rangerDistrict => rangerDistrict.match(/\((.*?)\)/)?.[1];
-
+export const getMapboxRDNameFormat = (rangerDistrict) => rangerDistrict.match(/\((.*?)\)/)?.[1];
 
 /**
  * @description splits string up by pascal case
@@ -41,7 +40,7 @@ export const separatePascalCase = (str) => {
     .replace(/([a-z\d])([A-Z])/g, '$1 $2')
   // Look for lower-case letters followed by numbers
     .replace(/([a-zA-Z])(\d)/g, '$1 $2')
-    .replace(/^./, s => s.toUpperCase())
+    .replace(/^./, (s) => s.toUpperCase())
   // Remove any white space left around the word
     .trim();
 };

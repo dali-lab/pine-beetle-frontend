@@ -4,7 +4,6 @@ import { clearSelections } from '../../../state/actions';
 
 import MultiSelectInput from './component';
 
-
 const mapDispatchToProps = (dispatch) => {
   return {
     clearAllSelections: () => {

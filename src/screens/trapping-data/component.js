@@ -13,10 +13,10 @@ import {
 
 import { Loading } from '../../components';
 
-const mapSelectedIcon = require('../../assets/icons/map-selected.png');
-const mapUnselectedIcon = require('../../assets/icons/map-unselected.png');
-const graphSelectedIcon = require('../../assets/icons/graph-selected.png');
-const graphUnselectedIcon = require('../../assets/icons/graph-unselected.png');
+import mapSelectedIcon from '../../assets/icons/map-selected.png';
+import mapUnselectedIcon from '../../assets/icons/map-unselected.png';
+import graphSelectedIcon from '../../assets/icons/graph-selected.png';
+import graphUnselectedIcon from '../../assets/icons/graph-unselected.png';
 
 const TrappingData = (props) => {
   const {
@@ -35,12 +35,12 @@ const TrappingData = (props) => {
 
   useEffect(() => {
     clearAllSelections(); // clears selections initially when switching to this tab
-  }, []);
+  }, [clearAllSelections]);
 
   return (
     <div>
       <Loading visible={isLoading} />
-      {errorText.length > 0 && errorText.map(t => <p>{t}</p>)}
+      {errorText.length > 0 && errorText.map((t) => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
       <div id="view-selections" className="container">

@@ -4,18 +4,18 @@ import { LOCAL_STORAGE_KEYS } from '../constants';
  * @description retrieves key from local storage
  * @returns {String} value in local storage
  */
-const getLocal = key => () => localStorage.getItem(key);
+const getLocal = (key) => () => localStorage.getItem(key);
 
 /**
  * @description sets key in local storage
  */
-const setLocal = key => value => localStorage.setItem(key, value);
+const setLocal = (key) => (value) => localStorage.setItem(key, value);
 
 /**
  * @description removes key from local storage
  * @returns {String} value in local storage
  */
-const removeLocal = key => () => localStorage.removeItem(key);
+const removeLocal = (key) => () => localStorage.removeItem(key);
 
 /**
  * @description retrieves user auth token from local storage

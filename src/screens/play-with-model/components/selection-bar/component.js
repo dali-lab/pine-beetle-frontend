@@ -30,9 +30,9 @@ const SelectionBar = (props) => {
     year,
   } = props;
 
-  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const statesMappedToNames = availableStates.map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
-  const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
+  const setStateAbbrev = (stateName) => setState(getStateAbbreviationFromStateName(stateName));
   const revYears = [...availableYears].reverse();
 
   const countyMode = dataMode === DATA_MODES.COUNTY;

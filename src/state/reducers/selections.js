@@ -20,7 +20,6 @@ const initialState = {
   availablePredictionSublocations: [],
 };
 
-
 const SelectionsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.SET_START_YEAR:

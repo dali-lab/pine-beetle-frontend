@@ -31,19 +31,18 @@ You must have [Node](https://nodejs.org) and [yarn](https://yarnpkg.com/) instal
 
 ```
 src/
-	assets/							[all assets]
-	components/						[reusable components across several screens]
-	constants/						[all constants and mapping files]
-	screens/						[containers for each screen]
-	services/						[service files for sending server requests]
-	state/							[all redux interactions]
-	utils/							[utility functions]
-.babelrc							[babel setup]
-.env.example						[structure of .env file]
-.eslintrc							[eslint setup]
-.env-setup.js						[script for injecting environment variables at build]
-package.json						[package]
-webpack.config.js					[webpack setup]
+    assets/                     [all assets]
+    components/                 [reusable components across several screens]
+    constants/                  [all constants and mapping files]
+    screens/                    [containers for each screen]
+    services/                   [service files for sending server requests]
+    state/                      [all redux interactions]
+    utils/                      [utility functions]
+.babelrc                        [babel setup]
+.env.example                    [structure of .env file]
+.eslintrc.json                  [eslint setup]
+package.json                    [package]
+webpack.config.js               [webpack setup]
 ```
 
 ### Componentization
@@ -89,14 +88,14 @@ Pull requests should always be first merged into the `dev` branch so they are st
 
 ## Contributors
 
-- Thomas Monfre
 - Jeff Liu
-- Alejandro Lopez
-- Grace Wang
-- Maria Cristoforo
 
 ### Past Project Members
 
+- Thomas Monfre
+- Alejandro Lopez
+- Grace Wang
+- Maria Cristoforo
 - Angela Zhang
 - Nathan Schneider
 - John McCambridge

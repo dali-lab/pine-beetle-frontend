@@ -2,7 +2,7 @@ import React from 'react';
 
 import './style.scss';
 
-const beetleImage = require('../../assets/icons/mobile-beetle.png');
+import beetleImage from '../../assets/icons/mobile-beetle.png';
 
 const MobileOverlay = () => (
   <div id="mobile-overlay">

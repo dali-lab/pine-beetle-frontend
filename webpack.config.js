@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const env = process.env.NODE_ENV || 'development';
 // set to 'production' or 'development' in your env
@@ -7,22 +8,29 @@ const env = process.env.NODE_ENV || 'development';
 const finalCSSLoader = (env === 'production') ? MiniCssExtractPlugin.loader : { loader: 'style-loader' };
 const autoprefixer = require('autoprefixer');
 
-require('dotenv-safe').config({ silent: true });
-const DotenvPlugin = require('webpack-dotenv-plugin');
+const DotenvPlugin = require('dotenv-webpack');
+
+const postcssPresets = require('postcss-preset-env');
+
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = {
   mode: env,
   output: { publicPath: '/' },
-  entry: ['babel-polyfill', './src'], // this is where our app lives
-  devtool: 'source-map', // this enables debugging with source in chrome devtools
+  entry: ['./src'], // this is where our app lives
+  devtool: env === 'development' ? 'eval-source-map' : undefined, // this enables debugging with source in chrome devtools
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: [
-          { loader: 'babel-loader' },
-          { loader: 'eslint-loader' },
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: [env === 'development' && 'react-refresh/babel'].filter(Boolean),
+            },
+          },
         ],
       },
       {
@@ -37,8 +45,14 @@ module.exports = {
           },
           {
             loader: 'postcss-loader',
+            ident: 'postcss',
             options: {
-              plugins: () => [autoprefixer()],
+              postcssOptions: {
+                plugins: [
+                  autoprefixer(),
+                  postcssPresets({ browsers: 'last 2 versions' }),
+                ],
+              },
               sourceMap: true,
             },
           },
@@ -65,24 +79,28 @@ module.exports = {
     ],
   },
   plugins: [
+    new ESLintPlugin(),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: './index.html',
     }),
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-      filename: './200.html',
-    }),
     new DotenvPlugin({
       path: '.env',
-      sample: '.env',
-      allowEmptyValues: true,
-      silent: true,
+      safe: true,
+      systemvars: true,
     }),
-  ],
+    env === 'development' && new ReactRefreshWebpackPlugin(),
+  ].filter(Boolean),
   devServer: {
     hot: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+      disableDotRule: true,
+    },
+    client: {
+      overlay: {
+        warnings: false,
+      },
+    },
   },
 };

@@ -32,7 +32,7 @@ const PlayWithModel = (props) => {
   });
 
   const updateModelInputs = (updates) => {
-    setModelInputs(currentInputs => ({
+    setModelInputs((currentInputs) => ({
       ...currentInputs,
       ...updates,
     }));

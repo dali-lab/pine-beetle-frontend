@@ -2,9 +2,9 @@ import React from 'react';
 
 import './style.scss';
 
-const trapIcon = require('../../../../assets/icons/trap.png');
-const cleridsIcon = require('../../../../assets/icons/clerids.png');
-const endobrevIcon = require('../../../../assets/icons/endobrev.png');
+import trapIcon from '../../../../assets/icons/trap.png';
+import cleridsIcon from '../../../../assets/icons/clerids.png';
+import endobrevIcon from '../../../../assets/icons/endobrev.png';
 
 const PlayWithModelInputs = (props) => {
   const {
@@ -14,7 +14,7 @@ const PlayWithModelInputs = (props) => {
     year,
   } = props;
 
-  const createValueSetter = fieldName => (newValue) => {
+  const createValueSetter = (fieldName) => (newValue) => {
     updateModelInputs({
       [fieldName]: newValue,
     });
@@ -71,18 +71,18 @@ const PlayWithModelInputs = (props) => {
   const selectionInput = (isTrueFalseSelection, value, setValue) => {
     if (!isTrueFalseSelection) {
       return (
-        <form onKeyPress={e => e.key === 'Enter' && e.preventDefault()}>
+        <form onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}>
           <input
             type="number"
             min="0"
-            onChange={e => setValue(e.target.value)}
+            onChange={(e) => setValue(e.target.value)}
             value={value}
           />
         </form>
       );
     } else {
       return (
-        <form onKeyPress={e => e.key === 'Enter' && e.preventDefault()}>
+        <form onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}>
           <div className="checkboxes">
             <div className="endobrev-checkbox" onClick={() => setValue(true)}>
               <label htmlFor="yes-endobrev">

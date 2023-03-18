@@ -13,8 +13,8 @@ import {
 
 import './style.scss';
 
-const closeIcon = require('../../assets/icons/close.png');
-const downloadIcon = require('../../assets/icons/download-white.png');
+import closeIcon from '../../assets/icons/close.png';
+import downloadIcon from '../../assets/icons/download-white.png';
 
 const DownloadData = (props) => {
   const {
@@ -38,10 +38,10 @@ const DownloadData = (props) => {
 
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
-  const statesMappedToNames = availableStates.map(abbrev => getStateNameFromAbbreviation(abbrev)).filter(s => !!s);
+  const statesMappedToNames = availableStates.map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
-  const setStateAbbrev = stateName => setState(getStateAbbreviationFromStateName(stateName));
-  const revYears = [...availableYears].reverse();
+  const setStateAbbrev = (stateName) => setState(getStateAbbreviationFromStateName(stateName));
+  const revYears = availableYears.filter((n) => n >= startYear);
 
   // functions for showing modal
   const [show, setShow] = useState(false);
@@ -50,42 +50,52 @@ const DownloadData = (props) => {
 
   const [isDownloading, setIsDownloading] = useState(false);
 
+  const [error, setError] = useState('');
+
   // vars for selecting types of data in modal
   const [fieldsToDownload, setFieldsToDownload] = useState({
-    SUMMARIZED: false,
-    UNSUMMARIZED: false,
+    SUMMARIZED: true,
+    UNSUMMARIZED: true,
   });
 
-  const addFieldToDownload = fieldName => e => setFieldsToDownload({
+  const addFieldToDownload = (fieldName) => (e) => setFieldsToDownload({
     ...fieldsToDownload,
     [fieldName]: e.target.checked,
   });
 
   // function for handling trapping data download
   const handleDownload = async () => {
-    const promises = Object.entries(fieldsToDownload).map(async ([fieldName, value]) => {
-      if (!value) return null;
+    try {
+      setError('');
+      const promises = Object.entries(fieldsToDownload).map(async ([fieldName, value]) => {
+        if (!value) return null;
 
-      const dataTypeName = countyMode ? 'COUNTY' : 'RD';
-      const dataName = fieldName === 'SUMMARIZED' ? `${fieldName}_${dataTypeName}` : fieldName;
+        const dataTypeName = countyMode ? 'COUNTY' : 'RD';
+        const dataName = fieldName === 'SUMMARIZED'
+          ? `${fieldName}_${dataTypeName}`
+          : fieldName;
 
-      // to allow multiple counties/RD
-      const countyString = county.join('&county=');
-      const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
+        // to allow multiple counties/RD
+        const countyString = county.join('&county=');
+        const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
 
-      return downloadCsv(dataName, {
-        state: selectedState,
-        // [countyMode ? 'county' : 'rangerDistrict']: countyMode ? county : rangerDistrict,
-        [countyMode ? 'county' : 'rangerDistrict']: countyMode ? countyString : rangerDistrictString,
-        startYear,
-        endYear,
-      });
-    }).filter(f => !!f);
+        return downloadCsv(dataName, {
+          state: selectedState,
+          [countyMode ? 'county' : 'rangerDistrict']: countyMode ? countyString : rangerDistrictString,
+          startYear,
+          endYear,
+        });
+      }).filter((f) => !!f);
 
-    if (promises.length > 0) {
-      setIsDownloading(true);
-      await Promise.all(promises);
+      if (promises.length > 0) {
+        setIsDownloading(true);
+        await Promise.all(promises);
+        setIsDownloading(false);
+      }
+    } catch (err) {
       setIsDownloading(false);
+      console.log(err);
+      setError('There was an error.');
     }
   };
 
@@ -167,26 +177,15 @@ const DownloadData = (props) => {
               <h4>Options</h4>
             </div>
             <div id="selection-types">
-              {/* <div>
-                <label htmlFor="select-all">
-                  <input
-                    type="checkbox"
-                    id="select-all"
-                    onChange={e => selectAll(e.target.checked)}
-                    checked={fieldsToDownload.PREDICTION && fieldsToDownload.SUMMARIZED && fieldsToDownload.UNSUMMARIZED}
-                  />
-                  <span className="checkbox-text">Select All</span>
-                </label>
-              </div> */}
               <div>
-                <label htmlFor="prediction-data">
+                <label htmlFor="unsummarized-data">
                   <input
                     type="checkbox"
-                    id="prediction-data"
-                    onChange={addFieldToDownload('PREDICTION')}
-                    checked={fieldsToDownload.PREDICTION}
+                    id="unsummarized-data"
+                    onChange={addFieldToDownload('UNSUMMARIZED')}
+                    checked={fieldsToDownload.UNSUMMARIZED}
                   />
-                  <span className="checkbox-text">Unsummarized historical data</span>
+                  <span className="checkbox-text">Unsummarized data with weekly trap captures</span>
                 </label>
               </div>
               <div>
@@ -197,18 +196,7 @@ const DownloadData = (props) => {
                     onChange={addFieldToDownload('SUMMARIZED')}
                     checked={fieldsToDownload.SUMMARIZED}
                   />
-                  <span className="checkbox-text">Model input historical data</span>
-                </label>
-              </div>
-              <div>
-                <label htmlFor="unsummarized-data">
-                  <input
-                    type="checkbox"
-                    id="unsummarized-data"
-                    onChange={addFieldToDownload('UNSUMMARIZED')}
-                    checked={fieldsToDownload.UNSUMMARIZED}
-                  />
-                  <span className="checkbox-text">Predictions vs outcomes</span>
+                  <span className="checkbox-text">Summarized data with one record per year for each county or federal parcel</span>
                 </label>
               </div>
             </div>
@@ -236,6 +224,9 @@ const DownloadData = (props) => {
               <p>Download</p>
             </button>
           )}
+        </div>
+        <div>
+          <p>{error}</p>
         </div>
       </Modal>
     </>

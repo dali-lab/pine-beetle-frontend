@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { ROUTES, VIDEO_URL } from '../../constants';
 import './style.scss';
 
-const beetleIcon = require('../../assets/icons/background-beetle-color.png');
-const howItWorksIcon = require('../../assets/icons/how-it-works.png');
-const modelOutbreakIcon = require('../../assets/icons/model-outbreaks.png');
-const testInputIcon = require('../../assets/icons/test-inputs.png');
-const statsIcon = require('../../assets/icons/stats.png');
-const zeroIcon = require('../../assets/icons/zero.png');
+import beetleIcon from '../../assets/icons/background-beetle-color.png';
+import howItWorksIcon from '../../assets/icons/how-it-works.png';
+import modelOutbreakIcon from '../../assets/icons/model-outbreaks.png';
+import testInputIcon from '../../assets/icons/test-inputs.png';
+import statsIcon from '../../assets/icons/stats.png';
+import zeroIcon from '../../assets/icons/zero.png';
 
 const Home = (_props) => {
   return (

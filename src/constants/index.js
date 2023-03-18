@@ -1,3 +1,8 @@
+// map of state abbreviations to their names
+import stateAbbrevToStateName from './state-abbreviations.json';
+import stateAbbrevToStateId from './state-ids.json';
+import stateAbbrevToZoomLevel from './state-zoom-levels.json';
+
 const MIN_WIDTH_THRESHOLD = 725;
 
 const SERVER_ENDPOINTS = {
@@ -11,12 +16,6 @@ const AUTOMATION_SERVER_ENDPOINTS = {
   DEV: 'https://pine-beetle-automation-dev.herokuapp.com/v3',
   PROD: 'https://pine-beetle-automation.herokuapp.com/v3',
 };
-
-// map of state abbreviations to their names
-const stateAbbrevToStateName = require('./state-abbreviations.json');
-const stateAbbrevToStateId = require('./state-ids.json');
-const stateAbbrevToZoomLevel = require('./state-zoom-levels.json');
-
 
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
@@ -72,10 +71,78 @@ const CHART_MODES = {
 const ROUTES = {
   ABOUT: '/about',
   ADMIN: '/admin',
-  TRAPPING_DATA: '/historical-data',
   HOME: '/',
+  RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predict-outbreak',
+  TRAPPING_DATA: '/historical-data',
+};
+
+const RESOURCE_ROUTES = {
+  CODE: '/SPB.PredictionModel.2022.zip',
+  DISSERTATION: '/Aoki-Dissertation.pdf',
+  ANNUAL: '/SPB.southwide.Annual.1988-2021.zip',
+  UTILITY_RELIABILITY: '/2023_SPB-predictions.Utility-Reliabililty.v07.pdf',
+  WEEKLY_OLD: '/SPB.southwide.Weekly.1987-2011.zip',
+  WEEKLY: '/SPB.southwide.Weekly.2011-2017.zip',
+};
+
+const RESOURCE_LOCAL_ROOTS = {
+  PROD: 'https://www.spbpredict.com',
+  DEV: 'https://pine-beetle-prediction.netlify.app',
+};
+
+const getResourceLocalRoot = () => {
+  switch (process.env.RESOURCE_ENV) {
+    case 'DEV':
+      return RESOURCE_LOCAL_ROOTS.DEV;
+
+    case 'PROD':
+      return RESOURCE_LOCAL_ROOTS.PROD;
+
+    default:
+      return RESOURCE_LOCAL_ROOTS.DEV;
+  }
+};
+
+const RESOURCE_LOCAL_ROOT = getResourceLocalRoot();
+
+const RESOURCE_LOCAL_URLS = {
+  CODE: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.CODE,
+  DISSERTATION: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.DISSERTATION,
+  ANNUAL: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.ANNUAL,
+  UTILITY_RELIABILITY: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.UTILITY_RELIABILITY,
+  WEEKLY_OLD: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.WEEKLY_OLD,
+  WEEKLY: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.WEEKLY,
+};
+
+const RESOURCE_REMOTE_ROOTS = {
+  DEV: 'https://raw.githubusercontent.com/dali-lab/pine-beetle-frontend/dev/downloads',
+  PROD: 'https://raw.githubusercontent.com/dali-lab/pine-beetle-frontend/release/downloads',
+};
+
+const getResourceRemoteRoot = () => {
+  switch (process.env.RESOURCE_ENV) {
+    case 'DEV':
+      return RESOURCE_REMOTE_ROOTS.DEV;
+
+    case 'PROD':
+      return RESOURCE_REMOTE_ROOTS.PROD;
+
+    default:
+      return RESOURCE_REMOTE_ROOTS.DEV;
+  }
+};
+
+const RESOURCE_REMOTE_ROOT = getResourceRemoteRoot();
+
+const RESOURCE_REMOTE_URLS = {
+  CODE: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.CODE,
+  DISSERTATION: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.DISSERTATION,
+  ANNUAL: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.ANNUAL,
+  UTILITY_RELIABILITY: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.UTILITY_RELIABILITY,
+  WEEKLY_OLD: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.WEEKLY_OLD,
+  WEEKLY: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.WEEKLY,
 };
 
 const DOWNLOAD_DATA_ROUTES = {
@@ -115,5 +182,8 @@ export {
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
   getYearRange,
+  RESOURCE_ROUTES,
+  RESOURCE_REMOTE_URLS,
+  RESOURCE_LOCAL_URLS,
   VIDEO_URL,
 };
