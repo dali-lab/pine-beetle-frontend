@@ -20,12 +20,12 @@ We have two backend servers that are used for handling various functionality. Ou
 
 ## Setup
 
-You must have [Node](https://nodejs.org) and [yarn](https://yarnpkg.com/) installed to run this project.
+You must have [Node](https://nodejs.org) and [npm](https://www.npmjs.com/) installed to run this project.
 
 1. Clone the repository
-2. `yarn install`
+2. `npm install` (or `npm ci` if you want to keep the lockfile frozen)
 3. Add a `.env` file and paste in the necessary contents (see Handoff Document for this)
-4. `yarn start` to run in the local development environment
+4. `npm start` to run in the local development environment
 
 ## Repository Structure
 
