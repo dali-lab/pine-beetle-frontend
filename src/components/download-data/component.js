@@ -132,7 +132,7 @@ const DownloadData = (props) => {
         </div>
         <div id="modal-title">Download Data</div>
         <div className="modal-divide-flex">
-          <div>
+          <div className="modal-select">
             <h4 id="subtitle">Year(s)</h4>
             <div id="modal-year">
               <div id="year-selection">
@@ -145,7 +145,7 @@ const DownloadData = (props) => {
               <div className="selection-p" id="selection-download">
                 <div
                   className={countyMode ? 'selected-option-2-p' : 'unselected-option-p'}
-                  onClick={() => { setDataMode(DATA_MODES.COUNTY); clearAllSelections(); }}
+                  onClick={() => setDataMode(DATA_MODES.COUNTY)}
                 >
                   <p className={countyMode ? 'selected-option-text-p' : 'unselected-option-text-p'}>
                     By County
@@ -153,7 +153,7 @@ const DownloadData = (props) => {
                 </div>
                 <div
                   className={countyMode ? 'unselected-option-p' : 'selected-option-2-p'}
-                  onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); clearAllSelections(); }}
+                  onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
                 >
                   <p className={countyMode ? 'unselected-option-text-p' : 'selected-option-text-p'}>
                     By Federal land
@@ -170,6 +170,13 @@ const DownloadData = (props) => {
                 listOnly
               />
             </div>
+            <button
+              type="button"
+              className="animated-button download-clear-button"
+              onClick={clearAllSelections}
+            >
+              Clear Selections
+            </button>
           </div>
           <div id="divider-line" />
           <div id="modal-download-selection">
@@ -207,26 +214,24 @@ const DownloadData = (props) => {
                 for that season by the following January.
               </p>
             </div>
-          </div>
-        </div>
-        <div>
-          {isDownloading ? (
-            <div id="downloading-container">
-              <h4>Downloading...</h4>
+            <div className="submit-btn-container">
+              {error && <div className="download-error">{error}</div>}
+              {isDownloading ? (
+                <div id="downloading-container">
+                  <h4>Downloading...</h4>
+                </div>
+              ) : (
+                <button
+                  className="animated-button"
+                  id="modal-submit-btn"
+                  onClick={handleDownload}
+                  type="button"
+                >
+                  <p>Download</p>
+                </button>
+              )}
             </div>
-          ) : (
-            <button
-              className="animated-button"
-              id="modal-submit-btn"
-              onClick={handleDownload}
-              type="button"
-            >
-              <p>Download</p>
-            </button>
-          )}
-        </div>
-        <div>
-          <p>{error}</p>
+          </div>
         </div>
       </Modal>
     </>

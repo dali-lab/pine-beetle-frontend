@@ -50,8 +50,8 @@ const SelectionsReducer = (state = initialState, action) => {
         ...state,
         dataMode: action.payload.mode,
         state: '',
-        county: '',
-        rangerDistrict: '',
+        county: [],
+        rangerDistrict: [],
       };
 
     case ActionTypes.CLEAR_SELECTIONS:

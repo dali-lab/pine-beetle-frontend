@@ -55,7 +55,7 @@ const Prediction = (props) => {
 
   useEffect(() => {
     clearAllSelections(); // clears selections initially when switching to this tab
-  }, []);
+  }, [clearAllSelections]);
 
   const getHistogram = (probSpotsGT50) => {
     if (probSpotsGT50 < 0.025) {

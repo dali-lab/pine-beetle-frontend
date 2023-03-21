@@ -1,17 +1,16 @@
-/* eslint-disable jsx-a11y/label-has-for */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect, useRef } from 'react';
+
 import './style.scss';
 
 import arrowDown from '../../../assets/icons/arrow-down.png';
 import emptyCheckbox from '../../../assets/icons/empty_checkbox.png';
 import selectedCheckbox from '../../../assets/icons/selected_checkbox.png';
+import closeIcon from '../../../assets/icons/close.png';
 
 const CLEAR_TEXT = 'All Locations';
 
 const MultiSelectInput = (props) => {
   const {
-    clearAllSelections,
     valueParent,
     valueChildren,
     setValueParent,
@@ -23,7 +22,7 @@ const MultiSelectInput = (props) => {
 
   const ref = useRef();
   const [statusText, setStatusText] = useState('');
-  const [allSelected, setAllSelected] = useState(false);
+  const [allSelected, setAllSelected] = useState(true);
   const [isListOpen, setIsListOpen] = useState(false);
 
   // close dropdown when clicking outside the component
@@ -47,11 +46,18 @@ const MultiSelectInput = (props) => {
     } else {
       setStatusText(valueParent ? `${valueParent} (${valueChildren.length} selected)` : CLEAR_TEXT);
     }
-  }, [valueChildren, optionsChildren]);
+  }, [valueChildren, optionsChildren, valueParent]);
+
+  // force "none selected" to be "all selected"
+  useEffect(() => {
+    if (!valueParent) {
+      setAllSelected(true);
+    }
+  }, [valueParent]);
 
   useEffect(() => {
     setValueChildren([]);
-  }, [valueParent]);
+  }, [setValueChildren]);
 
   const handleRemove = (element) => {
     setValueChildren(valueChildren.filter((e) => e !== element));
@@ -59,10 +65,11 @@ const MultiSelectInput = (props) => {
 
   // set the parent and auto select all its children
   const selectParent = (parent) => {
-    setAllSelected(false);
     if (valueParent === parent) {
+      setAllSelected(true);
       setValueParent('');
     } else {
+      setAllSelected(false);
       setValueParent(parent);
     }
   };
@@ -84,13 +91,18 @@ const MultiSelectInput = (props) => {
           <button type="button"
             className="location-list-instructions"
             onClick={() => {
-              setAllSelected(!allSelected);
+              setAllSelected(true);
               setValueParent('');
             }}
           >
-            {allSelected ? 'Unselect all' : 'Select all'}
+            Reset locations
           </button>
-          <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
+          {!listOnly
+            && (
+              <div className="close-icon">
+                <img src={closeIcon} alt="close icon" onClick={() => setIsListOpen(false)} />
+              </div>
+            )}
         </div>
         {
           optionsParent.map((item) => (
@@ -135,7 +147,6 @@ const MultiSelectInput = (props) => {
                             className="location-list-item-select-checkbox"
                           />
                           {child}
-                          {' '}
                         </div>
                       ))
                     }

@@ -1,6 +1,7 @@
 .multi-select-container {
     background-color: #F5F5F5;
     z-index: 2;
+
     .input-container {
         display: flex;
         flex-direction: row;
@@ -20,15 +21,14 @@
             .location-header-arrow {
                 width: 12px;
                 height: 8px;
-                margin-right: 10px;     
+                margin-right: 10px;
             }
         }
 
         .location-wrapper {
             width: 300px;
-            cursor: pointer;
             z-index: 1;
-            
+
             .location-list {
                 position: absolute;
                 margin-top: 10px;
@@ -51,6 +51,21 @@
                         border-width: unset;
                         cursor: pointer;
                     }
+
+                    .close-icon {
+                        margin-right: 15px;
+                        display: flex;
+
+                        img {
+                            width: 20px;
+                            height: 20px;
+                        }
+
+                        img:hover {
+                            cursor: pointer;
+                        }
+                    }
+
                     .location-list-clear {
                         color: #2656B5;
                         font-size: 15px;
@@ -64,6 +79,7 @@
                     width: 300px;
                     display: flex;
                     flex-direction: column;
+                    cursor: pointer;
 
                     .location-list-item-select {
                         display: flex;
@@ -86,7 +102,7 @@
                     .children-list {
                         position: relative;
                         margin-left: 50px;
-        
+
                         .children-list-item {
                             background-color: #F3F3F3;
                             color: #434754;
