@@ -29,7 +29,6 @@ const PredictionChart = (props) => {
     ],
   });
 
-  // eslint-disable-next-line no-unused-vars
   const [chartOptions, setChartOptions] = useState({
     maintainAspectRatio: false,
     scales: {

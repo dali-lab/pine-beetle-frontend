@@ -55,7 +55,7 @@ const SelectionBar = (props) => {
           optionsChildren={availableSublocations}
         />
       </div>
-      <button className="historicalbar-clear-button" onClick={clearSelections} type="button">Clear</button>
+      <button className="animated-button historicalbar-clear-button" onClick={clearSelections} type="button">Clear</button>
     </div>
   );
 };
