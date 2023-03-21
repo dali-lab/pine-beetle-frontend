@@ -10,7 +10,7 @@
     "start": "NODE_ENV=development webpack serve",
     "lint": "eslint src",
     "ci:lint": "eslint src --rule 'react-hooks/exhaustive-deps: 0'",
-    "build": "yarn clean; NODE_ENV=production webpack --color --progress; cp src/_redirects dist/_redirects",
+    "build": "npm clean; NODE_ENV=production webpack --color --progress; cp src/_redirects dist/_redirects",
     "clean": "rimraf dist"
   },
   "devDependencies": {
@@ -44,7 +44,7 @@
     "sass": "^1.49.7",
     "sass-loader": "^13.2.0",
     "style-loader": "^3.3.1",
-    "webpack": "^5.75.0",
+    "webpack": "^5.76.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1"
   },
@@ -70,7 +70,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
   },
-  "resolutions": {
+  "overrides": {
     "canvg": "^3.0.9"
   }
 }
