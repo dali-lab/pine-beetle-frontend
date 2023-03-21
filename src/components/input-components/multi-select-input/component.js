@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
+
 import './style.scss';
 
 import arrowDown from '../../../assets/icons/arrow-down.png';
 import emptyCheckbox from '../../../assets/icons/empty_checkbox.png';
 import selectedCheckbox from '../../../assets/icons/selected_checkbox.png';
+import closeIcon from '../../../assets/icons/close.png';
 
 const CLEAR_TEXT = 'All Locations';
 
 const MultiSelectInput = (props) => {
   const {
-    clearAllSelections,
     valueParent,
     valueChildren,
     setValueParent,
@@ -89,9 +90,12 @@ const MultiSelectInput = (props) => {
           >
             Reset locations
           </button>
-          <div className="location-list-clear" onClick={clearAllSelections}>clear</div>
-          {/* TODO: Style this properly */}
-          <button type="button" style={{ 'margin-right': '20px' }} onClick={() => setIsListOpen(false)}>x</button>
+          {!listOnly
+            && (
+              <div className="close-icon">
+                <img src={closeIcon} alt="close icon" onClick={() => setIsListOpen(false)} />
+              </div>
+            )}
         </div>
         {
           optionsParent.map((item) => (

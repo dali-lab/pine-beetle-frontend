@@ -102,7 +102,7 @@ const SelectionBar = (props) => {
               optionsChildren={availableSublocations}
             />
           </div>
-          <button className="predictionbar-clear-button" onClick={clearAllSelections} type="button">Clear</button>
+          <button className="animated-button predictionbar-clear-button" onClick={clearAllSelections} type="button">Clear</button>
         </div>
       </div>
     );

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
@@ -21,6 +22,7 @@ const DownloadData = (props) => {
     availableYears,
     availableStates,
     availableSublocations,
+    clearAllSelections,
     county,
     dataMode,
     endYear,
@@ -131,7 +133,7 @@ const DownloadData = (props) => {
         </div>
         <div id="modal-title">Download Data</div>
         <div className="modal-divide-flex">
-          <div>
+          <div className="modal-select">
             <h4 id="subtitle">Year(s)</h4>
             <div id="modal-year">
               <div id="year-selection">
@@ -169,6 +171,13 @@ const DownloadData = (props) => {
                 listOnly
               />
             </div>
+            <button
+              type="button"
+              className="animated-button download-clear-button"
+              onClick={clearAllSelections}
+            >
+              Clear Selections
+            </button>
           </div>
           <div id="divider-line" />
           <div id="modal-download-selection">
@@ -206,26 +215,24 @@ const DownloadData = (props) => {
                 for that season by the following January.
               </p>
             </div>
-          </div>
-        </div>
-        <div>
-          {isDownloading ? (
-            <div id="downloading-container">
-              <h4>Downloading...</h4>
+            <div className="submit-btn-container">
+              {error && <div className="download-error">{error}</div>}
+              {isDownloading ? (
+                <div id="downloading-container">
+                  <h4>Downloading...</h4>
+                </div>
+              ) : (
+                <button
+                  className="animated-button"
+                  id="modal-submit-btn"
+                  onClick={handleDownload}
+                  type="button"
+                >
+                  <p>Download</p>
+                </button>
+              )}
             </div>
-          ) : (
-            <button
-              className="animated-button"
-              id="modal-submit-btn"
-              onClick={handleDownload}
-              type="button"
-            >
-              <p>Download</p>
-            </button>
-          )}
-        </div>
-        <div>
-          <p>{error}</p>
+          </div>
         </div>
       </Modal>
     </>
