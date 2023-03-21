@@ -48,6 +48,13 @@ const MultiSelectInput = (props) => {
     }
   }, [valueChildren, optionsChildren, valueParent]);
 
+  // force "none selected" to be "all selected"
+  useEffect(() => {
+    if (!valueParent) {
+      setAllSelected(true);
+    }
+  }, [valueParent]);
+
   useEffect(() => {
     setValueChildren([]);
   }, [setValueChildren]);
