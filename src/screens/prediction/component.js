@@ -4,25 +4,18 @@ import Modal from 'react-modal';
 import {
   AboutPredictions,
   OverviewText,
-  PredictionChart,
   PredictionDetails,
   PredictionMap,
   SelectionBar,
 } from './components';
 
-import {
-  Loading,
-} from '../../components';
+import { Loading } from '../../components';
 
-import { CHART_MODES, DATA_MODES } from '../../constants';
+import { DATA_MODES } from '../../constants';
 
 import './style.scss';
 
 import closeIcon from '../../assets/icons/close.png';
-import mapSelectedIcon from '../../assets/icons/map-selected.png';
-import mapUnselectedIcon from '../../assets/icons/map-unselected.png';
-import graphSelectedIcon from '../../assets/icons/graph-selected.png';
-import graphUnselectedIcon from '../../assets/icons/graph-unselected.png';
 
 import histogrambin1 from '../../assets/images/spb-histogram-bin1.png';
 import histogrambin2 from '../../assets/images/spb-histogram-bin2.png';
@@ -38,9 +31,7 @@ const Prediction = (props) => {
     isLoading,
     predictionModal,
     setPredictionModal,
-    chartMode,
     dataMode,
-    setChartMode,
     setDataMode,
     clearAllSelections,
   } = props;
@@ -48,10 +39,6 @@ const Prediction = (props) => {
   // functions for showing modal
   const handleClose = () => setPredictionModal(false);
   const handleShow = () => setPredictionModal(true);
-
-  const isGraphView = chartMode === CHART_MODES.GRAPH;
-  const setGraphView = () => setChartMode(CHART_MODES.GRAPH);
-  const setMapView = () => setChartMode(CHART_MODES.MAP);
 
   useEffect(() => {
     clearAllSelections(); // clears selections initially when switching to this tab
@@ -136,37 +123,9 @@ const Prediction = (props) => {
             </p>
           </div>
         </div>
-        <div className="selection-p">
-          <div
-            className={isGraphView ? 'unselected-option-p' : 'selected-option-2-p'}
-            onClick={() => { setMapView(); clearAllSelections(); }}
-          >
-            <img
-              src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
-              alt="Map View"
-              className={isGraphView ? 'unselected-view-p' : 'selected-view-p'}
-            />
-            <p className={isGraphView ? 'unselected-option-text-p' : 'selected-option-text-p'}>
-              Map View
-            </p>
-          </div>
-          <div
-            className={isGraphView ? 'selected-option-2-p' : 'unselected-option-p'}
-            onClick={() => { setGraphView(); clearAllSelections(); }}
-          >
-            <img
-              src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
-              alt="Chart View"
-              className={isGraphView ? 'selected-view-p' : 'unselected-view-p'}
-            />
-            <p className={isGraphView ? 'selected-option-text-p' : 'unselected-option-text-p'}>
-              Graph View
-            </p>
-          </div>
-        </div>
       </div>
       <div className="container">
-        {isGraphView ? <PredictionChart /> : <PredictionMap />}
+        <PredictionMap />
       </div>
       {predModal()}
     </div>

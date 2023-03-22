@@ -9,7 +9,7 @@ const initialState = {
   county: [],
   rangerDistrict: [],
   dataMode: DATA_MODES.COUNTY,
-  chartMode: CHART_MODES.MAP,
+  chartMode: CHART_MODES.GRAPH,
   predictionModal: false,
 
   availableHistoricalYears: [],
