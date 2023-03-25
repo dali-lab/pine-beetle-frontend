@@ -24,10 +24,12 @@ const SelectionsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.SET_START_YEAR: {
       const castedYear = parseInt(action.payload.startYear, 10);
+
       // try choosing earliest possible year
       const defaultYear = state.availableHistoricalYears.length
         ? state.availablePredictionYears[0]
         : initialState.startYear;
+
       // guards against null, undefined, ''
       const startYear = Number.isNaN(castedYear)
         ? defaultYear
@@ -37,10 +39,12 @@ const SelectionsReducer = (state = initialState, action) => {
 
     case ActionTypes.SET_END_YEAR: {
       const castedYear = parseInt(action.payload.endYear, 10);
+
       // try choosing latest possible year
       const defaultYear = state.availableHistoricalYears.length
         ? state.availablePredictionYears.slice(-1)
         : initialState.endYear;
+
       // guards against null, undefined, ''
       const endYear = Number.isNaN(castedYear)
         ? defaultYear
