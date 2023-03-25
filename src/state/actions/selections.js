@@ -311,10 +311,13 @@ export const setState = (state) => {
 
 /**
  * @description action creator for setting county
- * @param {String} county county name
+ * @param {String} newCounty county name
  */
-export const setCounty = (county) => {
+export const setCounty = (newCounty) => {
   return (dispatch, getState) => {
+    const county = newCounty === '' // guard against emptystring from input
+      ? []
+      : newCounty;
     dispatch({ type: ActionTypes.SET_COUNTY, payload: { county } });
 
     // clear out existing data
@@ -336,10 +339,13 @@ export const setCounty = (county) => {
 
 /**
  * @description action creator for setting ranger district
- * @param {String} rangerDistrict ranger district name
+ * @param {String} newRangerDistrict ranger district name
  */
-export const setRangerDistrict = (rangerDistrict) => {
+export const setRangerDistrict = (newRangerDistrict) => {
   return (dispatch, getState) => {
+    const rangerDistrict = newRangerDistrict === '' // guard against emptystring from input
+      ? []
+      : newRangerDistrict;
     dispatch({ type: ActionTypes.SET_RANGER_DISTRICT, payload: { rangerDistrict } });
 
     // clear out existing data
