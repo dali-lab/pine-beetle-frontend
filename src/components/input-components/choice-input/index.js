@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../style.scss';
 
-const CLEAR_TEXT = 'Reset Year';
+const CLEAR_TEXT = 'Select';
 
 const ChoiceInput = (props) => {
   const {
