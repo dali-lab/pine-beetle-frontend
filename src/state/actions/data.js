@@ -61,7 +61,7 @@ export function getPredictions(startYear = new Date().getFullYear(), endYear = n
         type: ActionTypes.SET_DATA_FETCH_ERROR,
         payload: {
           error,
-          text: 'Failed to fetch aggregate year data',
+          text: 'Failed to fetch predictions',
         },
       });
     } finally {
@@ -237,7 +237,7 @@ export function getAggregateLocationData(overrideFilter = {}) {
         type: ActionTypes.SET_DATA_FETCH_ERROR,
         payload: {
           error,
-          text: 'Failed to fetch aggregate state data',
+          text: 'Failed to fetch aggregate location data',
         },
       });
     } finally {

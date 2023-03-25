@@ -1,18 +1,17 @@
 import { useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-// adopted from: https://stackoverflow.com/questions/36904185/react-router-scroll-to-top-on-every-transition
-function ScrollToTop({ history, children }) {
+import { RESOURCE_ROUTES, ROUTES } from '../constants';
+
+export default function ScrollToTop() {
+  const { pathname } = useLocation();
+
   useEffect(() => {
-    const unlisten = history.listen(() => {
+    // prevent scrolling up on resources page
+    if (pathname !== ROUTES.RESOURCES && !Object.values(RESOURCE_ROUTES).includes(pathname)) {
       window.scrollTo(0, 0);
-    });
-    return () => {
-      unlisten();
-    };
-  }, [history]);
+    }
+  }, [pathname]);
 
-  return children;
+  return null;
 }
-
-export default withRouter(ScrollToTop);
