@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 
-import { clearCustomPredictionError, runCustomPrediction } from '../../state/actions';
+import {
+  clearCustomPredictionError,
+  clearSelections,
+  runCustomPrediction,
+} from '../../state/actions';
 
 import PlayWithModel from './component';
 
@@ -47,6 +51,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    clearAllSelections: () => {
+      dispatch(clearSelections());
+    },
     clearError: () => {
       dispatch(clearCustomPredictionError());
     },

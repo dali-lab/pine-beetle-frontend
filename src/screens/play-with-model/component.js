@@ -13,6 +13,7 @@ import { DATA_MODES } from '../../constants';
 
 const PlayWithModel = (props) => {
   const {
+    clearAllSelections,
     clearError, // function to clear the error
     fetchErrorText,
     isLoading,
@@ -25,6 +26,10 @@ const PlayWithModel = (props) => {
     selectedState,
     year,
   } = props;
+
+  useEffect(() => {
+    clearAllSelections(); // clears selections initially when switching to this tab
+  }, [clearAllSelections]);
 
   const [modelInputs, setModelInputs] = useState({
     cleridst1: 0,
