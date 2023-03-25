@@ -4,7 +4,7 @@ import { DATA_MODES, CHART_MODES } from '../../constants';
 const initialState = {
   startYear: 1988,
   endYear: new Date().getFullYear(),
-  predictionYear: 2022,
+  predictionYear: new Date().getFullYear(),
   state: '',
   county: [],
   rangerDistrict: [],

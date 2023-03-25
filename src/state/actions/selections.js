@@ -383,7 +383,6 @@ export const clearSelections = () => {
 
     // fetch new selection criteria
     dispatch(getAvailableYears());
-    // needs to be awaited
     dispatch(getAvailableStates());
     dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_HISTORICAL, payload: [] });
     dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION, payload: [] });
@@ -412,7 +411,6 @@ export const setDataMode = (mode) => {
 
     // fetch new selection criteria
     dispatch(getAvailableYears());
-    // needs to be awaited
     dispatch(getAvailableStates());
     dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_HISTORICAL, payload: [] });
     dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION, payload: [] });
