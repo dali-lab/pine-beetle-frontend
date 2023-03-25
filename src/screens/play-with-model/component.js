@@ -7,16 +7,19 @@ import {
   SelectionBar,
 } from './components';
 
-import { DATA_MODES } from '../../constants';
+import { Loading } from '../../components';
 
-import { api } from '../../services';
+import { DATA_MODES } from '../../constants';
 
 const PlayWithModel = (props) => {
   const {
     clearError, // function to clear the error
+    fetchErrorText,
+    isLoading,
     county,
     dataMode,
     isError, // whether or not an error occurred
+    predictions,
     rangerDistrict,
     runCustomPrediction, // function to call for running the prediction
     selectedState,
@@ -46,11 +49,10 @@ const PlayWithModel = (props) => {
   };
 
   useEffect(() => {
-    const sublocation = dataMode === DATA_MODES.COUNTY ? 'county' : 'rangerDistrict';
     const selectedSubLocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
 
-    // sets input fields to 0 if selection cleared
-    if (!selectedState && !sublocation) {
+    // sets input fields to 0 if selections not fully specified
+    if (predictions.length !== 1 || !selectedState || selectedSubLocation.length !== 1) {
       setModelInputs({
         cleridst1: 0,
         endobrev: 0,
@@ -58,37 +60,30 @@ const PlayWithModel = (props) => {
         spotst1: 0,
         spotst2: 0,
       });
-    } else if (year && selectedState && selectedSubLocation) {
-      // send request to backend to get model inputs for this selection
-      const fetcher = dataMode === DATA_MODES.COUNTY ? api.getCountyData : api.getRangerDistrictData;
+    } else {
+      const {
+        spotst1 = 0,
+        spotst2 = 0,
+        spbPer2Weeks = 0,
+        endobrev = 1,
+        cleridst1,
+      } = predictions[0];
 
-      fetcher({ year, state: selectedState, [sublocation]: selectedSubLocation })
-        .then((data) => {
-          const {
-            spotst1 = 0,
-            spotst2 = 0,
-            spbPer2Weeks = 0,
-            endobrev = 1,
-            cleridst1,
-          } = data[0] || {};
-
-          // update the state
-          updateModelInputs({
-            spotst1,
-            spotst2,
-            spb: spbPer2Weeks,
-            endobrev,
-            cleridst1,
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // update the state
+      updateModelInputs({
+        spotst1,
+        spotst2,
+        spb: spbPer2Weeks,
+        endobrev,
+        cleridst1,
+      });
     }
-  }, [year, selectedState, county, rangerDistrict, dataMode]);
+  }, [county, dataMode, predictions, rangerDistrict, selectedState]);
 
   return (
     <div>
+      <Loading visible={isLoading} />
+      {fetchErrorText.length > 0 && fetchErrorText.map((t) => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
       <div className="container" id="play-with-model-inputs-container">

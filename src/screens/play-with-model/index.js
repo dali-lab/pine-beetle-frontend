@@ -15,22 +15,30 @@ const mapStateToProps = (state) => {
     },
     data: {
       customPrediction,
-      fetchingCustomPrediction,
+      fetchingPredictions,
+      predictions,
     },
     error: {
       customPredictionError,
+      fetchError: {
+        text: fetchErrorText,
+      },
     },
   } = state;
 
   const isError = customPredictionError.error.length > 0;
+
+  const isLoading = fetchingPredictions;
 
   return {
     county: county[0],
     customPrediction,
     dataMode,
     error: customPredictionError,
+    fetchErrorText,
     isError,
-    isLoading: fetchingCustomPrediction,
+    isLoading,
+    predictions,
     rangerDistrict: rangerDistrict[0],
     selectedState,
     year,
