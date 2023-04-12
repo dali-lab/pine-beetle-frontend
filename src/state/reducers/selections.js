@@ -9,7 +9,7 @@ const initialState = {
   county: [],
   rangerDistrict: [],
   dataMode: DATA_MODES.COUNTY,
-  chartMode: CHART_MODES.MAP,
+  chartMode: CHART_MODES.GRAPH,
   predictionModal: false,
 
   availableHistoricalYears: [],
@@ -22,14 +22,50 @@ const initialState = {
 
 const SelectionsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.SET_START_YEAR:
-      return { ...state, startYear: parseInt(action.payload.startYear, 10) };
+    case ActionTypes.SET_START_YEAR: {
+      const castedYear = parseInt(action.payload.startYear, 10);
 
-    case ActionTypes.SET_END_YEAR:
-      return { ...state, endYear: parseInt(action.payload.endYear, 10) };
+      // try choosing earliest possible year
+      const defaultYear = state.availableHistoricalYears.length
+        ? state.availablePredictionYears[0]
+        : initialState.startYear;
 
-    case ActionTypes.SET_PREDICTION_YEAR:
-      return { ...state, predictionYear: parseInt(action.payload.year, 10) };
+      // guards against null, undefined, ''
+      const startYear = Number.isNaN(castedYear)
+        ? defaultYear
+        : castedYear;
+      return { ...state, startYear };
+    }
+
+    case ActionTypes.SET_END_YEAR: {
+      const castedYear = parseInt(action.payload.endYear, 10);
+
+      // try choosing latest possible year
+      const defaultYear = state.availableHistoricalYears.length
+        ? state.availablePredictionYears.slice(-1)
+        : initialState.endYear;
+
+      // guards against null, undefined, ''
+      const endYear = Number.isNaN(castedYear)
+        ? defaultYear
+        : castedYear;
+      return { ...state, endYear };
+    }
+
+    case ActionTypes.SET_PREDICTION_YEAR: {
+      const castedYear = parseInt(action.payload.year, 10);
+
+      // try choosing latest possible year
+      const defaultYear = state.availablePredictionYears.length
+        ? state.availablePredictionYears.slice(-1)
+        : initialState.predictionYear;
+
+      // guards against null, undefined, ''
+      const predictionYear = Number.isNaN(castedYear)
+        ? defaultYear
+        : castedYear;
+      return { ...state, predictionYear };
+    }
 
     case ActionTypes.SET_STATE:
       return {

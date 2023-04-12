@@ -12,7 +12,6 @@ import {
 } from '../../utils';
 
 import { api } from '../../services';
-import { CHART_MODES } from '../../constants';
 
 export const ActionTypes = {
   SET_START_YEAR: 'SET_START_YEAR',
@@ -89,7 +88,6 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
       endYear,
       startYear,
       predictionYear,
-      chartMode,
     } = getState().selections;
 
     const filters = {
@@ -106,22 +104,12 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
       }
 
       if (prediction) {
-        let predictionStates = [];
-        if (chartMode === CHART_MODES.MAP) {
-          predictionStates = await api.getAvailableStates(dataMode, {
-            ...filters,
-            isPrediction: true,
-            startYear: filters.predictionYear,
-            endYear: filters.predictionYear,
-          });
-        } else {
-          predictionStates = await api.getAvailableStates(dataMode, {
-            ...filters,
-            isPrediction: true,
-            startYear: filters.startYear,
-            endYear: filters.predictionYear,
-          });
-        }
+        const predictionStates = await api.getAvailableStates(dataMode, {
+          ...filters,
+          isPrediction: true,
+          startYear: predictionYear,
+          endYear: predictionYear,
+        });
         dispatch({ type: ActionTypes.SET_AVAILABLE_STATES_PREDICTION, payload: predictionStates });
       }
     } catch (error) {
@@ -129,7 +117,7 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
         type: ActionTypes.SET_DATA_FETCH_ERROR,
         payload: {
           error,
-          text: 'Failed to fetch available years',
+          text: 'Failed to fetch available states',
         },
       });
     }
@@ -179,7 +167,7 @@ export function getAvailableSublocations(state, overrideFilter = {}, { historica
         type: ActionTypes.SET_DATA_FETCH_ERROR,
         payload: {
           error,
-          text: 'Failed to fetch available years',
+          text: 'Failed to fetch available sublocations',
         },
       });
     }
@@ -192,19 +180,26 @@ export function getAvailableSublocations(state, overrideFilter = {}, { historica
  */
 export const setPredictionYear = (year) => {
   return (dispatch, getState) => {
-    const { state, startYear } = getState().selections;
+    const { state } = getState().selections;
 
     dispatch({ type: ActionTypes.SET_PREDICTION_YEAR, payload: { year } });
 
-    if (getState().selections.chartMode === CHART_MODES.MAP) {
-      dispatch(getPredictions(year, year));
-    } else {
-      dispatch(getPredictions(startYear, year));
-    }
+    dispatch(getPredictions(year, year));
 
     // fetch new drop down values
-    dispatch(getAvailableStates({ startYear: year, endYear: year, predictionYear: year }, { historical: false }));
-    if (state) { dispatch(getAvailableSublocations(state, { startYear: year, endYear: year, predictionYear: year }, { historical: false })); }
+    dispatch(getAvailableStates({
+      startYear: year,
+      endYear: year,
+      predictionYear: year,
+    }, { historical: false }));
+
+    if (state) {
+      dispatch(getAvailableSublocations(state, {
+        startYear: year,
+        endYear: year,
+        predictionYear: year,
+      }, { historical: false }));
+    }
   };
 };
 
@@ -304,11 +299,9 @@ export const setState = (state) => {
     dispatch(getAggregateYearData({ state }));
     dispatch(getAggregateStateData({ state }));
     dispatch(getAggregateLocationData({ state }));
-    if (getState().selections.chartMode === CHART_MODES.MAP) {
-      dispatch(getPredictions(getState().selections.predictionYear, getState().selections.predictionYear), { state });
-    } else {
-      dispatch(getPredictions(getState().selections.startYear, getState().selections.predictionYear), { state });
-    }
+
+    const { predictionYear } = getState().selections;
+    dispatch(getPredictions(predictionYear, predictionYear), { state });
 
     // fetch new drop down values
     dispatch(getAvailableYears({ state }));
@@ -318,10 +311,13 @@ export const setState = (state) => {
 
 /**
  * @description action creator for setting county
- * @param {String} county county name
+ * @param {String} newCounty county name
  */
-export const setCounty = (county) => {
+export const setCounty = (newCounty) => {
   return (dispatch, getState) => {
+    const county = newCounty === '' // guard against emptystring from input
+      ? []
+      : newCounty;
     dispatch({ type: ActionTypes.SET_COUNTY, payload: { county } });
 
     // clear out existing data
@@ -332,11 +328,10 @@ export const setCounty = (county) => {
     dispatch(getAggregateYearData({ county }));
     dispatch(getAggregateStateData({ county }));
     dispatch(getAggregateLocationData({ county }));
-    if (getState().selections.chartMode === CHART_MODES.MAP) {
-      dispatch(getPredictions(getState().selections.predictionYear, getState().selections.predictionYear), { county });
-    } else {
-      dispatch(getPredictions(getState().selections.startYear, getState().selections.predictionYear), { county });
-    }
+
+    const { predictionYear } = getState().selections;
+    dispatch(getPredictions(predictionYear, predictionYear), { county });
+
     // fetch new drop down values
     dispatch(getAvailableYears({ county }));
   };
@@ -344,10 +339,13 @@ export const setCounty = (county) => {
 
 /**
  * @description action creator for setting ranger district
- * @param {String} rangerDistrict ranger district name
+ * @param {String} newRangerDistrict ranger district name
  */
-export const setRangerDistrict = (rangerDistrict) => {
+export const setRangerDistrict = (newRangerDistrict) => {
   return (dispatch, getState) => {
+    const rangerDistrict = newRangerDistrict === '' // guard against emptystring from input
+      ? []
+      : newRangerDistrict;
     dispatch({ type: ActionTypes.SET_RANGER_DISTRICT, payload: { rangerDistrict } });
 
     // clear out existing data
@@ -358,11 +356,9 @@ export const setRangerDistrict = (rangerDistrict) => {
     dispatch(getAggregateYearData({ rangerDistrict }));
     dispatch(getAggregateStateData({ rangerDistrict }));
     dispatch(getAggregateLocationData({ rangerDistrict }));
-    if (getState().selections.chartMode === CHART_MODES.MAP) {
-      dispatch(getPredictions(getState().selections.predictionYear, getState().selections.predictionYear), { rangerDistrict });
-    } else {
-      dispatch(getPredictions(getState().selections.startYear, getState().selections.predictionYear), { rangerDistrict });
-    }
+    const { predictionYear } = getState().selections;
+    dispatch(getPredictions(predictionYear, predictionYear), { rangerDistrict });
+
     // fetch new drop down values
     dispatch(getAvailableYears({ rangerDistrict }));
   };
@@ -383,6 +379,7 @@ export const clearSelections = () => {
     dispatch(getAggregateYearData());
     dispatch(getAggregateStateData());
     dispatch(getAggregateLocationData());
+    dispatch(getPredictions());
 
     // fetch new selection criteria
     dispatch(getAvailableYears());
@@ -409,11 +406,9 @@ export const setDataMode = (mode) => {
     dispatch(getAggregateYearData());
     dispatch(getAggregateStateData());
     dispatch(getAggregateLocationData());
-    if (getState().selections.chartMode === CHART_MODES.MAP) {
-      dispatch(getPredictions(getState().selections.predictionYear, getState().selections.predictionYear));
-    } else {
-      dispatch(getPredictions(getState().selections.startYear, getState().selections.predictionYear));
-    }
+    const { predictionYear } = getState().selections;
+    dispatch(getPredictions(predictionYear, predictionYear));
+
     // fetch new selection criteria
     dispatch(getAvailableYears());
     dispatch(getAvailableStates());

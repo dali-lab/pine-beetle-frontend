@@ -16,6 +16,7 @@ const mapStateToProps = (state) => {
     selections: {
       startYear,
       endYear,
+      chartMode,
       state: selectedState,
       county,
       rangerDistrict,
@@ -30,6 +31,7 @@ const mapStateToProps = (state) => {
     availableYears: availableHistoricalYears,
     availableStates: availableHistoricalStates,
     availableSublocations: availableHistoricalSublocations,
+    chartMode,
     county,
     dataMode,
     endYear,

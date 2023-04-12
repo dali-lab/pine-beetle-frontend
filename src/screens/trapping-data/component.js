@@ -65,19 +65,6 @@ const TrappingData = (props) => {
           </div>
           <div className="selection">
             <div
-              className={isGraphView ? 'unselected-option' : 'selected-option-2'}
-              onClick={setMapView}
-            >
-              <img
-                src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
-                alt="Map View"
-                className={isGraphView ? 'unselected-view' : 'selected-view'}
-              />
-              <p className={isGraphView ? 'unselected-option-text' : 'selected-option-text'}>
-                Map View
-              </p>
-            </div>
-            <div
               className={isGraphView ? 'selected-option-2' : 'unselected-option'}
               onClick={setGraphView}
             >
@@ -88,6 +75,19 @@ const TrappingData = (props) => {
               />
               <p className={isGraphView ? 'selected-option-text' : 'unselected-option-text'}>
                 Graph View
+              </p>
+            </div>
+            <div
+              className={isGraphView ? 'unselected-option' : 'selected-option-2'}
+              onClick={setMapView}
+            >
+              <img
+                src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
+                alt="Map View"
+                className={isGraphView ? 'unselected-view' : 'selected-view'}
+              />
+              <p className={isGraphView ? 'unselected-option-text' : 'selected-option-text'}>
+                Map View
               </p>
             </div>
           </div>
