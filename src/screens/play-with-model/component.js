@@ -33,11 +33,13 @@ const PlayWithModel = (props) => {
 
   const [modelInputs, setModelInputs] = useState({
     cleridst1: 0,
-    endobrev: 0,
+    endobrev: 1,
     spb: 0,
     spotst1: 0,
     spotst2: 0,
   });
+
+  console.log(modelInputs);
 
   const updateModelInputs = (updates) => {
     setModelInputs((currentInputs) => ({
@@ -50,7 +52,13 @@ const PlayWithModel = (props) => {
     if (isError) {
       clearError();
     }
-    runCustomPrediction(modelInputs.cleridst1, modelInputs.spotst1, modelInputs.spotst2, modelInputs.spb, modelInputs.endobrev);
+    runCustomPrediction(
+      modelInputs.cleridst1,
+      modelInputs.spotst1,
+      modelInputs.spotst2,
+      modelInputs.spb,
+      modelInputs.endobrev,
+    );
   };
 
   useEffect(() => {
@@ -60,7 +68,7 @@ const PlayWithModel = (props) => {
     if (predictions.length !== 1 || !selectedState || selectedSubLocation.length !== 1) {
       setModelInputs({
         cleridst1: 0,
-        endobrev: 0,
+        endobrev: 1,
         spb: 0,
         spotst1: 0,
         spotst2: 0,
