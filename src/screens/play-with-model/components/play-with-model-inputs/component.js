@@ -143,13 +143,17 @@ const PlayWithModelInputs = (props) => {
                     .replace('{YEAR}', year)
                     .replace('{YEAR-1}', year - 1)
                     .replace('{YEAR-2}', year - 2)}
+                  {key !== 'CLERIDST1'
+                    ? <span className="required-text"> *</span>
+                    : <span className="required-text"> (optional)</span>}
                 </div>
               </div>
-              { selectionInput(trueFalseSelection, value, setValue) }
+              {selectionInput(trueFalseSelection, value, setValue)}
             </div>
           );
         })}
       </div>
+      <div className="required-text">* required</div>
       <button className="animated-button" id="run-button" type="button" onClick={runModel}>
         Run
       </button>
