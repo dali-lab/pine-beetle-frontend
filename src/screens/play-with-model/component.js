@@ -39,8 +39,6 @@ const PlayWithModel = (props) => {
     spotst2: 0,
   });
 
-  console.log(modelInputs);
-
   const updateModelInputs = (updates) => {
     setModelInputs((currentInputs) => ({
       ...currentInputs,
@@ -62,10 +60,13 @@ const PlayWithModel = (props) => {
   };
 
   useEffect(() => {
+    // don't run if no predictions
+    if (predictions.length === 0) return;
+
     const selectedSubLocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
 
     // sets input fields to 0 if selections not fully specified
-    if (predictions.length !== 1 || !selectedState || selectedSubLocation.length !== 1) {
+    if (!selectedState || selectedSubLocation.length !== 1) {
       setModelInputs({
         cleridst1: 0,
         endobrev: 1,
@@ -75,10 +76,10 @@ const PlayWithModel = (props) => {
       });
     } else {
       const {
-        spotst1 = 0,
-        spotst2 = 0,
-        spbPer2Weeks = 0,
-        endobrev = 1,
+        spotst1,
+        spotst2,
+        spbPer2Weeks,
+        endobrev,
         cleridst1,
       } = predictions[0];
 
