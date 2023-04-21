@@ -165,6 +165,28 @@ const getYearRange = (start, end) => {
   return Array(end - start + 1).fill().map((_, idx) => start + idx);
 };
 
+const MAP_SOURCES = {
+  COUNTY: {
+    type: 'vector',
+    url: 'mapbox://pine-beetle-prediction.1be58pyi',
+  },
+  RANGER_DISTRICT: {
+    type: 'vector',
+    url: 'mapbox://pine-beetle-prediction.0tor8eeq',
+  },
+};
+
+const SOURCE_LAYERS = {
+  COUNTY: 'US_Counties_updated',
+  RANGER_DISTRICT: 'RD_SPB_NE',
+};
+
+const STATE_VECTOR_LAYER = 'states';
+
+// these are completely arbitrary
+const MAP_SOURCE_NAME = 'sublocations';
+const VECTOR_LAYER = 'map-choropleth-layer';
+
 export {
   AUTOMATION_SERVER_ENDPOINTS,
   CHART_MODES,
@@ -175,15 +197,20 @@ export {
   getServerUrl,
   LOCAL_STORAGE_KEYS,
   MIN_WIDTH_THRESHOLD,
+  MAP_SOURCES,
+  MAP_SOURCE_NAME,
   ROUTES,
   SERVER_ENDPOINTS,
+  SOURCE_LAYERS,
   stateAbbrevToStateId,
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
+  STATE_VECTOR_LAYER,
   getYearRange,
   RESOURCE_ROUTES,
   RESOURCE_REMOTE_URLS,
   RESOURCE_LOCAL_URLS,
   VIDEO_URL,
+  VECTOR_LAYER,
 };
