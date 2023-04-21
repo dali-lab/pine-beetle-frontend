@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "NODE_ENV=development webpack serve",
-    "lint": "eslint src",
+    "lint": "eslint src --cache",
     "ci:lint": "eslint src --rule 'react-hooks/exhaustive-deps: 0'",
     "build": "npm clean; NODE_ENV=production webpack --color --progress; cp src/_redirects dist/_redirects",
     "clean": "rimraf dist"

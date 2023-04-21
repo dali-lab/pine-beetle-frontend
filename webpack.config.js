@@ -79,7 +79,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new ESLintPlugin(),
+    new ESLintPlugin({ cache: true }),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.html',

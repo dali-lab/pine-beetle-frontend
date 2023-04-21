@@ -35,7 +35,7 @@ const mapStateToProps = (state) => {
   const isLoading = fetchingPredictions;
 
   return {
-    county: county[0],
+    county,
     customPrediction,
     dataMode,
     error: customPredictionError,
@@ -43,7 +43,7 @@ const mapStateToProps = (state) => {
     isError,
     isLoading,
     predictions,
-    rangerDistrict: rangerDistrict[0],
+    rangerDistrict,
     selectedState,
     year,
   };

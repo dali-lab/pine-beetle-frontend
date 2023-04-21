@@ -34,7 +34,9 @@ const SelectionsReducer = (state = initialState, action) => {
       const startYear = Number.isNaN(castedYear)
         ? defaultYear
         : castedYear;
-      return { ...state, startYear };
+
+      const endYear = Math.max(state.endYear, startYear); // ensure endYear >= startYear
+      return { ...state, startYear, endYear };
     }
 
     case ActionTypes.SET_END_YEAR: {
@@ -49,7 +51,9 @@ const SelectionsReducer = (state = initialState, action) => {
       const endYear = Number.isNaN(castedYear)
         ? defaultYear
         : castedYear;
-      return { ...state, endYear };
+
+      const startYear = Math.min(state.startYear, endYear); // ensure endYear >= startYear
+      return { ...state, endYear, startYear };
     }
 
     case ActionTypes.SET_PREDICTION_YEAR: {

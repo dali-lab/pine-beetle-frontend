@@ -18,12 +18,26 @@
 }
 
 #change-fields-title {
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 1.4;
-    text-align: left;
-    color: #2f303a;
     margin-bottom: 37px;
+
+    .input-description {
+        font-size: 22px;
+        font-weight: 600;
+        line-height: 1.4;
+        text-align: left;
+        color: #2f303a;
+    }
+
+    .required-text {
+        color: #ff0000;
+        float: right;
+        margin-right: 20px;
+        margin-top: 7px;
+    }
+}
+
+span.required-text {
+    color: #ff0000;
 }
 
 .field {
