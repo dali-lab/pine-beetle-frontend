@@ -4,19 +4,23 @@ import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
-import { DATA_MODES, stateAbbrevToZoomLevel } from '../../../../constants';
+import {
+  DATA_MODES,
+  stateAbbrevToZoomLevel,
+  MAP_SOURCES,
+  SOURCE_LAYERS,
+  MAP_SOURCE_NAME,
+  VECTOR_LAYER,
+  STATE_VECTOR_LAYER,
+} from '../../../../constants';
+
 import { getMapboxRDNameFormat } from '../../../../utils';
 import { api } from '../../../../services';
 
 import {
   thresholds,
   colors,
-  MAP_SOURCES,
-  SOURCE_LAYERS,
-  MAP_SOURCE_NAME,
-  VECTOR_LAYER,
-  STATE_VECTOR_LAYER,
-} from './utils';
+} from './constants';
 
 import './style.scss';
 
@@ -53,7 +57,7 @@ const PredictionMap = (props) => {
     if (dataMode === DATA_MODES.RANGER_DISTRICT) {
       api.getAvailableSublocations(dataMode)
         .then(setAllRangerDistricts)
-        .catch(console.log);
+        .catch(console.error);
     }
   }, [dataMode]);
 
@@ -78,9 +82,9 @@ const PredictionMap = (props) => {
   const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availStates) => (e) => {
     if (!map || !e || !map.isStyleLoaded()) return;
 
-    const counties = map.queryRenderedFeatures(e.point, {
-      layers: [VECTOR_LAYER],
-    });
+    const counties = map.getLayer(VECTOR_LAYER)
+      ? map.queryRenderedFeatures(e.point, { layers: [VECTOR_LAYER] })
+      : [];
 
     if (counties.length > 0 && counties[0]?.properties?.forest) {
       const { x, y } = e.point || {};
@@ -96,7 +100,7 @@ const PredictionMap = (props) => {
       const location = mode === DATA_MODES.COUNTY
         ? hoverCounty
         : rangerDistricts.filter((rd) => !!rd)
-          .find((rd) => rd.includes(hoverRD));
+          .find((rd) => getMapboxRDNameFormat(rd)?.includes(hoverRD));
 
       const pred = predictions.find((p) => {
         // either ranger district mode or have a matching state
@@ -116,7 +120,7 @@ const PredictionMap = (props) => {
 
         setPredictionHover((
           <div id="prediction-hover" style={mapboxHoverStyle(x, y)}>
-            <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
+            <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${getMapboxRDNameFormat(location).slice(0, -3)} Ranger District`}</h3>
             <p>Probability of any spots: {isInvalidNumber(probAny) ? 'null' : (probAny * 100).toFixed(1)}%</p>
             <p>Probability of an outbreak: {isInvalidNumber(probOutbreak) ? 'null' : (probOutbreak * 100).toFixed(1)}%</p>
           </div>
@@ -134,15 +138,15 @@ const PredictionMap = (props) => {
     const {
       COUNTYNAME: county,
       forest: clickRD,
-      STATE: _state,
+      STATE: mapboxState,
     } = e.features[0].properties;
 
     const rangerDistrictToSet = sublocations.filter((rd) => !!rd)
       .find((district) => district.includes(clickRD));
 
-    const state = !_state && mode === DATA_MODES.RANGER_DISTRICT
+    const state = !mapboxState && mode === DATA_MODES.RANGER_DISTRICT
       ? predictions.find((p) => p.rangerDistrict === rangerDistrictToSet)?.state
-      : _state;
+      : mapboxState;
 
     // ensure clicked on valid state
     if (!states.includes(state) || !currentState) return;
@@ -265,11 +269,14 @@ const PredictionMap = (props) => {
 
       const locationName = dataMode === DATA_MODES.COUNTY
         ? countyFormatName
-        // handles case where tileset has two spaces instead of one (this is a one-off)
-        : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD')];
+        // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
+        : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD'), rangerDistrictFormatName.replace(' RD', '')]
+          .filter((str) => !!str);
 
-      fillExpression.push(locationName, color);
-      strokeExpression.push(locationName, '#000000');
+      if (locationName?.length !== 0) {
+        fillExpression.push(locationName, color);
+        strokeExpression.push(locationName, '#000000');
+      }
     });
 
     // last value is the default, used where there is no data
@@ -381,7 +388,7 @@ const PredictionMap = (props) => {
         setIsDownloadingMap(false);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 

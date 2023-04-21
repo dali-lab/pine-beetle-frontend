@@ -116,7 +116,8 @@ const PlayWithModelInputs = (props) => {
     <div className="change-fields-container">
       <div className="change-fields">
         <div id="change-fields-title">
-          <p>Change numbers in any of the fields below to gauge effect on predicted risks at right</p>
+          <span className="input-description">Change numbers in any of the fields below to gauge effect on predicted risks at right</span>
+          <span className="required-text">* required</span>
         </div>
         {Object.entries(INPUT_INFORMATION).map(([key, inputInfo]) => {
           const {
@@ -143,9 +144,12 @@ const PlayWithModelInputs = (props) => {
                     .replace('{YEAR}', year)
                     .replace('{YEAR-1}', year - 1)
                     .replace('{YEAR-2}', year - 2)}
+                  {key !== 'CLERIDST1'
+                    ? <span className="required-text"> *</span>
+                    : <span className="required-text"> (optional)</span>}
                 </div>
               </div>
-              { selectionInput(trueFalseSelection, value, setValue) }
+              {selectionInput(trueFalseSelection, value, setValue)}
             </div>
           );
         })}

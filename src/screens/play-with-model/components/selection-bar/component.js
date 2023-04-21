@@ -76,7 +76,7 @@ const SelectionBar = (props) => {
         <div>
           <ChoiceInput
             value={countyMode ? county : rangerDistrict}
-            setValue={countyMode ? setCounty : setRangerDistrict}
+            setValue={countyMode ? (v) => setCounty([v]) : (v) => setRangerDistrict([v])}
             options={availableSublocations}
             firstOptionText={countyMode ? 'County' : 'Ranger District'}
           />

@@ -33,7 +33,7 @@ const PlayWithModel = (props) => {
 
   const [modelInputs, setModelInputs] = useState({
     cleridst1: 0,
-    endobrev: 0,
+    endobrev: 1,
     spb: 0,
     spotst1: 0,
     spotst2: 0,
@@ -50,27 +50,36 @@ const PlayWithModel = (props) => {
     if (isError) {
       clearError();
     }
-    runCustomPrediction(modelInputs.cleridst1, modelInputs.spotst1, modelInputs.spotst2, modelInputs.spb, modelInputs.endobrev);
+    runCustomPrediction(
+      modelInputs.cleridst1,
+      modelInputs.spotst1,
+      modelInputs.spotst2,
+      modelInputs.spb,
+      modelInputs.endobrev,
+    );
   };
 
   useEffect(() => {
+    // don't run if no predictions
+    if (predictions.length === 0) return;
+
     const selectedSubLocation = dataMode === DATA_MODES.COUNTY ? county : rangerDistrict;
 
     // sets input fields to 0 if selections not fully specified
-    if (predictions.length !== 1 || !selectedState || selectedSubLocation.length !== 1) {
+    if (!selectedState || selectedSubLocation.length !== 1) {
       setModelInputs({
         cleridst1: 0,
-        endobrev: 0,
+        endobrev: 1,
         spb: 0,
         spotst1: 0,
         spotst2: 0,
       });
     } else {
       const {
-        spotst1 = 0,
-        spotst2 = 0,
-        spbPer2Weeks = 0,
-        endobrev = 1,
+        spotst1,
+        spotst2,
+        spbPer2Weeks,
+        endobrev,
         cleridst1,
       } = predictions[0];
 
