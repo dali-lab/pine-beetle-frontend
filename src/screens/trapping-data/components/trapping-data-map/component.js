@@ -4,19 +4,23 @@ import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
-import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
+import {
+  stateAbbrevToZoomLevel,
+  DATA_MODES,
+  MAP_SOURCES,
+  SOURCE_LAYERS,
+  MAP_SOURCE_NAME,
+  VECTOR_LAYER,
+  STATE_VECTOR_LAYER,
+} from '../../../../constants';
+
 import { getMapboxRDNameFormat } from '../../../../utils';
 import { api } from '../../../../services';
 
 import {
   thresholds,
   colors,
-  MAP_SOURCES,
-  SOURCE_LAYERS,
-  MAP_SOURCE_NAME,
-  VECTOR_LAYER,
-  STATE_VECTOR_LAYER,
-} from './utils';
+} from './constants';
 
 import './style.scss';
 
@@ -94,10 +98,11 @@ const HistoricalMap = (props) => {
 
       if (data && data.length > 0 && x && y) {
         const {
-          avgSpbPer2Weeks,
-          avgCleridsPer2Weeks,
-          minSpotst0,
-          maxSpotst0,
+          // avgSpbPer2Weeks,
+          // avgCleridsPer2Weeks,
+          // minSpotst0,
+          // maxSpotst0,
+          sumSpotst0,
           county: countyName,
         } = data[0];
 
@@ -106,9 +111,10 @@ const HistoricalMap = (props) => {
         setTrappingHover((
           <div id="trapping-hover" style={{ left: `${x + 10}px`, top: `${y - 140}px` }}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
-            <p>Average SPB Per 2 Weeks: {isInvalidNumber(avgSpbPer2Weeks) ? 'null' : avgSpbPer2Weeks.toFixed(2)}</p>
-            <p>Average Clerids Per 2 Weeks: {isInvalidNumber(avgCleridsPer2Weeks) ? 'null' : avgCleridsPer2Weeks.toFixed(2)}</p>
-            {!isInvalidNumber(minSpotst0) && !isInvalidNumber(maxSpotst0) ? <p>Spot Range: [{minSpotst0}, {maxSpotst0}]</p> : null}
+            {/* <p>SPB Per 2 Weeks: {isInvalidNumber(avgSpbPer2Weeks) ? 'null' : avgSpbPer2Weeks.toFixed(2)}</p> */}
+            {/* <p>Clerids Per 2 Weeks: {isInvalidNumber(avgCleridsPer2Weeks) ? 'null' : avgCleridsPer2Weeks.toFixed(2)}</p> */}
+            {/* {!isInvalidNumber(minSpotst0) && !isInvalidNumber(maxSpotst0) ? <p>Spot Range: [{minSpotst0}, {maxSpotst0}]</p> : null} */}
+            {!isInvalidNumber(sumSpotst0) ? <p>Spots: {sumSpotst0}</p> : null}
           </div>
         ));
       } else {
