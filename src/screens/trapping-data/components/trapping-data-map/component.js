@@ -4,19 +4,23 @@ import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl';
 import printPdf from 'mapbox-print-pdf';
 
-import { stateAbbrevToZoomLevel, DATA_MODES } from '../../../../constants';
+import {
+  stateAbbrevToZoomLevel,
+  DATA_MODES,
+  MAP_SOURCES,
+  SOURCE_LAYERS,
+  MAP_SOURCE_NAME,
+  VECTOR_LAYER,
+  STATE_VECTOR_LAYER,
+} from '../../../../constants';
+
 import { getMapboxRDNameFormat } from '../../../../utils';
 import { api } from '../../../../services';
 
 import {
   thresholds,
   colors,
-  MAP_SOURCES,
-  SOURCE_LAYERS,
-  MAP_SOURCE_NAME,
-  VECTOR_LAYER,
-  STATE_VECTOR_LAYER,
-} from './utils';
+} from './constants';
 
 import './style.scss';
 
@@ -53,7 +57,7 @@ const HistoricalMap = (props) => {
     if (dataMode === DATA_MODES.RANGER_DISTRICT) {
       api.getAvailableSublocations(dataMode)
         .then(setAllRangerDistricts)
-        .catch(console.log);
+        .catch(console.error);
     }
   }, [dataMode]);
 
@@ -61,25 +65,26 @@ const HistoricalMap = (props) => {
   const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => (e) => {
     if (!map || !e || !map.isStyleLoaded()) return;
 
-    const counties = map.queryRenderedFeatures(e.point, {
-      layers: [VECTOR_LAYER],
-    });
+    const counties = map.getLayer(VECTOR_LAYER)
+      ? map.queryRenderedFeatures(e.point, { layers: [VECTOR_LAYER] })
+      : [];
 
-    if (counties.length > 0 && counties[0]?.properties?.forest) {
+    if (counties.length > 0 && counties[0]?.properties?.DISTRICTNA) {
       const { x, y } = e.point || {};
 
       const {
         STATE: hoverState,
         COUNTYNAME: hoverCounty,
-        forest: rawForest,
+        DISTRICTNA: rawForest,
       } = counties[0].properties;
 
+      // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
       const hoverRD = rawForest.replaceAll('  ', ' ');
 
       const location = mode === DATA_MODES.COUNTY
         ? hoverCounty
         : rangerDistricts.filter((rd) => !!rd)
-          .find((rd) => rd.includes(hoverRD));
+          .find((rd) => getMapboxRDNameFormat(rd)?.includes(hoverRD));
 
       const sublocation = mode === DATA_MODES.COUNTY ? 'county' : 'rangerDistrict';
 
@@ -94,10 +99,11 @@ const HistoricalMap = (props) => {
 
       if (data && data.length > 0 && x && y) {
         const {
-          avgSpbPer2Weeks,
-          avgCleridsPer2Weeks,
-          minSpotst0,
-          maxSpotst0,
+          // avgSpbPer2Weeks,
+          // avgCleridsPer2Weeks,
+          // minSpotst0,
+          // maxSpotst0,
+          sumSpotst0,
           county: countyName,
         } = data[0];
 
@@ -105,10 +111,11 @@ const HistoricalMap = (props) => {
 
         setTrappingHover((
           <div id="trapping-hover" style={{ left: `${x + 10}px`, top: `${y - 140}px` }}>
-            <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
-            <p>Average SPB Per 2 Weeks: {isInvalidNumber(avgSpbPer2Weeks) ? 'null' : avgSpbPer2Weeks.toFixed(2)}</p>
-            <p>Average Clerids Per 2 Weeks: {isInvalidNumber(avgCleridsPer2Weeks) ? 'null' : avgCleridsPer2Weeks.toFixed(2)}</p>
-            {!isInvalidNumber(minSpotst0) && !isInvalidNumber(maxSpotst0) ? <p>Spot Range: [{minSpotst0}, {maxSpotst0}]</p> : null}
+            <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.DISTRICTNA.slice(0, -3)} Ranger District`}</h3>
+            {/* <p>SPB Per 2 Weeks: {isInvalidNumber(avgSpbPer2Weeks) ? 'null' : avgSpbPer2Weeks.toFixed(2)}</p> */}
+            {/* <p>Clerids Per 2 Weeks: {isInvalidNumber(avgCleridsPer2Weeks) ? 'null' : avgCleridsPer2Weeks.toFixed(2)}</p> */}
+            {/* {!isInvalidNumber(minSpotst0) && !isInvalidNumber(maxSpotst0) ? <p>Spot Range: [{minSpotst0}, {maxSpotst0}]</p> : null} */}
+            {!isInvalidNumber(sumSpotst0) ? <p>Spots: {sumSpotst0}</p> : null}
           </div>
         ));
       } else {
@@ -123,7 +130,7 @@ const HistoricalMap = (props) => {
 
     const {
       COUNTYNAME: county,
-      forest: clickRD,
+      DISTRICTNA: clickRD,
       STATE: mapboxState,
     } = e.features[0].properties;
 
@@ -226,8 +233,8 @@ const HistoricalMap = (props) => {
       map.removeLayer(VECTOR_LAYER);
     }
 
-    const fillExpression = ['match', ['upcase', ['get', 'forest']]];
-    const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
+    const fillExpression = ['match', ['upcase', ['get', 'DISTRICTNA']]];
+    const strokeExpression = ['match', ['upcase', ['get', 'DISTRICTNA']]];
 
     const trappingsByLocality = d.reduce((acc, curr) => {
       const {
@@ -241,6 +248,12 @@ const HistoricalMap = (props) => {
       const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict)?.toUpperCase() : '';
 
       const localityDescription = dataMode === DATA_MODES.COUNTY ? countyFormatName : rangerDistrictFormatName;
+      // for some reason the below code doesn't work, despite that it's supposed to be more robust for a couple of places like Holly Springs
+      // const localityDescription = dataMode === DATA_MODES.COUNTY
+      //   ? countyFormatName
+      //   // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
+      //   : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD'), rangerDistrictFormatName.replace(' RD', '')]
+      //     .filter((str) => !!str);
 
       return {
         ...acc,
