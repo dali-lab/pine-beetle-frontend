@@ -86,15 +86,16 @@ const PredictionMap = (props) => {
       ? map.queryRenderedFeatures(e.point, { layers: [VECTOR_LAYER] })
       : [];
 
-    if (counties.length > 0 && counties[0]?.properties?.forest) {
+    if (counties.length > 0 && counties[0]?.properties?.DISTRICTNA) {
       const { x, y } = e.point || {};
 
       const {
         STATE: hoverState,
         COUNTYNAME: hoverCounty,
-        forest: rawForest,
+        DISTRICTNA: rawForest,
       } = counties[0].properties;
 
+      // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
       const hoverRD = rawForest.replaceAll('  ', ' ');
 
       const location = mode === DATA_MODES.COUNTY
@@ -137,7 +138,7 @@ const PredictionMap = (props) => {
 
     const {
       COUNTYNAME: county,
-      forest: clickRD,
+      DISTRICTNA: clickRD,
       STATE: mapboxState,
     } = e.features[0].properties;
 
@@ -239,8 +240,8 @@ const PredictionMap = (props) => {
       map.removeLayer(VECTOR_LAYER);
     }
 
-    const fillExpression = ['match', ['upcase', ['get', 'forest']]];
-    const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
+    const fillExpression = ['match', ['upcase', ['get', 'DISTRICTNA']]];
+    const strokeExpression = ['match', ['upcase', ['get', 'DISTRICTNA']]];
 
     predictions.forEach(({
       county,

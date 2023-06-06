@@ -172,13 +172,13 @@ const MAP_SOURCES = {
   },
   RANGER_DISTRICT: {
     type: 'vector',
-    url: 'mapbox://pine-beetle-prediction.0tor8eeq',
+    url: 'mapbox://pine-beetle-prediction.b6vi50h0',
   },
 };
 
 const SOURCE_LAYERS = {
   COUNTY: 'US_Counties_updated',
-  RANGER_DISTRICT: 'RD_SPB_NE',
+  RANGER_DISTRICT: '08_09_RDmap1',
 };
 
 const STATE_VECTOR_LAYER = 'states';
