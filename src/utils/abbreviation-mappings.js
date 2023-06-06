@@ -25,7 +25,7 @@ export const getStateAbbreviationFromStateName = (stateName) => {
  * @description maps ranger district name format in db to mapbox format
  * @param {String} rangerDistrict ranger district name
  */
-export const getMapboxRDNameFormat = (rangerDistrict) => rangerDistrict.match(/\((.*?)\)/)?.[1];
+export const getMapboxRDNameFormat = (rangerDistrict) => rangerDistrict.match(/\((.*?)\)/)?.[1] ?? '';
 
 /**
  * @description splits string up by pascal case
