@@ -172,7 +172,6 @@ const MAP_SOURCES = {
   },
   RANGER_DISTRICT: {
     type: 'vector',
-    // url: 'mapbox://pine-beetle-prediction.0tor8eeq',
     url: 'mapbox://pine-beetle-prediction.b6vi50h0',
   },
 };
