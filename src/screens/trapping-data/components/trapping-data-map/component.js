@@ -1,3 +1,14 @@
+/*
+ * DEV NOTE, Jeff Liu 2023:
+ * this and the other map (prediction & trapping) should be rewritten
+ * in the future and refactored to use composition. there's tons of
+ * code duplication that can be combined so bug fixes are unified.
+ *
+ * also, there's a whole bunch of weird things based on switching the map
+ * between county and federal land mode. I think a map subcomponent should be made
+ * and there should be two different ones for county and RD that look at different fields.
+ */
+
 /* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
@@ -69,13 +80,13 @@ const HistoricalMap = (props) => {
       ? map.queryRenderedFeatures(e.point, { layers: [VECTOR_LAYER] })
       : [];
 
-    if (counties.length > 0 && counties[0]?.properties?.DISTRICTNA) {
+    if (counties.length > 0 && counties[0]?.properties?.forest) {
       const { x, y } = e.point || {};
 
       const {
         STATE: hoverState,
         COUNTYNAME: hoverCounty,
-        DISTRICTNA: rawForest,
+        forest: rawForest,
       } = counties[0].properties;
 
       // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
@@ -111,7 +122,7 @@ const HistoricalMap = (props) => {
 
         setTrappingHover((
           <div id="trapping-hover" style={{ left: `${x + 10}px`, top: `${y - 140}px` }}>
-            <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.DISTRICTNA.slice(0, -3)} Ranger District`}</h3>
+            <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
             {/* <p>SPB Per 2 Weeks: {isInvalidNumber(avgSpbPer2Weeks) ? 'null' : avgSpbPer2Weeks.toFixed(2)}</p> */}
             {/* <p>Clerids Per 2 Weeks: {isInvalidNumber(avgCleridsPer2Weeks) ? 'null' : avgCleridsPer2Weeks.toFixed(2)}</p> */}
             {/* {!isInvalidNumber(minSpotst0) && !isInvalidNumber(maxSpotst0) ? <p>Spot Range: [{minSpotst0}, {maxSpotst0}]</p> : null} */}
@@ -130,7 +141,7 @@ const HistoricalMap = (props) => {
 
     const {
       COUNTYNAME: county,
-      DISTRICTNA: clickRD,
+      forest: clickRD,
       STATE: mapboxState,
     } = e.features[0].properties;
 
@@ -233,8 +244,8 @@ const HistoricalMap = (props) => {
       map.removeLayer(VECTOR_LAYER);
     }
 
-    const fillExpression = ['match', ['upcase', ['get', 'DISTRICTNA']]];
-    const strokeExpression = ['match', ['upcase', ['get', 'DISTRICTNA']]];
+    const fillExpression = ['match', ['upcase', ['get', 'forest']]];
+    const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
 
     const trappingsByLocality = d.reduce((acc, curr) => {
       const {

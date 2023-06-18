@@ -178,7 +178,7 @@ const MAP_SOURCES = {
 
 const SOURCE_LAYERS = {
   COUNTY: 'US_Counties_updated',
-  RANGER_DISTRICT: '08_09_RDmap1',
+  RANGER_DISTRICT: '08_09_RDmap',
 };
 
 const STATE_VECTOR_LAYER = 'states';
