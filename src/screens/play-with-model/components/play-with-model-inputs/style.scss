@@ -140,3 +140,9 @@ span.required-text {
     color: #ffffff;
     float: right;
 }
+
+.actions-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
