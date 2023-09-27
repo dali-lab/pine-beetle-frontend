@@ -256,12 +256,12 @@ export function getAggregateLocationData(overrideFilter = {}) {
  * @param {Number} SPB num spb this year
  * @param {Number|Boolean} endobrev whether or not endobrev was used
  */
-export function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev) {
+export function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev, modelVersion) {
   return async (dispatch) => {
     dispatch({ type: ActionTypes.FETCHING_CUSTOM_PREDICTION, payload: true });
 
     try {
-      const response = await api.runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev);
+      const response = await api.runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev, modelVersion);
       dispatch({ type: ActionTypes.SET_CUSTOM_PREDICTION, payload: response });
     } catch (error) {
       dispatch({

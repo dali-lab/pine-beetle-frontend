@@ -5,6 +5,7 @@ import './style.scss';
 import trapIcon from '../../../../assets/icons/trap.png';
 import cleridsIcon from '../../../../assets/icons/clerids.png';
 import endobrevIcon from '../../../../assets/icons/endobrev.png';
+import { ChoiceInput } from '../../../../components/input-components';
 
 const PlayWithModelInputs = (props) => {
   const {
@@ -12,6 +13,7 @@ const PlayWithModelInputs = (props) => {
     runModel,
     updateModelInputs,
     year,
+    defaultModelVersion,
   } = props;
 
   const createValueSetter = (fieldName) => (newValue) => {
@@ -68,6 +70,21 @@ const PlayWithModelInputs = (props) => {
     },
   };
 
+  const MODEL_VERSION_INPUTS = {
+    2022: ['SPOTST2', 'SPOTST1', 'CLERIDST1', 'SPB', 'ENDOBREV'],
+    2023: ['SPOTST1', 'SPB', 'ENDOBREV'],
+  };
+
+  const filterModelVersionInputs = (modelVersion) => {
+    const filteredInputsInformation = Object.entries(INPUT_INFORMATION).filter((entry) => {
+      return MODEL_VERSION_INPUTS[modelVersion || defaultModelVersion].includes(entry[0]);
+    });
+
+    return Object.fromEntries(filteredInputsInformation);
+  };
+
+  const inputInformation = filterModelVersionInputs(modelInputs.modelVersion);
+
   const selectionInput = (isTrueFalseSelection, value, setValue) => {
     if (!isTrueFalseSelection) {
       return (
@@ -119,7 +136,7 @@ const PlayWithModelInputs = (props) => {
           <span className="input-description">Change numbers in any of the fields below to gauge effect on predicted risks at right</span>
           <span className="required-text">* required</span>
         </div>
-        {Object.entries(INPUT_INFORMATION).map(([key, inputInfo]) => {
+        {Object.entries(inputInformation).map(([key, inputInfo]) => {
           const {
             text,
             icon,
@@ -154,9 +171,21 @@ const PlayWithModelInputs = (props) => {
           );
         })}
       </div>
-      <button className="animated-button" id="run-button" type="button" onClick={runModel}>
-        Run
-      </button>
+      <div className="actions-container">
+        <div>
+          <span>Pick model version</span>
+          <ChoiceInput
+            id="modelVersion"
+            options={[2022, 2023]}
+            value={modelInputs.modelVersion}
+            setValue={createValueSetter('modelVersion')}
+            firstOptionText="Year"
+          />
+        </div>
+        <button className="animated-button" id="run-button" type="button" onClick={runModel}>
+          Run
+        </button>
+      </div>
     </div>
   );
 };

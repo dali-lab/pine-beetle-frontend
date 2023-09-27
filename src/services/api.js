@@ -246,13 +246,14 @@ export async function rangerDistrictAggregateByRangerDistrict(filters = {}) {
  * @param {Number|string|Boolean} endobrev whether or not endobrev was used
  * @returns {Promise<Object>} model results
  */
-export async function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev) {
+export async function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev, modelVersion) {
   const params = {
     cleridst1,
     endobrev: +endobrev, // note: this casts true to 1 and false to 0 if it is a boolean
     SPB,
     spotst1,
     spotst2,
+    modelVersion,
   };
 
   const url = `${global.AUTOMATION_API_URL}/${R_MODEL_SUBROUTE}`;
