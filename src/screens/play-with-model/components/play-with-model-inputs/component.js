@@ -24,7 +24,7 @@ const PlayWithModelInputs = (props) => {
 
   const INPUT_INFORMATION = {
     SPOTST2: {
-      text: 'Enter a number for spots in {YEAR-2} (whole year)',
+      text: 'Enter number of spots two years ago',
       icon: trapIcon,
       iconAlt: 'number of spots icon',
       iconId: 'trap-icon',
@@ -33,7 +33,7 @@ const PlayWithModelInputs = (props) => {
       trueFalseSelection: false,
     },
     SPOTST1: {
-      text: 'Enter a number for spots in {YEAR-1} (whole year)',
+      text: 'Enter number of spots in previous year',
       icon: trapIcon,
       iconAlt: 'number of spots icon',
       iconId: 'trap-icon',
@@ -42,7 +42,7 @@ const PlayWithModelInputs = (props) => {
       trueFalseSelection: false,
     },
     CLERIDST1: {
-      text: 'Enter a number for clerids per 2 weeks in Spring, {YEAR-1}',
+      text: 'Enter number of clerids / 2 weeks / trap this spring (leave blank if unknown)',
       icon: cleridsIcon,
       iconAlt: 'number of clerids icon',
       iconId: 'clerids-icon',
@@ -51,7 +51,7 @@ const PlayWithModelInputs = (props) => {
       trueFalseSelection: false,
     },
     SPB: {
-      text: 'Enter a number for SPB per 2 weeks in Spring, {YEAR}',
+      text: 'Enter number of SPB / 2 weeks / trap this spring',
       icon: trapIcon,
       iconAlt: 'number of SPB icon',
       iconId: 'spb-icon',
@@ -60,7 +60,7 @@ const PlayWithModelInputs = (props) => {
       trueFalseSelection: false,
     },
     ENDOBREV: {
-      text: 'Was endo-brevicomin used in Spring, {YEAR}?',
+      text: 'Toggle this switch to “No” if endo-brevicomin was not used',
       icon: endobrevIcon,
       iconAlt: 'endo-brevicomin icon',
       iconId: 'endobrev-icon',
@@ -71,7 +71,7 @@ const PlayWithModelInputs = (props) => {
   };
 
   const MODEL_VERSION_INPUTS = {
-    2022: ['SPOTST2', 'SPOTST1', 'CLERIDST1', 'SPB', 'ENDOBREV'],
+    2018: ['SPOTST2', 'SPOTST1', 'CLERIDST1', 'SPB', 'ENDOBREV'],
     2023: ['SPOTST1', 'SPB', 'ENDOBREV'],
   };
 
@@ -172,11 +172,11 @@ const PlayWithModelInputs = (props) => {
         })}
       </div>
       <div className="actions-container">
-        <div>
+        <div className="pick-model-input">
           <span>Pick model version</span>
           <ChoiceInput
             id="modelVersion"
-            options={[2022, 2023]}
+            options={[2018, 2023]}
             value={modelInputs.modelVersion}
             setValue={createValueSetter('modelVersion')}
             firstOptionText="Year"

@@ -11,7 +11,7 @@ import { Loading } from '../../components';
 
 import { DATA_MODES } from '../../constants';
 
-export const DEFAULT_MODEL_VERSION = 2022;
+export const DEFAULT_MODEL_VERSION = 2023;
 
 const PlayWithModel = (props) => {
   const {
@@ -34,7 +34,7 @@ const PlayWithModel = (props) => {
   }, [clearAllSelections]);
 
   const [modelInputs, setModelInputs] = useState({
-    cleridst1: 0,
+    cleridst1: null,
     endobrev: 1,
     spb: 0,
     spotst1: 0,
@@ -72,7 +72,7 @@ const PlayWithModel = (props) => {
     // sets input fields to 0 if selections not fully specified
     if (!selectedState || selectedSubLocation.length !== 1) {
       setModelInputs({
-        cleridst1: 0,
+        cleridst1: null,
         endobrev: 1,
         spb: 0,
         spotst1: 0,
