@@ -11,7 +11,7 @@ import { Loading } from '../../components';
 
 import { DATA_MODES } from '../../constants';
 
-export const DEFAULT_MODEL_VERSION = 2023;
+export const DEFAULT_MODEL_VERSION = 2024;
 
 const PlayWithModel = (props) => {
   const {

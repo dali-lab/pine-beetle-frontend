@@ -72,7 +72,7 @@ const PlayWithModelInputs = (props) => {
 
   const MODEL_VERSION_INPUTS = {
     2018: ['SPOTST2', 'SPOTST1', 'CLERIDST1', 'SPB', 'ENDOBREV'],
-    2023: ['SPOTST1', 'SPB', 'ENDOBREV'],
+    2024: ['SPOTST1', 'SPB', 'ENDOBREV'],
   };
 
   const filterModelVersionInputs = (modelVersion) => {
@@ -176,7 +176,7 @@ const PlayWithModelInputs = (props) => {
           <span>Pick model version</span>
           <ChoiceInput
             id="modelVersion"
-            options={[2018, 2023]}
+            options={[2018, 2024]}
             value={modelInputs.modelVersion}
             setValue={createValueSetter('modelVersion')}
             firstOptionText="Year"
