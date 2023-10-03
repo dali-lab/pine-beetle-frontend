@@ -5,6 +5,7 @@ import './style.scss';
 import trapIcon from '../../../../assets/icons/trap.png';
 import cleridsIcon from '../../../../assets/icons/clerids.png';
 import endobrevIcon from '../../../../assets/icons/endobrev.png';
+import { ChoiceInput } from '../../../../components/input-components';
 
 const PlayWithModelInputs = (props) => {
   const {
@@ -12,6 +13,7 @@ const PlayWithModelInputs = (props) => {
     runModel,
     updateModelInputs,
     year,
+    defaultModelVersion,
   } = props;
 
   const createValueSetter = (fieldName) => (newValue) => {
@@ -22,7 +24,7 @@ const PlayWithModelInputs = (props) => {
 
   const INPUT_INFORMATION = {
     SPOTST2: {
-      text: 'Enter a number for spots in {YEAR-2} (whole year)',
+      text: 'Enter number of spots two years ago',
       icon: trapIcon,
       iconAlt: 'number of spots icon',
       iconId: 'trap-icon',
@@ -31,7 +33,7 @@ const PlayWithModelInputs = (props) => {
       trueFalseSelection: false,
     },
     SPOTST1: {
-      text: 'Enter a number for spots in {YEAR-1} (whole year)',
+      text: 'Enter number of spots in previous year',
       icon: trapIcon,
       iconAlt: 'number of spots icon',
       iconId: 'trap-icon',
@@ -40,7 +42,7 @@ const PlayWithModelInputs = (props) => {
       trueFalseSelection: false,
     },
     CLERIDST1: {
-      text: 'Enter a number for clerids per 2 weeks in Spring, {YEAR-1}',
+      text: 'Enter number of clerids / 2 weeks / trap this spring (leave blank if unknown)',
       icon: cleridsIcon,
       iconAlt: 'number of clerids icon',
       iconId: 'clerids-icon',
@@ -49,7 +51,7 @@ const PlayWithModelInputs = (props) => {
       trueFalseSelection: false,
     },
     SPB: {
-      text: 'Enter a number for SPB per 2 weeks in Spring, {YEAR}',
+      text: 'Enter number of SPB / 2 weeks / trap this spring',
       icon: trapIcon,
       iconAlt: 'number of SPB icon',
       iconId: 'spb-icon',
@@ -58,7 +60,7 @@ const PlayWithModelInputs = (props) => {
       trueFalseSelection: false,
     },
     ENDOBREV: {
-      text: 'Was endo-brevicomin used in Spring, {YEAR}?',
+      text: 'Toggle this switch to “No” if endo-brevicomin was not used',
       icon: endobrevIcon,
       iconAlt: 'endo-brevicomin icon',
       iconId: 'endobrev-icon',
@@ -67,6 +69,21 @@ const PlayWithModelInputs = (props) => {
       trueFalseSelection: true,
     },
   };
+
+  const MODEL_VERSION_INPUTS = {
+    2018: ['SPOTST2', 'SPOTST1', 'CLERIDST1', 'SPB', 'ENDOBREV'],
+    2024: ['SPOTST1', 'SPB', 'ENDOBREV'],
+  };
+
+  const filterModelVersionInputs = (modelVersion) => {
+    const filteredInputsInformation = Object.entries(INPUT_INFORMATION).filter((entry) => {
+      return MODEL_VERSION_INPUTS[modelVersion || defaultModelVersion].includes(entry[0]);
+    });
+
+    return Object.fromEntries(filteredInputsInformation);
+  };
+
+  const inputInformation = filterModelVersionInputs(modelInputs.modelVersion);
 
   const selectionInput = (isTrueFalseSelection, value, setValue) => {
     if (!isTrueFalseSelection) {
@@ -119,7 +136,7 @@ const PlayWithModelInputs = (props) => {
           <span className="input-description">Change numbers in any of the fields below to gauge effect on predicted risks at right</span>
           <span className="required-text">* required</span>
         </div>
-        {Object.entries(INPUT_INFORMATION).map(([key, inputInfo]) => {
+        {Object.entries(inputInformation).map(([key, inputInfo]) => {
           const {
             text,
             icon,
@@ -154,9 +171,21 @@ const PlayWithModelInputs = (props) => {
           );
         })}
       </div>
-      <button className="animated-button" id="run-button" type="button" onClick={runModel}>
-        Run
-      </button>
+      <div className="actions-container">
+        <div className="pick-model-input">
+          <span>Pick model version</span>
+          <ChoiceInput
+            id="modelVersion"
+            options={[2018, 2024]}
+            value={modelInputs.modelVersion}
+            setValue={createValueSetter('modelVersion')}
+            firstOptionText="Year"
+          />
+        </div>
+        <button className="animated-button" id="run-button" type="button" onClick={runModel}>
+          Run
+        </button>
+      </div>
     </div>
   );
 };

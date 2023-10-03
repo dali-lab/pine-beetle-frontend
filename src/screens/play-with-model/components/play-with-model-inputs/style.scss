@@ -140,3 +140,25 @@ span.required-text {
     color: #ffffff;
     float: right;
 }
+
+.actions-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .selection-button {
+        background-color: #f0f2f8;
+    }
+}
+
+.pick-model-input {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+
+    span {
+        font-weight: 600;
+        line-height: 1.8;
+        margin-bottom: 5px;
+    }
+}

@@ -57,8 +57,8 @@ const mapDispatchToProps = (dispatch) => {
     clearError: () => {
       dispatch(clearCustomPredictionError());
     },
-    runCustomPrediction: (cleridst1, spotst1, spotst2, SPB, endobrev) => {
-      dispatch(runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev));
+    runCustomPrediction: (cleridst1, spotst1, spotst2, SPB, endobrev, modelVersion) => {
+      dispatch(runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev, modelVersion));
     },
   };
 };
