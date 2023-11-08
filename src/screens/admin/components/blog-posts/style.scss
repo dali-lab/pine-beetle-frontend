@@ -1,0 +1,48 @@
+.blog-post {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    padding: 5px 16px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 6px 40px 0 rgba(0, 0, 0, 0.04);
+    background-color: #ffffff;
+    font-size: 15px;
+    line-height: 1.51;
+    color: #62697e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-title {
+        font-weight: 600;
+        margin-right: 6px;
+        width: 250px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    &-date {
+        font-style: italic;
+    }
+
+    &-action-buttons {
+        border-left: 1px solid #c9cdd9;
+        padding-left: 6px;
+    }
+
+    &-button {
+        padding: 6px;
+        border-radius: 6px;
+        background-color: #c9cdd9;
+        margin-left: 6px;
+    }
+}
+
+.blog-posts-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2f303a;
+    margin-bottom: 14px;
+}
