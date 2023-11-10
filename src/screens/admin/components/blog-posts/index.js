@@ -1,13 +1,32 @@
 import { connect } from 'react-redux';
 
 import BlogPosts from './component';
+import { deleteBlogPost, editBlogPost, getAllBlogPostsByAuthor } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
-  return {};
+  const {
+    blog: {
+      blogPostsByUser: blogPosts,
+    },
+  } = state;
+
+  return {
+    blogPosts,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    getAllBlogPostsByAuthor: (onSuccess, onError) => {
+      dispatch(getAllBlogPostsByAuthor(onSuccess, onError));
+    },
+    editBlogPost: (id, fields) => {
+      dispatch(editBlogPost(id, fields));
+    },
+    deleteBlogPost: (id) => {
+      dispatch(deleteBlogPost(id));
+    },
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogPosts);

@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { deleteBlogPost, editBlogPost, getAllBlogPostsByAuthor } from '../../../../services/blog';
+import React, { useEffect } from 'react';
 
 import './style.scss';
 
-const BlogPost = ({ post }) => {
+const BlogPost = ({ post, onEdit, onDelete }) => {
   const date = new Date(post.date_created);
   const dateToDisplay = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
 
   const onClickEdit = () => {
-    editBlogPost(
+    onEdit(
       post.id,
-      { title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.' },
+      { title: 'New title 40' },
     );
   };
 
   const onClickDelete = () => {
-    deleteBlogPost(post.id);
+    onDelete(post.id);
   };
 
   return (
@@ -36,21 +35,19 @@ const BlogPost = ({ post }) => {
   );
 };
 
-const BlogPosts = () => {
-  const [blogPosts, setBlogPosts] = useState([]);
+const BlogPosts = (props) => {
+  const {
+    blogPosts, getAllBlogPostsByAuthor, editBlogPost, deleteBlogPost,
+  } = props;
 
   useEffect(() => {
-    (async () => {
-      const blogPostsArray = await getAllBlogPostsByAuthor();
-      setBlogPosts(blogPostsArray);
-    })();
-  }, [setBlogPosts]);
+    getAllBlogPostsByAuthor();
+  }, [getAllBlogPostsByAuthor]);
 
-  console.log(blogPosts);
   return (
     <div className="blog-posts-container">
       <div className="blog-posts-title">Your blog posts</div>
-      {blogPosts.map((post) => <BlogPost post={post} key={post.id} />)}
+      {blogPosts && blogPosts.map((post) => <BlogPost post={post} onEdit={editBlogPost} onDelete={deleteBlogPost} key={post.id} />)}
     </div>
   );
 };

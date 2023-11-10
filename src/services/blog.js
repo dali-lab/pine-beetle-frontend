@@ -77,9 +77,7 @@ export const deleteBlogPost = async (id) => {
       },
     });
 
-    const { data } = response;
-
-    return data;
+    return response;
   } catch (error) {
     console.error(error);
     throw error;
