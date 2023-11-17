@@ -6,6 +6,11 @@ const initialState = {
 
 const BlogReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ActionTypes.CREATE_BLOG_POST: {
+      const updatedBlogPostsByUser = state.blogPostsByUser.concat([action.payload]);
+      return { ...state, blogPostsByUser: updatedBlogPostsByUser };
+    }
+
     case ActionTypes.SET_BLOG_POSTS_BY_USER_DATA:
       return { ...state, blogPostsByUser: action.payload };
 

@@ -5,6 +5,24 @@ export const ActionTypes = {
   SET_BLOG_POSTS_BY_USER_DATA: 'SET_BLOG_POSTS_BY_USER_DATA',
   EDIT_BLOG_POST: 'EDIT_BLOG_POST',
   DELETE_BLOG_POST: 'DELETE_BLOG_POST',
+  CREATE_BLOG_POST: 'CREATE_BLOG_POST',
+};
+
+export const createBlogPost = (fields) => {
+  return async (dispatch) => {
+    try {
+      const createdBlogPost = await BlogService.createBlogPost(fields);
+      dispatch({ type: ActionTypes.CREATE_BLOG_POST, payload: createdBlogPost });
+    } catch (error) {
+      dispatch({
+        type: ActionTypes.API_ERROR,
+        payload: {
+          action: 'CREATE BLOG POST',
+          error,
+        },
+      });
+    }
+  };
 };
 
 export const getAllBlogPostsByAuthor = (onSuccess = () => {}, onError = () => {}) => {

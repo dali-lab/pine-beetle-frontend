@@ -37,6 +37,7 @@ import {
 
 import {
   ActionTypes as blogActionTypes,
+  createBlogPost,
   getAllBlogPostsByAuthor,
   editBlogPost,
   deleteBlogPost,
@@ -54,6 +55,7 @@ export {
   clearCustomPredictionError,
   clearData,
   clearSelections,
+  createBlogPost,
   deleteBlogPost,
   editBlogPost,
   getAggregateLocationData,

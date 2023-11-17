@@ -6,15 +6,29 @@ import {
 
 const SUBROUTE = 'blog';
 
-export const createBlogPost = async () => {};
+export const createBlogPost = async (fields) => {
+  const url = `${global.API_URL}/${SUBROUTE}/create`;
+  const token = getAuthTokenFromStorage();
+  try {
+    const { data: response } = await axios.post(url, fields, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    const { data } = response;
+
+    return data.blogPost;
+  } catch (error) {
+    console.error(error); throw error;
+  }
+};
 
 export const getAllBlogPosts = async () => {
   const url = `${global.API_URL}/${SUBROUTE}`;
 
   try {
-    console.log('req');
     const { data: response } = await axios.get(url);
-    console.log('res');
 
     const { data } = response;
 

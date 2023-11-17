@@ -1,7 +1,14 @@
 import React from 'react';
 
-const AddBlogPost = () => {
-  return <div className="add-blog-post-container">Add blog post</div>;
+import BlogPostForm from '../blog-post-form';
+import './style.scss';
+
+const AddBlogPost = (props) => {
+  const { createBlogPost } = props;
+
+  return (
+    <BlogPostForm onSubmit={createBlogPost} />
+  );
 };
 
 export default AddBlogPost;

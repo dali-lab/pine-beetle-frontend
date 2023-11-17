@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 
+import { createBlogPost } from '../../../../state/actions';
 import AddBlogPost from './component';
 
 const mapStateToProps = (state) => {
@@ -7,7 +8,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    createBlogPost: (fields) => {
+      dispatch(createBlogPost(fields));
+    },
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddBlogPost);

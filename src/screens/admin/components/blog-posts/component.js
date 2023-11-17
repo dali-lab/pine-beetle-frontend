@@ -44,10 +44,21 @@ const BlogPosts = (props) => {
     getAllBlogPostsByAuthor();
   }, [getAllBlogPostsByAuthor]);
 
+  // Sort posts from the newest to the oldest
+  const sortedBlogPosts = blogPosts.sort((a, b) => {
+    const dateA = new Date(a.date_created);
+    const dateB = new Date(b.date_created);
+
+    return dateB - dateA;
+  });
+
   return (
     <div className="blog-posts-container">
       <div className="blog-posts-title">Your blog posts</div>
-      {blogPosts && blogPosts.map((post) => <BlogPost post={post} onEdit={editBlogPost} onDelete={deleteBlogPost} key={post.id} />)}
+      {sortedBlogPosts.length > 0
+      && sortedBlogPosts.map(
+        (post) => <BlogPost post={post} onEdit={editBlogPost} onDelete={deleteBlogPost} key={post.id} />,
+      )}
     </div>
   );
 };
