@@ -37,7 +37,13 @@ const FileUpload = (props) => {
   return (
     <>
       {componentsToRender.map((component) => (
-        <FileInput component={component} onResetFiles={() => component.selectFile()} guideURL={guideURL} />
+        <FileInput
+          component={component}
+          onResetFiles={() => component.selectFile()}
+          guideURL={guideURL}
+          key={component.id}
+
+        />
       ))}
     </>
   );

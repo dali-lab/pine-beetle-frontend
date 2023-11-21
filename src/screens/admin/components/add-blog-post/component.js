@@ -7,7 +7,7 @@ const AddBlogPost = (props) => {
   const { createBlogPost } = props;
 
   return (
-    <BlogPostForm onSubmit={createBlogPost} />
+    <BlogPostForm onSubmit={createBlogPost} formTitle="Create blog post" formType="create" />
   );
 };
 

@@ -15,7 +15,11 @@ const BlogReducer = (state = initialState, action) => {
       return { ...state, blogPostsByUser: action.payload };
 
     case ActionTypes.EDIT_BLOG_POST: {
-      const updatedBlogPosts = state.blogPostsByUser.map((post) => (post._id === action.payload._id ? action.payload : post));
+      const updatedBlogPosts = state.blogPostsByUser.map(
+        (post) => (post._id === action.payload._id
+          ? action.payload
+          : post),
+      );
       return { ...state, blogPostsByUser: updatedBlogPosts };
     }
 

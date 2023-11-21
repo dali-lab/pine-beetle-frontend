@@ -52,10 +52,30 @@
 
 .image-input-container {
     margin: 10px 0 18px;
+    display: flex;
+    justify-content: space-between;
 
     label {
         font-size: 13.3333px;
         padding: 6px;
         border-radius: 6px;
+    }
+}
+
+.image-preview-container {
+    width: 50%;
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+
+    img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
     }
 }

@@ -47,6 +47,7 @@ export const getAllBlogPostsByAuthor = (onSuccess = () => {}, onError = () => {}
 export const editBlogPost = (id, fields) => {
   return async (dispatch) => {
     try {
+      console.log('id', id, 'fields', fields);
       const editedBlogPost = await BlogService.editBlogPost(id, fields);
       dispatch({ type: ActionTypes.EDIT_BLOG_POST, payload: editedBlogPost });
     } catch (error) {

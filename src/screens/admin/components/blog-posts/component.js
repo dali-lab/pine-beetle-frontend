@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import EditBlogPost from '../edit-blog-post';
 import './style.scss';
 
-const BlogPost = ({ post, onEdit, onDelete }) => {
+const BlogPost = ({ post, onClickEdit, onDelete }) => {
   const date = new Date(post.date_created);
   const dateToDisplay = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
-
-  const onClickEdit = () => {
-    onEdit(
-      post.id,
-      { title: 'New title 40' },
-    );
-  };
 
   const onClickDelete = () => {
     onDelete(post.id);
@@ -40,6 +34,14 @@ const BlogPosts = (props) => {
     blogPosts, getAllBlogPostsByAuthor, editBlogPost, deleteBlogPost,
   } = props;
 
+  const [selectedBlogPost, setSelectedBlogPost] = useState({ title: '', body: '', image: null });
+  const [showEditForm, setShowEditForm] = useState(false);
+
+  const openEditForm = (post) => {
+    setShowEditForm(true);
+    setSelectedBlogPost(post);
+  };
+
   useEffect(() => {
     getAllBlogPostsByAuthor();
   }, [getAllBlogPostsByAuthor]);
@@ -57,8 +59,10 @@ const BlogPosts = (props) => {
       <div className="blog-posts-title">Your blog posts</div>
       {sortedBlogPosts.length > 0
       && sortedBlogPosts.map(
-        (post) => <BlogPost post={post} onEdit={editBlogPost} onDelete={deleteBlogPost} key={post.id} />,
+        (post) => <BlogPost post={post} onClickEdit={() => openEditForm(post)} onDelete={deleteBlogPost} key={post.id} />,
       )}
+      <EditBlogPost isOpen={showEditForm} setIsOpen={setShowEditForm} post={selectedBlogPost} onSubmit={editBlogPost} />
+
     </div>
   );
 };
