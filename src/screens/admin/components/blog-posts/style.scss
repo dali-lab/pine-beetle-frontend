@@ -46,3 +46,34 @@
     color: #2f303a;
     margin-bottom: 14px;
 }
+
+.delete-blog-post-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20vw;
+    height: 10vh;
+    padding: 50px;
+    border-radius: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: scroll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-blog-post-buttons {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 50px;
+    margin-top: 20px;
+
+    .blog-post-button {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}

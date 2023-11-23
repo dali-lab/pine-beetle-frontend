@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
 
 import EditBlogPost from '../edit-blog-post';
 import './style.scss';
@@ -29,6 +30,30 @@ const BlogPost = ({ post, onClickEdit, onDelete }) => {
   );
 };
 
+const DeleteModal = ({
+  handleDelete, isOpen, setIsOpen,
+}) => {
+  const handleClose = () => setIsOpen(false);
+  const handleOpen = () => setIsOpen(true);
+
+  return (
+    <Modal isOpen={isOpen}
+      onAfterOpen={handleOpen}
+      onRequestClose={handleClose}
+      className="delete-blog-post-modal"
+      ariaHideApp={false}
+    >
+      <div>
+        Are you sure you want to delete?
+        <div className="delete-blog-post-buttons">
+          <button type="button" className="blog-post-button animated-button" onClick={handleDelete}>Yes</button>
+          <button type="button" className="blog-post-button animated-button" onClick={handleClose}>No</button>
+        </div>
+      </div>
+    </Modal>
+  );
+};
+
 const BlogPosts = (props) => {
   const {
     blogPosts, getAllBlogPostsByAuthor, editBlogPost, deleteBlogPost,
@@ -38,9 +63,15 @@ const BlogPosts = (props) => {
     id: null, title: '', body: '', image: null,
   });
   const [showEditForm, setShowEditForm] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const openEditForm = (post) => {
     setShowEditForm(true);
+    setSelectedBlogPost(post);
+  };
+
+  const openDeleteModal = (post) => {
+    setShowDeleteModal(true);
     setSelectedBlogPost(post);
   };
 
@@ -61,14 +92,20 @@ const BlogPosts = (props) => {
     await editBlogPost(selectedBlogPost.id, formData, closeModal);
   };
 
+  const handleDeleteBlogPost = async () => {
+    const closeModal = () => setShowDeleteModal(false);
+    await deleteBlogPost(selectedBlogPost.id, closeModal);
+  };
+
   return (
     <div className="blog-posts-container">
       <div className="blog-posts-title">Your blog posts</div>
       {sortedBlogPosts.length > 0
       && sortedBlogPosts.map(
-        (post) => <BlogPost post={post} onClickEdit={() => openEditForm(post)} onDelete={deleteBlogPost} key={post.id} />,
+        (post) => <BlogPost post={post} onClickEdit={() => openEditForm(post)} onDelete={() => openDeleteModal(post)} key={post.id} />,
       )}
       <EditBlogPost isOpen={showEditForm} setIsOpen={setShowEditForm} post={selectedBlogPost} onSubmit={handleFormSubmit} />
+      <DeleteModal handleDelete={handleDeleteBlogPost} isOpen={showDeleteModal} setIsOpen={setShowDeleteModal} />
 
     </div>
   );

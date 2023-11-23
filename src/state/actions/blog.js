@@ -67,12 +67,13 @@ export const editBlogPost = (id, fields, onSuccess) => {
   };
 };
 
-export const deleteBlogPost = (id) => {
+export const deleteBlogPost = (id, onSuccess) => {
   return async (dispatch) => {
     try {
       const response = await BlogService.deleteBlogPost(id);
       if (response.status === 200) {
         dispatch({ type: ActionTypes.DELETE_BLOG_POST, payload: { _id: id } });
+        onSuccess();
       }
     } catch (error) {
       dispatch({

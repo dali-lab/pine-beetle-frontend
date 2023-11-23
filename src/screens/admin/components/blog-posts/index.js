@@ -23,8 +23,8 @@ const mapDispatchToProps = (dispatch) => {
     editBlogPost: (id, fields, onSuccess) => {
       dispatch(editBlogPost(id, fields, onSuccess));
     },
-    deleteBlogPost: (id) => {
-      dispatch(deleteBlogPost(id));
+    deleteBlogPost: (id, onSuccess) => {
+      dispatch(deleteBlogPost(id, onSuccess));
     },
   };
 };
