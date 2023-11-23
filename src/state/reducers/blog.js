@@ -2,6 +2,7 @@ import { ActionTypes } from '../actions';
 
 const initialState = {
   blogPostsByUser: [],
+  error: null,
 };
 
 const BlogReducer = (state = initialState, action) => {
@@ -27,6 +28,12 @@ const BlogReducer = (state = initialState, action) => {
       const filteredBlogPosts = state.blogPostsByUser.filter((post) => post._id !== action.payload._id);
       return { ...state, blogPostsByUser: filteredBlogPosts };
     }
+
+    case ActionTypes.API_ERROR:
+      return { ...state, error: { message: action.payload.error.response?.data?.error, action: action.payload.action } };
+
+    case ActionTypes.CLEAR_API_ERROR:
+      return { ...state, error: null };
 
     default:
       return state;

@@ -9,8 +9,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createBlogPost: (fields) => {
-      dispatch(createBlogPost(fields));
+    createBlogPost: (fields, onSuccess) => {
+      dispatch(createBlogPost(fields, onSuccess));
     },
   };
 };

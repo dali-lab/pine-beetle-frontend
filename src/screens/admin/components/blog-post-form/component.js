@@ -6,7 +6,7 @@ import './style.scss';
 
 const BlogPostForm = (props) => {
   const {
-    onSubmit, formTitle, formValues, formType,
+    onSubmit, formTitle, formValues, formType, error,
   } = props;
 
   const [formData, setFormData] = useState(formValues || {
@@ -39,8 +39,15 @@ const BlogPostForm = (props) => {
     if (formData.image) {
       data.append('image', formData.image);
     }
-
-    await onSubmit(data);
+    if (formType === 'create') {
+      await onSubmit(data, () => setFormData({
+        title: '',
+        body: '',
+        image: null,
+      }));
+    } else {
+      onSubmit(data);
+    }
   };
 
   const uploadImageComponent = {
@@ -57,6 +64,10 @@ const BlogPostForm = (props) => {
     image: null,
   });
 
+  const isButtonDisabled = !formData.title.length || !formData.body.length;
+
+  const shouldErrorDisplay = error?.action && error.action.toLowerCase().includes(formType);
+
   return (
     <div className="add-blog-post-container">
       <div className="blog-posts-form-title">
@@ -72,6 +83,7 @@ const BlogPostForm = (props) => {
               placeholder="Title"
               onChange={handleInputChange}
               value={formData.title}
+              required
             />
           </div>
         </label>
@@ -94,16 +106,19 @@ const BlogPostForm = (props) => {
               name="body"
               onChange={handleInputChange}
               value={formData.body}
+              required
             />
           </div>
         </label>
         <button
           type="submit"
-          className="blog-form-button animated-button"
+          className={`blog-form-button ${isButtonDisabled ? '' : 'animated-button'}`}
           onClick={handleSubmit}
+          disabled={isButtonDisabled}
         >
           Submit
         </button>
+        <div className="blog-form-error">{shouldErrorDisplay && error.message}</div>
       </form>
     </div>
   );

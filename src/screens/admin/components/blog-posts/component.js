@@ -34,7 +34,9 @@ const BlogPosts = (props) => {
     blogPosts, getAllBlogPostsByAuthor, editBlogPost, deleteBlogPost,
   } = props;
 
-  const [selectedBlogPost, setSelectedBlogPost] = useState({ title: '', body: '', image: null });
+  const [selectedBlogPost, setSelectedBlogPost] = useState({
+    id: null, title: '', body: '', image: null,
+  });
   const [showEditForm, setShowEditForm] = useState(false);
 
   const openEditForm = (post) => {
@@ -54,6 +56,11 @@ const BlogPosts = (props) => {
     return dateB - dateA;
   });
 
+  const handleFormSubmit = async (formData) => {
+    const closeModal = () => { setShowEditForm(false); };
+    await editBlogPost(selectedBlogPost.id, formData, closeModal);
+  };
+
   return (
     <div className="blog-posts-container">
       <div className="blog-posts-title">Your blog posts</div>
@@ -61,7 +68,7 @@ const BlogPosts = (props) => {
       && sortedBlogPosts.map(
         (post) => <BlogPost post={post} onClickEdit={() => openEditForm(post)} onDelete={deleteBlogPost} key={post.id} />,
       )}
-      <EditBlogPost isOpen={showEditForm} setIsOpen={setShowEditForm} post={selectedBlogPost} onSubmit={editBlogPost} />
+      <EditBlogPost isOpen={showEditForm} setIsOpen={setShowEditForm} post={selectedBlogPost} onSubmit={handleFormSubmit} />
 
     </div>
   );

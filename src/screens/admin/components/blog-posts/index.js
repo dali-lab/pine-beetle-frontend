@@ -20,8 +20,8 @@ const mapDispatchToProps = (dispatch) => {
     getAllBlogPostsByAuthor: (onSuccess, onError) => {
       dispatch(getAllBlogPostsByAuthor(onSuccess, onError));
     },
-    editBlogPost: (id, fields) => {
-      dispatch(editBlogPost(id, fields));
+    editBlogPost: (id, fields, onSuccess) => {
+      dispatch(editBlogPost(id, fields, onSuccess));
     },
     deleteBlogPost: (id) => {
       dispatch(deleteBlogPost(id));

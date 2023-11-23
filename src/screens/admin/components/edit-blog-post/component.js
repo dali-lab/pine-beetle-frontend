@@ -12,8 +12,6 @@ const EditBlogPost = (props) => {
   const handleClose = () => setIsOpen(false);
   const handleOpen = () => setIsOpen(true);
 
-  const handleSubmit = (data) => { onSubmit(post.id, data); handleClose(); };
-
   return (
     <Modal isOpen={isOpen}
       onAfterOpen={handleOpen}
@@ -21,7 +19,7 @@ const EditBlogPost = (props) => {
       className="blog-post-edit-modal"
       ariaHideApp={false}
     >
-      <BlogPostForm onSubmit={handleSubmit}
+      <BlogPostForm onSubmit={onSubmit}
         formTitle="Edit your blog post"
         formValues={{
           title: post.title,
