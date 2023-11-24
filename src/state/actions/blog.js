@@ -9,7 +9,7 @@ export const ActionTypes = {
   CREATE_BLOG_POST: 'CREATE_BLOG_POST',
 };
 
-export const createBlogPost = (fields, onSuccess) => {
+export const createBlogPost = (fields, onSuccess = () => {}) => {
   return async (dispatch) => {
     try {
       dispatch({ type: ActionTypes.CLEAR_API_ERROR });
@@ -47,7 +47,7 @@ export const getAllBlogPostsByAuthor = (onSuccess = () => {}, onError = () => {}
   };
 };
 
-export const editBlogPost = (id, fields, onSuccess) => {
+export const editBlogPost = (id, fields, onSuccess = () => {}) => {
   return async (dispatch) => {
     try {
       dispatch({ type: ActionTypes.CLEAR_API_ERROR });
@@ -67,7 +67,7 @@ export const editBlogPost = (id, fields, onSuccess) => {
   };
 };
 
-export const deleteBlogPost = (id, onSuccess) => {
+export const deleteBlogPost = (id, onSuccess = () => {}) => {
   return async (dispatch) => {
     try {
       const response = await BlogService.deleteBlogPost(id);
