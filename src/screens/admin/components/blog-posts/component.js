@@ -31,7 +31,7 @@ const BlogPost = ({ post, onClickEdit, onDelete }) => {
 };
 
 const DeleteModal = ({
-  handleDelete, isOpen, setIsOpen,
+  handleDelete, isOpen, setIsOpen, title,
 }) => {
   const handleClose = () => setIsOpen(false);
   const handleOpen = () => setIsOpen(true);
@@ -44,7 +44,7 @@ const DeleteModal = ({
       ariaHideApp={false}
     >
       <div>
-        Are you sure you want to delete?
+        Are you sure you want to delete <span className="delete-blog-post-title">{`"${title}" `}</span>?
         <div className="delete-blog-post-buttons">
           <button type="button" className="blog-post-button animated-button" onClick={handleDelete}>Yes</button>
           <button type="button" className="blog-post-button animated-button" onClick={handleClose}>No</button>
@@ -105,7 +105,7 @@ const BlogPosts = (props) => {
         (post) => <BlogPost post={post} onClickEdit={() => openEditForm(post)} onDelete={() => openDeleteModal(post)} key={post.id} />,
       )}
       <EditBlogPost isOpen={showEditForm} setIsOpen={setShowEditForm} post={selectedBlogPost} onSubmit={handleFormSubmit} />
-      <DeleteModal handleDelete={handleDeleteBlogPost} isOpen={showDeleteModal} setIsOpen={setShowDeleteModal} />
+      <DeleteModal handleDelete={handleDeleteBlogPost} isOpen={showDeleteModal} setIsOpen={setShowDeleteModal} title={selectedBlogPost.title} />
 
     </div>
   );
