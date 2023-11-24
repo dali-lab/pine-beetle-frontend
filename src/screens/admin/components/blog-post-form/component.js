@@ -95,7 +95,7 @@ const BlogPostForm = (props) => {
           />
           {typeof formData.image === 'string' && (
           <div className="image-preview-container">
-            <img src={formData.image} alt="blog post illustration" />
+            <img src={`${global.API_URL}${formData.image}`} alt="blog post illustration" />
           </div>
           )}
         </div>
