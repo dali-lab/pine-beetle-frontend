@@ -1,6 +1,7 @@
 import { ActionTypes } from '../actions';
 
 const initialState = {
+  blogPosts: [],
   blogPostsByUser: [],
   error: null,
 };
@@ -14,6 +15,9 @@ const BlogReducer = (state = initialState, action) => {
 
     case ActionTypes.SET_BLOG_POSTS_BY_USER_DATA:
       return { ...state, blogPostsByUser: action.payload };
+
+    case ActionTypes.GET_ALL_BLOG_POSTS:
+      return { ...state, blogPosts: action.payload };
 
     case ActionTypes.EDIT_BLOG_POST: {
       const updatedBlogPosts = state.blogPostsByUser.map(

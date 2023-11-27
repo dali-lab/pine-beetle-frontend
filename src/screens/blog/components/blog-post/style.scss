@@ -1,0 +1,44 @@
+.blog-page {
+    &-blog-post {
+        &-container {
+            margin: 30px auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        &-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        &-author {
+            margin-bottom: 20px;
+            margin-top: 6px;
+        }
+
+        &-picture {
+            max-width: 100%;
+            height: auto;
+            max-height: 500px;
+            margin: 30px auto 50px;
+        }
+
+        &-date {
+            font-style: italic;
+            font-size: 14px;
+            margin-top: 30px;
+            width: 100%;
+            text-align: right;
+        }
+
+        &-date,
+        &-author {
+            font-style: italic;
+            color: #73767e;
+        }
+
+        &-body {
+            white-space: pre-line;
+        }
+    }
+}

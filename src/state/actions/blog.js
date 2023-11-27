@@ -4,6 +4,7 @@ export const ActionTypes = {
   API_ERROR: 'API_ERROR',
   CLEAR_API_ERROR: 'CLEAR_API_ERROR',
   SET_BLOG_POSTS_BY_USER_DATA: 'SET_BLOG_POSTS_BY_USER_DATA',
+  GET_ALL_BLOG_POSTS: 'GET_ALL_BLOG_POSTS',
   EDIT_BLOG_POST: 'EDIT_BLOG_POST',
   DELETE_BLOG_POST: 'DELETE_BLOG_POST',
   CREATE_BLOG_POST: 'CREATE_BLOG_POST',
@@ -28,6 +29,21 @@ export const createBlogPost = (fields, onSuccess = () => {}) => {
   };
 };
 
+export const getAllBlogPosts = () => {
+  return async (dispatch) => {
+    try {
+      const blogPosts = await BlogService.getAllBlogPosts();
+      dispatch({ type: ActionTypes.GET_ALL_BLOG_POSTS, payload: blogPosts });
+    } catch (error) {
+      dispatch({
+        type: ActionTypes.API_ERROR,
+        payload: 'GET ALL BLOG POSTS',
+        error,
+      });
+    }
+  };
+};
+
 export const getAllBlogPostsByAuthor = (onSuccess = () => {}, onError = () => {}) => {
   return async (dispatch) => {
     try {
@@ -38,7 +54,7 @@ export const getAllBlogPostsByAuthor = (onSuccess = () => {}, onError = () => {}
       dispatch({
         type: ActionTypes.API_ERROR,
         payload: {
-          action: 'GET ALL BLOG POSTS',
+          action: 'GET ALL BLOG POSTS BY USER',
           error,
         },
       });
