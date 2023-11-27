@@ -22,20 +22,29 @@ import {
   toQueryParams,
 } from './network';
 
+import {
+  sortBlogPosts,
+  getDateToDisplay,
+  formatPostDates,
+} from './blog';
+
 export {
   downloadCsv,
   getAuthTokenFromStorage,
   getChartModeFromStorage,
   getDataModeFromStorage,
+  getDateToDisplay,
   getMapboxRDNameFormat,
   getStateAbbreviationFromStateName,
   getStateNameFromAbbreviation,
   getUserIdFromStorage,
+  formatPostDates,
   removeAuthTokenFromStorage,
   removeUserIdFromStorage,
   setAuthTokenInStorage,
   setChartModeInStorage,
   setDataModeInStorage,
   setUserIdInStorage,
+  sortBlogPosts,
   toQueryParams,
 };

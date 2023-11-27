@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 
 import EditBlogPost from '../edit-blog-post';
+import { getDateToDisplay, sortBlogPosts } from '../../../../utils';
+
 import './style.scss';
 
 const BlogPost = ({ post, onClickEdit, onDelete }) => {
-  const date = new Date(post.date_created);
-  const dateToDisplay = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
-
   const onClickDelete = () => {
     onDelete(post.id);
   };
@@ -19,7 +18,7 @@ const BlogPost = ({ post, onClickEdit, onDelete }) => {
           {post.title}
         </div>
         <div className="blog-post-date">
-          {dateToDisplay}
+          {getDateToDisplay(post.date_created)}
         </div>
       </div>
       <div className="blog-post-action-buttons">
@@ -80,12 +79,7 @@ const BlogPosts = (props) => {
   }, [getAllBlogPostsByAuthor]);
 
   // Sort posts from the newest to the oldest
-  const sortedBlogPosts = blogPosts.sort((a, b) => {
-    const dateA = new Date(a.date_created);
-    const dateB = new Date(b.date_created);
-
-    return dateB - dateA;
-  });
+  const sortedBlogPosts = sortBlogPosts(blogPosts);
 
   const handleFormSubmit = async (formData) => {
     const closeModal = () => { setShowEditForm(false); };

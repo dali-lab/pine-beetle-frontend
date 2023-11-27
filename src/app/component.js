@@ -14,6 +14,7 @@ import {
   Home,
   PlayWithModel,
   Prediction,
+  Blog,
 } from '../screens';
 
 import {
@@ -120,6 +121,7 @@ const App = (props) => {
           <Route exact path={ROUTES.HOME} component={Home} />
           <Route path={ROUTES.ABOUT} component={About} />
           <Route path={ROUTES.ADMIN} component={Admin} />
+          <Route path={ROUTES.BLOG} component={Blog} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
           <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
           <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModel} />
