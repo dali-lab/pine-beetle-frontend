@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { ROUTES, VIDEO_URL } from '../../constants';
 import './style.scss';
 
@@ -10,15 +10,28 @@ import testInputIcon from '../../assets/icons/test-inputs.png';
 import statsIcon from '../../assets/icons/stats.png';
 import zeroIcon from '../../assets/icons/zero.png';
 
-const Home = (_props) => {
+const Home = () => {
+  const howItWorksRef = useRef(null);
+  const location = useLocation();
+
+  // scroll to the "How does it work?" section whenever a respective nav button is clicked
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get('scrollTo') === 'howItWorks' && howItWorksRef.current) {
+      howItWorksRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location.search]);
+
   return (
     <div className="container" id="home-container">
       <div id="beetle-background">
         <img src={beetleIcon} alt="beetle" />
       </div>
       <div className="title-words">
-        <div id="big-title">Pine Beetle</div>
-        <div id="subtitle">Outbreak Prediction</div>
+        <h1 id="big-title">Southern Pine Beetle</h1>
+        <h2>(Dendroctonus frontalis)</h2>
+        <h3 id="subtitle">Annual Outbreak Predictions and Historical Database <br />(1988-present)
+        </h3>
         <div id="title-description">
           This website predicts the likelihood of a summer outbreak based on spring trapping data, with the goal of assisting forest managers as they make resource allocation decisions.
         </div>
@@ -63,7 +76,7 @@ const Home = (_props) => {
           />
         </div>
       </div>
-      <div className="how-it-works">
+      <div className="how-it-works" ref={howItWorksRef}>
         <div id="how-it-works-title-container">
           <div id="icon0">
             <img
