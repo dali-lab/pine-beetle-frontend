@@ -1,0 +1,53 @@
+.hero-section-container {
+    overflow: hidden;
+    border-bottom: 3px solid #E5E5E5;
+}
+
+#beetle-background {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: 0;
+    height: 20px;
+    margin-top: 50px;
+
+    img {
+        width: 400px;
+    }
+}
+
+.title-words {
+    text-align: left;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    margin-bottom: 35px;
+}
+
+.title-words #big-title {
+    font-size: 55px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+.title-words h2 {
+    font-size: 36px;
+    font-weight: 500;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.title-words #subtitle {
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 1.2px;
+}
+
+.title-words #title-description {
+    font-size: 18px;
+    letter-spacing: normal;
+    margin-top: 34px;
+    line-height: 1.6;
+    width: 500px;
+}
