@@ -1,0 +1,18 @@
+.button {
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 500;
+    text-decoration: none;
+
+    &-primary {
+        color: #ffffff;
+        background-color: #424755;
+    }
+
+    &-secondary {
+        background-color: white;
+        border: 1px solid #424755 !important;
+        color: #424755
+    }
+}
