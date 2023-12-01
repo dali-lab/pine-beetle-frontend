@@ -15,15 +15,17 @@ const BlogPost = (props) => {
     <div className="page-container">
       {latestPost ? (
         <>
-          <div className="home-page-blog-post-title">
-            {latestPost.title}
-          </div>
-          <div className="home-page-blog-post-info">
-            <span className="home-page-blog-post-author">{`${latestPost.author}, `}</span>
-            <span className="home-page-blog-post-author">{getDateToDisplay(latestPost.date_created)}</span>
-          </div>
-          <div className="home-page-blog-post-body">
-            {truncateText(latestPost.body, 850)}
+          <div>
+            <div className="home-content-section-title">
+              {latestPost.title}
+            </div>
+            <div className="home-page-blog-post-info">
+              <span className="home-page-blog-post-author">{`${latestPost.author}, `}</span>
+              <span className="home-page-blog-post-author">{getDateToDisplay(latestPost.date_created)}</span>
+            </div>
+            <div className="home-page-blog-post-body">
+              {truncateText(latestPost.body, 1000)}
+            </div>
           </div>
           <div className="home-page-blog-post-buttons">
             <Button onClick={() => history.push(ROUTES.BLOG)} buttonStyle="primary">

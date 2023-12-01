@@ -1,10 +1,4 @@
 .home-page-blog-post {
-    &-title {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 7px;
-    }
-
     &-info {
         font-style: italic;
         color: #73767E;
@@ -14,9 +8,7 @@
     &-body {
         color: #5E6076;
         white-space: pre-line;
-        height: 400px;
         overflow: hidden;
-        text-overflow: ellipsis;
     }
 
     &-buttons {

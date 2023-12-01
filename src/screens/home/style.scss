@@ -72,5 +72,11 @@
     display: grid;
     grid-template-columns: 3fr 2fr;
     grid-template-rows: repeat(2, auto);
-    gap: 30px
+    gap: 30px;
+
+    &-section-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
 }

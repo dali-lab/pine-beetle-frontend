@@ -3,7 +3,9 @@ import { useLocation } from 'react-router-dom';
 // import { ROUTES, VIDEO_URL } from '../../constants';
 import './style.scss';
 
-import { BlogPost, HeroSection, HowItWorks } from './components';
+import {
+  BlogPost, HeroSection, HowItWorks, MiniMap,
+} from './components';
 
 const Home = () => {
   const howItWorksRef = useRef(null);
@@ -21,7 +23,7 @@ const Home = () => {
     <div className="container" id="home-container">
       <HeroSection />
       <div className="home-content">
-        <div className="page-container">1st section</div>
+        <MiniMap />
         <BlogPost />
         <div className="page-container" style={{ height: '200px' }}>1st section</div>
         <div className="page-container">2nd section</div>
