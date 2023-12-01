@@ -25,7 +25,9 @@ import {
 import {
   sortBlogPosts,
   getDateToDisplay,
+  getLatestBlogPost,
   formatPostDates,
+  truncateText,
 } from './blog';
 
 export {
@@ -34,6 +36,7 @@ export {
   getChartModeFromStorage,
   getDataModeFromStorage,
   getDateToDisplay,
+  getLatestBlogPost,
   getMapboxRDNameFormat,
   getStateAbbreviationFromStateName,
   getStateNameFromAbbreviation,
@@ -47,4 +50,5 @@ export {
   setUserIdInStorage,
   sortBlogPosts,
   toQueryParams,
+  truncateText,
 };

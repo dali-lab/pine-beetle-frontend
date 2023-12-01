@@ -5,6 +5,7 @@ import {
   getAggregateStateData,
   getAggregateLocationData,
   getAvailableStates,
+  getAllBlogPosts,
   getSparseData,
   getPredictions,
   getUserFromStorage,
@@ -43,6 +44,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getAvailableStates: (overrideFilter) => {
       dispatch(getAvailableStates(overrideFilter));
+    },
+    getAllBlogPosts: () => {
+      dispatch(getAllBlogPosts());
     },
     getSparseData: (overrideFilter) => {
       dispatch(getSparseData(overrideFilter));

@@ -6,6 +6,16 @@ const sortBlogPosts = (blogPosts) => blogPosts.sort((a, b) => {
   return dateB - dateA;
 });
 
+// Get the latest blog post
+const getLatestBlogPost = (blogPosts) => {
+  if (!blogPosts || blogPosts.length === 0) {
+    return null; // Handle the empty array case
+  }
+
+  const sortedPosts = sortBlogPosts(blogPosts);
+  return sortedPosts[0];
+};
+
 // Return string with US date format
 const getDateToDisplay = (dateToParse) => {
   const date = new Date(dateToParse);
@@ -28,6 +38,22 @@ const formatPostDates = (created, updated) => {
   return dateString;
 };
 
+// truncate text for the blog post preview on home page
+const truncateText = (text, maxLength) => {
+  if (text.length <= maxLength) {
+    return text;
+  }
+
+  // Find the last space within maxLength
+  const truncated = text.substr(0, maxLength);
+  const lastSpaceIndex = truncated.lastIndexOf(' ');
+  if (lastSpaceIndex > 0) {
+    return `${truncated.substr(0, lastSpaceIndex)}...`;
+  }
+
+  return `${truncated}...`;
+};
+
 export {
-  sortBlogPosts, getDateToDisplay, formatPostDates,
+  sortBlogPosts, getDateToDisplay, getLatestBlogPost, formatPostDates, truncateText,
 };

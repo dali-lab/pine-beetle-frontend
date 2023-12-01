@@ -66,3 +66,11 @@
         height: 100%;
     }
 }
+
+.home-content {
+    margin-top: 35px;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: repeat(2, auto);
+    gap: 30px
+}
