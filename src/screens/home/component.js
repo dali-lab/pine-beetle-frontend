@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-// import { ROUTES, VIDEO_URL } from '../../constants';
-import './style.scss';
 
 import {
-  BlogPost, HeroSection, HowItWorks, MiniMap,
+  BlogPost, HeroSection, HistoricalData, HowItWorks, MiniMap, Video,
 } from './components';
+
+import './style.scss';
 
 const Home = () => {
   const howItWorksRef = useRef(null);
@@ -26,19 +26,11 @@ const Home = () => {
         <MiniMap />
         <BlogPost />
         <div className="page-container" style={{ height: '200px' }}>1st section</div>
-        <div className="page-container">2nd section</div>
-      </div>
-      {/* <div id="video-container">
-        <div id="video-wrapper">
-          <iframe
-            title="Pine Beetle Description Video"
-            src={VIDEO_URL}
-            frameBorder="0"
-            width="100%"
-            height="100%"
-          />
+        <div className="home-content-section">
+          <HistoricalData />
+          <Video />
         </div>
-      </div> */}
+      </div>
       <HowItWorks howItWorksRef={howItWorksRef} />
     </div>
   );
