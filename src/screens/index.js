@@ -4,7 +4,6 @@ import Blog from './blog';
 import Resources from './resources';
 import TrappingData from './trapping-data';
 import Home from './home';
-import PlayWithModel from './play-with-model';
 import Prediction from './prediction';
 
 export {
@@ -14,6 +13,5 @@ export {
   Resources,
   TrappingData,
   Home,
-  PlayWithModel,
   Prediction,
 };
