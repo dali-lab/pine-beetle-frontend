@@ -7,9 +7,9 @@ import {
   SelectionBar,
 } from './components';
 
-import { Loading } from '../../components';
+import { Loading } from '../../../../components';
 
-import { DATA_MODES } from '../../constants';
+import { DATA_MODES } from '../../../../constants';
 
 export const DEFAULT_MODEL_VERSION = 2024;
 
@@ -102,12 +102,12 @@ const PlayWithModel = (props) => {
   }, [county, dataMode, predictions, rangerDistrict, selectedState]);
 
   return (
-    <div>
+    <div className="page-container">
       <Loading visible={isLoading} />
       {fetchErrorText.length > 0 && fetchErrorText.map((t) => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
-      <div className="container" id="play-with-model-inputs-container">
+      <div className="play-with-model-inputs-container">
         <PlayWithModelInputs
           modelInputs={modelInputs}
           runModel={runModel}

@@ -72,10 +72,10 @@ const PlayWithModelOutputs = (props) => {
   return (
     <div id="predictions-output">
       <div id="vl" />
+      <div id="predictions-generated-title">
+        <p>{predictionTitle()}</p>
+      </div>
       <div className="predictions-generated">
-        <div id="predictions-generated-title">
-          <p>{predictionTitle()}</p>
-        </div>
         {predictionDetails()}
       </div>
     </div>

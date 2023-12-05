@@ -9,7 +9,7 @@ import {
   setPredictionYear,
   setRangerDistrict,
   setState,
-} from '../../../../state/actions';
+} from '../../../../../../state/actions';
 
 const mapStateToProps = (state) => {
   const {

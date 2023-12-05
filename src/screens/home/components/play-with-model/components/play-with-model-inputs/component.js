@@ -1,11 +1,12 @@
 import React from 'react';
 
-import './style.scss';
+import trapIcon from '../../../../../../assets/icons/trap.png';
+import cleridsIcon from '../../../../../../assets/icons/clerids.png';
+import endobrevIcon from '../../../../../../assets/icons/endobrev.png';
+import { ChoiceInput } from '../../../../../../components/input-components';
+import { Button } from '../../../../../../components';
 
-import trapIcon from '../../../../assets/icons/trap.png';
-import cleridsIcon from '../../../../assets/icons/clerids.png';
-import endobrevIcon from '../../../../assets/icons/endobrev.png';
-import { ChoiceInput } from '../../../../components/input-components';
+import './style.scss';
 
 const PlayWithModelInputs = (props) => {
   const {
@@ -182,9 +183,9 @@ const PlayWithModelInputs = (props) => {
             firstOptionText="Year"
           />
         </div>
-        <button className="animated-button" id="run-button" type="button" onClick={runModel}>
+        <Button className="run-button" onClick={runModel}>
           Run
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -1,12 +1,6 @@
-#play-with-model-inputs-container {
-    display: flex;
+.play-with-model-inputs-container {
     justify-content: space-between;
-    padding: 36px 47px 39px 61px;
     border-radius: 26px;
-    box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
-    background-color: #ffffff;
-    margin-top: 58px;
-    margin-bottom: 100px;
 }
 
 .change-fields-container {
@@ -21,7 +15,7 @@
     margin-bottom: 37px;
 
     .input-description {
-        font-size: 22px;
+        font-size: 18px;
         font-weight: 600;
         line-height: 1.4;
         text-align: left;
@@ -31,8 +25,7 @@
     .required-text {
         color: #ff0000;
         float: right;
-        margin-right: 20px;
-        margin-top: 7px;
+        margin-top: 10px;
     }
 }
 
@@ -128,23 +121,14 @@ span.required-text {
     }
 }
 
-#run-button {
+.run-button {
     width: 129px;
-    padding: 11px 20px;
-    margin-top: 25px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    background-color: #3c4253;
-    font-size: 20px;
-    font-weight: 500;
-    color: #ffffff;
-    float: right;
 }
 
 .actions-container {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
 
     .selection-button {
         background-color: #f0f2f8;

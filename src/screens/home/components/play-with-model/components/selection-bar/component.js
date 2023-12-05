@@ -1,13 +1,14 @@
 import React from 'react';
 
-import { ChoiceInput } from '../../../../components/input-components';
+import { ChoiceInput } from '../../../../../../components/input-components';
+import { Button } from '../../../../../../components';
 
-import { DATA_MODES } from '../../../../constants';
+import { DATA_MODES } from '../../../../../../constants';
 
 import {
   getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
-} from '../../../../utils';
+} from '../../../../../../utils';
 
 import './style.scss';
 
@@ -37,22 +38,20 @@ const SelectionBar = (props) => {
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
   return (
-    <div id="predictionbar" className="container">
-      <div className="predictionbar-year-selection">
-        <p className="predictionbar-year-selection-title">Year</p>
-        <div className="predictionbar-year-selection-options">
+    <div className="play-with-model-bar">
+      <div className="play-with-model-bar-selection">
+        <p className="play-with-model-bar-selection-title">Year</p>
+        <div className="play-with-model-bar-selection-options">
           <ChoiceInput setValue={setPredictionYear} value={year} options={revYears} firstOptionText="Year" />
         </div>
       </div>
-      <div id="vl1" />
-      <div className="predictionbar-year-selection">
-        <p className="predictionbar-year-selection-title">State</p>
-        <div className="predictionbar-year-selection-options">
+      <div className="play-with-model-bar-selection">
+        <p className="play-with-model-bar-selection-title">State</p>
+        <div className="play-with-model-bar-selection-options">
           <ChoiceInput value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
         </div>
       </div>
-      <div id="vl1" />
-      <div className="predictionbar-year-selection">
+      <div className="play-with-model-bar-selection">
         <div id="mode-selection">
           <button
             type="button"
@@ -62,7 +61,6 @@ const SelectionBar = (props) => {
           >
             County
           </button>
-          <div id="vl2" />
           <button
             type="button"
             id="mode-btn"
@@ -82,14 +80,12 @@ const SelectionBar = (props) => {
           />
         </div>
       </div>
-      <button
-        type="button"
-        id="reset-current-data-button"
-        className="animated-button"
+      <Button
+        className="reset-current-data-button"
         onClick={clearAllSelections}
       >
         Clear
-      </button>
+      </Button>
     </div>
   );
 };

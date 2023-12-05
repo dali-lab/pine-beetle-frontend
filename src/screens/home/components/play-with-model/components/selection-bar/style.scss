@@ -1,5 +1,5 @@
-#predictionbar {
-    background: #FFFFFF;
+.play-with-model-bar {
+    background-color: #F5F5F5;
     box-shadow: 0px 12px 30px -5px rgba(77, 81, 94, 0.04);
     border-radius: 18px;
     font-family: 'Inter';
@@ -8,10 +8,37 @@
     font-weight: 500;
     letter-spacing: 0em;
     text-align: left;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 2fr 2fr 4fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 10px;
     align-items: flex-end;
-    padding: 20px 40px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    &-selection {
+        display: flex;
+        flex-direction: column;
+
+        &-title {
+            margin-top: 0.5vh;
+            font-weight: bold;
+        }
+
+        &-options {
+            display: flex !important;
+            flex-direction: row !important;
+
+            .selection-container {
+                width: 100%;
+            }
+        }
+    }
+
+
+    .selection-button {
+        width: 100%;
+    }
 }
 
 .menuInstruction {
@@ -61,8 +88,8 @@
 
 #mode-selection {
     display: flex;
-    flex-direction: row;
     margin-top: 0.5vh;
+    gap: 10px;
 }
 
 #mode-selection button {
@@ -73,19 +100,7 @@
     outline: none;
     color: #84848a;
     font-size: 18px;
-}
-
-#reset-current-data-button {
-    background: #505050;
-    font-size: 18px;
-    border-radius: 10px;
-    letter-spacing: 1.5px;
-    color: #FFFFFF;
-    border: 0;
-    margin-top: 4vh;
-    height: 45px;
-    padding: 0px 60px;
-    margin-left: 2vw;
+    line-height: 1.8;
 }
 
 // Hide short text by default (resolution > 1200px)

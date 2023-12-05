@@ -4,7 +4,7 @@ import {
   clearCustomPredictionError,
   clearSelections,
   runCustomPrediction,
-} from '../../state/actions';
+} from '../../../../state/actions';
 
 import PlayWithModel from './component';
 
