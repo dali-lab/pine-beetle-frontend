@@ -28,7 +28,7 @@ const BlogPost = (props) => {
             </div>
           </div>
           <div className="home-page-blog-post-buttons">
-            <Button onClick={() => history.push(ROUTES.BLOG)} buttonStyle="primary">
+            <Button onClick={() => history.push(`${ROUTES.BLOG}/${latestPost._id}`)} buttonStyle="primary">
               Read more
             </Button>
             <Button onClick={() => history.push(ROUTES.BLOG)} buttonStyle="secondary">See all blog posts</Button>
