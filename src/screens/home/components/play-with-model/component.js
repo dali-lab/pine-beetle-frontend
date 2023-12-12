@@ -7,8 +7,6 @@ import {
   SelectionBar,
 } from './components';
 
-import { Loading } from '../../../../components';
-
 import { DATA_MODES } from '../../../../constants';
 
 export const DEFAULT_MODEL_VERSION = 2024;
@@ -18,7 +16,6 @@ const PlayWithModel = (props) => {
     clearAllSelections,
     clearError, // function to clear the error
     fetchErrorText,
-    isLoading,
     county,
     dataMode,
     isError, // whether or not an error occurred
@@ -103,7 +100,6 @@ const PlayWithModel = (props) => {
 
   return (
     <div className="page-container">
-      <Loading visible={isLoading} />
       {fetchErrorText.length > 0 && fetchErrorText.map((t) => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />

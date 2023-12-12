@@ -2,25 +2,35 @@ import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import {
-  BlogPost, HeroSection, HistoricalData, HowItWorks, MiniMap, PlayWithModel, Video,
+  BlogPost,
+  HeroSection,
+  HistoricalData,
+  HowItWorks,
+  MiniMap,
+  PlayWithModel,
+  Video,
 } from './components';
+import { Loading } from '../../components';
 
 import './style.scss';
 
-const Home = () => {
+const Home = (props) => {
+  const { isLoading } = props;
+
   const howItWorksRef = useRef(null);
   const location = useLocation();
 
   // scroll to the "How does it work?" section whenever a respective nav button is clicked
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    if (searchParams.get('scrollTo') === 'howItWorks' && howItWorksRef.current) {
-      howItWorksRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (!isLoading && searchParams.get('scrollTo') === 'howItWorks' && howItWorksRef.current) {
+      setTimeout(() => howItWorksRef.current.scrollIntoView({ behavior: 'smooth' }), 200);
     }
-  }, [location.search]);
+  }, [location.search, isLoading]);
 
   return (
     <div className="container">
+      <Loading visible={isLoading} />
       <HeroSection />
       <div className="home-content">
         <MiniMap />

@@ -51,7 +51,7 @@ const HowItWorks = ({ howItWorksRef }) => {
       </div>
       {howItWorksContent.map((element, index) => {
         return (
-          <div id="description-container">
+          <div id="description-container" key={`how-it-works-${index + 1}`}>
             <div id="description-title-container">
               <div id={`icon${index + 1}`}>
                 <img

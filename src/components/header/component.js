@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 
-import './style.scss';
-
 import { ROUTES } from '../../constants';
 import DownloadData from '../download-data';
-
 import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
+
+import './style.scss';
 
 const Header = () => {
   const routes = {
@@ -14,10 +13,21 @@ const Header = () => {
     [ROUTES.ABOUT]: 'About',
   };
 
-  const urlPath = useLocation().pathname;
-
+  const location = useLocation();
   const history = useHistory();
-  const handleHowItWorksButtonClick = () => history.push('/?scrollTo=howItWorks');
+  const urlPath = location.pathname;
+
+  const handleHowItWorksButtonClick = () => {
+    // handle situation when user wants to go back to how does it work section, after already clicking on the button
+    if (location.pathname === '/' && location.search === '?scrollTo=howItWorks') {
+      history.push('/');
+      setTimeout(() => {
+        history.push('/?scrollTo=howItWorks');
+      }, 0);
+    } else {
+      history.push('/?scrollTo=howItWorks');
+    }
+  };
 
   return (
     <div id="header">

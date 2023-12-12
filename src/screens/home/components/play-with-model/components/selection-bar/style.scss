@@ -22,7 +22,7 @@
 
         &-title {
             margin-top: 0.5vh;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         &-options {
@@ -38,6 +38,7 @@
 
     .selection-button {
         width: 100%;
+        font-size: 16px;
     }
 }
 

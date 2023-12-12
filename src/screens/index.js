@@ -5,6 +5,7 @@ import Resources from './resources';
 import TrappingData from './trapping-data';
 import Home from './home';
 import Prediction from './prediction';
+import SingleBlogPost from './single-blog-post';
 
 export {
   About,
@@ -14,4 +15,5 @@ export {
   TrappingData,
   Home,
   Prediction,
+  SingleBlogPost,
 };
