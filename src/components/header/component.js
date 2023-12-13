@@ -17,15 +17,17 @@ const Header = () => {
   const history = useHistory();
   const urlPath = location.pathname;
 
+  const scrollToUrl = '?scrollTo=howItWorks';
+
   const handleHowItWorksButtonClick = () => {
     // handle situation when user wants to go back to how does it work section, after already clicking on the button
-    if (location.pathname === '/' && location.search === '?scrollTo=howItWorks') {
-      history.push('/');
+    if (location.pathname === ROUTES.HOME && location.search === scrollToUrl) {
+      history.push(ROUTES.HOME);
       setTimeout(() => {
-        history.push('/?scrollTo=howItWorks');
+        history.push(scrollToUrl);
       }, 0);
     } else {
-      history.push('/?scrollTo=howItWorks');
+      history.push(scrollToUrl);
     }
   };
 

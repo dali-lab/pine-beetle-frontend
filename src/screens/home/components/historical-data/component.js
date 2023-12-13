@@ -12,7 +12,7 @@ const HistoricalData = () => {
   return (
     <div className="page-container home-content-historical-data">
       <div className="home-content-section-title">Historical Data</div>
-      <SPBChart screen="home" />
+      <SPBChart />
       <Button onClick={() => history.push(ROUTES.TRAPPING_DATA)} buttonStyle="secondary">View trapping data</Button>
     </div>
   );

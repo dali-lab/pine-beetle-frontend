@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { getYearRange } from '../../../../../../constants';
+import { useLocation } from 'react-router-dom';
+import { ROUTES, getYearRange } from '../../../../../../constants';
 
 const SPBChart = (props) => {
   const {
-    yearData = [], startYear, endYear, screen = 'trapping-data',
+    yearData = [], startYear, endYear,
   } = props;
 
-  const isHomepage = screen === 'home';
+  const location = useLocation();
+  const isHomepage = location.pathname === ROUTES.HOME;
 
   const [spbChartData, setSpbChartData] = useState({
     labels: [],
