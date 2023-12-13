@@ -1,0 +1,20 @@
+.home-page-blog-post {
+    &-info {
+        font-style: italic;
+        color: #73767E;
+        margin-bottom: 29px;
+    }
+
+    &-body {
+        color: #5E6076;
+        white-space: pre-line;
+        overflow: hidden;
+    }
+
+    &-buttons {
+        margin-top: 24px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+}

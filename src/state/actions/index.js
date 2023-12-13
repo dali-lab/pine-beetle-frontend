@@ -38,6 +38,7 @@ import {
 import {
   ActionTypes as blogActionTypes,
   createBlogPost,
+  getAllBlogPosts,
   getAllBlogPostsByAuthor,
   editBlogPost,
   deleteBlogPost,
@@ -61,6 +62,7 @@ export {
   getAggregateLocationData,
   getAggregateStateData,
   getAggregateYearData,
+  getAllBlogPosts,
   getAllBlogPostsByAuthor,
   getAvailableStates,
   getAvailableSublocations,

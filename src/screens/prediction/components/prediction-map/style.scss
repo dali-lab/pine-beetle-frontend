@@ -16,6 +16,7 @@
     border-radius: 20px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: #ffffff;
+    padding: 0;
 }
 
 #map-overlay-download {
@@ -146,7 +147,7 @@
     justify-content: center;
     margin-top: 10px;
     margin-right: 10px;
-    
+
     .data-info-section {
         display: flex;
         flex-direction: column;

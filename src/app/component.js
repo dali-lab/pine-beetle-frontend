@@ -12,9 +12,9 @@ import {
   Resources,
   TrappingData,
   Home,
-  PlayWithModel,
   Prediction,
   Blog,
+  SingleBlogPost,
 } from '../screens';
 
 import {
@@ -59,6 +59,7 @@ const App = (props) => {
     getPredictions,
     getAvailableStates,
     getSparseData,
+    getAllBlogPosts,
   } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
@@ -87,12 +88,14 @@ const App = (props) => {
     getAggregateYearData();
     getAggregateStateData();
     getAggregateLocationData();
+    getAllBlogPosts();
     getSparseData();
     getPredictions();
   }, [
     getAggregateLocationData,
     getAggregateStateData,
     getAggregateYearData,
+    getAllBlogPosts,
     getPredictions,
     getSparseData,
     loginUserFromStorage,
@@ -121,10 +124,10 @@ const App = (props) => {
           <Route exact path={ROUTES.HOME} component={Home} />
           <Route path={ROUTES.ABOUT} component={About} />
           <Route path={ROUTES.ADMIN} component={Admin} />
+          <Route path={`${ROUTES.BLOG}/:id`} component={SingleBlogPost} />
           <Route path={ROUTES.BLOG} component={Blog} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
           <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
-          <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModel} />
           <Route path={ROUTES.PREDICTIONS} component={Prediction} />
           {Object.entries(RESOURCE_ROUTES).map(([TYPE, ROUTE]) => (
             <Route

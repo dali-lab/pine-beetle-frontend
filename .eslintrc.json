@@ -46,7 +46,10 @@
         ],
         "max-len": [
             "error",
-            200
+            200,
+            {
+                "ignoreStrings": true
+            }
         ],
         "no-extra-parens": 0,
         "no-restricted-syntax": [

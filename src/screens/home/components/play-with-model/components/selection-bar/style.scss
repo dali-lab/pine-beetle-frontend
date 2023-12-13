@@ -1,0 +1,121 @@
+.play-with-model-bar {
+    background-color: #F5F5F5;
+    box-shadow: 0px 12px 30px -5px rgba(77, 81, 94, 0.04);
+    border-radius: 18px;
+    font-family: 'Inter';
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0em;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 2fr 2fr 4fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 10px;
+    align-items: flex-end;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    &-selection {
+        display: flex;
+        flex-direction: column;
+
+        &-title {
+            margin-top: 0.5vh;
+            font-weight: 600;
+        }
+
+        &-options {
+            display: flex !important;
+            flex-direction: row !important;
+
+            .selection-container {
+                width: 100%;
+            }
+        }
+    }
+
+
+    .selection-button {
+        width: 100%;
+        font-size: 16px;
+    }
+}
+
+.menuInstruction {
+    background: #FFFFFF;
+}
+
+.menuInstruction label {
+    background: #FFFFFF;
+    color: #7c7c96;
+}
+
+.menuInstruction .input {
+    padding-left: 20px;
+    background: #EDEDEE;
+    height: 43px;
+    font-family: 'Inter';
+    font-size: 18px;
+    width: 10vw;
+    max-width: 200px;
+    border-radius: 6px;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    letter-spacing: 1.5px;
+}
+
+#vl1 {
+    border-left: 2px solid #f9f9f9;
+    height: 72px;
+    margin-left: 2vw;
+    margin-right: 2vw;
+}
+
+#vl2 {
+    border-left: 2px solid #f9f9f9;
+    height: 24px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.county-rd-selection {
+    color: #2d2d2d !important;
+    font-weight: 600;
+}
+
+#mode-selection {
+    display: flex;
+    margin-top: 0.5vh;
+    gap: 10px;
+}
+
+#mode-selection button {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    color: #84848a;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+// Hide short text by default (resolution > 1200px)
+.short-text {
+    display: none;
+}
+
+// When resolution <= 1200px, hide full text and show short text
+@media (max-width: 1200px) {
+    .short-text {
+        display: inline-block;
+    }
+
+    .full-text {
+        display: none;
+    }
+}

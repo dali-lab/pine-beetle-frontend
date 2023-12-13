@@ -34,8 +34,8 @@ const SelectionBar = (props) => {
   const revYears = [...availableYears].reverse();
 
   return (
-    <div>
-      <div id="predictionbar" className="container">
+    <div className="container">
+      <div id="predictionbar">
         <div className="predictionbar-year-selection">
           <p className="predictionbar-year-selection-title">Year</p>
           <div className="predictionbar-year-selection-options">
