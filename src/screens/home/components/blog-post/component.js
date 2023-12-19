@@ -24,7 +24,7 @@ const BlogPost = (props) => {
               <span className="home-page-blog-post-author">{getDateToDisplay(latestPost.date_created)}</span>
             </div>
             <div className="home-page-blog-post-body">
-              {truncateText(latestPost.body, 1000)}
+              {truncateText(latestPost.body, 850)}
             </div>
           </div>
           <div className="home-page-blog-post-buttons">
