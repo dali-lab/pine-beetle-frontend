@@ -24,10 +24,10 @@ const Header = () => {
     if (location.pathname === ROUTES.HOME && location.search === scrollToUrl) {
       history.push(ROUTES.HOME);
       setTimeout(() => {
-        history.push(scrollToUrl);
+        history.push(`/${scrollToUrl}`);
       }, 0);
     } else {
-      history.push(scrollToUrl);
+      history.push(`/${scrollToUrl}`);
     }
   };
 
