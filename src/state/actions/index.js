@@ -35,10 +35,20 @@ import {
   runCustomPrediction,
 } from './data';
 
+import {
+  ActionTypes as blogActionTypes,
+  createBlogPost,
+  getAllBlogPosts,
+  getAllBlogPostsByAuthor,
+  editBlogPost,
+  deleteBlogPost,
+} from './blog';
+
 const ActionTypes = {
   ...dataActionTypes,
   ...selectionActionTypes,
   ...userActionTypes,
+  ...blogActionTypes,
 };
 
 export {
@@ -46,9 +56,14 @@ export {
   clearCustomPredictionError,
   clearData,
   clearSelections,
+  createBlogPost,
+  deleteBlogPost,
+  editBlogPost,
   getAggregateLocationData,
   getAggregateStateData,
   getAggregateYearData,
+  getAllBlogPosts,
+  getAllBlogPostsByAuthor,
   getAvailableStates,
   getAvailableSublocations,
   getAvailableYears,

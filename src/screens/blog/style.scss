@@ -1,0 +1,14 @@
+.blog-page-container {
+    max-width: 1000px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.blog-page-no-posts {
+    font-size: 26px;
+    width: 100%;
+    text-align: center;
+    color: #73767e;
+}

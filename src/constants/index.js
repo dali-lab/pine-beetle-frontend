@@ -71,6 +71,7 @@ const CHART_MODES = {
 const ROUTES = {
   ABOUT: '/about',
   ADMIN: '/admin',
+  BLOG: '/blog',
   HOME: '/',
   RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',

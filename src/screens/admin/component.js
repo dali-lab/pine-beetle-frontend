@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
 import {
+  AddBlogPost,
   AddUser,
+  BlogPosts,
   ChangePassword,
   FileUpload,
   Login,
@@ -78,6 +80,10 @@ const Admin = (props) => {
               <p>{modelError}</p>
             </div>
           )}
+          <div className="blog-container">
+            <AddBlogPost />
+            <BlogPosts />
+          </div>
         </div>
         <ChangePassword
           close={() => setChangePasswordVisible(false)}

@@ -8,6 +8,8 @@
         justify-content: space-around;
         align-items: center;
         background-color: #FBFBFD;
+        max-width: 1200px;
+        margin: auto;
 
         a {
             text-decoration: none;
@@ -30,7 +32,6 @@
             align-items: center;
 
             img {
-                margin-left: 35px;
                 margin-top: 13px;
                 width: 26px;
                 height: 32px;
@@ -43,7 +44,7 @@
 
         #nav-button-area {
             margin: auto;
-            margin-right: 100px;
+            margin-right: 0;
         }
 
         #nav-buttons {
@@ -71,7 +72,6 @@
 
         #download-button-area {
             display: flex;
-            background-color: white;
             padding: 5px;
             justify-content: center;
             align-content: center;
@@ -88,6 +88,8 @@
             line-height: 24px;
             letter-spacing: 0em;
             text-align: center;
+            border: none;
+            background: none;
 
             -o-transition: 0.3s;
             -ms-transition: 0.3s;

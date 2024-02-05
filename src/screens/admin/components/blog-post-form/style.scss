@@ -1,0 +1,93 @@
+.blog-form-button {
+    width: 114px;
+    margin: 19px 67px 0 0;
+    padding: 4px 0;
+    border-radius: 6px;
+    background-color: #c9cdd9;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.8;
+    color: #2f303a;
+    margin-left: auto;
+    margin-right: auto;
+
+    &:disabled {
+        border: none;
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.blog-form-error {
+    margin-top: 10px;
+    color: red
+}
+
+.blog-posts-form-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2f303a;
+    margin-bottom: 14px;
+}
+
+.input-container {
+
+    margin: 10px 0;
+
+    input,
+    textarea {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 8px;
+        padding: 5px 16px;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 6px 40px 0 rgba(0, 0, 0, 0.04);
+        background-color: #ffffff;
+        font-size: 15px;
+        line-height: 1.51;
+        color: #62697e;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 150px;
+
+    }
+}
+
+.input-label {
+    margin-bottom: 10px;
+}
+
+.image-input-container {
+    margin: 10px 0 18px;
+    display: flex;
+    justify-content: space-between;
+
+    label {
+        font-size: 13.3333px;
+        padding: 6px;
+        border-radius: 6px;
+    }
+}
+
+.image-preview-container {
+    width: 50%;
+    height: 150px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+
+    img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        min-width: 100%;
+        min-height: 100%;
+        width: inherit;
+        height: auto;
+    }
+}

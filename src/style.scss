@@ -22,12 +22,19 @@ body h2 {
     padding-bottom: 0px;
 }
 
-body p, a, li {
+body p,
+a,
+li {
     font-family: 'Inter';
     padding-bottom: 0px;
 }
 
-body h1, h2, h3, h4, h5, h6 {
+body h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Inter';
     padding-bottom: 0px;
 }
@@ -40,43 +47,54 @@ body img {
     border-radius: 0px;
 }
 
+body input,
+textarea {
+    font-family: 'Inter';
+}
+
 .container {
     width: auto;
+    max-width: 1100px;
     height: auto;
-    margin: 0px; /* 15px 31px */
-    background-color:#FBFBFD;
+    margin: 0 auto;
+    padding: 0 50px;
+    background-color: #FBFBFD;
     background-clip: border-box;
     border-radius: 0px;
     text-align: center;
 }
 
-.content .container {
-    margin-left: unquote("max(100px, 13%)");
-    margin-right: unquote("max(100px, 13%)");
-}
-
 .flex-container {
     width: 100%;
-    display: flex;             /* primary flex container */
-    flex-direction: row;       /* horizontal alignment of flex items */
-    align-items: stretch;      /* will apply equal heights to flex items*/
+    display: flex;
+    /* primary flex container */
+    flex-direction: row;
+    /* horizontal alignment of flex items */
+    align-items: stretch;
+    /* will apply equal heights to flex items*/
     height: 100%;
 }
 
 .flex-item {
     flex: 1;
-    padding: 0px; /* 15 */
-    display: flex;             /* nested flex container */
-    flex-direction: column;    /* vertical alignment of flex items */
-    justify-content: center;   /* center flex items vertically */
+    padding: 0px;
+    /* 15 */
+    display: flex;
+    /* nested flex container */
+    flex-direction: column;
+    /* vertical alignment of flex items */
+    justify-content: center;
+    /* center flex items vertically */
 }
 
 .flex-item-left {
-    margin-right: 0px; /* 15 */
+    margin-right: 0px;
+    /* 15 */
 }
 
 .flex-item-right {
-    margin-left: 0px; /* 15 */
+    margin-left: 0px;
+    /* 15 */
 }
 
 .content {

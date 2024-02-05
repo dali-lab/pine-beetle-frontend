@@ -1,0 +1,27 @@
+.mini-map {
+    .home-content-section-title {
+        margin-bottom: 10px;
+    }
+
+    #map-container {
+        width: 100%;
+        padding: 0;
+        margin-bottom: 24px;
+        box-shadow: none;
+
+        #map {
+            height: 500px;
+        }
+
+        .map-overlay-data,
+        #map-overlay-download {
+            display: none;
+        }
+
+        .map-overlay-legend {
+            top: 20px;
+            left: 10px;
+        }
+
+    }
+}
