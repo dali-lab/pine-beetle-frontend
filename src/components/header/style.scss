@@ -32,7 +32,6 @@
             align-items: center;
 
             img {
-                margin-top: 13px;
                 width: 26px;
                 height: 32px;
             }
@@ -67,7 +66,13 @@
                     width: 95px;
                 }
             }
-
+            
+        }
+        
+        .nav-button:hover,
+        .nav-button-short:hover {
+            transform: scale(1.05);
+            color: #424755;
         }
 
         #download-button-area {

@@ -28,6 +28,12 @@
         a {
             font-style: italic;
             color: #73767e;
+            transition: all ease 0.3s;
+
+            &:hover {
+                color: #424755;
+                transition: all ease 0.3s;
+            }
         }
     }
 }
