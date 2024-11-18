@@ -7,7 +7,7 @@
         width: auto;
         height: auto;
         margin-top: 25px;
-        background-color: #FBFBFD;
+        background-color: $backgroundColor;
         background-clip: border-box;
         border-radius: 0px;
         text-align: left;
@@ -27,11 +27,11 @@
 
         a {
             font-style: italic;
-            color: #73767e;
+            color: $greyBlue700;
             transition: all ease 0.3s;
 
             &:hover {
-                color: #424755;
+                color: $greyBlue800;
                 transition: all ease 0.3s;
             }
         }

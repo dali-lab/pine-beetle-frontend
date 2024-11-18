@@ -14,7 +14,7 @@
     padding-left: 12px;
     padding-top: 5px;
     border-radius: 6px;
-    background-color: #4CD791;
+    background-color: $green500;
     display: flex;
 }
 
@@ -28,7 +28,7 @@
     font-size: 15px;
     text-align: center;
     white-space: nowrap;
-    color: #ffffff;
+    color: $white;
 }
 
 .modal-divide-flex {
@@ -46,13 +46,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #F3F3F3;
+    background-color: $grey200;
     margin-top: 1vh;
     border-radius: 10px;
     width: 302px;
 
     .input-container {
-        background-color: #F3F3F3;
+        background-color: $grey200;
         height: 30px;
     }
 
@@ -72,9 +72,9 @@
     align-items: center;
     width: 300px;
     height: 40px;
-    background-color: #FFFFFF;
+    background-color: $white;
     border-radius: 100px;
-    border: 1px solid #B7B7B7;
+    border: 1px solid $grey500;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25);
     margin-top: 5vh;
 
@@ -82,13 +82,13 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        background-color: #DFFBFF;
+        background-color: $blue200;
         border-radius: 100px;
         padding-left: 25px;
         padding-right: 25px;
 
         .selected-option-text-p {
-            color: #ffffff;
+            color: $white;
         }
 
         img {
@@ -101,13 +101,13 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        background-color: #505050;
+        background-color: $grey800;
         border-radius: 100px;
         padding-left: 15px;
         padding-right: 15px;
 
         .selected-option-text-p {
-            color: #ffffff;
+            color: $white;
         }
 
         img {
@@ -128,7 +128,7 @@
         cursor: pointer;
 
         .unselected-option-text-p {
-            color: #93949B;
+            color: $greyBlue600;
         }
 
         img {
@@ -148,13 +148,13 @@
     height: 70vh;
     padding: 50px;
     border-radius: 20px;
-    background-color: #ffffff;
+    background-color: $white;
     // TODO: replace box shadow with grayer background later
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 
     .selection-button {
         width: 9vw;
-        background-color: #F3F3F3;
+        background-color: $grey200;
     }
 }
 
@@ -185,7 +185,7 @@
     font-size: 30px;
     font-weight: 500;
     text-align: center;
-    color: #1e1e1e;
+    color: $headingColor;
 }
 
 #modal-year {
@@ -216,16 +216,16 @@
     margin-top: 10px;
     display: flex;
     border-radius: 5px;
-    background-color: #F3F3F3;
+    background-color: $grey200;
     padding: 5px;
 }
 
 .download-clear-button {
-    background: #505050;
+    background: $grey800;
     font-size: 18px;
     border-radius: 10px;
     letter-spacing: 1.5px;
-    color: #FFFFFF;
+    color: $white;
     border: 0;
     margin-top: auto;
     height: 45px;
@@ -244,7 +244,7 @@
 }
 
 #divider-line {
-    border-left: 1px solid #AEAEAE;
+    border-left: 1px solid $grey500;
     height: 62vh;
     margin-left: 20px;
     margin-right: 20px;
@@ -264,7 +264,7 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 10px;
-    background-color: #F3F3F3;
+    background-color: $grey200;
     padding-right: 25px;
     padding-left: 25px;
     padding-top: 15px;
@@ -286,7 +286,7 @@
     margin-top: auto;
 
     .download-error {
-        color: #cc0002;
+        color: $red700;
         margin-right: 20px;
     }
 }
@@ -296,7 +296,7 @@
     padding: 5px 25px 5px 25px;
     right: 0px;
     border-radius: 10px;
-    background-color: #434754;
+    background-color: $greyBlue800;
     display: flex;
     border: none;
     text-align: center;
@@ -312,7 +312,7 @@
 #modal-submit-btn p {
     font-size: 16px;
     line-height: 1.8;
-    color: #ffffff;
+    color: $white;
 }
 
 #modal-footnote-container {
@@ -321,7 +321,7 @@
 
 .modal-footnote {
     font-size: 11px;
-    color: #AEAEAE;
+    color: $grey500;
     margin-bottom: 5px;
 }
 

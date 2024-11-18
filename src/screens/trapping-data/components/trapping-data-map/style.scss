@@ -12,7 +12,7 @@
     flex: 1.1 !important;
     border-radius: 20px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
-    background-color: #ffffff;
+    background-color: $white;
 }
 
 .map-overlay-legend {
@@ -106,45 +106,45 @@
         }
 
         #empty {
-            background-color: #DBDBDB;
+            background-color: $grey300;
         }
 
         #spbs {
-            background-color: #ACA0F9;
+            background-color: $purple600;
         }
 
         #clerid {
-            background-color: #E4C89D;
+            background-color: $beige600;
         }
 
         #spots-null {
-            background-color: #D3D3D3;
+            background-color: $grey400;
         }
 
         #spots-10 {
-            background-color: #86CCFF;
+            background-color: $blue500;
         }
 
         #spots-20 {
-            background-color: #FFC148;
+            background-color: $yellow;
         }
 
         #spots-50 {
-            background-color: #FFA370;
+            background-color: $orange;
         }
 
         #spots-100 {
-            background-color: #FF525C;
+            background-color: $red400;
         }
 
         #spots-250 {
-            background-color: #CB4767;
-            color: #FFFFFF;
+            background-color: $red600;
+            color: $white;
         }
 
         #spots-more {
-            background-color: #6B1B38;
-            color: #FFFFFF;
+            background-color: $red900;
+            color: $white;
         }
 
         p {
@@ -234,7 +234,7 @@
 }
 
 .footnote {
-    color: #898989;
+    color: $grey600;
     line-height: 14px;
     width: 53%;
     margin: auto;

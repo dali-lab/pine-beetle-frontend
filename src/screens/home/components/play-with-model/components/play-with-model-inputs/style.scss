@@ -19,18 +19,18 @@
         font-weight: 500;
         line-height: 1.4;
         text-align: left;
-        color: #2f303a;
+        color: $greyBlue900;
     }
 
     .required-text {
-        color: #ff0000;
+        color: $red500;
         float: right;
         margin-top: 10px;
     }
 }
 
 span.required-text {
-    color: #ff0000;
+    color: $red500;
 }
 
 .field {
@@ -57,26 +57,26 @@ span.required-text {
 }
 
 #trap-icon {
-    background-color: #c7ffb4;
+    background-color: $green300;
 }
 
 #clerids-icon {
-    background-color: #ffe5b4;
+    background-color: $beige300;
 }
 
 #spb-icon {
-    background-color: #b4dbff;
+    background-color: $blue400;
 }
 
 #endobrev-icon {
-    background-color: #deb4ff;
+    background-color: $purple500;
 }
 
 .field input[type=number] {
     width: 88px;
     height: 28px;
     border-radius: 6px;
-    background-color: #f0f2f8;
+    background-color: $greyBlue200;
     border: none;
     padding: 3px 0px 4px 10px;
 
@@ -85,7 +85,7 @@ span.required-text {
     font-weight: 600;
     line-height: 1.16;
     text-align: center;
-    color: #2f303a;
+    color: $greyBlue900;
 }
 
 .field .checkboxes {
@@ -93,7 +93,7 @@ span.required-text {
     font-size: 22px;
     font-weight: 600;
     line-height: 1.16;
-    color: #2f303a;
+    color: $greyBlue900;
     display: inline-flex;
 }
 
@@ -103,14 +103,14 @@ span.required-text {
     font-size: 18px;
     font-weight: 500;
     text-align: left;
-    color: #000000;
+    color: $black;
 }
 
 .endobrev-checkbox {
     width: 88px;
     height: 28px;
     border-radius: 6px;
-    background-color: #f0f2f8;
+    background-color: $greyBlue200;
     border: none;
     padding: 3px 0px 4px 10px;
     margin-left: 5px;
@@ -131,7 +131,7 @@ span.required-text {
     align-items: flex-end;
 
     .selection-button {
-        background-color: #f0f2f8;
+        background-color: $greyBlue200;
         font-size: 16px;
     }
 }

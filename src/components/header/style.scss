@@ -1,19 +1,19 @@
 #header {
     height: auto;
     padding: 12px;
-    background-color: #FBFBFD;
+    background-color: $backgroundColor;
 
     #title-area {
         display: flex;
         justify-content: space-around;
         align-items: center;
-        background-color: #FBFBFD;
+        background-color: $backgroundColor;
         max-width: 1200px;
         margin: auto;
 
         a {
             text-decoration: none;
-            color: #000000;
+            color: $black;
         }
 
         img {
@@ -72,7 +72,7 @@
         .nav-button:hover,
         .nav-button-short:hover {
             transform: scale(1.05);
-            color: #424755;
+            color: $greyBlue800;
         }
 
         #download-button-area {
@@ -108,12 +108,12 @@
         }
 
         .active-nav {
-            color: #000000;
+            color: $black;
             font-weight: bold;
         }
 
         .inactive-nav {
-            color: #73767e;
+            color: $greyBlue700;
         }
     }
 }
