@@ -1,13 +1,13 @@
 .prediction-details-container {
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
-    background-color: #ffffff;
+    background-color: $white;
     padding: 39px;
     border-radius: 26px;
 }
 
 .prediction-details {
     // TODO: why is its margin left and right more than others?
-    background-color: #ffffff;
+    background-color: $white;
     border-radius: 26px;
 }
 
@@ -19,7 +19,7 @@
     line-height: normal;
     letter-spacing: normal;
     text-align: left;
-    color: #2f303a;
+    color: $greyBlue900;
     margin-bottom: 13px;
 }
 
@@ -28,7 +28,7 @@
     font-weight: 500;
     line-height: 1.31;
     text-align: left;
-    color: #464756;
+    color: $greyBlue800;
     margin-bottom: 24px;
 }
 
@@ -67,12 +67,12 @@
 
 #any-spots {
     box-shadow: 0 6px 20px -2px rgba(134, 204, 255, 0.55);
-    background-color: #86ccff;
+    background-color: $blue500;
 }
 
 #outbreak {
     box-shadow: 0 6px 20px -2px rgba(255, 193, 72, 0.55);
-    background-color: #ffc148;
+    background-color: $yellow;
 }
 
 .circle p {
@@ -89,7 +89,7 @@
     line-height: 1.31;
     letter-spacing: normal;
     text-align: center;
-    color: #383b4a;
+    color: $greyBlue900;
 }
 
 .prediction-grid-container {
@@ -104,14 +104,14 @@
 
 .bullet {
     position: relative;
-    border: 2px solid #e9eaef;
+    border: 2px solid $greyBlue300;
     border-radius: 100%; 
     width: 20px; 
     height: 20px;
     line-height: 40px; 
     text-align: center; 
     margin-top: 45px; 
-    background-color: #e9eaef; 
+    background-color: $greyBlue300; 
     z-index: 2;
 }
 
@@ -121,7 +121,7 @@
 
 .bullet:before {
     position: absolute; 
-    border: 1px solid #e9eaef; 
+    border: 1px solid $greyBlue300; 
     width: 0; 
     height: 50px; 
     display: block; 
@@ -158,7 +158,7 @@
     margin-top: 23px;
     font-size: 20px;
     font-weight: bold;
-    color: #2f303a;
+    color: $greyBlue900;
 }
 
 .yeart2 {
@@ -198,7 +198,7 @@
     padding: 7px 9px 9px 7px;
     border-radius: 6px;
     box-shadow: 0 7px 22px -2px rgba(0, 0, 0, 0.08);
-    background-color: #ffffff;
+    background-color: $white;
     overflow: hidden;
     white-space: nowrap;
 }
@@ -206,7 +206,7 @@
 hr {
     height: 1px;
     border: none;
-    background-color: #dbdbdb;
+    background-color: $grey300;
 }
 
 .prediction-grid img {
@@ -218,17 +218,17 @@ hr {
 }
 
 .prediction-grid #clerids img {
-    background-color: #FFE5B4;
+    background-color: $beige300;
     border-radius: 6px;
 }
 
 .prediction-grid #spots img {
-    background-color: #C7FFB4;
+    background-color: $green300;
     border-radius: 6px;
 }
 
 .prediction-grid #spb img {
-    background-color: #B4DBFF;
+    background-color: $blue400;
     border-radius: 6px;
 }
 

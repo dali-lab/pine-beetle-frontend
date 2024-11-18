@@ -4,13 +4,13 @@
 }
 
 #main {
-    background-color: #FBFBFD;
+    background-color: $backgroundColor;
 }
 
 body {
     font-family: 'Inter';
     font-weight: normal;
-    color: #212122;
+    color: $headingColor;
 }
 
 body p {
@@ -58,7 +58,7 @@ textarea {
     height: auto;
     margin: 0 auto;
     padding: 0 50px;
-    background-color: #FBFBFD;
+    background-color: $backgroundColor;
     background-clip: border-box;
     border-radius: 0px;
     text-align: center;
@@ -106,7 +106,7 @@ textarea {
     width: 156px;
     height: 1px;
     margin: auto;
-    background-color: #212122;
+    background-color: $headingColor;
     margin-top: 15px;
     margin-bottom: 15px;
 }

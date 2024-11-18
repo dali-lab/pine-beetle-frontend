@@ -4,7 +4,7 @@
     #users-title {
         font-size: 18px;
         font-weight: 600;
-        color: #2f303a;
+        color: $greyBlue900;
     }
 
     #user-info-container {
@@ -12,11 +12,11 @@
         padding: 17px 2px 18px 22px;
         border-radius: 12px;
         box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.04);
-        background-color: #ffffff;
+        background-color: $white;
         overflow: scroll;
 
         #user-email {
-            color: #545a6c;
+            color: $greyBlue800;
             font-size: 14px;
             line-height: 1.51;
         }

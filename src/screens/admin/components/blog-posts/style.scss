@@ -6,10 +6,10 @@
     border: none;
     border-radius: 10px;
     box-shadow: 0 6px 40px 0 rgba(0, 0, 0, 0.04);
-    background-color: #ffffff;
+    background-color: $white;
     font-size: 15px;
     line-height: 1.51;
-    color: #62697e;
+    color: $greyBlue800;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -28,14 +28,14 @@
     }
 
     &-action-buttons {
-        border-left: 1px solid #c9cdd9;
+        border-left: 1px solid $greyBlue400;
         padding-left: 6px;
     }
 
     &-button {
         padding: 6px;
         border-radius: 6px;
-        background-color: #c9cdd9;
+        background-color: $greyBlue400;
         margin-left: 6px;
     }
 }
@@ -43,7 +43,7 @@
 .blog-posts-title {
     font-size: 18px;
     font-weight: 600;
-    color: #2f303a;
+    color: $greyBlue900;
     margin-bottom: 14px;
 }
 
@@ -56,7 +56,7 @@
     height: 10vh;
     padding: 50px;
     border-radius: 20px;
-    background-color: #ffffff;
+    background-color: $white;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     overflow: scroll;
     display: flex;

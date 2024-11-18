@@ -10,7 +10,7 @@
         margin-bottom: 35px;
         letter-spacing: normal;
         font-weight: 800;
-        color: #2f303a;
+        color: $greyBlue900;
     }
 
     #sign-up-button {
@@ -27,7 +27,7 @@
         padding: 19px 52px 53px;
         border-radius: 26px;
         box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
-        background-color: #ffffff;
+        background-color: $white;
 
         #input-fields {
             display: flex;
@@ -39,27 +39,27 @@
                 margin-top: 20px;
 
                 #error-input {
-                    border: solid 2.5px #ff364e;
+                    border: solid 2.5px $red500;
                 }
 
                 p {
                     margin-bottom: 5px;
                     font-size: 18px;
                     font-weight: 600;
-                    color: #3c4253;
+                    color: $greyBlue800;
                 }
 
                 input {
                     padding: 5px 10px;  
                     width: 300px;
-                    background-color: #f1f3f8;
+                    background-color: $greyBlue200;
                 }
             }
         }
 
         #forgot-password {
             font-size: 13px;
-            color: #3c4253;
+            color: $greyBlue800;
             margin-top: 10px;
             background-color: transparent;
             border: 0;
@@ -82,11 +82,11 @@
             }
 
             #error {
-                color: #ff364e;
+                color: $red500;
             }
 
             #success {
-                color: #86ccff;
+                color: $blue500;
             }
         }
 
@@ -94,10 +94,10 @@
             width: 150px;
             border: none;
             padding: 10px;
-            background-color: #c9cdd9;
+            background-color: $greyBlue400;
             font-size: 18px;
             font-weight: 600;
-            color: #3c4253;
+            color: $greyBlue800;
             border-radius: 8px;
             margin-top: 20px;
             display: block;
@@ -109,10 +109,10 @@
             width: 200px;
             border: none;
             padding: 10px;
-            background-color: #c9cdd9;
+            background-color: $greyBlue400;
             font-size: 18px;
             font-weight: 600;
-            color: #3c4253;
+            color: $greyBlue800;
             border-radius: 8px;
             margin-top: 20px;
             display: block;

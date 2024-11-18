@@ -6,13 +6,13 @@
     text-decoration: none;
 
     &-primary {
-        color: #ffffff;
-        background-color: #424755;
+        color: $white;
+        background-color: $greyBlue800;
     }
 
     &-secondary {
         background-color: white;
-        border: 1px solid #424755 !important;
-        color: #424755
+        border: 1px solid $greyBlue800 !important;
+        color: $greyBlue800;
     }
 }

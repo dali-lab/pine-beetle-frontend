@@ -15,7 +15,7 @@
     flex: 1.1 !important;
     border-radius: 20px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
-    background-color: #ffffff;
+    background-color: $white;
     padding: 0;
 }
 
@@ -167,21 +167,21 @@
         }
 
         #empty {
-            background-color: #DBDBDB;
+            background-color: $grey300;
         }
 
         #data-divergence {
-            background-color: #94CBFB;
+            background-color: $blue500;
             box-shadow: none;
         }
 
         #data-spots {
-            background-color: #FFE0B0;
+            background-color: $orangeLight;
             box-shadow: none;
         }
 
         #data-outbreak {
-            background-color: #F9A0A1;
+            background-color: $red100;
             box-shadow: none;
         }
 
@@ -199,14 +199,14 @@
 }
 
 .data-button {
-    background-color: #000000;
+    background-color: $black;
     border-radius: 5px;
     width: 10vw;
     margin-top: 15px;
     cursor: pointer;
 
     p {
-        color: #FFFFFF;
+        color: $white;
     }
 }
 
@@ -289,7 +289,7 @@
 }
 
 .footnote {
-    color: #898989;
+    color: $grey600;
     line-height: 14px;
     width: 53%;
     margin: auto;

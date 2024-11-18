@@ -7,7 +7,7 @@
     width: 40vw;
     padding: 30px;
     border-radius: 20px;
-    background-color: #ffffff;
+    background-color: $white;
     // TODO: replace box shadow with grayer background later
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
 
@@ -28,14 +28,14 @@
                 width: 100%;
 
                 #error-input {
-                    border: solid 2.5px #ff364e;
+                    border: solid 2.5px $red500;
                 }
                 
                 input {
                     width: calc(100% - 30px);
                     height: 43px;
                     border-radius: 8px;
-                    background-color: #f8f9ff;
+                    background-color: $greyBlue100;
                     border: 0;
                     font-family: "Inter";
                     padding-left: 15px;
@@ -58,11 +58,11 @@
             }
 
             #error {
-                color: #ff364e;
+                color: $red500;
             }
 
             #success {
-                color: #86ccff;
+                color: $blue500;
             }
         }
 
@@ -71,7 +71,7 @@
             margin: 14px 127px 0;
             padding: 8px;
             border-radius: 6px;
-            background-color: #c9cdd9;
+            background-color: $greyBlue400;
             border: 0;
             font-family: "Inter";
         }
