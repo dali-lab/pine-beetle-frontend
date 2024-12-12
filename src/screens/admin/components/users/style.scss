@@ -1,5 +1,5 @@
 #users-container {
-    overflow: scroll;
+    overflow: auto;
 
     #users-title {
         font-size: 18px;
@@ -13,7 +13,7 @@
         border-radius: 12px;
         box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.04);
         background-color: $white;
-        overflow: scroll;
+        overflow: auto;
 
         #user-email {
             color: $greyBlue800;
