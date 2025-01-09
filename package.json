@@ -52,6 +52,7 @@
     "axios": "^1.2.1",
     "chart.js": "^2.9.4",
     "chartjs-top-round-bar": "^1.0.1",
+    "d3": "^7.9.0",
     "mapbox-gl": "^2.11.1",
     "mapbox-print-pdf": "^0.4.3",
     "prop-types": "^15.8.1",
