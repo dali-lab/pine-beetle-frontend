@@ -1,0 +1,67 @@
+.histogram {
+    display: flex;
+    margin-bottom: 40px;
+}
+
+.histogram__y-axis-title {
+    position: absolute;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    left: 0;
+    top: 50px;
+    font-weight: 500;
+}
+
+.histogram__legend-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position:relative;
+    width: 130px;
+    height: auto;
+    padding-top: 26px;
+}
+
+.histogram__legend {
+    padding-right: 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-left: 30px;
+    width: 75px;
+
+    p {
+        font-size: 14px;
+        line-height: 31px;
+        text-align: right;
+    }
+}
+
+.histogram__legend--yellow {
+    background-color: $yellow;
+    padding-top: 5px;
+}
+
+.histogram__legend--blue {
+    background-color: $blue500;
+    padding-bottom: 5px;
+}
+
+.histogram__legend--x-axis {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    font-size: 13px;
+    padding: 15px 10px;
+}
+
+.histogram__x-axis-title {
+    font-weight: 500;
+}
+
+.histogram__wrapper {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    padding: 10px;
+    border-left: 3px solid black;
+    border-bottom: 3px solid black;
+    min-width: 450px;
+}
