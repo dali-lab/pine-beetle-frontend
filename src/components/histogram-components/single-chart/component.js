@@ -2,7 +2,12 @@ import React from 'react';
 import ReactECharts from 'echarts-for-react';
 import './style.scss';
 
-const SingleChart = ({ withBorder }) => {
+const SingleChart = ({
+  withBorder,
+  frequency,
+  globalMax,
+  data,
+}) => {
   const options = {
     grid: {
       top: 10,
@@ -16,24 +21,26 @@ const SingleChart = ({ withBorder }) => {
       data: ['0', '1-9', '10-19', '20-49', '50-99', '100-249', '>249'],
       axisLine: {
         show: true,
-        lineStyle: { color: '#000', width: 2 },
+        lineStyle: { color: '#000', width: 1 },
+        onZero: false,
       },
       axisTick: {
         show: true,
         alignWithLabel: true,
-        lineStyle: { color: '#000', width: 1.5 },
+        lineStyle: { color: '#000', width: 1 },
         length: 10,
       },
       axisLabel: {
         show: false,
       },
       boundaryGap: true,
+      offset: 1,
     },
     xAxis: {
       type: 'value',
       axisLine: {
         show: true,
-        lineStyle: { color: '#000', width: 1.3 },
+        lineStyle: { color: '#000', width: 1 },
       },
       axisTick: {
         show: true,
@@ -47,14 +54,15 @@ const SingleChart = ({ withBorder }) => {
         show: true,
         splitNumber: 4, // 3 smaller ticks between big ticks
         length: 3,
-        lineStyle: { color: '#000', width: 0.5 },
+        lineStyle: { color: '#000', width: 1 },
       },
+      max: globalMax,
     },
     series: [
       {
         name: 'Spots',
         type: 'bar',
-        data: [200, 50, 80, 100, 200, 250, 300],
+        data,
         barWidth: '98%',
         barCategoryGap: '1%',
         itemStyle: {
@@ -77,7 +85,9 @@ const SingleChart = ({ withBorder }) => {
   return (
     <div className={`single-chart-wrapper ${withBorder && 'with-border'}`}>
       <ReactECharts option={options} style={{ height: 250, width: 'auto' }} />
-      <p className="single-chart__text">Frequency (n&nbsp;=&nbsp;1517)</p>
+      <p className="single-chart__text">
+        Frequency (n&nbsp;=&nbsp;{frequency})
+      </p>
     </div>
   );
 };

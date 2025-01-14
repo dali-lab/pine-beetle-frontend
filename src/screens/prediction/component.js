@@ -28,6 +28,7 @@ import Histogram from '../../components/histogram-components/histogram/component
 const Prediction = (props) => {
   const {
     data,
+    endYear,
     fetchErrorText,
     isLoading,
     predictionModal,
@@ -39,6 +40,7 @@ const Prediction = (props) => {
     setCounty,
     rangerDistrict,
     setRangerDistrict,
+    frequencyArray,
   } = props;
 
   // functions for showing modal
@@ -57,26 +59,30 @@ const Prediction = (props) => {
     clearAllSelections(); // clears selections initially when switching to this tab
   }, [clearAllSelections]);
 
-  // const getHistogram = (probSpotsGT50) => {
-  //   if (probSpotsGT50 < 0.025) {
-  //     return histogrambin1;
-  //   } else if (probSpotsGT50 < 0.05) {
-  //     return histogrambin2;
-  //   } else if (probSpotsGT50 < 0.15) {
-  //     return histogrambin3;
-  //   } else if (probSpotsGT50 < 0.25) {
-  //     return histogrambin4;
-  //   } else if (probSpotsGT50 < 0.4) {
-  //     return histogrambin5;
-  //   } else {
-  //     return histogrambin6;
-  //   }
-  // };
+  const updateWithBorder = (array, probSpotsGT50) => {
+    const arrayUpdated = array.map((item) => {
+      const rangeArray = item.range.split('-');
+
+      if (probSpotsGT50 >= rangeArray[0] && probSpotsGT50 < rangeArray[1]) {
+        return { ...item, withBorder: true };
+      } else return item;
+    });
+
+    return arrayUpdated;
+  };
+
+  const totalFrequency = frequencyArray.reduce(
+    (sum, item) => sum + item.frequency,
+    0,
+  );
 
   const predModal = () => {
     if (!predictionModal) return null;
-    // const { probSpotsGT50 } = data[0];
-    // const histogram = getHistogram(probSpotsGT50);
+    const { probSpotsGT50 } = data[0];
+    const updatedFrequencyArray = updateWithBorder(
+      frequencyArray,
+      probSpotsGT50,
+    );
     return (
       <Modal
         isOpen={predictionModal}
@@ -96,11 +102,11 @@ const Prediction = (props) => {
             <div className="histogram-container">
               <div id="histogram-title">
                 <span>
-                  Predicted vs. Observed Outcomes for All Data, 1987-2019
-                  (n=2,978)
+                  {`Predicted vs. Observed Outcomes for All Data, 1987-${endYear}
+                  (n=${totalFrequency.toLocaleString()})`}
                 </span>
               </div>
-              <Histogram />
+              <Histogram frequencyArray={updatedFrequencyArray} />
             </div>
             <AboutPredictions />
           </div>
