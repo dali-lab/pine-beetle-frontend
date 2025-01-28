@@ -30,12 +30,15 @@ import {
   truncateText,
 } from './blog';
 
+import getFillColor from './colors';
+
 export {
   downloadCsv,
   getAuthTokenFromStorage,
   getChartModeFromStorage,
   getDataModeFromStorage,
   getDateToDisplay,
+  getFillColor,
   getLatestBlogPost,
   getMapboxRDNameFormat,
   getStateAbbreviationFromStateName,

@@ -7,6 +7,7 @@ import { DATA_MODES } from '../../../../constants';
 
 import trapIcon from '../../../../assets/icons/trap.png';
 import cleridIcon from '../../../../assets/icons/clerids.png';
+import { getFillColor } from '../../../../utils';
 
 const spbText = 'SPB per two weeks, averaged across traps';
 const cleridText = 'clerids per two weeks, averaged across traps';
@@ -31,13 +32,13 @@ const PredictionDetails = (props) => {
               <p id="prediction-subtitle">{data[0].year} Prediction</p>
               <div className="percentages">
                 <div className="prediction-circle">
-                  <div className="circle" id="any-spots">
+                  <div className={`circle ${getFillColor(data[0].probSpotsGT0).colorName}`} id="any-spots">
                     <div id="percent">{((data[0].probSpotsGT0) * 100).toFixed(1)}%</div>
                     <p>Predicted % Chance of Any Spots ({'>'}0 spots)</p>
                   </div>
                 </div>
                 <div className="prediction-circle">
-                  <div className="circle" id="outbreak">
+                  <div className={`circle ${getFillColor(data[0].probSpotsGT50).colorName}`} id="outbreak">
                     <div id="percent">{((data[0].probSpotsGT50) * 100).toFixed(1)}%</div>
                     <p>Predicted % Chance of Outbreak ({'>'}50 spots)</p>
                   </div>
