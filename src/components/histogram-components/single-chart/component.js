@@ -5,7 +5,6 @@ import './style.scss';
 const SingleChart = ({
   withBorder,
   frequency,
-  globalMax,
   data,
 }) => {
   const options = {
@@ -56,11 +55,11 @@ const SingleChart = ({
         length: 3,
         lineStyle: { color: '#000', width: 1 },
       },
-      max: globalMax,
+      max: data.frequency,
     },
     series: [
       {
-        name: 'Spots',
+        name: 'Frequency',
         type: 'bar',
         data,
         barWidth: '98%',

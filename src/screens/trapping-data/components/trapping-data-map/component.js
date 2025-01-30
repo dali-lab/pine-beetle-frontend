@@ -187,9 +187,6 @@ const HistoricalMap = (props) => {
 
     createdMap.addControl(new mapboxgl.NavigationControl());
 
-    // disable map zoom when using scroll
-    createdMap.scrollZoom.disable();
-
     const legendTagsToSet = thresholds.map((threshold, index) => {
       const color = colors[index];
 

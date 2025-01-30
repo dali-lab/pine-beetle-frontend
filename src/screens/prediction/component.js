@@ -9,21 +9,13 @@ import {
   SelectionBar,
 } from './components';
 
-import { Loading } from '../../components';
+import { Histogram, Loading } from '../../components';
 
 import { DATA_MODES } from '../../constants';
 
 import './style.scss';
 
 import closeIcon from '../../assets/icons/close.png';
-
-// import histogrambin1 from '../../assets/images/spb-histogram-bin1.png';
-// import histogrambin2 from '../../assets/images/spb-histogram-bin2.png';
-// import histogrambin3 from '../../assets/images/spb-histogram-bin3.png';
-// import histogrambin4 from '../../assets/images/spb-histogram-bin4.png';
-// import histogrambin5 from '../../assets/images/spb-histogram-bin5.png';
-// import histogrambin6 from '../../assets/images/spb-histogram-bin6.png';
-import Histogram from '../../components/histogram-components/histogram/component';
 
 const Prediction = (props) => {
   const {
@@ -40,7 +32,7 @@ const Prediction = (props) => {
     setCounty,
     rangerDistrict,
     setRangerDistrict,
-    frequencyArray,
+    frequency,
   } = props;
 
   // functions for showing modal
@@ -59,30 +51,10 @@ const Prediction = (props) => {
     clearAllSelections(); // clears selections initially when switching to this tab
   }, [clearAllSelections]);
 
-  const updateWithBorder = (array, probSpotsGT50) => {
-    const arrayUpdated = array.map((item) => {
-      const rangeArray = item.range.split('-');
-
-      if (probSpotsGT50 >= rangeArray[0] && probSpotsGT50 < rangeArray[1]) {
-        return { ...item, withBorder: true };
-      } else return item;
-    });
-
-    return arrayUpdated;
-  };
-
-  const totalFrequency = frequencyArray.reduce(
-    (sum, item) => sum + item.frequency,
-    0,
-  );
-
   const predModal = () => {
     if (!predictionModal) return null;
     const { probSpotsGT50 } = data[0];
-    const updatedFrequencyArray = updateWithBorder(
-      frequencyArray,
-      probSpotsGT50,
-    );
+
     return (
       <Modal
         isOpen={predictionModal}
@@ -103,10 +75,10 @@ const Prediction = (props) => {
               <div id="histogram-title">
                 <span>
                   {`Predicted vs. Observed Outcomes for All Data, 1987-${endYear}
-                  (n=${totalFrequency.toLocaleString()})`}
+                  (n=${frequency.toLocaleString()})`}
                 </span>
               </div>
-              <Histogram frequencyArray={updatedFrequencyArray} />
+              <Histogram probSpotsGT50={probSpotsGT50} />
             </div>
             <AboutPredictions />
           </div>

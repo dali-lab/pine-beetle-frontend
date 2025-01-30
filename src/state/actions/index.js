@@ -44,11 +44,17 @@ import {
   deleteBlogPost,
 } from './blog';
 
+import {
+  ActionTypes as histogramActionTypes,
+  getHistogram,
+} from './histogram';
+
 const ActionTypes = {
   ...dataActionTypes,
   ...selectionActionTypes,
   ...userActionTypes,
   ...blogActionTypes,
+  ...histogramActionTypes,
 };
 
 export {
@@ -67,6 +73,7 @@ export {
   getAvailableStates,
   getAvailableSublocations,
   getAvailableYears,
+  getHistogram,
   getSparseData,
   getPredictions,
   getUserFromStorage,
