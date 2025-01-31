@@ -25,7 +25,7 @@ import {
   STATE_VECTOR_LAYER,
 } from '../../../../constants';
 
-import { getMapboxRDNameFormat } from '../../../../utils';
+import { getMapboxRDNameFormat, getFillColor } from '../../../../utils';
 import { api } from '../../../../services';
 
 import {
@@ -82,11 +82,6 @@ const PredictionMap = (props) => {
     } else {
       return ({ left: `${x - 280}px`, top: `${y - 125}px` });
     }
-  };
-
-  // for the data window once we select a county/RD
-  const windowTitle = () => {
-    return dataMode === DATA_MODES.COUNTY ? `${data[0].county} County` : data[0].rangerDistrict;
   };
 
   // twice-curried function for generating hover callback
@@ -194,9 +189,6 @@ const PredictionMap = (props) => {
 
     createdMap.addControl(new mapboxgl.NavigationControl());
 
-    // disable map zoom when using scroll
-    createdMap.scrollZoom.disable();
-
     const legendTagsToSet = thresholds.map((threshold, index) => {
       const color = colors[index];
 
@@ -260,21 +252,7 @@ const PredictionMap = (props) => {
       rangerDistrict,
       state,
     }) => {
-      let color;
-
-      if (fillProb <= 0.025) {
-        color = colors[0];
-      } else if (fillProb > 0.025 && fillProb <= 0.05) {
-        color = colors[1];
-      } else if (fillProb > 0.05 && fillProb <= 0.15) {
-        color = colors[2];
-      } else if (fillProb > 0.15 && fillProb <= 0.25) {
-        color = colors[3];
-      } else if (fillProb > 0.25 && fillProb <= 0.4) {
-        color = colors[4];
-      } else {
-        color = colors[5];
-      }
+      const color = getFillColor(fillProb).color;
 
       const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
       const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict).toUpperCase() : '';
@@ -502,56 +480,15 @@ const PredictionMap = (props) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (data.length === 1) {
+      setPredictionModal(true);
+    }
+  }, [data]);
+
   return (
     <div className="container flex-item-left" id="map-container">
       <div id="map" />
-      <div className="map-overlay-data" id="data">
-        <h3 className="data-title">
-          {
-            data?.length === 1
-              ? windowTitle()
-              : 'Select county or federal land on the map to view prediction data'
-          }
-        </h3>
-        {
-          data?.length === 1
-          && <p>{year} Prediction</p>
-        }
-        <div className="data-info">
-          <div className="data-info-section">
-            {
-              data?.length === 1
-                ? (
-                  <div className="circle" id="data-spots">
-                    <div id="percent">{((data[0].probSpotsGT0) * 100).toFixed(0)}%</div>
-                  </div>
-                )
-                : <div className="circle" id="empty" />
-            }
-            <p>Probability of any spots</p>
-          </div>
-          <div className="data-info-section">
-            {
-              data?.length === 1
-                ? (
-                  <div className="circle" id="data-outbreak">
-                    <div id="percent">{((data[0].probSpotsGT50) * 100).toFixed(0)}%</div>
-                  </div>
-                )
-                : <div className="circle" id="empty" />
-            }
-            <p>Probability of a spot outbreak</p>
-          </div>
-        </div>
-        {
-          data?.length === 1
-          && (
-            <div className="data-button" onClick={() => setPredictionModal(true)}>
-              <p>View details</p>
-            </div>
-          )
-        }
-      </div>
       <div id="map-overlay-download" onClick={downloadMap}>
         <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
         <div>

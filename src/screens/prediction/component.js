@@ -34,10 +34,22 @@ const Prediction = (props) => {
     dataMode,
     setDataMode,
     clearAllSelections,
+    county,
+    setCounty,
+    rangerDistrict,
+    setRangerDistrict,
   } = props;
 
   // functions for showing modal
-  const handleClose = () => setPredictionModal(false);
+  const handleClose = () => {
+    setPredictionModal(false);
+    if (county.length > 0) {
+      setCounty([]);
+    }
+    if (rangerDistrict.length > 0) {
+      setRangerDistrict([]);
+    }
+  };
   const handleShow = () => setPredictionModal(true);
 
   useEffect(() => {

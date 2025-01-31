@@ -7,6 +7,8 @@ import {
   clearSelections,
   setDataMode,
   setPredictionModal,
+  setCounty,
+  setRangerDistrict,
 } from '../../state/actions';
 
 const mapStateToProps = (state) => {
@@ -24,6 +26,8 @@ const mapStateToProps = (state) => {
       predictionModal,
       chartMode,
       dataMode,
+      county,
+      rangerDistrict,
     },
   } = state;
 
@@ -36,6 +40,8 @@ const mapStateToProps = (state) => {
     predictionModal,
     chartMode,
     dataMode,
+    county,
+    rangerDistrict,
   };
 };
 
@@ -52,6 +58,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     setDataMode: (mode) => {
       dispatch(setDataMode(mode));
+    },
+    setCounty: (county) => {
+      dispatch(setCounty(county));
+    },
+    setRangerDistrict: (rangerDistrict) => {
+      dispatch(setRangerDistrict(rangerDistrict));
     },
   };
 };
