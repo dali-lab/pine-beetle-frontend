@@ -13,6 +13,7 @@ const SUBROUTES = {
   SPOT_DATA_COUNTY: 'summarized-county/spots/upload',
   SPOT_DATA_RD: 'summarized-rangerdistrict/spots/upload',
   SURVEY123: 'survey123/upload',
+  HISTOGRAM: 'histogram',
 };
 
 /**
@@ -157,4 +158,27 @@ export const updatePassword = async (email, currentPassword, password) => {
  */
 export const sendForgotPasswordEmail = async (email) => {
   return userService.sendForgotPasswordEmail(email);
+};
+
+/**
+ * @description update the histogram data with new trapping data
+ * @returns {Promise<Object>} API response
+ */
+export const updateHistogram = async () => {
+  const url = `${global.API_URL}/${SUBROUTES.HISTOGRAM}/update`;
+  const token = getAuthTokenFromStorage();
+
+  try {
+    const { data: response } = await axios.post(url, {}, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    const { data } = response;
+
+    return data;
+  } catch (error) {
+    console.error(error); throw error;
+  }
 };

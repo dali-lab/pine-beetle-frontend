@@ -91,17 +91,50 @@
             }
         }
 
-        #rerun-button {
-            margin: 40px 346px 40px 349px;
-            padding: 8px 34px 7px 35px;
-            border-radius: 6px;
-            background-color: $greyBlue900;
-            font-size: 18px;
-            font-weight: 600;
-            line-height: 1.8;
-            color: $white;
-            white-space: nowrap;
+        .dashboard-buttons-container {
+            display:flex;
+            justify-content: space-around;
+            margin: 40px;
+
+            .button {
+                flex: 0
+            }
+
+            #rerun-button,
+            #update-histogram-button {
+                margin: 20px 40px;
+                padding: 8px 34px 7px 35px;
+                border-radius: 6px;
+                background-color: $greyBlue900;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 1.8;
+                color: $white;
+                white-space: nowrap;
+            }
+
+            #model-error-container,
+            #histogram-error-container {
+                color: $red500;
+                display: flex;
+                justify-content: center;
+                font-weight: 700;
+
+                .error-mark {
+                    width: 30px;
+                    height: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 100%;
+                    flex: 0 0 auto;
+                    background-color: $red500;
+                    color: $white;
+                    margin-right: 10px;
+                }
+            }
         }
+
     }
 }
 
