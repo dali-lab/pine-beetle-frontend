@@ -129,6 +129,11 @@
     // TODO: replace box shadow with grayer background later
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
     overflow-y: scroll;
+
+    #close-icon {
+        position: sticky;
+        top: -25px;
+    }
 }
 
 // remove unnecessary blue outline from modal (does not impact accessibility)
