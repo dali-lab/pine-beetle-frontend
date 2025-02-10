@@ -1,0 +1,12 @@
+.single-chart-wrapper {
+    padding: 7px;
+
+    &.with-border {
+        border-radius: 10px;
+        box-shadow: 0 0 0 3px black;
+    }
+}
+
+.single-chart__text {
+    font-size: 10px;
+}

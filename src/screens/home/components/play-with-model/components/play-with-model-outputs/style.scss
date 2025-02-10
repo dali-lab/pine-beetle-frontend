@@ -38,22 +38,17 @@
             border-radius: 12px;
         }
 
-        #prob-spots,
-        #prob-spots-disabled {
-            box-shadow: 0 18px 50px 0 rgba(255, 193, 72, 0.4);
-            background-color: $yellow;
-        }
-
-        #prob-outbreak,
-        #prob-outbreak-disabled {
-            box-shadow: 0 18px 50px 0 rgba(134, 204, 255, 0.4);
-            background-color: $blue500;
-        }
-
         #prob-outbreak-disabled,
         #prob-spots-disabled {
             box-shadow: 0 18px 50px 0 rgba(49, 57, 85, 0.04);
             background-color: $greyBlue400;
+        }
+
+        .darkRed {
+            #percent,
+            #prob-text {
+                color: $white;
+            }
         }
     }
 

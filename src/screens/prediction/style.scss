@@ -9,8 +9,6 @@
 }
 
 .prediction-bottom {
-    display: flex;
-    flex-direction: row;
     margin-top: 25px;
 }
 
@@ -94,24 +92,26 @@
     }
 }
 
-.histogram {
+.histogram-container {
     padding: 25px;
+    padding-right: 75px;
     border-radius: 26px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: $white;
     height: 0%;
 }
 
-.histogram #histogram-title {
+.histogram-container #histogram-title {
     font-size: 24px;
     font-weight: 600;
     line-height: 1.6;
     letter-spacing: normal;
     text-align: left;
     color: $greyBlue900;
+    margin-bottom: 40px;
 }
 
-.histogram img {
+.histogram-container img {
     width: 45vw;
 }
 
@@ -125,10 +125,15 @@
     width: 70vw;
     padding: 50px;
     border-radius: 20px;
-    background-color: $white;
+    background-color: $backgroundColor;
     // TODO: replace box shadow with grayer background later
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
     overflow-y: scroll;
+
+    #close-icon {
+        position: sticky;
+        top: -25px;
+    }
 }
 
 // remove unnecessary blue outline from modal (does not impact accessibility)

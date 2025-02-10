@@ -21,6 +21,7 @@ const mapStateToProps = (state) => {
     data: {
       predictions,
       fetchingPredictions,
+      yearData,
     },
     selections: {
       predictionModal,
@@ -29,12 +30,16 @@ const mapStateToProps = (state) => {
       county,
       rangerDistrict,
     },
+    histogram: {
+      frequency,
+    },
   } = state;
 
   const isLoading = fetchingPredictions;
 
   return {
     data: predictions,
+    endYear: yearData[yearData.length - 1]?.year,
     fetchErrorText,
     isLoading,
     predictionModal,
@@ -42,6 +47,7 @@ const mapStateToProps = (state) => {
     dataMode,
     county,
     rangerDistrict,
+    frequency,
   };
 };
 

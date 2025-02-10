@@ -10,7 +10,7 @@ import {
   Users,
 } from './components';
 
-import { runPipeline } from '../../services/admin';
+import { runPipeline, updateHistogram } from '../../services/admin';
 
 import './style.scss';
 
@@ -30,9 +30,12 @@ const Admin = (props) => {
 
   const [changePasswordVisible, setChangePasswordVisible] = useState(false);
   const [runningModels, setRunningModels] = useState(false);
+  const [updatingHistogram, setUpdatingHistogram] = useState(false);
   const [modelError, setModelError] = useState('');
+  const [histogramError, setHistogramError] = useState('');
 
   const runAllModels = async () => {
+    setModelError('');
     setRunningModels(true);
 
     try {
@@ -41,6 +44,19 @@ const Admin = (props) => {
       setModelError(err?.response?.data?.error?.message || '');
     } finally {
       setRunningModels(false);
+    }
+  };
+
+  const runUpdateHistogram = async () => {
+    setHistogramError('');
+    setUpdatingHistogram(true);
+
+    try {
+      await updateHistogram();
+    } catch (err) {
+      setHistogramError(err?.response?.data || '');
+    } finally {
+      setUpdatingHistogram(false);
     }
   };
 
@@ -66,20 +82,41 @@ const Admin = (props) => {
               <div id="add-users"><AddUser /></div>
             </div>
           </div>
-          <button
-            className="animated-button"
-            disabled={runningModels}
-            id="rerun-button"
-            onClick={runAllModels}
-            type="button"
-          >
-            {runningModels ? 'Running...' : 'Rerun all models'}
-          </button>
-          {modelError && (
-            <div id="model-error-container">
-              <p>{modelError}</p>
+          <div className="dashboard-buttons-container">
+            <div className="button">
+              <button
+                className="animated-button"
+                disabled={runningModels}
+                id="rerun-button"
+                onClick={runAllModels}
+                type="button"
+              >
+                {runningModels ? 'Running...' : 'Rerun all models'}
+              </button>
+              {modelError && (
+              <div id="model-error-container">
+                <p>{modelError}</p>
+              </div>
+              )}
             </div>
-          )}
+            <div className="button">
+              <button
+                className="animated-button"
+                disabled={updatingHistogram}
+                id="update-histogram-button"
+                onClick={runUpdateHistogram}
+                type="button"
+              >
+                {updatingHistogram ? 'Updating...' : 'Update histogram'}
+              </button>
+              {histogramError && (
+              <div id="histogram-error-container">
+                <span className="error-mark">!</span>
+                <p>{histogramError}</p>
+              </div>
+              )}
+            </div>
+          </div>
           <div className="blog-container">
             <AddBlogPost />
             <BlogPosts />
