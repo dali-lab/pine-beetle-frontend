@@ -2,7 +2,7 @@
     height: auto;
     margin: 0px 0px 0px 0px;
     padding: 0px 5px;
-    background-color: #f1f1fb;
+    background-color: $footerColor;
 
     #footer-container {
         padding: 0px;
@@ -17,7 +17,7 @@
     p {
         text-align: center;
         font-family: 'Open Sans', sans-serif;
-        color: #2f303a;
+        color: $greyBlue900;
     }
 
     a {

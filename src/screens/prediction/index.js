@@ -7,6 +7,8 @@ import {
   clearSelections,
   setDataMode,
   setPredictionModal,
+  setCounty,
+  setRangerDistrict,
 } from '../../state/actions';
 
 const mapStateToProps = (state) => {
@@ -19,11 +21,17 @@ const mapStateToProps = (state) => {
     data: {
       predictions,
       fetchingPredictions,
+      yearData,
     },
     selections: {
       predictionModal,
       chartMode,
       dataMode,
+      county,
+      rangerDistrict,
+    },
+    histogram: {
+      frequency,
     },
   } = state;
 
@@ -31,11 +39,15 @@ const mapStateToProps = (state) => {
 
   return {
     data: predictions,
+    endYear: yearData[yearData.length - 1]?.year,
     fetchErrorText,
     isLoading,
     predictionModal,
     chartMode,
     dataMode,
+    county,
+    rangerDistrict,
+    frequency,
   };
 };
 
@@ -52,6 +64,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     setDataMode: (mode) => {
       dispatch(setDataMode(mode));
+    },
+    setCounty: (county) => {
+      dispatch(setCounty(county));
+    },
+    setRangerDistrict: (rangerDistrict) => {
+      dispatch(setRangerDistrict(rangerDistrict));
     },
   };
 };

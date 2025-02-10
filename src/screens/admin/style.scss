@@ -15,7 +15,7 @@
         p {
             font-size: 16px;
             text-align: center;
-            color: #4d4f5f;
+            color: $greyBlue800;
         }
 
         #header-options {
@@ -24,7 +24,7 @@
             justify-content: center;
 
             p {
-                color: #2f303a;
+                color: $greyBlue900;
                 text-decoration: underline;
             }
 
@@ -42,7 +42,7 @@
         padding: 37px;
         border-radius: 26px;
         box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
-        background-color: #ffffff;
+        background-color: $white;
         margin: 15px unquote("max(100px, 17%)") 100px;
 
         #dashboard {
@@ -54,12 +54,12 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                overflow: scroll;
+                overflow: auto;
 
                 div {
                     padding: 23px;
                     border-radius: 22px;
-                    background-color: #f8f9ff;
+                    background-color: $greyBlue100;
                     flex: 1 1 auto;
                     width: 400px;
                 }
@@ -74,7 +74,7 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                overflow: scroll;
+                overflow: auto;
                 margin-left: 20px;
 
                 #users-container,
@@ -82,7 +82,7 @@
                     flex: 1 1 auto;
                     padding: 23px;
                     border-radius: 22px;
-                    background-color: #f8f9ff;
+                    background-color: $greyBlue100;
                 }
 
                 #add-users {
@@ -91,17 +91,50 @@
             }
         }
 
-        #rerun-button {
-            margin: 40px 346px 40px 349px;
-            padding: 8px 34px 7px 35px;
-            border-radius: 6px;
-            background-color: #2f303a;
-            font-size: 18px;
-            font-weight: 600;
-            line-height: 1.8;
-            color: #ffffff;
-            white-space: nowrap;
+        .dashboard-buttons-container {
+            display:flex;
+            justify-content: space-around;
+            margin: 40px;
+
+            .button {
+                flex: 0
+            }
+
+            #rerun-button,
+            #update-histogram-button {
+                margin: 20px 40px;
+                padding: 8px 34px 7px 35px;
+                border-radius: 6px;
+                background-color: $greyBlue900;
+                font-size: 18px;
+                font-weight: 600;
+                line-height: 1.8;
+                color: $white;
+                white-space: nowrap;
+            }
+
+            #model-error-container,
+            #histogram-error-container {
+                color: $red500;
+                display: flex;
+                justify-content: center;
+                font-weight: 700;
+
+                .error-mark {
+                    width: 30px;
+                    height: 30px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 100%;
+                    flex: 0 0 auto;
+                    background-color: $red500;
+                    color: $white;
+                    margin-right: 10px;
+                }
+            }
         }
+
     }
 }
 
@@ -114,12 +147,12 @@
     flex: 1 1 auto;
     padding: 23px;
     border-radius: 22px;
-    background-color: #f8f9ff;
+    background-color: $greyBlue100;
     width: 50%;
 }
 
 .blog-posts-container {
     margin-left: 20px;
-    overflow: scroll;
+    overflow: auto;
     max-height: 500px;
 }

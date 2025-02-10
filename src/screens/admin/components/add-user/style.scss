@@ -1,6 +1,6 @@
 #sign-up-title {
     font-size: 16px;
-    color: #2f303a;
+    color: $greyBlue900;
     margin-bottom: 10px;
 }
 
@@ -31,10 +31,10 @@
             border: none;
             border-radius: 10px;
             box-shadow: 0 6px 40px 0 rgba(0, 0, 0, 0.04);
-            background-color: #ffffff;
+            background-color: $white;
             font-size: 15px;
             line-height: 1.51;
-            color: #62697e;
+            color: $greyBlue800;
         }
     }
 }
@@ -50,12 +50,12 @@
     margin: 19px 67px 0 0;
     padding: 4px 39px 0;
     border-radius: 6px;
-    background-color: #c9cdd9;
+    background-color: $greyBlue400;
     margin-top: 20px;
     font-size: 18px;
     font-weight: 600;
     line-height: 1.8;
-    color: #2f303a;
+    color: $greyBlue900;
     margin-left: auto;
     margin-right: auto;
 }

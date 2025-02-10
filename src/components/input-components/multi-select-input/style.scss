@@ -1,12 +1,12 @@
 .multi-select-container {
-    background-color: #F5F5F5;
+    background-color: $grey100;
     z-index: 2;
 
     .input-container {
         display: flex;
         flex-direction: row;
         align-items: center;
-        background-color: #FFFFFF;
+        background-color: $white;
         height: 45px;
         border-radius: 10px;
 
@@ -41,10 +41,10 @@
                     flex-direction: row;
                     justify-content: space-between;
                     align-items: center;
-                    background-color: #F3F3F3;
+                    background-color: $grey200;
 
                     .location-list-instructions {
-                        color: #434754;
+                        color: $greyBlue800;
                         padding: 5px 10px;
                         margin-left: 10px;
                         border-radius: 10px;
@@ -67,15 +67,15 @@
                     }
 
                     .location-list-clear {
-                        color: #2656B5;
+                        color: $blue800;
                         font-size: 15px;
                         padding: 5px 10px;
                     }
                 }
 
                 .location-list-item {
-                    background-color: #F3F3F3;
-                    color: #434754;
+                    background-color: $grey200;
+                    color: $greyBlue800;
                     width: 300px;
                     display: flex;
                     flex-direction: column;
@@ -94,7 +94,7 @@
 
                         .location-list-item-select-status {
                             font-size: 14px;
-                            color: #BEBEBE;
+                            color: $grey500;
                             margin-left: 5px;
                         }
                     }
@@ -104,8 +104,8 @@
                         margin-left: 50px;
 
                         .children-list-item {
-                            background-color: #F3F3F3;
-                            color: #434754;
+                            background-color: $grey200;
+                            color: $greyBlue800;
                             width: 250px;
                             min-height: 40px;
                             display: flex;

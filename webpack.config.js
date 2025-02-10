@@ -60,6 +60,7 @@ module.exports = {
             loader: 'sass-loader',
             options: {
               sourceMap: true,
+              additionalData: '@import "src/styles/colors.scss";',
             },
           },
         ],

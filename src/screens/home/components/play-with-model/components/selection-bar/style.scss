@@ -1,5 +1,5 @@
 .play-with-model-bar {
-    background-color: #F5F5F5;
+    background-color: $grey100;
     box-shadow: 0px 12px 30px -5px rgba(77, 81, 94, 0.04);
     border-radius: 18px;
     font-family: 'Inter';
@@ -43,14 +43,15 @@
 }
 
 .menuInstruction {
-    background: #FFFFFF;
+    background: $white;
 }
 
 .menuInstruction label {
-    background: #FFFFFF;
-    color: #7c7c96;
+    background: $white;
+    color: $greyBlue500;
 }
 
+// TODO: review these styles - they are probably not used
 .menuInstruction .input {
     padding-left: 20px;
     background: #EDEDEE;
@@ -83,7 +84,7 @@
 }
 
 .county-rd-selection {
-    color: #2d2d2d !important;
+    color: $headingColor !important;
     font-weight: 600;
 }
 
@@ -99,7 +100,7 @@
     border: none;
     cursor: pointer;
     outline: none;
-    color: #84848a;
+    color: $greyBlue600;
     font-size: 18px;
     line-height: 1.8;
 }

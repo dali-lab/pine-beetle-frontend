@@ -93,7 +93,7 @@ const PlayWithModel = (props) => {
         spb: spbPer2Weeks,
         endobrev,
         cleridst1,
-        modelVersion,
+        modelVersion: modelVersion || DEFAULT_MODEL_VERSION,
       });
     }
   }, [county, dataMode, predictions, rangerDistrict, selectedState]);

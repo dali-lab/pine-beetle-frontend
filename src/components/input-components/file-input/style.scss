@@ -11,10 +11,10 @@ input[type=file] {
     display: inline-block;
     padding: 6px 15px 5px;
     border-radius: 6px;
-    background-color: #c9cdd9;
+    background-color: $greyBlue400;
     font-size: 18px;
     line-height: 1.8;
-    color: #000000;
+    color: $black;
     margin-top: 8px;
     cursor: pointer;
     border: 0;
@@ -22,7 +22,7 @@ input[type=file] {
 }
 
 #upload-button {
-    background-color: #86ccff;
+    background-color: $blue500;
 }
 
 .uploading-message-container {
@@ -40,13 +40,13 @@ input[type=file] {
 }
 
 #success-message {
-    color: #86ccff;
+    color: $blue500;
     margin-top: -5px !important;
 }
 
 #uploading-error-container {
     h3 {
-        color: #ff364e;
+        color: $red500;
         margin-bottom: 20px;
     }
 
@@ -54,10 +54,10 @@ input[type=file] {
         width: 100px;
         border: none;
         padding: 10px;
-        background-color: #c9cdd9;
+        background-color: $greyBlue400;
         font-size: 14px;
         font-weight: 600;
-        color: #3c4253;
+        color: $greyBlue800;
         border-radius: 8px;
         margin-top: 20px;
         display: block;

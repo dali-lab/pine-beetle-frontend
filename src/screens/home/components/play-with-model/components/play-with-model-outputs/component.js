@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getFillColor } from '../../../../../../utils';
 
 import './style.scss';
 
@@ -34,7 +35,10 @@ const PlayWithModelOutputs = (props) => {
 
   const predictionDetails = () => (
     <>
-      <div id={showPredictions ? 'prob-spots' : 'prob-spots-disabled'}>
+      <div
+        id={showPredictions ? 'prob-spots' : 'prob-spots-disabled'}
+        className={showPredictions && `color-fill-with-shadow ${getFillColor(probSpots).colorName}`}
+      >
         <div id="percent">
           {showPredictions
             ? `${(probSpots * 100).toFixed(1)}%`
@@ -44,7 +48,10 @@ const PlayWithModelOutputs = (props) => {
           <p>Predicted % Chance of Any Spots ({'>'}0 spots)</p>
         </div>
       </div>
-      <div id={showPredictions ? 'prob-outbreak' : 'prob-outbreak-disabled'}>
+      <div
+        id={showPredictions ? 'prob-outbreak' : 'prob-outbreak-disabled'}
+        className={showPredictions && `color-fill-with-shadow ${getFillColor(probOutbreak).colorName}`}
+      >
         <div id="percent">
           {showPredictions
             ? `${(probOutbreak * 100).toFixed(1)}%`

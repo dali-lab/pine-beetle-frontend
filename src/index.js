@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import reducers from './state/reducers';
 
 import App from './app';
-import './style.scss';
+import './styles/main.scss';
 
 // google analytics
 if (process.env.ANALYTICS_ENV === 'PROD') {
