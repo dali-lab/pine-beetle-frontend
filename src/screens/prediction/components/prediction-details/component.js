@@ -10,7 +10,6 @@ import cleridIcon from '../../../../assets/icons/clerids.png';
 import { getFillColor } from '../../../../utils';
 
 const spbText = 'SPB per two weeks, averaged across traps';
-const cleridText = 'clerids per two weeks, averaged across traps';
 
 const PredictionDetails = (props) => {
   const {
@@ -70,18 +69,6 @@ const PredictionDetails = (props) => {
                     <hr />
                     <div className="year-title">{currYear - 1}</div>
                   </div>
-                  <div className="yeart1-clerids" id="clerids">
-                    <hr />
-                    <div className="content-container">
-                      <img
-                        src={cleridIcon}
-                        alt="clerids"
-                      />
-                      {/* note: model uses 77 for cleridst1 if it is null */}
-                      <div className="content-text" data-tip={cleridText}>{Math.round(data[0].cleridst1) || 'null'} <u>clerids</u></div>
-                      <ReactTooltip multiline place="right" />
-                    </div>
-                  </div>
                   <div className="yeart1-spots" id="spots">
                     <hr />
                     <div className="content-container">
@@ -108,7 +95,7 @@ const PredictionDetails = (props) => {
                     </div>
                   </div>
                   <div className="curr-endobrev" id="endobrev">
-                    <hr />
+                    <hr className="content-horizontal-rule" />
                     <div className="content-container">
                       <div className="content-text">{(data[0].endobrev === 0) ? 'no' : 'yes'} <u>endo-brevicomin</u></div>
                     </div>
