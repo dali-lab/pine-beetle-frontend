@@ -15,6 +15,7 @@ import {
   Prediction,
   Blog,
   SingleBlogPost,
+  ResultsComparison,
 } from '../screens';
 
 import {
@@ -129,6 +130,7 @@ const App = (props) => {
           <Route path={ROUTES.RESOURCES} component={Resources} />
           <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
           <Route path={ROUTES.PREDICTIONS} component={Prediction} />
+          <Route path={ROUTES.RESULTS_COMPARISON} component={ResultsComparison} />
           {Object.entries(RESOURCE_ROUTES).map(([TYPE, ROUTE]) => (
             <Route
               key={ROUTE}
