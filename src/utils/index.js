@@ -32,8 +32,19 @@ import {
 
 import getFillColor from './colors';
 
+import {
+  createMapClickCallback,
+  createHoverCallback,
+  downloadMap,
+  generateMap,
+} from './map';
+
 export {
+  createHoverCallback,
+  createMapClickCallback,
   downloadCsv,
+  downloadMap,
+  generateMap,
   getAuthTokenFromStorage,
   getChartModeFromStorage,
   getDataModeFromStorage,
