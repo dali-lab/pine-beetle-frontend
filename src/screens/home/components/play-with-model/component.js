@@ -9,7 +9,7 @@ import {
 
 import { DATA_MODES } from '../../../../constants';
 
-export const DEFAULT_MODEL_VERSION = 2024;
+export const DEFAULT_MODEL_VERSION = 2025;
 
 const PlayWithModel = (props) => {
   const {
