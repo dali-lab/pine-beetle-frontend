@@ -37,6 +37,8 @@ import {
   createHoverCallback,
   downloadMap,
   generateMap,
+  mapboxHoverStyle,
+  zoomToSelectedState,
 } from './map';
 
 export {
@@ -56,6 +58,7 @@ export {
   getStateNameFromAbbreviation,
   getUserIdFromStorage,
   formatPostDates,
+  mapboxHoverStyle,
   removeAuthTokenFromStorage,
   removeUserIdFromStorage,
   setAuthTokenInStorage,
@@ -65,4 +68,5 @@ export {
   sortBlogPosts,
   toQueryParams,
   truncateText,
+  zoomToSelectedState,
 };

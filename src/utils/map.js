@@ -2,7 +2,12 @@ import React from 'react';
 import mapboxPrintPdf from 'mapbox-print-pdf';
 import mapboxgl from 'mapbox-gl';
 import {
-  DATA_MODES, MAP_SOURCE_NAME, MAP_SOURCES, MAP_TYPES, VECTOR_LAYER,
+  DATA_MODES,
+  MAP_SOURCE_NAME,
+  MAP_SOURCES,
+  MAP_TYPES,
+  stateAbbrevToZoomLevel,
+  VECTOR_LAYER,
 } from '../constants';
 import { getMapboxRDNameFormat } from './abbreviation-mappings';
 
@@ -222,6 +227,39 @@ const downloadMap = (map, year, isDownloadingMap, setIsDownloadingMap, selectedS
     });
 };
 
+const zoomToSelectedState = (selectedState, map) => {
+  if (selectedState) {
+    const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
+
+    map.flyTo({
+      center: zoom[0],
+      zoom: zoom[1],
+    });
+  } else {
+    map.flyTo({
+      center: [-84.3880, 33.7490],
+      zoom: 4.8,
+    });
+  }
+};
+
+const mapboxHoverStyle = (x, y) => {
+  if (x < 300 && y < 200) {
+    return ({ left: `${x}px`, top: `${y}px` });
+  } else if (y < 200) {
+    return ({ left: `${x - 280}px`, top: `${y}px` });
+  } else if (x < 300) {
+    return ({ left: `${x}px`, top: `${y - 125}px` });
+  } else {
+    return ({ left: `${x - 280}px`, top: `${y - 125}px` });
+  }
+};
+
 export {
-  createMapClickCallback, createHoverCallback, generateMap, downloadMap,
+  createMapClickCallback,
+  createHoverCallback,
+  downloadMap,
+  generateMap,
+  mapboxHoverStyle,
+  zoomToSelectedState,
 };

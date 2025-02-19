@@ -11,11 +11,9 @@
 
 /* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
-import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl';
 
 import {
-  stateAbbrevToZoomLevel,
   DATA_MODES,
   SOURCE_LAYERS,
   MAP_SOURCE_NAME,
@@ -30,6 +28,7 @@ import {
   downloadMap,
   generateMap,
   getMapboxRDNameFormat,
+  zoomToSelectedState,
 } from '../../../../utils';
 import { api } from '../../../../services';
 
@@ -39,10 +38,7 @@ import {
 } from './constants';
 
 import './style.scss';
-
-import questionIcon from '../../../../assets/icons/help-circle.png';
-
-const helpText = 'Please use Chrome, Firefox,<br />\nor Edge to download map.';
+import { Map } from '../../../../components';
 
 const HistoricalMap = (props) => {
   const {
@@ -239,19 +235,7 @@ const HistoricalMap = (props) => {
 
     if (endYear.toString().length === 4) colorFill(rawData);
 
-    if (selectedState) {
-      const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
-
-      map.flyTo({
-        center: zoom[0],
-        zoom: zoom[1],
-      });
-    } else {
-      map.flyTo({
-        center: [-84.3880, 33.7490],
-        zoom: 4.8,
-      });
-    }
+    zoomToSelectedState(selectedState, map);
   }, [rawData, selectedState, map]); // endYear can prob be added. colorFill needs useCallback
 
   useEffect(() => {
@@ -339,9 +323,15 @@ const HistoricalMap = (props) => {
 
   return (
     <div id="trapping-map-container">
-      <div id="map" />
-      <div id="map-overlay-download"
-        onClick={() => downloadMap(
+      <Map
+        hover={trappingHover}
+        legend={(
+          <>
+            <div className="legend-key-title">Total Number of Spots</div>
+            {legendTags}
+          </>
+              )}
+        downloadCallback={() => downloadMap(
           map,
           endYear,
           isDownloadingMap,
@@ -350,23 +340,8 @@ const HistoricalMap = (props) => {
           MAP_TYPES.HISTORICAL,
           { titleDetails: { selectedState, period: `${startYear}-${endYear}` }, thresholds, colors },
         )}
-      >
-        <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
-        <div>
-          <img id="icon-small"
-            data-tip={helpText}
-            src={questionIcon}
-            alt="Help"
-          />
-          <ReactTooltip multiline place="right" />
-        </div>
-
-      </div>
-      <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title">Total Number of Spots</div>
-        {legendTags}
-      </div>
-      {trappingHover}
+        isDownloadingMap={isDownloadingMap}
+      />
     </div>
   );
 };

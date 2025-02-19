@@ -11,12 +11,10 @@
 
 /* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
-import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl';
 
 import {
   DATA_MODES,
-  stateAbbrevToZoomLevel,
   SOURCE_LAYERS,
   MAP_SOURCE_NAME,
   VECTOR_LAYER,
@@ -25,9 +23,14 @@ import {
 } from '../../../../constants';
 
 import {
-  getMapboxRDNameFormat, getFillColor, createMapClickCallback, generateMap,
+  getMapboxRDNameFormat,
+  getFillColor,
+  createMapClickCallback,
+  generateMap,
   downloadMap,
   createHoverCallback,
+  zoomToSelectedState,
+  mapboxHoverStyle,
 } from '../../../../utils';
 import { api } from '../../../../services';
 
@@ -38,9 +41,8 @@ import {
 
 import './style.scss';
 
-import questionIcon from '../../../../assets/icons/help-circle.png';
-
-const helpText = 'Please use Chrome, Firefox,<br />\nor Edge to download map.';
+import { Map } from '../../../../components';
+import TogglesOverlay from '../../../../components/map/components';
 
 const PredictionMap = (props) => {
   const {
@@ -74,18 +76,6 @@ const PredictionMap = (props) => {
         .catch(console.error);
     }
   }, [dataMode]);
-
-  const mapboxHoverStyle = (x, y) => {
-    if (x < 300 && y < 200) {
-      return ({ left: `${x}px`, top: `${y}px` });
-    } else if (y < 200) {
-      return ({ left: `${x - 280}px`, top: `${y}px` });
-    } else if (x < 300) {
-      return ({ left: `${x}px`, top: `${y - 125}px` });
-    } else {
-      return ({ left: `${x - 280}px`, top: `${y - 125}px` });
-    }
-  };
 
   const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availStates) => {
     const callback = (hoverState, location, x, y) => {
@@ -183,12 +173,40 @@ const PredictionMap = (props) => {
 
   useEffect(() => {
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
-    const clickCallback = createMapClickCallback(availableStates, availableSublocations, selectedState, data, dataMode, props.county, setCounty, props.rangerDistrict, setRangerDistrict);
-    const hoverCallback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates);
+    const clickCallback = createMapClickCallback(
+      availableStates,
+      availableSublocations,
+      selectedState,
+      data,
+      dataMode,
+      props.county,
+      setCounty,
+      props.rangerDistrict,
+      setRangerDistrict,
+    );
+    const hoverCallback = createMapHoverCallback(
+      data,
+      allRangerDistricts,
+      dataMode,
+      selectedState,
+      availableStates,
+    );
 
     setTimeout(() => {
       setMap(undefined);
-      generateMap(true, map, thresholds, colors, setLegendTags, dataMode, clickCallback, setMapClickCallback, hoverCallback, setMapHoverCallback, setMap);
+      generateMap(
+        true,
+        map,
+        thresholds,
+        colors,
+        setLegendTags,
+        dataMode,
+        clickCallback,
+        setMapClickCallback,
+        hoverCallback,
+        setMapHoverCallback,
+        setMap,
+      );
     }, 100);
   }, [dataMode]);
 
@@ -197,19 +215,7 @@ const PredictionMap = (props) => {
 
     if (year.toString().length === 4 && data.length > 0) colorPredictions(data);
 
-    if (selectedState) {
-      const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
-
-      map.flyTo({
-        center: zoom[0],
-        zoom: zoom[1],
-      });
-    } else {
-      map.flyTo({
-        center: [-84.3880, 33.7490],
-        zoom: 4.8,
-      });
-    }
+    zoomToSelectedState(selectedState, map);
   }, [data, selectedState, map]);
 
   useEffect(() => {
@@ -236,7 +242,17 @@ const PredictionMap = (props) => {
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
-      const callback = createMapClickCallback(availableStates, availableSublocations, selectedState, data, dataMode, props.county, setCounty, props.rangerDistrict, setRangerDistrict);
+      const callback = createMapClickCallback(
+        availableStates,
+        availableSublocations,
+        selectedState,
+        data,
+        dataMode,
+        props.county,
+        setCounty,
+        props.rangerDistrict,
+        setRangerDistrict,
+      );
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
@@ -279,7 +295,7 @@ const PredictionMap = (props) => {
     if (data.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
       map.removeLayer(VECTOR_LAYER);
     }
-  }, [data]);
+  }, [data, map]);
 
   useEffect(() => {
     if (data.length === 1) {
@@ -288,36 +304,30 @@ const PredictionMap = (props) => {
   }, [data]);
 
   return (
-    <div className="container flex-item-left" id="map-container">
-      <div id="map" />
-      <div
-        id="map-overlay-download"
-        onClick={() => downloadMap(
-          map,
-          year,
-          isDownloadingMap,
-          setIsDownloadingMap,
-          selectedState,
-          MAP_TYPES.PREDICTION,
-          { titleDetails: { selectedState, period: year }, thresholds, colors },
+    <>
+      <TogglesOverlay />
+      <div className="container flex-item-left" id="map-container">
+        <Map
+          hover={predictionHover}
+          legend={(
+            <>
+              <div className="legend-key-title">Probability of &gt;50 spots</div>
+              {legendTags}
+            </>
         )}
-      >
-        <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
-        <div>
-          <img id="icon-small"
-            data-tip={helpText}
-            src={questionIcon}
-            alt="Help"
-          />
-          <ReactTooltip multiline place="right" />
-        </div>
+          downloadCallback={() => downloadMap(
+            map,
+            year,
+            isDownloadingMap,
+            setIsDownloadingMap,
+            selectedState,
+            MAP_TYPES.PREDICTION,
+            { titleDetails: { selectedState, period: year }, thresholds, colors },
+          )}
+          isDownloadingMap={isDownloadingMap}
+        />
       </div>
-      <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title">Probability of &gt;50 spots</div>
-        {legendTags}
-      </div>
-      {predictionHover}
-    </div>
+    </>
   );
 };
 
