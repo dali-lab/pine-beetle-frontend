@@ -343,3 +343,47 @@ export async function getAvailableSublocations(dataMode, filters = {}) {
     throw error;
   }
 }
+
+/**
+ * @description retrieves all counties with comparison between predicted probability of an outbreak and actual spot data for the last year
+ * @param {Object} [filters={}] optional filters (year, state, county)
+ * @returns {Promise<Object>} API response
+ */
+export async function getCountyResultsComparison(filters) {
+  const params = toQueryParams({
+    ...filters,
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
+  });
+  const url = `${global.API_URL}/${COUNTY_SUBROUTE}/counties/results${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
+ * @description retrieves all ranger districts with comparison between predicted probability of an outbreak and actual spot data for the last year
+ * @param {Object} [filters={}] optional filters (year, state, rangerDistrict)
+ * @returns {Promise<Object>} API response
+ */
+export async function getRDResultsComparison(filters) {
+  const params = toQueryParams({
+    ...filters,
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
+  });
+  const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/rangerDistricts/results${params ? `?${params}` : ''}`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}

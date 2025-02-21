@@ -24,7 +24,7 @@ const ErrorReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.CLEAR_DATA_FETCH_ERROR:
-      return { ...state, fetchError: initialState.trappingError };
+      return { ...state, fetchError: initialState.fetchError };
 
     case ActionTypes.SET_CUSTOM_PREDICTION_ERROR:
       return {

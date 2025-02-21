@@ -1,8 +1,20 @@
 import { connect } from 'react-redux';
 import ResultsComparison from './component';
 
-const mapStateToProps = (state) => {};
+const mapStateToProps = (state) => {
+  const {
+    data: {
+      fetchingResultsComparisonData,
+    },
+  } = state;
 
-const mapDispatchToProps = (dispatch) => {};
+  return {
+    isLoading: fetchingResultsComparisonData,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResultsComparison);

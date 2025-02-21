@@ -8,6 +8,7 @@ export const ActionTypes = {
   SET_AGGREGATE_STATE_DATA: 'SET_AGGREGATE_STATE_DATA', // data grouped by state
   SET_AGGREGATE_LOCATION_DATA: 'SET_AGGREGATE_LOCATION_DATA', // data grouped by county/RD
   SET_CUSTOM_PREDICTION: 'SET_CUSTOM_PREDICTION',
+  SET_RESULTS_COMPARISON_DATA: 'SET_RESULTS_COMPARISON_DATA',
 
   FETCHING_PREDICTIONS: 'FETCHING_PREDICTIONS',
   FETCHING_SPARSE_DATA: 'FETCHING_SPARSE_DATA',
@@ -15,9 +16,11 @@ export const ActionTypes = {
   FETCHING_AGGREGATE_STATE_DATA: 'FETCHING_AGGREGATE_STATE_DATA',
   FETCHING_AGGREGATE_LOCATION_DATA: 'FETCHING_AGGREGATE_LOCATION_DATA',
   FETCHING_CUSTOM_PREDICTION: 'FETCHING_CUSTOM_PREDICTION',
+  FETCHING_RESULTS_COMPARISON_DATA: 'FETCHING_RESULTS_COMPARISON_DATA',
 
   SET_DATA_FETCH_ERROR: 'SET_DATA_FETCH_ERROR',
   SET_CUSTOM_PREDICTION_ERROR: 'SET_CUSTOM_PREDICTION_ERROR',
+  SET_CUSTOM_RESULTS_ERROR: 'SET_CUSTOM_RESULTS_ERROR',
 
   CLEAR_DATA: 'CLEAR_DATA',
   CLEAR_DATA_FETCH_ERROR: 'CLEAR_DATA_FETCH_ERROR',
@@ -295,5 +298,48 @@ export const clearData = () => {
 export const clearCustomPredictionError = () => {
   return (dispatch) => {
     dispatch({ type: ActionTypes.CLEAR_CUSTOM_PREDICTION_ERROR });
+  };
+};
+
+export const getResultsComparisonData = (year, overrideFilter = {}) => {
+  return async (dispatch, getState) => {
+    const {
+      county,
+      dataMode,
+      rangerDistrict,
+      state,
+    } = getState().selections;
+    console.log('actions state', year, getState().selections);
+
+    dispatch({ type: ActionTypes.FETCHING_RESULTS_COMPARISON_DATA, payload: true });
+
+    const filters = {
+      state,
+      county,
+      rangerDistrict,
+      year,
+      ...overrideFilter,
+    };
+
+    try {
+      const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyResultsComparison(filters) : api.getRDResultsComparison(filters));
+      console.log('response', response);
+      dispatch({ type: ActionTypes.SET_RESULTS_COMPARISON_DATA, payload: response });
+    } catch (error) {
+      dispatch({
+        type: ActionTypes.CLEAR_DATA_FETCH_ERROR,
+      });
+      dispatch({
+        type: ActionTypes.SET_DATA_FETCH_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch results comparison data',
+        },
+      });
+    } finally {
+      setTimeout(() => {
+        dispatch({ type: ActionTypes.FETCHING_RESULTS_COMPARISON_DATA, payload: false });
+      }, 1000);
+    }
   };
 };

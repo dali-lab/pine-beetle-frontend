@@ -61,6 +61,7 @@ const App = (props) => {
     getAvailableStates,
     getSparseData,
     getAllBlogPosts,
+    getResultsComparisonData,
   } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
@@ -92,6 +93,7 @@ const App = (props) => {
     getAllBlogPosts();
     getSparseData();
     getPredictions();
+    getResultsComparisonData(predictionYear);
   }, [
     getAggregateLocationData,
     getAggregateStateData,
@@ -99,9 +101,11 @@ const App = (props) => {
     getAllBlogPosts,
     getPredictions,
     getSparseData,
+    getResultsComparisonData,
     loginUserFromStorage,
     setChartMode,
     setDataMode,
+    predictionYear,
   ]);
 
   // TODO rework redux to only have stuff fetched here

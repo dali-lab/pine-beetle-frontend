@@ -97,7 +97,7 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     return (
       <div key={color}>
         <span className="legend-key" style={{ backgroundColor: color }} />
-        <span>{threshold}</span>
+        <span className="legend-tag">{threshold}</span>
       </div>
     );
   });
