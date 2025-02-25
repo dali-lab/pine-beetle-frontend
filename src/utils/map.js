@@ -5,7 +5,7 @@ import {
   DATA_MODES,
   MAP_SOURCE_NAME,
   MAP_SOURCES,
-  MAP_TYPES,
+  MAP_TITLES,
   stateAbbrevToZoomLevel,
   VECTOR_LAYER,
 } from '../constants';
@@ -131,10 +131,10 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
 // adopted from old site
 // Creates and returns HTML with the title for the header
 // of the downloaded maps. This object is used by the mapbox-print-pdf library.
-const buildHeader = (mapType) => {
+const buildHeader = (mapTitle) => {
   return (
     `<div id="map-header" style="text-align: center;">
-          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">${MAP_TYPES[mapType]}</h2>
+          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">${MAP_TITLES[mapTitle]}</h2>
         </div>`
   );
 };
@@ -144,9 +144,9 @@ const buildHeader = (mapType) => {
 // of the downloaded maps. This includes a legend for the color scale,
 // notes explaining the legend and sources, and information about the
 // data collection process. This object is used by the mapbox-print-pdf library.
-const buildFooter = (titleDetails, thresholds, colors, mapType) => {
-  const isPredictionMap = mapType === MAP_TYPES.PREDICTION;
-  const isHistoricalMap = mapType === MAP_TYPES.HISTORICAL;
+const buildFooter = (titleDetails, thresholds, colors, mapTitle) => {
+  const isPredictionMap = mapTitle === MAP_TITLES.PREDICTION;
+  const isHistoricalMap = mapTitle === MAP_TITLES.HISTORICAL;
 
   const title = `Southern Pine Beetle Outbreak ${isPredictionMap ? 'Prediction' : 'Spot'} Maps: ${titleDetails.selectedState} ${titleDetails.period}`;
 
@@ -192,7 +192,7 @@ const buildFooter = (titleDetails, thresholds, colors, mapType) => {
   );
 };
 
-const downloadMap = (map, year, isDownloadingMap, setIsDownloadingMap, selectedState, mapType, footerContent) => {
+const downloadMap = (map, year, isDownloadingMap, setIsDownloadingMap, selectedState, mapTitle, footerContent) => {
   if (!map || !year || isDownloadingMap) return;
 
   setIsDownloadingMap(true);
@@ -202,11 +202,11 @@ const downloadMap = (map, year, isDownloadingMap, setIsDownloadingMap, selectedS
 
   mapboxPrintPdf.build()
     .header({
-      html: buildHeader(mapType),
+      html: buildHeader(mapTitle),
       baseline: { format: 'a3', orientation: 'p' },
     })
     .footer({
-      html: buildFooter(titleDetails, thresholds, colors, mapType),
+      html: buildFooter(titleDetails, thresholds, colors, mapTitle),
       baseline: { format: 'a3', orientation: 'p' },
     })
     .margins({
@@ -255,11 +255,14 @@ const mapboxHoverStyle = (x, y) => {
   }
 };
 
+const isInvalidNumber = (num) => Number.isNaN(num) || num === null || num === undefined;
+
 export {
   createMapClickCallback,
   createHoverCallback,
   downloadMap,
   generateMap,
+  isInvalidNumber,
   mapboxHoverStyle,
   zoomToSelectedState,
 };

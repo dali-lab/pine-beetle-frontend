@@ -189,7 +189,7 @@ const STATE_VECTOR_LAYER = 'states';
 const MAP_SOURCE_NAME = 'sublocations';
 const VECTOR_LAYER = 'map-choropleth-layer';
 
-const MAP_TYPES = {
+const MAP_TITLES = {
   PREDICTION: 'Probability of (Any) SPB Spots',
   HISTORICAL: 'Average Number of Spots',
 };
@@ -206,7 +206,7 @@ export {
   MIN_WIDTH_THRESHOLD,
   MAP_SOURCES,
   MAP_SOURCE_NAME,
-  MAP_TYPES,
+  MAP_TITLES,
   ROUTES,
   SERVER_ENDPOINTS,
   SOURCE_LAYERS,

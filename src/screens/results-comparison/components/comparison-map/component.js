@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import Map from '../../../../components/map';
 import {
-  DATA_MODES, MAP_SOURCE_NAME, MAP_TYPES, SOURCE_LAYERS, STATE_VECTOR_LAYER, VECTOR_LAYER,
+  DATA_MODES, MAP_SOURCE_NAME, MAP_TITLES, SOURCE_LAYERS, STATE_VECTOR_LAYER, VECTOR_LAYER,
 } from '../../../../constants';
 import {
   createHoverCallback,
@@ -18,6 +18,7 @@ import TogglesOverlay from '../../../../components/map/components';
 import { colors, thresholds } from './constants';
 
 import './style.scss';
+import { isInvalidNumber } from '../../../../utils/map';
 
 const getFillColor = (fillProb, sumSpots) => {
   if (fillProb >= 0.25 && sumSpots > 50) {
@@ -80,8 +81,6 @@ const ComparisonMap = (props) => {
           probSpotsGT50: probOutbreak,
           sumSpots: spotsCount,
         } = pred;
-
-        const isInvalidNumber = (num) => Number.isNaN(num) || num === null || num === undefined;
 
         setResultsHover((
           <div id="prediction-hover" style={mapboxHoverStyle(x, y)}>
@@ -303,7 +302,7 @@ const ComparisonMap = (props) => {
             isDownloadingMap,
             setIsDownloadingMap,
             selectedState,
-            MAP_TYPES.PREDICTION,
+            MAP_TITLES.PREDICTION,
             { titleDetails: { selectedState, period: year }, thresholds, colors },
           )}
         />

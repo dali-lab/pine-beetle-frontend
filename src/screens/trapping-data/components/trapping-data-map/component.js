@@ -19,7 +19,7 @@ import {
   MAP_SOURCE_NAME,
   VECTOR_LAYER,
   STATE_VECTOR_LAYER,
-  MAP_TYPES,
+  MAP_TITLES,
 } from '../../../../constants';
 
 import {
@@ -39,6 +39,7 @@ import {
 
 import './style.scss';
 import { Map } from '../../../../components';
+import { isInvalidNumber } from '../../../../utils/map';
 
 const HistoricalMap = (props) => {
   const {
@@ -91,8 +92,6 @@ const HistoricalMap = (props) => {
           sumSpotst0,
           county: countyName,
         } = data[0];
-
-        const isInvalidNumber = (num) => Number.isNaN(num) || num === null || num === undefined;
 
         setTrappingHover((
           <div id="trapping-hover" style={{ left: `${x + 10}px`, top: `${y - 140}px` }}>
@@ -209,7 +208,7 @@ const HistoricalMap = (props) => {
           isDownloadingMap,
           setIsDownloadingMap,
           selectedState,
-          MAP_TYPES.HISTORICAL,
+          MAP_TITLES.HISTORICAL,
           { titleDetails: { selectedState, period: `${startYear}-${endYear}` }, thresholds, colors },
         );
       }, false);
@@ -223,7 +222,7 @@ const HistoricalMap = (props) => {
           isDownloadingMap,
           setIsDownloadingMap,
           selectedState,
-          MAP_TYPES.HISTORICAL,
+          MAP_TITLES.HISTORICAL,
           { titleDetails: { selectedState, period: `${startYear}-${endYear}` }, thresholds, colors },
         );
       }, false);
@@ -337,7 +336,7 @@ const HistoricalMap = (props) => {
           isDownloadingMap,
           setIsDownloadingMap,
           selectedState,
-          MAP_TYPES.HISTORICAL,
+          MAP_TITLES.HISTORICAL,
           { titleDetails: { selectedState, period: `${startYear}-${endYear}` }, thresholds, colors },
         )}
         isDownloadingMap={isDownloadingMap}

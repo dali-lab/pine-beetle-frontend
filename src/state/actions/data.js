@@ -309,7 +309,6 @@ export const getResultsComparisonData = (year, overrideFilter = {}) => {
       rangerDistrict,
       state,
     } = getState().selections;
-    console.log('actions state', year, getState().selections);
 
     dispatch({ type: ActionTypes.FETCHING_RESULTS_COMPARISON_DATA, payload: true });
 
@@ -323,7 +322,6 @@ export const getResultsComparisonData = (year, overrideFilter = {}) => {
 
     try {
       const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyResultsComparison(filters) : api.getRDResultsComparison(filters));
-      console.log('response', response);
       dispatch({ type: ActionTypes.SET_RESULTS_COMPARISON_DATA, payload: response });
     } catch (error) {
       dispatch({

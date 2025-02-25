@@ -19,7 +19,7 @@ import {
   MAP_SOURCE_NAME,
   VECTOR_LAYER,
   STATE_VECTOR_LAYER,
-  MAP_TYPES,
+  MAP_TITLES,
 } from '../../../../constants';
 
 import {
@@ -43,6 +43,7 @@ import './style.scss';
 
 import { Map } from '../../../../components';
 import TogglesOverlay from '../../../../components/map/components';
+import { isInvalidNumber } from '../../../../utils/map';
 
 const PredictionMap = (props) => {
   const {
@@ -92,8 +93,6 @@ const PredictionMap = (props) => {
           probSpotsGT0: probAny,
           probSpotsGT50: probOutbreak,
         } = pred;
-
-        const isInvalidNumber = (num) => Number.isNaN(num) || num === null || num === undefined;
 
         setPredictionHover((
           <div id="prediction-hover" style={mapboxHoverStyle(x, y)}>
@@ -321,7 +320,7 @@ const PredictionMap = (props) => {
             isDownloadingMap,
             setIsDownloadingMap,
             selectedState,
-            MAP_TYPES.PREDICTION,
+            MAP_TITLES.PREDICTION,
             { titleDetails: { selectedState, period: year }, thresholds, colors },
           )}
           isDownloadingMap={isDownloadingMap}
