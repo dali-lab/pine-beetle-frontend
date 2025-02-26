@@ -133,6 +133,15 @@ export const addAdminUser = async (email, password, firstName, lastName) => {
 };
 
 /**
+ * @description deletes user with given id
+ * @param {String} id user id
+ * @returns {Promise<Object>} API response
+ */
+export const deleteAdminUser = async (id) => {
+  return userService.deleteUser(id);
+};
+
+/**
  * @description gets all admin users
  */
 export const getAllAdminUsers = async () => {
