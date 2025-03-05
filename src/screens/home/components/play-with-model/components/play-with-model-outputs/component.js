@@ -17,7 +17,7 @@ const PlayWithModelOutputs = (props) => {
   } = props;
 
   const probSpots = customPrediction.probSpotsGT0;
-  const probOutbreak = customPrediction.probSpotsGT50;
+  const probOutbreak = customPrediction.probSpotsGT20;
 
   const validCustomPredictions = !isError && !isLoading && !Number.isNaN(probSpots) && !Number.isNaN(probOutbreak);
 
@@ -58,7 +58,7 @@ const PlayWithModelOutputs = (props) => {
             : '--'}
         </div>
         <div id="prob-text">
-          <p>Predicted % Chance of Outbreak ({'>'}50 spots)</p>
+          <p>Predicted % Chance of Outbreak ({'>'}20 spots)</p>
         </div>
       </div>
     </>

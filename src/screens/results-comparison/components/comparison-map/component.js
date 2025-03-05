@@ -21,13 +21,13 @@ import './style.scss';
 import { isInvalidNumber } from '../../../../utils/map';
 
 const getFillColor = (fillProb, sumSpots) => {
-  if (fillProb >= 0.25 && sumSpots > 50) {
+  if (fillProb >= 0.2 && sumSpots > 20) {
     return colors[0];
-  } else if (fillProb < 0.25 && sumSpots < 50) {
+  } else if (fillProb < 0.2 && sumSpots < 20) {
     return colors[1];
-  } else if (fillProb < 0.25 && sumSpots > 50) {
+  } else if (fillProb < 0.2 && sumSpots > 20) {
     return colors[2];
-  } else if (fillProb >= 0.25 && sumSpots <= 50) {
+  } else if (fillProb >= 0.2 && sumSpots <= 20) {
     return colors[3];
   } else {
     return colors[4];
@@ -78,7 +78,7 @@ const ComparisonMap = (props) => {
       if (pred && x && y) {
         const {
           county: countyName,
-          probSpotsGT50: probOutbreak,
+          probSpotsGT20: probOutbreak,
           sumSpots: spotsCount,
         } = pred;
 
@@ -117,7 +117,7 @@ const ComparisonMap = (props) => {
 
     comparisonData.forEach(({
       county,
-      probSpotsGT50: fillProb,
+      probSpotsGT20: fillProb,
       sumSpots,
       rangerDistrict,
       state,

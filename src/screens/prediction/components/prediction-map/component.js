@@ -91,7 +91,7 @@ const PredictionMap = (props) => {
         const {
           county: countyName,
           probSpotsGT0: probAny,
-          probSpotsGT50: probOutbreak,
+          probSpotsGT20: probOutbreak,
         } = pred;
 
         setPredictionHover((
@@ -129,7 +129,7 @@ const PredictionMap = (props) => {
 
     predictions.forEach(({
       county,
-      probSpotsGT50: fillProb,
+      probSpotsGT20: fillProb,
       rangerDistrict,
       state,
     }) => {
@@ -310,7 +310,7 @@ const PredictionMap = (props) => {
           hover={predictionHover}
           legend={(
             <>
-              <div className="legend-key-title">Probability of &gt;50 spots</div>
+              <div className="legend-key-title">Probability of &gt;20 spots</div>
               {legendTags}
             </>
         )}
