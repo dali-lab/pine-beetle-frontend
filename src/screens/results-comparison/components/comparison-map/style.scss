@@ -1,0 +1,28 @@
+.results-comparison-map {
+    .legend-tag {
+        font-size: 14px;
+    }
+}
+
+.results-comparison-message {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: rgba($white, 0.6);
+
+    p {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 400px;
+        width: 40vw;
+        padding: 30px;
+        border-radius: 20px;
+        background-color: $white;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+    }
+}

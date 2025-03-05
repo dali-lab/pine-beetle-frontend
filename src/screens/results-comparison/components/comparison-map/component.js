@@ -1,51 +1,40 @@
-/*
- * DEV NOTE, Jeff Liu 2023:
- * this and the other map (prediction & trapping) should be rewritten
- * in the future and refactored to use composition. there's tons of
- * code duplication that can be combined so bug fixes are unified.
- *
- * also, there's a whole bunch of weird things based on switching the map
- * between county and federal land mode. I think a map subcomponent should be made
- * and there should be two different ones for county and RD that look at different fields.
- */
-
-/* eslint-disable prefer-destructuring */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
-
+import Map from '../../../../components/map';
 import {
-  DATA_MODES,
-  SOURCE_LAYERS,
-  MAP_SOURCE_NAME,
-  VECTOR_LAYER,
-  STATE_VECTOR_LAYER,
-  MAP_TITLES,
+  DATA_MODES, MAP_SOURCE_NAME, MAP_TITLES, SOURCE_LAYERS, STATE_VECTOR_LAYER, VECTOR_LAYER,
 } from '../../../../constants';
-
 import {
-  getMapboxRDNameFormat,
-  getFillColor,
-  createMapClickCallback,
-  generateMap,
-  downloadMap,
   createHoverCallback,
-  zoomToSelectedState,
+  createMapClickCallback,
+  downloadMap,
+  generateMap,
+  getMapboxRDNameFormat,
   mapboxHoverStyle,
+  zoomToSelectedState,
 } from '../../../../utils';
 import { api } from '../../../../services';
-
-import {
-  thresholds,
-  colors,
-} from './constants';
+import TogglesOverlay from '../../../../components/map/components';
+import { colors, thresholds } from './constants';
 
 import './style.scss';
-
-import { Map } from '../../../../components';
-import TogglesOverlay from '../../../../components/map/components';
 import { isInvalidNumber } from '../../../../utils/map';
 
-const PredictionMap = (props) => {
+const getFillColor = (fillProb, sumSpots) => {
+  if (fillProb >= 0.2 && sumSpots > 20) {
+    return colors[0];
+  } else if (fillProb < 0.2 && sumSpots < 20) {
+    return colors[1];
+  } else if (fillProb < 0.2 && sumSpots > 20) {
+    return colors[2];
+  } else if (fillProb >= 0.2 && sumSpots <= 20) {
+    return colors[3];
+  } else {
+    return colors[4];
+  }
+};
+
+const ComparisonMap = (props) => {
   const {
     availableStates,
     availableSublocations,
@@ -55,14 +44,13 @@ const PredictionMap = (props) => {
     setCounty,
     setRangerDistrict,
     setState,
-    setPredictionModal,
     year,
+    isLoading,
   } = props;
-
   const [map, setMap] = useState();
   const [initialFill, setInitialFill] = useState(false);
   const [legendTags, setLegendTags] = useState([]);
-  const [predictionHover, setPredictionHover] = useState(null);
+  const [resultsHover, setResultsHover] = useState(null);
   const [isDownloadingMap, setIsDownloadingMap] = useState(false);
   const [mapClickCallback, setMapClickCallback] = useState();
   const [mapHoverCallback, setMapHoverCallback] = useState();
@@ -78,9 +66,9 @@ const PredictionMap = (props) => {
     }
   }, [dataMode]);
 
-  const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availStates) => {
+  const createMapHoverCallback = (resultsData, rangerDistricts, mode, state, availStates) => {
     const callback = (hoverState, location, x, y) => {
-      const pred = predictions.find((p) => {
+      const pred = resultsData.find((p) => {
       // either ranger district mode or have a matching state
         return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState)))
               // and sublocation matches
@@ -90,30 +78,30 @@ const PredictionMap = (props) => {
       if (pred && x && y) {
         const {
           county: countyName,
-          probSpotsGT0: probAny,
           probSpotsGT20: probOutbreak,
+          sumSpots: spotsCount,
         } = pred;
 
-        setPredictionHover((
+        setResultsHover((
           <div id="prediction-hover" style={mapboxHoverStyle(x, y)}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${getMapboxRDNameFormat(location).slice(0, -3)} Ranger District`}</h3>
-            <p>Probability of any spots: {isInvalidNumber(probAny) ? 'null' : (probAny * 100).toFixed(1)}%</p>
-            <p>Probability of an outbreak: {isInvalidNumber(probOutbreak) ? 'null' : (probOutbreak * 100).toFixed(1)}%</p>
+            <p>Predicted probability of an outbreak: {isInvalidNumber(probOutbreak) ? 'null' : (probOutbreak * 100).toFixed(1)}%</p>
+            <p>Number of spots: {isInvalidNumber(spotsCount) ? 'null' : spotsCount}</p>
           </div>
         ));
       } else {
-        setPredictionHover(null);
+        setResultsHover(null);
       }
     };
 
     return createHoverCallback(map, rangerDistricts, dataMode, callback);
   };
 
-  const colorPredictions = (predictions) => {
+  const colorResults = (comparisonData) => {
     // keep trying until map styles are loaded
     if (!map.isStyleLoaded()) {
       setTimeout(() => {
-        colorPredictions(predictions);
+        colorResults(comparisonData);
       }, 1000);
 
       return;
@@ -127,13 +115,14 @@ const PredictionMap = (props) => {
     const fillExpression = ['match', ['upcase', ['get', 'forest']]];
     const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
 
-    predictions.forEach(({
+    comparisonData.forEach(({
       county,
       probSpotsGT20: fillProb,
+      sumSpots,
       rangerDistrict,
       state,
     }) => {
-      const color = getFillColor(fillProb).color;
+      const color = getFillColor(fillProb, sumSpots);
 
       const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
       const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict).toUpperCase() : '';
@@ -153,7 +142,6 @@ const PredictionMap = (props) => {
     // last value is the default, used where there is no data
     fillExpression.push('rgba(0,0,0,0)');
     strokeExpression.push('rgba(0,0,0,0)');
-
     // add layer from the vector tile source with data-driven style
     // double-checking if we have valid fillExpression for paint
     if (fillExpression.length > 3) {
@@ -211,15 +199,14 @@ const PredictionMap = (props) => {
 
   useEffect(() => {
     if (!map) return;
-
-    if (year.toString().length === 4 && data.length > 0) colorPredictions(data);
+    if (year.toString().length === 4 && data.length > 0) colorResults(data);
 
     zoomToSelectedState(selectedState, map);
-  }, [data, selectedState, map]);
+  }, [data, selectedState, map, dataMode]);
 
   useEffect(() => {
     if (!initialFill && map && data.length > 0) {
-      colorPredictions(data);
+      colorResults(data);
       setInitialFill(true);
     }
 
@@ -283,7 +270,7 @@ const PredictionMap = (props) => {
       if (mapLayerMouseLeaveCallback) map.off('click', VECTOR_LAYER, mapLayerMouseLeaveCallback);
 
       // generate new callback
-      const callback = () => setPredictionHover(null);
+      const callback = () => setResultsHover(null);
 
       setMapLayerMouseLeaveCallback(() => callback);
       map.on('mouseleave', VECTOR_LAYER, callback);
@@ -296,24 +283,19 @@ const PredictionMap = (props) => {
     }
   }, [data, map]);
 
-  useEffect(() => {
-    if (data.length === 1) {
-      setPredictionModal(true);
-    }
-  }, [data]);
-
   return (
     <>
       <TogglesOverlay />
-      <div className="container flex-item-left" id="map-container">
+      <div className="container results-comparison-map" id="map-container">
         <Map
-          hover={predictionHover}
           legend={(
             <>
-              <div className="legend-key-title">Probability of &gt;20 spots</div>
+              <div className="legend-key-title">Results comparison</div>
               {legendTags}
             </>
-        )}
+            )}
+          hover={resultsHover}
+          isDownloadingMap={isDownloadingMap}
           downloadCallback={() => downloadMap(
             map,
             year,
@@ -323,11 +305,17 @@ const PredictionMap = (props) => {
             MAP_TITLES.PREDICTION,
             { titleDetails: { selectedState, period: year }, thresholds, colors },
           )}
-          isDownloadingMap={isDownloadingMap}
         />
+        {!isLoading && !data.length && (
+        <div className="results-comparison-message">
+          <p>
+            {`Map for ${year} not yet available. Spot data for the previous year usually come online sometime in January or February of the following year.`}
+          </p>
+        </div>
+        )}
       </div>
     </>
   );
 };
 
-export default PredictionMap;
+export default ComparisonMap;

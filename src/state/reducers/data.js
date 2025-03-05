@@ -7,6 +7,7 @@ const initialState = {
   stateData: [], // data aggregated by state
   sublocationData: [], // data aggregated by county/ranger district
   customPrediction: {},
+  resultsComparison: [], // data with comparison of prediction and spots
 
   fetchingPredictions: false,
   fetchingSparseData: false,
@@ -14,6 +15,7 @@ const initialState = {
   fetchingAggregateStateData: false,
   fetchingAggregateLocationData: false,
   fetchingCustomPrediction: false,
+  fetchingResultsComparisonData: false,
 };
 
 const DataReducer = (state = initialState, action) => {
@@ -36,6 +38,9 @@ const DataReducer = (state = initialState, action) => {
     case ActionTypes.SET_CUSTOM_PREDICTION:
       return { ...state, customPrediction: action.payload };
 
+    case ActionTypes.SET_RESULTS_COMPARISON_DATA:
+      return { ...state, resultsComparison: action.payload };
+
     case ActionTypes.FETCHING_PREDICTIONS:
       return { ...state, fetchingPredictions: action.payload };
 
@@ -54,6 +59,9 @@ const DataReducer = (state = initialState, action) => {
     case ActionTypes.FETCHING_CUSTOM_PREDICTION:
       return { ...state, fetchingCustomPrediction: action.payload };
 
+    case ActionTypes.FETCHING_RESULTS_COMPARISON_DATA:
+      return { ...state, fetchingResultsComparisonData: action.payload };
+
     case ActionTypes.CLEAR_DATA:
       return {
         ...state,
@@ -63,6 +71,7 @@ const DataReducer = (state = initialState, action) => {
         stateData: initialState.stateData,
         sublocationData: initialState.sublocationData,
         customPrediction: initialState.customPrediction,
+        resultsComparison: initialState.resultsComparison,
       };
 
     case ActionTypes.CLEAR_SELECTIONS:

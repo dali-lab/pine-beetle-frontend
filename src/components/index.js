@@ -5,6 +5,7 @@ import Header from './header';
 import Histogram from './histogram-components/histogram';
 import Loader from './loader';
 import Loading from './loading';
+import Map from './map';
 import MobileOverlay from './mobile-overlay';
 import ScrollToTop from './scroll-to-top';
 
@@ -16,6 +17,7 @@ export {
   Histogram,
   Loader,
   Loading,
+  Map,
   MobileOverlay,
   ScrollToTop,
 };

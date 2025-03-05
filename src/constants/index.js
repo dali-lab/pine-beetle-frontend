@@ -77,6 +77,7 @@ const ROUTES = {
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predict-outbreak',
   TRAPPING_DATA: '/historical-data',
+  RESULTS_COMPARISON: '/results-comparison',
 };
 
 const RESOURCE_ROUTES = {
@@ -188,6 +189,11 @@ const STATE_VECTOR_LAYER = 'states';
 const MAP_SOURCE_NAME = 'sublocations';
 const VECTOR_LAYER = 'map-choropleth-layer';
 
+const MAP_TITLES = {
+  PREDICTION: 'Probability of (Any) SPB Spots',
+  HISTORICAL: 'Average Number of Spots',
+};
+
 export {
   AUTOMATION_SERVER_ENDPOINTS,
   CHART_MODES,
@@ -200,6 +206,7 @@ export {
   MIN_WIDTH_THRESHOLD,
   MAP_SOURCES,
   MAP_SOURCE_NAME,
+  MAP_TITLES,
   ROUTES,
   SERVER_ENDPOINTS,
   SOURCE_LAYERS,

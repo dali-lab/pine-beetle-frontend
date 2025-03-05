@@ -17,7 +17,7 @@ const PlayWithModelOutputs = (props) => {
   } = props;
 
   const probSpots = customPrediction.probSpotsGT0;
-  const probOutbreak = customPrediction.probSpotsGT50;
+  const probOutbreak = customPrediction.probSpotsGT20;
 
   const validCustomPredictions = !isError && !isLoading && !Number.isNaN(probSpots) && !Number.isNaN(probOutbreak);
 
@@ -37,7 +37,7 @@ const PlayWithModelOutputs = (props) => {
     <>
       <div
         id={showPredictions ? 'prob-spots' : 'prob-spots-disabled'}
-        className={showPredictions && `color-fill-with-shadow ${getFillColor(probSpots).colorName}`}
+        className={showPredictions ? `color-fill-with-shadow ${getFillColor(probSpots).colorName}` : undefined}
       >
         <div id="percent">
           {showPredictions
@@ -50,7 +50,7 @@ const PlayWithModelOutputs = (props) => {
       </div>
       <div
         id={showPredictions ? 'prob-outbreak' : 'prob-outbreak-disabled'}
-        className={showPredictions && `color-fill-with-shadow ${getFillColor(probOutbreak).colorName}`}
+        className={showPredictions ? `color-fill-with-shadow ${getFillColor(probOutbreak).colorName}` : undefined}
       >
         <div id="percent">
           {showPredictions
@@ -58,7 +58,7 @@ const PlayWithModelOutputs = (props) => {
             : '--'}
         </div>
         <div id="prob-text">
-          <p>Predicted % Chance of Outbreak ({'>'}50 spots)</p>
+          <p>Predicted % Chance of Outbreak ({'>'}20 spots)</p>
         </div>
       </div>
     </>

@@ -1,9 +1,8 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { ChoiceInput, MultiSelectInput } from '../../../../components/input-components';
 
-import { DATA_MODES, ROUTES } from '../../../../constants';
+import { DATA_MODES } from '../../../../constants';
 
 import {
   getStateNameFromAbbreviation,
@@ -15,16 +14,16 @@ import './style.scss';
 const SelectionBar = (props) => {
   const {
     availableStates,
-    availableYears,
     availableSublocations,
+    availableYears,
     clearAllSelections,
     selectedState,
     dataMode,
     county,
     rangerDistrict,
     setRangerDistrict,
-    setCounty,
     setPredictionYear,
+    setCounty,
     setState,
     year,
   } = props;
@@ -34,20 +33,18 @@ const SelectionBar = (props) => {
   const setStateAbbrev = (stateName) => setState(getStateAbbreviationFromStateName(stateName));
   const revYears = [...availableYears].reverse();
 
-  const history = useHistory();
-
   return (
     <div className="container">
-      <div id="predictionbar">
-        <div className="predictionbar-selections">
-          <div className="predictionbar-year-selection">
-            <p className="predictionbar-year-selection-title">Year</p>
-            <div className="predictionbar-year-selection-options input-container">
+      <div id="resultsbar">
+        <div className="resultsbar-selections">
+          <div className="resultsbar-year-selection">
+            <p className="resultsbar-year-selection-title">Year</p>
+            <div className="resultsbar-year-selection-options input-container">
               <ChoiceInput setValue={setPredictionYear} options={revYears} value={year} />
             </div>
           </div>
-          <div className="predictionbar-location-selection">
-            <p className="predictionbar-location-selection-title">Locations</p>
+          <div className="resultsbar-location-selection">
+            <p className="resultsbar-location-selection-title">Locations</p>
             <MultiSelectInput
               valueParent={selectedStateName}
               valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
@@ -57,17 +54,8 @@ const SelectionBar = (props) => {
               optionsChildren={availableSublocations}
             />
           </div>
-          <button className="animated-button predictionbar-clear-button" onClick={clearAllSelections} type="button">Clear</button>
+          <button className="animated-button resultsbar-clear-button" onClick={clearAllSelections} type="button">Clear</button>
         </div>
-        <div className="divider" />
-        <button
-          onClick={() => history.push(ROUTES.RESULTS_COMPARISON)}
-          type="button"
-          className="animated-button predictionbar-link-button"
-          data-tip="Map of predicted vs. observed outbreaks"
-        >
-          How did we do?
-        </button>
       </div>
     </div>
   );

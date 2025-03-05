@@ -1,4 +1,4 @@
-#predictionbar {
+#resultsbar {
     background: $grey200;
     box-shadow: 0px 12px 30px -5px rgba(77, 81, 94, 0.04);
     border-radius: 18px;
@@ -15,25 +15,26 @@
     padding: 20px;
     margin-bottom: 20px;
 
-    .predictionbar-selections {
+    .resultsbar-selections {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
-        gap: 20px;
+        gap: 40px;
+        width: 100%;
     }
 
-    .predictionbar-year-selection {
+    .resultsbar-year-selection {
         display: flex;
         flex-direction: column;
 
-        .predictionbar-year-selection-title {
+        .resultsbar-year-selection-title {
             margin-top: 0.5vh;
             font-weight: bold;
 
         }
 
-        .predictionbar-year-selection-options {
+        .resultsbar-year-selection-options {
             display: flex !important;
             flex-direction: row !important;
 
@@ -43,18 +44,18 @@
         }
     }
 
-    .predictionbar-location-selection {
+    .resultsbar-location-selection {
         display: flex;
         flex-direction: column;
 
-        .predictionbar-location-selection-title {
+        .resultsbar-location-selection-title {
             font-weight: bold;
 
         }
     }
 
-    .predictionbar-clear-button,
-    .predictionbar-link-button {
+    .resultsbar-clear-button,
+    .resultsbar-link-button {
         background: $grey800;
         font-size: 18px;
         border-radius: 10px;
