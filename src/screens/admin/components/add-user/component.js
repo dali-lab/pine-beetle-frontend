@@ -4,7 +4,7 @@ import { admin as adminService } from '../../../../services';
 
 import './style.scss';
 
-const AddUser = (_props) => {
+const AddUser = ({ setUsers }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -34,7 +34,22 @@ const AddUser = (_props) => {
     }
 
     try {
-      return await adminService.addAdminUser(email, password, firstName, lastName);
+      const newUser = await adminService.addAdminUser(email, password, firstName, lastName);
+
+      if (newUser) {
+        setUsers((prevUsers) => [...prevUsers, {
+          id: newUser._id,
+          email: newUser.email,
+          name: `${newUser.first_name} ${newUser.last_name}`,
+        }]);
+        setSuccess(true);
+
+        // clear the success message
+        setTimeout(() => {
+          setSuccess(false);
+        }, 3000);
+      }
+      return newUser;
     } catch (err) {
       return setError(err?.response?.data?.error?.message || '');
     }

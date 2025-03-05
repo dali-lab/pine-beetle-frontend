@@ -203,3 +203,26 @@ export const sendForgotPasswordEmail = async (email) => {
     throw error;
   }
 };
+
+/**
+ * @description deletes user with given id
+ * @param {String} id user id
+ * @returns {Promise<Object>} API response
+ */
+export const deleteUser = async (id) => {
+  const url = `${global.API_URL}/${SUBROUTE}/${id}`;
+  const token = getAuthTokenFromStorage();
+
+  try {
+    const { data: response } = await axios.delete(url, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

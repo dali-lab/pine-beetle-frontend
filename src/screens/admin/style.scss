@@ -47,7 +47,7 @@
 
         #dashboard {
             display: flex;
-            height: 70vh;
+            height: 85vh;
 
             #upload-container {
                 flex: 1 1 auto;
@@ -61,7 +61,6 @@
                     border-radius: 22px;
                     background-color: $greyBlue100;
                     flex: 1 1 auto;
-                    width: 400px;
                 }
 
                 *+* {
@@ -76,6 +75,10 @@
                 justify-content: space-between;
                 overflow: auto;
                 margin-left: 20px;
+
+                #users-container {
+                    min-height: 170px;
+                }
 
                 #users-container,
                 #add-users {

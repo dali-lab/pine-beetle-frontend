@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Users from './component';
+import UserSection from './component';
 
 const mapStateToProps = (state) => {
   const {
@@ -15,4 +15,4 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Users);
+export default connect(mapStateToProps, mapDispatchToProps)(UserSection);
