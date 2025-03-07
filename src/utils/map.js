@@ -147,6 +147,7 @@ const buildHeader = (mapTitle) => {
 const buildFooter = (titleDetails, thresholds, colors, mapTitle) => {
   const isPredictionMap = mapTitle === MAP_TITLES.PREDICTION;
   const isHistoricalMap = mapTitle === MAP_TITLES.HISTORICAL;
+  const isComparisonMap = mapTitle === MAP_TITLES.COMPARISON;
 
   const title = `Southern Pine Beetle Outbreak ${isPredictionMap ? 'Prediction' : 'Spot'} Maps: ${titleDetails.selectedState} ${titleDetails.period}`;
 
@@ -165,6 +166,8 @@ const buildFooter = (titleDetails, thresholds, colors, mapTitle) => {
           <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
               ${isHistoricalMap ? `<p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height:
                 14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Total spots per year:</p>` : ''}
+              ${isComparisonMap ? `<p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height:
+                14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Predicted vs observed outcomes:</p>` : ''}
               <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 90%;margin: auto;margin-bottom: 10px;">
                   ${legendString}
               </div>
