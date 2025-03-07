@@ -192,6 +192,7 @@ const VECTOR_LAYER = 'map-choropleth-layer';
 const MAP_TITLES = {
   PREDICTION: 'Probability of (Any) SPB Spots',
   HISTORICAL: 'Average Number of Spots',
+  COMPARISON: 'Observed vs Predicted',
 };
 
 export {

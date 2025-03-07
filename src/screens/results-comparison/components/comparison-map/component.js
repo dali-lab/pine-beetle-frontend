@@ -302,7 +302,7 @@ const ComparisonMap = (props) => {
             isDownloadingMap,
             setIsDownloadingMap,
             selectedState,
-            MAP_TITLES.PREDICTION,
+            MAP_TITLES.COMPARISON,
             { titleDetails: { selectedState, period: year }, thresholds, colors },
           )}
         />
