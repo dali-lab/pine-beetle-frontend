@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 
-import { setChartMode, setDataMode, clearSelections } from '../../state/actions';
+import {
+  setChartMode, setDataMode, clearSelections, setStartYear,
+} from '../../state/actions';
 
 import TrappingData from './component';
 
@@ -14,6 +16,9 @@ const mapStateToProps = (state) => {
     selections: {
       chartMode,
       dataMode,
+      startYear,
+      endYear,
+      availableHistoricalYears,
     },
     data: {
       fetchingAggregateYearData,
@@ -29,6 +34,9 @@ const mapStateToProps = (state) => {
     dataMode,
     isLoading,
     errorText,
+    startYear,
+    endYear,
+    availableYears: availableHistoricalYears,
   };
 };
 
@@ -42,6 +50,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setDataMode: (dataMode) => {
       dispatch(setDataMode(dataMode));
+    },
+    setStartYear: (year) => {
+      dispatch(setStartYear(year));
     },
   };
 };

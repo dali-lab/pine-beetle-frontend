@@ -49,7 +49,7 @@ const Prediction = (props) => {
 
   const predModal = () => {
     if (!predictionModal) return null;
-    const { probSpotsGT20 } = data[0];
+    const { probSpotsGT50 } = data[0];
 
     return (
       <Modal
@@ -74,7 +74,7 @@ const Prediction = (props) => {
                   (n=${frequency.toLocaleString()})`}
                 </span>
               </div>
-              <Histogram probSpotsGT20={probSpotsGT20} />
+              <Histogram probSpotsGT50={probSpotsGT50} />
             </div>
             <AboutPredictions />
           </div>

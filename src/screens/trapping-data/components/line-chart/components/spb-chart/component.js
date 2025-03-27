@@ -79,7 +79,7 @@ const SPBChart = (props) => {
           const { label } = d.datasets[tooltipItem.datasetIndex];
           const value = tooltipItem.yLabel;
 
-          return `${label}: ${value.toFixed(2)}`;
+          return `${label}: ${value}`;
         },
       },
     },
@@ -111,9 +111,11 @@ const SPBChart = (props) => {
     updatedSPBChartData.labels = getYearRange(startYear, endYear);
 
     // get sum of spb by year
-    const spbMap = yearData.reduce((acc, { year, sumSpbPer2Weeks }) => ({
+    const spbMap = yearData.reduce((acc, {
+      year, avgSpbPerTrapPer2Weeks,
+    }) => ({
       ...acc,
-      [year]: sumSpbPer2Weeks,
+      [year]: avgSpbPerTrapPer2Weeks,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
     // update chartData
