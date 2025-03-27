@@ -27,15 +27,22 @@ const TrappingData = (props) => {
     setChartMode,
     setDataMode,
     clearAllSelections,
+    setStartYear,
+    availableYears,
   } = props;
 
   const isGraphView = chartMode === CHART_MODES.GRAPH;
-  const setGraphView = () => setChartMode(CHART_MODES.GRAPH);
   const setMapView = () => setChartMode(CHART_MODES.MAP);
 
   useEffect(() => {
     clearAllSelections(); // clears selections initially when switching to this tab
   }, [clearAllSelections]);
+
+  // TODO handle other way here as well
+  const handleChangeToGraphView = () => {
+    setChartMode(CHART_MODES.GRAPH);
+    setStartYear(availableYears[0]);
+  };
 
   return (
     <div>
@@ -66,7 +73,7 @@ const TrappingData = (props) => {
           <div className="selection">
             <div
               className={isGraphView ? 'selected-option-2' : 'unselected-option'}
-              onClick={setGraphView}
+              onClick={handleChangeToGraphView}
             >
               <img
                 src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
