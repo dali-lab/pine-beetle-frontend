@@ -118,8 +118,6 @@ const SPBChart = (props) => {
       [year]: avgSpbPerTrapPer2Weeks,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    console.log('filtered', yearData.filter(({ isValidForPrediction }) => isValidForPrediction === 0));
-
     // update chartData
     updatedSPBChartData.datasets[0].data = Object.values(spbMap);
 

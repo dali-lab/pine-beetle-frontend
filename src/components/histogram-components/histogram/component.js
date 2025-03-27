@@ -4,11 +4,11 @@ import Loader from '../../loader';
 
 import './style.scss';
 
-const updateWithBorder = (array, probSpotsGT20) => {
+const updateWithBorder = (array, probSpotsGT50) => {
   const arrayUpdated = array.map((item) => {
     const rangeArray = item.range.split('-');
 
-    if (probSpotsGT20 >= rangeArray[0] && probSpotsGT20 < rangeArray[1]) {
+    if (probSpotsGT50 >= rangeArray[0] && probSpotsGT50 < rangeArray[1]) {
       return { ...item, withBorder: true };
     } else return item;
   });
@@ -16,10 +16,10 @@ const updateWithBorder = (array, probSpotsGT20) => {
   return arrayUpdated;
 };
 
-const Histogram = ({ histogramData, getHistogram, probSpotsGT20 }) => {
+const Histogram = ({ histogramData, getHistogram, probSpotsGT50 }) => {
   useEffect(() => getHistogram(), [getHistogram]);
 
-  const updatedHistogramData = updateWithBorder(histogramData, probSpotsGT20);
+  const updatedHistogramData = updateWithBorder(histogramData, probSpotsGT50);
 
   const getXAxisLegend = () => {
     if (updatedHistogramData) {
@@ -48,9 +48,9 @@ const Histogram = ({ histogramData, getHistogram, probSpotsGT20 }) => {
             <p>{'> 249'}</p>
             <p>100 - 249</p>
             <p>50 - 99</p>
-            <p>20 - 49</p>
           </div>
           <div className="histogram__legend histogram__legend--blue">
+            <p>20 - 49</p>
             <p>10 - 19</p>
             <p>1 - 9</p>
             <p>0</p>
@@ -75,7 +75,7 @@ const Histogram = ({ histogramData, getHistogram, probSpotsGT20 }) => {
             ))}
           </div>
           <h4 className="histogram__x-axis-title">
-            {'Predicted % chance of > 20 spots'}
+            {'Predicted % chance of > 50 spots'}
           </h4>
         </div>
       </div>

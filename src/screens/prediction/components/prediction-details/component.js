@@ -37,9 +37,9 @@ const PredictionDetails = (props) => {
                   </div>
                 </div>
                 <div className="prediction-circle">
-                  <div className={`circle color-fill-with-shadow ${getFillColor(data[0].probSpotsGT20).colorName}`} id="outbreak">
-                    <div id="percent">{((data[0].probSpotsGT20) * 100).toFixed(1)}%</div>
-                    <p>Predicted % Chance of Outbreak ({'>'}20 spots)</p>
+                  <div className={`circle color-fill-with-shadow ${getFillColor(data[0].probSpotsGT50).colorName}`} id="outbreak">
+                    <div id="percent">{((data[0].probSpotsGT50) * 100).toFixed(1)}%</div>
+                    <p>Predicted % Chance of Outbreak ({'>'}50 spots)</p>
                   </div>
                 </div>
               </div>

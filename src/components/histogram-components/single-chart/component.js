@@ -66,8 +66,8 @@ const SingleChart = ({
         barCategoryGap: '1%',
         itemStyle: {
           color: (params) => {
-            const categoriesAbove20 = ['>249', '100-249', '50-99', '20-49'];
-            return categoriesAbove20.includes(params.name)
+            const categoriesAbove50 = ['>249', '100-249', '50-99'];
+            return categoriesAbove50.includes(params.name)
               ? '#FFC148'
               : '#86CCFF';
           },

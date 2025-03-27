@@ -5,7 +5,7 @@ import './style.scss';
 import questionIcon from '../../../../assets/icons/help-circle.png';
 
 const helpText = `This tool uses annual trapping data and the most recent two years of 
-spot data to predict the likelihood of an outbreak (greater than 20 spots per location) in the coming summer. 
+spot data to predict the likelihood of an outbreak (greater than 50 spots per location) in the coming summer. 
 Resource managers enter their trapping data from approximately March-June of each season. Each location traps 
 over 4-6 weeks, and enters their data when complete. When complete data is entered, a prediction for that 
 location becomes available on this page. Observed outcome data is usually uploaded in January following a 
