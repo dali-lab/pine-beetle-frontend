@@ -42,7 +42,7 @@ const SPBChart = (props) => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Count',
+          labelString: 'Average count',
           fontColor: '#7c7c96',
           fontFamily: 'Inter',
           fontSize: isHomepage ? '14' : '22',
