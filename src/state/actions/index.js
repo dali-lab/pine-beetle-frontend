@@ -33,6 +33,7 @@ import {
   getPredictions,
   getSparseData,
   runCustomPrediction,
+  getResultsComparisonData,
 } from './data';
 
 import {
@@ -74,8 +75,9 @@ export {
   getAvailableSublocations,
   getAvailableYears,
   getHistogram,
-  getSparseData,
   getPredictions,
+  getResultsComparisonData,
+  getSparseData,
   getUserFromStorage,
   login,
   runCustomPrediction,

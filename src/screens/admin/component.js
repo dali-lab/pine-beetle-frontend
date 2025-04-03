@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 
 import {
   AddBlogPost,
-  AddUser,
   BlogPosts,
   ChangePassword,
   FileUpload,
   Login,
-  Users,
+  UserSection,
 } from './components';
 
 import { runPipeline, updateHistogram } from '../../services/admin';
@@ -77,10 +76,7 @@ const Admin = (props) => {
         <div id="dashboard-container">
           <div id="dashboard">
             <div id="upload-container"><FileUpload guideURL={guideURL} /></div>
-            <div id="user-container">
-              <div id="users-container"><Users /></div>
-              <div id="add-users"><AddUser /></div>
-            </div>
+            <UserSection />
           </div>
           <div className="dashboard-buttons-container">
             <div className="button">

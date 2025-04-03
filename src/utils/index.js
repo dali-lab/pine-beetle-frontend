@@ -32,8 +32,21 @@ import {
 
 import getFillColor from './colors';
 
+import {
+  createMapClickCallback,
+  createHoverCallback,
+  downloadMap,
+  generateMap,
+  mapboxHoverStyle,
+  zoomToSelectedState,
+} from './map';
+
 export {
+  createHoverCallback,
+  createMapClickCallback,
   downloadCsv,
+  downloadMap,
+  generateMap,
   getAuthTokenFromStorage,
   getChartModeFromStorage,
   getDataModeFromStorage,
@@ -45,6 +58,7 @@ export {
   getStateNameFromAbbreviation,
   getUserIdFromStorage,
   formatPostDates,
+  mapboxHoverStyle,
   removeAuthTokenFromStorage,
   removeUserIdFromStorage,
   setAuthTokenInStorage,
@@ -54,4 +68,5 @@ export {
   sortBlogPosts,
   toQueryParams,
   truncateText,
+  zoomToSelectedState,
 };

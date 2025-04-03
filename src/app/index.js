@@ -11,6 +11,7 @@ import {
   getUserFromStorage,
   setChartMode,
   setDataMode,
+  getResultsComparisonData,
 } from '../state/actions';
 
 import App from './component';
@@ -50,6 +51,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getSparseData: (overrideFilter) => {
       dispatch(getSparseData(overrideFilter));
+    },
+    getResultsComparisonData: (year) => {
+      dispatch(getResultsComparisonData(year));
     },
     getPredictions: (startYear, endYear) => {
       dispatch(getPredictions(startYear, endYear));

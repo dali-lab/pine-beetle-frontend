@@ -1,0 +1,34 @@
+.delete-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20vw;
+    height: 10vh;
+    padding: 50px;
+    border-radius: 20px;
+    background-color: $white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-modal-buttons {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0 50px;
+    margin-top: 20px;
+
+    .single-button {
+        padding: 6px 20px;
+        border-radius: 6px;
+        background-color: $greyBlue400;
+    }
+}
+
+.delete-modal__item-title {
+    font-style: italic;
+}

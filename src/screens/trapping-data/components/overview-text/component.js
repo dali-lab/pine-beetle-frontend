@@ -7,10 +7,12 @@ import questionIcon from '../../../../assets/icons/help-circle.png';
 
 const helpText = 'Please select year, state, and<br />county/RD for trapping data.';
 
-const explanatoryText = `Southern pine beetle trapping data have been collected across the southeast since 1988, 
-and now, increasingly, in the mid-Atlantic and northeast. All historical data are collected here in one place 
-for researchers, forest resource managers, and the general public to access. You can select the year range and 
-location, and you can switch between map and graph view by toggling the button below.`;
+const explanatoryText = `Southern pine beetle trapping data have been collected across the southeast 
+since 1988. All historical data are collected here in one place for researchers, forest resource managers, 
+and the general public to access. Download data using the green button at the top right of your screen. 
+A new selection screen will allow you to choose your time and area of interest, and whether you want 
+summarized or unsummarized data (the data used in the model summarizes across all traps and all collection dates 
+for a given location). Using the filter below, you can explore totals for different locations across your chosen length of time.`;
 
 const OverviewText = (_props) => (
   <div className="container" id="overview-explanation">

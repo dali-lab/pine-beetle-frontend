@@ -15,6 +15,7 @@ import {
   Prediction,
   Blog,
   SingleBlogPost,
+  ResultsComparison,
 } from '../screens';
 
 import {
@@ -60,6 +61,7 @@ const App = (props) => {
     getAvailableStates,
     getSparseData,
     getAllBlogPosts,
+    getResultsComparisonData,
   } = props;
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
@@ -91,6 +93,7 @@ const App = (props) => {
     getAllBlogPosts();
     getSparseData();
     getPredictions();
+    getResultsComparisonData(predictionYear);
   }, [
     getAggregateLocationData,
     getAggregateStateData,
@@ -98,9 +101,11 @@ const App = (props) => {
     getAllBlogPosts,
     getPredictions,
     getSparseData,
+    getResultsComparisonData,
     loginUserFromStorage,
     setChartMode,
     setDataMode,
+    predictionYear,
   ]);
 
   // TODO rework redux to only have stuff fetched here
@@ -129,6 +134,7 @@ const App = (props) => {
           <Route path={ROUTES.RESOURCES} component={Resources} />
           <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
           <Route path={ROUTES.PREDICTIONS} component={Prediction} />
+          <Route path={ROUTES.RESULTS_COMPARISON} component={ResultsComparison} />
           {Object.entries(RESOURCE_ROUTES).map(([TYPE, ROUTE]) => (
             <Route
               key={ROUTE}

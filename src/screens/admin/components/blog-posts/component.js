@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Modal from 'react-modal';
 
+import DeleteModal from '../delete-modal';
 import EditBlogPost from '../edit-blog-post';
 import { getDateToDisplay, sortBlogPosts } from '../../../../utils';
 
@@ -26,30 +26,6 @@ const BlogPost = ({ post, onClickEdit, onDelete }) => {
         <button className="animated-button blog-post-button" type="button" onClick={onClickDelete}>Delete</button>
       </div>
     </div>
-  );
-};
-
-const DeleteModal = ({
-  handleDelete, isOpen, setIsOpen, title,
-}) => {
-  const handleClose = () => setIsOpen(false);
-  const handleOpen = () => setIsOpen(true);
-
-  return (
-    <Modal isOpen={isOpen}
-      onAfterOpen={handleOpen}
-      onRequestClose={handleClose}
-      className="delete-blog-post-modal"
-      ariaHideApp={false}
-    >
-      <div>
-        Are you sure you want to delete <span className="delete-blog-post-title">{`"${title}" `}</span>?
-        <div className="delete-blog-post-buttons">
-          <button type="button" className="blog-post-button animated-button" onClick={handleDelete}>Yes</button>
-          <button type="button" className="blog-post-button animated-button" onClick={handleClose}>No</button>
-        </div>
-      </div>
-    </Modal>
   );
 };
 

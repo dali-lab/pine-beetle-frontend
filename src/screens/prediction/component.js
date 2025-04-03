@@ -11,8 +11,6 @@ import {
 
 import { Histogram, Loading } from '../../components';
 
-import { DATA_MODES } from '../../constants';
-
 import './style.scss';
 
 import closeIcon from '../../assets/icons/close.png';
@@ -25,8 +23,6 @@ const Prediction = (props) => {
     isLoading,
     predictionModal,
     setPredictionModal,
-    dataMode,
-    setDataMode,
     clearAllSelections,
     county,
     setCounty,
@@ -93,46 +89,6 @@ const Prediction = (props) => {
       {fetchErrorText.length > 0 && fetchErrorText.map((t) => <p>{t}</p>)}
       <OverviewText />
       <SelectionBar />
-      <div id="toggles-overlay">
-        <div className="selection-p">
-          <div
-            className={
-              dataMode === DATA_MODES.COUNTY
-                ? 'selected-option-p'
-                : 'unselected-option-p'
-            }
-            onClick={() => setDataMode(DATA_MODES.COUNTY)}
-          >
-            <p
-              className={
-                dataMode === DATA_MODES.COUNTY
-                  ? 'selected-option-text-p'
-                  : 'unselected-option-text-p'
-              }
-            >
-              Counties
-            </p>
-          </div>
-          <div
-            className={
-              dataMode !== DATA_MODES.COUNTY
-                ? 'selected-option-p'
-                : 'unselected-option-p'
-            }
-            onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
-          >
-            <p
-              className={
-                dataMode !== DATA_MODES.COUNTY
-                  ? 'selected-option-text-p'
-                  : 'unselected-option-text-p'
-              }
-            >
-              Federal Land
-            </p>
-          </div>
-        </div>
-      </div>
       <div className="container">
         <PredictionMap />
       </div>

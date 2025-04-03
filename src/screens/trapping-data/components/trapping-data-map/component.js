@@ -11,21 +11,25 @@
 
 /* eslint-disable prefer-destructuring */
 import React, { useState, useEffect } from 'react';
-import ReactTooltip from 'react-tooltip';
 import mapboxgl from 'mapbox-gl';
-import printPdf from 'mapbox-print-pdf';
 
 import {
-  stateAbbrevToZoomLevel,
   DATA_MODES,
-  MAP_SOURCES,
   SOURCE_LAYERS,
   MAP_SOURCE_NAME,
   VECTOR_LAYER,
   STATE_VECTOR_LAYER,
+  MAP_TITLES,
 } from '../../../../constants';
 
-import { getMapboxRDNameFormat } from '../../../../utils';
+import {
+  createHoverCallback,
+  createMapClickCallback,
+  downloadMap,
+  generateMap,
+  getMapboxRDNameFormat,
+  zoomToSelectedState,
+} from '../../../../utils';
 import { api } from '../../../../services';
 
 import {
@@ -34,10 +38,8 @@ import {
 } from './constants';
 
 import './style.scss';
-
-import questionIcon from '../../../../assets/icons/help-circle.png';
-
-const helpText = 'Please use Chrome, Firefox,<br />\nor Edge to download map.';
+import { Map } from '../../../../components';
+import { isInvalidNumber } from '../../../../utils/map';
 
 const HistoricalMap = (props) => {
   const {
@@ -72,158 +74,37 @@ const HistoricalMap = (props) => {
     }
   }, [dataMode]);
 
-  // twice-curried function for generating hover callback
-  const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => (e) => {
-    if (!map || !e || !map.isStyleLoaded()) return;
-
-    const counties = map.getLayer(VECTOR_LAYER)
-      ? map.queryRenderedFeatures(e.point, { layers: [VECTOR_LAYER] })
-      : [];
-
-    if (counties.length > 0 && counties[0]?.properties?.forest) {
-      const { x, y } = e.point || {};
-
-      const {
-        STATE: hoverState,
-        COUNTYNAME: hoverCounty,
-        forest: rawForest,
-      } = counties[0].properties;
-
-      // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
-      const hoverRD = rawForest.replaceAll('  ', ' ');
-
-      const location = mode === DATA_MODES.COUNTY
-        ? hoverCounty
-        : rangerDistricts.filter((rd) => !!rd)
-          .find((rd) => getMapboxRDNameFormat(rd)?.includes(hoverRD));
-
+  const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => {
+    const callback = (hoverState, location, x, y, counties) => {
       const sublocation = mode === DATA_MODES.COUNTY ? 'county' : 'rangerDistrict';
 
       const data = allData.filter((p) => {
         return (
-          // either ranger district mode or have a matching state
+        // either ranger district mode or have a matching state
           (mode === DATA_MODES.RANGER_DISTRICT || ((p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState))))
-          // and sublocation matches
-          && ((p[sublocation] === location))
+      // and sublocation matches
+      && ((p[sublocation] === location))
         );
       }).filter((p) => p.state === hoverState || mode === DATA_MODES.RANGER_DISTRICT);
 
       if (data && data.length > 0 && x && y) {
         const {
-          // avgSpbPer2Weeks,
-          // avgCleridsPer2Weeks,
-          // minSpotst0,
-          // maxSpotst0,
           sumSpotst0,
           county: countyName,
         } = data[0];
 
-        const isInvalidNumber = (num) => Number.isNaN(num) || num === null || num === undefined;
-
         setTrappingHover((
           <div id="trapping-hover" style={{ left: `${x + 10}px`, top: `${y - 140}px` }}>
             <h3>{dataMode === DATA_MODES.COUNTY ? `${countyName} County` : `${counties[0].properties.forest.slice(0, -3)} Ranger District`}</h3>
-            {/* <p>SPB Per 2 Weeks: {isInvalidNumber(avgSpbPer2Weeks) ? 'null' : avgSpbPer2Weeks.toFixed(2)}</p> */}
-            {/* <p>Clerids Per 2 Weeks: {isInvalidNumber(avgCleridsPer2Weeks) ? 'null' : avgCleridsPer2Weeks.toFixed(2)}</p> */}
-            {/* {!isInvalidNumber(minSpotst0) && !isInvalidNumber(maxSpotst0) ? <p>Spot Range: [{minSpotst0}, {maxSpotst0}]</p> : null} */}
             {!isInvalidNumber(sumSpotst0) ? <p>Spots: {sumSpotst0}</p> : null}
           </div>
         ));
       } else {
         setTrappingHover(null);
       }
-    }
-  };
+    };
 
-  // twice-curried function for generating click callback
-  const createMapClickCallback = (states, sublocations, currentState, data, mode) => (e) => {
-    if (!e?.features[0]?.properties) return;
-
-    const {
-      COUNTYNAME: county,
-      forest: clickRD,
-      STATE: mapboxState,
-    } = e.features[0].properties;
-
-    const rangerDistrictToSet = sublocations.filter((rd) => !!rd)
-      .find((district) => district.includes(clickRD));
-
-    const state = !mapboxState && mode === DATA_MODES.RANGER_DISTRICT
-      ? data.find((p) => p.rangerDistrict === rangerDistrictToSet)?.state
-      : mapboxState;
-
-    // ensure clicked on valid state
-    if (!states.includes(state) || !currentState) return;
-
-    // select county or RD depending on mode
-    if (dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
-      if (props.county.length > 0) { // remove selection if user clicks selected county
-        setCounty([]);
-      } else {
-        setCounty([county]);
-      }
-    } else if (sublocations.includes(rangerDistrictToSet)) {
-      if (props.rangerDistrict.length > 0) { // remove selection if user clicks selected ranger district
-        setRangerDistrict([]);
-      } else {
-        setRangerDistrict([rangerDistrictToSet]);
-      }
-    }
-  };
-
-  // creates the initial map
-  const generateMap = (forceRegenerate) => {
-    if (map && !forceRegenerate) return;
-
-    const createdMap = new mapboxgl.Map({
-      container: 'map', // container id
-      style: 'mapbox://styles/pine-beetle-prediction/ckgrzijos0q5119paazko291z',
-      center: [-84.3880, 33.7490], // starting position
-      zoom: 4.8, // starting zoom
-      options: {
-        trackResize: true,
-      },
-    });
-
-    createdMap.addControl(new mapboxgl.NavigationControl());
-
-    const legendTagsToSet = thresholds.map((threshold, index) => {
-      const color = colors[index];
-
-      return (
-        <div key={color}>
-          <span className="legend-key" style={{ backgroundColor: color }} />
-          <span>{threshold}</span>
-        </div>
-      );
-    });
-
-    // add legend tags
-    setLegendTags(legendTagsToSet);
-
-    // add map source on load
-    if (!createdMap._listeners.load) {
-      createdMap.on('load', () => {
-        if (!createdMap.getSource(MAP_SOURCE_NAME)) {
-          createdMap.addSource(MAP_SOURCE_NAME, dataMode === DATA_MODES.COUNTY ? MAP_SOURCES.COUNTY : MAP_SOURCES.RANGER_DISTRICT);
-        }
-      });
-    }
-
-    // select county/RD when user clicks on it
-    if (!createdMap._listeners.click) {
-      const callback = createMapClickCallback(availableStates, availableSublocations, selectedState, rawData, dataMode);
-      setMapClickCallback(() => callback);
-      createdMap.on('click', VECTOR_LAYER, callback);
-    }
-
-    if (createdMap._listeners.mousemove === undefined) {
-      const callback = createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, availableStates);
-      setMapHoverCallback(callback);
-      createdMap.on('mousemove', callback);
-    }
-
-    setMap(createdMap);
+    return createHoverCallback(map, rangerDistricts, dataMode, callback);
   };
 
   const colorFill = (d) => {
@@ -309,109 +190,41 @@ const HistoricalMap = (props) => {
     }, 'water-point-label');
   };
 
-  // adopted from old site
-  // Creates and returns HTML with the title for the header
-  // of the downloaded maps. This object is used by the mapbox-print-pdf library.
-  const buildHeader = () => {
-    return (
-      `<div id="map-header" style="text-align: center;">
-          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">Average Number of Spots</h2>
-        </div>`
-    );
-  };
-
-  // adopted from old site
-  // Creates and returns HTML with information for the footer
-  // of the downloaded maps. This includes a legend for the color scale,
-  // notes explaining the legend and sources, and information about the
-  // data collection process. This object is used by the mapbox-print-pdf library.
-  const buildFooter = () => {
-    const title = `Southern Pine Beetle Outbreak Spot Maps: ${selectedState} ${startYear}-${endYear}`;
-
-    // creates the color boxes and text fields for the legend in the footer
-    const legendString = thresholds.reduce((acc, curr, index) => {
-      const layer = curr;
-      const color = colors[index];
-      const spanString = `
-          <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${color};display:
-          inline-block;border-radius: 20%;width: 20px;height: 20px;margin-right: 5px;margin-left: 5px;"></div><span>${layer}</span>`;
-      return acc.concat(spanString);
-    }, '');
-
-    return (
-      `
-          <div id="map-footer" style="text-align: center;letter-spacing: 1px;margin-top: 20px;margin-bottom: 0;">
-              <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height:
-              14px;width: 53%;margin: auto;margin-bottom: 16px;font-size: 14px;">Total spots per year:</p>
-              <div id="footer-legend" style="font-family: 'Open Sans', arial, serif;width: 90%;margin: auto;margin-bottom: 10px;">
-                  ${legendString}
-              </div>
-              <div id="spacer" style="height: 50px;"></div>
-              <h2 style="font-family: 'Open Sans', arial, serif;margin-bottom: 16px;margin-top: 16px;">${title}</h2>
-              <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">
-              The SPB prediction project is supported by USDA Forest Service: Science and Technology
-              Development Program (STDP)
-              </p>
-              <p style="font-family: 'Open Sans', arial, serif;font-size: 14px;margin-bottom: 16px;">Contact: Matthew P. Ayres - matthew.p.ayres@dartmouth.edu; Carissa F. Aoki - caoki@bates.edu
-              </p>
-              <p class="footnote" style="font-family: 'Open Sans', arial, serif;color: #898989;line-height: 14px;width: 53%;
-              margin: auto;margin-bottom: 16px;font-size: 14px;">Sources: Esri, HERE, Garmin, Intermap, increment P Corp., GEBCO, USGS,FAO, NPS, NRCAN,
-              GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), swisstopo, © OpenStreetMap
-              contributors, and the GIS User Community</p>
-          </div>
-          `
-    );
-  };
-
-  const downloadMap = () => {
-    if (!map || !endYear || isDownloadingMap) return;
-
-    setIsDownloadingMap(true);
-
-    const mapName = `${selectedState || 'All States'}-${endYear}.pdf`;
-
-    printPdf.build()
-      .header({
-        html: buildHeader(),
-        baseline: { format: 'a3', orientation: 'p' },
-      })
-      .footer({
-        html: buildFooter(),
-        baseline: { format: 'a3', orientation: 'p' },
-      })
-      .margins({
-        top: 8,
-        right: 8,
-        left: 8,
-        bottom: 8,
-      }, 'pt')
-      .format('a3')
-      .portrait()
-      .print(map, mapboxgl)
-      .then((pdf) => {
-        pdf.save(mapName);
-        setIsDownloadingMap(false);
-      })
-      .catch(console.log);
-  };
-
   useEffect(() => {
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
+    const clickCallback = createMapClickCallback(availableStates, availableSublocations, selectedState, rawData, dataMode, props.county, setCounty, props.rangerDistrict, setRangerDistrict);
+    const hoverCallback = createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, availableStates);
 
     setTimeout(() => {
       setMap(undefined);
-      generateMap(true);
+      generateMap(true, map, thresholds, colors, setLegendTags, dataMode, clickCallback, setMapClickCallback, hoverCallback, setMapHoverCallback, setMap);
 
       // Calls function to download map when download control is clicked
       document.addEventListener('click', (event) => {
         if (!event.target.matches('.download-button')) return;
-        downloadMap();
+        downloadMap(
+          map,
+          endYear,
+          isDownloadingMap,
+          setIsDownloadingMap,
+          selectedState,
+          MAP_TITLES.HISTORICAL,
+          { titleDetails: { selectedState, period: `${startYear}-${endYear}` }, thresholds, colors },
+        );
       }, false);
 
       // Calls function to download map when download control is clicked
       document.addEventListener('click', (event) => {
         if (!event.target.matches('.download-button p')) return;
-        downloadMap();
+        downloadMap(
+          map,
+          endYear,
+          isDownloadingMap,
+          setIsDownloadingMap,
+          selectedState,
+          MAP_TITLES.HISTORICAL,
+          { titleDetails: { selectedState, period: `${startYear}-${endYear}` }, thresholds, colors },
+        );
       }, false);
     }, 100);
   }, [dataMode]);
@@ -421,19 +234,7 @@ const HistoricalMap = (props) => {
 
     if (endYear.toString().length === 4) colorFill(rawData);
 
-    if (selectedState) {
-      const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
-
-      map.flyTo({
-        center: zoom[0],
-        zoom: zoom[1],
-      });
-    } else {
-      map.flyTo({
-        center: [-84.3880, 33.7490],
-        zoom: 4.8,
-      });
-    }
+    zoomToSelectedState(selectedState, map);
   }, [rawData, selectedState, map]); // endYear can prob be added. colorFill needs useCallback
 
   useEffect(() => {
@@ -467,14 +268,13 @@ const HistoricalMap = (props) => {
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
-      const callback = createMapClickCallback(availableStates, availableSublocations, selectedState, rawData, dataMode);
+      const callback = createMapClickCallback(availableStates, availableSublocations, selectedState, rawData, dataMode, props.county, setCounty, props.rangerDistrict, setRangerDistrict);
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
   }, [
     map,
     availableStates,
-    availableSublocations,
     availableSublocations,
     selectedState,
     rawData,
@@ -522,24 +322,25 @@ const HistoricalMap = (props) => {
 
   return (
     <div id="trapping-map-container">
-      <div id="map" />
-      <div id="map-overlay-download" onClick={downloadMap}>
-        <h4>{isDownloadingMap ? 'Downloading...' : 'Download Map'}</h4>
-        <div>
-          <img id="icon-small"
-            data-tip={helpText}
-            src={questionIcon}
-            alt="Help"
-          />
-          <ReactTooltip multiline place="right" />
-        </div>
-
-      </div>
-      <div className="map-overlay-legend" id="legend">
-        <div className="legend-key-title">Total Number of Spots</div>
-        {legendTags}
-      </div>
-      {trappingHover}
+      <Map
+        hover={trappingHover}
+        legend={(
+          <>
+            <div className="legend-key-title">Total Number of Spots</div>
+            {legendTags}
+          </>
+              )}
+        downloadCallback={() => downloadMap(
+          map,
+          endYear,
+          isDownloadingMap,
+          setIsDownloadingMap,
+          selectedState,
+          MAP_TITLES.HISTORICAL,
+          { titleDetails: { selectedState, period: `${startYear}-${endYear}` }, thresholds, colors },
+        )}
+        isDownloadingMap={isDownloadingMap}
+      />
     </div>
   );
 };

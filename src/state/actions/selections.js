@@ -5,6 +5,7 @@ import {
   getAggregateLocationData,
   getPredictions,
   getSparseData,
+  getResultsComparisonData,
 } from './data';
 
 import {
@@ -302,6 +303,7 @@ export const setState = (state) => {
 
     const { predictionYear } = getState().selections;
     dispatch(getPredictions(predictionYear, predictionYear), { state });
+    dispatch(getResultsComparisonData(predictionYear, { state }));
 
     // fetch new drop down values
     dispatch(getAvailableYears({ state }));
@@ -331,6 +333,7 @@ export const setCounty = (newCounty) => {
 
     const { predictionYear } = getState().selections;
     dispatch(getPredictions(predictionYear, predictionYear), { county });
+    dispatch(getResultsComparisonData(predictionYear, { county }));
 
     // fetch new drop down values
     dispatch(getAvailableYears({ county }));
@@ -358,6 +361,7 @@ export const setRangerDistrict = (newRangerDistrict) => {
     dispatch(getAggregateLocationData({ rangerDistrict }));
     const { predictionYear } = getState().selections;
     dispatch(getPredictions(predictionYear, predictionYear), { rangerDistrict });
+    dispatch(getResultsComparisonData(predictionYear, { rangerDistrict }));
 
     // fetch new drop down values
     dispatch(getAvailableYears({ rangerDistrict }));
@@ -368,7 +372,7 @@ export const setRangerDistrict = (newRangerDistrict) => {
  * @description action creator for clearing all selections
  */
 export const clearSelections = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: ActionTypes.CLEAR_SELECTIONS });
 
     // clear out existing data
@@ -380,6 +384,8 @@ export const clearSelections = () => {
     dispatch(getAggregateStateData());
     dispatch(getAggregateLocationData());
     dispatch(getPredictions());
+    const { predictionYear } = getState().selections;
+    dispatch(getResultsComparisonData(predictionYear));
 
     // fetch new selection criteria
     dispatch(getAvailableYears());
@@ -408,6 +414,7 @@ export const setDataMode = (mode) => {
     dispatch(getAggregateLocationData());
     const { predictionYear } = getState().selections;
     dispatch(getPredictions(predictionYear, predictionYear));
+    dispatch(getResultsComparisonData(predictionYear));
 
     // fetch new selection criteria
     dispatch(getAvailableYears());

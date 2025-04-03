@@ -5,7 +5,6 @@ import Prediction from './component';
 import {
   setChartMode,
   clearSelections,
-  setDataMode,
   setPredictionModal,
   setCounty,
   setRangerDistrict,
@@ -26,7 +25,6 @@ const mapStateToProps = (state) => {
     selections: {
       predictionModal,
       chartMode,
-      dataMode,
       county,
       rangerDistrict,
     },
@@ -44,7 +42,6 @@ const mapStateToProps = (state) => {
     isLoading,
     predictionModal,
     chartMode,
-    dataMode,
     county,
     rangerDistrict,
     frequency,
@@ -61,9 +58,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     setChartMode: (mode) => {
       dispatch(setChartMode(mode));
-    },
-    setDataMode: (mode) => {
-      dispatch(setDataMode(mode));
     },
     setCounty: (county) => {
       dispatch(setCounty(county));

@@ -1,32 +1,58 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { getAllAdminUsers } from '../../../../services/admin';
+import DeleteModal from '../delete-modal';
+import trashCan from '../../../../assets/icons/trash-can.png';
+import { deleteAdminUser } from '../../../../services/admin';
 
 import './style.scss';
 
-const Users = () => {
-  const [users, setUsers] = useState([]);
+const Users = ({ users, setUsers, activeUser }) => {
+  const [selectedUser, setSelectedUser] = useState({});
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      const allUsers = await getAllAdminUsers();
+  const handleDelete = async (userId) => {
+    const response = await deleteAdminUser(userId);
 
-      setUsers(allUsers.map((user) => ({
-        email: user.email,
-        name: `${user.first_name} ${user.last_name}`,
-      })));
-    })();
-  }, []);
+    if (response?.status === 200) {
+      setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
+    }
+
+    setSelectedUser({});
+  };
+
+  const onClickDeleteButton = (user) => {
+    setShowDeleteModal(true);
+    setSelectedUser(user);
+  };
 
   return (
     <>
       <p id="users-title">Users</p>
-      {users.map((user) => (
-        <div id="user-info-container" key={user.email}>
-          <p id="user-name">{user.name}</p>
-          <p id="user-email">{user.email}</p>
-        </div>
-      ))}
+      {users.map((user) => {
+        const isActiveUser = activeUser.email === user.email;
+        return (
+          <div id="user-info-container" key={user.email}>
+            <div>
+              <p id="user-name">{user.name}</p>
+              <p id="user-email">{user.email}</p>
+            </div>
+            {!isActiveUser && (
+            <button type="button" className="animated-button delete-user-button" onClick={() => onClickDeleteButton(user)}>
+              <img
+                src={trashCan}
+                alt="trash can icon"
+              />
+            </button>
+            )}
+          </div>
+        );
+      })}
+      <DeleteModal
+        handleDelete={() => handleDelete(selectedUser.id)}
+        isOpen={showDeleteModal}
+        setIsOpen={setShowDeleteModal}
+        title={selectedUser.name}
+      />
     </>
   );
 };

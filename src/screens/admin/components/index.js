@@ -5,6 +5,7 @@ import ChangePassword from './change-password';
 import FileUpload from './file-upload';
 import Login from './login';
 import Users from './users';
+import UserSection from './user-section';
 
 export {
   AddBlogPost,
@@ -14,4 +15,5 @@ export {
   FileUpload,
   Login,
   Users,
+  UserSection,
 };
