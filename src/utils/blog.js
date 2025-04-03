@@ -19,7 +19,7 @@ const getLatestBlogPost = (blogPosts) => {
 // Return string with US date format
 const getDateToDisplay = (dateToParse) => {
   const date = new Date(dateToParse);
-  return `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 };
 
 // Return string with blog post creation and editing dates
