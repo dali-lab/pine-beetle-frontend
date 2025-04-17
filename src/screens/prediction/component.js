@@ -6,6 +6,7 @@ import {
   OverviewText,
   PredictionDetails,
   PredictionMap,
+  ScatterChart,
   SelectionBar,
 } from './components';
 
@@ -93,6 +94,7 @@ const Prediction = (props) => {
         <PredictionMap />
       </div>
       {predModal()}
+      <ScatterChart />
     </div>
   );
 };
