@@ -2,6 +2,12 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import * as echarts from 'echarts';
 import * as ecStat from 'echarts-stat';
 
+import {
+  getMapboxRDNameFormat,
+} from '../../../../utils';
+
+import './style.scss';
+
 echarts.registerTransform(ecStat.transform.regression);
 
 const getCustomRegressionLine = () => {
@@ -13,22 +19,27 @@ const getCustomRegressionLine = () => {
   return points;
 };
 
-const ScatterChart = ({ data }) => {
+const ScatterChart = ({
+  data, predictionYear, getChartData, dataMode,
+}) => {
+  useEffect(() => {
+    getChartData();
+  }, [dataMode]);
+
   const chartRef = useRef(null);
 
-  const selectedYear = 2018;
   const formattedData = useMemo(() => {
     return data.map((item) => [
       item.probSpotsGT50 * 100,
       item.lnSpots,
-      `${item.county}, ${item.state}`,
+      `${item.county || `${getMapboxRDNameFormat(item.rangerDistrict).slice(0, -3)} Ranger District`}, ${item.state}`,
       item.year,
     ]);
   }, [data]);
 
   const selectedYearData = useMemo(
-    () => formattedData.filter((d) => d[3] === selectedYear),
-    [formattedData, selectedYear],
+    () => formattedData.filter((d) => d[3] === predictionYear),
+    [formattedData, predictionYear],
   );
 
   useEffect(() => {
@@ -41,8 +52,7 @@ const ScatterChart = ({ data }) => {
         { id: 'manualRegression', source: getCustomRegressionLine() },
       ],
       title: {
-        text: 'Probability vs Log Predicted Units',
-        subtext: `Year ${selectedYear} highlighted`,
+        text: `Year ${predictionYear} highlighted`,
         left: 'center',
       },
       tooltip: {
@@ -51,6 +61,7 @@ const ScatterChart = ({ data }) => {
           const [x, y, location, year] = params.data;
           return `${location} (${year})<br/><br/>ln(Spots): <b>${y.toFixed(2)}</b><br/>Percent chance > 50 spots: <b>${x.toFixed(0)}%</b>`;
         },
+        extraCssText: 'text-align: left;',
       },
       xAxis: {
         name: 'Percent chance > 50 spots',
@@ -96,7 +107,7 @@ const ScatterChart = ({ data }) => {
           },
         },
         {
-          name: `Year ${selectedYear}`,
+          name: `Year ${predictionYear}`,
           type: 'scatter',
           datasetId: 'selected',
           encode: { x: 0, y: 1 },
@@ -137,10 +148,23 @@ const ScatterChart = ({ data }) => {
 
     chart.setOption(option);
 
-    return () => chart.dispose();
+    const handleResize = () => {
+      chart.resize();
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      chart.dispose();
+      window.removeEventListener('resize', handleResize);
+    };
   }, [formattedData]);
 
-  return <div ref={chartRef} style={{ width: '100%', height: '500px' }} />;
+  return (
+    <div className="container scatter-chart">
+      <div ref={chartRef} style={{ width: '100%', height: '500px' }} />
+    </div>
+  );
 };
 
 export default ScatterChart;

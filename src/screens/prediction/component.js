@@ -8,6 +8,7 @@ import {
   PredictionMap,
   ScatterChart,
   SelectionBar,
+  ScatterChartSelectionBar,
 } from './components';
 
 import { Histogram, Loading } from '../../components';
@@ -94,6 +95,10 @@ const Prediction = (props) => {
         <PredictionMap />
       </div>
       {predModal()}
+      <div className="container">
+        <h2 className="prediction-chart-title">Probability vs Log Predicted Units</h2>
+      </div>
+      <ScatterChartSelectionBar />
       <ScatterChart />
     </div>
   );

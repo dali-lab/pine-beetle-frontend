@@ -4,6 +4,7 @@ import PredictionDetails from './prediction-details';
 import PredictionMap from './prediction-map';
 import SelectionBar from './selection-bar';
 import ScatterChart from './scatter-chart';
+import ScatterChartSelectionBar from './scatter-chart-selection-bar';
 
 export {
   AboutPredictions,
@@ -12,4 +13,5 @@ export {
   PredictionMap,
   SelectionBar,
   ScatterChart,
+  ScatterChartSelectionBar,
 };
