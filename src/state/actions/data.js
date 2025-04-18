@@ -9,6 +9,7 @@ export const ActionTypes = {
   SET_AGGREGATE_LOCATION_DATA: 'SET_AGGREGATE_LOCATION_DATA', // data grouped by county/RD
   SET_CUSTOM_PREDICTION: 'SET_CUSTOM_PREDICTION',
   SET_RESULTS_COMPARISON_DATA: 'SET_RESULTS_COMPARISON_DATA',
+  SET_SCATTER_CHART_DATA: 'SET_SCATTER_CHART_DATA',
 
   FETCHING_PREDICTIONS: 'FETCHING_PREDICTIONS',
   FETCHING_SPARSE_DATA: 'FETCHING_SPARSE_DATA',
@@ -17,6 +18,7 @@ export const ActionTypes = {
   FETCHING_AGGREGATE_LOCATION_DATA: 'FETCHING_AGGREGATE_LOCATION_DATA',
   FETCHING_CUSTOM_PREDICTION: 'FETCHING_CUSTOM_PREDICTION',
   FETCHING_RESULTS_COMPARISON_DATA: 'FETCHING_RESULTS_COMPARISON_DATA',
+  FETCHING_SCATTER_CHART_DATA: 'FETCHING_SCATTER_CHART_DATA',
 
   SET_DATA_FETCH_ERROR: 'SET_DATA_FETCH_ERROR',
   SET_CUSTOM_PREDICTION_ERROR: 'SET_CUSTOM_PREDICTION_ERROR',
@@ -337,6 +339,36 @@ export const getResultsComparisonData = (year, overrideFilter = {}) => {
     } finally {
       setTimeout(() => {
         dispatch({ type: ActionTypes.FETCHING_RESULTS_COMPARISON_DATA, payload: false });
+      }, 1000);
+    }
+  };
+};
+
+export const getScatterChartData = () => {
+  return async (dispatch, getState) => {
+    const {
+      dataMode,
+    } = getState().selections;
+
+    dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: true });
+
+    try {
+      const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyScatterChart() : api.getRDScatterChart());
+      dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: response.data });
+    } catch (error) {
+      dispatch({
+        type: ActionTypes.CLEAR_DATA_FETCH_ERROR,
+      });
+      dispatch({
+        type: ActionTypes.SET_DATA_FETCH_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch scatter chart data',
+        },
+      });
+    } finally {
+      setTimeout(() => {
+        dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: false });
       }, 1000);
     }
   };

@@ -12,6 +12,7 @@ import {
   setChartMode,
   setDataMode,
   getResultsComparisonData,
+  getScatterChartData,
 } from '../state/actions';
 
 import App from './component';
@@ -66,6 +67,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setDataMode: (mode) => {
       dispatch(setDataMode(mode));
+    },
+    getScatterChartData: () => {
+      dispatch(getScatterChartData());
     },
   };
 };

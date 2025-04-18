@@ -32,6 +32,7 @@ import {
   getAggregateYearData,
   getPredictions,
   getSparseData,
+  getScatterChartData,
   runCustomPrediction,
   getResultsComparisonData,
 } from './data';
@@ -78,6 +79,7 @@ export {
   getPredictions,
   getResultsComparisonData,
   getSparseData,
+  getScatterChartData,
   getUserFromStorage,
   login,
   runCustomPrediction,

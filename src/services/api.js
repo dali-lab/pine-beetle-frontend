@@ -387,3 +387,27 @@ export async function getRDResultsComparison(filters) {
     throw error;
   }
 }
+
+export async function getCountyScatterChart() {
+  const url = `${global.API_URL}/${COUNTY_SUBROUTE}/counties/scatter-chart`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getRDScatterChart() {
+  const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/rangerDistricts/scatter-chart`;
+
+  try {
+    const { data: { data } } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
