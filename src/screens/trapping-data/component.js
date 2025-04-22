@@ -11,7 +11,7 @@ import {
   SelectionBar,
 } from './components';
 
-import { Loading } from '../../components';
+import { Loading, ScrollHint } from '../../components';
 
 import mapSelectedIcon from '../../assets/icons/map-selected.png';
 import mapUnselectedIcon from '../../assets/icons/map-unselected.png';
@@ -103,6 +103,7 @@ const TrappingData = (props) => {
       <div className="container">
         {isGraphView ? <LineChart /> : <TrappingDataMap />}
       </div>
+      <ScrollHint />
     </div>
   );
 };

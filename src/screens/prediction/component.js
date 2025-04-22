@@ -11,11 +11,10 @@ import {
   ScatterChartSelectionBar,
 } from './components';
 
-import { Histogram, Loading } from '../../components';
+import { Histogram, Loading, ScrollHint } from '../../components';
+import closeIcon from '../../assets/icons/close.png';
 
 import './style.scss';
-
-import closeIcon from '../../assets/icons/close.png';
 
 const Prediction = (props) => {
   const {
@@ -105,6 +104,7 @@ const Prediction = (props) => {
       </div>
       <ScatterChartSelectionBar />
       <ScatterChart />
+      <ScrollHint />
     </div>
   );
 };
