@@ -11,11 +11,10 @@ import {
   ScatterChartSelectionBar,
 } from './components';
 
-import { Histogram, Loading } from '../../components';
+import { Histogram, Loading, ScrollHint } from '../../components';
+import closeIcon from '../../assets/icons/close.png';
 
 import './style.scss';
-
-import closeIcon from '../../assets/icons/close.png';
 
 const Prediction = (props) => {
   const {
@@ -96,10 +95,16 @@ const Prediction = (props) => {
       </div>
       {predModal()}
       <div className="container">
-        <h2 className="prediction-chart-title">Probability vs Log Predicted Units</h2>
+        <h2 className="prediction-chart-title">Predictions versus outcomes</h2>
+        <p className="prediction-chart-text">Each point represents one county or ranger district in one year.
+          The regression line indicates the overall relationship between predictions and outcomes.
+          Points above the line had more SPB spots than predicted. Points below the line had fewer spots than predicted.
+          Highlighted points are for the indicated year.
+        </p>
       </div>
       <ScatterChartSelectionBar />
       <ScatterChart />
+      <ScrollHint />
     </div>
   );
 };

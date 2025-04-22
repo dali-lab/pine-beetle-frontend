@@ -34,6 +34,7 @@ const ScatterChart = ({
       item.lnSpots,
       `${item.county || `${getMapboxRDNameFormat(item.rangerDistrict).slice(0, -3)} Ranger District`}, ${item.state}`,
       item.year,
+      item.spotst0,
     ]);
   }, [data]);
 
@@ -58,13 +59,13 @@ const ScatterChart = ({
       tooltip: {
         trigger: 'item',
         formatter: (params) => {
-          const [x, y, location, year] = params.data;
-          return `${location} (${year})<br/><br/>ln(Spots): <b>${y.toFixed(2)}</b><br/>Percent chance > 50 spots: <b>${x.toFixed(0)}%</b>`;
+          const [x, y, location, year, spotst0] = params.data;
+          return `${location} (${year})<br/><br/>spots = exp(${y.toFixed(2)}) = ${spotst0}<br/>Percent chance > 50 spots: <b>${x.toFixed(0)}%</b>`;
         },
         extraCssText: 'text-align: left;',
       },
       xAxis: {
-        name: 'Percent chance > 50 spots',
+        name: 'Predicted % chance of > 50 SPB spots',
         splitLine: { lineStyle: { type: 'dashed' } },
         axisLine: {
           onZero: false,
@@ -77,7 +78,7 @@ const ScatterChart = ({
         },
       },
       yAxis: {
-        name: 'ln(Spots)',
+        name: 'Number of SPB infestations\nln(spots+1)',
         splitLine: { lineStyle: { type: 'dashed' } },
         axisLine: {
           onZero: false,

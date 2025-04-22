@@ -10,7 +10,7 @@ import {
   PlayWithModel,
   Video,
 } from './components';
-import { Loading } from '../../components';
+import { Loading, ScrollHint } from '../../components';
 
 import './style.scss';
 
@@ -42,6 +42,7 @@ const Home = (props) => {
         </div>
       </div>
       <HowItWorks howItWorksRef={howItWorksRef} />
+      <ScrollHint />
     </div>
   );
 };
