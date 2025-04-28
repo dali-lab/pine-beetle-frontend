@@ -27,7 +27,7 @@ const OverviewText = (_props) => (
       />
       <ReactTooltip multiline place="right" />
     </div>
-    <div>
+    <div className="explanatory-text">
       <ReactReadMoreReadLess
         charLimit={250}
         readMoreText="Read more"
