@@ -4,6 +4,8 @@ import {
 } from './components';
 import { Loading, ScrollHint } from '../../components';
 
+import './style.scss';
+
 const ResultsComparison = (props) => {
   const { isLoading } = props;
   return (

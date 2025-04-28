@@ -29,7 +29,7 @@ const OverviewText = (_props) => (
       <ReactTooltip className="overview-text-tooltip" multiline place="right" />
     </div>
     <div>
-      <p>
+      <p className="explanatory-text">
         {explanatoryText}
       </p>
     </div>

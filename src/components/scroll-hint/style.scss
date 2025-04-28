@@ -1,13 +1,19 @@
 .scroll-hint {
   position: fixed;
+  display: flex;
+  justify-content: center;
   bottom: 30px;
-  right: 30px;
+  left: 50%;
   transform: translateX(-50%);
-  font-size: 1.5rem;
-  opacity: 0.5;
+  font-size: 2.5rem;
+  opacity: 0.8;
   pointer-events: none;
   animation: bounce 2s infinite;
   z-index: 1000;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 100%;
+  background-color: $white;
 }
 
 @keyframes bounce {
