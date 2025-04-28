@@ -1,8 +1,10 @@
 import React from 'react';
-import OverviewText from './components';
-import ComparisonMap from './components/comparison-map';
-import { Loading } from '../../components';
-import SelectionBar from './components/selection-bar';
+import {
+  ComparisonMap, OverviewText, ScatterChart, ScatterChartSelectionBar, SelectionBar,
+} from './components';
+import { Loading, ScrollHint } from '../../components';
+
+import './style.scss';
 
 const ResultsComparison = (props) => {
   const { isLoading } = props;
@@ -12,6 +14,17 @@ const ResultsComparison = (props) => {
       <OverviewText />
       <SelectionBar />
       <ComparisonMap />
+      <div className="container">
+        <h2 className="prediction-chart-title">Predictions versus outcomes</h2>
+        <p className="prediction-chart-text">Each point represents one county or ranger district in one year.
+          The regression line indicates the overall relationship between predictions and outcomes.
+          Points above the line had more SPB spots than predicted. Points below the line had fewer spots than predicted.
+          Highlighted points are for the indicated year.
+        </p>
+      </div>
+      <ScatterChartSelectionBar />
+      <ScatterChart />
+      <ScrollHint />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import Loading from './loading';
 import Map from './map';
 import MobileOverlay from './mobile-overlay';
 import ScrollToTop from './scroll-to-top';
+import ScrollHint from './scroll-hint';
 
 export {
   Button,
@@ -20,4 +21,5 @@ export {
   Map,
   MobileOverlay,
   ScrollToTop,
+  ScrollHint,
 };

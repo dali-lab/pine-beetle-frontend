@@ -19,7 +19,7 @@ const OverviewText = (_props) => (
       </h1>
     </div>
     <div>
-      <p>
+      <p className="explanatory-text">
         {explanatoryText}
       </p>
     </div>
