@@ -1,21 +1,17 @@
-import React from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
-import { ROUTES } from '../../constants';
-import DownloadData from '../download-data';
 import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
+import { ROUTES } from '../../constants';
 
 import './style.scss';
 
 const Header = () => {
-  const routes = {
-    [ROUTES.RESOURCES]: 'Resources',
-    [ROUTES.ABOUT]: 'About',
-  };
+  const [dataMenuOpen, setDataMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const location = useLocation();
   const history = useHistory();
-  const urlPath = location.pathname;
 
   const scrollToUrl = '?scrollTo=howItWorks';
 
@@ -31,36 +27,116 @@ const Header = () => {
     }
   };
 
+  const handleContactClick = () => {
+    // Scroll to contact section or handle contact action
+    console.log('Contact clicked');
+  };
+
   return (
-    <div id="header">
-      <div className="container">
-        <div id="title-area">
-          <div id="logo">
-            <Link to={ROUTES.HOME}>
-              <img src={pineBeetleImage} alt="logo" />
-            </Link>
-            <Link to={ROUTES.HOME} className={`nav-button ${(urlPath === '/') ? 'active-nav' : 'inactive-nav'}`}>
-              Home
-            </Link>
-          </div>
-          <div id="nav-button-area">
-            <div id="nav-buttons">
-              <div id="button-container">
-                <button type="button" onClick={handleHowItWorksButtonClick} className="nav-button inactive-nav">How does it work?</button>
-                {Object.entries(routes).map(([key, value]) => (
-                  <Link to={key} key={key} className={`${value === 'About' ? 'nav-button-short' : 'nav-button'} ${(urlPath === key) ? 'active-nav' : 'inactive-nav'}`}>
-                    {value}
-                  </Link>
-                ))}
-              </div>
-              <div id="download-button-area">
-                {urlPath === ROUTES.TRAPPING_DATA && <DownloadData />}
-              </div>
+    <header className="header">
+      <div className="header-container">
+        <nav className="header-nav">
+          <Link to={ROUTES.HOME} className="header-logo">
+            <div className="logo-image">
+              <img src={pineBeetleImage} alt="SPB Logo" />
             </div>
+            <span className="logo-text">SPB Predict</span>
+          </Link>
+
+          <div className="desktop-nav">
+            <Link to={ROUTES.PREDICTIONS} className="nav-link">
+              Predictions
+            </Link>
+
+            {/* Data Menu with hover/click functionality */}
+            <div
+              className="nav-dropdown"
+              onMouseEnter={() => setDataMenuOpen(true)}
+              onMouseLeave={() => setDataMenuOpen(false)}
+            >
+              <button type="button" className="nav-link dropdown-trigger">
+                Data
+                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {dataMenuOpen && (
+                <div className="dropdown-menu">
+                  <Link to={ROUTES.TRAPPING_DATA} className="dropdown-item">
+                    Time Series / Annual Trends
+                  </Link>
+                  <Link to="/data/tables" className="dropdown-item">
+                    Data Tables
+                  </Link>
+                  <Link to="/data/graphs" className="dropdown-item">
+                    Data Graphs
+                  </Link>
+                  <Link to="/data/download" className="dropdown-item">
+                    Download Data
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            <button type="button" onClick={handleHowItWorksButtonClick} className="nav-link">
+              Methodology
+            </button>
+            <Link to={ROUTES.ABOUT} className="nav-link">
+              About
+            </Link>
+            <button type="button" onClick={handleContactClick} className="contact-button">
+              Contact
+            </button>
           </div>
-        </div>
+
+          <button
+            type="button"
+            className="mobile-menu-button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <svg className="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </nav>
       </div>
-    </div>
+
+      {/* Mobile Navigation Menu */}
+      {mobileMenuOpen && (
+        <div className="mobile-nav">
+          <Link to={ROUTES.PREDICTIONS} className="mobile-nav-link">
+            Predictions
+          </Link>
+
+          <div className="mobile-nav-section">
+            <span className="mobile-nav-label">Data</span>
+            <Link to={ROUTES.TRAPPING_DATA} className="mobile-nav-sublink">
+              Time Series / Annual Trends
+            </Link>
+            <Link to="/data/tables" className="mobile-nav-sublink">
+              Data Tables
+            </Link>
+            <Link to="/data/graphs" className="mobile-nav-sublink">
+              Data Graphs
+            </Link>
+            <Link to="/data/download" className="mobile-nav-sublink">
+              Download Data
+            </Link>
+          </div>
+
+          <button type="button" onClick={handleHowItWorksButtonClick} className="mobile-nav-link">
+            Methodology
+          </button>
+          <Link to={ROUTES.ABOUT} className="mobile-nav-link">
+            About
+          </Link>
+          <button type="button" onClick={handleContactClick} className="mobile-contact-button">
+            Contact
+          </button>
+        </div>
+      )}
+    </header>
   );
 };
 
