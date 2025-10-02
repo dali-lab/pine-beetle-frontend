@@ -1,16 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import {
-  BlogPost,
-  HeroSection,
-  HistoricalData,
-  HowItWorks,
-  MiniMap,
-  PlayWithModel,
-  Video,
-} from './components';
 import { Loading, ScrollHint } from '../../components';
+import { PredictionMap } from '../prediction/components';
+import {
+  HeroSection,
+  HowItWorks,
+} from './components';
 
 import './style.scss';
 
@@ -29,21 +25,19 @@ const Home = (props) => {
   }, [location.search, isLoading]);
 
   return (
-    <div className="container">
-      <Loading visible={isLoading} />
-      <HeroSection />
-      <div className="home-content">
-        <MiniMap />
-        <BlogPost />
-        <PlayWithModel />
-        <div className="home-content-section">
-          <HistoricalData />
-          <Video />
-        </div>
+    <>
+      <div className="container">
+        <Loading visible={isLoading} />
+        <HeroSection />
       </div>
-      <HowItWorks howItWorksRef={howItWorksRef} />
-      <ScrollHint />
-    </div>
+      <div className="full-width-map">
+        <PredictionMap />
+      </div>
+      <div className="container">
+        <HowItWorks howItWorksRef={howItWorksRef} />
+        <ScrollHint />
+      </div>
+    </>
   );
 };
 

@@ -68,3 +68,39 @@
         margin-bottom: 7px;
     }
 }
+
+.full-width-map {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    margin-top: 40px;
+    margin-bottom: 40px;
+
+    // Override the container class constraints
+    .container {
+        max-width: none !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    // Override the prediction map container styles to make it full width
+    #map-container {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        max-width: none !important;
+    }
+
+    // Make the map itself full width and adjust height
+    #map {
+        width: 100% !important;
+        border-radius: 0 !important;
+        height: 1000px; // Twice the previous height
+    }
+}
