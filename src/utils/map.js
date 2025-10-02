@@ -1,6 +1,6 @@
-import React from 'react';
-import mapboxPrintPdf from 'mapbox-print-pdf';
 import mapboxgl from 'mapbox-gl';
+import mapboxPrintPdf from 'mapbox-print-pdf';
+import React from 'react';
 import {
   DATA_MODES,
   MAP_SOURCE_NAME,
@@ -261,9 +261,7 @@ const mapboxHoverStyle = (x, y) => {
 const isInvalidNumber = (num) => Number.isNaN(num) || num === null || num === undefined;
 
 export {
-  createMapClickCallback,
-  createHoverCallback,
-  downloadMap,
+  createHoverCallback, createMapClickCallback, downloadMap,
   generateMap,
   isInvalidNumber,
   mapboxHoverStyle,

@@ -6,8 +6,8 @@ import { ChoiceInput, MultiSelectInput } from '../../../../components/input-comp
 import { DATA_MODES, ROUTES } from '../../../../constants';
 
 import {
-  getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
+  getStateNameFromAbbreviation,
 } from '../../../../utils';
 
 import './style.scss';
@@ -38,16 +38,19 @@ const SelectionBar = (props) => {
 
   return (
     <div className="container">
-      <div id="predictionbar">
-        <div className="predictionbar-selections">
-          <div className="predictionbar-year-selection">
-            <p className="predictionbar-year-selection-title">Year</p>
-            <div className="predictionbar-year-selection-options input-container">
-              <ChoiceInput setValue={setPredictionYear} options={revYears} value={year} />
-            </div>
+      <div id="predictionbar" className="modern-selection-bar">
+        <div className="selection-section">
+          <div className="section-label">Year</div>
+          <div className="selection-input">
+            <ChoiceInput setValue={setPredictionYear} options={revYears} value={year} />
           </div>
-          <div className="predictionbar-location-selection">
-            <p className="predictionbar-location-selection-title">Locations</p>
+        </div>
+
+        <div className="selection-divider" />
+
+        <div className="selection-section">
+          <div className="section-label">Locations</div>
+          <div className="selection-input">
             <MultiSelectInput
               valueParent={selectedStateName}
               valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
@@ -57,17 +60,27 @@ const SelectionBar = (props) => {
               optionsChildren={availableSublocations}
             />
           </div>
-          <button className="animated-button predictionbar-clear-button" onClick={clearAllSelections} type="button">Clear</button>
         </div>
-        <div className="divider" />
-        <button
-          onClick={() => history.push(ROUTES.RESULTS_COMPARISON)}
-          type="button"
-          className="animated-button predictionbar-link-button"
-          data-tip="Map of predicted vs. observed outbreaks"
-        >
-          How did we do?
-        </button>
+
+        <div className="selection-divider" />
+
+        <div className="selection-actions">
+          <button
+            className="action-button clear-button"
+            onClick={clearAllSelections}
+            type="button"
+          >
+            Clear
+          </button>
+          <button
+            onClick={() => history.push(ROUTES.RESULTS_COMPARISON)}
+            type="button"
+            className="action-button primary-button"
+            data-tip="Map of predicted vs. observed outbreaks"
+          >
+            How did we do?
+          </button>
+        </div>
       </div>
     </div>
   );

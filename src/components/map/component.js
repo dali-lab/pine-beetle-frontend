@@ -6,7 +6,6 @@ const helpText = 'Please use Chrome, Firefox,<br />\nor Edge to download map.';
 
 const Map = (props) => {
   const {
-    legend,
     hover,
     downloadCallback,
     isDownloadingMap,
@@ -28,9 +27,6 @@ const Map = (props) => {
           />
           <ReactTooltip multiline place="right" />
         </div>
-      </div>
-      <div className="map-overlay-legend" id="legend">
-        {legend}
       </div>
       {hover}
     </>

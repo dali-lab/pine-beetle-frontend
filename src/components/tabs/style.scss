@@ -1,0 +1,42 @@
+@import '../../styles/colors.scss';
+
+.tabs-container {
+  width: 100%;
+}
+
+.tabs-header {
+  display: flex;
+  border-bottom: 2px solid $greyBlue200;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: $greyBlue600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: $greyBlue800;
+    background-color: $greyBlue100;
+  }
+  
+  &.active {
+    color: $greyBlue800;
+    border-bottom-color: $greyBlue800;
+    font-weight: 600;
+  }
+  
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.tabs-content {
+  width: 100%;
+}

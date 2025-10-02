@@ -69,15 +69,52 @@
     }
 }
 
-.full-width-map {
-    width: 100vw;
+// Tabs section styling
+.home-tabs-section {
+    width: calc(100vw - 120px);
     position: relative;
     left: 50%;
     right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    margin-left: calc(-50vw + 60px);
+    margin-right: calc(-50vw + 60px);
     margin-top: 40px;
     margin-bottom: 40px;
+
+    .tabs-container {
+        background: $white;
+        border-radius: 20px;
+        box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+    }
+
+    .tabs-header {
+        background: $greyBlue100;
+        margin-bottom: 0;
+        border-bottom: 1px solid $greyBlue200;
+        border-radius: 20px 20px 0 0;
+
+        .tab-button {
+            padding: 20px 30px;
+            font-size: 18px;
+            border-radius: 0;
+
+            &:first-child {
+                border-radius: 20px 0 0 0;
+            }
+
+            &.active {
+                background: $white;
+                border-bottom-color: $white;
+            }
+        }
+    }
+}
+
+.full-width-map {
+    width: 100%;
+    margin: 0;
+    position: relative;
+    min-height: 1000px;
 
     // Override the container class constraints
     .container {
@@ -95,6 +132,7 @@
         border-radius: 0 !important;
         box-shadow: none !important;
         max-width: none !important;
+        margin-bottom: 0 !important;
     }
 
     // Make the map itself full width and adjust height
@@ -102,5 +140,46 @@
         width: 100% !important;
         border-radius: 0 !important;
         height: 1000px; // Twice the previous height
+    }
+}
+
+// Tabs content styling
+.tabs-content-container {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.historical-data-section {
+    .home-content-historical-data {
+        padding: 0;
+        box-shadow: none;
+        background: transparent;
+    }
+}
+
+.prediction-map-section {
+    .section-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: $greyBlue800;
+    }
+
+    .prediction-map-wrapper {
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.1);
+
+        #map-container {
+            border-radius: 15px;
+            box-shadow: none;
+        }
+
+        #map {
+            height: 600px;
+            border-radius: 15px;
+        }
     }
 }

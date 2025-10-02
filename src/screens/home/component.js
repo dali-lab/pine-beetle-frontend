@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Loading, ScrollHint } from '../../components';
-import { PredictionMap } from '../prediction/components';
+import { Loading, ScrollHint, Tabs } from '../../components';
 import {
   HeroSection,
+  HistoricalData,
   HowItWorks,
+  MapWithControls,
 } from './components';
 
 import './style.scss';
@@ -24,14 +25,35 @@ const Home = (props) => {
     }
   }, [location.search, isLoading]);
 
+  const tabs = [
+    {
+      label: 'Map View',
+      content: (
+        <div className="full-width-map">
+          <MapWithControls />
+        </div>
+      ),
+    },
+    {
+      label: 'Historical Data',
+      content: (
+        <div className="tabs-content-container">
+          <div className="historical-data-section">
+            <HistoricalData />
+          </div>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <>
       <div className="container">
         <Loading visible={isLoading} />
         <HeroSection />
       </div>
-      <div className="full-width-map">
-        <PredictionMap />
+      <div className="home-tabs-section">
+        <Tabs tabs={tabs} defaultTab={0} />
       </div>
       <div className="container">
         <HowItWorks howItWorksRef={howItWorksRef} />

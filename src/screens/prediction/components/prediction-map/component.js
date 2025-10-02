@@ -10,38 +10,38 @@
  */
 
 /* eslint-disable prefer-destructuring */
-import React, { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
+import React, { useEffect, useState } from 'react';
 
 import {
   DATA_MODES,
-  SOURCE_LAYERS,
   MAP_SOURCE_NAME,
-  VECTOR_LAYER,
-  STATE_VECTOR_LAYER,
   MAP_TITLES,
+  SOURCE_LAYERS,
+  STATE_VECTOR_LAYER,
+  VECTOR_LAYER,
 } from '../../../../constants';
 
-import {
-  getMapboxRDNameFormat,
-  getFillColor,
-  createMapClickCallback,
-  generateMap,
-  downloadMap,
-  createHoverCallback,
-  zoomToSelectedState,
-  mapboxHoverStyle,
-} from '../../../../utils';
 import { api } from '../../../../services';
+import {
+  createHoverCallback,
+  createMapClickCallback,
+  downloadMap,
+  generateMap,
+  getFillColor,
+  getMapboxRDNameFormat,
+  mapboxHoverStyle,
+  zoomToSelectedState,
+} from '../../../../utils';
 
 import {
-  thresholds,
   colors,
+  thresholds,
 } from './constants';
 
 import './style.scss';
 
-import { Map } from '../../../../components';
+import { LegendOverlay, Map } from '../../../../components';
 import TogglesOverlay from '../../../../components/map/components';
 import { isInvalidNumber } from '../../../../utils/map';
 
@@ -61,7 +61,6 @@ const PredictionMap = (props) => {
 
   const [map, setMap] = useState();
   const [initialFill, setInitialFill] = useState(false);
-  const [legendTags, setLegendTags] = useState([]);
   const [predictionHover, setPredictionHover] = useState(null);
   const [isDownloadingMap, setIsDownloadingMap] = useState(false);
   const [mapClickCallback, setMapClickCallback] = useState();
@@ -198,7 +197,7 @@ const PredictionMap = (props) => {
         map,
         thresholds,
         colors,
-        setLegendTags,
+        () => {}, // No-op function since we use LegendOverlay instead
         dataMode,
         clickCallback,
         setMapClickCallback,
@@ -302,18 +301,24 @@ const PredictionMap = (props) => {
     }
   }, [data]);
 
+  // Helper function to get risk level label
+  const getRiskLevel = (index) => {
+    const riskLevels = ['Very Low', 'Low', 'Moderate', 'High', 'Very High', 'Extreme'];
+    return riskLevels[index] || 'Unknown';
+  };
+
+  // Prepare legend data for the overlay
+  const legendItems = thresholds.map((threshold, index) => ({
+    color: colors[index],
+    label: `${threshold} (${getRiskLevel(index)})`,
+  }));
+
   return (
     <>
       <TogglesOverlay />
       <div className="container flex-item-left" id="map-container">
         <Map
           hover={predictionHover}
-          legend={(
-            <>
-              <div className="legend-key-title">Probability of &gt;50 spots</div>
-              {legendTags}
-            </>
-        )}
           downloadCallback={() => downloadMap(
             map,
             year,
@@ -324,6 +329,10 @@ const PredictionMap = (props) => {
             { titleDetails: { selectedState, period: year }, thresholds, colors },
           )}
           isDownloadingMap={isDownloadingMap}
+        />
+        <LegendOverlay
+          legendItems={legendItems}
+          title="Outbreak Probability (%)"
         />
       </div>
     </>
