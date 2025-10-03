@@ -1,9 +1,8 @@
 import React from 'react';
 
-import howItWorksIcon from '../../../../assets/icons/how-it-works.png';
 import modelOutbreakIcon from '../../../../assets/icons/model-outbreaks.png';
-import testInputIcon from '../../../../assets/icons/test-inputs.png';
 import statsIcon from '../../../../assets/icons/stats.png';
+import testInputIcon from '../../../../assets/icons/test-inputs.png';
 import zeroIcon from '../../../../assets/icons/zero.png';
 
 import './style.scss';
@@ -13,63 +12,71 @@ const howItWorksContent = [
     title: 'Model the Outbreaks',
     icon: modelOutbreakIcon,
     alt: 'model outbreak icon',
-    text: 'We decided not to use traditional modeling techniques that involve modeling the beetles themselves; instead, we model the number of infestations, commonly referred to as “spots.” Complex population models are often difficult to fit to real data, so we opted for an approach that would allow us to use spot data that was already being collected by state forest service agencies and their federal counterparts.',
+    text: 'We model the number of infestations, commonly referred to as "spots," rather than modeling the beetles themselves. This approach provides more accurate predictions for forest management.',
+    color: 'primary',
   },
   {
-    title: 'Use a Statistical Model',
+    title: 'Statistical Analysis',
     icon: statsIcon,
     alt: 'statistics icon',
-    text: 'Rather than using a complex mathematical model, we used a statistical method known as “zero-inflation.” It’s basically a fancy version of regression, one of the most basic statistical techniques.',
+    text: 'We use zero-inflated regression models to account for the fact that most locations in most years do not experience outbreaks, providing robust predictions across diverse conditions.',
+    color: 'accent',
   },
   {
     title: 'Zero Inflation',
     icon: zeroIcon,
     alt: 'zero inflation icon',
-    text: 'Because most locations in most years do not experience an outbreak, a very large number of zeroes occurs in the data over the course of the three decades that data have been collected. This means that traditional statistics methods cannot be applied. Zero-inflation, however, is designed for precisely this kind of data, and we think it might prove to be a robust method for other kinds of irregularly outbreaking insects—not just SPB.',
+    text: 'Because most locations in most years do not experience an outbreak, a very large number of zeroes occurs in the data. Zero-inflation is designed for precisely this kind of data.',
+    color: 'secondary',
   },
   {
     title: 'Test Input Variables',
     icon: testInputIcon,
     alt: 'test input variables icon',
-    text: 'In any prediction model, there are “predictor variables” that help determine the prediction. For example, some combination of temperature, precipitation, and soil nutrients might predict crop productivity. To create our model of outbreak probability, we tested the following potential predictor variables: # of SPB, # of clerids, ratio of SPB/clerids, the three preceding variables both this year and last year, # of spots last year, and # of spots the year before. We also tested the size of the forest resource in each location (how many acres of SPB host trees were available). Of these, only # of SPB this year, # of clerids last year, and the two previous years of spot numbers were helpful in predicting the probability of outbreak. We continue to use these four variables in creating our model predictions. We will evaluate the predictor variables each year, potentially adding more in the future.',
+    text: 'Predictions incorporate spring trapping data, previous year outbreak history, climate indices like PDSI, and winter severity to provide comprehensive risk assessments.',
+    color: 'primary',
   },
 ];
 
 const HowItWorks = ({ howItWorksRef }) => {
   return (
-    <div className="how-it-works" ref={howItWorksRef}>
-      <div id="how-it-works-title-container">
-        <div id="icon0">
-          <img
-            id="icon"
-            src={howItWorksIcon}
-            alt="how it works icon"
-          />
+    <section id="how-it-works" className="how-it-works-section" ref={howItWorksRef}>
+      <div className="how-it-works-container">
+        <div className="how-it-works-header">
+          <h2 className="how-it-works-title">How does it work?</h2>
+          <p className="how-it-works-subtitle">
+            Our prediction model uses statistical analysis of historical outbreak data combined with current
+            environmental conditions
+          </p>
         </div>
-        <div id="vl" />
-        <div id="description-title">How does it work?</div>
-      </div>
-      {howItWorksContent.map((element, index) => {
-        return (
-          <div id="description-container" key={`how-it-works-${index + 1}`}>
-            <div id="description-title-container">
-              <div id={`icon${index + 1}`}>
-                <img
-                  id="icon"
-                  src={element.icon}
-                  alt={element.alt}
-                />
+
+        <div className="how-it-works-grid">
+          {howItWorksContent.map((element, index) => (
+            <div key={`how-it-works-${index + 1}`} className="how-it-works-card">
+              <div className="card-icon-container">
+                <div className={`card-icon ${element.color}`}>
+                  <img
+                    className="card-icon-image"
+                    src={element.icon}
+                    alt={element.alt}
+                  />
+                </div>
               </div>
-              <div id="vl" />
-              <div id="description-title">{element.title}</div>
+              <h3 className="card-title">{element.title}</h3>
+              <p className="card-description">
+                {element.text}
+              </p>
             </div>
-            <div id="description-text">
-              {element.text}
-            </div>
-          </div>
-        );
-      })}
-    </div>
+          ))}
+        </div>
+
+        <div className="how-it-works-footer">
+          <button type="button" className="learn-more-button">
+            Learn more about our methodology
+          </button>
+        </div>
+      </div>
+    </section>
   );
 };
 
