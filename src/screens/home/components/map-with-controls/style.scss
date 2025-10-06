@@ -6,38 +6,3 @@
   height: 100%;
   min-height: 1000px;
 }
-
-.map-controls-overlay {
-  position: absolute;
-  top: 24px;
-  left: 24px;
-  z-index: 10;
-  pointer-events: none; // Allow map interaction
-
-  // Override container to not add extra padding/margin
-  .container {
-    max-width: none !important;
-    width: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  #predictionbar {
-    pointer-events: all; // Re-enable interaction for controls
-  }
-
-  // Make buttons and inputs interactive
-  button,
-  select,
-  input {
-    pointer-events: all;
-  }
-}
-
-// Responsive adjustments
-@media (max-width: 768px) {
-  .map-controls-overlay {
-    top: 15px;
-    left: 15px;
-  }
-}

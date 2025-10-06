@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
 import { ROUTES } from '../../constants';
@@ -7,29 +7,48 @@ import { ROUTES } from '../../constants';
 import './style.scss';
 
 const Header = () => {
-  const [dataMenuOpen, setDataMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [historicalDataOpen, setHistoricalDataOpen] = useState(false);
+  const [howItWorksOpen, setHowItWorksOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
+  const navRef = useRef(null);
+  const historicalDataButtonRef = useRef(null);
+  const howItWorksButtonRef = useRef(null);
+  const aboutButtonRef = useRef(null);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [howItWorksDropdownPosition, setHowItWorksDropdownPosition] = useState({ top: 0, left: 0 });
+  const [aboutDropdownPosition, setAboutDropdownPosition] = useState({ top: 0, left: 0 });
 
   const location = useLocation();
-  const history = useHistory();
+
+  // Close all dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setHistoricalDataOpen(false);
+        setHowItWorksOpen(false);
+        setAboutOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const scrollToUrl = '?scrollTo=howItWorks';
 
   const handleHowItWorksButtonClick = () => {
-    // handle situation when user wants to go back to how does it work section, after already clicking on the button
     if (location.pathname === ROUTES.HOME && location.search === scrollToUrl) {
-      history.push(ROUTES.HOME);
-      setTimeout(() => {
-        history.push(`/${scrollToUrl}`);
-      }, 0);
+      window.location.href = `/${scrollToUrl}`;
     } else {
-      history.push(`/${scrollToUrl}`);
+      window.location.href = `/${scrollToUrl}`;
     }
   };
 
   const handleContactClick = () => {
-    // Scroll to contact section or handle contact action
-    console.log('Contact clicked');
+    window.location.href = '/contact';
   };
 
   return (
@@ -43,52 +62,7 @@ const Header = () => {
             <span className="logo-text">SPB Predict</span>
           </Link>
 
-          <div className="desktop-nav">
-            <Link to={ROUTES.PREDICTIONS} className="nav-link">
-              Predictions
-            </Link>
-
-            {/* Data Menu with hover/click functionality */}
-            <div
-              className="nav-dropdown"
-              onMouseEnter={() => setDataMenuOpen(true)}
-              onMouseLeave={() => setDataMenuOpen(false)}
-            >
-              <button type="button" className="nav-link dropdown-trigger">
-                Data
-                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {dataMenuOpen && (
-                <div className="dropdown-menu">
-                  <Link to={ROUTES.TRAPPING_DATA} className="dropdown-item">
-                    Time Series / Annual Trends
-                  </Link>
-                  <Link to="/data/tables" className="dropdown-item">
-                    Data Tables
-                  </Link>
-                  <Link to="/data/graphs" className="dropdown-item">
-                    Data Graphs
-                  </Link>
-                  <Link to="/data/download" className="dropdown-item">
-                    Download Data
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            <button type="button" onClick={handleHowItWorksButtonClick} className="nav-link">
-              Methodology
-            </button>
-            <Link to={ROUTES.ABOUT} className="nav-link">
-              About
-            </Link>
-            <button type="button" onClick={handleContactClick} className="contact-button">
-              Contact
-            </button>
-          </div>
+          <div className="desktop-nav" />
 
           <button
             type="button"
@@ -104,38 +78,230 @@ const Header = () => {
 
       {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
-        <div className="mobile-nav">
-          <Link to={ROUTES.PREDICTIONS} className="mobile-nav-link">
-            Predictions
-          </Link>
-
-          <div className="mobile-nav-section">
-            <span className="mobile-nav-label">Data</span>
-            <Link to={ROUTES.TRAPPING_DATA} className="mobile-nav-sublink">
-              Time Series / Annual Trends
-            </Link>
-            <Link to="/data/tables" className="mobile-nav-sublink">
-              Data Tables
-            </Link>
-            <Link to="/data/graphs" className="mobile-nav-sublink">
-              Data Graphs
-            </Link>
-            <Link to="/data/download" className="mobile-nav-sublink">
-              Download Data
-            </Link>
-          </div>
-
-          <button type="button" onClick={handleHowItWorksButtonClick} className="mobile-nav-link">
-            Methodology
-          </button>
-          <Link to={ROUTES.ABOUT} className="mobile-nav-link">
-            About
-          </Link>
-          <button type="button" onClick={handleContactClick} className="mobile-contact-button">
-            Contact
-          </button>
-        </div>
+      <div className="mobile-nav" />
       )}
+
+      {/* Navigation Bar */}
+      <nav className="navigation-bar" ref={navRef}>
+        <div className="nav-container">
+          <div className="nav-items">
+            <Link
+              to={ROUTES.PREDICTIONS}
+              className={`nav-item ${location.pathname === ROUTES.PREDICTIONS ? 'active' : ''}`}
+            >
+              Prediction Outbreak
+            </Link>
+
+            <Link
+              to={ROUTES.RESULTS_COMPARISON}
+              className={`nav-item ${location.pathname === ROUTES.RESULTS_COMPARISON ? 'active' : ''}`}
+            >
+              Result Comparison
+            </Link>
+
+            {/* Historical Data Menu */}
+            <div
+              className="nav-dropdown"
+              ref={historicalDataButtonRef}
+              onMouseEnter={() => {
+                if (historicalDataButtonRef.current) {
+                  const rect = historicalDataButtonRef.current.getBoundingClientRect();
+                  setDropdownPosition({
+                    top: rect.bottom,
+                    left: rect.left,
+                    width: rect.width,
+                  });
+                }
+                setHowItWorksOpen(false);
+                setAboutOpen(false);
+                setHistoricalDataOpen(true);
+              }}
+            >
+              <button
+                type="button"
+                className={`nav-item dropdown-trigger ${location.pathname === ROUTES.TRAPPING_DATA ? 'active' : ''}`}
+              >
+                Historical Data
+                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <div
+                className="dropdown-menu-historical"
+                onMouseEnter={() => setHistoricalDataOpen(true)}
+                onMouseLeave={() => setHistoricalDataOpen(false)}
+                style={{
+                  display: historicalDataOpen ? 'block' : 'none',
+                  top: `${dropdownPosition.top}px`,
+                  left: `${dropdownPosition.left}px`,
+                  minWidth: `${dropdownPosition.width}px`,
+                }}
+              >
+                <Link
+                  to="/data/graphs"
+                  className="dropdown-item"
+                  onClick={() => setHistoricalDataOpen(false)}
+                >
+                  Data Graph
+                </Link>
+                <Link
+                  to={ROUTES.TRAPPING_DATA}
+                  className="dropdown-item"
+                  onClick={() => setHistoricalDataOpen(false)}
+                >
+                  Map
+                </Link>
+                <Link
+                  to="/data/download"
+                  className="dropdown-item"
+                  onClick={() => setHistoricalDataOpen(false)}
+                >
+                  Data Download
+                </Link>
+              </div>
+            </div>
+
+            {/* How does it work Menu */}
+            <div
+              className="nav-dropdown"
+              ref={howItWorksButtonRef}
+              onMouseEnter={() => {
+                if (howItWorksButtonRef.current) {
+                  const rect = howItWorksButtonRef.current.getBoundingClientRect();
+                  setHowItWorksDropdownPosition({
+                    top: rect.bottom,
+                    left: rect.left,
+                    width: rect.width,
+                  });
+                }
+                setHistoricalDataOpen(false);
+                setAboutOpen(false);
+                setHowItWorksOpen(true);
+              }}
+            >
+              <button
+                type="button"
+                className="nav-item dropdown-trigger"
+              >
+                How does it work
+                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <div
+                className="dropdown-menu-how-it-works"
+                onMouseEnter={() => setHowItWorksOpen(true)}
+                onMouseLeave={() => setHowItWorksOpen(false)}
+                style={{
+                  display: howItWorksOpen ? 'block' : 'none',
+                  top: `${howItWorksDropdownPosition.top}px`,
+                  left: `${howItWorksDropdownPosition.left}px`,
+                  minWidth: `${howItWorksDropdownPosition.width}px`,
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleHowItWorksButtonClick();
+                    setHowItWorksOpen(false);
+                  }}
+                  className="dropdown-item"
+                >
+                  Methodology
+                </button>
+                <a
+                  href="https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/preview"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="dropdown-item"
+                  onClick={() => setHowItWorksOpen(false)}
+                >
+                  Learn more from the video
+                </a>
+              </div>
+            </div>
+
+            {/* About Menu */}
+            <div
+              className="nav-dropdown"
+              ref={aboutButtonRef}
+              onMouseEnter={() => {
+                if (aboutButtonRef.current) {
+                  const rect = aboutButtonRef.current.getBoundingClientRect();
+                  setAboutDropdownPosition({
+                    top: rect.bottom,
+                    left: rect.left,
+                    width: rect.width,
+                  });
+                }
+                setHistoricalDataOpen(false);
+                setHowItWorksOpen(false);
+                setAboutOpen(true);
+              }}
+            >
+              <button
+                type="button"
+                className="nav-item dropdown-trigger"
+              >
+                About
+                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <div
+                className="dropdown-menu-about"
+                onMouseEnter={() => setAboutOpen(true)}
+                onMouseLeave={() => setAboutOpen(false)}
+                style={{
+                  display: aboutOpen ? 'block' : 'none',
+                  top: `${aboutDropdownPosition.top}px`,
+                  left: `${aboutDropdownPosition.left}px`,
+                  minWidth: `${aboutDropdownPosition.width}px`,
+                }}
+              >
+                <Link
+                  to={ROUTES.BLOG}
+                  className="dropdown-item"
+                  onClick={() => setAboutOpen(false)}
+                >
+                  Blog
+                </Link>
+                <a
+                  href="https://www.spbpredict.com/resources"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="dropdown-item"
+                  onClick={() => setAboutOpen(false)}
+                >
+                  Resources
+                </a>
+                <a
+                  href="https://www.spbpredict.com/about"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="dropdown-item"
+                  onClick={() => setAboutOpen(false)}
+                >
+                  About The Project
+                </a>
+                <button
+                  type="button"
+                  className="dropdown-item"
+                  onClick={() => {
+                    handleContactClick();
+                    setAboutOpen(false);
+                  }}
+                >
+                  Contact
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
     </header>
   );
 };

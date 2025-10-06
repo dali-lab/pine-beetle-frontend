@@ -42,7 +42,6 @@ import {
 import './style.scss';
 
 import { LegendOverlay, Map } from '../../../../components';
-import TogglesOverlay from '../../../../components/map/components';
 import { isInvalidNumber } from '../../../../utils/map';
 
 const PredictionMap = (props) => {
@@ -314,28 +313,25 @@ const PredictionMap = (props) => {
   }));
 
   return (
-    <>
-      <TogglesOverlay />
-      <div className="container flex-item-left" id="map-container">
-        <Map
-          hover={predictionHover}
-          downloadCallback={() => downloadMap(
-            map,
-            year,
-            isDownloadingMap,
-            setIsDownloadingMap,
-            selectedState,
-            MAP_TITLES.PREDICTION,
-            { titleDetails: { selectedState, period: year }, thresholds, colors },
-          )}
-          isDownloadingMap={isDownloadingMap}
-        />
-        <LegendOverlay
-          legendItems={legendItems}
-          title="Outbreak Probability (%)"
-        />
-      </div>
-    </>
+    <div className="container flex-item-left" id="map-container">
+      <Map
+        hover={predictionHover}
+        downloadCallback={() => downloadMap(
+          map,
+          year,
+          isDownloadingMap,
+          setIsDownloadingMap,
+          selectedState,
+          MAP_TITLES.PREDICTION,
+          { titleDetails: { selectedState, period: year }, thresholds, colors },
+        )}
+        isDownloadingMap={isDownloadingMap}
+      />
+      <LegendOverlay
+        legendItems={legendItems}
+        title="Outbreak Probability (%)"
+      />
+    </div>
   );
 };
 

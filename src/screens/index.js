@@ -1,21 +1,23 @@
 import About from './about';
 import Admin from './admin';
 import Blog from './blog';
-import Resources from './resources';
-import TrappingData from './trapping-data';
+import Contact from './contact';
 import Home from './home';
 import Prediction from './prediction';
-import SingleBlogPost from './single-blog-post';
+import Resources from './resources';
 import ResultsComparison from './results-comparison';
+import SingleBlogPost from './single-blog-post';
+import TrappingData from './trapping-data';
 
 export {
   About,
   Admin,
   Blog,
-  Resources,
-  TrappingData,
+  Contact,
   Home,
   Prediction,
-  SingleBlogPost,
+  Resources,
   ResultsComparison,
+  SingleBlogPost,
+  TrappingData,
 };

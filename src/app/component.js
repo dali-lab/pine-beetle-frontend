@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import {
-  BrowserRouter as Router,
   Redirect,
   Route,
+  BrowserRouter as Router,
   Switch,
 } from 'react-router-dom';
 
 import {
   About,
   Admin,
-  Resources,
-  TrappingData,
+  Blog,
+  Contact,
   Home,
   Prediction,
-  Blog,
-  SingleBlogPost,
+  Resources,
   ResultsComparison,
+  SingleBlogPost,
+  TrappingData,
 } from '../screens';
 
 import {
-  Header,
+  FilterBar,
   Footer,
+  Header,
   MobileOverlay,
   ScrollToTop,
 } from '../components';
@@ -30,9 +32,9 @@ import {
   getAutomationServerUrl,
   getServerUrl,
   MIN_WIDTH_THRESHOLD,
-  ROUTES,
-  RESOURCE_ROUTES,
   RESOURCE_REMOTE_URLS,
+  RESOURCE_ROUTES,
+  ROUTES,
 } from '../constants';
 
 import {
@@ -127,6 +129,7 @@ const App = (props) => {
     <Router>
       <ScrollToTop />
       <Header />
+      <FilterBar />
       <div className="content">
         <Switch>
           <Route exact path={ROUTES.HOME} component={Home} />
@@ -134,6 +137,7 @@ const App = (props) => {
           <Route path={ROUTES.ADMIN} component={Admin} />
           <Route path={`${ROUTES.BLOG}/:id`} component={SingleBlogPost} />
           <Route path={ROUTES.BLOG} component={Blog} />
+          <Route path={ROUTES.CONTACT} component={Contact} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
           <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
           <Route path={ROUTES.PREDICTIONS} component={Prediction} />

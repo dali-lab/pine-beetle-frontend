@@ -1,5 +1,6 @@
 import Button from './button';
 import DownloadData from './download-data';
+import FilterBar from './filter-bar';
 import Footer from './footer';
 import Header from './header';
 import Histogram from './histogram-components/histogram';
@@ -15,6 +16,7 @@ import Tabs from './tabs';
 export {
   Button,
   DownloadData,
+  FilterBar,
   Footer,
   Header,
   Histogram,

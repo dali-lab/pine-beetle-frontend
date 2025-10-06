@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 
 import { Loading, ScrollHint, Tabs } from '../../components';
 import {
-  HeroSection,
   HistoricalData,
   HowItWorks,
   MapWithControls,
@@ -50,7 +49,6 @@ const Home = (props) => {
     <>
       <div className="container">
         <Loading visible={isLoading} />
-        <HeroSection />
       </div>
       <div className="home-tabs-section">
         <Tabs tabs={tabs} defaultTab={0} />
