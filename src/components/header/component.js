@@ -109,7 +109,6 @@ const Header = () => {
                   setDropdownPosition({
                     top: rect.bottom,
                     left: rect.left,
-                    width: rect.width,
                   });
                 }
                 setHowItWorksOpen(false);
@@ -135,7 +134,6 @@ const Header = () => {
                   display: historicalDataOpen ? 'block' : 'none',
                   top: `${dropdownPosition.top}px`,
                   left: `${dropdownPosition.left}px`,
-                  minWidth: `${dropdownPosition.width}px`,
                 }}
               >
                 <Link
@@ -172,7 +170,6 @@ const Header = () => {
                   setHowItWorksDropdownPosition({
                     top: rect.bottom,
                     left: rect.left,
-                    width: rect.width,
                   });
                 }
                 setHistoricalDataOpen(false);
@@ -198,7 +195,6 @@ const Header = () => {
                   display: howItWorksOpen ? 'block' : 'none',
                   top: `${howItWorksDropdownPosition.top}px`,
                   left: `${howItWorksDropdownPosition.left}px`,
-                  minWidth: `${howItWorksDropdownPosition.width}px`,
                 }}
               >
                 <button
@@ -233,7 +229,6 @@ const Header = () => {
                   setAboutDropdownPosition({
                     top: rect.bottom,
                     left: rect.left,
-                    width: rect.width,
                   });
                 }
                 setHistoricalDataOpen(false);
@@ -259,7 +254,6 @@ const Header = () => {
                   display: aboutOpen ? 'block' : 'none',
                   top: `${aboutDropdownPosition.top}px`,
                   left: `${aboutDropdownPosition.left}px`,
-                  minWidth: `${aboutDropdownPosition.width}px`,
                 }}
               >
                 <Link

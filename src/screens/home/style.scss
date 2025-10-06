@@ -49,6 +49,54 @@
     text-decoration: none;
 }
 
+.home-hero-section {
+    width: 100%;
+    background: linear-gradient(135deg, #33454f 0%, #1a252b 100%);
+    padding: 60px 0 40px 0;
+    margin-bottom: 0;
+
+    .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 32px;
+        text-align: center;
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: $white;
+            margin-bottom: 20px;
+            font-family: "Inter", sans-serif;
+            line-height: 1.2;
+        }
+
+        .hero-description {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-family: "Inter", sans-serif;
+        }
+    }
+
+    @media (max-width: 768px) {
+        padding: 40px 0;
+
+        .hero-content {
+            padding: 0 16px;
+
+            .hero-title {
+                font-size: 32px;
+            }
+
+            .hero-description {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
 .home-content {
     margin-top: 35px;
     display: grid;
@@ -110,36 +158,50 @@
     }
 }
 
+.filter-bar-wrapper {
+    max-width: 1400px;
+    margin: 40px auto 0 auto;
+    padding: 0 32px;
+
+    @media (max-width: 768px) {
+        padding: 0 16px;
+        margin: 20px auto 0 auto;
+    }
+}
+
 .full-width-map {
-    width: 100%;
-    margin: 0;
+    max-width: 1400px;
+    margin: 20px auto 40px auto;
+    padding: 0 32px;
     position: relative;
     min-height: 1000px;
 
-    // Override the container class constraints
-    .container {
-        max-width: none !important;
-        width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
+    @media (max-width: 768px) {
+        padding: 0 16px;
+        margin: 20px auto;
     }
 
-    // Override the prediction map container styles to make it full width
+    // Override the prediction map container styles
     #map-container {
         width: 100% !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
+        border-radius: 20px !important;
+        box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.1) !important;
         max-width: none !important;
         margin-bottom: 0 !important;
+        overflow: hidden;
     }
 
-    // Make the map itself full width and adjust height
+    // Make the map with rounded corners and proper height
     #map {
         width: 100% !important;
-        border-radius: 0 !important;
-        height: 1000px; // Twice the previous height
+        border-radius: 20px !important;
+        height: 650px;
+
+        @media (max-width: 768px) {
+            height: 500px;
+        }
     }
 }
 

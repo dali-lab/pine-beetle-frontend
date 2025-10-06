@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Loading, ScrollHint, Tabs } from '../../components';
+import { FilterBar, Loading, ScrollHint } from '../../components';
 import {
-  HistoricalData,
   HowItWorks,
   MapWithControls,
 } from './components';
@@ -24,34 +23,25 @@ const Home = (props) => {
     }
   }, [location.search, isLoading]);
 
-  const tabs = [
-    {
-      label: 'Map View',
-      content: (
-        <div className="full-width-map">
-          <MapWithControls />
-        </div>
-      ),
-    },
-    {
-      label: 'Historical Data',
-      content: (
-        <div className="tabs-content-container">
-          <div className="historical-data-section">
-            <HistoricalData />
-          </div>
-        </div>
-      ),
-    },
-  ];
-
   return (
     <>
       <div className="container">
         <Loading visible={isLoading} />
       </div>
-      <div className="home-tabs-section">
-        <Tabs tabs={tabs} defaultTab={0} />
+      <div className="home-hero-section">
+        <div className="hero-content">
+          <h1 className="hero-title">Annual Outbreak Predictions</h1>
+          <p className="hero-description">
+            This website predicts the likelihood of a summer outbreak based on spring trapping data,
+            with the goal of assisting forest managers as they make resource allocation decisions.
+          </p>
+        </div>
+      </div>
+      <div className="filter-bar-wrapper">
+        <FilterBar />
+      </div>
+      <div className="full-width-map">
+        <MapWithControls />
       </div>
       <div className="container">
         <HowItWorks howItWorksRef={howItWorksRef} />
