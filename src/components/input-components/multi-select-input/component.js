@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import './style.scss';
 
-import arrowDown from '../../../assets/icons/arrow-down.png';
+import closeIcon from '../../../assets/icons/close.png';
 import emptyCheckbox from '../../../assets/icons/empty_checkbox.png';
 import selectedCheckbox from '../../../assets/icons/selected_checkbox.png';
-import closeIcon from '../../../assets/icons/close.png';
 
 const CLEAR_TEXT = 'All Locations';
 
 const MultiSelectInput = (props) => {
   const {
+    id,
     valueParent,
     valueChildren,
     setValueParent,
@@ -176,13 +176,38 @@ const MultiSelectInput = (props) => {
       <div className="multi-select-container" ref={ref}>
         <div className="input-container">
           <div className="location-wrapper">
-            <div className="location-header" onClick={() => setIsListOpen(!isListOpen)}>
+            <div
+              id={id}
+              className="location-header"
+              onClick={() => setIsListOpen(!isListOpen)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setIsListOpen(!isListOpen);
+                }
+              }}
+              aria-expanded={isListOpen}
+              aria-haspopup="listbox"
+            >
               <div className="location-header-title">{statusText}</div>
-              <img
-                src={arrowDown}
-                alt="Arrow down"
+              <svg
                 className="location-header-arrow"
-              />
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 6L8 10L12 6"
+                  stroke="#73767e"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </div>
             {/* Initial dropdown displaying all parent data (e.g. all states) */}
             {isListOpen && (

@@ -1,11 +1,38 @@
 .selection-button {
-    padding-left: 20px;
-    height: 43px;
-    font-family: 'Inter';
-    font-size: 18px; 
-    border: none;
+    padding: 0 36px 0 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
     cursor: pointer;
-    letter-spacing: 1.5px;
-    border-radius: 10px;
-    margin-right: 5px;
+    letter-spacing: normal;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%2373767e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+
+    /* Remove all browser default styling */
+    &:focus {
+        outline: none;
+    }
+
+    &::-ms-expand {
+        display: none;
+    }
+
+    option {
+        font-size: 14px;
+        padding: 10px;
+        background-color: white;
+        color: #2f303a;
+    }
+
+    option:checked {
+        background-color: #f8f9ff;
+    }
+}
+
+.selection-container {
+    width: 100%;
 }

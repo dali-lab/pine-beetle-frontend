@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../style.scss';
 
 const CLEAR_TEXT = 'Reset';
 
 const ChoiceInput = (props) => {
   const {
+    id,
     options,
     setValue,
     value,
@@ -33,7 +34,7 @@ const ChoiceInput = (props) => {
 
   return (
     <div className="selection-container">
-      <select className="selection-button" onChange={submit} value={value}>
+      <select id={id} className="selection-button" onChange={submit} value={value}>
         {opts}
       </select>
     </div>

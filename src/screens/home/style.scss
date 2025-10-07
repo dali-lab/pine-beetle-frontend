@@ -51,9 +51,10 @@
 
 .home-hero-section {
     width: 100%;
-    background: linear-gradient(135deg, #33454f 0%, #1a252b 100%);
+    background: $backgroundColor;
     padding: 60px 0 40px 0;
     margin-bottom: 0;
+    margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
 
     .hero-content {
         max-width: 1200px;
@@ -64,7 +65,7 @@
         .hero-title {
             font-size: 48px;
             font-weight: 700;
-            color: $white;
+            color: $greyBlue900;
             margin-bottom: 20px;
             font-family: "Inter", sans-serif;
             line-height: 1.2;
@@ -72,7 +73,7 @@
 
         .hero-description {
             font-size: 20px;
-            color: rgba(255, 255, 255, 0.9);
+            color: $greyBlue700;
             max-width: 800px;
             margin: 0 auto;
             line-height: 1.6;
@@ -160,12 +161,11 @@
 
 .filter-bar-wrapper {
     max-width: 1400px;
-    margin: 40px auto 0 auto;
+    margin: 0 auto;
     padding: 0 32px;
 
     @media (max-width: 768px) {
         padding: 0 16px;
-        margin: 20px auto 0 auto;
     }
 }
 
@@ -186,7 +186,7 @@
         width: 100% !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
-        border-radius: 20px !important;
+        border-radius: 8px !important;
         box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.1) !important;
         max-width: none !important;
         margin-bottom: 0 !important;
@@ -196,7 +196,8 @@
     // Make the map with rounded corners and proper height
     #map {
         width: 100% !important;
-        border-radius: 20px !important;
+        border-radius: 8px !important;
+        border: 2px solid #e9eaef;
         height: 650px;
 
         @media (max-width: 768px) {

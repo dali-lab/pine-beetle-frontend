@@ -1,121 +1,202 @@
 .multi-select-container {
-    background-color: $grey100;
+    background-color: transparent;
     z-index: 2;
+    position: relative;
 
     .input-container {
         display: flex;
         flex-direction: row;
         align-items: center;
-        background-color: $white;
-        height: 45px;
-        border-radius: 10px;
+        position: relative;
+        margin: 0;
+        padding: 0;
+    }
+
+    .location-wrapper {
+        width: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
 
         .location-header {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
-            padding-left: 10px;
-            height: 45px;
+            padding: 0 12px;
+            height: 100%;
+            min-height: 44px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+
+            .location-header-title {
+                font-size: 14px;
+                font-weight: 400;
+                color: $greyBlue900;
+                font-family: 'Inter', sans-serif;
+                flex: 1;
+            }
 
             .location-header-arrow {
-                width: 12px;
-                height: 8px;
-                margin-right: 10px;
+                width: 16px;
+                height: 16px;
+                flex-shrink: 0;
+                pointer-events: none;
+                margin-left: 8px;
             }
         }
 
-        .location-wrapper {
-            width: 300px;
-            z-index: 1;
+        .location-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            max-height: 350px;
+            overflow-y: auto;
+            border-radius: 8px;
+            background-color: $white;
+            border: 1px solid $greyBlue300;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            z-index: 1000;
+            padding: 4px 0;
 
-            .location-list {
-                position: absolute;
-                margin-top: 10px;
-                max-height: 325px;
-                overflow-y: scroll;
-                border-radius: 10px;
+            /* Custom scrollbar styling */
+            &::-webkit-scrollbar {
+                width: 8px;
+            }
 
-                .location-list-header {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    align-items: center;
-                    background-color: $grey200;
+            &::-webkit-scrollbar-track {
+                background: transparent;
+            }
 
-                    .location-list-instructions {
-                        color: $greyBlue800;
-                        padding: 5px 10px;
-                        margin-left: 10px;
-                        border-radius: 10px;
-                        border-width: unset;
-                        cursor: pointer;
-                    }
+            &::-webkit-scrollbar-thumb {
+                background: $greyBlue400;
+                border-radius: 4px;
+            }
 
-                    .close-icon {
-                        margin-right: 15px;
-                        display: flex;
+            &::-webkit-scrollbar-thumb:hover {
+                background: $greyBlue500;
+            }
 
-                        img {
-                            width: 20px;
-                            height: 20px;
-                        }
+            .location-list-header {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                background-color: $greyBlue100;
+                border-bottom: 1px solid $greyBlue200;
+                padding: 8px 12px;
+                margin: 0 0 4px 0;
 
-                        img:hover {
-                            cursor: pointer;
-                        }
-                    }
+                .location-list-instructions {
+                    color: $greyBlue800;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    border: none;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 500;
+                    transition: background-color 0.15s ease;
 
-                    .location-list-clear {
-                        color: $blue800;
-                        font-size: 15px;
-                        padding: 5px 10px;
+                    &:hover {
+                        background-color: $greyBlue200;
                     }
                 }
 
-                .location-list-item {
-                    background-color: $grey200;
-                    color: $greyBlue800;
-                    width: 300px;
+                .close-icon {
                     display: flex;
-                    flex-direction: column;
-                    cursor: pointer;
+                    padding: 4px;
+                    border-radius: 4px;
+                    transition: background-color 0.15s ease;
 
-                    .location-list-item-select {
+                    img {
+                        width: 18px;
+                        height: 18px;
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: $greyBlue200;
+                    }
+                }
+
+                .location-list-clear {
+                    color: $blue800;
+                    font-size: 13px;
+                    font-weight: 500;
+                    padding: 4px 8px;
+                    cursor: pointer;
+                }
+            }
+
+            .location-list-item {
+                background-color: transparent;
+                color: $greyBlue900;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                cursor: pointer;
+                transition: background-color 0.15s ease;
+                border-radius: 4px;
+                margin: 0 4px;
+                width: calc(100% - 8px);
+
+                &:hover {
+                    background-color: $greyBlue100;
+                }
+
+                .location-list-item-select {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    min-height: 36px;
+                    padding: 6px 10px;
+
+                    .location-list-item-select-checkbox {
+                        margin-left: 0;
+                        margin-right: 10px;
+                        width: 18px;
+                        height: 18px;
+                    }
+
+                    .location-list-item-select-status {
+                        font-size: 12px;
+                        color: $greyBlue600;
+                        margin-left: auto;
+                        padding-left: 8px;
+                    }
+                }
+
+                .children-list {
+                    position: relative;
+                    margin-left: 28px;
+                    background-color: transparent;
+
+                    .children-list-item {
+                        background-color: transparent;
+                        color: $greyBlue800;
+                        width: 100%;
+                        min-height: 36px;
                         display: flex;
                         flex-direction: row;
                         align-items: center;
-                        height: 40px;
+                        white-space: pre-line;
+                        padding: 6px 10px;
+                        transition: background-color 0.15s ease;
+                        border-radius: 4px;
+                        font-size: 14px;
+
+                        &:hover {
+                            background-color: $greyBlue100;
+                        }
 
                         .location-list-item-select-checkbox {
-                            margin-left: 10px;
                             margin-right: 10px;
-                        }
-
-                        .location-list-item-select-status {
-                            font-size: 14px;
-                            color: $grey500;
-                            margin-left: 5px;
-                        }
-                    }
-
-                    .children-list {
-                        position: relative;
-                        margin-left: 50px;
-
-                        .children-list-item {
-                            background-color: $grey200;
-                            color: $greyBlue800;
-                            width: 250px;
-                            min-height: 40px;
-                            display: flex;
-                            flex-direction: row;
-                            align-items: center;
-                            white-space: pre-line;
-
-                            .location-list-item-select-checkbox {
-                                margin-right: 10px;
-                            }
+                            width: 16px;
+                            height: 16px;
                         }
                     }
                 }
@@ -125,7 +206,9 @@
 }
 
 #separation-line {
-    width: 300px;
-    height: 0px;
-    border: 1px solid #CBCBCB;
+    width: 100%;
+    height: 0;
+    border: none;
+    border-top: 1px solid $greyBlue200;
+    margin: 4px 0;
 }

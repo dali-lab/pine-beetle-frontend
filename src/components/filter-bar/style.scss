@@ -1,140 +1,259 @@
-@import '../../styles/colors.scss';
+@import '../../styles/colors.scss'; // Assuming color variables like $white, $greyBlue exist
 
 .filter-bar {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-bottom: 1px solid #dee2e6;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px 0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  width: 100%;
+  background-color: $white;
+  // Mimicking Card className="border-2 shadow-sm"
+  border-radius: 8px;
+  border: 2px solid $greyBlue300; // Use a light border color
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+  margin-bottom: 32px;
 }
 
-.filter-bar-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+.filter-bar-content {
+  padding: 24px; // Matches p-6 in the design
+}
+
+.filter-bar-header {
   display: flex;
   align-items: center;
-  gap: 32px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 16px; // Matches mb-4 in the design
+}
+
+.filter-bar-title {
+  // Matches text-sm font-semibold text-foreground uppercase tracking-wide
+  font-size: 13px;
+  font-weight: 600;
+  color: $greyBlue900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+// Grid layout for filters (grid grid-cols-1 md:grid-cols-2 gap-4)
+.filter-bar-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px; // Matches gap-4
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr); // md:grid-cols-2
+  }
 }
 
 .filter-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 150px;
+  gap: 8px; // Matches space-y-2
 }
 
 .filter-label {
+  // Matches text-sm font-medium text-foreground block
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   color: $greyBlue900;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 0;
 }
 
 .filter-input {
-  min-width: 180px;
+  width: 100%;
+
+  // Ensure the inner components take full width
+  .selection-container,
+  .multi-select-container {
+    width: 100%;
+  }
+
+  // Style for Year dropdown (select)
+  .selection-button {
+    width: 100%;
+    height: 44px;
+    border-radius: 6px;
+    border: 1px solid $greyBlue300;
+    background-color: $white;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: $greyBlue900;
+    font-weight: 400;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none !important;
+      border-color: $greyBlue500;
+      box-shadow: 0 0 0 3px rgba(201, 205, 217, 0.2);
+      background-color: $white;
+    }
+
+    &:hover:not(:focus) {
+      border-color: $greyBlue400;
+    }
+
+    /* Remove all browser defaults */
+    &:active {
+      background-color: $white;
+    }
+
+    &:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px white inset;
+    }
+  }
+
+  // Style for State/Location dropdown (multi-select)
+  .multi-select-container .input-container {
+    width: 100%;
+    height: 44px;
+    border-radius: 6px;
+    border: 1px solid $greyBlue300;
+    background-color: $white;
+    font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    color: $greyBlue900;
+    font-weight: 400;
+    box-sizing: border-box;
+
+    &:focus-within {
+      outline: none;
+      border-color: $greyBlue500;
+      box-shadow: 0 0 0 3px rgba(201, 205, 217, 0.2);
+    }
+
+    &:hover:not(:focus-within) {
+      border-color: $greyBlue400;
+    }
+  }
 }
 
 
-.filter-divider {
-  width: 1px;
-  height: 40px;
-  background: #dee2e6;
-  flex-shrink: 0;
-}
-
-.filter-actions {
-  display: flex;
-  gap: 12px;
-  margin-left: auto;
-  align-items: flex-end;
-}
-
+// Clear All Button Styling
 .action-button {
-  padding: 10px 20px;
+  padding: 6px 14px; // Adjust padding for sm size
   border-radius: 6px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  font-family: "Inter", sans-serif;
+  height: auto;
+  line-height: 1.5;
 
   &.clear-button {
-    background: #dc3545;
-    color: $white;
-    border-color: #dc3545;
+    // Matches Button variant="outline" bg-transparent
+    background-color: transparent;
+    color: $greyBlue700;
+    border: 1px solid $greyBlue300;
 
-    &:hover {
-      background: #c82333;
-      color: $white;
-      border-color: #bd2130;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+    &:hover:not(:disabled) {
+      background-color: $greyBlue100;
+      border-color: $greyBlue400;
     }
-  }
 
-  &.primary-button {
-    background: $greyBlue800;
-    color: $white;
+    &:active:not(:disabled) {
+      background-color: $greyBlue200;
+    }
 
-    &:hover {
-      background: darken($greyBlue800, 10%);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      color: $greyBlue500;
+      border-color: $greyBlue200;
     }
   }
 }
 
-// Responsive design
-@media (max-width: 1024px) {
-  .filter-bar-container {
-    gap: 24px;
-  }
+// Active Filters Section (Matches mt-4 pt-4 border-t border-border)
+.active-filters {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid $greyBlue200;
+}
 
-  .filter-section {
-    min-width: 120px;
-  }
+.active-filters-content {
+  display: flex;
+  align-items: center;
+  gap: 8px; // Matches gap-2
+  flex-wrap: wrap;
+}
 
-  .filter-input {
-    min-width: 150px;
+.active-filters-label {
+  // Matches text-sm text-muted-foreground
+  font-size: 14px;
+  color: $greyBlue600;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+// Filter Tag Styling
+.filter-tag {
+  // Matches inline-flex items-center gap-1 px-3 py-1 bg-[#2C3E50] text-white text-sm rounded-full
+  display: inline-flex;
+  align-items: center;
+  gap: 4px; // Adjusted from 1 to 4 to give slight space before button
+  padding: 4px 12px;
+  background-color: #2C3E50;
+  color: $white;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: 9999px; // rounded-full
+  font-family: "Inter", sans-serif;
+  line-height: 1.4;
+
+  .filter-tag-remove {
+    // Matches hover:bg-white/20 rounded-full p-0.5
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background: transparent;
+    border: none;
+    color: $white;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 2px;
+    margin-left: 2px;
+    transition: background-color 0.15s ease;
+    flex-shrink: 0;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:active {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .filter-tag-icon {
+      width: 12px;
+      height: 12px;
+    }
   }
 }
 
+// Responsive adjustments (keeping the original media queries structure)
 @media (max-width: 768px) {
   .filter-bar {
-    padding: 16px 0;
+    padding: 0; // Padding moved to .filter-bar-content
+    margin-bottom: 24px;
+  }
+
+  .filter-bar-content {
+    padding: 20px;
+  }
+
+  .filter-bar-header {
+    margin-bottom: 14px;
   }
 
   .filter-bar-container {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 16px;
-  }
-
-  .filter-section {
-    min-width: auto;
-  }
-
-  .filter-input {
-    min-width: auto;
-  }
-
-  .filter-divider {
-    display: none;
-  }
-
-  .filter-actions {
-    margin-left: 0;
-    justify-content: center;
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
 }
 
 @media (max-width: 480px) {
-  .filter-bar-container {
-    padding: 0 16px;
+  .filter-bar-content {
+    padding: 18px 16px;
   }
 }

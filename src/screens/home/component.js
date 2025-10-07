@@ -1,9 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 
-import { FilterBar, Loading, ScrollHint } from '../../components';
+import { FilterBar, Loading } from '../../components';
 import {
-  HowItWorks,
   MapWithControls,
 } from './components';
 
@@ -11,17 +9,6 @@ import './style.scss';
 
 const Home = (props) => {
   const { isLoading } = props;
-
-  const howItWorksRef = useRef(null);
-  const location = useLocation();
-
-  // scroll to the "How does it work?" section whenever a respective nav button is clicked
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    if (!isLoading && searchParams.get('scrollTo') === 'howItWorks' && howItWorksRef.current) {
-      setTimeout(() => howItWorksRef.current.scrollIntoView({ behavior: 'smooth' }), 200);
-    }
-  }, [location.search, isLoading]);
 
   return (
     <>
@@ -42,10 +29,6 @@ const Home = (props) => {
       </div>
       <div className="full-width-map">
         <MapWithControls />
-      </div>
-      <div className="container">
-        <HowItWorks howItWorksRef={howItWorksRef} />
-        <ScrollHint />
       </div>
     </>
   );

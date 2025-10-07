@@ -20,11 +20,9 @@ import {
 } from '../screens';
 
 import {
-  FilterBar,
   Footer,
   Header,
   MobileOverlay,
-  ScrollToTop,
 } from '../components';
 
 import {
@@ -127,9 +125,7 @@ const App = (props) => {
 
   return (
     <Router>
-      <ScrollToTop />
       <Header />
-      <FilterBar />
       <div className="content">
         <Switch>
           <Route exact path={ROUTES.HOME} component={Home} />

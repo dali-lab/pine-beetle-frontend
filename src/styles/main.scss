@@ -11,6 +11,7 @@ body {
     font-family: 'Inter';
     font-weight: normal;
     color: $headingColor;
+    background-color: $backgroundColor;
 }
 
 body p {
@@ -100,6 +101,7 @@ textarea {
 .content {
     height: 100%;
     min-height: calc(100vh - 135px);
+    background-color: $backgroundColor;
 }
 
 .line {
