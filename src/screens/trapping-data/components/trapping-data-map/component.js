@@ -10,18 +10,19 @@
  */
 
 /* eslint-disable prefer-destructuring */
-import React, { useState, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
+import React, { useEffect, useState } from 'react';
 
 import {
   DATA_MODES,
-  SOURCE_LAYERS,
   MAP_SOURCE_NAME,
-  VECTOR_LAYER,
-  STATE_VECTOR_LAYER,
   MAP_TITLES,
+  SOURCE_LAYERS,
+  STATE_VECTOR_LAYER,
+  VECTOR_LAYER,
 } from '../../../../constants';
 
+import { api } from '../../../../services';
 import {
   createHoverCallback,
   createMapClickCallback,
@@ -30,28 +31,26 @@ import {
   getMapboxRDNameFormat,
   zoomToSelectedState,
 } from '../../../../utils';
-import { api } from '../../../../services';
 
 import {
-  thresholds,
   colors,
+  thresholds,
 } from './constants';
 
-import './style.scss';
 import { Map } from '../../../../components';
 import { isInvalidNumber } from '../../../../utils/map';
+import './style.scss';
 
 const HistoricalMap = (props) => {
   const {
     availableStates,
     availableSublocations,
     dataMode,
-    endYear,
+    predictionYear,
     selectedState,
     setCounty,
     setRangerDistrict,
     setState,
-    startYear,
     sublocationData: rawData,
   } = props;
 
@@ -204,12 +203,12 @@ const HistoricalMap = (props) => {
         if (!event.target.matches('.download-button')) return;
         downloadMap(
           map,
-          endYear,
+          predictionYear,
           isDownloadingMap,
           setIsDownloadingMap,
           selectedState,
           MAP_TITLES.HISTORICAL,
-          { titleDetails: { selectedState, period: `${startYear}-${endYear}` }, thresholds, colors },
+          { titleDetails: { selectedState, period: predictionYear }, thresholds, colors },
         );
       }, false);
 
@@ -218,12 +217,12 @@ const HistoricalMap = (props) => {
         if (!event.target.matches('.download-button p')) return;
         downloadMap(
           map,
-          endYear,
+          predictionYear,
           isDownloadingMap,
           setIsDownloadingMap,
           selectedState,
           MAP_TITLES.HISTORICAL,
-          { titleDetails: { selectedState, period: `${startYear}-${endYear}` }, thresholds, colors },
+          { titleDetails: { selectedState, period: predictionYear }, thresholds, colors },
         );
       }, false);
     }, 100);
@@ -232,10 +231,10 @@ const HistoricalMap = (props) => {
   useEffect(() => {
     if (!map) return;
 
-    if (endYear.toString().length === 4) colorFill(rawData);
+    if (predictionYear.toString().length === 4) colorFill(rawData);
 
     zoomToSelectedState(selectedState, map);
-  }, [rawData, selectedState, map]); // endYear can prob be added. colorFill needs useCallback
+  }, [rawData, selectedState, map]); // predictionYear can prob be added. colorFill needs useCallback
 
   useEffect(() => {
     if (!initialFill && map && rawData.length > 0) {
@@ -332,12 +331,12 @@ const HistoricalMap = (props) => {
               )}
         downloadCallback={() => downloadMap(
           map,
-          endYear,
+          predictionYear,
           isDownloadingMap,
           setIsDownloadingMap,
           selectedState,
           MAP_TITLES.HISTORICAL,
-          { titleDetails: { selectedState, period: `${startYear}-${endYear}` }, thresholds, colors },
+          { titleDetails: { selectedState, period: predictionYear }, thresholds, colors },
         )}
         isDownloadingMap={isDownloadingMap}
       />

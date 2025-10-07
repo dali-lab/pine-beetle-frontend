@@ -1,9 +1,7 @@
+import { CHART_MODES, DATA_MODES } from '../../constants';
 import { ActionTypes } from '../actions';
-import { DATA_MODES, CHART_MODES } from '../../constants';
 
 const initialState = {
-  startYear: 1988,
-  endYear: new Date().getFullYear(),
   predictionYear: new Date().getFullYear(),
   state: '',
   county: [],
@@ -22,40 +20,6 @@ const initialState = {
 
 const SelectionsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.SET_START_YEAR: {
-      const castedYear = parseInt(action.payload.startYear, 10);
-
-      // try choosing earliest possible year
-      const defaultYear = state.availableHistoricalYears.length
-        ? state.availablePredictionYears[0]
-        : initialState.startYear;
-
-      // guards against null, undefined, ''
-      const startYear = Number.isNaN(castedYear)
-        ? defaultYear
-        : castedYear;
-
-      const endYear = Math.max(state.endYear, startYear); // ensure endYear >= startYear
-      return { ...state, startYear, endYear };
-    }
-
-    case ActionTypes.SET_END_YEAR: {
-      const castedYear = parseInt(action.payload.endYear, 10);
-
-      // try choosing latest possible year
-      const defaultYear = state.availableHistoricalYears.length
-        ? state.availablePredictionYears.slice(-1)
-        : initialState.endYear;
-
-      // guards against null, undefined, ''
-      const endYear = Number.isNaN(castedYear)
-        ? defaultYear
-        : castedYear;
-
-      const startYear = Math.min(state.startYear, endYear); // ensure endYear >= startYear
-      return { ...state, endYear, startYear };
-    }
-
     case ActionTypes.SET_PREDICTION_YEAR: {
       const castedYear = parseInt(action.payload.year, 10);
 
@@ -106,19 +70,10 @@ const SelectionsReducer = (state = initialState, action) => {
     case ActionTypes.SET_CHART_MODE:
       return { ...state, chartMode: action.payload };
 
-    case ActionTypes.SET_AGGREGATE_YEAR_DATA:
-      return {
-        ...state,
-        startYear: action.payload.map(({ year }) => year).includes(state.startYear) ? parseInt(state.startYear, 10) : parseInt(Math.min(...action.payload.map(({ year }) => year)), 10),
-        endYear: action.payload.map(({ year }) => year).includes(state.endYear) ? parseInt(state.endYear, 10) : parseInt(Math.max(...action.payload.map(({ year }) => year)), 10),
-      };
-
     case ActionTypes.SET_AVAILABLE_YEARS_HISTORICAL:
       return {
         ...state,
         availableHistoricalYears: action.payload,
-        startYear: action.payload.includes(state.startYear) ? parseInt(state.startYear, 10) : parseInt(Math.min(...action.payload), 10),
-        endYear: action.payload.includes(state.endYear) ? parseInt(state.endYear, 10) : parseInt(Math.max(...action.payload), 10),
       };
 
     case ActionTypes.SET_AVAILABLE_STATES_HISTORICAL:

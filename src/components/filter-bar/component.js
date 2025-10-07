@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { DATA_MODES } from '../../constants';
 import {
@@ -25,14 +25,8 @@ const FilterBar = (props) => {
     setRangerDistrict,
     setState,
     clearAllSelections,
-    // Optional props for year range (trapping data)
-    startYear,
-    endYear,
-    setStartYear,
-    setEndYear,
     // Optional props for customization
     title = 'Filter Predictions',
-    chartMode,
   } = props;
 
   // Logic to map state abbreviations to full names
@@ -42,73 +36,21 @@ const FilterBar = (props) => {
 
   const revYears = [...availableYears].reverse();
 
-  // Determine if using year range mode (for trapping data)
-  const isYearRangeMode = startYear !== undefined && endYear !== undefined;
-
-  // Handle desync issues when switching between map and graph views for trapping data
-  useEffect(() => {
-    if (isYearRangeMode && chartMode === 'MAP' && startYear !== endYear && setStartYear) {
-      setStartYear(endYear);
-    }
-  }, [chartMode, endYear, setStartYear, startYear, isYearRangeMode]);
-
   // Check for any active filters (Year, State, County, or District)
-  const hasActiveFilters = predictionYear || startYear || endYear || selectedStateName || county?.length > 0 || rangerDistrict?.length > 0;
+  const hasActiveFilters = predictionYear || selectedStateName || county?.length > 0 || rangerDistrict?.length > 0;
 
-  // Determine the year label based on mode
-  let yearLabel = 'Year';
-  if (isYearRangeMode && chartMode !== 'MAP') {
-    yearLabel = 'Year Range';
-  }
+  // Year label is always 'Year' for single year selection
+  const yearLabel = 'Year';
 
-  // Render year selection component based on mode
+  // Render year selection component - always single year
   const renderYearSelection = () => {
-    if (!isYearRangeMode) {
-      // Single year for prediction/results screens
-      return (
-        <ChoiceInput
-          id="year-input"
-          setValue={setPredictionYear}
-          options={revYears}
-          value={predictionYear}
-        />
-      );
-    }
-
-    if (chartMode === 'MAP') {
-      // Single year for map view in trapping data
-      return (
-        <ChoiceInput
-          id="year-input"
-          setValue={(year) => {
-            if (year !== '') setStartYear(year);
-            setEndYear(year);
-          }}
-          options={revYears}
-          value={endYear}
-        />
-      );
-    }
-
-    // Year range for graph view in trapping data
     return (
-      <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-        <ChoiceInput
-          id="start-year-input"
-          setValue={setStartYear}
-          options={availableYears}
-          value={startYear}
-          firstOptionText="Start Year"
-        />
-        <span>to</span>
-        <ChoiceInput
-          id="end-year-input"
-          setValue={setEndYear}
-          options={revYears}
-          value={endYear}
-          firstOptionText="End Year"
-        />
-      </div>
+      <ChoiceInput
+        id="year-input"
+        setValue={setPredictionYear}
+        options={revYears}
+        value={predictionYear}
+      />
     );
   };
 
@@ -171,26 +113,6 @@ const FilterBar = (props) => {
                     className="filter-tag-remove"
                     type="button"
                     aria-label="Remove year filter"
-                  >
-                    <svg className="filter-tag-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </span>
-              )}
-
-              {/* Year Range Filter Tags */}
-              {(startYear || endYear) && (
-                <span className="filter-tag">
-                  Year Range: {startYear || '...'} - {endYear || '...'}
-                  <button
-                    onClick={() => {
-                      if (setStartYear) setStartYear('');
-                      if (setEndYear) setEndYear('');
-                    }}
-                    className="filter-tag-remove"
-                    type="button"
-                    aria-label="Remove year range filter"
                   >
                     <svg className="filter-tag-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

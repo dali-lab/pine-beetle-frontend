@@ -1,5 +1,5 @@
-import { api } from '../../services';
 import { DATA_MODES } from '../../constants';
+import { api } from '../../services';
 
 export const ActionTypes = {
   SET_PREDICTIONS: 'SET_PREDICTIONS', // predictions for single year
@@ -32,9 +32,9 @@ export const ActionTypes = {
 /**
  * @description action creator that fetches data with predictions for given filter
  * @param {Number} year year to fetch predictions on
- * @param {Object} [overrideFilter={}] optional filter for startYear, endYear, state, etc.
+ * @param {Object} [overrideFilter={}] optional filter for state, etc.
  */
-export function getPredictions(startYear = new Date().getFullYear(), endYear = new Date().getFullYear(), overrideFilter = {}) {
+export function getPredictions(year = new Date().getFullYear(), overrideFilter = {}) {
   return async (dispatch, getState) => {
     const {
       county,
@@ -44,8 +44,7 @@ export function getPredictions(startYear = new Date().getFullYear(), endYear = n
     } = getState().selections;
 
     const filters = Object.entries({
-      startYear,
-      endYear,
+      year,
       state,
       county,
       rangerDistrict,

@@ -15,8 +15,7 @@ const mapStateToProps = (state) => {
       dataMode,
       rangerDistrict,
       state: selectedState,
-      startYear,
-      endYear,
+      predictionYear,
       availableHistoricalStates,
       availableHistoricalSublocations,
     },
@@ -30,10 +29,9 @@ const mapStateToProps = (state) => {
     availableSublocations: availableHistoricalSublocations,
     county,
     dataMode,
-    endYear,
+    predictionYear,
     rangerDistrict,
     selectedState,
-    startYear,
     sublocationData,
   };
 };

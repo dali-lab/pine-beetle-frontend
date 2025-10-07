@@ -1,54 +1,54 @@
 import {
-  ActionTypes as userActionTypes,
   getUserFromStorage,
   login,
   signOut,
+  ActionTypes as userActionTypes,
 } from './user';
 
 import {
-  ActionTypes as selectionActionTypes,
   clearSelections,
   getAvailableStates,
   getAvailableSublocations,
   getAvailableYears,
+  ActionTypes as selectionActionTypes,
   setAllYears,
   setChartMode,
   setCounty,
   setDataMode,
   setEndYear,
+  setPredictionModal, // eslint-disable-line no-unused-vars
   setPredictionYear,
   setRangerDistrict,
   setStartYear,
   setState,
-  setPredictionModal,
 } from './selections';
 
 import {
-  ActionTypes as dataActionTypes,
   clearCustomPredictionError,
   clearData,
+  ActionTypes as dataActionTypes,
   getAggregateLocationData,
   getAggregateStateData,
   getAggregateYearData,
   getPredictions,
-  getSparseData,
-  getScatterChartData,
-  runCustomPrediction,
   getResultsComparisonData,
+  getScatterChartData,
+  getSparseData,
+  runCustomPrediction,
 } from './data';
 
 import {
   ActionTypes as blogActionTypes,
   createBlogPost,
+  deleteBlogPost,
+  editBlogPost,
   getAllBlogPosts,
   getAllBlogPostsByAuthor,
-  editBlogPost,
-  deleteBlogPost,
 } from './blog';
 
 import {
-  ActionTypes as histogramActionTypes,
   getHistogram,
+  ActionTypes as histogramActionTypes,
 } from './histogram';
 
 const ActionTypes = {
@@ -77,21 +77,15 @@ export {
   getAvailableYears,
   getHistogram,
   getPredictions,
-  getResultsComparisonData,
-  getSparseData,
-  getScatterChartData,
-  getUserFromStorage,
+  getResultsComparisonData, getScatterChartData, getSparseData, getUserFromStorage,
   login,
   runCustomPrediction,
   setAllYears,
   setChartMode,
   setCounty,
   setDataMode,
-  setEndYear,
-  setPredictionYear,
+  setEndYear, setPredictionModal, setPredictionYear,
   setRangerDistrict,
   setStartYear,
-  setState,
-  setPredictionModal,
-  signOut,
+  setState, signOut,
 };

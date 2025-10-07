@@ -1,11 +1,11 @@
 import {
   clearData,
-  getAggregateYearData,
-  getAggregateStateData,
   getAggregateLocationData,
+  getAggregateStateData,
+  getAggregateYearData,
   getPredictions,
-  getSparseData,
   getResultsComparisonData,
+  getSparseData,
 } from './data';
 
 import {
@@ -15,9 +15,9 @@ import {
 import { api } from '../../services';
 
 export const ActionTypes = {
+  SET_PREDICTION_YEAR: 'SET_PREDICTION_YEAR',
   SET_START_YEAR: 'SET_START_YEAR',
   SET_END_YEAR: 'SET_END_YEAR',
-  SET_PREDICTION_YEAR: 'SET_PREDICTION_YEAR',
   SET_STATE: 'SET_STATE',
   SET_COUNTY: 'SET_COUNTY',
   SET_RANGER_DISTRICT: 'SET_RANGER_DISTRICT',
@@ -86,14 +86,10 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
   return async (dispatch, getState) => {
     const {
       dataMode,
-      endYear,
-      startYear,
       predictionYear,
     } = getState().selections;
 
     const filters = {
-      startYear,
-      endYear,
       predictionYear,
       ...overrideFilter,
     };
@@ -108,8 +104,6 @@ export function getAvailableStates(overrideFilter = {}, { historical = true, pre
         const predictionStates = await api.getAvailableStates(dataMode, {
           ...filters,
           isPrediction: true,
-          startYear: predictionYear,
-          endYear: predictionYear,
         });
         dispatch({ type: ActionTypes.SET_AVAILABLE_STATES_PREDICTION, payload: predictionStates });
       }
@@ -134,14 +128,10 @@ export function getAvailableSublocations(state, overrideFilter = {}, { historica
   return async (dispatch, getState) => {
     const {
       dataMode,
-      endYear,
-      startYear,
       predictionYear,
     } = getState().selections;
 
     const filters = {
-      startYear,
-      endYear,
       predictionYear,
       ...overrideFilter,
       state,
@@ -157,8 +147,6 @@ export function getAvailableSublocations(state, overrideFilter = {}, { historica
         const predictionSublocations = await api.getAvailableSublocations(dataMode, {
           ...filters,
           isPrediction: true,
-          startYear: filters.predictionYear,
-          endYear: filters.predictionYear,
         });
 
         dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION, payload: predictionSublocations });
@@ -185,19 +173,15 @@ export const setPredictionYear = (year) => {
 
     dispatch({ type: ActionTypes.SET_PREDICTION_YEAR, payload: { year } });
 
-    dispatch(getPredictions(year, year));
+    dispatch(getPredictions(year));
 
     // fetch new drop down values
     dispatch(getAvailableStates({
-      startYear: year,
-      endYear: year,
       predictionYear: year,
     }, { historical: false }));
 
     if (state) {
       dispatch(getAvailableSublocations(state, {
-        startYear: year,
-        endYear: year,
         predictionYear: year,
       }, { historical: false }));
     }
@@ -206,51 +190,21 @@ export const setPredictionYear = (year) => {
 
 /**
  * @description action creator for setting start year
- * @param {Number} startYear start year to set
+ * @param {Number} year year to set as start year
  */
-export const setStartYear = (startYear) => {
-  return (dispatch, getState) => {
-    const { state } = getState().selections;
-
-    dispatch({ type: ActionTypes.SET_START_YEAR, payload: { startYear } });
-
-    // clear out existing data
-    dispatch(clearData());
-
-    // fetch new data
-    dispatch(getAggregateYearData({ startYear }));
-    dispatch(getSparseData({ startYear }));
-    dispatch(getAggregateStateData({ startYear }));
-    dispatch(getAggregateLocationData({ startYear }));
-
-    // fetch new drop down values
-    dispatch(getAvailableStates({ startYear }, { prediction: false }));
-    if (state) { dispatch(getAvailableSublocations(state, { startYear }, { prediction: false })); }
+export const setStartYear = (year) => {
+  return (dispatch) => {
+    dispatch({ type: ActionTypes.SET_START_YEAR, payload: { year } });
   };
 };
 
 /**
  * @description action creator for setting end year
- * @param {Number} endYear end year to set
+ * @param {Number} year year to set as end year
  */
-export const setEndYear = (endYear) => {
-  return (dispatch, getState) => {
-    const { state } = getState().selections;
-
-    dispatch({ type: ActionTypes.SET_END_YEAR, payload: { endYear } });
-
-    // clear out existing data
-    dispatch(clearData());
-
-    // fetch new data
-    dispatch(getSparseData({ endYear }));
-    dispatch(getAggregateYearData({ endYear }));
-    dispatch(getAggregateStateData({ endYear }));
-    dispatch(getAggregateLocationData({ endYear }));
-
-    // fetch new drop down values
-    dispatch(getAvailableStates({ endYear }, { prediction: false }));
-    if (state) { dispatch(getAvailableSublocations(state, { endYear }, { prediction: false })); }
+export const setEndYear = (year) => {
+  return (dispatch) => {
+    dispatch({ type: ActionTypes.SET_END_YEAR, payload: { year } });
   };
 };
 
@@ -259,28 +213,25 @@ export const setEndYear = (endYear) => {
  */
 export const setAllYears = () => {
   return (dispatch, getState) => {
-    const { availableYears, state } = getState().selections;
+    const { availablePredictionYears, state } = getState().selections;
 
-    const startYear = Math.min(...availableYears);
-    const endYear = Math.max(...availableYears);
+    const year = Math.max(...availablePredictionYears);
 
-    dispatch({ type: ActionTypes.SET_START_YEAR, payload: { startYear } });
-    dispatch({ type: ActionTypes.SET_END_YEAR, payload: { endYear } });
-    dispatch({ type: ActionTypes.SET_PREDICTION_YEAR, payload: { year: endYear } });
+    dispatch({ type: ActionTypes.SET_PREDICTION_YEAR, payload: { year } });
 
     // clear out existing data
     dispatch(clearData());
 
     // fetch new data
-    dispatch(getSparseData({ startYear, endYear }));
-    dispatch(getAggregateYearData({ startYear, endYear }));
-    dispatch(getAggregateStateData({ startYear, endYear }));
-    dispatch(getAggregateLocationData({ startYear, endYear }));
-    dispatch(getPredictions(startYear, endYear));
+    dispatch(getSparseData({ year }));
+    dispatch(getAggregateYearData({ year }));
+    dispatch(getAggregateStateData({ year }));
+    dispatch(getAggregateLocationData({ year }));
+    dispatch(getPredictions(year));
 
     // fetch new drop down values
-    dispatch(getAvailableStates({ startYear, endYear, predictionYear: endYear }));
-    if (state) { dispatch(getAvailableSublocations(state, { startYear, endYear, predictionYear: endYear })); }
+    dispatch(getAvailableStates({ predictionYear: year }));
+    if (state) { dispatch(getAvailableSublocations(state, { predictionYear: year })); }
   };
 };
 
@@ -302,7 +253,7 @@ export const setState = (state) => {
     dispatch(getAggregateLocationData({ state }));
 
     const { predictionYear } = getState().selections;
-    dispatch(getPredictions(predictionYear, predictionYear), { state });
+    dispatch(getPredictions(predictionYear), { state });
     dispatch(getResultsComparisonData(predictionYear, { state }));
 
     // fetch new drop down values
@@ -332,7 +283,7 @@ export const setCounty = (newCounty) => {
     dispatch(getAggregateLocationData({ county }));
 
     const { predictionYear } = getState().selections;
-    dispatch(getPredictions(predictionYear, predictionYear), { county });
+    dispatch(getPredictions(predictionYear), { county });
     dispatch(getResultsComparisonData(predictionYear, { county }));
 
     // fetch new drop down values
@@ -360,7 +311,7 @@ export const setRangerDistrict = (newRangerDistrict) => {
     dispatch(getAggregateStateData({ rangerDistrict }));
     dispatch(getAggregateLocationData({ rangerDistrict }));
     const { predictionYear } = getState().selections;
-    dispatch(getPredictions(predictionYear, predictionYear), { rangerDistrict });
+    dispatch(getPredictions(predictionYear), { rangerDistrict });
     dispatch(getResultsComparisonData(predictionYear, { rangerDistrict }));
 
     // fetch new drop down values
@@ -413,7 +364,7 @@ export const setDataMode = (mode) => {
     dispatch(getAggregateStateData());
     dispatch(getAggregateLocationData());
     const { predictionYear } = getState().selections;
-    dispatch(getPredictions(predictionYear, predictionYear));
+    dispatch(getPredictions(predictionYear));
     dispatch(getResultsComparisonData(predictionYear));
 
     // fetch new selection criteria
