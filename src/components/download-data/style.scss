@@ -349,3 +349,210 @@
 .ReactModal__Overlay--before-close {
     opacity: 0;
 }
+
+// New styles for the expanded download content
+.download-data-page-content {
+  .download-content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+
+  .download-selection-section,
+  .download-options-section {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.5rem;
+  }
+
+  .year-selection {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+    }
+  }
+
+  .data-mode-selection {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    .selected-option,
+    .unselected-option {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+
+      .selected-option-text,
+      .unselected-option-text {
+        margin: 0;
+        font-weight: 500;
+      }
+    }
+
+    .selected-option {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+
+      .selected-option-text {
+        color: white;
+      }
+    }
+
+    .unselected-option {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      color: #6c757d;
+
+      .unselected-option-text {
+        color: #6c757d;
+      }
+
+      &:hover {
+        border-color: #667eea;
+        background: #f0f2ff;
+      }
+    }
+  }
+
+  .clear-selections-button {
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+
+    &:hover {
+      background: #5a6268;
+      transform: translateY(-1px);
+    }
+  }
+
+  .download-options {
+    margin-bottom: 2rem;
+
+    .option-item {
+      margin-bottom: 1rem;
+
+      label {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        cursor: pointer;
+        font-size: 0.95rem;
+        line-height: 1.5;
+
+        input[type="checkbox"] {
+          margin-top: 0.2rem;
+          width: 18px;
+          height: 18px;
+          accent-color: #667eea;
+        }
+
+        .checkbox-text {
+          color: #495057;
+        }
+      }
+    }
+  }
+
+  .footnote-container {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+
+    .footnote {
+      font-size: 0.85rem;
+      color: #6c757d;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .download-button-container {
+    text-align: center;
+
+    .download-error {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .downloading-container {
+      padding: 1rem;
+      color: #667eea;
+      font-weight: 500;
+    }
+
+    .download-button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 12px;
+      padding: 1rem 2rem;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+
+      span {
+        font-weight: 600;
+      }
+    }
+  }
+}

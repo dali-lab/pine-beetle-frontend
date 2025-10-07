@@ -2,6 +2,9 @@ import About from './about';
 import Admin from './admin';
 import Blog from './blog';
 import Contact from './contact';
+import DownloadData from './download-data';
+import HistoricalGraphView from './historical-graph-view';
+import HistoricalMapView from './historical-map-view';
 import Home from './home';
 import Prediction from './prediction';
 import Resources from './resources';
@@ -14,6 +17,9 @@ export {
   Admin,
   Blog,
   Contact,
+  DownloadData,
+  HistoricalGraphView,
+  HistoricalMapView,
   Home,
   Prediction,
   Resources,

@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import Modal from 'react-modal';
+import { useHistory } from 'react-router-dom';
 
 import {
   AboutPredictions,
   OverviewText,
   PredictionDetails,
   PredictionMap,
-  SelectionBar,
 } from './components';
 
-import { Histogram, Loading } from '../../components';
 import closeIcon from '../../assets/icons/close.png';
+import { FilterBar, Histogram, Loading } from '../../components';
+import { ROUTES } from '../../constants';
 
 import './style.scss';
 
@@ -29,6 +30,8 @@ const Prediction = (props) => {
     setRangerDistrict,
     frequency,
   } = props;
+
+  const history = useHistory();
 
   // functions for showing modal
   const handleClose = () => {
@@ -87,7 +90,19 @@ const Prediction = (props) => {
       <Loading visible={isLoading} />
       {fetchErrorText.length > 0 && fetchErrorText.map((t) => <p>{t}</p>)}
       <OverviewText />
-      <SelectionBar />
+      <div className="container">
+        <FilterBar />
+        <div style={{ marginTop: '20px', textAlign: 'right' }}>
+          <button
+            onClick={() => history.push(ROUTES.RESULTS_COMPARISON)}
+            type="button"
+            className="action-button primary-button"
+            data-tip="Map of predicted vs. observed outbreaks"
+          >
+            How did we do?
+          </button>
+        </div>
+      </div>
       <div className="container">
         <PredictionMap />
       </div>

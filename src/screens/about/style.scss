@@ -1,5 +1,6 @@
 #about-content {
     margin-bottom: 50px;
+    margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
 
     .about-content-container {
         margin-left: unquote("max(100px, 13%)");

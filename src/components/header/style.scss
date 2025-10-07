@@ -248,20 +248,20 @@
 // Navigation Bar Styles
 .navigation-bar {
     background: $white;
-    border-bottom: 1px solid rgba(51, 69, 79, 0.1);
-    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 70px;
     z-index: 1000;
-    height: 70px;
     display: flex;
     align-items: center;
     overflow: visible !important;
 
     .nav-container {
         max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 16px;
+        margin: 0;
+        padding: 0 24px;
+        width: 100%;
         overflow: visible !important;
 
         @media (min-width: 768px) {
@@ -276,50 +276,47 @@
     .nav-items {
         display: flex;
         align-items: center;
-        gap: 0;
+        gap: 4px;
         overflow-x: auto;
         overflow-y: visible !important;
         -webkit-overflow-scrolling: touch;
-        height: 100%;
 
         @media (min-width: 768px) {
-            gap: 8px;
+            gap: 4px;
         }
 
         @media (min-width: 1024px) {
-            gap: 16px;
+            gap: 4px;
         }
     }
 
     .nav-item {
         display: flex;
         align-items: center;
-        gap: 6px;
-        padding: 0 20px;
-        height: 70px;
-        color: $greyBlue700;
-        font-size: 16px;
+        gap: 4px;
+        padding: 16px;
+        color: #6b7280;
+        font-size: 14px;
         font-weight: 500;
         font-family: "Inter", sans-serif;
         text-decoration: none;
         background: none;
         border: none;
+        border-bottom: 2px solid transparent;
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
         white-space: nowrap;
-        border-bottom: 3px solid transparent;
-        border-radius: 8px;
-        margin: 0 4px;
+        position: relative;
 
         &:hover {
-            color: $greyBlue900;
-            background: rgba(51, 69, 79, 0.1);
+            color: #111827;
+            background-color: #f9fafb;
         }
 
         &.active {
-            color: $greyBlue900;
-            border-bottom-color: #33454f;
-            background: rgba(51, 69, 79, 0.1);
+            color: #111827;
+            background-color: #f3f4f6;
+            border-bottom-color: #2C3E50;
         }
 
         &.dropdown-trigger {
@@ -330,14 +327,14 @@
             }
 
             &:hover {
-                color: $greyBlue900;
-                background: rgba(51, 69, 79, 0.1);
+                color: #111827;
+                background-color: #f9fafb;
             }
 
             &.active {
-                color: $greyBlue900;
-                border-bottom-color: #33454f;
-                background: rgba(51, 69, 79, 0.1);
+                color: #111827;
+                background-color: #f3f4f6;
+                border-bottom-color: #2C3E50;
             }
         }
     }
@@ -354,12 +351,13 @@
             position: absolute;
             top: 100%;
             left: 0;
-            min-width: 200px;
+            min-width: 192px;
             background-color: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(51, 69, 79, 0.1);
-            padding: 8px 0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            padding: 4px;
+            margin-top: 4px;
             z-index: 99999;
             display: none;
             opacity: 0;
@@ -367,53 +365,57 @@
             transition: opacity 0.2s ease, visibility 0.2s ease;
 
             .dropdown-item {
-                display: block;
-                padding: 12px 20px;
+                display: flex;
+                align-items: center;
+                padding: 10px 12px;
                 font-size: 14px;
-                color: $greyBlue700;
+                color: #374151;
                 text-decoration: none;
                 font-family: "Inter", sans-serif;
-                transition: background-color 0.2s ease;
+                transition: background-color 0.2s ease, color 0.2s ease;
                 background: none;
                 border: none;
+                border-radius: 6px;
                 width: 100%;
                 text-align: left;
                 cursor: pointer;
 
                 &:hover {
-                    background-color: rgba(51, 69, 79, 0.05);
-                    color: $greyBlue900;
+                    background-color: #f3f4f6;
+                    color: #111827;
                 }
             }
         }
 
         // Dropdown menus with fixed positioning
         .dropdown-menu-historical,
+        .dropdown-menu-historical-data,
         .dropdown-menu-how-it-works,
         .dropdown-menu-about {
-            position: fixed !important; // Use fixed to escape overflow clipping
-            margin-top: -1px;
-            min-width: 220px;
+            position: fixed !important;
+            margin-top: 0;
+            min-width: 192px;
             width: max-content;
             max-width: 280px;
             background-color: #ffffff !important;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(51, 69, 79, 0.1);
-            border-top: none;
-            padding: 8px 0;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e5e7eb;
+            padding: 4px;
             z-index: 999999 !important;
 
             .dropdown-item {
-                display: block;
-                padding: 12px 20px;
+                display: flex;
+                align-items: center;
+                padding: 10px 12px;
                 font-size: 14px;
-                color: $greyBlue700;
+                color: #374151;
                 text-decoration: none;
                 font-family: "Inter", sans-serif;
-                transition: background-color 0.2s ease;
+                transition: background-color 0.2s ease, color 0.2s ease;
                 background: none;
                 border: none;
+                border-radius: 6px;
                 width: 100%;
                 text-align: left;
                 cursor: pointer;
@@ -421,16 +423,16 @@
                 box-sizing: border-box;
 
                 &:hover {
-                    background-color: rgba(51, 69, 79, 0.1);
-                    color: $greyBlue900;
+                    background-color: #f3f4f6;
+                    color: #111827;
                 }
 
                 &:first-child {
-                    border-radius: 8px 8px 0 0;
+                    border-radius: 6px;
                 }
 
                 &:last-child {
-                    border-radius: 0 0 8px 8px;
+                    border-radius: 6px;
                 }
             }
         }

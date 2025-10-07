@@ -1,7 +1,7 @@
 #overview-text {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 190px; // Account for fixed header (70px) + navigation bar (70px) + spacing (50px)
     margin-bottom: 50px;
 
     .overview-text-tooltip {

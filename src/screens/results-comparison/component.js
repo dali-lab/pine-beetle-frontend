@@ -1,8 +1,8 @@
 import React from 'react';
+import { FilterBar, Loading, ScrollHint } from '../../components';
 import {
-  ComparisonMap, OverviewText, ScatterChart, ScatterChartSelectionBar, SelectionBar,
+  ComparisonMap, OverviewText, ScatterChart, ScatterChartSelectionBar,
 } from './components';
-import { Loading, ScrollHint } from '../../components';
 
 import './style.scss';
 
@@ -12,7 +12,9 @@ const ResultsComparison = (props) => {
     <div>
       <Loading visible={isLoading} />
       <OverviewText />
-      <SelectionBar />
+      <div className="container">
+        <FilterBar />
+      </div>
       <ComparisonMap />
       <div className="container">
         <h2 className="prediction-chart-title">Predictions versus outcomes</h2>

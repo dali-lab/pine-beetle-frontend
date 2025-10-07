@@ -3,8 +3,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import './style.scss';
 
 import closeIcon from '../../../assets/icons/close.png';
-import emptyCheckbox from '../../../assets/icons/empty_checkbox.png';
-import selectedCheckbox from '../../../assets/icons/selected_checkbox.png';
+
+// SVG Checkbox Components
+const CheckboxEmpty = () => (
+  <svg className="checkbox-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0.5" y="0.5" width="19" height="19" rx="3.5" stroke="#32454F" fill="white" />
+  </svg>
+);
+
+const CheckboxChecked = () => (
+  <svg className="checkbox-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="20" height="20" rx="4" fill="#32454F" />
+    <path d="M6 10L9 13L14 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 const CLEAR_TEXT = 'All Locations';
 
@@ -68,9 +80,11 @@ const MultiSelectInput = (props) => {
     if (valueParent === parent) {
       setAllSelected(true);
       setValueParent('');
+      setIsListOpen(false);
     } else {
       setAllSelected(false);
       setValueParent(parent);
+      setIsListOpen(false);
     }
   };
 
@@ -107,18 +121,16 @@ const MultiSelectInput = (props) => {
         {
           optionsParent.map((item) => (
             <div
-              className="location-list-item"
+              className={`location-list-item ${(valueParent === item || allSelected) ? 'active' : ''}`}
               key={item}
             >
               <div
                 className="location-list-item-select"
                 onClick={() => selectParent(item)}
               >
-                <img
-                  src={(valueParent === item || allSelected) ? selectedCheckbox : emptyCheckbox}
-                  alt="Parent checkbox"
-                  className="location-list-item-select-checkbox"
-                />
+                <div className="location-list-item-select-checkbox">
+                  {(valueParent === item || allSelected) ? <CheckboxChecked /> : <CheckboxEmpty />}
+                </div>
                 {item}
                 {valueParent === item && (
                   <span className="location-list-item-select-status">(
@@ -137,15 +149,13 @@ const MultiSelectInput = (props) => {
                     {
                       optionsChildren.map((child) => (
                         <div
-                          className="children-list-item"
+                          className={`children-list-item ${(valueChildren.indexOf(child) > -1 || valueChildren.length === 0) ? 'active' : ''}`}
                           key={child}
                           onClick={() => selectChildren(child)}
                         >
-                          <img
-                            src={(valueChildren.indexOf(child) > -1 || valueChildren.length === 0) ? selectedCheckbox : emptyCheckbox}
-                            alt="Child checkbox"
-                            className="location-list-item-select-checkbox"
-                          />
+                          <div className="children-list-item-checkbox">
+                            {(valueChildren.indexOf(child) > -1 || valueChildren.length === 0) ? <CheckboxChecked /> : <CheckboxEmpty />}
+                          </div>
                           {child}
                         </div>
                       ))

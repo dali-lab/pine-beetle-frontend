@@ -1,6 +1,7 @@
 .blog-page-container {
     max-width: 1000px;
     margin: auto;
+    margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
     display: flex;
     flex-direction: column;
     align-items: center;

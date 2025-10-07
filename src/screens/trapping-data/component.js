@@ -4,19 +4,14 @@ import { CHART_MODES, DATA_MODES } from '../../constants';
 
 import './style.scss';
 
-import {
-  TrappingDataMap,
-  LineChart,
-  OverviewText,
-  SelectionBar,
-} from './components';
+import { LineChart, OverviewText, TrappingDataMap } from './components';
 
-import { Loading, ScrollHint } from '../../components';
+import { FilterBar, Loading, ScrollHint } from '../../components';
 
-import mapSelectedIcon from '../../assets/icons/map-selected.png';
-import mapUnselectedIcon from '../../assets/icons/map-unselected.png';
 import graphSelectedIcon from '../../assets/icons/graph-selected.png';
 import graphUnselectedIcon from '../../assets/icons/graph-unselected.png';
+import mapSelectedIcon from '../../assets/icons/map-selected.png';
+import mapUnselectedIcon from '../../assets/icons/map-unselected.png';
 
 const TrappingData = (props) => {
   const {
@@ -36,7 +31,8 @@ const TrappingData = (props) => {
 
   useEffect(() => {
     clearAllSelections(); // clears selections initially when switching to this tab
-  }, [clearAllSelections]);
+    setChartMode(CHART_MODES.GRAPH); // ensure graph view is shown by default
+  }, [clearAllSelections, setChartMode]);
 
   // TODO handle other way here as well
   const handleChangeToGraphView = () => {
@@ -49,7 +45,9 @@ const TrappingData = (props) => {
       <Loading visible={isLoading} />
       {errorText.length > 0 && errorText.map((t) => <p>{t}</p>)}
       <OverviewText />
-      <SelectionBar />
+      <div className="container">
+        <FilterBar useHistoricalData title="Filter Historical Data" />
+      </div>
       <div id="view-selections" className="container">
         <div id="toggles-overlay-h">
           <div className="selection">

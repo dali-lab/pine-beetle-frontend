@@ -1,23 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { connect } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
-import { ROUTES } from '../../constants';
+import { CHART_MODES, ROUTES } from '../../constants';
+import { setChartMode as setChartModeAction } from '../../state/actions';
 
 import './style.scss';
 
-const Header = () => {
+const Header = ({ setChartMode }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [historicalDataOpen, setHistoricalDataOpen] = useState(false);
   const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [historicalDataOpen, setHistoricalDataOpen] = useState(false);
   const navRef = useRef(null);
-  const historicalDataButtonRef = useRef(null);
   const howItWorksButtonRef = useRef(null);
   const aboutButtonRef = useRef(null);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const historicalDataButtonRef = useRef(null);
   const [howItWorksDropdownPosition, setHowItWorksDropdownPosition] = useState({ top: 0, left: 0 });
   const [aboutDropdownPosition, setAboutDropdownPosition] = useState({ top: 0, left: 0 });
+  const [historicalDataDropdownPosition, setHistoricalDataDropdownPosition] = useState({ top: 0, left: 0 });
 
   const location = useLocation();
 
@@ -25,9 +27,9 @@ const Header = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
-        setHistoricalDataOpen(false);
         setHowItWorksOpen(false);
         setAboutOpen(false);
+        setHistoricalDataOpen(false);
       }
     };
 
@@ -86,8 +88,8 @@ const Header = () => {
         <div className="nav-container">
           <div className="nav-items">
             <Link
-              to={ROUTES.PREDICTIONS}
-              className={`nav-item ${location.pathname === ROUTES.PREDICTIONS ? 'active' : ''}`}
+              to={ROUTES.HOME}
+              className={`nav-item ${location.pathname === ROUTES.HOME ? 'active' : ''}`}
             >
               Prediction Outbreak
             </Link>
@@ -99,14 +101,14 @@ const Header = () => {
               Result Comparison
             </Link>
 
-            {/* Historical Data Menu */}
+            {/* Historical Data Dropdown */}
             <div
               className="nav-dropdown"
               ref={historicalDataButtonRef}
               onMouseEnter={() => {
                 if (historicalDataButtonRef.current) {
                   const rect = historicalDataButtonRef.current.getBoundingClientRect();
-                  setDropdownPosition({
+                  setHistoricalDataDropdownPosition({
                     top: rect.bottom,
                     left: rect.left,
                   });
@@ -118,7 +120,7 @@ const Header = () => {
             >
               <button
                 type="button"
-                className={`nav-item dropdown-trigger ${location.pathname === ROUTES.TRAPPING_DATA ? 'active' : ''}`}
+                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.HISTORICAL_GRAPH_VIEW || location.pathname === ROUTES.HISTORICAL_MAP_VIEW || location.pathname === ROUTES.DOWNLOAD_DATA) ? 'active' : ''}`}
               >
                 Historical Data
                 <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,35 +129,41 @@ const Header = () => {
               </button>
 
               <div
-                className="dropdown-menu-historical"
+                className="dropdown-menu-historical-data"
                 onMouseEnter={() => setHistoricalDataOpen(true)}
                 onMouseLeave={() => setHistoricalDataOpen(false)}
                 style={{
                   display: historicalDataOpen ? 'block' : 'none',
-                  top: `${dropdownPosition.top}px`,
-                  left: `${dropdownPosition.left}px`,
+                  top: `${historicalDataDropdownPosition.top}px`,
+                  left: `${historicalDataDropdownPosition.left}px`,
                 }}
               >
                 <Link
-                  to="/data/graphs"
+                  to={ROUTES.HISTORICAL_GRAPH_VIEW}
                   className="dropdown-item"
-                  onClick={() => setHistoricalDataOpen(false)}
+                  onClick={() => {
+                    setChartMode(CHART_MODES.GRAPH);
+                    setHistoricalDataOpen(false);
+                  }}
                 >
-                  Data Graph
+                  Graph View
                 </Link>
                 <Link
-                  to={ROUTES.TRAPPING_DATA}
+                  to={ROUTES.HISTORICAL_MAP_VIEW}
                   className="dropdown-item"
-                  onClick={() => setHistoricalDataOpen(false)}
+                  onClick={() => {
+                    setChartMode(CHART_MODES.MAP);
+                    setHistoricalDataOpen(false);
+                  }}
                 >
-                  Map
+                  Map View
                 </Link>
                 <Link
-                  to="/data/download"
+                  to={ROUTES.DOWNLOAD_DATA}
                   className="dropdown-item"
                   onClick={() => setHistoricalDataOpen(false)}
                 >
-                  Data Download
+                  Download Data
                 </Link>
               </div>
             </div>
@@ -172,8 +180,8 @@ const Header = () => {
                     left: rect.left,
                   });
                 }
-                setHistoricalDataOpen(false);
                 setAboutOpen(false);
+                setHistoricalDataOpen(false);
                 setHowItWorksOpen(true);
               }}
             >
@@ -231,8 +239,8 @@ const Header = () => {
                     left: rect.left,
                   });
                 }
-                setHistoricalDataOpen(false);
                 setHowItWorksOpen(false);
+                setHistoricalDataOpen(false);
                 setAboutOpen(true);
               }}
             >
@@ -300,4 +308,8 @@ const Header = () => {
   );
 };
 
-export default Header;
+const mapDispatchToProps = (dispatch) => ({
+  setChartMode: (mode) => dispatch(setChartModeAction(mode)),
+});
+
+export default connect(null, mapDispatchToProps)(Header);

@@ -11,8 +11,10 @@ import {
   Admin,
   Blog,
   Contact,
+  DownloadData,
+  HistoricalGraphView,
+  HistoricalMapView,
   Home,
-  Prediction,
   Resources,
   ResultsComparison,
   SingleBlogPost,
@@ -134,9 +136,15 @@ const App = (props) => {
           <Route path={`${ROUTES.BLOG}/:id`} component={SingleBlogPost} />
           <Route path={ROUTES.BLOG} component={Blog} />
           <Route path={ROUTES.CONTACT} component={Contact} />
+          <Route path={ROUTES.DOWNLOAD_DATA} component={DownloadData} />
+          <Route path={ROUTES.HISTORICAL_GRAPH_VIEW} component={HistoricalGraphView} />
+          <Route path={ROUTES.HISTORICAL_MAP_VIEW} component={HistoricalMapView} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
           <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
-          <Route path={ROUTES.PREDICTIONS} component={Prediction} />
+          {/* Redirect old prediction route to home page (new prediction page) */}
+          <Route path={ROUTES.PREDICTIONS}>
+            <Redirect to={ROUTES.HOME} />
+          </Route>
           <Route path={ROUTES.RESULTS_COMPARISON} component={ResultsComparison} />
           {Object.entries(RESOURCE_ROUTES).map(([TYPE, ROUTE]) => (
             <Route

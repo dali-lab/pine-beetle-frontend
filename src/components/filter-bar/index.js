@@ -5,13 +5,15 @@ import FilterBar from './component';
 import {
   clearSelections,
   setCounty,
+  setDataMode,
+  setEndYear,
   setPredictionYear,
   setRangerDistrict,
+  setStartYear,
   setState,
-  setDataMode,
 } from '../../state/actions';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   const {
     selections: {
       predictionYear: year,
@@ -22,18 +24,30 @@ const mapStateToProps = (state) => {
       availablePredictionYears,
       availablePredictionStates,
       availablePredictionSublocations,
+      availableHistoricalYears,
+      availableHistoricalStates,
+      availableHistoricalSublocations,
+      startYear,
+      endYear,
+      chartMode,
     },
   } = state;
 
+  // Use historical data if useHistoricalData prop is passed, otherwise use prediction data
+  const useHistorical = ownProps.useHistoricalData;
+
   return {
-    availableYears: availablePredictionYears,
-    availableStates: availablePredictionStates,
-    availableSublocations: availablePredictionSublocations,
+    availableYears: useHistorical ? availableHistoricalYears : availablePredictionYears,
+    availableStates: useHistorical ? availableHistoricalStates : availablePredictionStates,
+    availableSublocations: useHistorical ? availableHistoricalSublocations : availablePredictionSublocations,
     county,
     rangerDistrict,
     selectedState,
     dataMode,
     predictionYear: year,
+    startYear,
+    endYear,
+    chartMode,
   };
 };
 
@@ -55,6 +69,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setDataMode: (mode) => {
     dispatch(setDataMode(mode));
+  },
+  setStartYear: (startYear) => {
+    dispatch(setStartYear(startYear));
+  },
+  setEndYear: (endYear) => {
+    dispatch(setEndYear(endYear));
   },
 });
 
