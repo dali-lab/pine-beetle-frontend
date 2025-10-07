@@ -126,11 +126,18 @@
                 }
 
                 .location-list-clear {
-                    color: $blue800;
+                    color: $greyBlue700;
                     font-size: 15px;
                     font-weight: 500;
                     padding: 6px 12px;
                     cursor: pointer;
+                    background-color: $greyBlue100;
+                    border-radius: 4px;
+                    transition: background-color 0.15s ease;
+
+                    &:hover {
+                        background-color: $greyBlue200;
+                    }
                 }
             }
 
@@ -151,8 +158,8 @@
                 }
 
                 &.active {
-                    background-color: $blue200;
-                    color: $blue800;
+                    background-color: $greyBlue100;
+                    color: $greyBlue900;
                 }
 
                 .location-list-item-select {
@@ -211,8 +218,8 @@
                         }
 
                         &.active {
-                            background-color: $blue200;
-                            color: $blue800;
+                            background-color: $greyBlue100;
+                            color: $greyBlue900;
                         }
 
                         .children-list-item-checkbox {

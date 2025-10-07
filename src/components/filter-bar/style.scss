@@ -19,6 +19,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px; // Matches mb-4 in the design
+  cursor: pointer;
 }
 
 .filter-bar-title {
@@ -31,21 +32,61 @@
   margin: 0;
 }
 
-// Grid layout for filters (grid grid-cols-1 md:grid-cols-2 gap-4)
-.filter-bar-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px; // Matches gap-4
+// Filter Toggle Button
+.filter-toggle-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr); // md:grid-cols-2
+  &:hover {
+    background-color: $greyBlue100;
   }
+
+  .filter-arrow {
+    width: 20px;
+    height: 20px;
+    color: $greyBlue600;
+    transition: transform 0.2s ease, color 0.2s ease;
+
+    &.expanded {
+      transform: rotate(180deg);
+    }
+
+    &.collapsed {
+      transform: rotate(0deg);
+    }
+  }
+
+  &:hover .filter-arrow {
+    color: $greyBlue800;
+  }
+}
+
+// Single line layout for filters
+.filter-bar-container {
+  display: flex;
+  align-items: end;
+  gap: 16px; // Matches gap-4
+  flex-wrap: wrap;
 }
 
 .filter-section {
   display: flex;
   flex-direction: column;
   gap: 8px; // Matches space-y-2
+  flex: 1;
+  min-width: 0; // Allows flex items to shrink below their content size
+}
+
+.filter-clear-section {
+  flex: 0 0 auto; // Don't grow or shrink, maintain natural size
+  align-self: end;
 }
 
 .filter-label {
@@ -135,29 +176,32 @@
   cursor: pointer;
   transition: background-color 0.2s ease, border-color 0.2s ease;
   font-family: "Inter", sans-serif;
-  height: auto;
+  height: 44px; // Match input height
   line-height: 1.5;
+  min-width: 120px; // Make button even longer
 
   &.clear-button {
-    // Matches Button variant="outline" bg-transparent
-    background-color: transparent;
-    color: $greyBlue700;
-    border: 1px solid $greyBlue300;
+    // Matches header color #02394A
+    background-color: #02394A;
+    color: $white;
+    border: 1px solid #02394A;
 
     &:hover:not(:disabled) {
-      background-color: $greyBlue100;
-      border-color: $greyBlue400;
+      background-color: #00472f;
+      border-color: #00472f;
     }
 
     &:active:not(:disabled) {
-      background-color: $greyBlue200;
+      background-color: #003d26;
+      border-color: #003d26;
     }
 
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+      background-color: $greyBlue300;
       color: $greyBlue500;
-      border-color: $greyBlue200;
+      border-color: $greyBlue300;
     }
   }
 }
@@ -246,9 +290,29 @@
     margin-bottom: 14px;
   }
 
+  .filter-toggle-button {
+    .filter-arrow {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
   .filter-bar-container {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
     gap: 14px;
+  }
+
+  .filter-section {
+    flex: none;
+  }
+
+  .filter-clear-section {
+    align-self: stretch;
+
+    .action-button {
+      width: 100%;
+    }
   }
 }
 
