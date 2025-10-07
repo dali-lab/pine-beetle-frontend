@@ -168,7 +168,22 @@ const DATA_TYPE_EXTENSIONS = {
 const VIDEO_URL = 'https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/preview';
 
 const getYearRange = (start, end) => {
-  return Array(end - start + 1).fill().map((_, idx) => start + idx);
+  // Handle edge cases where start or end might be undefined, null, or invalid
+  if (typeof start !== 'number' || typeof end !== 'number' || Number.isNaN(start) || Number.isNaN(end)) {
+    return [];
+  }
+
+  // Ensure start is not greater than end
+  if (start > end) {
+    return [];
+  }
+
+  const length = end - start + 1;
+  if (length <= 0) {
+    return [];
+  }
+
+  return Array(length).fill().map((_, idx) => start + idx);
 };
 
 const MAP_SOURCES = {
