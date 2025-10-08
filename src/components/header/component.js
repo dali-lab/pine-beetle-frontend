@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
-import { CHART_MODES, ROUTES } from '../../constants';
+import { CHART_MODES, ROUTES, VIDEO_URL } from '../../constants';
 import { setChartMode as setChartModeAction } from '../../state/actions';
 
 import './style.scss';
@@ -12,11 +12,14 @@ const Header = ({ setChartMode }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [historicalDataOpen, setHistoricalDataOpen] = useState(false);
+  const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const navRef = useRef(null);
   const aboutButtonRef = useRef(null);
   const historicalDataButtonRef = useRef(null);
+  const howItWorksButtonRef = useRef(null);
   const [aboutDropdownPosition, setAboutDropdownPosition] = useState({ top: 0, left: 0 });
   const [historicalDataDropdownPosition, setHistoricalDataDropdownPosition] = useState({ top: 0, left: 0 });
+  const [howItWorksDropdownPosition, setHowItWorksDropdownPosition] = useState({ top: 0, left: 0 });
 
   const location = useLocation();
 
@@ -26,6 +29,7 @@ const Header = ({ setChartMode }) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
         setAboutOpen(false);
         setHistoricalDataOpen(false);
+        setHowItWorksOpen(false);
       }
     };
 
@@ -79,6 +83,7 @@ const Header = ({ setChartMode }) => {
               onMouseEnter={() => {
                 setAboutOpen(false);
                 setHistoricalDataOpen(false);
+                setHowItWorksOpen(false);
               }}
             >
               Prediction Outbreak
@@ -90,6 +95,7 @@ const Header = ({ setChartMode }) => {
               onMouseEnter={() => {
                 setAboutOpen(false);
                 setHistoricalDataOpen(false);
+                setHowItWorksOpen(false);
               }}
             >
               Result Comparison
@@ -108,6 +114,7 @@ const Header = ({ setChartMode }) => {
                   });
                 }
                 setAboutOpen(false);
+                setHowItWorksOpen(false);
                 setHistoricalDataOpen(true);
               }}
             >
@@ -151,17 +158,61 @@ const Header = ({ setChartMode }) => {
               </div>
             </div>
 
-            {/* How does it work - Direct link to Methodology */}
-            <Link
-              to={ROUTES.METHODOLOGY}
-              className={`nav-item ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
+            {/* How does it work Dropdown */}
+            <div
+              className="nav-dropdown"
+              ref={howItWorksButtonRef}
               onMouseEnter={() => {
+                if (howItWorksButtonRef.current) {
+                  const rect = howItWorksButtonRef.current.getBoundingClientRect();
+                  setHowItWorksDropdownPosition({
+                    top: rect.bottom,
+                    left: rect.left,
+                  });
+                }
                 setAboutOpen(false);
                 setHistoricalDataOpen(false);
+                setHowItWorksOpen(true);
               }}
             >
-              How does it work
-            </Link>
+              <button
+                type="button"
+                className={`nav-item dropdown-trigger ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
+              >
+                How does it work
+                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <div
+                className="dropdown-menu-how-it-works"
+                onMouseEnter={() => setHowItWorksOpen(true)}
+                onMouseLeave={() => setHowItWorksOpen(false)}
+                style={{
+                  display: howItWorksOpen ? 'block' : 'none',
+                  top: `${howItWorksDropdownPosition.top}px`,
+                  left: `${howItWorksDropdownPosition.left}px`,
+                }}
+              >
+                <Link
+                  to={ROUTES.METHODOLOGY}
+                  className="dropdown-item"
+                  onClick={() => setHowItWorksOpen(false)}
+                >
+                  Methodology
+                </Link>
+                <a
+                  href={VIDEO_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="dropdown-item"
+                  onClick={() => setHowItWorksOpen(false)}
+                >
+                  Learn more from the video
+                </a>
+              </div>
+            </div>
 
             {/* About Menu */}
             <div
@@ -176,6 +227,7 @@ const Header = ({ setChartMode }) => {
                   });
                 }
                 setHistoricalDataOpen(false);
+                setHowItWorksOpen(false);
                 setAboutOpen(true);
               }}
             >
