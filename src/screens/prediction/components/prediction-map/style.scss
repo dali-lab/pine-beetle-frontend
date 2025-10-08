@@ -17,7 +17,7 @@
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: $white;
     padding: 0;
-    overflow: hidden; // Ensure legend overlay stays within container bounds
+    overflow: hidden;
 }
 
 #map-overlay-download {

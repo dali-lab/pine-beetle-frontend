@@ -1,8 +1,8 @@
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import { formatPostDates } from '../../../../utils';
 import { ROUTES } from '../../../../constants';
+import { getDateToDisplay, truncateText } from '../../../../utils';
 
 import './style.scss';
 
@@ -11,26 +11,42 @@ const BlogPost = ({ post }) => {
     title,
     body,
     date_created: createdAt,
-    date_edited: editedAt,
-    image,
-    author,
     _id,
   } = post;
 
   const history = useHistory();
   const location = useLocation();
-  const isBlogPage = location.pathname === '/blog';
+  const isSinglePostPage = location.pathname.includes('/blog/') && location.pathname !== '/blog';
+
+  const handleClick = () => {
+    if (!isSinglePostPage) {
+      history.push(`${ROUTES.BLOG}/${_id}`);
+    }
+  };
 
   return (
-    <div className="blog-page-blog-post-container page-container">
-      {isBlogPage
-        ? <button className="blog-page-blog-post-title animated-button" type="button" onClick={() => history.push(`${ROUTES.BLOG}/${_id}`)}>{title}</button>
-        : <div className="blog-page-blog-post-title">{title}</div>}
-      <div className="blog-page-blog-post-author">{`by ${author}`}</div>
-      {image && <img className="blog-page-blog-post-picture" src={image} alt="blog post illustration" />}
-      <div className="blog-page-blog-post-body">{body}</div>
-      <div className="blog-page-blog-post-date">{formatPostDates(createdAt, editedAt)}</div>
-    </div>
+    <article className="blog-post-item">
+      <div className="blog-post-date">
+        {getDateToDisplay(createdAt)}
+      </div>
+      <h2 className={`blog-post-title ${isSinglePostPage ? 'no-click' : ''}`} onClick={handleClick}>
+        {title}
+      </h2>
+      <div className="blog-post-content">
+        {isSinglePostPage ? (
+          <div className="blog-post-full-body">
+            {body}
+          </div>
+        ) : (
+          <div className="blog-post-snippet">
+            {truncateText(body, 200)}
+            <span className="continue-reading" onClick={handleClick}>
+              continue reading
+            </span>
+          </div>
+        )}
+      </div>
+    </article>
   );
 };
 

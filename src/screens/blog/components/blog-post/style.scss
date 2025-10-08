@@ -1,46 +1,83 @@
-.blog-page {
-    &-blog-post {
-        &-container {
-            margin: 30px auto;
-            width: 100%;
-            box-sizing: border-box;
-        }
+.blog-post-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+}
 
-        &-title {
-            font-size: 24px;
-            font-weight: 600;
-            background: none;
-            border: none;
-        }
+.blog-post-date {
+    font-size: 14px;
+    color: $greyBlue600;
+    margin-bottom: 8px;
+    font-weight: 400;
+    line-height: 1.4;
+}
 
-        &-author {
-            margin-bottom: 20px;
-            margin-top: 6px;
-        }
+.blog-post-title {
+    font-family: 'Inter';
+    font-size: 24px;
+    font-weight: 600;
+    color: $headingColor;
+    margin: 0 0 16px 0;
+    line-height: 1.3;
+    cursor: pointer;
+    transition: color 0.2s ease;
 
-        &-picture {
-            max-width: 100%;
-            height: auto;
-            max-height: 500px;
-            margin: 30px auto 50px;
-        }
+    &:hover {
+        color: $headingColor;
+    }
 
-        &-date {
-            font-style: italic;
-            font-size: 14px;
-            margin-top: 30px;
-            width: 100%;
-            text-align: right;
-        }
+    &.no-click {
+        cursor: default;
 
-        &-date,
-        &-author {
-            font-style: italic;
-            color: $greyBlue700;
+        &:hover {
+            color: $headingColor;
         }
+    }
 
-        &-body {
-            white-space: pre-line;
-        }
+    @media (max-width: 768px) {
+        font-size: 20px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 18px;
+    }
+}
+
+.blog-post-content {
+    margin: 0;
+}
+
+.blog-post-snippet {
+    font-size: 16px;
+    color: $textColor;
+    line-height: 1.6;
+    margin: 0;
+
+    @media (max-width: 768px) {
+        font-size: 15px;
+    }
+}
+
+.blog-post-full-body {
+    font-size: 16px;
+    color: $textColor;
+    line-height: 1.8;
+    margin: 0;
+    white-space: pre-line;
+
+    @media (max-width: 768px) {
+        font-size: 15px;
+    }
+}
+
+.continue-reading {
+    color: $headingColor;
+    cursor: pointer;
+    font-weight: 500;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: $headingColor;
+        text-decoration: underline;
     }
 }

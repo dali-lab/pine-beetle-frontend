@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 import {
-  getAuthTokenFromStorage, getUserIdFromStorage,
+  getAuthTokenFromStorage,
+  getUserIdFromStorage,
 } from '../utils';
 
 const SUBROUTE = 'blog';
@@ -29,12 +30,15 @@ export const getAllBlogPosts = async () => {
 
   try {
     const { data: response } = await axios.get(url);
+    console.log('getAllBlogPosts service - full response:', response);
 
     const { data } = response;
+    console.log('getAllBlogPosts service - extracted data:', data);
+    console.log('getAllBlogPosts service - data length:', data?.length);
 
     return data;
   } catch (error) {
-    console.error(error);
+    console.error('getAllBlogPosts service - error:', error);
     throw error;
   }
 };

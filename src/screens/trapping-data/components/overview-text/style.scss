@@ -12,12 +12,6 @@
     justify-content: center;
     flex-direction: column;
     margin-bottom: 50px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 255, 0.8) 100%);
-    border-radius: 16px;
-    padding: 40px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 #title {
@@ -137,9 +131,7 @@
     }
 
     #overview-explanation {
-        padding: 24px;
         margin: 0 16px 40px 16px;
-        border-radius: 12px;
     }
 
     #title {
@@ -176,7 +168,6 @@
 
 @media (max-width: 480px) {
     #overview-explanation {
-        padding: 20px;
         margin: 0 8px 30px 8px;
     }
 

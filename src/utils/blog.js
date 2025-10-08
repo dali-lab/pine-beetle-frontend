@@ -1,10 +1,16 @@
 // Sort posts from the newest to the oldest
-const sortBlogPosts = (blogPosts) => blogPosts.sort((a, b) => {
-  const dateA = new Date(a.date_created);
-  const dateB = new Date(b.date_created);
+const sortBlogPosts = (blogPosts) => {
+  if (!blogPosts || !Array.isArray(blogPosts)) {
+    return [];
+  }
 
-  return dateB - dateA;
-});
+  return [...blogPosts].sort((a, b) => {
+    const dateA = new Date(a.date_created);
+    const dateB = new Date(b.date_created);
+
+    return dateB - dateA;
+  });
+};
 
 // Get the latest blog post
 const getLatestBlogPost = (blogPosts) => {
@@ -55,5 +61,9 @@ const truncateText = (text, maxLength) => {
 };
 
 export {
-  sortBlogPosts, getDateToDisplay, getLatestBlogPost, formatPostDates, truncateText,
+  formatPostDates,
+  getDateToDisplay,
+  getLatestBlogPost,
+  sortBlogPosts,
+  truncateText,
 };

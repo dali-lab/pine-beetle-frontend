@@ -1,19 +1,103 @@
 .blog-page-container {
     max-width: 1400px;
-    margin: 140px auto 0 auto;
-    padding: 0 32px;
+    margin: 0 auto;
+    padding: 0;
+    background: $backgroundColor;
+}
+
+.blog-hero-section {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center;
+    margin-top: 190px; // Account for fixed header (70px) + navigation bar (70px) + spacing (50px)
+    margin-bottom: 50px;
 
     @media (max-width: 768px) {
+        margin-top: 150px;
+        margin-bottom: 40px;
+    }
+}
+
+.blog-hero-title {
+    font-family: 'Inter';
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    color: $headingColor;
+    margin: 0;
+
+    @media (max-width: 768px) {
+        font-size: 36px;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 28px;
+    }
+}
+
+.blog-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+
+    @media (max-width: 1024px) {
+        max-width: 900px;
+        padding: 0 32px;
+    }
+
+    @media (max-width: 768px) {
+        padding: 0 24px;
+    }
+
+    @media (max-width: 480px) {
         padding: 0 16px;
     }
 }
 
+.blog-header {
+    margin-bottom: 60px;
+    border-bottom: 1px solid $greyBlue200;
+    padding-bottom: 20px;
+
+    @media (max-width: 768px) {
+        margin-bottom: 40px;
+    }
+}
+
+.blog-section-title {
+    font-family: 'Inter';
+    font-size: 32px;
+    font-weight: 600;
+    color: $headingColor;
+    margin: 0;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+        font-size: 24px;
+    }
+}
+
+.blog-posts-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 60px 40px;
+    width: 100%;
+
+    @media (max-width: 1024px) {
+        gap: 50px 30px;
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+}
+
 .blog-page-no-posts {
-    font-size: 26px;
+    font-size: 24px;
     width: 100%;
     text-align: center;
     color: $greyBlue700;
+    grid-column: 1 / -1;
+    font-style: italic;
+    margin: 60px 0;
 }
