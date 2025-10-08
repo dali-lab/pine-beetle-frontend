@@ -17,12 +17,6 @@ const Blog = (props) => {
 
   const sortedBlogPosts = sortBlogPosts(blogPosts);
 
-  // Debug logging
-  console.log('Blog component - blogPosts:', blogPosts);
-  console.log('Blog component - sortedBlogPosts:', sortedBlogPosts);
-  console.log('Blog component - blogPosts length:', blogPosts?.length);
-  console.log('Blog component - sortedBlogPosts length:', sortedBlogPosts?.length);
-
   return (
     <div className="blog-page-container">
       {/* Hero Section */}
@@ -36,10 +30,7 @@ const Blog = (props) => {
         </div>
         <div className="blog-posts-list">
           {sortedBlogPosts.length > 0
-            ? sortedBlogPosts.map((post, index) => {
-              console.log(`Rendering post ${index}:`, post);
-              return <BlogPost key={post._id} post={post} />;
-            })
+            ? sortedBlogPosts.map((post) => <BlogPost key={post._id} post={post} />)
             : <div className="blog-page-no-posts">There are no blog posts yet</div>}
         </div>
       </div>
