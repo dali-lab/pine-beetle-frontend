@@ -34,11 +34,12 @@
     }
 
     .download-data-content {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 2rem;
-      margin-bottom: 2rem;
+      // Remove background card styling
+      background: transparent;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0;
+      margin-bottom: 0;
 
       // Override the download button styling for the page context
       #download-button-container {
@@ -47,7 +48,7 @@
         margin-bottom: 2rem;
 
         #download-button {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          background: #02394A;
           border: none;
           border-radius: 8px;
           padding: 1rem 2rem;
@@ -59,11 +60,12 @@
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+          box-shadow: 0 4px 15px rgba(2, 57, 74, 0.3);
 
           &:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            background: #034a5f;
+            box-shadow: 0 6px 20px rgba(2, 57, 74, 0.4);
           }
 
           &:active {

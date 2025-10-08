@@ -14,7 +14,7 @@
     padding-left: 12px;
     padding-top: 5px;
     border-radius: 6px;
-    background-color: $green500;
+    background-color: #02394A;
     display: flex;
 }
 
@@ -367,10 +367,10 @@
 
   .download-selection-section,
   .download-options-section {
-    background: white;
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
   }
 
   .section-title {
@@ -414,9 +414,9 @@
     }
 
     .selected-option {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #02394A;
       color: white;
-      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 2px 8px rgba(2, 57, 74, 0.3);
 
       .selected-option-text {
         color: white;
@@ -433,14 +433,14 @@
       }
 
       &:hover {
-        border-color: #667eea;
+        border-color: #02394A;
         background: #f0f2ff;
       }
     }
   }
 
   .clear-selections-button {
-    background: #6c757d;
+    background: #02394A;
     color: white;
     border: none;
     border-radius: 8px;
@@ -452,7 +452,7 @@
     margin-top: 1rem;
 
     &:hover {
-      background: #5a6268;
+      background: #034a5f;
       transform: translateY(-1px);
     }
   }
@@ -475,7 +475,7 @@
           margin-top: 0.2rem;
           width: 18px;
           height: 18px;
-          accent-color: #667eea;
+          accent-color: #02394A;
         }
 
         .checkbox-text {
@@ -522,7 +522,7 @@
     }
 
     .download-button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #02394A;
       border: none;
       border-radius: 12px;
       padding: 1rem 2rem;
@@ -534,11 +534,12 @@
       display: inline-flex;
       align-items: center;
       gap: 0.75rem;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 4px 15px rgba(2, 57, 74, 0.3);
 
       &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        background: #034a5f;
+        box-shadow: 0 6px 20px rgba(2, 57, 74, 0.4);
       }
 
       &:active {
