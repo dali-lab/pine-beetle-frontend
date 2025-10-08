@@ -71,7 +71,11 @@ const HowItWorks = ({ howItWorksRef }) => {
         </div>
 
         <div className="how-it-works-footer">
-          <button type="button" className="learn-more-button">
+          <button
+            type="button"
+            className="learn-more-button"
+            onClick={() => { window.location.href = '/methodology'; }}
+          >
             Learn more about our methodology
           </button>
         </div>

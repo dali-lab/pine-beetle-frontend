@@ -248,7 +248,6 @@
 // Navigation Bar Styles
 .navigation-bar {
     background: $white;
-    border-bottom: 1px solid #e5e7eb;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     position: sticky;
     top: 70px;
@@ -302,7 +301,7 @@
         text-decoration: none;
         background: none;
         border: none;
-        border-bottom: 3px solid transparent;
+        border-bottom: 2px solid transparent;
         cursor: pointer;
         transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
         white-space: nowrap;
@@ -316,7 +315,7 @@
         &.active {
             color: #111827;
             background-color: #f3f4f6;
-            border-bottom: 3px solid #2C3E50;
+            border-bottom-color: #02394A;
         }
 
         &.dropdown-trigger {
@@ -334,7 +333,7 @@
             &.active {
                 color: #111827;
                 background-color: #f3f4f6;
-                border-bottom: 3px solid #2C3E50;
+                border-bottom-color: #02394A;
             }
         }
     }

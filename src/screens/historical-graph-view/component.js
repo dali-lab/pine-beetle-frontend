@@ -27,7 +27,7 @@ const HistoricalGraphView = (props) => {
     <div>
       <Loading visible={isLoading} />
       {errorText.length > 0 && errorText.map((t) => <p>{t}</p>)}
-      <OverviewText />
+      <OverviewText title="Historical Graph View" />
       <div className="container">
         <FilterBar useHistoricalData title="Filter Historical Data" />
       </div>

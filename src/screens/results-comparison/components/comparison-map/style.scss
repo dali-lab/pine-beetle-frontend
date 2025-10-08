@@ -4,6 +4,21 @@
     }
 }
 
+#map-container {
+    position: relative;
+    margin-bottom: 100px;
+    margin-top: 0px;
+    width: 72vw;
+    margin-left: auto;
+    margin-right: auto;
+    flex: 1.1 !important;
+    border-radius: 20px;
+    box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+    background-color: $white;
+    padding: 0;
+    overflow: hidden; // Ensure legend overlay stays within container bounds
+}
+
 .results-comparison-message {
     position: absolute;
     top: 0;
@@ -23,6 +38,6 @@
         padding: 30px;
         border-radius: 20px;
         background-color: $white;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 }

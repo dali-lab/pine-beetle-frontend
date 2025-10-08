@@ -39,11 +39,16 @@
     }
 
     #dashboard-container {
-        padding: 37px;
+        max-width: 1400px;
+        margin: 15px auto 100px auto;
+        padding: 37px 32px;
         border-radius: 26px;
         box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
         background-color: $white;
-        margin: 15px unquote("max(100px, 17%)") 100px;
+
+        @media (max-width: 768px) {
+            padding: 37px 16px;
+        }
 
         #dashboard {
             display: flex;

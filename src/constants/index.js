@@ -77,6 +77,8 @@ const ROUTES = {
   HOME: '/',
   HISTORICAL_GRAPH_VIEW: '/historical-graph-view',
   HISTORICAL_MAP_VIEW: '/historical-map-view',
+  HISTORICAL_VIEW: '/historical-view',
+  METHODOLOGY: '/methodology',
   RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predict-outbreak',

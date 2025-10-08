@@ -14,7 +14,9 @@ import {
   DownloadData,
   HistoricalGraphView,
   HistoricalMapView,
+  HistoricalView,
   Home,
+  Methodology,
   Resources,
   ResultsComparison,
   SingleBlogPost,
@@ -139,6 +141,8 @@ const App = (props) => {
           <Route path={ROUTES.DOWNLOAD_DATA} component={DownloadData} />
           <Route path={ROUTES.HISTORICAL_GRAPH_VIEW} component={HistoricalGraphView} />
           <Route path={ROUTES.HISTORICAL_MAP_VIEW} component={HistoricalMapView} />
+          <Route path={ROUTES.HISTORICAL_VIEW} component={HistoricalView} />
+          <Route path={ROUTES.METHODOLOGY} component={Methodology} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
           <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
           {/* Redirect old prediction route to home page (new prediction page) */}

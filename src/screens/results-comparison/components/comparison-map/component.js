@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
+import React, { useEffect, useState } from 'react';
 import Map from '../../../../components/map';
+import TogglesOverlay from '../../../../components/map/components';
 import {
   DATA_MODES, MAP_SOURCE_NAME, MAP_TITLES, SOURCE_LAYERS, STATE_VECTOR_LAYER, VECTOR_LAYER,
 } from '../../../../constants';
+import { api } from '../../../../services';
 import {
   createHoverCallback,
   createMapClickCallback,
@@ -13,12 +15,10 @@ import {
   mapboxHoverStyle,
   zoomToSelectedState,
 } from '../../../../utils';
-import { api } from '../../../../services';
-import TogglesOverlay from '../../../../components/map/components';
 import { colors, thresholds } from './constants';
 
-import './style.scss';
 import { isInvalidNumber } from '../../../../utils/map';
+import './style.scss';
 
 const getFillColor = (fillProb, sumSpots) => {
   if (fillProb >= 0.2 && sumSpots > 50) {
@@ -69,10 +69,10 @@ const ComparisonMap = (props) => {
   const createMapHoverCallback = (resultsData, rangerDistricts, mode, state, availStates) => {
     const callback = (hoverState, location, x, y) => {
       const pred = resultsData.find((p) => {
-      // either ranger district mode or have a matching state
+        // either ranger district mode or have a matching state
         return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState)))
-              // and sublocation matches
-              && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState) || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
+            // and sublocation matches
+            && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState) || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
       });
 
       if (pred && x && y) {
@@ -98,7 +98,7 @@ const ComparisonMap = (props) => {
   };
 
   const colorResults = (comparisonData) => {
-    // keep trying until map styles are loaded
+  // keep trying until map styles are loaded
     if (!map.isStyleLoaded()) {
       setTimeout(() => {
         colorResults(comparisonData);
@@ -129,7 +129,7 @@ const ComparisonMap = (props) => {
 
       const locationName = dataMode === DATA_MODES.COUNTY
         ? countyFormatName
-        // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
+      // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
         : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD'), rangerDistrictFormatName.replace(' RD', '')]
           .filter((str) => !!str);
 
@@ -211,7 +211,7 @@ const ComparisonMap = (props) => {
     }
 
     if (map && data) {
-      // remove current callback
+    // remove current callback
       if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
 
       // generate new callback
@@ -224,7 +224,7 @@ const ComparisonMap = (props) => {
   // update the click callback handler when all RD or all states changes
   useEffect(() => {
     if (map && availableStates && availableSublocations) {
-      // remove current callback
+    // remove current callback
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
       // generate new callback
@@ -246,7 +246,7 @@ const ComparisonMap = (props) => {
 
   useEffect(() => {
     if (map) {
-      // remove current callback
+    // remove current callback
       if (mapStateClickCallback) map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
 
       // generate new callback
@@ -266,7 +266,7 @@ const ComparisonMap = (props) => {
 
   useEffect(() => {
     if (map) {
-      // remove current callback
+    // remove current callback
       if (mapLayerMouseLeaveCallback) map.off('click', VECTOR_LAYER, mapLayerMouseLeaveCallback);
 
       // generate new callback
@@ -286,14 +286,14 @@ const ComparisonMap = (props) => {
   return (
     <>
       <TogglesOverlay />
-      <div className="container results-comparison-map" id="map-container">
+      <div className="container flex-item-left results-comparison-map" id="map-container">
         <Map
           legend={(
             <>
               <div className="legend-key-title">Results comparison</div>
               {legendTags}
             </>
-            )}
+          )}
           hover={resultsHover}
           isDownloadingMap={isDownloadingMap}
           downloadCallback={() => downloadMap(

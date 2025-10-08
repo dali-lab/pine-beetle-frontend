@@ -3,15 +3,19 @@
     margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
 
     .about-content-container {
-        margin-left: unquote("max(100px, 13%)");
-        margin-right: unquote("max(100px, 13%)");
+        max-width: 1400px;
+        margin: 25px auto 0 auto;
+        padding: 0 32px;
         width: auto;
         height: auto;
-        margin-top: 25px;
         background-color: $backgroundColor;
         background-clip: border-box;
         border-radius: 0px;
         text-align: left;
+
+        @media (max-width: 768px) {
+            padding: 0 16px;
+        }
 
         h2 {
             margin-bottom: 15px;

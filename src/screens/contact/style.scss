@@ -6,12 +6,12 @@
   padding: 120px 0 60px;
 
   .contact-container {
-    max-width: 800px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 32px;
 
-    @media (min-width: 768px) {
-      padding: 0 32px;
+    @media (max-width: 768px) {
+      padding: 0 16px;
     }
   }
 

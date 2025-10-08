@@ -230,12 +230,12 @@
 
 // Filter Tag Styling
 .filter-tag {
-  // Matches inline-flex items-center gap-1 px-3 py-1 bg-[#2C3E50] text-white text-sm rounded-full
+  // Matches inline-flex items-center gap-1 px-3 py-1 bg-[#02394A] text-white text-sm rounded-full
   display: inline-flex;
   align-items: center;
   gap: 4px; // Adjusted from 1 to 4 to give slight space before button
   padding: 4px 12px;
-  background-color: #2C3E50;
+  background-color: #02394A;
   color: $white;
   font-size: 14px;
   font-weight: 400;

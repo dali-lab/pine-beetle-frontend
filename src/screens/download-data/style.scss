@@ -5,9 +5,13 @@
   margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
 
   .download-data-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 32px;
+
+    @media (max-width: 768px) {
+      padding: 0 16px;
+    }
 
     .page-header {
       text-align: center;
