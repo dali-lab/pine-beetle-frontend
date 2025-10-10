@@ -242,8 +242,15 @@
 }
 
 .filter-bar-wrapper {
-    max-width: 1400px;
-    margin: 0 auto;
+    position: fixed;
+    top: 140px; // Below header (70px) + navigation bar (70px)
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: $white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: none;
+    margin: 0;
     padding: 0 32px;
 
     @media (max-width: 768px) {
@@ -251,40 +258,82 @@
     }
 }
 
-.full-width-map {
-    max-width: 1400px;
-    margin: 20px auto 40px auto;
-    padding: 0 32px;
+// Home page wrapper to ensure footer appears at bottom
+.home-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     position: relative;
-    min-height: 1000px;
+}
 
-    @media (max-width: 768px) {
-        padding: 0 16px;
-        margin: 20px auto;
-    }
+.fullscreen-map {
+    position: absolute;
+    top: 200px; // Below header + navigation bar + filter bar
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: calc(100vh - 200px); // Full height minus header area
+    margin: 0;
+    padding: 0;
+    z-index: 1;
 
-    // Override the prediction map container styles
+    // Override the prediction map container styles more aggressively
     #map-container {
-        width: 100% !important;
+        width: 100vw !important;
+        height: 100% !important;
+        margin: 0 !important;
         margin-left: 0 !important;
         margin-right: 0 !important;
-        border-radius: 8px !important;
-        box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.1) !important;
-        max-width: none !important;
+        margin-top: 0 !important;
         margin-bottom: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        max-width: none !important;
+        min-width: none !important;
         overflow: hidden;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        padding: 0 !important;
+        background-color: transparent !important;
     }
 
-    // Make the map with rounded corners and proper height
+    // Make the map fullscreen
     #map {
-        width: 100% !important;
-        border-radius: 8px !important;
-        border: 2px solid #e9eaef;
-        height: 650px;
+        width: 100vw !important;
+        height: 100% !important;
+        border-radius: 0 !important;
+        border: none !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
 
-        @media (max-width: 768px) {
-            height: 500px;
-        }
+    // Override any container styles
+    .container {
+        width: 100vw !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+    }
+
+    // Override flex-item-left styles
+    .flex-item-left {
+        width: 100vw !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        flex: none !important;
     }
 }
 
