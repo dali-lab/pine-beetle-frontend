@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
-import { CHART_MODES, ROUTES, VIDEO_URL } from '../../constants';
+import { CHART_MODES, ROUTES } from '../../constants';
 import { setChartMode as setChartModeAction } from '../../state/actions';
 
 import './style.scss';
@@ -12,14 +12,11 @@ const Header = ({ setChartMode }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [historicalDataOpen, setHistoricalDataOpen] = useState(false);
-  const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const navRef = useRef(null);
   const aboutButtonRef = useRef(null);
   const historicalDataButtonRef = useRef(null);
-  const howItWorksButtonRef = useRef(null);
   const [aboutDropdownPosition, setAboutDropdownPosition] = useState({ top: 0, left: 0 });
   const [historicalDataDropdownPosition, setHistoricalDataDropdownPosition] = useState({ top: 0, left: 0 });
-  const [howItWorksDropdownPosition, setHowItWorksDropdownPosition] = useState({ top: 0, left: 0 });
 
   const location = useLocation();
 
@@ -29,7 +26,6 @@ const Header = ({ setChartMode }) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
         setAboutOpen(false);
         setHistoricalDataOpen(false);
-        setHowItWorksOpen(false);
       }
     };
 
@@ -54,54 +50,20 @@ const Header = ({ setChartMode }) => {
           </Link>
 
           <div className="header-title">
-            <h1>Southern Pine Beetle Predictions</h1>
+            <h1>Southern Pine Beetle</h1>
+            <h2>Outbreak Predictions</h2>
           </div>
 
-          <div className="desktop-nav" />
-
-          <button
-            type="button"
-            className="mobile-menu-button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <svg className="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </nav>
-      </div>
-
-      {/* Mobile Navigation Menu */}
-      {mobileMenuOpen && (
-      <div className="mobile-nav" />
-      )}
-
-      {/* Navigation Bar */}
-      <nav className="navigation-bar" ref={navRef}>
-        <div className="nav-container">
-          <div className="nav-items">
+          <div className="desktop-nav">
             <Link
               to={ROUTES.HOME}
               className={`nav-item ${location.pathname === ROUTES.HOME ? 'active' : ''}`}
               onMouseEnter={() => {
                 setAboutOpen(false);
                 setHistoricalDataOpen(false);
-                setHowItWorksOpen(false);
               }}
             >
-              Prediction Outbreak
-            </Link>
-
-            <Link
-              to={ROUTES.RESULTS_COMPARISON}
-              className={`nav-item ${location.pathname === ROUTES.RESULTS_COMPARISON ? 'active' : ''}`}
-              onMouseEnter={() => {
-                setAboutOpen(false);
-                setHistoricalDataOpen(false);
-                setHowItWorksOpen(false);
-              }}
-            >
-              Result Comparison
+              Prediction Map
             </Link>
 
             {/* Historical Data Dropdown */}
@@ -117,7 +79,6 @@ const Header = ({ setChartMode }) => {
                   });
                 }
                 setAboutOpen(false);
-                setHowItWorksOpen(false);
                 setHistoricalDataOpen(true);
               }}
             >
@@ -161,61 +122,27 @@ const Header = ({ setChartMode }) => {
               </div>
             </div>
 
-            {/* How does it work Dropdown */}
-            <div
-              className="nav-dropdown"
-              ref={howItWorksButtonRef}
+            <Link
+              to={ROUTES.RESULTS_COMPARISON}
+              className={`nav-item ${location.pathname === ROUTES.RESULTS_COMPARISON ? 'active' : ''}`}
               onMouseEnter={() => {
-                if (howItWorksButtonRef.current) {
-                  const rect = howItWorksButtonRef.current.getBoundingClientRect();
-                  setHowItWorksDropdownPosition({
-                    top: rect.bottom,
-                    left: rect.left,
-                  });
-                }
                 setAboutOpen(false);
                 setHistoricalDataOpen(false);
-                setHowItWorksOpen(true);
               }}
             >
-              <button
-                type="button"
-                className={`nav-item dropdown-trigger ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
-              >
-                How does it work
-                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
+              Comparison
+            </Link>
 
-              <div
-                className="dropdown-menu-how-it-works"
-                onMouseEnter={() => setHowItWorksOpen(true)}
-                onMouseLeave={() => setHowItWorksOpen(false)}
-                style={{
-                  display: howItWorksOpen ? 'block' : 'none',
-                  top: `${howItWorksDropdownPosition.top}px`,
-                  left: `${howItWorksDropdownPosition.left}px`,
-                }}
-              >
-                <Link
-                  to={ROUTES.METHODOLOGY}
-                  className="dropdown-item"
-                  onClick={() => setHowItWorksOpen(false)}
-                >
-                  Methodology
-                </Link>
-                <a
-                  href={VIDEO_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="dropdown-item"
-                  onClick={() => setHowItWorksOpen(false)}
-                >
-                  Learn more from the video
-                </a>
-              </div>
-            </div>
+            <Link
+              to={ROUTES.METHODOLOGY}
+              className={`nav-item ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
+              onMouseEnter={() => {
+                setAboutOpen(false);
+                setHistoricalDataOpen(false);
+              }}
+            >
+              Methodology
+            </Link>
 
             {/* About Menu */}
             <div
@@ -230,7 +157,6 @@ const Header = ({ setChartMode }) => {
                   });
                 }
                 setHistoricalDataOpen(false);
-                setHowItWorksOpen(false);
                 setAboutOpen(true);
               }}
             >
@@ -292,8 +218,24 @@ const Header = ({ setChartMode }) => {
               </div>
             </div>
           </div>
-        </div>
-      </nav>
+
+          <button
+            type="button"
+            className="mobile-menu-button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <svg className="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </nav>
+      </div>
+
+      {/* Mobile Navigation Menu */}
+      {mobileMenuOpen && (
+      <div className="mobile-nav" />
+      )}
+
     </header>
   );
 };

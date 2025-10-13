@@ -1,0 +1,255 @@
+@import '../../styles/colors.scss';
+
+.filter-overlay {
+  position: absolute;
+  top: 20px; // Match the button position
+  left: 20px; // Match the button position
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.2);
+  border: 1px solid $greyBlue200;
+  padding: 20px;
+  max-width: 280px;
+  min-width: 240px;
+  max-height: 60vh;
+  overflow-y: auto;
+  overflow-x: visible; // Allow dropdowns to extend beyond the overlay
+  overflow: visible; // Ensure no clipping of child elements
+}
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.filter-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: $greyBlue800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.filter-close-button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: $greyBlue600;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: $greyBlue100;
+    color: $greyBlue800;
+  }
+}
+
+.filter-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: $greyBlue700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-input {
+  // Input components will handle their own styling
+}
+
+.filter-clear-section {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid $greyBlue200;
+}
+
+.action-button {
+  background: #0B3D15;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &:hover:not(:disabled) {
+    background: #0F4A1A;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: $greyBlue300;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.clear-button {
+  width: 100%;
+}
+
+.filter-toggle-button {
+  position: absolute;
+  top: 20px; // Move closer to top of map
+  left: 20px; // Move closer to left edge of map
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid $greyBlue200;
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: $greyBlue800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 30px -5px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  min-height: 48px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 12px 40px -5px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+}
+
+.filter-icon {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.active-indicator {
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+// Responsive adjustments
+@media (max-height: 800px) {
+  .filter-overlay {
+    top: 20px; // Keep consistent positioning
+    max-height: 50vh;
+  }
+
+  .filter-toggle-button {
+    top: 20px; // Keep consistent positioning
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-overlay {
+    left: 16px;
+    right: 16px;
+    max-width: none;
+    min-width: auto;
+  }
+
+  .filter-toggle-button {
+    left: 16px;
+  }
+}
+
+// Override dropdown positioning for filter overlay
+.filter-overlay {
+  // Choice input dropdowns open to the right
+  .choice-input-dropdown {
+    position: fixed !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    width: 200px;
+    max-height: 300px;
+    z-index: 9999 !important;
+    transform: translateX(100%);
+  }
+
+  // Multi-select dropdowns open to the right
+  .location-list {
+    position: fixed !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    width: 200px;
+    max-height: 300px;
+    z-index: 9999 !important;
+    transform: translateX(100%);
+  }
+
+  // Ensure input containers can handle right-positioned dropdowns
+  .choice-input-wrapper,
+  .multi-select-container {
+    position: relative;
+    overflow: visible;
+  }
+
+  // Position dropdowns relative to their input fields
+  .choice-input-wrapper {
+    .choice-input-dropdown {
+      position: absolute !important;
+      top: 0 !important;
+      left: calc(100% + 8px) !important;
+      transform: none !important;
+    }
+  }
+
+  .multi-select-container {
+    .location-list {
+      position: absolute !important;
+      top: 0 !important;
+      left: calc(100% + 8px) !important;
+      transform: none !important;
+    }
+  }
+
+  // Change arrows to point right/left instead of up/down
+  .choice-input-arrow {
+    transform: rotate(90deg) !important; // Rotate 90 degrees to point right
+
+    &.open {
+      transform: rotate(-90deg) !important; // Rotate -90 degrees to point left when open
+    }
+  }
+
+  .location-header-arrow {
+    transform: rotate(90deg) !important; // Rotate 90 degrees to point right
+
+    &.open {
+      transform: rotate(-90deg) !important; // Rotate -90 degrees to point left when open
+    }
+  }
+}
