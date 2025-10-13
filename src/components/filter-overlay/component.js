@@ -53,15 +53,6 @@ const FilterOverlay = (props) => {
 
   return (
     <div className={`filter-overlay ${className}`}>
-      <div className="filter-header">
-        <button
-          type="button"
-          onClick={() => setShowFilters(false)}
-          className="filter-close-button"
-        >
-          ×
-        </button>
-      </div>
       <div className="filter-content">
         {/* Year Selection */}
         <div className="filter-section">
@@ -95,12 +86,12 @@ const FilterOverlay = (props) => {
         {/* Clear Button */}
         <div className="filter-section filter-clear-section">
           <button
-            className="action-button clear-button"
+            className="action-button"
             onClick={clearAllSelections}
             type="button"
             disabled={!hasActiveFilters}
           >
-            Clear All
+            Clear all
           </button>
         </div>
       </div>

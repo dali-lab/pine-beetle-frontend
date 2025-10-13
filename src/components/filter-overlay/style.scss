@@ -16,7 +16,29 @@
   max-height: 60vh;
   overflow-y: auto;
   overflow-x: visible; // Allow dropdowns to extend beyond the overlay
-  overflow: visible; // Ensure no clipping of child elements
+
+  /* Custom scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $greyBlue400;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: $greyBlue500;
+  }
+
+  // Ensure dropdowns can extend outside the overlay
+  .filter-content {
+    overflow: visible;
+  }
 }
 
 .filter-header {
@@ -61,6 +83,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  overflow: visible; // Ensure dropdowns can extend outside
 }
 
 .filter-section {
@@ -77,10 +100,6 @@
   letter-spacing: 0.5px;
 }
 
-.filter-input {
-  // Input components will handle their own styling
-}
-
 .filter-clear-section {
   margin-top: 8px;
   padding-top: 16px;
@@ -88,7 +107,7 @@
 }
 
 .action-button {
-  background: #0B3D15;
+  background: $headerColor;
   color: white;
   border: none;
   border-radius: 6px;
@@ -101,7 +120,7 @@
   letter-spacing: 0.5px;
 
   &:hover:not(:disabled) {
-    background: #0F4A1A;
+    background: #1e3f41;
     transform: translateY(-1px);
   }
 
@@ -182,74 +201,60 @@
 
 // Override dropdown positioning for filter overlay
 .filter-overlay {
-  // Choice input dropdowns open to the right
-  .choice-input-dropdown {
-    position: fixed !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    margin-top: 0 !important;
-    margin-left: 0 !important;
-    width: 200px;
-    max-height: 300px;
-    z-index: 9999 !important;
-    transform: translateX(100%);
-  }
-
-  // Multi-select dropdowns open to the right
-  .location-list {
-    position: fixed !important;
-    top: auto !important;
-    left: auto !important;
-    right: auto !important;
-    margin-top: 0 !important;
-    margin-left: 0 !important;
-    width: 200px;
-    max-height: 300px;
-    z-index: 9999 !important;
-    transform: translateX(100%);
-  }
-
-  // Ensure input containers can handle right-positioned dropdowns
+  // Ensure input containers can handle dropdowns that extend outside
   .choice-input-wrapper,
   .multi-select-container {
     position: relative;
     overflow: visible;
   }
 
-  // Position dropdowns relative to their input fields
+  // Position dropdowns to open to the right of the filter overlay with more spacing
   .choice-input-wrapper {
     .choice-input-dropdown {
-      position: absolute !important;
-      top: 0 !important;
-      left: calc(100% + 8px) !important;
-      transform: none !important;
+      position: absolute;
+      top: 0;
+      left: calc(100% + 24px);
+      right: auto;
+      width: 200px;
+      max-height: 300px;
+      z-index: 9999;
+      transform: none;
+      margin-top: 0;
+      margin-left: 0;
+      border-radius: 0 8px 8px 8px; // Remove top-left corner rounding
     }
   }
 
   .multi-select-container {
     .location-list {
-      position: absolute !important;
-      top: 0 !important;
-      left: calc(100% + 8px) !important;
-      transform: none !important;
+      position: absolute;
+      top: 0;
+      left: calc(100% + 24px);
+      right: auto;
+      width: 280px;
+      max-height: 300px;
+      z-index: 9999;
+      transform: none;
+      margin-top: 0;
+      margin-left: 0;
+      border-radius: 0 8px 8px 8px; // Remove top-left corner rounding
     }
   }
 
-  // Change arrows to point right/left instead of up/down
+  // Keep arrows always pointing left
   .choice-input-arrow {
-    transform: rotate(90deg) !important; // Rotate 90 degrees to point right
+    transform: rotate(-90deg); // Always point left
 
     &.open {
-      transform: rotate(-90deg) !important; // Rotate -90 degrees to point left when open
+      transform: rotate(-90deg); // Keep pointing left when open
     }
   }
 
   .location-header-arrow {
-    transform: rotate(90deg) !important; // Rotate 90 degrees to point right
+    transform: rotate(-90deg);
 
     &.open {
-      transform: rotate(-90deg) !important; // Rotate -90 degrees to point left when open
+      transform: rotate(-90deg);
     }
   }
 }

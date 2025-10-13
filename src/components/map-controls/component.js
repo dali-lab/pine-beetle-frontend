@@ -64,11 +64,13 @@ const MapControls = (props) => {
           <div className="control-section">
             <button
               type="button"
-              className="section-header"
+              className={`section-header ${openSections.filters ? 'active' : ''}`}
               onClick={() => toggleSection('filters')}
             >
               <span className="section-title">Filters</span>
-              <span className="section-toggle">{openSections.filters ? '−' : '+'}</span>
+              <span className="section-toggle">
+                {openSections.filters ? '−' : '+'}
+              </span>
             </button>
             {openSections.filters && (
               <FilterOverlay
@@ -95,37 +97,23 @@ const MapControls = (props) => {
             <button
               type="button"
               className="section-header"
-              onClick={() => toggleSection('download')}
+              onClick={() => handleDownloadClick()}
             >
-              <span className="section-title">Download</span>
-              <span className="section-toggle">{openSections.download ? '−' : '+'}</span>
+              <span className="section-title">{isDownloadingMap ? 'Downloading...' : 'Download map'}</span>
             </button>
-            {openSections.download && (
-              <div className="download-control">
-                <button
-                  type="button"
-                  className="download-button"
-                  onClick={handleDownloadClick}
-                  disabled={isDownloadingMap}
-                >
-                  {isDownloadingMap ? 'Downloading...' : 'Download Map'}
-                </button>
-                <p className="download-help">
-                  Please use Chrome, Firefox, or Edge to download map.
-                </p>
-              </div>
-            )}
           </div>
 
           {/* Legend Section */}
           <div className="control-section">
             <button
               type="button"
-              className="section-header"
+              className={`section-header ${openSections.legend ? 'active' : ''}`}
               onClick={() => toggleSection('legend')}
             >
               <span className="section-title">Legend</span>
-              <span className="section-toggle">{openSections.legend ? '−' : '+'}</span>
+              <span className="section-toggle">
+                {openSections.legend ? '−' : '+'}
+              </span>
             </button>
             {openSections.legend && (
               <LegendOverlay

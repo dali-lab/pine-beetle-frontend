@@ -49,8 +49,8 @@
     // Selected/checked state
     option:checked,
     option:active {
-        background: linear-gradient(0deg, #3b82f6 0%, #3b82f6 100%) !important;
-        background-color: #3b82f6 !important;
+        background: linear-gradient(0deg, $headerColor 0%, $headerColor 100%) !important;
+        background-color: $headerColor !important;
         color: #ffffff !important;
         font-weight: 500;
     }
@@ -121,9 +121,10 @@
             pointer-events: none;
             margin-left: 8px;
             transition: transform 0.2s ease;
+            transform: rotate(-90deg); // Always point left
 
             &.open {
-                transform: rotate(180deg);
+                transform: rotate(-90deg); // Keep pointing left when open
             }
         }
     }
@@ -136,6 +137,7 @@
         margin-top: 4px;
         max-height: 240px;
         overflow-y: auto;
+        overflow-x: hidden;
         border-radius: 8px;
         background-color: $white;
         border: 1px solid $greyBlue300;
@@ -180,13 +182,13 @@
             width: calc(100% - 8px);
 
             &:hover {
-                background-color: $greyBlue100;
+                background-color: $headerColor;
+                color: white;
             }
 
             &.selected {
-                background-color: $greyBlue100;
-                color: $greyBlue900;
-                font-weight: 500;
+                color: $headerColor;
+                font-weight: 700;
             }
 
             &.reset-option {
@@ -206,6 +208,10 @@
             .check-icon {
                 flex-shrink: 0;
                 margin-left: 8px;
+            }
+
+            &.selected .check-icon {
+                display: none; // Hide arrow for selected option
             }
         }
     }

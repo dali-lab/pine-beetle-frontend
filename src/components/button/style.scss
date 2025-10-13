@@ -7,22 +7,22 @@
 
     &-primary {
         color: $white;
-        background-color: #0B3D15;
+        background-color: $headerColor;
         transition: all 0.2s ease;
 
         &:hover {
-            background-color: #0F4A1A;
+            background-color: #1e3f41;
         }
     }
 
     &-secondary {
         background-color: white;
-        border: 1px solid #0B3D15 !important;
-        color: #0B3D15;
+        border: 1px solid $headerColor !important;
+        color: $headerColor;
         transition: all 0.2s ease;
 
         &:hover {
-            background-color: #0B3D15;
+            background-color: $headerColor;
             color: $white;
         }
     }

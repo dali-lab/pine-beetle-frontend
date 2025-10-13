@@ -48,12 +48,13 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
+  overflow: visible; // Allow dropdowns to extend outside the panel
   z-index: 1001;
 }
 
 .control-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: visible; // Allow dropdowns to extend outside sections
 
   &:last-child {
     border-bottom: none;
@@ -69,10 +70,43 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.02);
+    background: #2D5A5C;
+
+    .section-title {
+      color: white;
+    }
+
+    .section-toggle {
+      color: white;
+    }
+  }
+
+  &:active {
+    background: #2D5A5C;
+
+    .section-title {
+      color: white;
+    }
+
+    .section-toggle {
+      color: white;
+    }
+  }
+
+  // Active/open section styling
+  &.active {
+    background: #2D5A5C;
+
+    .section-title {
+      color: white;
+    }
+
+    .section-toggle {
+      color: white;
+    }
   }
 }
 
@@ -106,6 +140,7 @@
   max-width: none;
   min-width: none;
   width: 100%;
+  overflow: visible; // Allow dropdowns to extend outside
 
   // Make filter inputs use full width with proper spacing
   .choice-input-wrapper,
@@ -113,6 +148,7 @@
   .selection-container {
     width: 100%;
     max-width: none;
+    overflow: visible; // Ensure dropdowns can extend outside
   }
 
   .choice-input-button,
@@ -121,14 +157,20 @@
     max-width: none;
   }
 
-  // Style clear button to match download button
+  // Unified action button styling for both clear and download buttons
   .action-button,
-  .clear-button {
-    background: #2D5A5C;
-    color: white;
-    border: none;
+  .embedded-control .action-button,
+  .map-controls-panel .action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #2D5A5C !important;
+    color: white !important;
+    border: 1px solid #2D5A5C !important;
     border-radius: 6px;
     padding: 12px 24px;
+    font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -137,12 +179,14 @@
     margin-bottom: 12px;
 
     &:hover:not(:disabled) {
-      background: #1e3f41;
+      background: #1e3f41 !important;
+      border-color: #1e3f41 !important;
       transform: translateY(-1px);
     }
 
     &:disabled {
-      background: #6b7280;
+      background: #6b7280 !important;
+      border-color: #6b7280 !important;
       cursor: not-allowed;
       transform: none;
     }
@@ -169,6 +213,7 @@
     padding: 0;
     margin: 0;
     max-width: calc(320px - 32px); // Match the panel width minus padding
+    overflow: visible; // Allow dropdowns to extend outside
   }
 
   .filter-header,
@@ -195,35 +240,6 @@
   padding: 0 16px 16px 16px;
   text-align: center;
 
-  .download-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 24px;
-    background: #2D5A5C;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    width: 100%;
-    margin-bottom: 12px;
-
-    &:hover:not(:disabled) {
-      background: #1e3f41;
-      transform: translateY(-1px);
-    }
-
-    &:disabled {
-      background: #6b7280;
-      cursor: not-allowed;
-      transform: none;
-    }
-  }
 
   .download-help {
     font-size: 12px;

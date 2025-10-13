@@ -82,6 +82,7 @@
   gap: 8px; // Matches space-y-2
   flex: 1;
   min-width: 0; // Allows flex items to shrink below their content size
+  padding-top: 16px;
 }
 
 .filter-clear-section {
@@ -181,28 +182,8 @@
   min-width: 120px; // Make button even longer
 
   &.clear-button {
-    // Matches navbar color #0B3D15
-    background-color: #0B3D15;
-    color: $white;
-    border: 1px solid #0B3D15;
-
-    &:hover:not(:disabled) {
-      background-color: #0F4A1A;
-      border-color: #0F4A1A;
-    }
-
-    &:active:not(:disabled) {
-      background-color: #0A3312;
-      border-color: #0A3312;
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background-color: $greyBlue300;
-      color: $greyBlue500;
-      border-color: $greyBlue300;
-    }
+    // This styling is now handled by the unified .action-button class in map-controls
+    // Keeping this empty to avoid conflicts
   }
 }
 
