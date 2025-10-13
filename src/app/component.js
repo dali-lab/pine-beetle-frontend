@@ -12,6 +12,8 @@ import {
   Admin,
   Blog,
   Contact,
+  Data,
+  DataTable,
   DownloadData,
   HistoricalGraphView,
   HistoricalMapView,
@@ -150,6 +152,8 @@ const App = (props) => {
           <Route path={`${ROUTES.BLOG}/:id`} component={SingleBlogPost} />
           <Route path={ROUTES.BLOG} component={Blog} />
           <Route path={ROUTES.CONTACT} component={Contact} />
+          <Route path={ROUTES.DATA} component={Data} />
+          <Route path={ROUTES.DATA_TABLE} component={DataTable} />
           <Route path={ROUTES.DOWNLOAD_DATA} component={DownloadData} />
           <Route path={ROUTES.HISTORICAL_GRAPH_VIEW} component={HistoricalGraphView} />
           <Route path={ROUTES.HISTORICAL_MAP_VIEW} component={HistoricalMapView} />

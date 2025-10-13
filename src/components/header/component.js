@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
-import { CHART_MODES, ROUTES } from '../../constants';
+import { ROUTES } from '../../constants';
 import { setChartMode as setChartModeAction } from '../../state/actions';
 
 import './style.scss';
@@ -11,11 +11,17 @@ import './style.scss';
 const Header = ({ setChartMode }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [historicalDataOpen, setHistoricalDataOpen] = useState(false);
   const navRef = useRef(null);
   const aboutButtonRef = useRef(null);
+  const howItWorksButtonRef = useRef(null);
   const historicalDataButtonRef = useRef(null);
+  const historicalDataTimeoutRef = useRef(null);
+  const howItWorksTimeoutRef = useRef(null);
+  const aboutTimeoutRef = useRef(null);
   const [aboutDropdownPosition, setAboutDropdownPosition] = useState({ top: 0, left: 0 });
+  const [howItWorksDropdownPosition, setHowItWorksDropdownPosition] = useState({ top: 0, left: 0 });
   const [historicalDataDropdownPosition, setHistoricalDataDropdownPosition] = useState({ top: 0, left: 0 });
 
   const location = useLocation();
@@ -25,6 +31,7 @@ const Header = ({ setChartMode }) => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
         setAboutOpen(false);
+        setHowItWorksOpen(false);
         setHistoricalDataOpen(false);
       }
     };
@@ -59,59 +66,86 @@ const Header = ({ setChartMode }) => {
             <Link
               to={ROUTES.HOME}
               className={`nav-item ${location.pathname === ROUTES.HOME ? 'active' : ''}`}
-              onMouseEnter={() => {
-                setAboutOpen(false);
-                setHistoricalDataOpen(false);
-              }}
             >
               Prediction Map
             </Link>
 
-            {/* 2. Data Dropdown */}
+            {/* 2. Historical Data Dropdown */}
             <div
               className="nav-dropdown"
               ref={historicalDataButtonRef}
+              onMouseLeave={() => {
+                historicalDataTimeoutRef.current = setTimeout(() => {
+                  setHistoricalDataOpen(false);
+                }, 150);
+              }}
               onMouseEnter={() => {
+                if (historicalDataTimeoutRef.current) {
+                  clearTimeout(historicalDataTimeoutRef.current);
+                }
                 if (historicalDataButtonRef.current) {
                   const rect = historicalDataButtonRef.current.getBoundingClientRect();
+                  const dropdownWidth = 192; // min-width from CSS
+                  const rightEdge = rect.left + dropdownWidth;
+                  const viewportWidth = window.innerWidth;
+
+                  // If dropdown would overflow, position it to the left
+                  const leftPosition = rightEdge > viewportWidth
+                    ? rect.right - dropdownWidth
+                    : rect.left;
+
                   setHistoricalDataDropdownPosition({
                     top: rect.bottom,
-                    left: rect.left,
+                    left: leftPosition,
                   });
                 }
                 setAboutOpen(false);
+                setHowItWorksOpen(false);
                 setHistoricalDataOpen(true);
               }}
             >
-              <button
-                type="button"
-                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.HISTORICAL_GRAPH_VIEW || location.pathname === ROUTES.HISTORICAL_MAP_VIEW || location.pathname === ROUTES.DOWNLOAD_DATA) ? 'active' : ''}`}
+              <Link
+                to={ROUTES.DATA}
+                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.DATA || location.pathname === ROUTES.DATA_TABLE || location.pathname === ROUTES.HISTORICAL_GRAPH_VIEW || location.pathname === ROUTES.HISTORICAL_MAP_VIEW || location.pathname === ROUTES.DOWNLOAD_DATA) ? 'active' : ''}`}
+                onClick={() => setHistoricalDataOpen(false)}
               >
-                Data
+                Historical Data
                 <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
-              </button>
+              </Link>
 
               <div
-                className="dropdown-menu-historical-data"
-                onMouseEnter={() => setHistoricalDataOpen(true)}
-                onMouseLeave={() => setHistoricalDataOpen(false)}
+                className={`dropdown-menu-historical-data ${historicalDataOpen ? 'show' : ''}`}
+                onMouseEnter={() => {
+                  if (historicalDataTimeoutRef.current) {
+                    clearTimeout(historicalDataTimeoutRef.current);
+                  }
+                  setHistoricalDataOpen(true);
+                }}
+                onMouseLeave={() => {
+                  historicalDataTimeoutRef.current = setTimeout(() => {
+                    setHistoricalDataOpen(false);
+                  }, 150);
+                }}
                 style={{
-                  display: historicalDataOpen ? 'block' : 'none',
                   top: `${historicalDataDropdownPosition.top}px`,
                   left: `${historicalDataDropdownPosition.left}px`,
                 }}
               >
                 <Link
-                  to={ROUTES.HISTORICAL_VIEW}
+                  to={ROUTES.DATA}
                   className="dropdown-item"
-                  onClick={() => {
-                    setChartMode(CHART_MODES.GRAPH);
-                    setHistoricalDataOpen(false);
-                  }}
+                  onClick={() => setHistoricalDataOpen(false)}
                 >
-                  Graph View
+                  Time Series
+                </Link>
+                <Link
+                  to={ROUTES.DATA_TABLE}
+                  className="dropdown-item"
+                  onClick={() => setHistoricalDataOpen(false)}
+                >
+                  Data Table
                 </Link>
                 <Link
                   to={ROUTES.DOWNLOAD_DATA}
@@ -127,39 +161,120 @@ const Header = ({ setChartMode }) => {
             <Link
               to={ROUTES.RESULTS_COMPARISON}
               className={`nav-item ${location.pathname === ROUTES.RESULTS_COMPARISON ? 'active' : ''}`}
-              onMouseEnter={() => {
-                setAboutOpen(false);
-                setHistoricalDataOpen(false);
-              }}
             >
               Comparison
             </Link>
 
-            {/* 4. Model */}
-            <Link
-              to={ROUTES.METHODOLOGY}
-              className={`nav-item ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
+            {/* 4. How does it work Dropdown */}
+            <div
+              className="nav-dropdown"
+              ref={howItWorksButtonRef}
+              onMouseLeave={() => {
+                howItWorksTimeoutRef.current = setTimeout(() => {
+                  setHowItWorksOpen(false);
+                }, 150);
+              }}
               onMouseEnter={() => {
+                if (howItWorksTimeoutRef.current) {
+                  clearTimeout(howItWorksTimeoutRef.current);
+                }
+                if (howItWorksButtonRef.current) {
+                  const rect = howItWorksButtonRef.current.getBoundingClientRect();
+                  const dropdownWidth = 192; // min-width from CSS
+                  const rightEdge = rect.left + dropdownWidth;
+                  const viewportWidth = window.innerWidth;
+
+                  // If dropdown would overflow, position it to the left
+                  const leftPosition = rightEdge > viewportWidth
+                    ? rect.right - dropdownWidth
+                    : rect.left;
+
+                  setHowItWorksDropdownPosition({
+                    top: rect.bottom,
+                    left: leftPosition,
+                  });
+                }
                 setAboutOpen(false);
-                setHistoricalDataOpen(false);
+                setHowItWorksOpen(true);
               }}
             >
-              Model
-            </Link>
+              <button
+                type="button"
+                className={`nav-item dropdown-trigger ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
+              >
+                How does it work
+                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              <div
+                className={`dropdown-menu-how-it-works ${howItWorksOpen ? 'show' : ''}`}
+                onMouseEnter={() => {
+                  if (howItWorksTimeoutRef.current) {
+                    clearTimeout(howItWorksTimeoutRef.current);
+                  }
+                  setHowItWorksOpen(true);
+                }}
+                onMouseLeave={() => {
+                  howItWorksTimeoutRef.current = setTimeout(() => {
+                    setHowItWorksOpen(false);
+                  }, 150);
+                }}
+                style={{
+                  top: `${howItWorksDropdownPosition.top}px`,
+                  left: `${howItWorksDropdownPosition.left}px`,
+                }}
+              >
+                <Link
+                  to={ROUTES.METHODOLOGY}
+                  className="dropdown-item"
+                  onClick={() => setHowItWorksOpen(false)}
+                >
+                  Methodology
+                </Link>
+                <a
+                  href="https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/view"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="dropdown-item"
+                  onClick={() => setHowItWorksOpen(false)}
+                >
+                  Learn more from the video
+                </a>
+              </div>
+            </div>
 
             {/* 5. About Menu */}
             <div
               className="nav-dropdown"
               ref={aboutButtonRef}
+              onMouseLeave={() => {
+                aboutTimeoutRef.current = setTimeout(() => {
+                  setAboutOpen(false);
+                }, 150);
+              }}
               onMouseEnter={() => {
+                if (aboutTimeoutRef.current) {
+                  clearTimeout(aboutTimeoutRef.current);
+                }
                 if (aboutButtonRef.current) {
                   const rect = aboutButtonRef.current.getBoundingClientRect();
+                  const dropdownWidth = 192; // min-width from CSS
+                  const rightEdge = rect.left + dropdownWidth;
+                  const viewportWidth = window.innerWidth;
+
+                  // If dropdown would overflow, position it to the left
+                  const leftPosition = rightEdge > viewportWidth
+                    ? rect.right - dropdownWidth
+                    : rect.left;
+
                   setAboutDropdownPosition({
                     top: rect.bottom,
-                    left: rect.left,
+                    left: leftPosition,
                   });
                 }
-                setHistoricalDataOpen(false);
+                setHowItWorksOpen(false);
                 setAboutOpen(true);
               }}
             >
@@ -174,11 +289,19 @@ const Header = ({ setChartMode }) => {
               </button>
 
               <div
-                className="dropdown-menu-about"
-                onMouseEnter={() => setAboutOpen(true)}
-                onMouseLeave={() => setAboutOpen(false)}
+                className={`dropdown-menu-about ${aboutOpen ? 'show' : ''}`}
+                onMouseEnter={() => {
+                  if (aboutTimeoutRef.current) {
+                    clearTimeout(aboutTimeoutRef.current);
+                  }
+                  setAboutOpen(true);
+                }}
+                onMouseLeave={() => {
+                  aboutTimeoutRef.current = setTimeout(() => {
+                    setAboutOpen(false);
+                  }, 150);
+                }}
                 style={{
-                  display: aboutOpen ? 'block' : 'none',
                   top: `${aboutDropdownPosition.top}px`,
                   left: `${aboutDropdownPosition.left}px`,
                 }}
@@ -236,7 +359,107 @@ const Header = ({ setChartMode }) => {
 
       {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
-      <div className="mobile-nav" />
+        <div className="mobile-nav">
+          <Link
+            to={ROUTES.HOME}
+            className="mobile-nav-link"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Prediction Map
+          </Link>
+
+          <div className="mobile-nav-section">
+            <div className="mobile-nav-label">Historical Data</div>
+            <Link
+              to={ROUTES.DATA}
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Time Series
+            </Link>
+            <Link
+              to={ROUTES.DATA_TABLE}
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Data Table
+            </Link>
+            <Link
+              to={ROUTES.DOWNLOAD_DATA}
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Download Data
+            </Link>
+          </div>
+
+          <Link
+            to={ROUTES.RESULTS_COMPARISON}
+            className="mobile-nav-link"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Comparison
+          </Link>
+
+          <div className="mobile-nav-section">
+            <div className="mobile-nav-label">How does it work</div>
+            <Link
+              to={ROUTES.METHODOLOGY}
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Methodology
+            </Link>
+            <a
+              href="https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/view"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Learn more from the video
+            </a>
+          </div>
+
+          <div className="mobile-nav-section">
+            <div className="mobile-nav-label">About</div>
+            <Link
+              to={ROUTES.BLOG}
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Blog
+            </Link>
+            <a
+              href="https://www.spbpredict.com/resources"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Resources
+            </a>
+            <a
+              href="https://www.spbpredict.com/about"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              About The Project
+            </a>
+            <button
+              type="button"
+              className="mobile-nav-sublink"
+              onClick={() => {
+                handleContactClick();
+                setMobileMenuOpen(false);
+              }}
+            >
+              Contact
+            </button>
+          </div>
+        </div>
       )}
 
     </header>

@@ -73,6 +73,8 @@ const ROUTES = {
   ADMIN: '/admin',
   BLOG: '/blog',
   CONTACT: '/contact',
+  DATA: '/data',
+  DATA_TABLE: '/data-table',
   DOWNLOAD_DATA: '/download-data',
   HOME: '/',
   HISTORICAL_GRAPH_VIEW: '/historical-graph-view',
