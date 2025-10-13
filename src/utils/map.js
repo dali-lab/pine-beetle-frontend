@@ -84,12 +84,16 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     style: 'mapbox://styles/pine-beetle-prediction/ckgrzijos0q5119paazko291z',
     center: [-84.3880, 33.7490], // starting position
     zoom: 4.8, // starting zoom
+    bearing: 0, // Lock map to north orientation
     options: {
       trackResize: true,
     },
   });
 
-  createdMap.addControl(new mapboxgl.NavigationControl());
+  createdMap.addControl(new mapboxgl.NavigationControl({
+    showCompass: false, // Hide compass/rotation controls
+    showZoom: true, // Keep zoom controls
+  }));
 
   const legendTagsToSet = thresholds.map((threshold, index) => {
     const color = colors[index];

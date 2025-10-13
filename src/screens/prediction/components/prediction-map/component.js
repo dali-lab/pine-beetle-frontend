@@ -41,20 +41,25 @@ import {
 
 import './style.scss';
 
-import { LegendOverlay, Map } from '../../../../components';
+import { FilterOverlay, LegendOverlay, Map } from '../../../../components';
 import { isInvalidNumber } from '../../../../utils/map';
 
 const PredictionMap = (props) => {
   const {
     availableStates,
     availableSublocations,
+    availableYears,
+    county,
     data,
     dataMode,
+    rangerDistrict,
     selectedState,
     setCounty,
+    setPredictionYear,
     setRangerDistrict,
     setState,
     setPredictionModal,
+    clearAllSelections,
     year,
   } = props;
 
@@ -126,15 +131,15 @@ const PredictionMap = (props) => {
     const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
 
     predictions.forEach(({
-      county,
+      county: countyName,
       probSpotsGT50: fillProb,
-      rangerDistrict,
+      rangerDistrict: rangerDistrictName,
       state,
     }) => {
       const color = getFillColor(fillProb).color;
 
-      const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
-      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict).toUpperCase() : '';
+      const countyFormatName = countyName && state ? `${countyName.toUpperCase()} ${state}` : '';
+      const rangerDistrictFormatName = rangerDistrictName ? getMapboxRDNameFormat(rangerDistrictName).toUpperCase() : '';
 
       const locationName = dataMode === DATA_MODES.COUNTY
         ? countyFormatName
@@ -326,6 +331,22 @@ const PredictionMap = (props) => {
           { titleDetails: { selectedState, period: year }, thresholds, colors },
         )}
         isDownloadingMap={isDownloadingMap}
+      />
+      <FilterOverlay
+        availableStates={availableStates}
+        availableYears={availableYears || []}
+        availableSublocations={availableSublocations}
+        county={county}
+        dataMode={dataMode}
+        predictionYear={year}
+        rangerDistrict={rangerDistrict}
+        selectedState={selectedState}
+        setCounty={setCounty}
+        setPredictionYear={setPredictionYear}
+        setRangerDistrict={setRangerDistrict}
+        setState={setState}
+        clearAllSelections={clearAllSelections}
+        title="Filter Predictions"
       />
       <LegendOverlay
         legendItems={legendItems}

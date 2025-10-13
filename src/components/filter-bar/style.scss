@@ -181,19 +181,19 @@
   min-width: 120px; // Make button even longer
 
   &.clear-button {
-    // Matches header color #02394A
-    background-color: #02394A;
+    // Matches navbar color #0B3D15
+    background-color: #0B3D15;
     color: $white;
-    border: 1px solid #02394A;
+    border: 1px solid #0B3D15;
 
     &:hover:not(:disabled) {
-      background-color: #00472f;
-      border-color: #00472f;
+      background-color: #0F4A1A;
+      border-color: #0F4A1A;
     }
 
     &:active:not(:disabled) {
-      background-color: #003d26;
-      border-color: #003d26;
+      background-color: #0A3312;
+      border-color: #0A3312;
     }
 
     &:disabled {

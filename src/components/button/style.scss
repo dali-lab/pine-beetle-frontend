@@ -7,12 +7,23 @@
 
     &-primary {
         color: $white;
-        background-color: $greyBlue800;
+        background-color: #0B3D15;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: #0F4A1A;
+        }
     }
 
     &-secondary {
         background-color: white;
-        border: 1px solid $greyBlue800 !important;
-        color: $greyBlue800;
+        border: 1px solid #0B3D15 !important;
+        color: #0B3D15;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background-color: #0B3D15;
+            color: $white;
+        }
     }
 }

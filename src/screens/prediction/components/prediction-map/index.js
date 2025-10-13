@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import StateMap from './component';
 
 import {
+  clearSelections,
   setCounty,
+  setPredictionModal,
+  setPredictionYear,
   setRangerDistrict,
   setState,
-  setPredictionModal,
 } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
@@ -19,6 +21,7 @@ const mapStateToProps = (state) => {
       predictionYear: year,
       availablePredictionStates,
       availablePredictionSublocations,
+      availablePredictionYears,
     },
     data: {
       predictions,
@@ -28,6 +31,7 @@ const mapStateToProps = (state) => {
   return {
     availableStates: availablePredictionStates,
     availableSublocations: availablePredictionSublocations,
+    availableYears: availablePredictionYears,
     county,
     dataMode,
     data: predictions,
@@ -50,6 +54,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     setPredictionModal: (show) => {
       dispatch(setPredictionModal(show));
+    },
+    setPredictionYear: (year) => {
+      dispatch(setPredictionYear(year));
+    },
+    clearAllSelections: () => {
+      dispatch(clearSelections());
     },
   };
 };

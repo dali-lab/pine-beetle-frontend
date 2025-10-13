@@ -51,8 +51,11 @@ const Header = ({ setChartMode }) => {
             <div className="logo-image">
               <img src={pineBeetleImage} alt="SPB Logo" />
             </div>
-            <span className="logo-text">SPB Predict</span>
           </Link>
+
+          <div className="header-title">
+            <h1>Southern Pine Beetle Predictions</h1>
+          </div>
 
           <div className="desktop-nav" />
 

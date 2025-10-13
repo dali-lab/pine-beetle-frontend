@@ -268,11 +268,11 @@
 
 .fullscreen-map {
     position: absolute;
-    top: 200px; // Below header + navigation bar + filter bar
+    top: 135px;
     left: 0;
     right: 0;
     width: 100vw;
-    height: calc(100vh - 200px); // Full height minus header area
+    height: calc(100vh - 135px);
     margin: 0;
     padding: 0;
     z-index: 1;

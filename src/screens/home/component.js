@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FilterBar, Footer, Loading } from '../../components';
+import { Footer, Loading } from '../../components';
 import {
   MapWithControls,
 } from './components';
@@ -14,9 +14,6 @@ const Home = (props) => {
     <div className="home-page-wrapper">
       <div className="container">
         <Loading visible={isLoading} />
-      </div>
-      <div className="filter-bar-wrapper">
-        <FilterBar />
       </div>
       <div className="fullscreen-map">
         <MapWithControls />

@@ -184,4 +184,29 @@ textarea {
         box-shadow: 0 6px 20px -2px rgba($red900, 0.55);
         color: $white;
     }
+
+    &.green {
+        background-color: #0B3D15;
+        box-shadow: 0 6px 20px -2px rgba(11, 61, 21, 0.55);
+        color: $white;
+    }
+}
+
+// Global button styles to match navbar green
+.action-button, .primary-button {
+    background-color: #0B3D15 !important;
+    color: $white !important;
+    border: 1px solid #0B3D15 !important;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+        background-color: #0F4A1A !important;
+        border-color: #0F4A1A !important;
+    }
+
+    &:disabled {
+        background-color: $greyBlue300 !important;
+        border-color: $greyBlue300 !important;
+        cursor: not-allowed;
+    }
 }

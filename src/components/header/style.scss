@@ -29,6 +29,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 12px 0;
+            position: relative;
 
             .header-logo {
                 display: flex;
@@ -36,6 +37,7 @@
                 gap: 12px;
                 text-decoration: none;
                 transition: transform 0.2s ease;
+                flex-shrink: 0;
 
                 &:hover {
                     transform: scale(1.05);
@@ -60,6 +62,34 @@
                     font-weight: bold;
                     font-size: 18px;
                     font-family: "Inter", sans-serif;
+                }
+            }
+
+            .header-title {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                text-align: center;
+
+                h1 {
+                    color: $white;
+                    font-size: 22px;
+                    font-weight: 500;
+                    font-family: "Inter", sans-serif;
+                    margin: 0;
+                    white-space: nowrap;
+                    letter-spacing: 0.5px;
+                    text-transform: capitalize;
+
+                    @media (max-width: 768px) {
+                        font-size: 18px;
+                        font-weight: 500;
+                    }
+
+                    @media (max-width: 480px) {
+                        font-size: 16px;
+                        font-weight: 600;
+                    }
                 }
             }
 
@@ -88,6 +118,7 @@
                 padding: 8px;
                 border-radius: 4px;
                 transition: background-color 0.2s ease;
+                flex-shrink: 0;
 
                 @media (min-width: 768px) {
                     display: none;
