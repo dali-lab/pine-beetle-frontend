@@ -4,6 +4,7 @@ import {
   Route,
   BrowserRouter as Router,
   Switch,
+  useLocation,
 } from 'react-router-dom';
 
 import {
@@ -47,6 +48,17 @@ import {
 
 const FallBack = () => {
   return <div>URL not found</div>;
+};
+
+const ConditionalFooter = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === ROUTES.HOME;
+
+  if (isHomePage) {
+    return null;
+  }
+
+  return <Footer />;
 };
 
 global.API_URL = getServerUrl();
@@ -163,7 +175,7 @@ const App = (props) => {
           <Route component={FallBack} />
         </Switch>
       </div>
-      <Footer />
+      <ConditionalFooter />
     </Router>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Footer, Loading } from '../../components';
+import { Loading } from '../../components';
 import {
   MapWithControls,
 } from './components';
@@ -18,7 +18,6 @@ const Home = (props) => {
       <div className="fullscreen-map">
         <MapWithControls />
       </div>
-      <Footer />
     </div>
   );
 };

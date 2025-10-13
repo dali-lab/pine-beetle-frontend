@@ -6,7 +6,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: $white;
+    background: #2D5A5C;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     overflow: visible;
@@ -52,7 +52,7 @@
                         width: 100%;
                         height: 100%;
                         object-fit: contain;
-                        filter: none;
+                        filter: brightness(0) invert(1);
                     }
                 }
 
@@ -69,7 +69,7 @@
                 text-align: left;
 
                 h1 {
-                    color: #374151;
+                    color: $white;
                     font-size: 22px;
                     font-weight: 600;
                     font-family: "Inter", sans-serif;
@@ -90,7 +90,7 @@
                 }
 
                 h2 {
-                    color: #6B7280;
+                    color: rgba(255, 255, 255, 0.8);
                     font-size: 16px;
                     font-weight: 400;
                     font-family: "Inter", sans-serif;
@@ -124,7 +124,7 @@
                     align-items: center;
                     gap: 4px;
                     padding: 12px 16px;
-                    color: #374151;
+                    color: $white;
                     font-size: 16px;
                     font-weight: 500;
                     font-family: "Inter", sans-serif;
@@ -139,13 +139,13 @@
                     border-radius: 6px;
 
                     &:hover {
-                        color: #1F2937;
-                        background-color: rgba(0, 0, 0, 0.05);
+                        color: $white;
+                        background-color: rgba(255, 255, 255, 0.1);
                     }
 
                     &.active {
-                        color: #1F2937;
-                        background-color: rgba(0, 0, 0, 0.1);
+                        color: $white;
+                        background-color: rgba(255, 255, 255, 0.2);
                     }
 
                     &.dropdown-trigger {
@@ -156,13 +156,13 @@
                         }
 
                         &:hover {
-                            color: #1F2937;
-                            background-color: rgba(0, 0, 0, 0.05);
+                            color: $white;
+                            background-color: rgba(255, 255, 255, 0.1);
                         }
 
                         &.active {
-                            color: #1F2937;
-                            background-color: rgba(0, 0, 0, 0.1);
+                            color: $white;
+                            background-color: rgba(255, 255, 255, 0.2);
                         }
                     }
                 }
@@ -181,10 +181,10 @@
                         top: 100%;
                         left: 0;
                         min-width: 192px;
-                        background-color: $white;
+                        background-color: #2D5A5C;
                         border-radius: 8px;
                         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-                        border: 1px solid rgba(0, 0, 0, 0.1);
+                        border: 1px solid rgba(255, 255, 255, 0.2);
                         padding: 4px;
                         margin-top: 4px;
                         z-index: 99999;
@@ -200,7 +200,7 @@
                             font-size: 14px;
                             font-weight: 500;
                             font-family: "Inter", sans-serif;
-                            color: #374151;
+                            color: $white;
                             text-decoration: none;
                             background: none;
                             border: none;
@@ -211,7 +211,7 @@
                             text-align: left;
 
                             &:hover {
-                                background-color: rgba(0, 0, 0, 0.05);
+                                background-color: rgba(255, 255, 255, 0.1);
                             }
                         }
                     }
@@ -224,7 +224,7 @@
                 justify-content: center;
                 background: none;
                 border: none;
-                color: #374151;
+                color: $white;
                 cursor: pointer;
                 padding: 8px;
                 border-radius: 4px;
@@ -236,7 +236,7 @@
                 }
 
                 &:hover {
-                    background-color: rgba(0, 0, 0, 0.05);
+                    background-color: rgba(255, 255, 255, 0.1);
                 }
 
                 .hamburger-icon {
