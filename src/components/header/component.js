@@ -55,6 +55,7 @@ const Header = ({ setChartMode }) => {
           </div>
 
           <div className="desktop-nav">
+            {/* 1. Prediction Map */}
             <Link
               to={ROUTES.HOME}
               className={`nav-item ${location.pathname === ROUTES.HOME ? 'active' : ''}`}
@@ -66,7 +67,7 @@ const Header = ({ setChartMode }) => {
               Prediction Map
             </Link>
 
-            {/* Historical Data Dropdown */}
+            {/* 2. Data Dropdown */}
             <div
               className="nav-dropdown"
               ref={historicalDataButtonRef}
@@ -86,7 +87,7 @@ const Header = ({ setChartMode }) => {
                 type="button"
                 className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.HISTORICAL_GRAPH_VIEW || location.pathname === ROUTES.HISTORICAL_MAP_VIEW || location.pathname === ROUTES.DOWNLOAD_DATA) ? 'active' : ''}`}
               >
-                Historical Data
+                Data
                 <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
@@ -122,6 +123,7 @@ const Header = ({ setChartMode }) => {
               </div>
             </div>
 
+            {/* 3. Comparison */}
             <Link
               to={ROUTES.RESULTS_COMPARISON}
               className={`nav-item ${location.pathname === ROUTES.RESULTS_COMPARISON ? 'active' : ''}`}
@@ -133,6 +135,7 @@ const Header = ({ setChartMode }) => {
               Comparison
             </Link>
 
+            {/* 4. Model */}
             <Link
               to={ROUTES.METHODOLOGY}
               className={`nav-item ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
@@ -141,10 +144,10 @@ const Header = ({ setChartMode }) => {
                 setHistoricalDataOpen(false);
               }}
             >
-              Methodology
+              Model
             </Link>
 
-            {/* About Menu */}
+            {/* 5. About Menu */}
             <div
               className="nav-dropdown"
               ref={aboutButtonRef}
@@ -162,7 +165,7 @@ const Header = ({ setChartMode }) => {
             >
               <button
                 type="button"
-                className="nav-item dropdown-trigger"
+                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.BLOG) ? 'active' : ''}`}
               >
                 About
                 <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -23,12 +23,13 @@
             padding: 0 32px;
         }
 
-        .header-nav {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 12px 0;
-            position: relative;
+            .header-nav {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 8px 0;
+                position: relative;
+                min-height: 56px;
 
             .header-logo {
                 display: flex;
@@ -43,8 +44,8 @@
                 }
 
                 .logo-image {
-                    width: 40px;
-                    height: 40px;
+                    width: 32px;
+                    height: 32px;
                     position: relative;
                     transition: transform 0.2s ease;
 
@@ -112,7 +113,7 @@
             .desktop-nav {
                 display: none;
                 align-items: center;
-                gap: 8px;
+                gap: 0;
                 margin-left: auto;
 
                 @media (min-width: 1024px) {
@@ -123,7 +124,7 @@
                     display: flex;
                     align-items: center;
                     gap: 4px;
-                    padding: 12px 16px;
+                    padding: 8px 12px;
                     color: $white;
                     font-size: 16px;
                     font-weight: 500;
@@ -137,32 +138,78 @@
                     white-space: nowrap;
                     position: relative;
                     border-radius: 6px;
+                    outline: none;
 
                     &:hover {
                         color: $white;
-                        background-color: rgba(255, 255, 255, 0.1);
+                        background-color: transparent;
+
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            top: -8px;
+                            left: 0;
+                            right: 0;
+                            bottom: -8px;
+                            background-color: rgba(255, 255, 255, 0.2);
+                            border-radius: 0;
+                            z-index: -1;
+                        }
+                    }
+
+                    &:focus {
+                        outline: none;
+                        background-color: transparent;
+
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            top: -8px;
+                            left: 0;
+                            right: 0;
+                            bottom: -8px;
+                            background-color: rgba(255, 255, 255, 0.2);
+                            border-radius: 0;
+                            z-index: -1;
+                        }
                     }
 
                     &.active {
                         color: $white;
-                        background-color: rgba(255, 255, 255, 0.2);
+                        background-color: transparent;
+
+                        &::before {
+                            content: '';
+                            position: absolute;
+                            top: -8px;
+                            left: 0;
+                            right: 0;
+                            bottom: -8px;
+                            background-color: rgba(255, 255, 255, 0.2);
+                            border-radius: 0;
+                            z-index: -1;
+                        }
                     }
 
                     &.dropdown-trigger {
+                        // Ensure dropdown triggers have identical styling to regular nav items
+                        font-size: 16px;
+                        font-weight: 500;
+                        font-family: "Inter", sans-serif;
+                        color: $white;
+                        background: none;
+                        border: none;
+                        cursor: pointer;
+                        transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+                        white-space: nowrap;
+                        position: relative;
+                        border-radius: 6px;
+                        outline: none;
+
                         .dropdown-icon {
                             width: 16px;
                             height: 16px;
                             transition: transform 0.2s ease;
-                        }
-
-                        &:hover {
-                            color: $white;
-                            background-color: rgba(255, 255, 255, 0.1);
-                        }
-
-                        &.active {
-                            color: $white;
-                            background-color: rgba(255, 255, 255, 0.2);
                         }
                     }
                 }
