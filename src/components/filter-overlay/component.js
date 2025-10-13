@@ -22,11 +22,10 @@ const FilterOverlay = (props) => {
     setRangerDistrict,
     setState,
     clearAllSelections,
-    title = 'Filters',
     className = '',
   } = props;
 
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(props.className?.includes('embedded-control'));
 
   // Logic to map state abbreviations to full names
   const statesMappedToNames = availableStates.map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
@@ -55,7 +54,6 @@ const FilterOverlay = (props) => {
   return (
     <div className={`filter-overlay ${className}`}>
       <div className="filter-header">
-        <h3 className="filter-title">{title}</h3>
         <button
           type="button"
           onClick={() => setShowFilters(false)}

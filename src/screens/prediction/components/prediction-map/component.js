@@ -41,7 +41,8 @@ import {
 
 import './style.scss';
 
-import { FilterOverlay, LegendOverlay, Map } from '../../../../components';
+import { Map } from '../../../../components';
+import MapControls from '../../../../components/map-controls/component';
 import { isInvalidNumber } from '../../../../utils/map';
 
 const PredictionMap = (props) => {
@@ -332,7 +333,8 @@ const PredictionMap = (props) => {
         )}
         isDownloadingMap={isDownloadingMap}
       />
-      <FilterOverlay
+      <MapControls
+        // Filter props
         availableStates={availableStates}
         availableYears={availableYears || []}
         availableSublocations={availableSublocations}
@@ -346,11 +348,20 @@ const PredictionMap = (props) => {
         setRangerDistrict={setRangerDistrict}
         setState={setState}
         clearAllSelections={clearAllSelections}
-        title="Filter Predictions"
-      />
-      <LegendOverlay
+        // Legend props
         legendItems={legendItems}
-        title="Outbreak Probability (%)"
+        legendTitle="Outbreak Probability (%)"
+        // Download props
+        downloadCallback={() => downloadMap(
+          map,
+          year,
+          isDownloadingMap,
+          setIsDownloadingMap,
+          selectedState,
+          MAP_TITLES.PREDICTION,
+          { titleDetails: { selectedState, period: year }, thresholds, colors },
+        )}
+        isDownloadingMap={isDownloadingMap}
       />
     </div>
   );
