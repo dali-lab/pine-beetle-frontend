@@ -14,8 +14,11 @@ import './style.scss';
 const About = (_props) => {
   return (
     <div id="about-content">
-      <div className="container" id="overview-text">
-        <h1 id="title">Supporting Resources</h1>
+      <div className="page-header">
+        <h1>Supporting Resources</h1>
+        <p className="page-description">
+          Access research papers, datasets, code, and other resources related to the Southern Pine Beetle prediction system and forest management.
+        </p>
       </div>
       <div className="about-content-container">
         <h3>Reliability and utility of prediction system</h3>

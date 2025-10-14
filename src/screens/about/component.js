@@ -5,8 +5,11 @@ import './style.scss';
 const About = (_props) => {
   return (
     <div id="about-content">
-      <div className="container" id="overview-text">
-        <h1 id="title">About The Project</h1>
+      <div className="page-header">
+        <h1>About The Project</h1>
+        <p className="page-description">
+          Learn about the Southern Pine Beetle prediction system, its history, partners, and the collaborative effort behind this important forest management tool.
+        </p>
       </div>
       <div className="about-content-container">
         <h2>History</h2>

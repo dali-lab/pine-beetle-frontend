@@ -56,10 +56,10 @@ const Header = ({ setChartMode }) => {
             </div>
           </Link>
 
-          <div className="header-title">
+          <Link to={ROUTES.HOME} className="header-title">
             <h1>Southern Pine Beetle</h1>
             <h2>Outbreak Predictions</h2>
-          </div>
+          </Link>
 
           <div className="desktop-nav">
             {/* 1. Prediction Map */}

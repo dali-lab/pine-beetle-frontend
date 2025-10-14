@@ -1,38 +1,15 @@
 .blog-page-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0;
+    min-height: auto;
     background: $backgroundColor;
-}
-
-.blog-hero-section {
-    display: flex;
-    justify-content: center;
-    margin-top: 190px; // Account for fixed header (70px) + navigation bar (70px) + spacing (50px)
-    margin-bottom: 50px;
+    padding: 2rem 0;
+    margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
 
     @media (max-width: 768px) {
-        margin-top: 150px;
-        margin-bottom: 40px;
+        padding: 1rem 0;
     }
 }
 
-.blog-hero-title {
-    font-family: 'Inter';
-    font-size: 44px;
-    font-weight: 700;
-    letter-spacing: -1.5px;
-    color: $headingColor;
-    margin: 0;
-
-    @media (max-width: 768px) {
-        font-size: 36px;
-    }
-
-    @media (max-width: 480px) {
-        font-size: 28px;
-    }
-}
+// Blog hero section styles removed - now using global page-header styles
 
 .blog-content {
     max-width: 1200px;

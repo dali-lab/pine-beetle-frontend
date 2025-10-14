@@ -3,41 +3,15 @@
 .methodology-page {
   min-height: auto;
   background: $backgroundColor;
-  padding-top: 80px;
+  padding: 2rem 0;
+  margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
 
   @media (max-width: 768px) {
-    padding-top: 60px;
+    padding: 1rem 0;
   }
 }
 
-// Hero Section - same as results comparison
-#overview-text {
-  display: flex;
-  justify-content: center;
-  margin-top: 190px; // Account for fixed header (70px) + navigation bar (70px) + spacing (50px)
-  margin-bottom: 50px;
-}
-
-#overview-explanation {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  margin-bottom: 30px;
-}
-
-#title {
-  font-family: 'Inter';
-  font-size: 44px;
-  letter-spacing: 1;
-  margin-right: 21px;
-}
-
-.explanatory-text {
-  text-align: left;
-  font-family: 'Inter';
-  font-size: 15px;
-  margin-bottom: 15px;
-}
+// Old header styles removed - now using global page-header styles
 
 // How It Works Section
 .how-it-works-section {
@@ -67,30 +41,7 @@
   }
 }
 
-.how-it-works-header {
-  text-align: center;
-  margin-bottom: 64px;
-
-  @media (max-width: 768px) {
-    margin-bottom: 48px;
-  }
-}
-
-.how-it-works-title {
-  font-size: 48px;
-  font-weight: 700;
-  color: $headingColor;
-  margin-bottom: 24px;
-  line-height: 1.1;
-
-  @media (max-width: 1024px) {
-    font-size: 40px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 36px;
-  }
-}
+// Old how-it-works header styles removed - now using global page-header styles
 
 .how-it-works-subtitle {
   font-size: 20px;

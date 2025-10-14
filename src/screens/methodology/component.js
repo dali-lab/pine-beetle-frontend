@@ -41,16 +41,16 @@ const howItWorksContent = [
 const Methodology = () => {
   return (
     <div className="methodology-page">
+      <div className="page-header">
+        <h1>Methodology</h1>
+        <p className="page-description">
+          Our prediction model uses statistical analysis of historical outbreak data combined with current environmental conditions to provide accurate Southern Pine Beetle outbreak predictions.
+        </p>
+      </div>
+
       {/* How It Works Section */}
       <section className="how-it-works-section">
         <div className="how-it-works-container">
-          <div className="how-it-works-header">
-            <h2 className="how-it-works-title">How does it work?</h2>
-            <p className="how-it-works-subtitle">
-              Our prediction model uses statistical analysis of historical outbreak data combined with current
-              environmental conditions
-            </p>
-          </div>
 
           <div className="how-it-works-grid">
             {howItWorksContent.map((element, index) => (

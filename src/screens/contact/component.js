@@ -6,8 +6,11 @@ const Contact = () => {
   return (
     <div className="contact-page">
       <div className="contact-container">
-        <div className="contact-header">
+        <div className="page-header">
           <h1>Contact Information</h1>
+          <p className="page-description">
+            Get in touch with our team for questions about the Southern Pine Beetle prediction program, local forest management, or technical support.
+          </p>
         </div>
 
         <div className="contact-sections">

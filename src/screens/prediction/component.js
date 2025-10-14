@@ -86,27 +86,29 @@ const Prediction = (props) => {
   };
 
   return (
-    <div>
-      <Loading visible={isLoading} />
-      {fetchErrorText.length > 0 && fetchErrorText.map((t) => <p>{t}</p>)}
-      <OverviewText />
-      <div className="container">
-        <FilterBar />
-        <div style={{ marginTop: '20px', textAlign: 'right' }}>
-          <button
-            onClick={() => history.push(ROUTES.RESULTS_COMPARISON)}
-            type="button"
-            className="action-button primary-button"
-            data-tip="Map of predicted vs. observed outbreaks"
-          >
-            How did we do?
-          </button>
+    <div className="prediction-page">
+      <div className="prediction-container">
+        <Loading visible={isLoading} />
+        {fetchErrorText.length > 0 && fetchErrorText.map((t) => <p>{t}</p>)}
+        <OverviewText />
+        <div className="container">
+          <FilterBar />
+          <div style={{ marginTop: '20px', textAlign: 'right' }}>
+            <button
+              onClick={() => history.push(ROUTES.RESULTS_COMPARISON)}
+              type="button"
+              className="action-button primary-button"
+              data-tip="Map of predicted vs. observed outbreaks"
+            >
+              How did we do?
+            </button>
+          </div>
         </div>
+        <div className="container">
+          <PredictionMap />
+        </div>
+        {predModal()}
       </div>
-      <div className="container">
-        <PredictionMap />
-      </div>
-      {predModal()}
     </div>
   );
 };

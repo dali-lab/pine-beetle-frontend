@@ -82,14 +82,21 @@
 .filter-content {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   overflow: visible; // Ensure dropdowns can extend outside
 }
 
 .filter-section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  margin-bottom: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 4px;
+  }
 }
 
 .filter-label {
@@ -100,10 +107,15 @@
   letter-spacing: 0.5px;
 }
 
-.filter-clear-section {
-  margin-top: 8px;
-  padding-top: 16px;
+.filter-input {
+  margin-bottom: 0;
 }
+
+.filter-clear-section {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 
 .action-button {
   background: $headerColor;
@@ -127,6 +139,31 @@
     background: $greyBlue300;
     cursor: not-allowed;
     transform: none;
+  }
+}
+
+.text-button {
+  background: none;
+  color: $headerColor;
+  border: none;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+
+  &:hover:not(:disabled) {
+    color: $greyBlue800;
+    text-decoration-thickness: 2px;
+  }
+
+  &:disabled {
+    color: $greyBlue300;
+    cursor: not-allowed;
+    text-decoration: none;
   }
 }
 

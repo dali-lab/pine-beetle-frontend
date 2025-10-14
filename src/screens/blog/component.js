@@ -19,9 +19,11 @@ const Blog = (props) => {
 
   return (
     <div className="blog-page-container">
-      {/* Hero Section */}
-      <div className="blog-hero-section">
-        <h1 className="blog-hero-title">Blog</h1>
+      <div className="page-header">
+        <h1>Blog</h1>
+        <p className="page-description">
+          Stay updated with the latest news, research findings, and insights about Southern Pine Beetle prediction and forest management.
+        </p>
       </div>
 
       <div className="blog-content">

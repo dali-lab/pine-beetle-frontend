@@ -1,1 +1,23 @@
+@import '../../styles/colors.scss';
 @import '../trapping-data/style.scss';
+
+.historical-graph-view-page {
+  min-height: auto;
+  background-color: $backgroundColor;
+  padding: 2rem 0;
+  margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
+
+  @media (max-width: 768px) {
+    padding: 1rem 0;
+  }
+
+  .historical-graph-view-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+
+    @media (max-width: 768px) {
+      padding: 0 16px;
+    }
+  }
+}

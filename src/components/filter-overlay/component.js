@@ -86,7 +86,7 @@ const FilterOverlay = (props) => {
         {/* Clear Button */}
         <div className="filter-section filter-clear-section">
           <button
-            className="action-button"
+            className="text-button"
             onClick={clearAllSelections}
             type="button"
             disabled={!hasActiveFilters}

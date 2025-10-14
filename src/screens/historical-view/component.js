@@ -43,67 +43,69 @@ const HistoricalView = (props) => {
   };
 
   return (
-    <div>
-      <Loading visible={isLoading} />
-      {errorText.length > 0 && errorText.map((t) => <p>{t}</p>)}
-      <OverviewText title="Historical Data View" />
-      <div className="container">
-        <FilterBar useHistoricalData title="Filter Historical Data" />
-      </div>
-      <div id="view-selections" className="container">
-        <div id="toggles-overlay-h">
-          <div className="selection">
-            <div
-              className={dataMode === DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
-              onClick={() => setDataMode(DATA_MODES.COUNTY)}
-            >
-              <p className={dataMode === DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
-                Counties
-              </p>
+    <div className="historical-view-page">
+      <div className="historical-view-container">
+        <Loading visible={isLoading} />
+        {errorText.length > 0 && errorText.map((t) => <p>{t}</p>)}
+        <OverviewText title="Historical Data" />
+        <div className="container">
+          <FilterBar useHistoricalData title="Filter Historical Data" />
+        </div>
+        <div id="view-selections" className="container">
+          <div id="toggles-overlay-h">
+            <div className="selection">
+              <div
+                className={dataMode === DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
+                onClick={() => setDataMode(DATA_MODES.COUNTY)}
+              >
+                <p className={dataMode === DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
+                  Counties
+                </p>
+              </div>
+              <div
+                className={dataMode !== DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
+                onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
+              >
+                <p className={dataMode !== DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
+                  Federal Land
+                </p>
+              </div>
             </div>
-            <div
-              className={dataMode !== DATA_MODES.COUNTY ? 'selected-option' : 'unselected-option'}
-              onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
-            >
-              <p className={dataMode !== DATA_MODES.COUNTY ? 'selected-option-text' : 'unselected-option-text'}>
-                Federal Land
-              </p>
-            </div>
-          </div>
-          <div className="selection">
-            <div
-              className={isGraphView ? 'selected-option-2' : 'unselected-option'}
-              onClick={handleChangeToGraphView}
-            >
-              <img
-                src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
-                alt="Chart View"
-                className={isGraphView ? 'selected-view' : 'unselected-view'}
-              />
-              <p className={isGraphView ? 'selected-option-text' : 'unselected-option-text'}>
-                Graph View
-              </p>
-            </div>
-            <div
-              className={isGraphView ? 'unselected-option' : 'selected-option-2'}
-              onClick={setMapView}
-            >
-              <img
-                src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
-                alt="Map View"
-                className={isGraphView ? 'unselected-view' : 'selected-view'}
-              />
-              <p className={isGraphView ? 'unselected-option-text' : 'selected-option-text'}>
-                Map View
-              </p>
+            <div className="selection">
+              <div
+                className={isGraphView ? 'selected-option-2' : 'unselected-option'}
+                onClick={handleChangeToGraphView}
+              >
+                <img
+                  src={isGraphView ? graphSelectedIcon : graphUnselectedIcon}
+                  alt="Chart View"
+                  className={isGraphView ? 'selected-view' : 'unselected-view'}
+                />
+                <p className={isGraphView ? 'selected-option-text' : 'unselected-option-text'}>
+                  Graph View
+                </p>
+              </div>
+              <div
+                className={isGraphView ? 'unselected-option' : 'selected-option-2'}
+                onClick={setMapView}
+              >
+                <img
+                  src={isGraphView ? mapUnselectedIcon : mapSelectedIcon}
+                  alt="Map View"
+                  className={isGraphView ? 'unselected-view' : 'selected-view'}
+                />
+                <p className={isGraphView ? 'unselected-option-text' : 'selected-option-text'}>
+                  Map View
+                </p>
+              </div>
             </div>
           </div>
         </div>
+        <div className="container">
+          {isGraphView ? <LineChart /> : <TrappingDataMap />}
+        </div>
+        <ScrollHint />
       </div>
-      <div className="container">
-        {isGraphView ? <LineChart /> : <TrappingDataMap />}
-      </div>
-      <ScrollHint />
     </div>
   );
 };

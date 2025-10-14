@@ -1,3 +1,26 @@
+@import '../../styles/colors.scss';
+
+.prediction-page {
+  min-height: auto;
+  background-color: $backgroundColor;
+  padding: 2rem 0;
+  margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
+
+  @media (max-width: 768px) {
+    padding: 1rem 0;
+  }
+
+  .prediction-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+
+    @media (max-width: 768px) {
+      padding: 0 16px;
+    }
+  }
+}
+
 .about-predictions {
     margin-top: 20px;
     margin-left: 20px;
@@ -127,7 +150,7 @@
     border-radius: 20px;
     background-color: $backgroundColor;
     // TODO: replace box shadow with grayer background later
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     overflow-y: scroll;
 
     #close-icon {
