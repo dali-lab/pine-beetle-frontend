@@ -313,24 +313,20 @@ const Header = ({ setChartMode }) => {
                 >
                   Blog
                 </Link>
-                <a
-                  href="https://www.spbpredict.com/resources"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to={ROUTES.RESOURCES}
                   className="dropdown-item"
                   onClick={() => setAboutOpen(false)}
                 >
                   Resources
-                </a>
-                <a
-                  href="https://www.spbpredict.com/about"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                </Link>
+                <Link
+                  to={ROUTES.ABOUT}
                   className="dropdown-item"
                   onClick={() => setAboutOpen(false)}
                 >
                   About The Project
-                </a>
+                </Link>
                 <button
                   type="button"
                   className="dropdown-item"
@@ -430,24 +426,20 @@ const Header = ({ setChartMode }) => {
             >
               Blog
             </Link>
-            <a
-              href="https://www.spbpredict.com/resources"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to={ROUTES.RESOURCES}
               className="mobile-nav-sublink"
               onClick={() => setMobileMenuOpen(false)}
             >
               Resources
-            </a>
-            <a
-              href="https://www.spbpredict.com/about"
-              target="_blank"
-              rel="noopener noreferrer"
+            </Link>
+            <Link
+              to={ROUTES.ABOUT}
               className="mobile-nav-sublink"
               onClick={() => setMobileMenuOpen(false)}
             >
               About The Project
-            </a>
+            </Link>
             <button
               type="button"
               className="mobile-nav-sublink"
