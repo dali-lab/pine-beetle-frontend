@@ -2,8 +2,8 @@
     height: auto;
     margin: 0;
     padding: 0;
-    background: #ffffff;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #02394A 0%, #00472f 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06);
 
     #footer-container {
@@ -28,7 +28,7 @@
         font-family: 'Inter', sans-serif;
         font-size: 14px;
         font-weight: 400;
-        color: rgba(0, 0, 0, 0.8);
+        color: rgba(255, 255, 255, 0.8);
         margin: 0;
         line-height: 1.5;
         letter-spacing: 0.025em;
@@ -49,12 +49,12 @@
         #dali-logo {
             width: 90px;
             height: 34px;
-            filter: brightness(0);
+            filter: brightness(0) invert(1);
             transition: filter 0.2s ease;
         }
 
         &:hover #dali-logo {
-            filter: brightness(0) drop-shadow(0 0 8px rgba(0, 0, 0, 0.3));
+            filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
         }
     }
 
@@ -67,7 +67,7 @@
         transform: translateX(-50%);
         width: 60px;
         height: 3px;
-        background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.3), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
         border-radius: 0 0 2px 2px;
     }
 }
