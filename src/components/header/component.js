@@ -134,7 +134,7 @@ const Header = ({ setChartMode }) => {
                 }}
               >
                 <Link
-                  to={ROUTES.DATA}
+                  to={ROUTES.HISTORICAL_VIEW}
                   className="dropdown-item"
                   onClick={() => setHistoricalDataOpen(false)}
                 >
