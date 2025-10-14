@@ -181,10 +181,6 @@
   line-height: 1.5;
   min-width: 120px; // Make button even longer
 
-  &.clear-button {
-    // This styling is now handled by the unified .action-button class in map-controls
-    // Keeping this empty to avoid conflicts
-  }
 }
 
 // Active Filters Section (Matches mt-4 pt-4 border-t border-border)
@@ -216,7 +212,7 @@
   align-items: center;
   gap: 4px; // Adjusted from 1 to 4 to give slight space before button
   padding: 4px 12px;
-  background-color: #02394A;
+  background-color: $forestGreen;
   color: $white;
   font-size: 14px;
   font-weight: 400;

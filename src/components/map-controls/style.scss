@@ -73,7 +73,7 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background: #2D5A5C;
+    background: $forestGreen;
 
     .section-title {
       color: white;
@@ -85,7 +85,7 @@
   }
 
   &:active {
-    background: #2D5A5C;
+    background: $forestGreen;
 
     .section-title {
       color: white;
@@ -98,7 +98,7 @@
 
   // Active/open section styling
   &.active {
-    background: #2D5A5C;
+    background: $forestGreen;
 
     .section-title {
       color: white;
@@ -164,9 +164,9 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: #2D5A5C !important;
-    color: white !important;
-    border: 1px solid #2D5A5C !important;
+    background: $forestGreen !important;
+    color: $cleanWhite !important;
+    border: 1px solid $forestGreen !important;
     border-radius: 6px;
     padding: 12px 24px;
     font-family: 'Inter', sans-serif;
@@ -178,8 +178,8 @@
     margin-bottom: 12px;
 
     &:hover:not(:disabled) {
-      background: #1e3f41 !important;
-      border-color: #1e3f41 !important;
+      background: $pineNeedle !important;
+      border-color: $pineNeedle !important;
       transform: translateY(-1px);
     }
 

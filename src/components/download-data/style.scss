@@ -14,7 +14,7 @@
     padding-left: 12px;
     padding-top: 5px;
     border-radius: 6px;
-    background-color: #02394A;
+    background-color: $forestGreen;
     display: flex;
 }
 
@@ -414,7 +414,7 @@
     }
 
     .selected-option {
-      background: #02394A;
+      background: $forestGreen;
       color: white;
       box-shadow: 0 2px 8px rgba(2, 57, 74, 0.3);
 
@@ -433,14 +433,14 @@
       }
 
       &:hover {
-        border-color: #02394A;
+        border-color: $forestGreen;
         background: #f0f2ff;
       }
     }
   }
 
   .clear-selections-button {
-    background: #02394A;
+    background: $forestGreen;
     color: white;
     border: none;
     border-radius: 8px;
@@ -475,7 +475,7 @@
           margin-top: 0.2rem;
           width: 18px;
           height: 18px;
-          accent-color: #02394A;
+          accent-color: $forestGreen;
         }
 
         .checkbox-text {
@@ -522,7 +522,7 @@
     }
 
     .download-button {
-      background: #02394A;
+      background: $forestGreen;
       border: none;
       border-radius: 12px;
       padding: 1rem 2rem;

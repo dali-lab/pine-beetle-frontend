@@ -67,34 +67,32 @@
               width: 100%;
               height: 100%;
               position: relative;
+              display: flex;
+              flex-direction: column;
 
-              .chart-area {
-                width: 100%;
-                height: 80%;
-                display: flex;
-                align-items: end;
-                justify-content: space-around;
-                padding: 0.5rem;
-
-                .chart-line {
-                  width: 12px;
-                  border-radius: 2px 2px 0 0;
-                  transition: all 0.3s ease;
-                }
+              .chart-title {
+                font-size: 0.7rem;
+                font-weight: 600;
+                color: $textColor;
+                text-align: center;
+                margin-bottom: 0.5rem;
+                padding: 0.3rem;
+                background: rgba($greyBlue200, 0.3);
+                border-radius: 4px;
               }
 
-              .chart-axis {
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
+              .chart-area {
+                flex: 1;
                 display: flex;
-                justify-content: space-between;
-                font-size: 0.7rem;
-                color: $greyBlue600;
+                align-items: center;
+                justify-content: center;
+                padding: 0.5rem;
 
-                .axis-label {
-                  font-weight: 500;
+                .line-chart {
+                  width: 100%;
+                  height: 100%;
+                  max-width: 180px;
+                  max-height: 120px;
                 }
               }
             }
@@ -103,19 +101,27 @@
               width: 100%;
               height: 100%;
               font-size: 0.7rem;
+              display: flex;
+              flex-direction: column;
+              border: 1px solid $greyBlue300;
+              border-radius: 4px;
+              overflow: hidden;
 
               .table-header {
                 display: flex;
                 background: $headerColor;
                 color: $white;
                 font-weight: 600;
-                border-radius: 4px 4px 0 0;
+                flex-shrink: 0;
 
                 .header-cell {
                   flex: 1;
-                  padding: 0.3rem;
+                  padding: 0.5rem 0.3rem;
                   text-align: center;
                   border-right: 1px solid rgba($white, 0.2);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
 
                   &:last-child {
                     border-right: none;
@@ -125,19 +131,23 @@
 
               .table-row {
                 display: flex;
+                flex: 1;
                 border-bottom: 1px solid $greyBlue300;
+                background: $white;
 
                 &:last-child {
                   border-bottom: none;
-                  border-radius: 0 0 4px 4px;
                 }
 
                 .table-cell {
                   flex: 1;
-                  padding: 0.3rem;
+                  padding: 0.5rem 0.3rem;
                   text-align: center;
                   color: $textColor;
                   border-right: 1px solid $greyBlue300;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
 
                   &:last-child {
                     border-right: none;

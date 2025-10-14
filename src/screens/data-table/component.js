@@ -1,63 +1,73 @@
 import React, { useEffect, useState } from 'react';
 
+import { stateAbbrevToStateName } from '../../constants';
+import { colors } from '../trapping-data/components/trapping-data-map/constants';
+
 import './style.scss';
 
-const DataTableScreen = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+const DataTableScreen = ({
+  sparseData,
+  isLoading,
+  errorText,
+  dataMode,
+  getSparseData,
+}) => {
   const [sortField, setSortField] = useState('year');
   const [sortDirection, setSortDirection] = useState('asc');
   const [filterYear, setFilterYear] = useState('');
   const [filterState, setFilterState] = useState('');
 
-  // Mock data - in a real application, this would come from an API
-  const mockData = [
-    {
-      id: 1, year: 2020, state: 'Alabama', county: 'Baldwin', beetles: 1250, outbreak: 'Low',
-    },
-    {
-      id: 2, year: 2020, state: 'Alabama', county: 'Mobile', beetles: 2100, outbreak: 'Medium',
-    },
-    {
-      id: 3, year: 2020, state: 'Florida', county: 'Escambia', beetles: 850, outbreak: 'Low',
-    },
-    {
-      id: 4, year: 2021, state: 'Alabama', county: 'Baldwin', beetles: 3200, outbreak: 'High',
-    },
-    {
-      id: 5, year: 2021, state: 'Alabama', county: 'Mobile', beetles: 1800, outbreak: 'Medium',
-    },
-    {
-      id: 6, year: 2021, state: 'Florida', county: 'Escambia', beetles: 1500, outbreak: 'Medium',
-    },
-    {
-      id: 7, year: 2022, state: 'Alabama', county: 'Baldwin', beetles: 2800, outbreak: 'High',
-    },
-    {
-      id: 8, year: 2022, state: 'Alabama', county: 'Mobile', beetles: 1200, outbreak: 'Low',
-    },
-    {
-      id: 9, year: 2022, state: 'Florida', county: 'Escambia', beetles: 2200, outbreak: 'Medium',
-    },
-    {
-      id: 10, year: 2023, state: 'Alabama', county: 'Baldwin', beetles: 1900, outbreak: 'Medium',
-    },
-    {
-      id: 11, year: 2023, state: 'Alabama', county: 'Mobile', beetles: 3100, outbreak: 'High',
-    },
-    {
-      id: 12, year: 2023, state: 'Florida', county: 'Escambia', beetles: 1100, outbreak: 'Low',
-    },
-  ];
+  // Transform API data to table format
+  const transformData = (rawData) => {
+    if (!rawData || !Array.isArray(rawData)) return [];
+
+    return rawData.map((item, index) => {
+      const stateName = stateAbbrevToStateName[item.state] || item.state;
+      const locationName = dataMode === 'COUNTY' ? item.county : item.rangerDistrict;
+
+      // Determine outbreak level based on spots using exact thresholds from trapping-data-map
+      // Thresholds: ['no spot data', '0-9', '10-19', '20-49', '50-99', '100-249', '>249']
+      let outbreakLevel = 'no spot data';
+      if (item.spots > 249) outbreakLevel = '>249';
+      else if (item.spots >= 100) outbreakLevel = '100-249';
+      else if (item.spots >= 50) outbreakLevel = '50-99';
+      else if (item.spots >= 20) outbreakLevel = '20-49';
+      else if (item.spots >= 10) outbreakLevel = '10-19';
+      else if (item.spots > 0) outbreakLevel = '0-9';
+      else outbreakLevel = 'no spot data';
+
+      return {
+        id: index + 1,
+        year: item.year,
+        state: stateName,
+        county: locationName,
+        beetles: item.spb || 0,
+        outbreak: outbreakLevel,
+        clerids: item.clerids || 0,
+        spots: item.spots || 0,
+      };
+    });
+  };
+
+  const data = transformData(sparseData);
+
+  // Debug logging
+  console.log('DataTableScreen: sparseData =', sparseData);
+  console.log('DataTableScreen: isLoading =', isLoading);
+  console.log('DataTableScreen: errorText =', errorText);
+  console.log('DataTableScreen: transformed data =', data);
+
+  // Debug: Log first item structure if data exists
+  if (sparseData && sparseData.length > 0) {
+    console.log('DataTableScreen: First item structure =', sparseData[0]);
+    console.log('DataTableScreen: Available fields =', Object.keys(sparseData[0]));
+  }
 
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setData(mockData);
-      setLoading(false);
-    }, 1000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // Fetch real data when component mounts
+    console.log('DataTableScreen: Fetching sparse data...');
+    getSparseData();
+  }, [getSparseData]);
 
   const handleSort = (field) => {
     if (sortField === field) {
@@ -86,21 +96,35 @@ const DataTableScreen = () => {
     });
 
   const getOutbreakColor = (outbreak) => {
-    switch (outbreak) {
-      case 'Low': return '#4CD791';
-      case 'Medium': return '#FFC148';
-      case 'High': return '#FF525C';
-      default: return '#AEAEAE';
-    }
+    // Use exact colors from trapping-data-map constants
+    // Colors: ['#D3D3D3', '#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38']
+    const thresholdIndex = ['no spot data', '0-9', '10-19', '20-49', '50-99', '100-249', '>249'].indexOf(outbreak);
+    return thresholdIndex !== -1 ? colors[thresholdIndex] : '#AEAEAE';
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="data-table-screen">
         <div className="data-table-container">
           <div className="loading-container">
             <div className="loading-spinner" />
             <p>Loading data...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (errorText) {
+    return (
+      <div className="data-table-screen">
+        <div className="data-table-container">
+          <div className="error-container">
+            <h2>Error Loading Data</h2>
+            <p>{errorText}</p>
+            <button type="button" onClick={() => getSparseData()} className="retry-button">
+              Retry
+            </button>
           </div>
         </div>
       </div>
@@ -168,7 +192,7 @@ const DataTableScreen = () => {
                   )}
                 </th>
                 <th onClick={() => handleSort('county')} className="sortable">
-                  County
+                  {dataMode === 'COUNTY' ? 'County' : 'Ranger District'}
                   {sortField === 'county' && (
                     <span className="sort-indicator">
                       {sortDirection === 'asc' ? '↑' : '↓'}

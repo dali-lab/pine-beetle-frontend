@@ -191,22 +191,22 @@ textarea {
     }
 
     &.green {
-        background-color: $headerColor;
-        box-shadow: 0 6px 20px -2px rgba(45, 90, 92, 0.55);
-        color: $white;
+        background-color: $forestGreen;
+        box-shadow: 0 6px 20px -2px rgba(26, 77, 46, 0.55);
+        color: $cleanWhite;
     }
 }
 
 // Global button styles to match navbar green
 .action-button, .primary-button {
-    background-color: $headerColor !important;
-    color: $white !important;
-    border: 1px solid $headerColor !important;
+    background-color: $forestGreen !important;
+    color: $cleanWhite !important;
+    border: 1px solid $forestGreen !important;
     transition: all 0.2s ease;
 
     &:hover:not(:disabled) {
-        background-color: #1e3f41 !important;
-        border-color: #1e3f41 !important;
+        background-color: $pineNeedle !important;
+        border-color: $pineNeedle !important;
     }
 
     &:disabled {
@@ -233,7 +233,7 @@ textarea {
     h1 {
         font-size: 3rem;
         font-weight: 700;
-        color: $headerColor;
+        color: $forestGreen;
         margin-bottom: 1.5rem;
         letter-spacing: -1.5px;
 
@@ -245,7 +245,7 @@ textarea {
     .page-description {
         font-size: 1.2rem;
         color: $textColor;
-        max-width: 700px;
+        max-width: 900px;
         margin: 0 auto;
         line-height: 1.7;
 

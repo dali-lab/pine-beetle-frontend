@@ -131,7 +131,7 @@
   letter-spacing: 0.5px;
 
   &:hover:not(:disabled) {
-    background: #1e3f41;
+    background: $pineNeedle;
     transform: translateY(-1px);
   }
 
