@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
-import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
+import pineBeetleImage from '../../assets/icons/background-beetle-color.png';
 import { ROUTES } from '../../constants';
 import { setChartMode as setChartModeAction } from '../../state/actions';
 
