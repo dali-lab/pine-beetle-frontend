@@ -53,8 +53,8 @@ const MapControls = (props) => {
         className="panel-toggle-button"
         onClick={() => setShowPanel(!showPanel)}
       >
-        <span className="toggle-icon">{showPanel ? '−' : '+'}</span>
         Controls
+        <span className="toggle-icon">{showPanel ? '−' : '+'}</span>
       </button>
 
       {/* Unified Controls Panel */}
