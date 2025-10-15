@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { ROUTES } from '../../../../constants';
@@ -14,9 +14,25 @@ const BlogPost = ({ post }) => {
     _id,
   } = post;
 
+  const [likes, setLikes] = useState(0);
+  const [comments, setComments] = useState(0);
+
   const history = useHistory();
   const location = useLocation();
   const isSinglePostPage = location.pathname.includes('/blog/') && location.pathname !== '/blog';
+
+  useEffect(() => {
+    // Load likes and comments from localStorage (in a real app, this would be from API)
+    const savedLikes = localStorage.getItem(`blog-likes-${_id}`);
+    const savedComments = localStorage.getItem(`blog-comments-${_id}`);
+
+    if (savedLikes) {
+      setLikes(parseInt(savedLikes, 10));
+    }
+    if (savedComments) {
+      setComments(JSON.parse(savedComments).length);
+    }
+  }, [_id]);
 
   const handleClick = () => {
     if (!isSinglePostPage) {
@@ -26,13 +42,19 @@ const BlogPost = ({ post }) => {
 
   return (
     <article className="blog-post-item">
-      <div className="blog-post-date">
-        {getDateToDisplay(createdAt)}
+      <div className="blog-post-meta">
+        <div className="blog-post-date">
+          {getDateToDisplay(createdAt)}
+        </div>
+        <div className="blog-post-stats">
+          <span className="blog-post-likes">{likes} likes</span>
+          <span className="blog-post-comments">{comments} comments</span>
+        </div>
       </div>
       <h2 className={`blog-post-title ${isSinglePostPage ? 'no-click' : ''}`} onClick={handleClick}>
         {title}
       </h2>
-      <div className="blog-post-content">
+      <div className={isSinglePostPage ? 'blog-post-content' : 'blog-post-snippet-container'}>
         {isSinglePostPage ? (
           <div className="blog-post-full-body">
             {body}
