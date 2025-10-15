@@ -365,7 +365,13 @@ const Header = ({ setChartMode }) => {
           </Link>
 
           <div className="mobile-nav-section">
-            <div className="mobile-nav-label">Historical Data</div>
+            <Link
+              to={ROUTES.DATA}
+              className="mobile-nav-label"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Historical Data
+            </Link>
             <Link
               to={ROUTES.DATA}
               className="mobile-nav-sublink"
@@ -398,7 +404,13 @@ const Header = ({ setChartMode }) => {
           </Link>
 
           <div className="mobile-nav-section">
-            <div className="mobile-nav-label">How does it work</div>
+            <Link
+              to={ROUTES.METHODOLOGY}
+              className="mobile-nav-label"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              How does it work
+            </Link>
             <Link
               to={ROUTES.METHODOLOGY}
               className="mobile-nav-sublink"
@@ -418,7 +430,13 @@ const Header = ({ setChartMode }) => {
           </div>
 
           <div className="mobile-nav-section">
-            <div className="mobile-nav-label">About</div>
+            <Link
+              to={ROUTES.ABOUT}
+              className="mobile-nav-label"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              About
+            </Link>
             <Link
               to={ROUTES.BLOG}
               className="mobile-nav-sublink"

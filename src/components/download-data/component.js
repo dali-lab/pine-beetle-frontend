@@ -37,7 +37,7 @@ const DownloadData = (props) => {
   const statesMappedToNames = availableStates.map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
   const selectedStateName = getStateNameFromAbbreviation(selectedState);
   const setStateAbbrev = (stateName) => setState(getStateAbbreviationFromStateName(stateName));
-  const revYears = availableYears.filter((n) => n >= startYear);
+  const revYears = startYear ? availableYears.filter((n) => n >= startYear) : availableYears;
 
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -92,106 +92,140 @@ const DownloadData = (props) => {
 
   return (
     <div className="download-data-page-content">
-      <div className="download-content-grid">
-        <div className="download-selection-section">
-          <h3 className="section-title">Year(s)</h3>
-          <div className="year-selection">
-            <ChoiceInput setValue={setStartYear} options={availableYears} value={startYear} firstOptionText="Start Year" />
-            <ChoiceInput setValue={setEndYear} options={revYears} value={endYear} firstOptionText="End Year" />
-          </div>
-
-          <h3 className="section-title">Location(s)</h3>
-          <div className="location-select">
-            <div className="data-mode-selection">
-              <div
-                className={countyMode ? 'selected-option' : 'unselected-option'}
-                onClick={() => setDataMode(DATA_MODES.COUNTY)}
-              >
-                <p className={countyMode ? 'selected-option-text' : 'unselected-option-text'}>
-                  By County
-                </p>
-              </div>
-              <div
-                className={countyMode ? 'unselected-option' : 'selected-option'}
-                onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
-              >
-                <p className={countyMode ? 'unselected-option-text' : 'selected-option-text'}>
-                  By Federal land
-                </p>
-              </div>
+      <div className="download-form">
+        <div className="form-section">
+          <h3>Time Range</h3>
+          <div className="form-row">
+            <div className="form-group">
+              <div className="form-label">Start Year</div>
+              <ChoiceInput
+                id="start-year"
+                setValue={setStartYear}
+                options={availableYears}
+                value={startYear}
+                firstOptionText="Select start year"
+              />
             </div>
-            <MultiSelectInput
-              valueParent={selectedStateName}
-              valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
-              setValueParent={setStateAbbrev}
-              setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
-              optionsParent={statesMappedToNames}
-              optionsChildren={availableSublocations}
-              listOnly
-            />
+            <div className="form-group">
+              <div className="form-label">End Year</div>
+              <ChoiceInput
+                id="end-year"
+                setValue={setEndYear}
+                options={revYears}
+                value={endYear}
+                firstOptionText="Select end year"
+              />
+            </div>
           </div>
-
-          <button
-            type="button"
-            className="clear-selections-button"
-            onClick={clearAllSelections}
-          >
-            Clear Selections
-          </button>
         </div>
 
-        <div className="download-options-section">
-          <h3 className="section-title">Download Options</h3>
-          <div className="download-options">
-            <div className="option-item">
-              <label htmlFor="unsummarized-data">
-                <input
-                  type="checkbox"
-                  id="unsummarized-data"
-                  onChange={addFieldToDownload('UNSUMMARIZED')}
-                  checked={fieldsToDownload.UNSUMMARIZED}
-                />
-                <span className="checkbox-text">Unsummarized data with weekly trap captures</span>
-              </label>
+        <div className="form-section">
+          <h3>Geographic Area</h3>
+          <div className="form-row">
+            <div className="form-group">
+              <div className="form-label">Administrative Level</div>
+              <div className="toggle-buttons">
+                <button
+                  type="button"
+                  className={`toggle-btn ${countyMode ? 'active' : ''}`}
+                  onClick={() => setDataMode(DATA_MODES.COUNTY)}
+                >
+                  County
+                </button>
+                <button
+                  type="button"
+                  className={`toggle-btn ${!countyMode ? 'active' : ''}`}
+                  onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
+                >
+                  Federal Land
+                </button>
+              </div>
             </div>
-            <div className="option-item">
-              <label htmlFor="summarized-data">
-                <input
-                  type="checkbox"
-                  id="summarized-data"
-                  onChange={addFieldToDownload('SUMMARIZED')}
-                  checked={fieldsToDownload.SUMMARIZED}
-                />
-                <span className="checkbox-text">Summarized data with one record per year for each county or federal parcel</span>
-              </label>
+            <div className="form-group">
+              <div className="form-label">Location</div>
+              <MultiSelectInput
+                valueParent={selectedStateName}
+                valueChildren={dataMode === DATA_MODES.COUNTY ? county : rangerDistrict}
+                setValueParent={setStateAbbrev}
+                setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
+                optionsParent={statesMappedToNames}
+                optionsChildren={availableSublocations}
+              />
             </div>
           </div>
+        </div>
 
-          <div className="footnote-container">
-            <p className="footnote">* Helper data includes ranger district name mappings and state abbreviation mappings</p>
-            <p className="footnote">** Downloads include both trap (beetle) and spot data, per county/federal unit.
-              Trap data are uploaded from approximately March through June of each trapping year, and spot data are uploaded
-              for that season by the following January.
-            </p>
+        <div className="form-section">
+          <h3>Data Format</h3>
+          <div className="checkbox-group">
+            <label className="checkbox-item" htmlFor="unsummarized-data">
+              <input
+                type="checkbox"
+                id="unsummarized-data"
+                onChange={addFieldToDownload('UNSUMMARIZED')}
+                checked={fieldsToDownload.UNSUMMARIZED}
+              />
+              <span className="checkbox-label">
+                <strong>Raw Data</strong>
+                <small>Weekly trap captures with individual records</small>
+              </span>
+            </label>
+            <label className="checkbox-item" htmlFor="summarized-data">
+              <input
+                type="checkbox"
+                id="summarized-data"
+                onChange={addFieldToDownload('SUMMARIZED')}
+                checked={fieldsToDownload.SUMMARIZED}
+              />
+              <span className="checkbox-label">
+                <strong>Aggregated Data</strong>
+                <small>Annual summaries per administrative unit</small>
+              </span>
+            </label>
           </div>
+        </div>
 
-          <div className="download-button-container">
-            {error && <div className="download-error">{error}</div>}
+        <div className="form-actions">
+          <button
+            type="button"
+            className="reset-btn"
+            onClick={clearAllSelections}
+          >
+            Reset
+          </button>
+          <div className="download-area">
+            {error && <div className="error-message">{error}</div>}
             {isDownloading ? (
-              <div className="downloading-container">
-                <h4>Downloading...</h4>
+              <div className="loading-state">
+                <div className="spinner" />
+                <span>Generating dataset...</span>
               </div>
             ) : (
               <button
-                className="download-button"
+                className="download-btn"
                 onClick={handleDownload}
                 type="button"
               >
-                <span>Download Data</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 1V11M8 11L5 8M8 11L11 8M1 13H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Download Data
               </button>
             )}
           </div>
         </div>
+      </div>
+
+      <div className="data-info">
+        <h4>Dataset Information</h4>
+        <ul>
+          <li><strong>Data Sources:</strong> Trap data collected March-June annually, Spot data updated through January</li>
+          <li><strong>File Format:</strong> CSV files with UTF-8 encoding for maximum compatibility</li>
+          <li><strong>Geographic Coverage:</strong> Southern United States with county and federal land boundaries</li>
+          <li><strong>Time Range:</strong> Historical data from 1987 to present, updated annually</li>
+          <li><strong>Data Quality:</strong> Field-verified trapping data with standardized collection protocols</li>
+          <li><strong>Additional Files:</strong> Administrative mappings, state abbreviations, and metadata included</li>
+        </ul>
       </div>
     </div>
   );

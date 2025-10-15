@@ -24,54 +24,11 @@
     }
 
     .download-data-content {
-      // Remove background card styling
       background: transparent;
       border-radius: 0;
       box-shadow: none;
       padding: 0;
       margin-bottom: 0;
-
-      // Override the download button styling for the page context
-      #download-button-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 2rem;
-
-        #download-button {
-          background: $forestGreen;
-          border: none;
-          border-radius: 8px;
-          padding: 1rem 2rem;
-          color: white;
-          font-size: 1.1rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          box-shadow: 0 4px 15px rgba(2, 57, 74, 0.3);
-
-          &:hover {
-            transform: translateY(-2px);
-            background: #034a5f;
-            box-shadow: 0 6px 20px rgba(2, 57, 74, 0.4);
-          }
-
-          &:active {
-            transform: translateY(0);
-          }
-
-          p {
-            margin: 0;
-          }
-
-          #download-icon {
-            width: 20px;
-            height: 20px;
-          }
-        }
-      }
     }
   }
 }

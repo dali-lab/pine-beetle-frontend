@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FilterOverlay from '../filter-overlay';
 import LegendOverlay from '../legend-overlay';
 import './style.scss';
@@ -28,26 +28,64 @@ const MapControls = (props) => {
   } = props;
 
   const [showPanel, setShowPanel] = useState(true); // Panel open by default
+  const [isDesktop, setIsDesktop] = useState(false);
   const [openSections, setOpenSections] = useState({
-    filters: true, // Only filters open by default
+    filters: false, // Will be set based on device type
     download: false,
     legend: false,
   });
+
+  // Detect if device is desktop (screen width > 768px)
+  useEffect(() => {
+    const checkIsDesktop = () => {
+      setIsDesktop(window.innerWidth > 768);
+    };
+
+    // Check on mount
+    checkIsDesktop();
+
+    // Listen for resize events
+    window.addEventListener('resize', checkIsDesktop);
+
+    return () => {
+      window.removeEventListener('resize', checkIsDesktop);
+    };
+  }, []);
+
+  // Set default filter state based on device type
+  useEffect(() => {
+    setOpenSections((prev) => ({
+      ...prev,
+      filters: isDesktop, // Open filters by default on desktop
+    }));
+  }, [isDesktop]);
 
   const handleDownloadClick = () => {
     downloadCallback();
   };
 
   const toggleSection = (section) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
+    setOpenSections((prev) => {
+      // If clicking the same section, toggle it
+      if (prev[section]) {
+        return {
+          ...prev,
+          [section]: false,
+        };
+      }
+      // If clicking a different section, close all others and open this one
+      return {
+        filters: false,
+        download: false,
+        legend: false,
+        [section]: true,
+      };
+    });
   };
 
   return (
     <div className="map-controls-panel">
-      {/* Toggle Button */}
+      {/* Toggle Button - Hidden on mobile */}
       <button
         type="button"
         className={`panel-toggle-button ${showPanel ? 'panel-open' : 'panel-closed'}`}
@@ -117,11 +155,29 @@ const MapControls = (props) => {
           <div className="control-section">
             <button
               type="button"
-              className="section-header"
-              onClick={() => handleDownloadClick()}
+              className={`section-header ${openSections.download ? 'active' : ''}`}
+              onClick={() => toggleSection('download')}
             >
               <span className="section-title">{isDownloadingMap ? 'Downloading...' : 'Download map'}</span>
             </button>
+            {openSections.download && (
+              <div className="download-control">
+                <button
+                  type="button"
+                  className="action-button"
+                  onClick={() => {
+                    handleDownloadClick();
+                    setOpenSections((prev) => ({ ...prev, download: false }));
+                  }}
+                  disabled={isDownloadingMap}
+                >
+                  {isDownloadingMap ? 'Downloading...' : 'Download Map'}
+                </button>
+                <p className="download-help">
+                  Download the current map view as a high-resolution image
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}

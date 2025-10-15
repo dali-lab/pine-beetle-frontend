@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Redirect,
   Route,
@@ -29,14 +29,12 @@ import {
 import {
   Footer,
   Header,
-  MobileOverlay,
 } from '../components';
 
 import {
   DATA_MODES,
   getAutomationServerUrl,
   getServerUrl,
-  MIN_WIDTH_THRESHOLD,
   RESOURCE_REMOTE_URLS,
   RESOURCE_ROUTES,
   ROUTES,
@@ -82,15 +80,6 @@ const App = (props) => {
     getResultsComparisonData,
     getScatterChartData,
   } = props;
-
-  const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
-
-  useEffect(() => {
-    const resizeListener = (e) => setIsMobile(e.target.innerWidth < MIN_WIDTH_THRESHOLD);
-    window.addEventListener('resize', resizeListener);
-
-    return () => window.removeEventListener('resize', resizeListener);
-  }, []);
 
   useEffect(() => {
     global.API_URL = getServerUrl();
@@ -139,7 +128,7 @@ const App = (props) => {
     getAvailableStates,
   ]);
 
-  if (isMobile) return <MobileOverlay />;
+  // Mobile blockade disabled - app now works on mobile devices
 
   return (
     <Router>

@@ -310,6 +310,7 @@
                 border-radius: 4px;
                 transition: background-color 0.2s ease;
                 flex-shrink: 0;
+                margin-left: auto;
 
                 @media (min-width: 768px) {
                     display: none;
@@ -331,9 +332,9 @@
     // Mobile Navigation Menu
     .mobile-nav {
         display: block;
-        background-color: $pineNeedle;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 16px 24px;
+        background-color: $cleanWhite;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 0;
 
         @media (min-width: 768px) {
             display: none;
@@ -341,22 +342,27 @@
 
         .mobile-nav-link {
             display: block;
-            color: $white;
+            color: $deepCharcoal;
             font-size: 16px;
             font-weight: 500;
             font-family: "Inter", sans-serif;
             text-decoration: none;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             background: none;
-            border: none;
             width: 100%;
             text-align: left;
             cursor: pointer;
-            transition: color 0.2s ease;
+            transition: all 0.2s ease;
 
             &:hover {
-                color: rgba(255, 255, 255, 0.8);
+                color: $white;
+                background-color: $pineNeedle;
+            }
+
+            &.active {
+                color: $white;
+                background-color: $pineNeedle;
             }
 
             &:last-child {
@@ -365,30 +371,54 @@
         }
 
         .mobile-nav-section {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
             .mobile-nav-label {
                 display: block;
-                color: $white;
+                color: $deepCharcoal;
                 font-size: 16px;
-                font-weight: 600;
+                font-weight: 500;
                 font-family: "Inter", sans-serif;
                 margin-bottom: 8px;
+                padding: 12px 24px 4px 24px;
+                text-decoration: none;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    color: $white;
+                    background-color: $pineNeedle;
+                }
+
+                &.active {
+                    color: $white;
+                    background-color: $pineNeedle;
+                }
             }
 
             .mobile-nav-sublink {
                 display: block;
-                color: $white;
-                font-size: 14px;
+                color: $deepCharcoal;
+                font-size: 16px;
                 font-weight: 400;
                 font-family: "Inter", sans-serif;
                 text-decoration: none;
-                padding: 8px 0 8px 16px;
-                transition: color 0.2s ease;
+                padding: 12px 24px 12px 40px;
+                transition: all 0.2s ease;
+                background: none;
+                border: none;
+                width: 100%;
+                text-align: left;
+                cursor: pointer;
 
                 &:hover {
-                    color: rgba(255, 255, 255, 0.8);
+                    color: $white;
+                    background-color: $pineNeedle;
+                }
+
+                &.active {
+                    color: $white;
+                    background-color: $pineNeedle;
                 }
             }
         }
