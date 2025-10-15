@@ -6,7 +6,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: $white;
+    background: $forestGreen;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     overflow: visible;
@@ -53,12 +53,12 @@
                         width: 100%;
                         height: 100%;
                         object-fit: contain;
-                        filter: none;
+                        filter: brightness(0) invert(1);
                     }
                 }
 
                 .logo-text {
-                    color: $forestGreen;
+                    color: $white;
                     font-weight: bold;
                     font-size: 18px;
                     font-family: "Inter", sans-serif;
@@ -70,7 +70,7 @@
                 text-align: left;
 
                 h1 {
-                    color: $forestGreen;
+                    color: $white;
                     font-size: 22px;
                     font-weight: 600;
                     font-family: "Inter", sans-serif;
@@ -91,7 +91,7 @@
                 }
 
                 h2 {
-                    color: rgba(26, 77, 46, 0.8);
+                    color: rgba(255, 255, 255, 0.8);
                     font-size: 16px;
                     font-weight: 400;
                     font-family: "Inter", sans-serif;
@@ -125,7 +125,7 @@
                     align-items: center;
                     gap: 4px;
                     padding: 18px 12px;
-                    color: $forestGreen;
+                    color: $white;
                     font-size: 16px;
                     font-weight: 500;
                     font-family: "Inter", sans-serif;
@@ -141,7 +141,7 @@
                     outline: none;
 
                     &:hover {
-                        color: $forestGreen;
+                        color: $white;
                         background-color: transparent;
 
                         &::before {
@@ -151,7 +151,7 @@
                             left: 0;
                             right: 0;
                             bottom: -8px;
-                            background-color: rgba(26, 77, 46, 0.1);
+                            background-color: rgba(255, 255, 255, 0.2);
                             border-radius: 0;
                             z-index: -1;
                         }
@@ -168,14 +168,14 @@
                             left: 0;
                             right: 0;
                             bottom: -8px;
-                            background-color: rgba(26, 77, 46, 0.1);
+                            background-color: rgba(255, 255, 255, 0.2);
                             border-radius: 0;
                             z-index: -1;
                         }
                     }
 
                     &.active {
-                        color: $forestGreen;
+                        color: $white;
                         background-color: transparent;
 
                         &::before {
@@ -185,7 +185,7 @@
                             left: 0;
                             right: 0;
                             bottom: -8px;
-                            background-color: rgba(26, 77, 46, 0.1);
+                            background-color: rgba(255, 255, 255, 0.2);
                             border-radius: 0;
                             z-index: -1;
                         }
@@ -196,7 +196,7 @@
                         font-size: 16px;
                         font-weight: 500;
                         font-family: "Inter", sans-serif;
-                        color: $forestGreen;
+                        color: $white;
                         background: none;
                         border: none;
                         cursor: pointer;
@@ -217,6 +217,7 @@
                 .nav-dropdown {
                     position: relative;
                     z-index: 1002;
+                    display: inline-block;
 
                     &:hover .dropdown-trigger .dropdown-icon {
                         transform: rotate(180deg);
@@ -234,11 +235,12 @@
                     .dropdown-menu-about,
                     .dropdown-menu-how-it-works {
                         position: fixed;
-                        min-width: 192px;
+                        width: 192px;
+                        max-width: 192px;
                         background-color: $white;
                         border-radius: 8px;
                         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-                        border: 1px solid rgba(26, 77, 46, 0.2);
+                        border: 1px solid rgba(0, 0, 0, 0.1);
                         padding: 4px;
                         margin-top: 12px;
                         z-index: 10001;
@@ -246,6 +248,7 @@
                         opacity: 0;
                         visibility: hidden;
                         transition: opacity 0.2s ease, visibility 0.2s ease;
+                        box-sizing: border-box;
 
                         &[style*="display: block"] {
                             display: block !important;
@@ -266,7 +269,7 @@
                             font-size: 14px;
                             font-weight: 500;
                             font-family: "Inter", sans-serif;
-                            color: $forestGreen;
+                            color: $black;
                             text-decoration: none;
                             background: none;
                             border: none;
@@ -275,9 +278,20 @@
                             transition: background-color 0.2s ease;
                             width: 100%;
                             text-align: left;
+                            box-sizing: border-box;
 
                             &:hover {
-                                background-color: rgba(26, 77, 46, 0.1);
+                                background-color: $dropdownGreen;
+                                color: $white;
+                            }
+
+                            &.active {
+                                background-color: $dropdownGreen;
+                                color: $white;
+
+                                &:hover {
+                                    background-color: $dropdownGreen;
+                                }
                             }
                         }
                     }
@@ -290,7 +304,7 @@
                 justify-content: center;
                 background: none;
                 border: none;
-                color: $forestGreen;
+                color: $white;
                 cursor: pointer;
                 padding: 8px;
                 border-radius: 4px;
@@ -302,7 +316,7 @@
                 }
 
                 &:hover {
-                    background-color: rgba(26, 77, 46, 0.1);
+                    background-color: rgba(255, 255, 255, 0.1);
                 }
 
                 .hamburger-icon {
@@ -317,8 +331,8 @@
     // Mobile Navigation Menu
     .mobile-nav {
         display: block;
-        background-color: $white;
-        border-top: 1px solid rgba(26, 77, 46, 0.1);
+        background-color: $pineNeedle;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
         padding: 16px 24px;
 
         @media (min-width: 768px) {
@@ -327,7 +341,7 @@
 
         .mobile-nav-link {
             display: block;
-            color: $forestGreen;
+            color: $white;
             font-size: 16px;
             font-weight: 500;
             font-family: "Inter", sans-serif;
@@ -342,7 +356,7 @@
             transition: color 0.2s ease;
 
             &:hover {
-                color: rgba(26, 77, 46, 0.8);
+                color: rgba(255, 255, 255, 0.8);
             }
 
             &:last-child {
@@ -351,12 +365,12 @@
         }
 
         .mobile-nav-section {
-            border-bottom: 1px solid rgba(26, 77, 46, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 12px 0;
 
             .mobile-nav-label {
                 display: block;
-                color: $forestGreen;
+                color: $white;
                 font-size: 16px;
                 font-weight: 600;
                 font-family: "Inter", sans-serif;
@@ -365,7 +379,7 @@
 
             .mobile-nav-sublink {
                 display: block;
-                color: $forestGreen;
+                color: $white;
                 font-size: 14px;
                 font-weight: 400;
                 font-family: "Inter", sans-serif;
@@ -374,7 +388,7 @@
                 transition: color 0.2s ease;
 
                 &:hover {
-                    color: rgba(26, 77, 46, 0.8);
+                    color: rgba(255, 255, 255, 0.8);
                 }
             }
         }
@@ -382,21 +396,21 @@
         .mobile-contact-button {
             display: block;
             width: 100%;
-            background-color: rgba(26, 77, 46, 0.1);
-            color: $forestGreen;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: $white;
             padding: 12px 20px;
             border-radius: 8px;
             font-size: 16px;
             font-weight: 500;
             font-family: "Inter", sans-serif;
-            border: 1px solid rgba(26, 77, 46, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             cursor: pointer;
             margin-top: 16px;
             transition: all 0.2s ease;
 
             &:hover {
-                background-color: rgba(26, 77, 46, 0.2);
-                border-color: rgba(26, 77, 46, 0.5);
+                background-color: rgba(255, 255, 255, 0.3);
+                border-color: rgba(255, 255, 255, 0.5);
             }
         }
     }

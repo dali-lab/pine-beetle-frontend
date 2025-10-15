@@ -51,21 +51,14 @@ const Methodology = () => {
       {/* How It Works Section */}
       <section className="how-it-works-section">
         <div className="how-it-works-container">
-
-          <div className="how-it-works-grid">
+          <div className="methodology-content">
             {howItWorksContent.map((element, index) => (
-              <div key={`how-it-works-${index + 1}`} className="how-it-works-card">
-                <div className="card-icon-container">
-                  <div className={`card-icon ${element.color}`}>
-                    <img
-                      className="card-icon-image"
-                      src={element.icon}
-                      alt={element.alt}
-                    />
-                  </div>
+              <div key={`how-it-works-${index + 1}`} className="methodology-step">
+                <div className="step-header">
+                  <div className="step-number">{index + 1}</div>
+                  <h3 className="step-title">{element.title}</h3>
                 </div>
-                <h3 className="card-title">{element.title}</h3>
-                <p className="card-description">
+                <p className="step-description">
                   {element.text}
                 </p>
               </div>

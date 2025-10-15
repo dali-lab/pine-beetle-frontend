@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
-import pineBeetleImage from '../../assets/icons/background-beetle-color.png';
+import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
 import { ROUTES } from '../../constants';
 import { setChartMode as setChartModeAction } from '../../state/actions';
 
@@ -135,21 +135,21 @@ const Header = ({ setChartMode }) => {
               >
                 <Link
                   to={ROUTES.HISTORICAL_VIEW}
-                  className="dropdown-item"
+                  className={`dropdown-item ${location.pathname === ROUTES.HISTORICAL_VIEW ? 'active' : ''}`}
                   onClick={() => setHistoricalDataOpen(false)}
                 >
                   Time Series
                 </Link>
                 <Link
                   to={ROUTES.DATA_TABLE}
-                  className="dropdown-item"
+                  className={`dropdown-item ${location.pathname === ROUTES.DATA_TABLE ? 'active' : ''}`}
                   onClick={() => setHistoricalDataOpen(false)}
                 >
-                  Data Table
+                  Data Tables
                 </Link>
                 <Link
                   to={ROUTES.DOWNLOAD_DATA}
-                  className="dropdown-item"
+                  className={`dropdown-item ${location.pathname === ROUTES.DOWNLOAD_DATA ? 'active' : ''}`}
                   onClick={() => setHistoricalDataOpen(false)}
                 >
                   Download Data
@@ -228,7 +228,7 @@ const Header = ({ setChartMode }) => {
               >
                 <Link
                   to={ROUTES.METHODOLOGY}
-                  className="dropdown-item"
+                  className={`dropdown-item ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
                   onClick={() => setHowItWorksOpen(false)}
                 >
                   Methodology
@@ -308,21 +308,21 @@ const Header = ({ setChartMode }) => {
               >
                 <Link
                   to={ROUTES.BLOG}
-                  className="dropdown-item"
+                  className={`dropdown-item ${location.pathname === ROUTES.BLOG ? 'active' : ''}`}
                   onClick={() => setAboutOpen(false)}
                 >
                   Blog
                 </Link>
                 <Link
                   to={ROUTES.RESOURCES}
-                  className="dropdown-item"
+                  className={`dropdown-item ${location.pathname === ROUTES.RESOURCES ? 'active' : ''}`}
                   onClick={() => setAboutOpen(false)}
                 >
                   Resources
                 </Link>
                 <Link
                   to={ROUTES.ABOUT}
-                  className="dropdown-item"
+                  className={`dropdown-item ${location.pathname === ROUTES.ABOUT ? 'active' : ''}`}
                   onClick={() => setAboutOpen(false)}
                 >
                   About The Project

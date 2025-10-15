@@ -20,18 +20,19 @@
   cursor: pointer;
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
-  
+
   &:hover {
-    color: $greyBlue800;
-    background-color: $greyBlue100;
+    color: white;
+    background-color: $dropdownGreen;
   }
-  
+
   &.active {
-    color: $greyBlue800;
-    border-bottom-color: $greyBlue800;
+    color: white;
+    background-color: $dropdownGreen;
+    border-bottom-color: $dropdownGreen;
     font-weight: 600;
   }
-  
+
   &:first-child {
     margin-left: 0;
   }

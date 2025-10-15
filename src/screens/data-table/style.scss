@@ -58,8 +58,8 @@
 
             &:focus {
               outline: none;
-              border-color: $headerColor;
-              box-shadow: 0 0 0 2px rgba($headerColor, 0.1);
+              border-color: $dropdownGreen;
+              box-shadow: 0 0 0 2px rgba(107, 142, 107, 0.1);
             }
 
             &::placeholder {
@@ -82,7 +82,7 @@
             border-collapse: collapse;
 
             thead {
-              background: $headerColor;
+              background: $dropdownGreen;
 
               th {
                 padding: 1rem;

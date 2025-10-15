@@ -92,17 +92,6 @@ const MapControls = (props) => {
             )}
           </div>
 
-          {/* Download Section */}
-          <div className="control-section">
-            <button
-              type="button"
-              className="section-header"
-              onClick={() => handleDownloadClick()}
-            >
-              <span className="section-title">{isDownloadingMap ? 'Downloading...' : 'Download map'}</span>
-            </button>
-          </div>
-
           {/* Legend Section */}
           <div className="control-section">
             <button
@@ -122,6 +111,17 @@ const MapControls = (props) => {
                 className="embedded-control"
               />
             )}
+          </div>
+
+          {/* Download Section */}
+          <div className="control-section">
+            <button
+              type="button"
+              className="section-header"
+              onClick={() => handleDownloadClick()}
+            >
+              <span className="section-title">{isDownloadingMap ? 'Downloading...' : 'Download map'}</span>
+            </button>
           </div>
         </div>
       )}

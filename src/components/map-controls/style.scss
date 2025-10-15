@@ -73,7 +73,7 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background: $forestGreen;
+    background: $dropdownGreen;
 
     .section-title {
       color: white;
@@ -85,7 +85,7 @@
   }
 
   &:active {
-    background: $forestGreen;
+    background: $dropdownGreen;
 
     .section-title {
       color: white;
@@ -98,7 +98,7 @@
 
   // Active/open section styling
   &.active {
-    background: $forestGreen;
+    background: $dropdownGreen;
 
     .section-title {
       color: white;
@@ -164,9 +164,9 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background: $forestGreen !important;
+    background: $dropdownGreen !important;
     color: $cleanWhite !important;
-    border: 1px solid $forestGreen !important;
+    border: 1px solid $dropdownGreen !important;
     border-radius: 6px;
     padding: 12px 24px;
     font-family: 'Inter', sans-serif;
