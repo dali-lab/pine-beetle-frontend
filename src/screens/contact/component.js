@@ -1,5 +1,4 @@
 import React from 'react';
-import backgroundBeetleImage from '../../assets/icons/background-beetle-color.png';
 import './style.scss';
 
 const Contact = () => {
@@ -13,44 +12,60 @@ const Contact = () => {
           </p>
         </div>
 
-        <div className="contact-sections">
-          <div className="contact-section">
-            <h2>Questions about the program</h2>
-            <div className="contact-items-container">
-              <div className="contact-item">
-                <strong>Carissa Aoki:</strong>
-                <a href="mailto:caoki@mica.edu">caoki@mica.edu</a>
-              </div>
-              <div className="contact-item">
-                <strong>Matthew Ayres:</strong>
-                <a href="mailto:matthew.p.ayres@dartmouth.edu">matthew.p.ayres@dartmouth.edu</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="contact-section-with-beetle">
-            <div className="contact-section">
-              <h2>Questions about local forests</h2>
-              <div className="contact-items-container">
-                <div className="contact-item">
-                  <strong>US Forest Service:</strong>
-                  <a href="tel:+18008321355">(800) 832-1355</a>
+        <div className="contact-content">
+          <div className="contact-category">
+            <h2>Program Questions</h2>
+            <p className="category-description">For inquiries about the Southern Pine Beetle prediction program and research</p>
+            <div className="contact-list contact-list-row">
+              <div className="contact-person">
+                <div className="person-info">
+                  <h3>Carissa Aoki</h3>
+                  <p className="person-title">Research Lead</p>
                 </div>
+                <a href="mailto:caoki@mica.edu" className="contact-link">
+                  caoki@mica.edu
+                </a>
+              </div>
+              <div className="contact-person">
+                <div className="person-info">
+                  <h3>Matthew Ayres</h3>
+                  <p className="person-title">Principal Investigator</p>
+                </div>
+                <a href="mailto:matthew.p.ayres@dartmouth.edu" className="contact-link">
+                  matthew.p.ayres@dartmouth.edu
+                </a>
               </div>
             </div>
-            <div className="beetle-icon-standalone">
-              <img src={backgroundBeetleImage} alt="Pine Beetle" />
+          </div>
+
+          <div className="contact-category">
+            <h2>Local Forest Management</h2>
+            <p className="category-description">For questions about local forest conditions and management practices</p>
+            <div className="contact-list">
+              <div className="contact-person">
+                <div className="person-info">
+                  <h3>US Forest Service</h3>
+                  <p className="person-title">Forest Management Support</p>
+                </div>
+                <a href="tel:+18008321355" className="contact-link">
+                  (800) 832-1355
+                </a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="contact-sections">
-          <div className="contact-section">
-            <h2>Questions about the tool</h2>
-            <div className="contact-items-container">
-              <div className="contact-item">
-                <strong>Dartmouth DALI Lab:</strong>
-                <a href="mailto:pine-beetle@dali.dartmouth.edu">pine-beetle@dali.dartmouth.edu</a>
+          <div className="contact-category">
+            <h2>Technical Support</h2>
+            <p className="category-description">For technical issues with the prediction tool and platform</p>
+            <div className="contact-list">
+              <div className="contact-person">
+                <div className="person-info">
+                  <h3>Dartmouth DALI Lab</h3>
+                  <p className="person-title">Technical Development Team</p>
+                </div>
+                <a href="mailto:pine-beetle@dali.dartmouth.edu" className="contact-link">
+                  pine-beetle@dali.dartmouth.edu
+                </a>
               </div>
             </div>
           </div>

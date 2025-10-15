@@ -2,7 +2,7 @@
 
 .contact-page {
   min-height: auto;
-  background: #ffffff;
+  background: $cleanWhite;
   padding: 2rem 0;
   margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
 
@@ -11,7 +11,7 @@
   }
 
   .contact-container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 32px;
 
@@ -20,112 +20,150 @@
     }
   }
 
-  // Contact header styles removed - now using global page-header styles
-
-  .contact-sections {
-    display: grid;
-    gap: 40px;
-
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 60px;
-    }
-  }
-
-  .contact-section-with-beetle {
+  .contact-content {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    height: 100%;
+    gap: 3.5rem;
 
-    @media (min-width: 768px) {
-      gap: 30px;
+    @media (max-width: 768px) {
+      gap: 2.5rem;
     }
   }
 
-  .beetle-icon-standalone {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-
-    img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      background: $forestGreen;
-      border-radius: 50%;
-      padding: 15px;
-      box-shadow: 0 8px 20px -5px rgba(51, 69, 79, 0.3), 0 4px 8px -2px rgba(51, 69, 79, 0.2);
-      display: block;
-    }
-  }
-
-  .contact-section {
-    background: $white;
-    padding: 32px;
-    border-radius: 16px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(51, 69, 79, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  .contact-category {
     position: relative;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid $greyBlue200;
 
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    &:last-child {
+      border-bottom: none;
     }
 
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, $forestGreen, $pineNeedle);
+      border-radius: 2px;
+    }
 
     h2 {
-      color: $greyBlue900;
-      font-size: 24px;
-      font-weight: 600;
+      color: $forestGreen;
+      font-size: 2.25rem;
+      font-weight: 700;
       font-family: "Inter", sans-serif;
-      margin: 0 0 24px 0;
-      line-height: 1.3;
-      border-bottom: 2px solid rgba(51, 69, 79, 0.1);
-      padding-bottom: 12px;
+      margin: 0 0 1.25rem 0;
+      letter-spacing: -0.75px;
+      position: relative;
+      padding-left: 1.5rem;
+
+      @media (max-width: 768px) {
+        font-size: 1.875rem;
+        padding-left: 1rem;
+      }
     }
 
-    .contact-items-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+    .category-description {
+      color: $greyBlue700;
+      font-size: 1.125rem;
+      font-weight: 400;
+      font-family: "Inter", sans-serif;
+      margin: 0 0 2rem 0;
+      line-height: 1.7;
+      max-width: 700px;
+      padding-left: 1.5rem;
+
+      @media (max-width: 768px) {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+        padding-left: 1rem;
+      }
     }
 
-    .contact-item {
-      margin-bottom: 20px;
+    .contact-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 2rem;
+      padding-left: 1.5rem;
 
-      &:last-child {
-        margin-bottom: 0;
+      @media (min-width: 768px) {
+        gap: 2rem;
       }
 
-      strong {
-        color: $greyBlue800;
-        font-size: 16px;
+      &.contact-list-row {
+        @media (min-width: 768px) {
+          flex-direction: row;
+          gap: 4rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        padding-left: 1rem;
+      }
+    }
+
+    .contact-person {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1.5rem 0;
+
+      @media (max-width: 768px) {
+        padding: 1.25rem 0;
+      }
+
+      .person-info {
+        margin-bottom: 0.5rem;
+
+        h3 {
+          color: $deepCharcoal;
+          font-size: 1.375rem;
+          font-weight: 700;
+          font-family: "Inter", sans-serif;
+          margin: 0 0 0.5rem 0;
+          letter-spacing: -0.5px;
+
+          @media (max-width: 768px) {
+            font-size: 1.25rem;
+          }
+        }
+
+        .person-title {
+          color: $greyBlue600;
+          font-size: 1rem;
+          font-weight: 500;
+          font-family: "Inter", sans-serif;
+          margin: 0;
+          font-style: italic;
+        }
+      }
+
+      .contact-link {
+        color: $forestGreen;
+        font-size: 1.125rem;
         font-weight: 600;
         font-family: "Inter", sans-serif;
-      }
-
-      a {
-        color: $greyBlue600;
-        font-size: 16px;
-        font-weight: 500;
-        font-family: "Inter", sans-serif;
         text-decoration: none;
-        transition: color 0.2s ease;
-        word-break: break-all;
+        display: inline-block;
+        padding: 0.5rem 0;
+        transition: all 0.2s ease;
 
         &:hover {
-          color: $greyBlue800;
+          color: $pineNeedle;
           text-decoration: underline;
+        }
+
+        &:focus {
+          outline: 2px solid $forestGreen;
+          outline-offset: 2px;
+        }
+
+        @media (max-width: 768px) {
+          font-size: 1rem;
+          word-break: break-all;
         }
       }
     }
