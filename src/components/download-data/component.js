@@ -12,8 +12,6 @@ import {
 
 import './style.scss';
 
-import downloadIcon from '../../assets/icons/download-white.png';
-
 const DownloadData = (props) => {
   const {
     availableYears,
@@ -189,7 +187,6 @@ const DownloadData = (props) => {
                 onClick={handleDownload}
                 type="button"
               >
-                <img src={downloadIcon} alt="download icon" />
                 <span>Download Data</span>
               </button>
             )}

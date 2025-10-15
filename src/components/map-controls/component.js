@@ -50,7 +50,7 @@ const MapControls = (props) => {
       {/* Toggle Button */}
       <button
         type="button"
-        className="panel-toggle-button"
+        className={`panel-toggle-button ${showPanel ? 'panel-open' : 'panel-closed'}`}
         onClick={() => setShowPanel(!showPanel)}
       >
         Controls

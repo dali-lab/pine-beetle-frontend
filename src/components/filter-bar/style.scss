@@ -87,7 +87,14 @@
 
 .filter-clear-section {
   flex: 0 0 auto; // Don't grow or shrink, maintain natural size
-  align-self: center;
+  align-self: flex-start;
+  padding-top: 24px; // Move button down to align with input fields
+
+  .filter-input {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
 }
 
 .filter-label {

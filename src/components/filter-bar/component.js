@@ -108,16 +108,19 @@ const FilterBar = (props) => {
               </div>
             </div>
 
-            {/* Clear Button */}
+            {/* Clear Button - now aligned with inputs */}
             <div className="filter-section filter-clear-section">
-              <button
-                className="action-button clear-button"
-                onClick={clearAllSelections}
-                type="button"
-                disabled={!hasActiveFilters}
-              >
-                Clear
-              </button>
+              <div className="filter-label">&nbsp;</div>
+              <div className="filter-input">
+                <button
+                  className="action-button clear-button"
+                  onClick={clearAllSelections}
+                  type="button"
+                  disabled={!hasActiveFilters}
+                >
+                  Clear
+                </button>
+              </div>
             </div>
           </div>
         )}

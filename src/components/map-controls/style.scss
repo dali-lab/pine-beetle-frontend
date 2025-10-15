@@ -12,26 +12,42 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(8px);
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border-radius: 8px 8px 0 0; // Rounded top only when panel is closed
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: $greyBlue800;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   width: 100%;
   justify-content: space-between;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: 8px;
+  margin-bottom: 0; // Remove gap when panel is open
+  position: relative;
+  z-index: 1002;
 
   &:hover {
     background: rgba(255, 255, 255, 1);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
     transform: translateY(-1px);
+  }
+
+  // When panel is open, make it look connected
+  &.panel-open {
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
+    border-bottom: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  }
+
+  // When panel is closed, fully rounded
+  &.panel-closed {
+    border-radius: 8px;
+    margin-bottom: 8px;
   }
 }
 
@@ -46,10 +62,24 @@
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+  border-top: none; // Connect with toggle button
+  border-radius: 0 0 8px 8px; // Rounded bottom only
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   overflow: visible; // Allow dropdowns to extend outside the panel
   z-index: 1001;
+  margin-top: 0; // Connect directly with toggle button
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .control-section {
@@ -70,10 +100,13 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
 
   &:hover {
     background: $dropdownGreen;
+    transform: translateX(2px);
 
     .section-title {
       color: white;
@@ -86,6 +119,7 @@
 
   &:active {
     background: $dropdownGreen;
+    transform: translateX(1px);
 
     .section-title {
       color: white;
@@ -99,6 +133,7 @@
   // Active/open section styling
   &.active {
     background: $dropdownGreen;
+    transform: translateX(2px);
 
     .section-title {
       color: white;
@@ -112,10 +147,23 @@
 
 .map-controls-panel .section-title {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: $greyBlue800;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   margin: 0;
+  transition: color 0.3s ease;
+}
+
+// Download icon styling
+.download-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 4px;
+  color: $greyBlue800;
+}
+
+.section-header:hover .download-icon {
+  color: white !important;
 }
 
 .section-toggle {
