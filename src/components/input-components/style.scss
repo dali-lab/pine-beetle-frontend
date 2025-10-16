@@ -189,10 +189,11 @@
             &.selected {
                 color: $dropdownGreen;
                 font-weight: 700;
+                background-color: rgba(107, 142, 107, 0.1); // Light green background for selected items
             }
 
             &.reset-option {
-                background-color: $greyBlue100;
+                background-color: $grey100;
                 border-bottom: 1px solid $greyBlue200;
                 color: $greyBlue800;
                 border-radius: 0;
@@ -201,7 +202,7 @@
                 width: 100%;
 
                 &:hover {
-                    background-color: $greyBlue200;
+                    background-color: $grey200;
                 }
             }
 

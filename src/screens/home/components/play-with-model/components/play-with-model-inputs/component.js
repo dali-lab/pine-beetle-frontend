@@ -1,10 +1,7 @@
 import React from 'react';
 
-import trapIcon from '../../../../../../assets/icons/trap.png';
-import cleridsIcon from '../../../../../../assets/icons/clerids.png';
-import endobrevIcon from '../../../../../../assets/icons/endobrev.png';
-import { ChoiceInput } from '../../../../../../components/input-components';
 import { Button } from '../../../../../../components';
+import { ChoiceInput } from '../../../../../../components/input-components';
 
 import './style.scss';
 
@@ -26,45 +23,30 @@ const PlayWithModelInputs = (props) => {
   const INPUT_INFORMATION = {
     SPOTST2: {
       text: 'Enter number of spots two years ago',
-      icon: trapIcon,
-      iconAlt: 'number of spots icon',
-      iconId: 'trap-icon',
       value: parseInt(modelInputs.spotst2, 10),
       setValue: createValueSetter('spotst2'),
       trueFalseSelection: false,
     },
     SPOTST1: {
       text: 'Enter number of spots in previous year',
-      icon: trapIcon,
-      iconAlt: 'number of spots icon',
-      iconId: 'trap-icon',
       value: parseInt(modelInputs.spotst1, 10),
       setValue: createValueSetter('spotst1'),
       trueFalseSelection: false,
     },
     CLERIDST1: {
       text: 'Enter number of clerids / 2 weeks / trap this spring (leave blank if unknown)',
-      icon: cleridsIcon,
-      iconAlt: 'number of clerids icon',
-      iconId: 'clerids-icon',
       value: parseInt(modelInputs.cleridst1, 10),
       setValue: createValueSetter('cleridst1'),
       trueFalseSelection: false,
     },
     SPB: {
       text: 'Enter number of SPB / 2 weeks / trap this spring',
-      icon: trapIcon,
-      iconAlt: 'number of SPB icon',
-      iconId: 'spb-icon',
       value: parseInt(modelInputs.spb, 10),
       setValue: createValueSetter('spb'),
       trueFalseSelection: false,
     },
     ENDOBREV: {
-      text: 'Toggle this switch to “No” if endo-brevicomin was not used',
-      icon: endobrevIcon,
-      iconAlt: 'endo-brevicomin icon',
-      iconId: 'endobrev-icon',
+      text: 'Toggle this switch to "No" if endo-brevicomin was not used',
       value: modelInputs.endobrev,
       setValue: createValueSetter('endobrev'),
       trueFalseSelection: true,
@@ -103,27 +85,21 @@ const PlayWithModelInputs = (props) => {
       return (
         <form onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}>
           <div className="checkboxes">
-            <div className="endobrev-checkbox" onClick={() => setValue(true)}>
-              <label htmlFor="yes-endobrev">
-                <input
-                  type="checkbox"
-                  id="yes-endobrev"
-                  onChange={() => setValue(true)}
-                  checked={value}
-                />
+            <div className={`endobrev-checkbox ${value ? 'selected' : ''}`} onClick={() => setValue(true)}>
+              <div className="custom-checkbox">
+                <div className="checkbox-indicator">
+                  {value && <span className="checkmark">✓</span>}
+                </div>
                 <span>Yes</span>
-              </label>
+              </div>
             </div>
-            <div className="endobrev-checkbox" onClick={() => setValue(false)}>
-              <label htmlFor="no-endobrev" className="no-endobrev-checkbox">
-                <input
-                  type="checkbox"
-                  id="no-endobrev"
-                  onChange={() => setValue(false)}
-                  checked={!value}
-                />
+            <div className={`endobrev-checkbox ${!value ? 'selected' : ''}`} onClick={() => setValue(false)}>
+              <div className="custom-checkbox">
+                <div className="checkbox-indicator">
+                  {!value && <span className="checkmark">✓</span>}
+                </div>
                 <span>No</span>
-              </label>
+              </div>
             </div>
           </div>
         </form>
@@ -141,9 +117,6 @@ const PlayWithModelInputs = (props) => {
         {Object.entries(inputInformation).map(([key, inputInfo]) => {
           const {
             text,
-            icon,
-            iconAlt,
-            iconId,
             value,
             setValue,
             trueFalseSelection,
@@ -151,13 +124,7 @@ const PlayWithModelInputs = (props) => {
 
           return (
             <div className="field" key={key}>
-              <div className="icon-text-container">
-                <img
-                  className="icon"
-                  id={iconId}
-                  src={icon}
-                  alt={iconAlt}
-                />
+              <div className="field-text-container">
                 <div id="field-text">
                   {text
                     .replace('{YEAR}', year)

@@ -20,6 +20,7 @@ import {
   HistoricalView,
   Home,
   Methodology,
+  PlayWithModelScreen,
   Resources,
   ResultsComparison,
   SingleBlogPost,
@@ -148,6 +149,7 @@ const App = (props) => {
           <Route path={ROUTES.HISTORICAL_MAP_VIEW} component={HistoricalMapView} />
           <Route path={ROUTES.HISTORICAL_VIEW} component={HistoricalView} />
           <Route path={ROUTES.METHODOLOGY} component={Methodology} />
+          <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModelScreen} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
           <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
           {/* Redirect old prediction route to home page (new prediction page) */}

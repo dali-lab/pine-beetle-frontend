@@ -10,6 +10,7 @@ import HistoricalMapView from './historical-map-view';
 import HistoricalView from './historical-view';
 import Home from './home';
 import Methodology from './methodology';
+import PlayWithModelScreen from './play-with-model';
 import Prediction from './prediction';
 import Resources from './resources';
 import ResultsComparison from './results-comparison';
@@ -29,6 +30,7 @@ export {
   HistoricalView,
   Home,
   Methodology,
+  PlayWithModelScreen,
   Prediction,
   Resources,
   ResultsComparison,

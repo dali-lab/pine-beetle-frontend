@@ -50,11 +50,12 @@
         display: flex;
         background: $greyBlue200;
         border-radius: 6px;
-        padding: 2px;
+        height: 44px;
+        align-items: stretch;
 
         .toggle-btn {
           flex: 1;
-          padding: 0.5rem 1rem;
+          padding: 0;
           border: none;
           background: transparent;
           border-radius: 4px;
@@ -63,14 +64,26 @@
           color: $greyBlue600;
           cursor: pointer;
           transition: all 0.2s ease;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 40px;
+          height: 100%;
 
           &.active {
             background: $pineNeedle;
             color: $white;
+            font-weight: 600;
           }
 
           &:hover:not(.active) {
             color: $pineNeedle;
+            background: rgba(79, 119, 45, 0.1);
+          }
+
+          &:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(79, 119, 45, 0.2);
           }
         }
       }
@@ -224,76 +237,159 @@
     }
   }
 
-  .data-info {
-    background: linear-gradient(135deg, rgba(79, 119, 45, 0.05) 0%, rgba(107, 142, 107, 0.08) 100%);
-    border: 1px solid rgba(79, 119, 45, 0.2);
-    border-radius: 12px;
-    padding: 2rem;
-    margin-top: 3rem;
-    position: relative;
-    overflow: hidden;
+  .dataset-overview {
+    margin-top: 5rem;
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    border: none;
 
-    &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(to bottom, $pineNeedle, $dropdownGreen);
-      border-radius: 2px 0 0 2px;
+    @media (max-width: 768px) {
+      margin-top: 4rem;
     }
 
-    h4 {
-      color: $forestGreen;
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      letter-spacing: -0.25px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    .dataset-header {
+      text-align: left;
+      margin-bottom: 2.5rem;
 
-      &::before {
-        content: '📊';
-        font-size: 1.1rem;
+      h2 {
+        color: $forestGreen;
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin: 0 0 0.75rem 0;
+        letter-spacing: -0.25px;
+
+        @media (max-width: 768px) {
+          font-size: 1.5rem;
+        }
+      }
+
+      p {
+        color: $textColor;
+        font-size: 1rem;
+        margin: 0;
+        line-height: 1.5;
+
+        @media (max-width: 768px) {
+          font-size: 0.95rem;
+        }
       }
     }
 
-    ul {
-      margin: 0;
-      padding-left: 0;
-      list-style: none;
+    .dataset-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(79, 119, 45, 0.1);
 
-      li {
-        color: $textColor;
-        font-size: 0.95rem;
-        line-height: 1.7;
-        margin-bottom: 1rem;
-        padding: 0.75rem 0;
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .stat-card {
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 1rem 0;
+        text-align: center;
+        transition: none;
+
+        &:hover {
+          transform: none;
+          box-shadow: none;
+          border-color: transparent;
+        }
+
+        .stat-number {
+          color: $pineNeedle;
+          font-size: 2.5rem;
+          font-weight: 800;
+          line-height: 1;
+          margin-bottom: 0.5rem;
+
+          @media (max-width: 768px) {
+            font-size: 2rem;
+          }
+        }
+
+        .stat-label {
+          color: $forestGreen;
+          font-size: 1rem;
+          font-weight: 600;
+          margin-bottom: 0.25rem;
+        }
+
+        .stat-desc {
+          color: $textColor;
+          font-size: 0.85rem;
+          opacity: 0.7;
+        }
+      }
+    }
+
+    .dataset-details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .detail-section {
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        padding: 1.5rem 0;
+        transition: none;
         border-bottom: 1px solid rgba(79, 119, 45, 0.1);
-        display: flex;
-        align-items: flex-start;
-        gap: 0.75rem;
 
         &:last-child {
-          margin-bottom: 0;
           border-bottom: none;
         }
 
-        &::before {
-          content: '•';
-          color: $pineNeedle;
-          font-weight: bold;
-          font-size: 1.2rem;
-          line-height: 1;
-          margin-top: 0.1rem;
+        &:hover {
+          background: transparent;
+          border-color: transparent;
         }
 
-        strong {
+        h4 {
           color: $forestGreen;
-          font-weight: 700;
-          margin-right: 0.5rem;
+          font-size: 1.1rem;
+          font-weight: 600;
+          margin: 0 0 1rem 0;
+          display: flex;
+          align-items: center;
+
+          &::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(to bottom, $pineNeedle, $dropdownGreen);
+            border-radius: 2px;
+            margin-right: 0.75rem;
+          }
+        }
+
+        p {
+          color: $textColor;
+          font-size: 0.95rem;
+          line-height: 1.6;
+          margin: 0 0 0.75rem 0;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          strong {
+            color: $forestGreen;
+            font-weight: 600;
+          }
         }
       }
     }

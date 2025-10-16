@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { ChoiceInput } from '../../../../../../components/input-components';
 import { Button } from '../../../../../../components';
+import { ChoiceInput } from '../../../../../../components/input-components';
 
 import { DATA_MODES } from '../../../../../../constants';
 
 import {
-  getStateNameFromAbbreviation,
   getStateAbbreviationFromStateName,
+  getStateNameFromAbbreviation,
 } from '../../../../../../utils';
 
 import './style.scss';
@@ -38,40 +38,41 @@ const SelectionBar = (props) => {
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
   return (
-    <div className="play-with-model-bar">
-      <div className="play-with-model-bar-selection">
-        <p className="play-with-model-bar-selection-title">Year</p>
-        <div className="play-with-model-bar-selection-options">
+    <div className="selection-bar-container">
+      <div className="selection-bar-item">
+        <div className="selection-bar-label-container">
+          <div className="selection-bar-label">Year</div>
+        </div>
+        <div className="selection-bar-input-container">
           <ChoiceInput setValue={setPredictionYear} value={year} options={revYears} firstOptionText="Year" />
         </div>
       </div>
-      <div className="play-with-model-bar-selection">
-        <p className="play-with-model-bar-selection-title">State</p>
-        <div className="play-with-model-bar-selection-options">
+      <div className="selection-bar-item">
+        <div className="selection-bar-label-container">
+          <div className="selection-bar-label">State</div>
+        </div>
+        <div className="selection-bar-input-container">
           <ChoiceInput value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
         </div>
       </div>
-      <div className="play-with-model-bar-selection">
-        <div id="mode-selection">
-          <button
-            type="button"
-            id="mode-btn"
-            onClick={() => { setDataMode(DATA_MODES.COUNTY); }}
-            className={(countyMode) ? 'county-rd-selection' : null}
+      <div className="selection-bar-item">
+        <div className="selection-bar-label-container">
+          <div
+            className="selection-bar-label selection-bar-toggle-label"
+            onClick={() => setDataMode(countyMode ? DATA_MODES.RANGER_DISTRICT : DATA_MODES.COUNTY)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setDataMode(countyMode ? DATA_MODES.RANGER_DISTRICT : DATA_MODES.COUNTY);
+              }
+            }}
           >
-            County
-          </button>
-          <button
-            type="button"
-            id="mode-btn"
-            onClick={() => { setDataMode(DATA_MODES.RANGER_DISTRICT); }}
-            className={(!countyMode) ? 'county-rd-selection' : null}
-          >
-            <span className="full-text">Ranger District</span>
-            <span className="short-text">RD</span>
-          </button>
+            {countyMode ? 'County' : 'Ranger District'}
+          </div>
         </div>
-        <div>
+        <div className="selection-bar-input-container">
           <ChoiceInput
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? (v) => setCounty([v]) : (v) => setRangerDistrict([v])}
@@ -81,7 +82,7 @@ const SelectionBar = (props) => {
         </div>
       </div>
       <Button
-        className="reset-current-data-button"
+        className="selection-bar-clear-button"
         onClick={clearAllSelections}
       >
         Clear

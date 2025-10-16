@@ -216,16 +216,49 @@ const DownloadData = (props) => {
         </div>
       </div>
 
-      <div className="data-info">
-        <h4>Dataset Information</h4>
-        <ul>
-          <li><strong>Data Sources:</strong> Trap data collected March-June annually, Spot data updated through January</li>
-          <li><strong>File Format:</strong> CSV files with UTF-8 encoding for maximum compatibility</li>
-          <li><strong>Geographic Coverage:</strong> Southern United States with county and federal land boundaries</li>
-          <li><strong>Time Range:</strong> Historical data from 1987 to present, updated annually</li>
-          <li><strong>Data Quality:</strong> Field-verified trapping data with standardized collection protocols</li>
-          <li><strong>Additional Files:</strong> Administrative mappings, state abbreviations, and metadata included</li>
-        </ul>
+      <div className="dataset-overview">
+        <div className="dataset-header">
+          <h2>About This Dataset</h2>
+          <p>Download Southern Pine Beetle trapping data for your research, analysis, or educational projects</p>
+        </div>
+
+        <div className="dataset-stats">
+          <div className="stat-card">
+            <div className="stat-number">35+</div>
+            <div className="stat-label">Years Available</div>
+            <div className="stat-desc">From 1987 to present</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-number">15</div>
+            <div className="stat-label">States Covered</div>
+            <div className="stat-desc">Across the Southern US</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-number">2</div>
+            <div className="stat-label">Data Formats</div>
+            <div className="stat-desc">Raw & Summary data</div>
+          </div>
+        </div>
+
+        <div className="dataset-details">
+          <div className="detail-section">
+            <h4>What You&apos;ll Get</h4>
+            <p><strong>Raw Data:</strong> Individual trap records with exact dates and locations for detailed analysis</p>
+            <p><strong>Summary Data:</strong> Annual totals by county or federal land for trend analysis and mapping</p>
+          </div>
+          <div className="detail-section">
+            <h4>How to Use This Data</h4>
+            <p>Perfect for research papers, GIS mapping, statistical analysis, or educational projects. Data works with Excel, R, Python, ArcGIS, and other analysis tools.</p>
+          </div>
+          <div className="detail-section">
+            <h4>Data Collection</h4>
+            <p>Traps are deployed March through June each year using standardized protocols. All data is field-verified for accuracy and consistency.</p>
+          </div>
+          <div className="detail-section">
+            <h4>File Details</h4>
+            <p>CSV format with UTF-8 encoding ensures compatibility with all major software. Files include column headers and clear field descriptions.</p>
+          </div>
+        </div>
       </div>
     </div>
   );

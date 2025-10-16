@@ -30,6 +30,20 @@
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+
+            &:hover {
+                border-color: #9ca3af;
+            }
+
+            &:focus {
+                outline: none;
+                border-color: #4F772D;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            }
 
             .location-header-title {
                 font-size: 14px;

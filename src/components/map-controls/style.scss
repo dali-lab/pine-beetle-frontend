@@ -4,7 +4,7 @@
   position: absolute;
   top: 20px;
   left: 20px;
-  z-index: 1000;
+  z-index: 999;
   width: 240px;
 }
 
@@ -28,7 +28,7 @@
   box-shadow: none; // Remove shadow on desktop
   margin-bottom: 0; // Remove gap when panel is open
   position: relative;
-  z-index: 1002;
+  z-index: 998;
 
   &:hover {
     background: rgba(255, 255, 255, 1);
@@ -70,7 +70,7 @@
   border-radius: 0 0 8px 8px; // Rounded bottom only
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   overflow: visible; // Allow dropdowns to extend outside the panel
-  z-index: 1001;
+  z-index: 997;
   margin-top: 0; // Connect directly with toggle button
   animation: slideDown 0.3s ease-out;
 }
@@ -100,7 +100,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 12px 16px;
+  padding: 10px 14px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -145,6 +145,29 @@
 
     .section-toggle {
       color: white;
+    }
+  }
+
+  // Direct download button styling
+  &.download-direct {
+    background: $dropdownGreen;
+    color: white;
+    cursor: pointer;
+    justify-content: center;
+
+    .section-title {
+      color: white;
+    }
+
+    &:hover:not(:disabled) {
+      background: $pineNeedle;
+      transform: translateX(2px);
+    }
+
+    &:disabled {
+      background: #6b7280;
+      cursor: not-allowed;
+      transform: none;
     }
   }
 }
@@ -231,13 +254,11 @@
 
     &:hover:not(:disabled) {
       background: $pineNeedle !important;
-      border-color: $pineNeedle !important;
       transform: translateY(-1px);
     }
 
     &:disabled {
       background: #6b7280 !important;
-      border-color: #6b7280 !important;
       cursor: not-allowed;
       transform: none;
     }
@@ -286,19 +307,7 @@
   }
 }
 
-// Download control specific styles
-.download-control {
-  padding: 0 16px 16px 16px;
-  text-align: center;
-
-
-  .download-help {
-    font-size: 12px;
-    color: $greyBlue600;
-    margin: 0;
-    line-height: 1.4;
-  }
-}
+// Download control specific styles - removed as we now use direct download
 
 // Responsive adjustments
 @media (max-width: 768px) {
@@ -342,12 +351,23 @@
     padding: 0;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: none !important;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
+    outline: none !important;
+
+    &:focus {
+      outline: none !important;
+      border: none !important;
+    }
+
+    &:active {
+      outline: none !important;
+      border: none !important;
+    }
 
     &:hover {
       background: rgba(255, 255, 255, 1);
@@ -357,7 +377,6 @@
 
     &.active {
       background: $pineNeedle;
-      border-color: $pineNeedle;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
   }
@@ -403,8 +422,22 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23333333'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'/%3E%3C/svg%3E");
   }
 
-  .control-section:nth-child(3) .section-header.active::before {
+  .control-section:nth-child(3) .section-header.active::before,
+  .control-section:nth-child(3) .section-header.download-direct::before {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'/%3E%3C/svg%3E");
+  }
+
+  // Direct download button styling for mobile
+  .control-section:nth-child(3) .section-header.download-direct {
+    background: $pineNeedle;
+
+    &:hover:not(:disabled) {
+      background: darken($pineNeedle, 8%);
+    }
+
+    &:disabled {
+      background: #6b7280;
+    }
   }
 
   // Position each control panel to align with its button
@@ -422,7 +455,7 @@
     padding: 20px;
     width: 100vw;
     height: 100vh;
-    z-index: 2000;
+    z-index: 999;
     animation: slideUp 0.3s ease-out;
     overflow-y: auto;
 
@@ -467,7 +500,7 @@
     padding: 20px;
     width: 100vw;
     height: 100vh;
-    z-index: 2000;
+    z-index: 999;
     animation: slideUp 0.3s ease-out;
     overflow-y: auto;
 
@@ -498,20 +531,7 @@
     }
   }
 
-  .control-section:nth-child(3) .download-control {
-    position: absolute;
-    top: 0;
-    left: 56px; // Keep download panel small and to the right
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    padding: 16px;
-    width: 200px;
-    z-index: 1000;
-    animation: slideRight 0.3s ease-out;
-  }
+  // Download control removed - now using direct download button
 
   @keyframes slideUp {
     from {

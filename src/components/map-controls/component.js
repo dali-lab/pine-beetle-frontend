@@ -159,29 +159,12 @@ const MapControls = (props) => {
           <div className="control-section">
             <button
               type="button"
-              className={`section-header ${openSections.download ? 'active' : ''}`}
-              onClick={() => toggleSection('download')}
+              className="section-header download-direct"
+              onClick={handleDownloadClick}
+              disabled={isDownloadingMap}
             >
               <span className="section-title">{isDownloadingMap ? 'Downloading...' : 'Download map'}</span>
             </button>
-            {openSections.download && (
-              <div className="download-control">
-                <button
-                  type="button"
-                  className="action-button"
-                  onClick={() => {
-                    handleDownloadClick();
-                    setOpenSections((prev) => ({ ...prev, download: false }));
-                  }}
-                  disabled={isDownloadingMap}
-                >
-                  {isDownloadingMap ? 'Downloading...' : 'Download Map'}
-                </button>
-                <p className="download-help">
-                  Download the current map view as a high-resolution image
-                </p>
-              </div>
-            )}
           </div>
         </div>
       )}

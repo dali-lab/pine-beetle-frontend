@@ -31,7 +31,7 @@
                 position: relative;
                 min-height: 56px;
 
-            .header-logo {
+            .header-logo-title {
                 display: flex;
                 align-items: center;
                 gap: 12px;
@@ -57,55 +57,48 @@
                     }
                 }
 
-                .logo-text {
-                    color: $white;
-                    font-weight: bold;
-                    font-size: 18px;
-                    font-family: "Inter", sans-serif;
-                }
-            }
+                .header-title {
+                    position: relative;
+                    text-align: left;
 
-            .header-title {
-                position: relative;
-                text-align: left;
-
-                h1 {
-                    color: $white;
-                    font-size: 22px;
-                    font-weight: 600;
-                    font-family: "Inter", sans-serif;
-                    margin: 0;
-                    white-space: nowrap;
-                    letter-spacing: 0.5px;
-                    line-height: 1.2;
-
-                    @media (max-width: 768px) {
-                        font-size: 18px;
+                    h1 {
+                        color: $white;
+                        font-size: 22px;
                         font-weight: 600;
+                        font-family: "Inter", sans-serif;
+                        margin: 0;
+                        white-space: nowrap;
+                        letter-spacing: 0.5px;
+                        line-height: 1.2;
+
+                        @media (max-width: 768px) {
+                            font-size: 18px;
+                            font-weight: 600;
+                        }
+
+                        @media (max-width: 480px) {
+                            font-size: 16px;
+                            font-weight: 600;
+                        }
                     }
 
-                    @media (max-width: 480px) {
+                    h2 {
+                        color: rgba(255, 255, 255, 0.8);
                         font-size: 16px;
-                        font-weight: 600;
-                    }
-                }
+                        font-weight: 400;
+                        font-family: "Inter", sans-serif;
+                        margin: 0;
+                        white-space: nowrap;
+                        letter-spacing: 0.3px;
+                        line-height: 1.2;
 
-                h2 {
-                    color: rgba(255, 255, 255, 0.8);
-                    font-size: 16px;
-                    font-weight: 400;
-                    font-family: "Inter", sans-serif;
-                    margin: 0;
-                    white-space: nowrap;
-                    letter-spacing: 0.3px;
-                    line-height: 1.2;
+                        @media (max-width: 768px) {
+                            font-size: 14px;
+                        }
 
-                    @media (max-width: 768px) {
-                        font-size: 14px;
-                    }
-
-                    @media (max-width: 480px) {
-                        font-size: 12px;
+                        @media (max-width: 480px) {
+                            font-size: 12px;
+                        }
                     }
                 }
             }

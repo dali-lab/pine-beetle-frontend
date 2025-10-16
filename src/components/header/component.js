@@ -50,15 +50,14 @@ const Header = ({ setChartMode }) => {
     <header className="header">
       <div className="header-container">
         <nav className="header-nav">
-          <Link to={ROUTES.HOME} className="header-logo">
+          <Link to={ROUTES.HOME} className="header-logo-title">
             <div className="logo-image">
               <img src={pineBeetleImage} alt="SPB Logo" />
             </div>
-          </Link>
-
-          <Link to={ROUTES.HOME} className="header-title">
-            <h1>Southern Pine Beetle</h1>
-            <h2>Outbreak Predictions</h2>
+            <div className="header-title">
+              <h1>Southern Pine Beetle</h1>
+              <h2>Outbreak Predictions</h2>
+            </div>
           </Link>
 
           <div className="desktop-nav">
@@ -165,7 +164,15 @@ const Header = ({ setChartMode }) => {
               Comparison
             </Link>
 
-            {/* 4. How does it work Dropdown */}
+            {/* 4. Model Explorer */}
+            <Link
+              to={ROUTES.PLAY_WITH_MODEL}
+              className={`nav-item ${location.pathname === ROUTES.PLAY_WITH_MODEL ? 'active' : ''}`}
+            >
+              Model Explorer
+            </Link>
+
+            {/* 5. How does it work Dropdown */}
             <div
               className="nav-dropdown"
               ref={howItWorksButtonRef}
@@ -245,7 +252,7 @@ const Header = ({ setChartMode }) => {
               </div>
             </div>
 
-            {/* 5. About Menu */}
+            {/* 6. About Menu */}
             <div
               className="nav-dropdown"
               ref={aboutButtonRef}
@@ -401,6 +408,14 @@ const Header = ({ setChartMode }) => {
             onClick={() => setMobileMenuOpen(false)}
           >
             Comparison
+          </Link>
+
+          <Link
+            to={ROUTES.PLAY_WITH_MODEL}
+            className="mobile-nav-link"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Model Explorer
           </Link>
 
           <div className="mobile-nav-section">

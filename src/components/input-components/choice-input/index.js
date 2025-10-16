@@ -122,7 +122,7 @@ const ChoiceInput = (props) => {
               {option}
               {value === option && (
                 <svg className="check-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M3 8L6.5 11.5L13 4.5" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M3 8L6.5 11.5L13 4.5" stroke="#4F772D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               )}
             </div>

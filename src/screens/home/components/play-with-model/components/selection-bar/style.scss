@@ -1,122 +1,102 @@
-.play-with-model-bar {
-    background-color: $grey100;
-    box-shadow: 0px 12px 30px -5px rgba(77, 81, 94, 0.04);
-    border-radius: 18px;
-    font-family: 'Inter';
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 500;
-    letter-spacing: 0em;
-    text-align: left;
-    display: grid;
-    grid-template-columns: 2fr 2fr 4fr 1fr;
-    grid-template-rows: 1fr;
-    gap: 10px;
-    align-items: flex-end;
+@import '../../../../../../styles/colors.scss';
+
+.selection-bar-container {
+  background-color: $white;
+  border-radius: 12px;
+  border: 1px solid $grey200;
+  font-family: 'Inter';
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 24px;
+  align-items: flex-end;
+  padding: 24px;
+  margin-bottom: 0;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
     padding: 20px;
-    margin-bottom: 20px;
-
-    &-selection {
-        display: flex;
-        flex-direction: column;
-
-        &-title {
-            margin-top: 0.5vh;
-            font-weight: 600;
-        }
-
-        &-options {
-            display: flex !important;
-            flex-direction: row !important;
-
-            .selection-container {
-                width: 100%;
-            }
-        }
-    }
-
-
-    .selection-button {
-        width: 100%;
-        font-size: 16px;
-    }
+  }
 }
 
-.menuInstruction {
-    background: $white;
+.selection-bar-item {
+  display: flex;
+  flex-direction: column;
 }
 
-.menuInstruction label {
-    background: $white;
-    color: $greyBlue500;
+.selection-bar-label-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin-bottom: 8px;
 }
 
-// TODO: review these styles - they are probably not used
-.menuInstruction .input {
-    padding-left: 20px;
-    background: #EDEDEE;
-    height: 43px;
-    font-family: 'Inter';
-    font-size: 18px;
-    width: 10vw;
-    max-width: 200px;
-    border-radius: 6px;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+.selection-bar-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: $headingColor;
+  line-height: 1.4;
+
+  &.selection-bar-toggle-label {
     cursor: pointer;
-    letter-spacing: 1.5px;
-}
+    transition: all 0.2s ease;
+    padding: 4px 8px;
+    border-radius: 4px;
+    position: relative;
 
-#vl1 {
-    border-left: 2px solid #f9f9f9;
-    height: 72px;
-    margin-left: 2vw;
-    margin-right: 2vw;
-}
-
-#vl2 {
-    border-left: 2px solid #f9f9f9;
-    height: 24px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
-.county-rd-selection {
-    color: $headingColor !important;
-    font-weight: 600;
-}
-
-#mode-selection {
-    display: flex;
-    margin-top: 0.5vh;
-    gap: 10px;
-}
-
-#mode-selection button {
-    background-color: transparent;
-    background-repeat: no-repeat;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    color: $greyBlue600;
-    font-size: 18px;
-    line-height: 1.8;
-}
-
-// Hide short text by default (resolution > 1200px)
-.short-text {
-    display: none;
-}
-
-// When resolution <= 1200px, hide full text and show short text
-@media (max-width: 1200px) {
-    .short-text {
-        display: inline-block;
+    &:hover {
+      background-color: $grey100;
+      color: $pineNeedle;
     }
 
-    .full-text {
-        display: none;
+    &:active {
+      background-color: $grey200;
     }
+
+    &:focus {
+      outline: 2px solid $pineNeedle;
+      outline-offset: 2px;
+    }
+
+    &::after {
+      content: '↔';
+      margin-left: 8px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+  }
+}
+
+.selection-bar-input-container {
+  display: flex !important;
+  flex-direction: row !important;
+
+  .selection-container {
+    width: 100%;
+  }
+}
+
+// Clear button styling
+.selection-bar-clear-button {
+  background: $white;
+  color: $headingColor;
+  border: 2px solid $grey300;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:active {
+    background: $pineNeedle;
+    color: $white;
+  }
 }
