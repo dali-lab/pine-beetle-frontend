@@ -121,17 +121,62 @@ const DataScreen = () => {
             <Link to={ROUTES.DOWNLOAD_DATA} className="thumbnail-card">
               <div className="thumbnail-visual">
                 <div className="download-preview">
-                  <div className="download-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                      <polyline points="7,10 12,15 17,10" />
-                      <line x1="12" y1="15" x2="12" y2="3" />
+                  {/* Data Background Pattern */}
+                  <div className="data-background">
+                    <svg className="data-pattern" viewBox="0 0 200 200" fill="none">
+                      {/* Grid pattern */}
+                      <defs>
+                        <pattern id="dataGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(79, 119, 45, 0.1)" strokeWidth="0.5" />
+                        </pattern>
+                        <pattern id="dataDots" width="40" height="40" patternUnits="userSpaceOnUse">
+                          <circle cx="20" cy="20" r="1.5" fill="rgba(79, 119, 45, 0.15)" />
+                        </pattern>
+                      </defs>
+                      <rect width="200" height="200" fill="url(#dataGrid)" />
+                      <rect width="200" height="200" fill="url(#dataDots)" />
+
+                      {/* Data visualization elements */}
+                      <g className="data-charts">
+                        {/* Bar chart representation */}
+                        <rect x="20" y="160" width="8" height="20" fill="rgba(79, 119, 45, 0.3)" />
+                        <rect x="35" y="150" width="8" height="30" fill="rgba(79, 119, 45, 0.4)" />
+                        <rect x="50" y="140" width="8" height="40" fill="rgba(79, 119, 45, 0.5)" />
+                        <rect x="65" y="130" width="8" height="50" fill="rgba(79, 119, 45, 0.6)" />
+                        <rect x="80" y="120" width="8" height="60" fill="rgba(79, 119, 45, 0.7)" />
+
+                        {/* Line chart representation */}
+                        <polyline
+                          points="20,100 40,95 60,85 80,75 100,70 120,65 140,60 160,55 180,50"
+                          fill="none"
+                          stroke="rgba(107, 142, 107, 0.6)"
+                          strokeWidth="2"
+                        />
+
+                        {/* Scatter plot points */}
+                        <circle cx="30" cy="40" r="2" fill="rgba(79, 119, 45, 0.4)" />
+                        <circle cx="60" cy="35" r="2" fill="rgba(79, 119, 45, 0.5)" />
+                        <circle cx="90" cy="30" r="2" fill="rgba(79, 119, 45, 0.6)" />
+                        <circle cx="120" cy="25" r="2" fill="rgba(79, 119, 45, 0.7)" />
+                        <circle cx="150" cy="20" r="2" fill="rgba(79, 119, 45, 0.8)" />
+                      </g>
                     </svg>
                   </div>
-                  <div className="file-types">
-                    <div className="file-type">CSV</div>
-                    <div className="file-type">Excel</div>
-                    <div className="file-type">JSON</div>
+
+                  {/* Download Icon Overlay */}
+                  <div className="download-icon-overlay">
+                    <div className="download-icon">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7,10 12,15 17,10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                      </svg>
+                    </div>
+                    <div className="file-types">
+                      <div className="file-type">CSV</div>
+                      <div className="file-type">Excel</div>
+                      <div className="file-type">JSON</div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -38,6 +38,7 @@ import {
 } from './constants';
 
 import { Map } from '../../../../components';
+import MapControls from '../../../../components/map-controls/component';
 import { isInvalidNumber } from '../../../../utils/map';
 import './style.scss';
 
@@ -56,7 +57,6 @@ const HistoricalMap = (props) => {
 
   const [map, setMap] = useState();
   const [initialFill, setInitialFill] = useState(false);
-  const [legendTags, setLegendTags] = useState([]);
   const [trappingHover, setTrappingHover] = useState(null);
   const [isDownloadingMap, setIsDownloadingMap] = useState(false);
   const [mapClickCallback, setMapClickCallback] = useState();
@@ -196,7 +196,15 @@ const HistoricalMap = (props) => {
 
     setTimeout(() => {
       setMap(undefined);
-      generateMap(true, map, thresholds, colors, setLegendTags, dataMode, clickCallback, setMapClickCallback, hoverCallback, setMapHoverCallback, setMap);
+      // Wait for the map container to be available
+      const checkContainer = () => {
+        if (document.getElementById('map')) {
+          generateMap(true, map, thresholds, colors, () => {}, dataMode, clickCallback, setMapClickCallback, hoverCallback, setMapHoverCallback, setMap);
+        } else {
+          setTimeout(checkContainer, 50);
+        }
+      };
+      checkContainer();
 
       // Calls function to download map when download control is clicked
       document.addEventListener('click', (event) => {
@@ -319,16 +327,42 @@ const HistoricalMap = (props) => {
     }
   }, [rawData]);
 
+  // Helper function to get risk level label
+  const getRiskLevel = (index) => {
+    const riskLevels = ['No Data', '0-9', '10-19', '20-49', '50-99', '100-249', '250+'];
+    return riskLevels[index] || 'Unknown';
+  };
+
+  // Prepare legend data for the overlay
+  const legendItems = thresholds.map((threshold, index) => ({
+    color: colors[index],
+    label: `${threshold} (${getRiskLevel(index)})`,
+  }));
+
   return (
-    <div id="trapping-map-container">
+    <div className="container flex-item-left" id="map-container">
       <Map
         hover={trappingHover}
-        legend={(
-          <>
-            <div className="legend-key-title">Total Number of Spots</div>
-            {legendTags}
-          </>
-              )}
+      />
+      <MapControls
+        // Filter props
+        availableStates={availableStates}
+        availableYears={[]} // Historical data doesn't have years filter
+        availableSublocations={availableSublocations}
+        county={props.county}
+        dataMode={dataMode}
+        predictionYear={predictionYear}
+        rangerDistrict={props.rangerDistrict}
+        selectedState={selectedState}
+        setCounty={setCounty}
+        setPredictionYear={() => {}} // No year setting for historical
+        setRangerDistrict={setRangerDistrict}
+        setState={setState}
+        clearAllSelections={props.clearAllSelections}
+        // Legend props
+        legendItems={legendItems}
+        legendTitle="Total Number of Spots"
+        // Download props
         downloadCallback={() => downloadMap(
           map,
           predictionYear,
@@ -339,6 +373,8 @@ const HistoricalMap = (props) => {
           { titleDetails: { selectedState, period: predictionYear }, thresholds, colors },
         )}
         isDownloadingMap={isDownloadingMap}
+        // Hide filters
+        hideFilters
       />
     </div>
   );

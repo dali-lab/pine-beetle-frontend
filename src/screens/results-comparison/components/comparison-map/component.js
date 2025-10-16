@@ -1,6 +1,7 @@
 import mapboxgl from 'mapbox-gl';
 import React, { useEffect, useState } from 'react';
 import Map from '../../../../components/map';
+import MapControls from '../../../../components/map-controls/component';
 import TogglesOverlay from '../../../../components/map/components';
 import {
   DATA_MODES, MAP_SOURCE_NAME, MAP_TITLES, SOURCE_LAYERS, STATE_VECTOR_LAYER, VECTOR_LAYER,
@@ -49,7 +50,6 @@ const ComparisonMap = (props) => {
   } = props;
   const [map, setMap] = useState();
   const [initialFill, setInitialFill] = useState(false);
-  const [legendTags, setLegendTags] = useState([]);
   const [resultsHover, setResultsHover] = useState(null);
   const [isDownloadingMap, setIsDownloadingMap] = useState(false);
   const [mapClickCallback, setMapClickCallback] = useState();
@@ -181,19 +181,27 @@ const ComparisonMap = (props) => {
 
     setTimeout(() => {
       setMap(undefined);
-      generateMap(
-        true,
-        map,
-        thresholds,
-        colors,
-        setLegendTags,
-        dataMode,
-        clickCallback,
-        setMapClickCallback,
-        hoverCallback,
-        setMapHoverCallback,
-        setMap,
-      );
+      // Wait for the map container to be available
+      const checkContainer = () => {
+        if (document.getElementById('map')) {
+          generateMap(
+            true,
+            map,
+            thresholds,
+            colors,
+            () => {},
+            dataMode,
+            clickCallback,
+            setMapClickCallback,
+            hoverCallback,
+            setMapHoverCallback,
+            setMap,
+          );
+        } else {
+          setTimeout(checkContainer, 50);
+        }
+      };
+      checkContainer();
     }, 100);
   }, [dataMode]);
 
@@ -283,19 +291,48 @@ const ComparisonMap = (props) => {
     }
   }, [data, map]);
 
+  // Prepare legend data for the overlay with shorter labels
+  const getShortLabel = (threshold) => {
+    const labelMap = {
+      'outbreak predicted, outbreak occurred': 'Predicted, Occurred',
+      'outbreak not predicted, outbreak did not occur': 'Not Predicted, Did Not Occur',
+      'outbreak not predicted, outbreak occurred': 'Not Predicted, Occurred',
+      'outbreak predicted, outbreak did not occur': 'Predicted, Did Not Occur',
+    };
+    return labelMap[threshold] || threshold;
+  };
+
+  const legendItems = thresholds.map((threshold, index) => ({
+    color: colors[index],
+    label: getShortLabel(threshold),
+  }));
+
   return (
     <>
       <TogglesOverlay />
       <div className="container flex-item-left results-comparison-map" id="map-container">
         <Map
-          legend={(
-            <>
-              <div className="legend-key-title">Results comparison</div>
-              {legendTags}
-            </>
-          )}
           hover={resultsHover}
-          isDownloadingMap={isDownloadingMap}
+        />
+        <MapControls
+          // Filter props
+          availableStates={availableStates}
+          availableYears={[]} // Results comparison doesn't have years filter
+          availableSublocations={availableSublocations}
+          county={props.county}
+          dataMode={dataMode}
+          predictionYear={year}
+          rangerDistrict={props.rangerDistrict}
+          selectedState={selectedState}
+          setCounty={setCounty}
+          setPredictionYear={() => {}} // No year setting for results comparison
+          setRangerDistrict={setRangerDistrict}
+          setState={setState}
+          clearAllSelections={props.clearAllSelections}
+          // Legend props
+          legendItems={legendItems}
+          legendTitle="Results comparison"
+          // Download props
           downloadCallback={() => downloadMap(
             map,
             year,
@@ -305,6 +342,9 @@ const ComparisonMap = (props) => {
             MAP_TITLES.COMPARISON,
             { titleDetails: { selectedState, period: year }, thresholds, colors },
           )}
+          isDownloadingMap={isDownloadingMap}
+          // Hide filters
+          hideFilters
         />
         {!isLoading && !data.length && (
         <div className="results-comparison-message">

@@ -44,10 +44,14 @@
     box-shadow: none; // Remove shadow when panel is open
   }
 
-  // When panel is closed, fully rounded
+  // When panel is closed, fully rounded and smaller
   &.panel-closed {
     border-radius: 8px;
     margin-bottom: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    width: auto;
+    min-width: 80px;
   }
 }
 

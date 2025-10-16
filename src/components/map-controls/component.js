@@ -25,6 +25,8 @@ const MapControls = (props) => {
     // Download props
     downloadCallback,
     isDownloadingMap,
+    // Control visibility
+    hideFilters = false,
   } = props;
 
   const [showPanel, setShowPanel] = useState(true); // Panel open by default
@@ -98,37 +100,39 @@ const MapControls = (props) => {
       {/* Unified Controls Panel */}
       {showPanel && (
         <div className="unified-controls-panel">
-          {/* Filters Section */}
-          <div className="control-section">
-            <button
-              type="button"
-              className={`section-header ${openSections.filters ? 'active' : ''}`}
-              onClick={() => toggleSection('filters')}
-            >
-              <span className="section-title">Filters</span>
-              <span className="section-toggle">
-                {openSections.filters ? '−' : '+'}
-              </span>
-            </button>
-            {openSections.filters && (
-              <FilterOverlay
-                availableStates={availableStates}
-                availableYears={availableYears}
-                availableSublocations={availableSublocations}
-                county={county}
-                dataMode={dataMode}
-                predictionYear={predictionYear}
-                rangerDistrict={rangerDistrict}
-                selectedState={selectedState}
-                setCounty={setCounty}
-                setPredictionYear={setPredictionYear}
-                setRangerDistrict={setRangerDistrict}
-                setState={setState}
-                clearAllSelections={clearAllSelections}
-                className="embedded-control"
-              />
-            )}
-          </div>
+          {/* Filters Section - Only show if not hidden */}
+          {!hideFilters && (
+            <div className="control-section">
+              <button
+                type="button"
+                className={`section-header ${openSections.filters ? 'active' : ''}`}
+                onClick={() => toggleSection('filters')}
+              >
+                <span className="section-title">Filters</span>
+                <span className="section-toggle">
+                  {openSections.filters ? '−' : '+'}
+                </span>
+              </button>
+              {openSections.filters && (
+                <FilterOverlay
+                  availableStates={availableStates}
+                  availableYears={availableYears}
+                  availableSublocations={availableSublocations}
+                  county={county}
+                  dataMode={dataMode}
+                  predictionYear={predictionYear}
+                  rangerDistrict={rangerDistrict}
+                  selectedState={selectedState}
+                  setCounty={setCounty}
+                  setPredictionYear={setPredictionYear}
+                  setRangerDistrict={setRangerDistrict}
+                  setState={setState}
+                  clearAllSelections={clearAllSelections}
+                  className="embedded-control"
+                />
+              )}
+            </div>
+          )}
 
           {/* Legend Section */}
           <div className="control-section">

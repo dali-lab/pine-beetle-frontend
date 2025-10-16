@@ -6,7 +6,7 @@ import './style.scss';
 
 import { OverviewText, TrappingDataMap } from '../trapping-data/components';
 
-import { FilterBar, Loading, ScrollHint } from '../../components';
+import { Loading, ScrollHint } from '../../components';
 
 const HistoricalMapView = (props) => {
   const {
@@ -29,9 +29,6 @@ const HistoricalMapView = (props) => {
         <Loading visible={isLoading} />
         {errorText.length > 0 && errorText.map((t) => <p>{t}</p>)}
         <OverviewText title="Historical Map View" />
-        <div className="container">
-          <FilterBar useHistoricalData title="Filter Historical Data" />
-        </div>
         <div id="view-selections" className="container">
           <div id="toggles-overlay-h">
             <div className="selection">
