@@ -1,0 +1,278 @@
+#resources-content {
+    min-height: auto;
+    background-color: $backgroundColor;
+    padding: 2rem 0;
+    margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
+
+    // Using global page-header styles from main.scss
+
+    .resources-content-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 32px;
+
+        @media (max-width: 768px) {
+            padding: 0 16px;
+        }
+    }
+
+    .resources-section {
+        margin-bottom: 4rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid $grey200;
+
+        &:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: $deepCharcoal;
+            border-left: 4px solid $grey600;
+            padding-left: 1rem;
+
+            @media (max-width: 768px) {
+                font-size: 1.5rem;
+                padding-left: 0.75rem;
+            }
+        }
+
+        .section-intro {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: $textColor;
+            margin-bottom: 2rem;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+
+            @media (max-width: 768px) {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        .resource-card {
+            background-color: $backgroundColor;
+            border: 1px solid $grey200;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+
+            &:hover {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+                transform: translateY(-2px);
+                border-color: $grey300;
+            }
+
+            .resource-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+                gap: 1rem;
+
+                h3 {
+                    font-size: 1.3rem;
+                    font-weight: 500;
+                    color: $deepCharcoal;
+                    margin: 0;
+                    line-height: 1.3;
+                    flex: 1;
+                }
+
+                .resource-type {
+                    background-color: $grey100;
+                    color: $textColor;
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 20px;
+                    font-size: 0.8rem;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    white-space: nowrap;
+                }
+            }
+
+            .resource-description {
+                font-size: 0.95rem;
+                line-height: 1.6;
+                color: $textColor;
+                margin-bottom: 1.5rem;
+            }
+
+            .resource-details {
+                background-color: $grey100;
+                border-radius: 8px;
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+
+                .detail-item {
+                    display: flex;
+                    margin-bottom: 0.5rem;
+                    font-size: 0.9rem;
+                    line-height: 1.4;
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    strong {
+                        color: $headingColor;
+                        font-weight: 500;
+                        min-width: 80px;
+                        margin-right: 0.5rem;
+                    }
+                }
+            }
+
+            .resource-actions {
+                .resource-link {
+                    display: inline-flex;
+                    align-items: center;
+                    background-color: $forestGreen;
+                    color: white;
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 6px;
+                    text-decoration: none;
+                    font-weight: 500;
+                    font-size: 0.9rem;
+                    transition: all 0.2s ease;
+                    border: 2px solid transparent;
+
+                    &:hover {
+                        background-color: $pineNeedle;
+                        transform: translateY(-1px);
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+                    }
+
+                    &:active {
+                        transform: translateY(0);
+                    }
+                }
+            }
+        }
+
+        .reference-list {
+            .reference-item {
+                background-color: $backgroundColor;
+                border: 1px solid $grey200;
+                border-radius: 8px;
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                h4 {
+                    font-size: 1.1rem;
+                    font-weight: 500;
+                    color: $deepCharcoal;
+                    margin: 0 0 0.75rem 0;
+                }
+
+                p {
+                    font-size: 0.95rem;
+                    line-height: 1.6;
+                    color: $textColor;
+                    margin: 0;
+
+                    em {
+                        color: $grey600;
+                        font-style: italic;
+                    }
+                }
+            }
+        }
+
+        .guidelines-content {
+            background-color: $grey100;
+            border-radius: 8px;
+            padding: 2rem;
+
+            p {
+                font-size: 1rem;
+                line-height: 1.6;
+                color: $textColor;
+                margin-bottom: 1.5rem;
+            }
+
+            .citation-example {
+                background-color: $backgroundColor;
+                border: 1px solid $grey200;
+                border-radius: 6px;
+                padding: 1.5rem;
+                margin-top: 1.5rem;
+
+                h4 {
+                    font-size: 1rem;
+                    font-weight: 500;
+                    color: $headingColor;
+                    margin: 0 0 0.75rem 0;
+                }
+
+                p {
+                    font-size: 0.9rem;
+                    line-height: 1.5;
+                    color: $grey600;
+                    margin: 0;
+                    font-family: 'Courier New', monospace;
+                    background-color: $grey100;
+                    padding: 1rem;
+                    border-radius: 4px;
+                    border: 1px solid $grey200;
+                }
+            }
+        }
+    }
+
+    // Responsive adjustments
+    @media (max-width: 768px) {
+        .resource-card {
+            padding: 1.5rem;
+
+            .resource-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+
+                .resource-type {
+                    align-self: flex-start;
+                }
+            }
+
+            .resource-details {
+                .detail-item {
+                    flex-direction: column;
+                    gap: 0.25rem;
+
+                    strong {
+                        min-width: auto;
+                    }
+                }
+            }
+        }
+
+        .guidelines-content {
+            padding: 1.5rem;
+
+            .citation-example {
+                padding: 1rem;
+
+                p {
+                    font-size: 0.8rem;
+                }
+            }
+        }
+    }
+}

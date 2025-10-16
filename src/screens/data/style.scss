@@ -155,73 +155,23 @@
             .download-preview {
               width: 100%;
               height: 100%;
-              position: relative;
               display: flex;
-              flex-direction: column;
               align-items: center;
               justify-content: center;
-              overflow: hidden;
+              background: linear-gradient(135deg, rgba(79, 119, 45, 0.05) 0%, rgba(107, 142, 107, 0.05) 100%);
               border-radius: 6px;
 
-              .data-background {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                opacity: 0.6;
-                z-index: 1;
-
-                .data-pattern {
-                  width: 100%;
-                  height: 100%;
-                }
-              }
-
-              .download-icon-overlay {
-                position: relative;
-                z-index: 2;
+              .download-icon-data {
+                color: $pineNeedle;
                 display: flex;
-                flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 1rem;
-                background: rgba(255, 255, 255, 0.9);
-                padding: 1.5rem;
-                border-radius: 8px;
-                backdrop-filter: blur(2px);
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                filter: drop-shadow(0 2px 4px rgba(79, 119, 45, 0.2));
+                transition: all 0.3s ease;
 
-                .download-icon {
-                  color: $pineNeedle;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  filter: drop-shadow(0 2px 4px rgba(79, 119, 45, 0.2));
-                }
-
-                .file-types {
-                  display: flex;
-                  gap: 0.5rem;
-                  flex-wrap: wrap;
-                  justify-content: center;
-
-                  .file-type {
-                    background: $pineNeedle;
-                    color: $white;
-                    padding: 0.3rem 0.6rem;
-                    border-radius: 4px;
-                    font-size: 0.7rem;
-                    font-weight: 600;
-                    border: none;
-                    box-shadow: 0 2px 4px rgba(79, 119, 45, 0.3);
-                    transition: all 0.2s ease;
-
-                    &:hover {
-                      background: darken($pineNeedle, 10%);
-                      transform: translateY(-1px);
-                    }
-                  }
+                &:hover {
+                  transform: scale(1.1);
+                  filter: drop-shadow(0 4px 8px rgba(79, 119, 45, 0.3));
                 }
               }
             }
