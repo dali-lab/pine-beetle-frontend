@@ -15,7 +15,7 @@ const Contact = () => {
         <div className="contact-content">
           <div className="contact-category">
             <h2>Program Questions</h2>
-            <p className="category-description">For inquiries about the Southern Pine Beetle prediction program and research</p>
+            <p className="contact-description">For inquiries about the Southern Pine Beetle prediction program and research</p>
             <div className="contact-list contact-list-row">
               <div className="contact-person">
                 <div className="person-info">
@@ -40,7 +40,7 @@ const Contact = () => {
 
           <div className="contact-category">
             <h2>Local Forest Management</h2>
-            <p className="category-description">For questions about local forest conditions and management practices</p>
+            <p className="contact-description">For questions about local forest conditions and management practices</p>
             <div className="contact-list">
               <div className="contact-person">
                 <div className="person-info">
@@ -56,7 +56,7 @@ const Contact = () => {
 
           <div className="contact-category">
             <h2>Technical Support</h2>
-            <p className="category-description">For technical issues with the prediction tool and platform</p>
+            <p className="contact-description">For technical issues with the prediction tool and platform</p>
             <div className="contact-list">
               <div className="contact-person">
                 <div className="person-info">
