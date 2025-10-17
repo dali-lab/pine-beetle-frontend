@@ -150,24 +150,50 @@
 
   // Direct download button styling
   &.download-direct {
-    background: $dropdownGreen;
-    color: white;
+    background: transparent;
+    color: $greyBlue800;
     cursor: pointer;
-    justify-content: center;
+    justify-content: flex-start;
 
     .section-title {
-      color: white;
+      color: $greyBlue800;
     }
 
     &:hover:not(:disabled) {
-      background: $pineNeedle;
+      background: $dropdownGreen;
       transform: translateX(2px);
+
+      .section-title {
+        color: white;
+      }
+    }
+
+    &:focus:not(:disabled) {
+      background: $dropdownGreen;
+      transform: translateX(2px);
+
+      .section-title {
+        color: white;
+      }
+    }
+
+    &:active:not(:disabled) {
+      background: $pineNeedle;
+      transform: translateX(1px);
+
+      .section-title {
+        color: white;
+      }
     }
 
     &:disabled {
       background: #6b7280;
       cursor: not-allowed;
       transform: none;
+
+      .section-title {
+        color: white;
+      }
     }
   }
 }
@@ -429,9 +455,17 @@
 
   // Direct download button styling for mobile
   .control-section:nth-child(3) .section-header.download-direct {
-    background: $pineNeedle;
+    background: rgba(255, 255, 255, 0.95);
 
     &:hover:not(:disabled) {
+      background: $pineNeedle;
+    }
+
+    &:focus:not(:disabled) {
+      background: $pineNeedle;
+    }
+
+    &:active:not(:disabled) {
       background: darken($pineNeedle, 8%);
     }
 
