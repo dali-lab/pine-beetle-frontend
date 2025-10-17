@@ -49,16 +49,16 @@ const Methodology = () => {
       </div>
 
       {/* How It Works Section */}
-      <section className="how-it-works-section">
-        <div className="how-it-works-container">
+      <section className="methodology-how-it-works-section">
+        <div className="methodology-how-it-works-container">
           <div className="methodology-content">
             {howItWorksContent.map((element, index) => (
               <div key={`how-it-works-${index + 1}`} className="methodology-step">
-                <div className="step-header">
-                  <div className="step-number">{index + 1}</div>
-                  <h3 className="step-title">{element.title}</h3>
+                <div className="methodology-step-header">
+                  <div className="methodology-step-number">{index + 1}</div>
+                  <h3 className="methodology-step-title">{element.title}</h3>
                 </div>
-                <p className="step-description">
+                <p className="methodology-step-description">
                   {element.text}
                 </p>
               </div>

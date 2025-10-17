@@ -4,7 +4,7 @@
   min-height: auto;
   background: $backgroundColor;
   padding: 2rem 0;
-  margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
+  margin-top: 8.75rem;
 
   @media (max-width: 768px) {
     padding: 1rem 0;
@@ -14,46 +14,46 @@
 // Old header styles removed - now using global page-header styles
 
 // How It Works Section
-.how-it-works-section {
-  padding: 80px 0;
+.methodology-how-it-works-section {
+  padding: 5rem 0;
   background: $backgroundColor;
 
   @media (max-width: 1024px) {
-    padding: 64px 0;
+    padding: 4rem 0;
   }
 
   @media (max-width: 768px) {
-    padding: 48px 0;
+    padding: 3rem 0;
   }
 }
 
-.how-it-works-container {
-  max-width: 800px;
+.methodology-how-it-works-container {
+  max-width: 50rem;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 1.5rem;
 
   @media (max-width: 1024px) {
-    padding: 0 20px;
+    padding: 0 1.25rem;
   }
 
   @media (max-width: 768px) {
-    padding: 0 16px;
+    padding: 0 1rem;
   }
 }
 
 .methodology-content {
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 3rem;
 
   @media (max-width: 768px) {
-    gap: 32px;
+    gap: 2rem;
   }
 }
 
 .methodology-step {
   border-bottom: 1px solid $greyBlue200;
-  padding-bottom: 32px;
+  padding-bottom: 2rem;
 
   &:last-child {
     border-bottom: none;
@@ -61,104 +61,104 @@
   }
 
   @media (max-width: 768px) {
-    padding-bottom: 24px;
+    padding-bottom: 1.5rem;
   }
 }
 
-.step-header {
+.methodology-step-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 1rem;
+  margin-bottom: 1rem;
 
   @media (max-width: 768px) {
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
   }
 }
 
-.step-number {
-  width: 32px;
-  height: 32px;
+.methodology-step-number {
+  width: 2rem;
+  height: 2rem;
   background: $headingColor;
   color: $white;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
   flex-shrink: 0;
 
   @media (max-width: 768px) {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.75rem;
   }
 }
 
-.step-title {
-  font-size: 24px;
+.methodology-step-title {
+  font-size: 1.5rem;
   font-weight: 600;
   color: $headingColor;
   margin: 0;
   line-height: 1.3;
 
   @media (max-width: 1024px) {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
 
   @media (max-width: 768px) {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 }
 
-.step-description {
-  font-size: 16px;
+.methodology-step-description {
+  font-size: 1rem;
   color: $textColor;
   line-height: 1.6;
   margin: 0;
-  margin-left: 48px;
+  margin-left: 3rem;
 
   @media (max-width: 1024px) {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 
   @media (max-width: 768px) {
-    margin-left: 40px;
+    margin-left: 2.5rem;
   }
 }
 
 .methodology-page .container {
-  max-width: 1400px;
+  max-width: 87.5rem;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 2rem;
   width: 100%;
   text-align: left !important;
 
   @media (max-width: 1024px) {
-    padding: 0 20px;
+    padding: 0 1.25rem;
   }
 
   @media (max-width: 768px) {
-    padding: 0 16px;
+    padding: 0 1rem;
   }
 }
 
 // Clean, minimal styling for professional appearance
 
 // Content Sections - Clean and minimal
-.content-section {
-  padding: 48px 0;
+.methodology-content-section {
+  padding: 3rem 0;
   border-bottom: 1px solid $greyBlue200;
   text-align: left;
 
   @media (max-width: 1024px) {
-    padding: 40px 0;
+    padding: 2.5rem 0;
   }
 
   @media (max-width: 768px) {
-    padding: 32px 0;
+    padding: 2rem 0;
   }
 
   &:last-child {
@@ -166,76 +166,76 @@
   }
 }
 
-.section-title {
-  font-size: 28px;
+.methodology-section-title {
+  font-size: 1.75rem;
   font-weight: 600;
   color: $headingColor;
-  margin: 0 0 16px 0;
+  margin: 0 0 1rem 0;
   line-height: 1.3;
   text-align: left;
 
   @media (max-width: 1024px) {
-    font-size: 26px;
+    font-size: 1.625rem;
   }
 
   @media (max-width: 768px) {
-    font-size: 24px;
+    font-size: 1.5rem;
   }
 }
 
-.section-subtitle {
-  font-size: 16px;
+.methodology-section-subtitle {
+  font-size: 1rem;
   color: $textColor;
-  margin: 0 0 24px 0;
+  margin: 0 0 1.5rem 0;
   line-height: 1.6;
   text-align: left;
 
   @media (max-width: 768px) {
-    font-size: 15px;
-    margin-bottom: 20px;
+    font-size: 0.9375rem;
+    margin-bottom: 1.25rem;
   }
 }
 
-.section-description {
-  font-size: 16px;
+.methodology-section-description {
+  font-size: 1rem;
   color: $textColor;
   line-height: 1.6;
-  margin: 0 0 24px 0;
+  margin: 0 0 1.5rem 0;
   text-align: left;
 
   @media (max-width: 768px) {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 
-.section-content {
+.methodology-section-content {
   text-align: left;
 
   p {
-    font-size: 16px;
+    font-size: 1rem;
     color: $textColor;
     line-height: 1.6;
-    margin: 0 0 16px 0;
+    margin: 0 0 1rem 0;
     text-align: left;
 
     @media (max-width: 768px) {
-      font-size: 15px;
+      font-size: 0.9375rem;
     }
   }
 }
 
 // Key Components - Clean list style
-.components-list {
+.methodology-components-list {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.5rem;
 }
 
-.component-item {
+.methodology-component-item {
   display: flex;
-  gap: 16px;
+  gap: 1rem;
   align-items: flex-start;
-  padding: 16px 0;
+  padding: 1rem 0;
   border-bottom: 1px solid $greyBlue200;
 
   &:last-child {
@@ -243,85 +243,85 @@
   }
 
   @media (max-width: 768px) {
-    gap: 12px;
+    gap: 0.75rem;
   }
 }
 
-.component-number {
+.methodology-component-number {
   display: flex;
   align-items: center;
   flex-shrink: 0;
 }
 
-.number-circle {
-  width: 24px;
-  height: 24px;
+.methodology-number-circle {
+  width: 1.5rem;
+  height: 1.5rem;
   background: $headingColor;
   color: $white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 12px;
-  border-radius: 2px;
+  font-size: 0.75rem;
+  border-radius: 0.125rem;
 }
 
-.component-content {
+.methodology-component-content {
   flex: 1;
 }
 
-.component-header {
+.methodology-component-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.component-icon {
+.methodology-component-icon {
   color: $headingColor;
   flex-shrink: 0;
 }
 
-.component-title {
-  font-size: 18px;
+.methodology-component-title {
+  font-size: 1.125rem;
   font-weight: 600;
   color: $headingColor;
   margin: 0;
   line-height: 1.3;
 
   @media (max-width: 768px) {
-    font-size: 16px;
+    font-size: 1rem;
   }
 }
 
-.component-description {
-  font-size: 16px;
+.methodology-component-description {
+  font-size: 1rem;
   color: $textColor;
   line-height: 1.6;
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 
 // Data Sources - Clean list style
-.data-sources-list {
+.methodology-data-sources-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
   width: 100%;
-  max-width: 600px;
+  max-width: 37.5rem;
 
   @media (max-width: 768px) {
     width: 100%;
   }
 }
 
-.data-source-item {
+.methodology-data-source-item {
   display: flex;
-  gap: 12px;
-  padding: 16px 0;
+  gap: 0.75rem;
+  padding: 1rem 0;
   border-bottom: 1px solid $greyBlue200;
 
   &:last-child {
@@ -329,82 +329,82 @@
   }
 
   @media (max-width: 768px) {
-    gap: 10px;
+    gap: 0.625rem;
   }
 }
 
-.data-source-icon {
+.methodology-data-source-icon {
   color: $headingColor;
   flex-shrink: 0;
   margin-top: 2px;
 }
 
-.data-source-content {
+.methodology-data-source-content {
   flex: 1;
 }
 
-.data-source-title {
-  font-size: 16px;
+.methodology-data-source-title {
+  font-size: 1rem;
   font-weight: 600;
   color: $headingColor;
-  margin: 0 0 4px 0;
+  margin: 0 0 0.25rem 0;
   line-height: 1.3;
 }
 
-.data-source-description {
-  font-size: 16px;
+.methodology-data-source-description {
+  font-size: 1rem;
   color: $textColor;
   line-height: 1.6;
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 
 // Validation Methods - Clean list style
-.validation-list {
+.methodology-validation-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1rem;
 }
 
-.validation-item {
+.methodology-validation-item {
   border-left: 2px solid $headingColor;
-  padding-left: 16px;
+  padding-left: 1rem;
 }
 
-.validation-title {
-  font-size: 16px;
+.methodology-validation-title {
+  font-size: 1rem;
   font-weight: 600;
   color: $headingColor;
-  margin: 0 0 8px 0;
+  margin: 0 0 0.5rem 0;
   line-height: 1.3;
 }
 
-.validation-description {
-  font-size: 16px;
+.methodology-validation-description {
+  font-size: 1rem;
   color: $textColor;
   line-height: 1.6;
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 
 // Prediction Outputs - Clean list style
-.prediction-outputs-list {
+.methodology-prediction-outputs-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
   max-width: 100%;
 }
 
-.prediction-output-item {
+.methodology-prediction-output-item {
   display: flex;
-  gap: 12px;
-  padding: 16px 0;
+  gap: 0.75rem;
+  padding: 1rem 0;
   border-bottom: 1px solid $greyBlue200;
 
   &:last-child {
@@ -412,52 +412,52 @@
   }
 
   @media (max-width: 768px) {
-    gap: 10px;
+    gap: 0.625rem;
   }
 }
 
-.prediction-output-icon {
+.methodology-prediction-output-icon {
   color: $headingColor;
   flex-shrink: 0;
   margin-top: 2px;
 }
 
-.prediction-output-content {
+.methodology-prediction-output-content {
   flex: 1;
 }
 
-.prediction-output-title {
-  font-size: 16px;
+.methodology-prediction-output-title {
+  font-size: 1rem;
   font-weight: 600;
   color: $headingColor;
-  margin: 0 0 4px 0;
+  margin: 0 0 0.25rem 0;
   line-height: 1.3;
 }
 
-.prediction-output-description {
-  font-size: 16px;
+.methodology-prediction-output-description {
+  font-size: 1rem;
   color: $textColor;
   line-height: 1.6;
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 
 // References - Clean style
-.reference-content {
+.methodology-reference-content {
   border-left: 2px solid $headingColor;
-  padding-left: 16px;
+  padding-left: 1rem;
 }
 
-.reference-text {
-  font-size: 16px;
+.methodology-reference-text {
+  font-size: 1rem;
   color: $textColor;
   line-height: 1.6;
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }

@@ -38,27 +38,27 @@ const SelectionBar = (props) => {
   const countyMode = dataMode === DATA_MODES.COUNTY;
 
   return (
-    <div className="selection-bar-container">
-      <div className="selection-bar-item">
-        <div className="selection-bar-label-container">
-          <div className="selection-bar-label">Year</div>
+    <div className="home-selection-bar-container">
+      <div className="home-selection-bar-item">
+        <div className="home-selection-bar-label-container">
+          <div className="home-selection-bar-label">Year</div>
         </div>
-        <div className="selection-bar-input-container">
+        <div className="home-selection-bar-input-container">
           <ChoiceInput setValue={setPredictionYear} value={year} options={revYears} firstOptionText="Year" />
         </div>
       </div>
-      <div className="selection-bar-item">
-        <div className="selection-bar-label-container">
-          <div className="selection-bar-label">State</div>
+      <div className="home-selection-bar-item">
+        <div className="home-selection-bar-label-container">
+          <div className="home-selection-bar-label">State</div>
         </div>
-        <div className="selection-bar-input-container">
+        <div className="home-selection-bar-input-container">
           <ChoiceInput value={selectedStateName} setValue={setStateAbbrev} options={statesMappedToNames} firstOptionText="State" />
         </div>
       </div>
-      <div className="selection-bar-item">
-        <div className="selection-bar-label-container">
+      <div className="home-selection-bar-item">
+        <div className="home-selection-bar-label-container">
           <div
-            className="selection-bar-label selection-bar-toggle-label"
+            className="home-selection-bar-label home-selection-bar-toggle-label"
             onClick={() => setDataMode(countyMode ? DATA_MODES.RANGER_DISTRICT : DATA_MODES.COUNTY)}
             role="button"
             tabIndex={0}
@@ -72,7 +72,7 @@ const SelectionBar = (props) => {
             {countyMode ? 'County' : 'Ranger District'}
           </div>
         </div>
-        <div className="selection-bar-input-container">
+        <div className="home-selection-bar-input-container">
           <ChoiceInput
             value={countyMode ? county : rangerDistrict}
             setValue={countyMode ? (v) => setCounty([v]) : (v) => setRangerDistrict([v])}
@@ -82,7 +82,7 @@ const SelectionBar = (props) => {
         </div>
       </div>
       <Button
-        className="selection-bar-clear-button"
+        className="home-selection-bar-clear-button"
         onClick={clearAllSelections}
       >
         Clear

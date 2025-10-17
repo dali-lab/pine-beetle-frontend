@@ -4,35 +4,35 @@
   min-height: auto;
   background-color: $backgroundColor;
   padding: 2rem 0;
-  margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
+  margin-top: 8.75rem;
 
   @media (max-width: 768px) {
     padding: 1rem 0;
   }
 
   .prediction-container {
-    max-width: 1400px;
+    max-width: 87.5rem;
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 2rem;
 
     @media (max-width: 768px) {
-      padding: 0 16px;
+      padding: 0 1rem;
     }
   }
 }
 
-.about-predictions {
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+.prediction-about-predictions {
+    margin-top: 1.25rem;
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
 
     ul {
-        margin-left: 20px;
+        margin-left: 1.25rem;
     }
 }
 
 .prediction-bottom {
-    margin-top: 25px;
+    margin-top: 1.5625rem;
 }
 
 #toggles-overlay{
@@ -43,12 +43,12 @@
     z-index: 1;
 }
 
-.selection-p {
+.prediction-selection-p {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    height: 30px;
+    height: 1.875rem;
     background-color: $grey100;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25), 1px 1.5px 4px grey inset;
     border-radius: 100px;
@@ -56,106 +56,105 @@
     margin-top: 2vh;
     margin-left: 1vw;
 
-    .selected-option-p {
+    .prediction-selected-option-p {
         display: flex;
         flex-direction: row;
         align-items: center;
         background-color: $grey800;
         border-radius: 100px;
-        padding-left: 25px;
-        padding-right: 25px;
+        padding-left: 1.5625rem;
+        padding-right: 1.5625rem;
         padding-top: 1.4px;
         padding-bottom: 1.4px;
 
-        .selected-option-text-p {
+        .prediction-selected-option-text-p {
             color: $white;
         }
         img {
-            height: 20px;
-            width: 20px;
+            height: 1.25rem;
+            width: 1.25rem;
         }
     }
-    .selected-option-2-p {
+    .prediction-selected-option-2-p {
         display: flex;
         flex-direction: row;
         align-items: center;
         background-color: $grey800;
         border-radius: 100px;
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left: 0.9375rem;
+        padding-right: 0.9375rem;
         padding-top: 1.4px;
         padding-bottom: 1.4px;
 
-        .selected-option-text-p {
+        .prediction-selected-option-text-p {
             color: $white;
         }
         img {
-            height: 20px;
-            width: 20px;
-            margin-right: 10px;
+            height: 1.25rem;
+            width: 1.25rem;
+            margin-right: 0.625rem;
         }
     }
-    .unselected-option-p {
+    .prediction-unselected-option-p {
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left: 0.9375rem;
+        padding-right: 0.9375rem;
         border-radius: 100px;
         cursor: pointer;
 
-        .unselected-option-text-p {
+        .prediction-unselected-option-text-p {
             color: $greyBlue600;
         }
         img {
-            height: 20px;
-            width: 20px;
-            margin-right: 10px;
+            height: 1.25rem;
+            width: 1.25rem;
+            margin-right: 0.625rem;
         }
     }
 }
 
-.histogram-container {
-    padding: 25px;
-    padding-right: 75px;
-    border-radius: 26px;
+.prediction-histogram-container {
+    padding: 1.5625rem;
+    padding-right: 4.6875rem;
+    border-radius: 1.625rem;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: $white;
     height: 0%;
 }
 
-.histogram-container #histogram-title {
-    font-size: 24px;
+.prediction-histogram-container #histogram-title {
+    font-size: 1.5rem;
     font-weight: 600;
     line-height: 1.6;
     letter-spacing: normal;
     text-align: left;
     color: $greyBlue900;
-    margin-bottom: 40px;
+    margin-bottom: 2.5rem;
 }
 
-.histogram-container img {
+.prediction-histogram-container img {
     width: 45vw;
 }
 
-.modal {
+.prediction-modal {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 1200px;
+    max-width: 75rem;
     max-height: 65vh;
     width: 70vw;
-    padding: 50px;
-    border-radius: 20px;
+    padding: 3.125rem;
+    border-radius: 1.25rem;
     background-color: $backgroundColor;
-    // TODO: replace box shadow with grayer background later
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     overflow-y: scroll;
 
     #close-icon {
         position: sticky;
-        top: -25px;
+        top: -1.5625rem;
     }
 }
 
@@ -177,10 +176,10 @@
 }
 
 .prediction-chart-title {
-  margin: 50px auto;
-  font-size: 36px;
+  margin: 3.125rem auto;
+  font-size: 2.25rem;
 }
 
 .prediction-chart-text {
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem;
 }

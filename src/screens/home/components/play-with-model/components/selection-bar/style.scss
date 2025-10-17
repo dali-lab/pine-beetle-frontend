@@ -1,55 +1,55 @@
 @import '../../../../../../styles/colors.scss';
 
-.selection-bar-container {
+.home-selection-bar-container {
   background-color: $white;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   border: 1px solid $grey200;
   font-family: 'Inter';
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 500;
   text-align: left;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr auto;
-  gap: 24px;
+  gap: 1.5rem;
   align-items: flex-end;
-  padding: 24px;
+  padding: 1.5rem;
   margin-bottom: 0;
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
+    gap: 1.25rem;
   }
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 20px;
+    gap: 1rem;
+    padding: 1.25rem;
   }
 }
 
-.selection-bar-item {
+.home-selection-bar-item {
   display: flex;
   flex-direction: column;
 }
 
-.selection-bar-label-container {
+.home-selection-bar-label-container {
   display: flex;
   align-items: center;
   flex: 1;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
-.selection-bar-label {
-  font-size: 14px;
+.home-selection-bar-label {
+  font-size: 0.875rem;
   font-weight: 500;
   color: $headingColor;
   line-height: 1.4;
 
-  &.selection-bar-toggle-label {
+  &.home-selection-bar-toggle-label {
     cursor: pointer;
     transition: all 0.2s ease;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
     position: relative;
 
     &:hover {
@@ -68,30 +68,30 @@
 
     &::after {
       content: '↔';
-      margin-left: 8px;
-      font-size: 12px;
+      margin-left: 0.5rem;
+      font-size: 0.75rem;
       opacity: 0.6;
     }
   }
 }
 
-.selection-bar-input-container {
+.home-selection-bar-input-container {
   display: flex !important;
   flex-direction: row !important;
 
-  .selection-container {
+  .home-selection-container {
     width: 100%;
   }
 }
 
 // Clear button styling
-.selection-bar-clear-button {
+.home-selection-bar-clear-button {
   background: $white;
   color: $headingColor;
   border: 2px solid $grey300;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
+  border-radius: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
 

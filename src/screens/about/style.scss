@@ -2,17 +2,17 @@
     min-height: auto;
     background-color: $backgroundColor;
     padding: 2rem 0;
-    margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
+    margin-top: 8.75rem;
 
     // Using global page-header styles from main.scss
 
     .about-content-container {
-        max-width: 1200px;
+        max-width: 75rem;
         margin: 0 auto;
-        padding: 0 32px;
+        padding: 0 2rem;
 
         @media (max-width: 768px) {
-            padding: 0 16px;
+            padding: 0 1rem;
         }
     }
 
@@ -98,12 +98,12 @@
             }
         }
 
-        .collaboration-list {
+        .about-collaboration-list {
             margin-top: 3rem;
-            max-width: 800px;
+            max-width: 50rem;
         }
 
-        .collaboration-item {
+        .about-collaboration-item {
             margin-bottom: 3rem;
             padding: 0;
 
@@ -149,15 +149,14 @@
                 font-weight: 600;
             }
 
-            // Committee members styling
-            .committee-members {
+            .about-committee-members {
                 display: flex;
                 flex-direction: column;
                 gap: 1.5rem;
                 margin-top: 1rem;
             }
 
-            .member-group {
+            .about-member-group {
                 h4 {
                     margin: 0 0 0.75rem 0;
                     color: $greyBlue800;
@@ -175,11 +174,11 @@
                 }
             }
 
-            .funding-info {
+            .about-funding-info {
                 margin-top: 1.5rem;
                 padding: 1rem;
                 background-color: $grey100;
-                border-radius: 6px;
+                border-radius: 0.375rem;
 
                 p {
                     margin: 0;
@@ -189,15 +188,14 @@
                 }
             }
 
-            // Member lists styling
-            .member-list {
+            .about-member-list {
                 display: flex;
                 flex-direction: column;
                 gap: 0.75rem;
                 margin-top: 1rem;
             }
 
-            .member-item {
+            .about-member-item {
                 padding: 0.75rem 0;
                 border-bottom: 1px solid $greyBlue200;
                 font-size: 0.95rem;
@@ -211,14 +209,13 @@
                     color: $deepCharcoal;
                     font-weight: 600;
                     display: inline-block;
-                    min-width: 120px;
+                    min-width: 7.5rem;
                 }
             }
 
-            // State grid styling
-            .state-grid {
+            .about-state-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr));
                 gap: 0.75rem;
                 margin-top: 1rem;
 
@@ -227,7 +224,7 @@
                 }
             }
 
-            .state-item {
+            .about-state-item {
                 padding: 0.75rem 0;
                 border-bottom: 1px solid $greyBlue200;
                 font-size: 0.95rem;
@@ -241,14 +238,13 @@
                     color: $deepCharcoal;
                     font-weight: 600;
                     display: inline-block;
-                    min-width: 80px;
+                    min-width: 5rem;
                 }
             }
 
-            // Team sections styling
-            .team-sections {
+            .about-team-sections {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr));
                 gap: 2rem;
                 margin-top: 1.5rem;
 
@@ -258,7 +254,7 @@
                 }
             }
 
-            .team-section {
+            .about-team-section {
                 h4 {
                     margin: 0 0 1rem 0;
                     color: $greyBlue800;
@@ -270,16 +266,16 @@
                     padding-bottom: 0.5rem;
                 }
 
-                .member-list {
+                .about-member-list {
                     margin-top: 0;
                 }
             }
         }
 
-        &.contact-section {
-            .contact-grid {
+        &.about-contact-section {
+            .about-contact-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr));
                 gap: 2rem;
                 margin-top: 2rem;
 
@@ -289,10 +285,10 @@
                 }
             }
 
-            .contact-group {
+            .about-contact-group {
                 background-color: $backgroundColor;
                 border: 1px solid $greyBlue200;
-                border-radius: 8px;
+                border-radius: 0.5rem;
                 padding: 1.5rem;
 
                 h3 {
@@ -302,7 +298,7 @@
                     font-size: 1.1rem;
                 }
 
-                .contact-item {
+                .about-contact-item {
                     margin-bottom: 1rem;
 
                     &:last-child {

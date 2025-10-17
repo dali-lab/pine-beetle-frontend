@@ -61,17 +61,17 @@ textarea {
 
 .container {
     width: auto;
-    max-width: 1400px;
+    max-width: 87.5rem;
     height: auto;
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 2rem;
     background-color: $backgroundColor;
     background-clip: border-box;
     border-radius: 0px;
     text-align: center;
 
     @media (max-width: 768px) {
-        padding: 0 16px;
+        padding: 0 1rem;
     }
 }
 
@@ -114,12 +114,12 @@ textarea {
 }
 
 .line {
-    width: 156px;
+    width: 9.75rem;
     height: 1px;
     margin: auto;
     background-color: $headingColor;
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 0.9375rem;
+    margin-bottom: 0.9375rem;
 }
 
 .animated-button {
@@ -132,9 +132,8 @@ textarea {
     transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-/* Pre-render the bigger shadow, but hide it */
 .animated-button::after {
-    border-radius: 5px;
+    border-radius: 0.3125rem;
     position: absolute;
     z-index: -1;
     top: 0;
@@ -216,17 +215,16 @@ textarea {
     }
 }
 
-// Common page header and description styles
 .page-header {
     text-align: center;
     margin-bottom: 4rem;
-    max-width: 1200px;
+    max-width: 75rem;
     margin-left: auto;
     margin-right: auto;
-    padding: 0 32px;
+    padding: 0 2rem;
 
     @media (max-width: 768px) {
-        padding: 0 16px;
+        padding: 0 1rem;
         margin-bottom: 2.5rem;
     }
 
@@ -245,7 +243,7 @@ textarea {
     .page-description {
         font-size: 1.2rem;
         color: $headingColor;
-        max-width: 900px;
+        max-width: 56.25rem;
         margin: 0 auto;
         line-height: 1.7;
 

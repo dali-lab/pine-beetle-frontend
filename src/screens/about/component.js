@@ -49,102 +49,102 @@ const About = (_props) => {
             working together to protect forest resources.
           </p>
 
-          <div className="collaboration-list">
-            <div className="collaboration-item project-committee">
+          <div className="about-collaboration-list">
+            <div className="about-collaboration-item project-committee">
               <h3>Project Committee</h3>
-              <div className="committee-members">
-                <div className="member-group">
+              <div className="about-committee-members">
+                <div className="about-member-group">
                   <h4>Principal Investigators</h4>
                   <p>Matthew Ayres, Carissa Aoki</p>
                 </div>
-                <div className="member-group">
+                <div className="about-member-group">
                   <h4>Research Team</h4>
                   <p>Steve Clark, Kevin Dodds, Lorie Loeb, John Nowak, Brian Sullivan, Michael Torbett</p>
                 </div>
               </div>
-              <div className="funding-info">
+              <div className="about-funding-info">
                 <p>Supported by the U.S.D.A. Forest Service Special Technology Development Program (STDP)</p>
               </div>
             </div>
 
-            <div className="collaboration-item">
+            <div className="about-collaboration-item">
               <h3>U.S.D.A. Forest Service</h3>
-              <div className="member-list">
-                <div className="member-item">
+              <div className="about-member-list">
+                <div className="about-member-item">
                   <strong>Steve Clark</strong> - Entomologist
                 </div>
-                <div className="member-item">
+                <div className="about-member-item">
                   <strong>John Nowak</strong> - Entomologist, Southern Pine Beetle Prevention Program Coordinator
                 </div>
-                <div className="member-item">
+                <div className="about-member-item">
                   <strong>Brian Sullivan</strong> - Entomologist
                 </div>
               </div>
             </div>
 
-            <div className="collaboration-item">
+            <div className="about-collaboration-item">
               <h3>State Forestry Agencies</h3>
-              <div className="state-grid">
-                <div className="state-item">
+              <div className="about-state-grid">
+                <div className="about-state-item">
                   <strong>Alabama:</strong> Dana Stone (Alabama Forestry Commission)
                 </div>
-                <div className="state-item">
+                <div className="about-state-item">
                   <strong>Arkansas:</strong> Chandler Barton (Arkansas Forestry Commission)
                 </div>
-                <div className="state-item">
+                <div className="about-state-item">
                   <strong>Florida:</strong> Jeff Eickwort and Chris Pearce (Florida Forest Service)
                 </div>
-                <div className="state-item">
+                <div className="about-state-item">
                   <strong>Georgia:</strong> Michael Torbett and Chip Bates (Georgia Forestry Commission)
                 </div>
-                <div className="state-item">
+                <div className="about-state-item">
                   <strong>Louisiana:</strong> Brent Cutrer (Louisiana Department of Agriculture and Forestry)
                 </div>
-                <div className="state-item">
+                <div className="about-state-item">
                   <strong>Mississippi:</strong> Todd Matthews (Mississippi Forestry Commission)
                 </div>
-                <div className="state-item">
+                <div className="about-state-item">
                   <strong>North Carolina:</strong> Rob Trickel (North Carolina Forest Service)
                 </div>
-                <div className="state-item">
+                <div className="about-state-item">
                   <strong>South Carolina:</strong> David Jenkins (South Carolina Forestry Commission)
                 </div>
-                <div className="state-item">
+                <div className="about-state-item">
                   <strong>Tennessee:</strong> Nathan Hoover (Tennessee Division of Forestry)
                 </div>
-                <div className="state-item">
+                <div className="about-state-item">
                   <strong>Texas:</strong> Shane Harrington (Texas A&M Forest Service)
                 </div>
-                <div className="state-item">
+                <div className="about-state-item">
                   <strong>Virginia:</strong> Lori Chamberlin (Virginia Department of Forestry)
                 </div>
               </div>
             </div>
 
-            <div className="collaboration-item">
+            <div className="about-collaboration-item">
               <h3>Technical Development</h3>
               <p>Web design and development by the Dartmouth Applied Learning and Innovation (DALI) Lab at Dartmouth College.</p>
-              <div className="team-sections">
-                <div className="team-section">
+              <div className="about-team-sections">
+                <div className="about-team-section">
                   <h4>Current Team</h4>
-                  <div className="member-list">
-                    <div className="member-item">Thomas Monfre, Developer</div>
-                    <div className="member-item">Jeff Liu, Developer</div>
-                    <div className="member-item">Angela Zhang, Developer</div>
-                    <div className="member-item">Hannah Utter, Team Manager</div>
-                    <div className="member-item">Barkin Cavdaroglu, Designer</div>
-                    <div className="member-item">Darley Sackitey, Designer and Animator</div>
+                  <div className="about-member-list">
+                    <div className="about-member-item">Thomas Monfre, Developer</div>
+                    <div className="about-member-item">Jeff Liu, Developer</div>
+                    <div className="about-member-item">Angela Zhang, Developer</div>
+                    <div className="about-member-item">Hannah Utter, Team Manager</div>
+                    <div className="about-member-item">Barkin Cavdaroglu, Designer</div>
+                    <div className="about-member-item">Darley Sackitey, Designer and Animator</div>
                   </div>
                 </div>
-                <div className="team-section">
+                <div className="about-team-section">
                   <h4>Previous Contributors</h4>
-                  <div className="member-list">
-                    <div className="member-item">Nathan Schneider, Developer</div>
-                    <div className="member-item">John McCambridge, Developer</div>
-                    <div className="member-item">Madeline Hess, Developer</div>
-                    <div className="member-item">Isabel Hurley, Developer</div>
-                    <div className="member-item">Anuj Varma, Team Manager</div>
-                    <div className="member-item">Emma Langfitt, Designer and Developer</div>
+                  <div className="about-member-list">
+                    <div className="about-member-item">Nathan Schneider, Developer</div>
+                    <div className="about-member-item">John McCambridge, Developer</div>
+                    <div className="about-member-item">Madeline Hess, Developer</div>
+                    <div className="about-member-item">Isabel Hurley, Developer</div>
+                    <div className="about-member-item">Anuj Varma, Team Manager</div>
+                    <div className="about-member-item">Emma Langfitt, Designer and Developer</div>
                   </div>
                 </div>
               </div>
@@ -157,32 +157,32 @@ const About = (_props) => {
           <p>This project is supported by the National Science Foundation under Award ID 1917002.</p>
         </section>
 
-        <section className="about-section contact-section">
+        <section className="about-section about-contact-section">
           <h2>Contact Information</h2>
-          <div className="contact-grid">
-            <div className="contact-group">
+          <div className="about-contact-grid">
+            <div className="about-contact-group">
               <h3>Research & Program Questions</h3>
-              <div className="contact-item">
+              <div className="about-contact-item">
                 <strong>Carissa Aoki</strong><br />
                 <a href="mailto:caoki@mica.edu">caoki@mica.edu</a>
               </div>
-              <div className="contact-item">
+              <div className="about-contact-item">
                 <strong>Matthew Ayres</strong><br />
                 <a href="mailto:matthew.p.ayres@dartmouth.edu">matthew.p.ayres@dartmouth.edu</a>
               </div>
             </div>
 
-            <div className="contact-group">
+            <div className="about-contact-group">
               <h3>Local Forest Management</h3>
-              <div className="contact-item">
+              <div className="about-contact-item">
                 <strong>US Forest Service</strong><br />
                 <a href="tel:8008321355">(800) 832-1355</a>
               </div>
             </div>
 
-            <div className="contact-group">
+            <div className="about-contact-group">
               <h3>Technical Support</h3>
-              <div className="contact-item">
+              <div className="about-contact-item">
                 <strong>Dartmouth DALI Lab</strong><br />
                 <a href="mailto:pine-beetle@dali.dartmouth.edu">pine-beetle@dali.dartmouth.edu</a>
               </div>

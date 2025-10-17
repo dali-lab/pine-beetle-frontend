@@ -3,28 +3,26 @@
 .filter-bar {
   width: 100%;
   background-color: $white;
-  // Mimicking Card className="border-2 shadow-sm"
-  border-radius: 8px;
-  border: 2px solid $greyBlue300; // Use a light border color
+  border-radius: 0.5rem;
+  border: 2px solid $greyBlue300;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
-  margin-bottom: 32px;
+  margin-bottom: 2rem;
 }
 
 .filter-bar-content {
-  padding: 24px; // Matches p-6 in the design
+  padding: 1.5rem;
 }
 
 .filter-bar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px; // Matches mb-4 in the design
+  margin-bottom: 1rem;
   cursor: pointer;
 }
 
 .filter-bar-title {
-  // Matches text-sm font-semibold text-foreground uppercase tracking-wide
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: $greyBlue900;
   text-transform: uppercase;
@@ -37,8 +35,8 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
   transition: background-color 0.2s ease;
   display: flex;
   align-items: center;
@@ -49,8 +47,8 @@
   }
 
   .filter-arrow {
-    width: 20px;
-    height: 20px;
+    width: 1.25rem;
+    height: 1.25rem;
     color: $greyBlue600;
     transition: transform 0.2s ease, color 0.2s ease;
 
@@ -72,23 +70,23 @@
 .filter-bar-container {
   display: flex;
   align-items: end;
-  gap: 16px; // Matches gap-4
+  gap: 1rem;
   flex-wrap: wrap;
 }
 
 .filter-section {
   display: flex;
   flex-direction: column;
-  gap: 8px; // Matches space-y-2
+  gap: 0.5rem;
   flex: 1;
-  min-width: 0; // Allows flex items to shrink below their content size
-  padding-top: 16px;
+  min-width: 0;
+  padding-top: 1rem;
 }
 
 .filter-clear-section {
-  flex: 0 0 auto; // Don't grow or shrink, maintain natural size
+  flex: 0 0 auto;
   align-self: flex-start;
-  padding-top: 24px; // Move button down to align with input fields
+  padding-top: 1.5rem;
 
   .filter-input {
     display: flex;
@@ -98,8 +96,7 @@
 }
 
 .filter-label {
-  // Matches text-sm font-medium text-foreground block
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   color: $greyBlue900;
   display: block;
@@ -115,14 +112,13 @@
     width: 100%;
   }
 
-  // Style for Year dropdown (select)
   .selection-button {
     width: 100%;
-    height: 44px;
-    border-radius: 6px;
+    height: 2.75rem;
+    border-radius: 0.375rem;
     border: 1px solid $greyBlue300;
     background-color: $white;
-    font-size: 14px;
+    font-size: 0.875rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     color: $greyBlue900;
     font-weight: 400;
@@ -149,14 +145,13 @@
     }
   }
 
-  // Style for State/Location dropdown (multi-select)
   .multi-select-container .input-container {
     width: 100%;
-    height: 44px;
-    border-radius: 6px;
+    height: 2.75rem;
+    border-radius: 0.375rem;
     border: 1px solid $greyBlue300;
     background-color: $white;
-    font-size: 14px;
+    font-size: 0.875rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     color: $greyBlue900;
     font-weight: 400;
@@ -177,36 +172,35 @@
 
 // Clear All Button Styling
 .action-button {
-  padding: 6px 14px; // Adjust padding for sm size
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 0.375rem 0.875rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
   font-weight: 400;
   cursor: pointer;
   transition: background-color 0.2s ease, border-color 0.2s ease;
   font-family: "Inter", sans-serif;
-  height: 44px; // Match input height
+  height: 2.75rem;
   line-height: 1.5;
-  min-width: 120px; // Make button even longer
+  min-width: 7.5rem;
 
 }
 
 // Active Filters Section (Matches mt-4 pt-4 border-t border-border)
 .active-filters {
-  margin-top: 16px;
-  padding-top: 16px;
+  margin-top: 1rem;
+  padding-top: 1rem;
   border-top: 1px solid $greyBlue200;
 }
 
 .active-filters-content {
   display: flex;
   align-items: center;
-  gap: 8px; // Matches gap-2
+  gap: 0.5rem;
   flex-wrap: wrap;
 }
 
 .active-filters-label {
-  // Matches text-sm text-muted-foreground
-  font-size: 14px;
+  font-size: 0.875rem;
   color: $greyBlue600;
   font-weight: 400;
   line-height: 1.5;
@@ -214,33 +208,31 @@
 
 // Filter Tag Styling
 .filter-tag {
-  // Matches inline-flex items-center gap-1 px-3 py-1 bg-[#02394A] text-white text-sm rounded-full
   display: inline-flex;
   align-items: center;
-  gap: 4px; // Adjusted from 1 to 4 to give slight space before button
-  padding: 4px 12px;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
   background-color: $dropdownGreen;
   color: $white;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 400;
-  border-radius: 9999px; // rounded-full
+  border-radius: 9999px;
   font-family: "Inter", sans-serif;
   line-height: 1.4;
 
   .filter-tag-remove {
-    // Matches hover:bg-white/20 rounded-full p-0.5
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
+    width: 1rem;
+    height: 1rem;
     background: transparent;
     border: none;
     color: $white;
     cursor: pointer;
     border-radius: 50%;
-    padding: 2px;
-    margin-left: 2px;
+    padding: 0.125rem;
+    margin-left: 0.125rem;
     transition: background-color 0.15s ease;
     flex-shrink: 0;
 
@@ -253,8 +245,8 @@
     }
 
     .filter-tag-icon {
-      width: 12px;
-      height: 12px;
+      width: 0.75rem;
+      height: 0.75rem;
     }
   }
 }
@@ -262,29 +254,29 @@
 // Responsive adjustments (keeping the original media queries structure)
 @media (max-width: 768px) {
   .filter-bar {
-    padding: 0; // Padding moved to .filter-bar-content
+    padding: 0;
 
   }
 
   .filter-bar-content {
-    padding: 20px;
+    padding: 1.25rem;
   }
 
   .filter-bar-header {
-    margin-bottom: 14px;
+    margin-bottom: 0.875rem;
   }
 
   .filter-toggle-button {
     .filter-arrow {
-      width: 18px;
-      height: 18px;
+      width: 1.125rem;
+      height: 1.125rem;
     }
   }
 
   .filter-bar-container {
     flex-direction: column;
     align-items: stretch;
-    gap: 14px;
+    gap: 0.875rem;
   }
 
   .filter-section {
@@ -302,6 +294,6 @@
 
 @media (max-width: 480px) {
   .filter-bar-content {
-    padding: 18px 16px;
+    padding: 1.125rem 1rem;
   }
 }

@@ -13,28 +13,28 @@
 
     .header-container {
         width: auto;
-        padding: 0 16px;
+        padding: 0 1rem;
 
         @media (min-width: 768px) {
-            padding: 0 24px;
+            padding: 0 1.5rem;
         }
 
         @media (min-width: 1024px) {
-            padding: 0 32px;
+            padding: 0 2rem;
         }
 
             .header-nav {
                 display: flex;
                 align-items: center;
-                gap: 16px;
-                padding: 8px 0;
+                gap: 1rem;
+                padding: 0.5rem 0;
                 position: relative;
-                min-height: 56px;
+                min-height: 3.5rem;
 
             .header-logo-title {
                 display: flex;
                 align-items: center;
-                gap: 12px;
+                gap: 0.75rem;
                 text-decoration: none;
                 transition: transform 0.2s ease;
                 flex-shrink: 0;
@@ -44,8 +44,8 @@
                 }
 
                 .logo-image {
-                    width: 32px;
-                    height: 32px;
+                    width: 2rem;
+                    height: 2rem;
                     position: relative;
                     transition: transform 0.2s ease;
 
@@ -63,7 +63,7 @@
 
                     h1 {
                         color: $white;
-                        font-size: 22px;
+                        font-size: 1.375rem;
                         font-weight: 600;
                         font-family: "Inter", sans-serif;
                         margin: 0;
@@ -72,19 +72,19 @@
                         line-height: 1.2;
 
                         @media (max-width: 768px) {
-                            font-size: 18px;
+                            font-size: 1.125rem;
                             font-weight: 600;
                         }
 
                         @media (max-width: 480px) {
-                            font-size: 16px;
+                            font-size: 1rem;
                             font-weight: 600;
                         }
                     }
 
                     h2 {
                         color: rgba(255, 255, 255, 0.8);
-                        font-size: 16px;
+                        font-size: 1rem;
                         font-weight: 400;
                         font-family: "Inter", sans-serif;
                         margin: 0;
@@ -93,11 +93,11 @@
                         line-height: 1.2;
 
                         @media (max-width: 768px) {
-                            font-size: 14px;
+                            font-size: 0.875rem;
                         }
 
                         @media (max-width: 480px) {
-                            font-size: 12px;
+                            font-size: 0.75rem;
                         }
                     }
                 }
@@ -116,10 +116,10 @@
                 .nav-item {
                     display: flex;
                     align-items: center;
-                    gap: 4px;
-                    padding: 18px 12px;
+                    gap: 0.25rem;
+                    padding: 1.125rem 0.75rem;
                     color: $white;
-                    font-size: 16px;
+                    font-size: 1rem;
                     font-weight: 500;
                     font-family: "Inter", sans-serif;
                     text-decoration: none;
@@ -130,7 +130,7 @@
                     transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
                     white-space: nowrap;
                     position: relative;
-                    border-radius: 6px;
+                    border-radius: 0.375rem;
                     outline: none;
 
                     &:hover {
@@ -140,10 +140,10 @@
                         &::before {
                             content: '';
                             position: absolute;
-                            top: -8px;
+                            top: -0.5rem;
                             left: 0;
                             right: 0;
-                            bottom: -8px;
+                            bottom: -0.5rem;
                             background-color: rgba(255, 255, 255, 0.2);
                             border-radius: 0;
                             z-index: -1;
@@ -157,10 +157,10 @@
                         &::before {
                             content: '';
                             position: absolute;
-                            top: -8px;
+                            top: -0.5rem;
                             left: 0;
                             right: 0;
-                            bottom: -8px;
+                            bottom: -0.5rem;
                             background-color: rgba(255, 255, 255, 0.2);
                             border-radius: 0;
                             z-index: -1;
@@ -174,10 +174,10 @@
                         &::before {
                             content: '';
                             position: absolute;
-                            top: -8px;
+                            top: -0.5rem;
                             left: 0;
                             right: 0;
-                            bottom: -8px;
+                            bottom: -0.5rem;
                             background-color: rgba(255, 255, 255, 0.2);
                             border-radius: 0;
                             z-index: -1;
@@ -185,8 +185,7 @@
                     }
 
                     &.dropdown-trigger {
-                        // Ensure dropdown triggers have identical styling to regular nav items
-                        font-size: 16px;
+                        font-size: 1rem;
                         font-weight: 500;
                         font-family: "Inter", sans-serif;
                         color: $white;
@@ -196,12 +195,12 @@
                         transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
                         white-space: nowrap;
                         position: relative;
-                        border-radius: 6px;
+                        border-radius: 0.375rem;
                         outline: none;
 
                         .dropdown-icon {
-                            width: 16px;
-                            height: 16px;
+                            width: 1rem;
+                            height: 1rem;
                             transition: transform 0.2s ease;
                         }
                     }
@@ -228,14 +227,14 @@
                     .dropdown-menu-about,
                     .dropdown-menu-how-it-works {
                         position: fixed;
-                        width: 192px;
-                        max-width: 192px;
+                        width: 12rem;
+                        max-width: 12rem;
                         background-color: $white;
-                        border-radius: 8px;
+                        border-radius: 0.5rem;
                         box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
                         border: 1px solid rgba(0, 0, 0, 0.1);
-                        padding: 4px;
-                        margin-top: 12px;
+                        padding: 0.25rem;
+                        margin-top: 0.75rem;
                         z-index: 10001;
                         display: none;
                         opacity: 0;
@@ -258,15 +257,15 @@
                         .dropdown-item {
                             display: flex;
                             align-items: center;
-                            padding: 10px 12px;
-                            font-size: 14px;
+                            padding: 0.625rem 0.75rem;
+                            font-size: 0.875rem;
                             font-weight: 500;
                             font-family: "Inter", sans-serif;
                             color: $black;
                             text-decoration: none;
                             background: none;
                             border: none;
-                            border-radius: 6px;
+                            border-radius: 0.375rem;
                             cursor: pointer;
                             transition: background-color 0.2s ease;
                             width: 100%;
@@ -299,8 +298,8 @@
                 border: none;
                 color: $white;
                 cursor: pointer;
-                padding: 8px;
-                border-radius: 4px;
+                padding: 0.5rem;
+                border-radius: 0.25rem;
                 transition: background-color 0.2s ease;
                 flex-shrink: 0;
                 margin-left: auto;
@@ -314,8 +313,8 @@
                 }
 
                 .hamburger-icon {
-                    width: 24px;
-                    height: 24px;
+                    width: 1.5rem;
+                    height: 1.5rem;
                 }
             }
 
@@ -336,11 +335,11 @@
         .mobile-nav-link {
             display: block;
             color: $deepCharcoal;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 500;
             font-family: "Inter", sans-serif;
             text-decoration: none;
-            padding: 12px 24px;
+            padding: 0.75rem 1.5rem;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             background: none;
             width: 100%;
@@ -369,11 +368,11 @@
             .mobile-nav-label {
                 display: block;
                 color: $deepCharcoal;
-                font-size: 16px;
+                font-size: 1rem;
                 font-weight: 500;
                 font-family: "Inter", sans-serif;
-                margin-bottom: 8px;
-                padding: 12px 24px 4px 24px;
+                margin-bottom: 0.5rem;
+                padding: 0.75rem 1.5rem 0.25rem 1.5rem;
                 text-decoration: none;
                 cursor: pointer;
                 transition: all 0.2s ease;
@@ -392,11 +391,11 @@
             .mobile-nav-sublink {
                 display: block;
                 color: $deepCharcoal;
-                font-size: 16px;
+                font-size: 1rem;
                 font-weight: 400;
                 font-family: "Inter", sans-serif;
                 text-decoration: none;
-                padding: 12px 24px 12px 40px;
+                padding: 0.75rem 1.5rem 0.75rem 2.5rem;
                 transition: all 0.2s ease;
                 background: none;
                 border: none;
@@ -421,14 +420,14 @@
             width: 100%;
             background-color: rgba(255, 255, 255, 0.2);
             color: $white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
             font-weight: 500;
             font-family: "Inter", sans-serif;
             border: 1px solid rgba(255, 255, 255, 0.3);
             cursor: pointer;
-            margin-top: 16px;
+            margin-top: 1rem;
             transition: all 0.2s ease;
 
             &:hover {
@@ -439,6 +438,6 @@
     }
 
     & + * {
-        padding-top: -40px; // Negative padding to pull content up
+        padding-top: -2.5rem;
     }
 }

@@ -1,118 +1,118 @@
 @import '../../../../styles/colors.scss';
 
-.how-it-works-section {
-  padding: 96px 0 128px 0;
+.home-how-it-works-section {
+  padding: 6rem 0 8rem 0;
   background: $backgroundColor;
 
   @media (max-width: 1024px) {
-    padding: 80px 0 96px 0;
+    padding: 5rem 0 6rem 0;
   }
 
   @media (max-width: 768px) {
-    padding: 64px 0 80px 0;
+    padding: 4rem 0 5rem 0;
   }
 }
 
-.how-it-works-container {
-  max-width: 1200px;
+.home-how-it-works-container {
+  max-width: 75rem;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 1.5rem;
 
   @media (max-width: 1024px) {
-    padding: 0 20px;
+    padding: 0 1.25rem;
   }
 
   @media (max-width: 768px) {
-    padding: 0 16px;
+    padding: 0 1rem;
   }
 }
 
-.how-it-works-header {
+.home-how-it-works-header {
   text-align: center;
-  margin-bottom: 64px;
+  margin-bottom: 4rem;
 
   @media (max-width: 768px) {
-    margin-bottom: 48px;
+    margin-bottom: 3rem;
   }
 }
 
-.how-it-works-title {
-  font-size: 48px;
+.home-how-it-works-title {
+  font-size: 3rem;
   font-weight: 700;
   color: $headingColor;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
   line-height: 1.1;
 
   @media (max-width: 1024px) {
-    font-size: 40px;
+    font-size: 2.5rem;
   }
 
   @media (max-width: 768px) {
-    font-size: 36px;
+    font-size: 2.25rem;
   }
 }
 
-.how-it-works-subtitle {
-  font-size: 20px;
+.home-how-it-works-subtitle {
+  font-size: 1.25rem;
   color: $textColor;
-  max-width: 640px;
+  max-width: 40rem;
   margin: 0 auto;
   line-height: 1.6;
 
   @media (max-width: 1024px) {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
 
   @media (max-width: 768px) {
-    font-size: 16px;
+    font-size: 1rem;
   }
 }
 
-.how-it-works-grid {
+.home-how-it-works-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 24px;
-  margin-bottom: 64px;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 20px;
-    margin-bottom: 48px;
+    gap: 1.25rem;
+    margin-bottom: 3rem;
   }
 }
 
-.how-it-works-card {
+.home-how-it-works-card {
   background: $white;
   border: 1px solid $greyBlue200;
-  border-radius: 16px;
-  padding: 32px;
+  border-radius: 1rem;
+  padding: 2rem;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 
   &:hover {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    transform: translateY(-4px);
+    transform: translateY(-0.25rem);
     border-color: $greyBlue300;
   }
 
   @media (max-width: 1024px) {
-    padding: 28px;
+    padding: 1.75rem;
   }
 
   @media (max-width: 768px) {
-    padding: 24px;
+    padding: 1.5rem;
   }
 }
 
-.card-icon-container {
-  margin-bottom: 24px;
+.home-card-icon-container {
+  margin-bottom: 1.5rem;
 }
 
-.card-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+.home-card-icon {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,7 +121,7 @@
   &.primary {
     background: rgba(66, 71, 85, 0.1);
 
-    .how-it-works-card:hover & {
+    .home-how-it-works-card:hover & {
       background: rgba(66, 71, 85, 0.2);
     }
   }
@@ -129,7 +129,7 @@
   &.accent {
     background: rgba(255, 163, 112, 0.1);
 
-    .how-it-works-card:hover & {
+    .home-how-it-works-card:hover & {
       background: rgba(255, 163, 112, 0.2);
     }
   }
@@ -137,56 +137,56 @@
   &.secondary {
     background: rgba(134, 204, 255, 0.1);
 
-    .how-it-works-card:hover & {
+    .home-how-it-works-card:hover & {
       background: rgba(134, 204, 255, 0.2);
     }
   }
 }
 
-.card-icon-image {
-  width: 32px;
-  height: 32px;
+.home-card-icon-image {
+  width: 2rem;
+  height: 2rem;
   object-fit: contain;
 }
 
-.card-title {
-  font-size: 24px;
+.home-card-title {
+  font-size: 1.5rem;
   font-weight: 600;
   color: $headingColor;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
   line-height: 1.3;
 
   @media (max-width: 1024px) {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
 
   @media (max-width: 768px) {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 }
 
-.card-description {
-  font-size: 16px;
+.home-card-description {
+  font-size: 1rem;
   color: $textColor;
   line-height: 1.6;
   margin: 0;
 
   @media (max-width: 1024px) {
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
 }
 
-.how-it-works-footer {
+.home-how-it-works-footer {
   text-align: center;
 }
 
-.learn-more-button {
+.home-learn-more-button {
   background: transparent;
   border: 2px solid $greyBlue800;
   color: $greyBlue800;
-  padding: 12px 32px;
-  border-radius: 50px;
-  font-size: 16px;
+  padding: 0.75rem 2rem;
+  border-radius: 3.125rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -194,8 +194,8 @@
   &:hover {
     background: $greyBlue800;
     color: $white;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(66, 71, 85, 0.3);
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.5rem 1.25rem rgba(66, 71, 85, 0.3);
   }
 
   &:active {
@@ -203,7 +203,7 @@
   }
 
   @media (max-width: 768px) {
-    padding: 10px 28px;
-    font-size: 14px;
+    padding: 0.625rem 1.75rem;
+    font-size: 0.875rem;
   }
 }

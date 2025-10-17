@@ -40,40 +40,40 @@ const howItWorksContent = [
 
 const HowItWorks = ({ howItWorksRef }) => {
   return (
-    <section id="how-it-works" className="how-it-works-section" ref={howItWorksRef}>
-      <div className="how-it-works-container">
-        <div className="how-it-works-header">
-          <h2 className="how-it-works-title">How does it work?</h2>
-          <p className="how-it-works-subtitle">
+    <section id="how-it-works" className="home-how-it-works-section" ref={howItWorksRef}>
+      <div className="home-how-it-works-container">
+        <div className="home-how-it-works-header">
+          <h2 className="home-how-it-works-title">How does it work?</h2>
+          <p className="home-how-it-works-subtitle">
             Our prediction model uses statistical analysis of historical outbreak data combined with current
             environmental conditions
           </p>
         </div>
 
-        <div className="how-it-works-grid">
+        <div className="home-how-it-works-grid">
           {howItWorksContent.map((element, index) => (
-            <div key={`how-it-works-${index + 1}`} className="how-it-works-card">
-              <div className="card-icon-container">
-                <div className={`card-icon ${element.color}`}>
+            <div key={`how-it-works-${index + 1}`} className="home-how-it-works-card">
+              <div className="home-card-icon-container">
+                <div className={`home-card-icon ${element.color}`}>
                   <img
-                    className="card-icon-image"
+                    className="home-card-icon-image"
                     src={element.icon}
                     alt={element.alt}
                   />
                 </div>
               </div>
-              <h3 className="card-title">{element.title}</h3>
-              <p className="card-description">
+              <h3 className="home-card-title">{element.title}</h3>
+              <p className="home-card-description">
                 {element.text}
               </p>
             </div>
           ))}
         </div>
 
-        <div className="how-it-works-footer">
+        <div className="home-how-it-works-footer">
           <button
             type="button"
-            className="learn-more-button"
+            className="home-learn-more-button"
             onClick={() => { window.location.href = '/methodology'; }}
           >
             Learn more about our methodology
