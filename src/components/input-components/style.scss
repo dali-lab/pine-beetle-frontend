@@ -49,8 +49,8 @@
     // Selected/checked state
     option:checked,
     option:active {
-        background: linear-gradient(0deg, $dropdownGreen 0%, $dropdownGreen 100%) !important;
-        background-color: $dropdownGreen !important;
+        background: linear-gradient(0deg, $brandSecondary 0%, $brandSecondary 100%) !important;
+        background-color: $brandSecondary !important;
         color: #ffffff !important;
         font-weight: 500;
     }
@@ -180,12 +180,12 @@
             width: calc(100% - 8px);
 
             &:hover {
-                background-color: $dropdownGreen;
+                background-color: $brandSecondary;
                 color: white;
             }
 
             &.selected {
-                color: $dropdownGreen;
+                color: $brandSecondary;
                 font-weight: 700;
                 background-color: rgba(107, 142, 107, 0.1);
             }

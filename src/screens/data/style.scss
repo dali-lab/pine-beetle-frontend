@@ -105,7 +105,7 @@
 
               .table-header {
                 display: flex;
-                background: $dropdownGreen;
+                background: $brandSecondary;
                 color: $white;
                 font-weight: 600;
                 flex-shrink: 0;
@@ -162,7 +162,7 @@
               border-radius: 6px;
 
               .download-icon-data {
-                color: $pineNeedle;
+                color: $brandSecondary;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -185,7 +185,7 @@
             h3 {
               font-size: 1.3rem;
               font-weight: 600;
-              color: $headerColor;
+              color: $brandPrimary;
               margin-bottom: 0.5rem;
             }
 

@@ -139,7 +139,7 @@
                 .resource-link {
                     display: inline-flex;
                     align-items: center;
-                    background-color: $forestGreen;
+                    background-color: $brandPrimary;
                     color: white;
                     padding: 0.75rem 1.5rem;
                     border-radius: 6px;
@@ -150,7 +150,7 @@
                     border: 2px solid transparent;
 
                     &:hover {
-                        background-color: $pineNeedle;
+                        background-color: $brandSecondary;
                         transform: translateY(-1px);
                         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
                     }

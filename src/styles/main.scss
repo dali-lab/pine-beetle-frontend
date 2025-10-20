@@ -190,27 +190,26 @@ textarea {
     }
 
     &.green {
-        background-color: $dropdownGreen;
+        background-color: $brandSecondary;
         box-shadow: 0 6px 20px -2px rgba(107, 142, 107, 0.55);
         color: $cleanWhite;
     }
 }
 
-// Global button styles to match navbar green
 .action-button, .primary-button {
-    background-color: $dropdownGreen !important;
-    color: $cleanWhite !important;
-    border: 1px solid $dropdownGreen !important;
+    background-color: $brandSecondary;
+    color: $cleanWhite;
+    border: 1px solid $brandSecondary;
     transition: all 0.2s ease;
 
     &:hover:not(:disabled) {
-        background-color: $forestGreen !important;
-        border-color: $forestGreen !important;
+        background-color: $brandPrimary;
+        border-color: $brandPrimary;
     }
 
     &:disabled {
-        background-color: $greyBlue300 !important;
-        border-color: $greyBlue300 !important;
+        background-color: $greyBlue300;
+        border-color: $greyBlue300;
         cursor: not-allowed;
     }
 }
@@ -231,7 +230,7 @@ textarea {
     h1 {
         font-size: 3rem;
         font-weight: 400;
-        color: $forestGreen;
+        color: $brandPrimary;
         margin-bottom: 1.5rem;
         letter-spacing: -0.5px;
 

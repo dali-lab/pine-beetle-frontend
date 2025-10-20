@@ -119,7 +119,7 @@
 
 
 .action-button {
-  background: $headerColor;
+  background: $brandPrimary;
   color: white;
   border: none;
   border-radius: 6px;
@@ -132,7 +132,7 @@
   letter-spacing: 0.5px;
 
   &:hover:not(:disabled) {
-    background: $pineNeedle;
+    background: $brandSecondary;
     transform: translateY(-1px);
   }
 
@@ -145,7 +145,7 @@
 
 .text-button {
   background: none;
-  color: $headerColor;
+  color: $brandPrimary;
   border: none;
   padding: 8px 0;
   font-size: 14px;

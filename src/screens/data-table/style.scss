@@ -54,7 +54,7 @@
 
             &:focus {
               outline: none;
-              border-color: $dropdownGreen;
+              border-color: $brandSecondary;
               box-shadow: 0 0 0 2px rgba(107, 142, 107, 0.1);
             }
 
@@ -78,7 +78,7 @@
             border-collapse: collapse;
 
             thead {
-              background: $dropdownGreen;
+              background: $brandSecondary;
 
               th {
                 padding: 1rem;
@@ -160,7 +160,7 @@
             width: 40px;
             height: 40px;
             border: 3px solid $greyBlue300;
-            border-top: 3px solid $headerColor;
+            border-top: 3px solid $brandPrimary;
             border-radius: 50%;
             animation: spin 1s linear infinite;
           }
@@ -194,7 +194,7 @@
 
           .retry-button {
             padding: 0.75rem 1.5rem;
-            background: $headerColor;
+            background: $brandPrimary;
             color: $white;
             border: none;
             border-radius: 6px;
@@ -204,7 +204,7 @@
             transition: all 0.3s ease;
 
             &:hover {
-              background: darken($headerColor, 10%);
+              background: darken($brandPrimary, 10%);
               transform: translateY(-1px);
             }
           }

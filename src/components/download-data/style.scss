@@ -15,7 +15,7 @@
       margin-bottom: 2.5rem;
 
       h3 {
-        color: $headerColor;
+        color: $brandPrimary;
         font-size: 1.25rem;
         font-weight: 600;
         margin-bottom: 1.5rem;
@@ -71,13 +71,13 @@
           height: 100%;
 
           &.active {
-            background: $pineNeedle;
+            background: $brandSecondary;
             color: $white;
             font-weight: 600;
           }
 
           &:hover:not(.active) {
-            color: $pineNeedle;
+            color: $brandSecondary;
             background: rgba(79, 119, 45, 0.1);
           }
 
@@ -104,7 +104,7 @@
           transition: all 0.2s ease;
 
           &:hover {
-            border-color: $pineNeedle;
+            border-color: $brandSecondary;
             background: rgba(79, 119, 45, 0.02);
           }
 
@@ -112,7 +112,7 @@
             margin-top: 0.2rem;
             width: 18px;
             height: 18px;
-            accent-color: $pineNeedle;
+            accent-color: $brandSecondary;
           }
 
           .checkbox-label {
@@ -161,8 +161,8 @@
         transition: all 0.2s ease;
 
         &:hover {
-          border-color: $pineNeedle;
-          color: $pineNeedle;
+          border-color: $brandSecondary;
+          color: $brandSecondary;
         }
       }
 
@@ -192,7 +192,7 @@
           justify-content: center;
           gap: 0.75rem;
           padding: 1rem;
-          color: $pineNeedle;
+          color: $brandSecondary;
           font-weight: 500;
           background: rgba(79, 119, 45, 0.05);
           border-radius: 6px;
@@ -202,14 +202,14 @@
             width: 16px;
             height: 16px;
             border: 2px solid #e9ecef;
-            border-top: 2px solid $pineNeedle;
+            border-top: 2px solid $brandSecondary;
             border-radius: 50%;
             animation: spin 1s linear infinite;
           }
         }
 
         .download-btn {
-          background: $pineNeedle;
+          background: $brandSecondary;
           border: none;
           border-radius: 6px;
           padding: 1rem 2rem;
@@ -225,7 +225,7 @@
           min-width: 180px;
 
           &:hover {
-            background: darken($pineNeedle, 8%);
+            background: darken($brandSecondary, 8%);
             transform: translateY(-1px);
           }
 
@@ -254,7 +254,7 @@
       margin-bottom: 2.5rem;
 
       h2 {
-        color: $forestGreen;
+        color: $brandPrimary;
         font-size: 1.75rem;
         font-weight: 600;
         margin: 0 0 0.75rem 0;
@@ -305,7 +305,7 @@
         }
 
         .stat-number {
-          color: $pineNeedle;
+          color: $brandSecondary;
           font-size: 2.5rem;
           font-weight: 800;
           line-height: 1;
@@ -317,7 +317,7 @@
         }
 
         .stat-label {
-          color: $forestGreen;
+          color: $brandPrimary;
           font-size: 1rem;
           font-weight: 600;
           margin-bottom: 0.25rem;
@@ -359,7 +359,7 @@
         }
 
         h4 {
-          color: $forestGreen;
+          color: $brandPrimary;
           font-size: 1.1rem;
           font-weight: 600;
           margin: 0 0 1rem 0;
@@ -370,7 +370,7 @@
             content: '';
             width: 4px;
             height: 20px;
-            background: linear-gradient(to bottom, $pineNeedle, $dropdownGreen);
+            background: linear-gradient(to bottom, $brandSecondary, $brandSecondary);
             border-radius: 2px;
             margin-right: 0.75rem;
           }
@@ -387,7 +387,7 @@
           }
 
           strong {
-            color: $forestGreen;
+            color: $brandPrimary;
             font-weight: 600;
           }
         }
@@ -413,7 +413,7 @@
   height: 35px;
   padding: 5px 12px;
   border-radius: 6px;
-  background-color: $pineNeedle;
+  background-color: $brandSecondary;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -423,7 +423,7 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background: darken($pineNeedle, 8%);
+    background: darken($brandSecondary, 8%);
   }
 
   p {

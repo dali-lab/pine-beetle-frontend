@@ -23,13 +23,13 @@
 
   &:hover {
     color: white;
-    background-color: $dropdownGreen;
+    background-color: $brandSecondary;
   }
 
   &.active {
     color: white;
-    background-color: $dropdownGreen;
-    border-bottom-color: $dropdownGreen;
+    background-color: $brandSecondary;
+    border-bottom-color: $brandSecondary;
     font-weight: 600;
   }
 

@@ -6,7 +6,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: $forestGreen;
+    background: $brandPrimary;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     overflow: visible;
@@ -241,13 +241,13 @@
                         box-sizing: border-box;
 
                         &[style*="display: block"] {
-                            display: block !important;
+                            display: block;
                             opacity: 1;
                             visibility: visible;
                         }
 
                         &.show {
-                            display: block !important;
+                            display: block;
                             opacity: 1;
                             visibility: visible;
                         }
@@ -270,16 +270,16 @@
                             box-sizing: border-box;
 
                             &:hover {
-                                background-color: $dropdownGreen;
+                                background-color: $brandSecondary;
                                 color: $white;
                             }
 
                             &.active {
-                                background-color: $dropdownGreen;
+                                background-color: $brandSecondary;
                                 color: $white;
 
                                 &:hover {
-                                    background-color: $dropdownGreen;
+                                    background-color: $brandSecondary;
                                 }
                             }
                         }
@@ -346,12 +346,12 @@
 
             &:hover {
                 color: $white;
-                background-color: $pineNeedle;
+                background-color: $brandSecondary;
             }
 
             &.active {
                 color: $white;
-                background-color: $pineNeedle;
+                background-color: $brandSecondary;
             }
 
             &:last-child {
@@ -376,12 +376,12 @@
 
                 &:hover {
                     color: $white;
-                    background-color: $pineNeedle;
+                    background-color: $brandSecondary;
                 }
 
                 &.active {
                     color: $white;
-                    background-color: $pineNeedle;
+                    background-color: $brandSecondary;
                 }
             }
 
@@ -402,12 +402,12 @@
 
                 &:hover {
                     color: $white;
-                    background-color: $pineNeedle;
+                    background-color: $brandSecondary;
                 }
 
                 &.active {
                     color: $white;
-                    background-color: $pineNeedle;
+                    background-color: $brandSecondary;
                 }
             }
         }

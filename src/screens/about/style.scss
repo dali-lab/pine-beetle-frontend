@@ -322,8 +322,8 @@
             transition: all 0.2s ease;
 
             &:hover {
-                color: $forestGreen;
-                border-bottom-color: $pineNeedle;
+                color: $brandPrimary;
+                border-bottom-color: $brandSecondary;
             }
         }
     }

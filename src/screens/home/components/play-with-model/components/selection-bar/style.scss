@@ -54,7 +54,7 @@
 
     &:hover {
       background-color: $grey100;
-      color: $pineNeedle;
+      color: $brandSecondary;
     }
 
     &:active {
@@ -62,7 +62,7 @@
     }
 
     &:focus {
-      outline: 2px solid $pineNeedle;
+      outline: 2px solid $brandSecondary;
       outline-offset: 2px;
     }
 
@@ -96,7 +96,7 @@
   cursor: pointer;
 
   &:active {
-    background: $pineNeedle;
+    background: $brandSecondary;
     color: $white;
   }
 }

@@ -7,22 +7,22 @@
 
     &-primary {
         color: $white;
-        background-color: $headerColor;
+        background-color: $brandPrimary;
         transition: all 0.2s ease;
 
         &:hover {
-            background-color: $pineNeedle;
+            background-color: $brandSecondary;
         }
     }
 
     &-secondary {
         background-color: white;
-        border: 1px solid $headerColor !important;
-        color: $headerColor;
+        border: 1px solid $brandPrimary !important;
+        color: $brandPrimary;
         transition: all 0.2s ease;
 
         &:hover {
-            background-color: $headerColor;
+            background-color: $brandPrimary;
             color: $white;
         }
     }

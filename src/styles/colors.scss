@@ -1,7 +1,6 @@
 // New Pine Beetle Color Palette
-$forestGreen: #1A4D2E;      // Primary navigation, action buttons
-$pineNeedle: #4F772D;       // Secondary navigation, hover states
-$dropdownGreen: #6B8E6B;    // Dropdown selected item background
+$brandPrimary: #1A4D2E;      // Primary navigation, action buttons (formerly $forestGreen)
+$brandSecondary: #6B8E6B;    // Secondary/interactive elements (formerly $dropdownGreen and $pineNeedle)
 $deepCharcoal: #333333;     // Main body text and titles
 $cleanWhite: #FFFFFF;       // Primary background, content sections
 
@@ -62,4 +61,3 @@ $blue800: #2656B5;
 
 $textColor: #5e6076;
 $headingColor: #212122;
-$headerColor: #2D5A5C;

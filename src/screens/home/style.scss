@@ -140,12 +140,12 @@
                     transition: all 0.2s ease;
 
                     &:hover {
-                        background-color: $dropdownGreen;
+                        background-color: $brandSecondary;
                         color: white;
                     }
 
                     &.active {
-                        background-color: $dropdownGreen;
+                        background-color: $brandSecondary;
                         color: white;
                     }
 

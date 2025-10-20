@@ -100,7 +100,7 @@ span.required-text {
 
   &:focus {
     outline: none;
-    border-color: $pineNeedle;
+    border-color: $brandSecondary;
     box-shadow: 0 0 0 3px rgba(79, 119, 45, 0.1);
   }
 }
@@ -210,7 +210,7 @@ span.required-text {
 }
 
 .run-button {
-  background: linear-gradient(135deg, $pineNeedle 0%, darken($pineNeedle, 8%) 100%);
+  background: linear-gradient(135deg, $brandSecondary 0%, darken($brandSecondary, 8%) 100%);
   color: $white;
   border: none;
   border-radius: 8px;
@@ -225,7 +225,7 @@ span.required-text {
   min-width: 120px;
 
   &:hover {
-    background: linear-gradient(135deg, darken($pineNeedle, 5%) 0%, darken($pineNeedle, 12%) 100%);
+    background: linear-gradient(135deg, darken($brandSecondary, 5%) 0%, darken($brandSecondary, 12%) 100%);
     transform: translateY(-1px);
     box-shadow: 0 3px 6px rgba(79, 119, 45, 0.25);
   }
