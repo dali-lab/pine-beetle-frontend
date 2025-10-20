@@ -2,8 +2,8 @@
 
 .filter-overlay {
   position: absolute;
-  top: 20px; // Match the button position
-  left: 20px; // Match the button position
+  top: 20px;
+  left: 20px;
   z-index: 10;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
@@ -11,13 +11,10 @@
   box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.2);
   border: 1px solid $greyBlue200;
   padding: 20px;
-  max-width: 280px;
-  min-width: 240px;
   max-height: 60vh;
   overflow-y: auto;
-  overflow-x: visible; // Allow dropdowns to extend beyond the overlay
+  overflow-x: visible;
 
-  /* Custom scrollbar styling */
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -35,7 +32,6 @@
     background: $greyBlue500;
   }
 
-  // Ensure dropdowns can extend outside the overlay
   .filter-content {
     overflow: visible;
   }
@@ -112,9 +108,9 @@
 }
 
 .filter-clear-section {
-  margin-top: -8px; // Move up by adding negative margin
+  margin-top: -8px;
   margin-bottom: 0;
-  padding-left: 4px; // Add small left padding
+  padding-left: 4px;
 }
 
 
@@ -175,8 +171,8 @@
 
 .filter-toggle-button {
   position: absolute;
-  top: 20px; // Move closer to top of map
-  left: 20px; // Move closer to left edge of map
+  top: 20px;
+  left: 20px;
   z-index: 10;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
@@ -212,15 +208,14 @@
   margin-left: 4px;
 }
 
-// Responsive adjustments
 @media (max-height: 800px) {
   .filter-overlay {
-    top: 20px; // Keep consistent positioning
+    top: 20px;
     max-height: 50vh;
   }
 
   .filter-toggle-button {
-    top: 20px; // Keep consistent positioning
+    top: 20px;
   }
 }
 
@@ -237,16 +232,13 @@
   }
 }
 
-// Override dropdown positioning for filter overlay
 .filter-overlay {
-  // Ensure input containers can handle dropdowns that extend outside
   .choice-input-wrapper,
   .multi-select-container {
     position: relative;
     overflow: visible;
   }
 
-  // Position dropdowns to open to the right of the filter overlay with more spacing
   .choice-input-wrapper {
     .choice-input-dropdown {
       position: absolute;
@@ -259,7 +251,7 @@
       transform: none;
       margin-top: 0;
       margin-left: 0;
-      border-radius: 0 8px 8px 8px; // Remove top-left corner rounding
+      border-radius: 0 8px 8px 8px;
     }
   }
 
@@ -275,16 +267,15 @@
       transform: none;
       margin-top: 0;
       margin-left: 0;
-      border-radius: 0 8px 8px 8px; // Remove top-left corner rounding
+      border-radius: 0 8px 8px 8px;
     }
   }
 
-  // Keep arrows always pointing left
   .choice-input-arrow {
-    transform: rotate(-90deg); // Always point left
+    transform: rotate(-90deg);
 
     &.open {
-      transform: rotate(-90deg); // Keep pointing left when open
+      transform: rotate(-90deg);
     }
   }
 

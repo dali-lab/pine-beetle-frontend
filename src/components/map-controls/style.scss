@@ -2,83 +2,81 @@
 
 .map-controls-panel {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 1.25rem;
+  left: 1.25rem;
   z-index: 999;
-  width: 240px;
+  width: 15rem;
 }
 
 .panel-toggle-button {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px 8px 0 0; // Rounded top only when panel is closed
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba($cleanWhite, 0.98);
+  backdrop-filter: blur(0.75rem);
+  border: 1px solid rgba($black, 0.1);
+  border-radius: 8px 8px 0 0;
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   color: $greyBlue800;
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
   justify-content: space-between;
-  box-shadow: none; // Remove shadow on desktop
-  margin-bottom: 0; // Remove gap when panel is open
+  box-shadow: none;
+  margin-bottom: 0;
   position: relative;
   z-index: 998;
 
   &:hover {
-    background: rgba(255, 255, 255, 1);
-    box-shadow: none; // Remove hover shadow on desktop
-    transform: translateY(-1px);
+    background: $cleanWhite;
+    box-shadow: none;
+    transform: translateY(-0.0625rem);
   }
 
-  // When panel is open, make it look connected
   &.panel-open {
     border-radius: 8px 8px 0 0;
     margin-bottom: 0;
     border-bottom: none;
-    box-shadow: none; // Remove shadow when panel is open
+    box-shadow: none;
   }
 
-  // When panel is closed, fully rounded and smaller
   &.panel-closed {
     border-radius: 8px;
-    margin-bottom: 8px;
-    padding: 8px 12px;
-    font-size: 13px;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
     width: auto;
-    min-width: 80px;
+    min-width: 5rem;
   }
 }
 
 .toggle-icon {
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
-  width: 16px;
+  width: 1rem;
   text-align: center;
 }
 
 .unified-controls-panel {
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-top: none; // Connect with toggle button
-  border-radius: 0 0 8px 8px; // Rounded bottom only
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  overflow: visible; // Allow dropdowns to extend outside the panel
+  background: rgba($cleanWhite, 0.98);
+  backdrop-filter: blur(0.75rem);
+  border: 1px solid rgba($black, 0.1);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 0.5rem 1.5rem rgba($black, 0.15);
+  overflow: visible;
   z-index: 997;
-  margin-top: 0; // Connect directly with toggle button
+  margin-top: 0;
   animation: slideDown 0.3s ease-out;
 }
 
 @keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-0.625rem);
   }
   to {
     opacity: 1;
@@ -87,8 +85,8 @@
 }
 
 .control-section {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  overflow: visible; // Allow dropdowns to extend outside sections
+  border-bottom: 1px solid rgba($black, 0.05);
+  overflow: visible;
 
   &:last-child {
     border-bottom: none;
@@ -100,7 +98,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 10px 14px;
+  padding: 0.625rem 0.875rem;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -110,7 +108,7 @@
 
   &:hover {
     background: $brandSecondary;
-    transform: translateX(2px);
+    transform: none;
 
     .section-title {
       color: white;
@@ -123,7 +121,7 @@
 
   &:active {
     background: $brandSecondary;
-    transform: translateX(1px);
+    transform: none;
 
     .section-title {
       color: white;
@@ -134,10 +132,9 @@
     }
   }
 
-  // Active/open section styling
   &.active {
     background: $brandSecondary;
-    transform: translateX(2px);
+    transform: none;
 
     .section-title {
       color: white;
@@ -148,7 +145,6 @@
     }
   }
 
-  // Direct download button styling
   &.download-direct {
     background: transparent;
     color: $greyBlue800;
@@ -161,7 +157,7 @@
 
     &:hover:not(:disabled) {
       background: $brandSecondary;
-      transform: translateX(2px);
+      transform: none;
 
       .section-title {
         color: white;
@@ -170,7 +166,7 @@
 
     &:focus:not(:disabled) {
       background: $brandSecondary;
-      transform: translateX(2px);
+      transform: none;
 
       .section-title {
         color: white;
@@ -179,7 +175,7 @@
 
     &:active:not(:disabled) {
       background: $brandSecondary;
-      transform: translateX(1px);
+      transform: none;
 
       .section-title {
         color: white;
@@ -199,35 +195,33 @@
 }
 
 .map-controls-panel .section-title {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   color: $greyBlue800;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.01875rem;
   margin: 0;
   transition: color 0.3s ease;
 }
 
-// Download icon styling
 .download-icon {
-  width: 14px;
-  height: 14px;
-  margin-right: 4px;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-right: 0.25rem;
   color: $greyBlue800;
 }
 
 .section-header:hover .download-icon {
-  color: white !important;
+  color: white;
 }
 
 .section-toggle {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: bold;
   color: $greyBlue600;
-  width: 16px;
+  width: 1rem;
   text-align: center;
 }
 
-// Embedded control styles
 .embedded-control {
   position: static;
   background: transparent;
@@ -236,19 +230,18 @@
   box-shadow: none;
   border-radius: 0;
   margin: 0;
-  padding: 0 16px 16px 16px;
+  padding: 0;
   max-width: none;
   min-width: none;
   width: 100%;
-  overflow: visible; // Allow dropdowns to extend outside
+  overflow: visible;
 
-  // Make filter inputs use full width with proper spacing
   .choice-input-wrapper,
   .multi-select-container,
   .selection-container {
     width: 100%;
     max-width: none;
-    overflow: visible; // Ensure dropdowns can extend outside
+    overflow: visible;
   }
 
   .choice-input-button,
@@ -257,34 +250,33 @@
     max-width: none;
   }
 
-  // Unified action button styling for both clear and download buttons
   .action-button,
   .embedded-control .action-button,
   .map-controls-panel .action-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    background: $brandSecondary !important;
-    color: $cleanWhite !important;
-    border: 1px solid $brandSecondary !important;
+    gap: 0.5rem;
+    background: $brandSecondary;
+    color: $cleanWhite;
+    border: 1px solid $brandSecondary;
     border-radius: 6px;
-    padding: 12px 24px;
+    padding: 0.75rem 1.5rem;
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
     width: 100%;
-    margin-bottom: 12px;
+    margin-bottom: 0.75rem;
 
     &:hover:not(:disabled) {
-      background: $brandSecondary !important;
-      transform: translateY(-1px);
+      background: $brandSecondary;
+      transform: translateY(-0.0625rem);
     }
 
     &:disabled {
-      background: #6b7280 !important;
+      background: $grey600;
       cursor: not-allowed;
       transform: none;
     }
@@ -305,55 +297,52 @@
     width: 100%;
   }
 
-  // Make filter content match control-section width exactly
   .filter-content {
-    width: calc(100% - 32px); // Account for the 16px padding on each side
-    padding: 0;
+    width: calc(100% - 2rem);
+    padding: 0 1rem 1rem 1rem;
     margin: 0;
-    max-width: calc(320px - 32px); // Match the panel width minus padding
-    overflow: visible; // Allow dropdowns to extend outside
+    max-width: calc(20rem - 2rem);
+    overflow: visible;
   }
 
   .filter-header,
   .legend-header {
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba($black, 0.1);
   }
 
   .filter-title,
   .legend-title {
-    font-size: 14px;
+    font-size: 0.875rem;
     margin: 0;
   }
 
   .filter-close-button,
   .legend-close-button {
-    display: none; // Hide close buttons since we have our own control
+    display: none;
   }
 }
 
-// Download control specific styles - removed as we now use direct download
 
-// Responsive adjustments
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .map-controls-panel {
-    top: 10px;
-    left: 10px;
+    top: 0.625rem;
+    left: 0.625rem;
     width: auto;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   .panel-toggle-button {
-    display: none; // Hide the toggle button on mobile
+    display: none;
   }
 
   .unified-controls-panel {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.5rem;
     background: transparent;
     border: none;
     box-shadow: none;
@@ -372,8 +361,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    width: 3rem;
+    height: 3rem;
     padding: 0;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(12px);
@@ -396,9 +385,9 @@
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 1);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transform: translateY(-1px);
+    background: $cleanWhite;
+    box-shadow: 0 0.25rem 0.75rem rgba($black, 0.15);
+    transform: translateY(-0.0625rem);
     }
 
     &.active {
@@ -408,24 +397,22 @@
   }
 
   .map-controls-panel .section-title {
-    display: none; // Hide text labels on mobile
+    display: none;
   }
 
   .section-toggle {
-    display: none; // Hide toggle icons on mobile
+    display: none;
   }
 
-  // Icon-only styling for mobile
   .section-header::before {
     content: '';
-    width: 20px;
-    height: 20px;
+    width: 1.25rem;
+    height: 1.25rem;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
   }
 
-  // Filter icon
   .control-section:nth-child(1) .section-header::before {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23333333'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 4h18M3 8h12M3 12h6M3 16h4'/%3E%3C/svg%3E");
   }
@@ -434,7 +421,6 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 4h18M3 8h12M3 12h6M3 16h4'/%3E%3C/svg%3E");
   }
 
-  // Legend icon
   .control-section:nth-child(2) .section-header::before {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23333333'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'/%3E%3C/svg%3E");
   }
@@ -443,7 +429,6 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z'/%3E%3C/svg%3E");
   }
 
-  // Download icon
   .control-section:nth-child(3) .section-header::before {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23333333'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'/%3E%3C/svg%3E");
   }
@@ -453,9 +438,8 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23ffffff'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'/%3E%3C/svg%3E");
   }
 
-  // Direct download button styling for mobile
   .control-section:nth-child(3) .section-header.download-direct {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba($cleanWhite, 0.95);
 
     &:hover:not(:disabled) {
       background: $brandSecondary;
@@ -470,51 +454,49 @@
     }
 
     &:disabled {
-      background: #6b7280;
+      background: $grey600;
     }
   }
 
-  // Position each control panel to align with its button
   .control-section:nth-child(1) .embedded-control {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(12px);
+    background: rgba($cleanWhite, 0.98);
+    backdrop-filter: blur(0.75rem);
     border: none;
     border-radius: 0;
     box-shadow: none;
-    padding: 20px;
+    padding: 1.25rem;
     width: 100vw;
     height: 100vh;
     z-index: 999;
     animation: slideUp 0.3s ease-out;
     overflow-y: auto;
 
-    // Add close button styling
     .filter-close-button,
     .legend-close-button {
       display: block;
       position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.1);
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      background: rgba($black, 0.1);
       border: none;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 1.25rem;
       color: $greyBlue800;
       transition: all 0.2s ease;
 
       &:hover {
-        background: rgba(0, 0, 0, 0.2);
+        background: rgba($black, 0.2);
         color: $greyBlue900;
       }
     }
@@ -526,51 +508,48 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(12px);
+    background: rgba($cleanWhite, 0.98);
+    backdrop-filter: blur(0.75rem);
     border: none;
     border-radius: 0;
     box-shadow: none;
-    padding: 20px;
+    padding: 1.25rem;
     width: 100vw;
     height: 100vh;
     z-index: 999;
     animation: slideUp 0.3s ease-out;
     overflow-y: auto;
 
-    // Add close button styling
     .filter-close-button,
     .legend-close-button {
       display: block;
       position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.1);
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      background: rgba($black, 0.1);
       border: none;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 1.25rem;
       color: $greyBlue800;
       transition: all 0.2s ease;
 
       &:hover {
-        background: rgba(0, 0, 0, 0.2);
+        background: rgba($black, 0.2);
         color: $greyBlue900;
       }
     }
   }
 
-  // Download control removed - now using direct download button
-
   @keyframes slideUp {
     from {
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(1.25rem);
     }
     to {
       opacity: 1;
@@ -581,7 +560,7 @@
   @keyframes slideRight {
     from {
       opacity: 0;
-      transform: translateX(-10px);
+      transform: translateX(-0.625rem);
     }
     to {
       opacity: 1;
