@@ -1,0 +1,82 @@
+---
+alwaysApply: true
+---
+
+# Pine Beetle Frontend Project Rules
+
+## General Guidelines
+
+- Use English for all code and documentation.
+- Write concise, technical code with accurate examples.
+- Use functional and declarative programming patterns; avoid classes.
+- Prefer iteration and modularization over code duplication.
+- Use descriptive variable names with auxiliary verbs (e.g., `isLoading`, `hasError`).
+- Follow existing project structure and naming conventions.
+
+## TypeScript Rules
+
+- Always declare the type of each variable and function (parameters and return value).
+- Avoid using `any`; create necessary types instead.
+- Use interface definitions for object shapes and component props.
+- Prefer type unions over enums when possible.
+- Use generic types for reusable components and functions.
+- Define return types explicitly for functions, especially in Redux actions and reducers.
+- Use optional chaining (`?.`) and nullish coalescing (`??`) operators.
+- Leverage TypeScript's strict mode settings.
+
+## SCSS/Sass Rules
+
+- Use SCSS variables from `src/styles/colors.scss` for all color values.
+- Follow BEM methodology for CSS class naming when appropriate.
+- Use nested selectors sparingly (max 3 levels deep).
+- Leverage SCSS mixins for repeated patterns (animations, transitions).
+- Use `@import` statements at the top of files for dependencies.
+- Follow the existing color variable naming convention (`$colorName` + `$shade`).
+- Use semantic color names (e.g., `$headingColor`, `$backgroundColor`) over generic ones.
+- Keep component-specific styles in their respective `style.scss` files.
+- Use CSS custom properties for dynamic values when needed.
+
+## React.js Rules
+
+- Use functional components with hooks over class components.
+- Follow the existing component structure: `component.js`, `index.js`, `style.scss`.
+- Use PropTypes for prop validation (as seen in the project).
+- Implement proper error boundaries for component error handling.
+- Use React.memo() for performance optimization when appropriate.
+- Follow the existing Redux pattern with actions, reducers, and thunks.
+- Use descriptive component and function names.
+- Implement proper cleanup in useEffect hooks (remove event listeners, clear timers).
+- Use React Router patterns as established in the project.
+- Follow the existing state management structure with Redux.
+
+## Node.js & Build Tools Rules
+
+- Follow the existing Webpack configuration patterns.
+- Use Babel for JavaScript transpilation with the configured presets.
+- Follow the existing ESLint configuration (Airbnb style guide).
+- Use the established npm scripts for development and production builds.
+- Follow the existing file structure for assets and components.
+- Use environment variables for configuration (following the Dotenv pattern).
+- Follow the existing PostCSS and Autoprefixer setup.
+- Use the established Sass loader configuration with color imports.
+- Follow the existing development server configuration with hot reloading.
+
+## File Organization Rules
+
+- Keep components in their respective directories with `component.js`, `index.js`, and `style.scss`.
+- Use the existing screen structure for page-level components.
+- Follow the established services pattern for API calls.
+- Use the existing utils structure for helper functions.
+- Follow the established constants organization.
+- Keep assets organized by type (icons, images, animations).
+- Use the existing state management structure (actions, reducers).
+
+## Code Quality Rules
+
+- Follow the existing ESLint configuration and fix all linting errors.
+- Use meaningful commit messages following conventional commit format.
+- Write self-documenting code with clear variable and function names.
+- Avoid deep nesting in both JavaScript and SCSS.
+- Use consistent indentation (2 spaces for JS, 4 spaces for SCSS as per project).
+- Follow the existing import/export patterns.
+- Use destructuring for props and state when appropriate.
