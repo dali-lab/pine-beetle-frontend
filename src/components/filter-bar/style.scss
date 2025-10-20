@@ -1,5 +1,4 @@
-@import '../../styles/colors.scss'; // Assuming color variables like $white, $greyBlue exist
-
+@import '../../styles/colors.scss';
 .filter-bar {
   width: 100%;
   background-color: $white;
@@ -135,7 +134,6 @@
       border-color: $greyBlue400;
     }
 
-    /* Remove all browser defaults */
     &:active {
       background-color: $white;
     }

@@ -162,8 +162,6 @@
                 flex-direction: column;
                 cursor: pointer;
                 transition: background-color 0.15s ease;
-                border-radius: 4px;
-                margin: 0 4px;
                 width: calc(100% - 8px);
 
                 &:hover {
@@ -181,7 +179,7 @@
                     flex-direction: row;
                     align-items: center;
                     min-height: 42px;
-                    padding: 8px 12px;
+                    padding: 8px 10px;
                     font-size: 14px;
                     font-weight: 400;
                     text-align: left;
