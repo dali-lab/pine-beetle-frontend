@@ -5,8 +5,6 @@ import Contact from './contact';
 import Data from './data';
 import DataTable from './data-table';
 import DownloadData from './download-data';
-import HistoricalGraphView from './historical-graph-view';
-import HistoricalMapView from './historical-map-view';
 import HistoricalView from './historical-view';
 import Home from './home';
 import Methodology from './methodology';
@@ -25,8 +23,6 @@ export {
   Data,
   DataTable,
   DownloadData,
-  HistoricalGraphView,
-  HistoricalMapView,
   HistoricalView,
   Home,
   Methodology,
