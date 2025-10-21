@@ -84,11 +84,10 @@ const Header = ({ setChartMode }) => {
                 }
                 if (historicalDataButtonRef.current) {
                   const rect = historicalDataButtonRef.current.getBoundingClientRect();
-                  const dropdownWidth = 192; // min-width from CSS
+                  const dropdownWidth = 192;
                   const rightEdge = rect.left + dropdownWidth;
                   const viewportWidth = window.innerWidth;
 
-                  // If dropdown would overflow, position it to the left
                   const leftPosition = rightEdge > viewportWidth
                     ? rect.right - dropdownWidth
                     : rect.left;
@@ -108,7 +107,7 @@ const Header = ({ setChartMode }) => {
                 className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.DATA || location.pathname === ROUTES.DATA_TABLE || location.pathname === ROUTES.HISTORICAL_GRAPH_VIEW || location.pathname === ROUTES.HISTORICAL_MAP_VIEW || location.pathname === ROUTES.DOWNLOAD_DATA) ? 'active' : ''}`}
                 onClick={() => setHistoricalDataOpen(false)}
               >
-                Historical Data
+                Data
                 <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
