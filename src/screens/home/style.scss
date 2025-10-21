@@ -59,6 +59,11 @@
         padding: 0 !important;
         background-color: transparent !important;
         flex: none !important;
+
+        // On mobile, leave space for bottom navigation
+        @media (max-width: 48rem) {
+            bottom: 5rem !important; // Space for bottom nav + safe area
+        }
     }
 
     // Make the map fullscreen
@@ -72,6 +77,11 @@
         left: 0 !important;
         right: 0 !important;
         bottom: 0 !important;
+
+        // On mobile, leave space for bottom navigation
+        @media (max-width: 48rem) {
+            bottom: 5rem !important; // Space for bottom nav + safe area
+        }
     }
 
     // Override any container styles

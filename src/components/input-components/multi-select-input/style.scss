@@ -264,3 +264,67 @@
     border-top: 1px solid $greyBlue200;
     margin: 4px 0;
 }
+
+// Mobile touch-friendly enhancements
+@media (max-width: 768px) {
+    .multi-select-container {
+        .location-wrapper {
+            .location-header {
+                min-height: 48px;
+                padding: 0 16px;
+                font-size: 16px; // Prevent zoom on iOS
+                border-radius: 8px;
+                border-width: 2px;
+
+                &:focus {
+                    border-color: $brandSecondary;
+                    box-shadow: 0 0 0 3px rgba($brandSecondary, 0.2);
+                }
+
+                .location-header-title {
+                    font-size: 16px;
+                }
+            }
+
+            .location-list {
+                border-radius: 12px;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                padding: 8px 0;
+
+                .location-list-item {
+                    margin: 2px 8px;
+                    width: calc(100% - 16px);
+                    border-radius: 8px;
+
+                    .location-list-item-select {
+                        min-height: 48px;
+                        padding: 12px 16px;
+                        font-size: 16px;
+
+                        &:active {
+                            transform: scale(0.98);
+                            background-color: $brandSecondary;
+                            color: white;
+                        }
+                    }
+
+                    .children-list {
+                        .children-list-item {
+                            min-height: 48px;
+                            padding: 12px 16px;
+                            font-size: 16px;
+                            border-radius: 8px;
+                            margin: 2px 0;
+
+                            &:active {
+                                transform: scale(0.98);
+                                background-color: $brandSecondary;
+                                color: white;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

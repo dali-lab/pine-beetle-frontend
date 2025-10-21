@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './style.scss';
 
 const LegendOverlay = ({ legendItems, title = 'Legend', className = '' }) => {
-  const [showLegend, setShowLegend] = useState(true);
+  const [showLegend, setShowLegend] = useState(className?.includes('embedded-control') || className?.includes('mobile-fullscreen-overlay'));
 
   if (!showLegend) {
     return (

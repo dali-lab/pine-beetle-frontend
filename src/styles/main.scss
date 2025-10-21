@@ -266,6 +266,27 @@ textarea {
     left: 50%;
     transform: translateX(-50%);
     margin-top: 0;
+
+    // Mobile-specific positioning improvements
+    @media (max-width: 768px) {
+        top: 0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100vw - 2rem);
+        max-width: 14rem;
+
+        .selection-p {
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    @media (max-width: 480px) {
+        top: 0.25rem;
+        width: calc(100vw - 1rem);
+        max-width: 12rem;
+    }
 }
 
 .selection-p {
@@ -320,4 +341,118 @@ textarea {
             font-weight: 500;
         }
     }
+
+    // Mobile-specific improvements for toggle buttons
+    @media (max-width: 768px) {
+        height: 1.75rem;
+        margin-top: 0.5vh;
+        margin-left: 0.5vw;
+        margin-right: 0.5vw;
+        gap: 0.125rem;
+        padding: 0.0625rem;
+
+        .selected-option-p {
+            flex: 1;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+            min-height: 1.5rem;
+            justify-content: center;
+
+            .selected-option-text-p {
+                font-size: 0.75rem;
+                text-align: center;
+                white-space: nowrap;
+            }
+        }
+
+        .unselected-option-p {
+            flex: 1;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+            min-height: 1.5rem;
+            justify-content: center;
+
+            .unselected-option-text-p {
+                font-size: 0.75rem;
+                text-align: center;
+                white-space: nowrap;
+            }
+        }
+    }
+
+    // Extra small mobile screens
+    @media (max-width: 480px) {
+        height: 1.5rem;
+        margin-top: 0.25vh;
+        margin-left: 0.25vw;
+        margin-right: 0.25vw;
+
+        .selected-option-p,
+        .unselected-option-p {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            padding-top: 0.1875rem;
+            padding-bottom: 0.1875rem;
+            min-height: 1.25rem;
+
+            .selected-option-text-p,
+            .unselected-option-text-p {
+                font-size: 0.7rem;
+            }
+        }
+    }
+}
+
+// iOS Design System Enhancements
+@media (max-width: 768px) {
+  // iOS-style touch targets
+  button, .button {
+    min-height: 44px;
+    padding: 0.75rem 1rem;
+    font-size: 16px; // Prevent zoom on iOS
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // iOS-style form elements
+  input, select, textarea {
+    font-size: 16px; // Prevent zoom on iOS
+    border-radius: 8px;
+    border-width: 2px;
+
+    &:focus {
+      outline: none;
+      border-color: $brandSecondary;
+      box-shadow: 0 0 0 3px rgba($brandSecondary, 0.2);
+    }
+  }
+
+  // iOS-style cards and containers
+  .card, .panel {
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  // iOS-style typography
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  // Better spacing for mobile
+  .section {
+    padding: 2rem 0;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
 }

@@ -41,6 +41,27 @@
     margin-top: 2px;
     left: 35vw;
     z-index: 1;
+
+    // Mobile-specific positioning improvements
+    @media (max-width: 768px) {
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100vw - 2rem);
+        max-width: 14rem;
+        margin-top: 0.5rem;
+
+        .prediction-selection-p {
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    @media (max-width: 480px) {
+        width: calc(100vw - 1rem);
+        max-width: 12rem;
+        margin-top: 0.25rem;
+    }
 }
 
 .prediction-selection-p {
@@ -111,6 +132,90 @@
             height: 1.25rem;
             width: 1.25rem;
             margin-right: 0.625rem;
+        }
+    }
+
+    // Mobile-specific improvements for prediction toggle buttons
+    @media (max-width: 768px) {
+        height: 1.75rem;
+        margin-top: 0.5vh;
+        margin-left: 0.5vw;
+        margin-right: 0.5vw;
+        gap: 0.125rem;
+        padding: 0.0625rem;
+
+        .prediction-selected-option-p,
+        .prediction-selected-option-2-p {
+            flex: 1;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+            min-height: 1.5rem;
+            justify-content: center;
+
+            .prediction-selected-option-text-p {
+                font-size: 0.75rem;
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            img {
+                height: 0.75rem;
+                width: 0.75rem;
+                margin-right: 0.125rem;
+            }
+        }
+
+        .prediction-unselected-option-p {
+            flex: 1;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+            min-height: 1.5rem;
+            justify-content: center;
+
+            .prediction-unselected-option-text-p {
+                font-size: 0.75rem;
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            img {
+                height: 0.75rem;
+                width: 0.75rem;
+                margin-right: 0.125rem;
+            }
+        }
+    }
+
+    // Extra small mobile screens
+    @media (max-width: 480px) {
+        height: 1.5rem;
+        margin-top: 0.25vh;
+        margin-left: 0.25vw;
+        margin-right: 0.25vw;
+
+        .prediction-selected-option-p,
+        .prediction-selected-option-2-p,
+        .prediction-unselected-option-p {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            padding-top: 0.1875rem;
+            padding-bottom: 0.1875rem;
+            min-height: 1.25rem;
+
+            .prediction-selected-option-text-p,
+            .prediction-unselected-option-text-p {
+                font-size: 0.7rem;
+            }
+
+            img {
+                height: 0.625rem;
+                width: 0.625rem;
+                margin-right: 0.0625rem;
+            }
         }
     }
 }

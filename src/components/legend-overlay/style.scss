@@ -119,3 +119,61 @@
   font-weight: bold;
   color: $greyBlue600;
 }
+
+// Mobile fullscreen overlay styles
+@media (max-width: 768px) {
+  .mobile-fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba($cleanWhite, 0.98);
+    backdrop-filter: blur(20px);
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 1.5rem;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1001;
+    animation: slideUpMobile 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    .legend-header {
+      margin-bottom: 2rem;
+      padding-top: 3rem;
+      padding-left: 0;
+    }
+
+    .legend-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: $greyBlue900;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .legend-content {
+      padding-left: 0;
+      padding-bottom: 0;
+      gap: 1rem;
+    }
+
+    .legend-item {
+      gap: 1rem;
+    }
+
+    .legend-color-box {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    .legend-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: $greyBlue800;
+    }
+  }
+}

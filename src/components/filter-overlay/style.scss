@@ -214,6 +214,69 @@
   .filter-toggle-button {
     left: 16px;
   }
+
+  // Mobile fullscreen overlay styles
+  .mobile-fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba($cleanWhite, 0.98);
+    backdrop-filter: blur(20px);
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 1.5rem;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    animation: slideUpMobile 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    .filter-content {
+      width: 100%;
+      max-width: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .filter-header {
+      margin-bottom: 2rem;
+      padding-top: 3rem;
+    }
+
+    .filter-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: $greyBlue900;
+    }
+
+    .filter-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: $greyBlue800;
+      margin-bottom: 0.5rem;
+    }
+
+    .action-button {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    .text-button {
+      font-size: 1rem;
+      padding: 1rem 0;
+    }
+  }
 }
 
 .filter-overlay {
