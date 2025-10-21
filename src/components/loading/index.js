@@ -1,23 +1,25 @@
 import React from 'react';
 import Modal from 'react-modal';
-import Loader from '../loader';
 
 import './style.scss';
 
-const Loading = ({ visible }) => {
+const Loading = ({ visible, message = 'Loading...' }) => {
   return (
     <Modal
       ariaHideApp={false}
       className="loading-modal"
-      closeTimeoutMS={150}
+      closeTimeoutMS={200}
       contentLabel="Loading Data Modal"
       isOpen={visible}
+      overlayClassName="loading-overlay"
     >
-      <div id="loading-container">
-        <p>Please wait while we load the data...</p>
-        <div id="loading-animation">
-          <Loader />
+      <div className="loading-container">
+        <div className="loading-spinner">
+          <div className="spinner-ring" />
+          <div className="spinner-ring" />
+          <div className="spinner-ring" />
         </div>
+        <p className="loading-message">{message}</p>
       </div>
     </Modal>
   );

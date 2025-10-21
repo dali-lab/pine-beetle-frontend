@@ -1,20 +1,9 @@
-#loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 20px;
-
-    p {
-        font-size: 20px;
-        margin-bottom: -10px;
-    }
-
-    #loading-animation {
-        width: 150px;
-        margin-top: -20px;
-        margin-bottom: -20px;
-    }
+// Modern minimalist loading overlay styles
+.loading-overlay {
+    background-color: rgba($deepCharcoal, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
 }
 
 .loading-modal {
@@ -22,32 +11,126 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    max-width: none;
+    width: auto;
+    height: auto;
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    background-color: $cleanWhite;
+    border-radius: 16px;
+    box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba($brandSecondary, 0.1);
+    min-width: 280px;
     max-width: 400px;
-    width: 40vw;
-    padding: 30px;
-    border-radius: 20px;
-    background-color: $white;
-    // TODO: replace box shadow with grayer background later
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
 }
 
-// remove unnecessary blue outline from modal (does not impact accessibility)
-.loading-modal:focus {
-    outline:0;
+.loading-spinner {
+    position: relative;
+    width: 48px;
+    height: 48px;
 }
 
-// https://stackoverflow.com/questions/58355628/animate-react-modal
+.spinner-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-top: 3px solid $brandPrimary;
+    border-radius: 50%;
+    animation: spin 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.spinner-ring:nth-child(1) {
+    animation-delay: -0.45s;
+    border-top-color: $brandPrimary;
+}
+
+.spinner-ring:nth-child(2) {
+    animation-delay: -0.3s;
+    border-top-color: $brandSecondary;
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+}
+
+.spinner-ring:nth-child(3) {
+    animation-delay: -0.15s;
+    border-top-color: rgba($brandPrimary, 0.6);
+    width: 60%;
+    height: 60%;
+    top: 20%;
+    left: 20%;
+}
+
+.loading-message {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: $deepCharcoal;
+    margin: 0;
+    text-align: center;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+// Enhanced modal transitions
 .ReactModal__Overlay {
     opacity: 0;
-    transition: all 150ms ease-in-out;
-    z-index: 2;
+    transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
 }
 
 .ReactModal__Overlay--after-open {
     opacity: 1;
-    z-index: 2;
 }
 
 .ReactModal__Overlay--before-close {
     opacity: 0;
+}
+
+// Focus management for accessibility
+.loading-modal:focus {
+    outline: none;
+}
+
+// Responsive adjustments
+@media (max-width: 480px) {
+    .loading-container {
+        margin: 1rem;
+        padding: 1.5rem;
+        min-width: auto;
+        max-width: calc(100vw - 2rem);
+    }
+
+    .loading-spinner {
+        width: 40px;
+        height: 40px;
+    }
+
+    .loading-message {
+        font-size: 0.9rem;
+    }
 }

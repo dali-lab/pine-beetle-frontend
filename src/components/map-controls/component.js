@@ -62,6 +62,12 @@ const MapControls = (props) => {
   }, [isDesktop]);
 
   const handleDownloadClick = () => {
+    // Close filters and legend when downloading
+    setOpenSections((prev) => ({
+      ...prev,
+      filters: false,
+      legend: false,
+    }));
     downloadCallback();
   };
 
@@ -81,7 +87,16 @@ const MapControls = (props) => {
           [section]: false,
         };
       }
-      // If clicking a different section, close all others and open this one
+      // If clicking filters or legend, allow them to coexist
+      // Only close download section when opening filters or legend
+      if (section === 'filters' || section === 'legend') {
+        return {
+          ...prev,
+          download: false,
+          [section]: true,
+        };
+      }
+      // For download section, close all others
       return {
         filters: false,
         download: false,
