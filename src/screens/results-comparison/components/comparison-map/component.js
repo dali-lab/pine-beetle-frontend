@@ -309,53 +309,51 @@ const ComparisonMap = (props) => {
   }));
 
   return (
-    <>
+    <div className="container flex-item-left results-comparison-map" id="map-container">
       <TogglesOverlay dataMode={dataMode} setDataMode={setDataMode} />
-      <div className="container flex-item-left results-comparison-map" id="map-container">
-        <Map
-          hover={resultsHover}
-        />
-        <MapControls
+      <Map
+        hover={resultsHover}
+      />
+      <MapControls
           // Filter props
-          availableStates={availableStates}
-          availableYears={[]} // Results comparison doesn't have years filter
-          availableSublocations={availableSublocations}
-          county={props.county}
-          dataMode={dataMode}
-          predictionYear={year}
-          rangerDistrict={props.rangerDistrict}
-          selectedState={selectedState}
-          setCounty={setCounty}
-          setPredictionYear={() => {}} // No year setting for results comparison
-          setRangerDistrict={setRangerDistrict}
-          setState={setState}
-          clearAllSelections={props.clearAllSelections}
+        availableStates={availableStates}
+        availableYears={[]} // Results comparison doesn't have years filter
+        availableSublocations={availableSublocations}
+        county={props.county}
+        dataMode={dataMode}
+        predictionYear={year}
+        rangerDistrict={props.rangerDistrict}
+        selectedState={selectedState}
+        setCounty={setCounty}
+        setPredictionYear={() => {}} // No year setting for results comparison
+        setRangerDistrict={setRangerDistrict}
+        setState={setState}
+        clearAllSelections={props.clearAllSelections}
           // Legend props
-          legendItems={legendItems}
-          legendTitle="Results comparison"
+        legendItems={legendItems}
+        legendTitle="Results comparison"
           // Download props
-          downloadCallback={() => downloadMap(
-            map,
-            year,
-            isDownloadingMap,
-            setIsDownloadingMap,
-            selectedState,
-            MAP_TITLES.COMPARISON,
-            { titleDetails: { selectedState, period: year }, thresholds, colors },
-          )}
-          isDownloadingMap={isDownloadingMap}
+        downloadCallback={() => downloadMap(
+          map,
+          year,
+          isDownloadingMap,
+          setIsDownloadingMap,
+          selectedState,
+          MAP_TITLES.COMPARISON,
+          { titleDetails: { selectedState, period: year }, thresholds, colors },
+        )}
+        isDownloadingMap={isDownloadingMap}
           // Hide filters
-          hideFilters
-        />
-        {!isLoading && !data.length && (
+        hideFilters
+      />
+      {!isLoading && !data.length && (
         <div className="results-comparison-message">
           <p>
             {`Map for ${year} not yet available. Spot data for the previous year usually come online sometime in January or February of the following year.`}
           </p>
         </div>
-        )}
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 

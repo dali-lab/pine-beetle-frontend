@@ -64,7 +64,6 @@ textarea {
     max-width: 87.5rem;
     height: auto;
     margin: 0 auto;
-    padding: 0 2rem;
     background-color: $backgroundColor;
     background-clip: border-box;
     border-radius: 0px;
@@ -259,6 +258,14 @@ textarea {
     margin-top: 2px;
     left: 35vw;
     z-index: 1;
+}
+
+// Map-specific toggle positioning - centered at top
+#map-container #toggles-overlay {
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
 }
 
 .selection-p {

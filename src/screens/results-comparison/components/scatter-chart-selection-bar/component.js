@@ -2,8 +2,8 @@ import React from 'react';
 
 import { ChoiceInput } from '../../../../components/input-components';
 
-import './style.scss';
 import TogglesOverlay from '../../../../components/map/components';
+import './style.scss';
 
 const ScatterChartSelectionBar = (props) => {
   const {
@@ -19,12 +19,14 @@ const ScatterChartSelectionBar = (props) => {
       <div id="scatter-chart-bar">
         <div className="scatter-chart-bar-selections">
           <div className="scatter-chart-bar-year-selection">
-            <p className="scatter-chart-bar-year-selection-title">Year</p>
-            <div className="scatter-chart-bar-year-selection-options input-container">
+            <div className="scatter-chart-bar-year-selection-title">Year</div>
+            <div className="scatter-chart-bar-year-selection-options">
               <ChoiceInput setValue={setPredictionYear} options={revYears} value={year} />
             </div>
           </div>
-          <TogglesOverlay />
+          <div className="scatter-chart-bar-toggles-section">
+            <TogglesOverlay />
+          </div>
         </div>
       </div>
     </div>
