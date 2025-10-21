@@ -15,8 +15,6 @@ import {
   Data,
   DataTable,
   DownloadData,
-  HistoricalGraphView,
-  HistoricalMapView,
   HistoricalView,
   Home,
   Methodology,
@@ -145,8 +143,8 @@ const App = (props) => {
           <Route path={ROUTES.DATA} component={Data} />
           <Route path={ROUTES.DATA_TABLE} component={DataTable} />
           <Route path={ROUTES.DOWNLOAD_DATA} component={DownloadData} />
-          <Route path={ROUTES.HISTORICAL_GRAPH_VIEW} component={HistoricalGraphView} />
-          <Route path={ROUTES.HISTORICAL_MAP_VIEW} component={HistoricalMapView} />
+          <Route path={ROUTES.HISTORICAL_GRAPH_VIEW} component={HistoricalView} />
+          <Route path={ROUTES.HISTORICAL_MAP_VIEW} component={HistoricalView} />
           <Route path={ROUTES.HISTORICAL_VIEW} component={HistoricalView} />
           <Route path={ROUTES.METHODOLOGY} component={Methodology} />
           <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModelScreen} />

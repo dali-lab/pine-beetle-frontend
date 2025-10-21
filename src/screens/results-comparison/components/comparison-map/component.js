@@ -43,6 +43,7 @@ const ComparisonMap = (props) => {
     dataMode,
     selectedState,
     setCounty,
+    setDataMode,
     setRangerDistrict,
     setState,
     year,
@@ -309,7 +310,7 @@ const ComparisonMap = (props) => {
 
   return (
     <>
-      <TogglesOverlay />
+      <TogglesOverlay dataMode={dataMode} setDataMode={setDataMode} />
       <div className="container flex-item-left results-comparison-map" id="map-container">
         <Map
           hover={resultsHover}

@@ -43,6 +43,7 @@ import './style.scss';
 
 import { Map } from '../../../../components';
 import MapControls from '../../../../components/map-controls/component';
+import TogglesOverlay from '../../../../components/map/components';
 import { isInvalidNumber } from '../../../../utils/map';
 
 const PredictionMap = (props) => {
@@ -56,6 +57,7 @@ const PredictionMap = (props) => {
     rangerDistrict,
     selectedState,
     setCounty,
+    setDataMode,
     setPredictionYear,
     setRangerDistrict,
     setState,
@@ -320,6 +322,7 @@ const PredictionMap = (props) => {
 
   return (
     <div className="container flex-item-left" id="map-container">
+      <TogglesOverlay dataMode={dataMode} setDataMode={setDataMode} />
       <Map
         hover={predictionHover}
         downloadCallback={() => downloadMap(

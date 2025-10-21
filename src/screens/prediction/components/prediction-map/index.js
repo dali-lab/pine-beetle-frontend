@@ -5,6 +5,7 @@ import StateMap from './component';
 import {
   clearSelections,
   setCounty,
+  setDataMode,
   setPredictionModal,
   setPredictionYear,
   setRangerDistrict,
@@ -45,6 +46,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setCounty: (county) => {
       dispatch(setCounty(county));
+    },
+    setDataMode: (mode) => {
+      dispatch(setDataMode(mode));
     },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));
