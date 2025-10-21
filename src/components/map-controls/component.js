@@ -66,6 +66,13 @@ const MapControls = (props) => {
     downloadCallback();
   };
 
+  const handleCloseFilters = () => {
+    setOpenSections((prev) => ({
+      ...prev,
+      filters: false,
+    }));
+  };
+
   const toggleSection = (section) => {
     setOpenSections((prev) => {
       // If clicking the same section, toggle it
@@ -129,6 +136,7 @@ const MapControls = (props) => {
                   setState={setState}
                   clearAllSelections={clearAllSelections}
                   className="embedded-control"
+                  onClose={handleCloseFilters}
                 />
               )}
             </div>

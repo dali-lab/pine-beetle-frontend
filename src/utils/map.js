@@ -91,7 +91,7 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
   });
 
   createdMap.addControl(new mapboxgl.NavigationControl({
-    showCompass: false, // Hide compass/rotation controls
+    showCompass: true, // Show compass/rotation controls
     showZoom: true, // Keep zoom controls
   }));
 

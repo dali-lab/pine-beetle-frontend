@@ -10,7 +10,7 @@ const DataScreen = () => {
     <div className="data-screen">
       <div className="data-container">
         <div className="page-header">
-          <h1>Historical Data</h1>
+          <h1>Data</h1>
           <p className="page-description">
             Access and explore Southern Pine Beetle historical data through various visualization and analysis tools.
             Choose from time series analysis, tabular data views, or download raw data for your research.

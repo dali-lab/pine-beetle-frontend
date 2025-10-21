@@ -23,6 +23,7 @@ const FilterOverlay = (props) => {
     setState,
     clearAllSelections,
     className = '',
+    onClose,
   } = props;
 
   const [showFilters, setShowFilters] = useState(props.className?.includes('embedded-control'));
@@ -53,6 +54,17 @@ const FilterOverlay = (props) => {
 
   return (
     <div className={`filter-overlay ${className}`}>
+      {/* Close button for mobile */}
+      {onClose && (
+        <button
+          type="button"
+          className="filter-close-button"
+          onClick={onClose}
+          aria-label="Close filters"
+        >
+          ×
+        </button>
+      )}
       <div className="filter-content">
         {/* Year Selection */}
         <div className="filter-section">
