@@ -2,7 +2,7 @@
     height: 700px;
     text-align: left;
     width: 100%;
-    border-radius: 18px;
+    border-radius: 12px;
 }
 
 #map-container {
@@ -13,11 +13,17 @@
     margin-left: auto;
     margin-right: auto;
     flex: 1.1 !important;
-    border-radius: 20px;
+    border-radius: 12px;
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: $white;
     padding: 0;
     overflow: hidden;
+
+    @media (max-width: 768px) {
+        width: calc(100vw - 2rem);
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
 }
 
 #map-overlay-download {

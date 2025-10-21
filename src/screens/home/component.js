@@ -11,7 +11,7 @@ const Home = (props) => {
   const { isLoading } = props;
 
   return (
-    <div className="home-page-wrapper">
+    <div className="map-page-wrapper">
       <div className="container">
         <Loading visible={isLoading} />
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FilterBar, Loading, ScrollHint } from '../../components';
+import { FilterBar, Loading } from '../../components';
 import {
   ComparisonMap, OverviewText, ScatterChart, ScatterChartSelectionBar,
 } from './components';
@@ -27,7 +27,6 @@ const ResultsComparison = (props) => {
         </div>
         <ScatterChartSelectionBar />
         <ScatterChart />
-        <ScrollHint />
       </div>
     </div>
   );

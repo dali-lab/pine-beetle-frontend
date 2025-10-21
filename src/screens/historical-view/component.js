@@ -6,7 +6,7 @@ import './style.scss';
 
 import { LineChart, OverviewText, TrappingDataMap } from '../trapping-data/components';
 
-import { FilterBar, Loading, ScrollHint } from '../../components';
+import { FilterBar, Loading } from '../../components';
 
 import graphSelectedIcon from '../../assets/icons/graph-selected.png';
 import graphUnselectedIcon from '../../assets/icons/graph-unselected.png';
@@ -104,7 +104,6 @@ const HistoricalView = (props) => {
         <div className="container">
           {isGraphView ? <LineChart /> : <TrappingDataMap />}
         </div>
-        <ScrollHint />
       </div>
     </div>
   );

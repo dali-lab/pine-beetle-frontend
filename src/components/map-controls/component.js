@@ -29,7 +29,6 @@ const MapControls = (props) => {
     hideFilters = false,
   } = props;
 
-  const [showPanel, setShowPanel] = useState(true); // Panel open by default
   const [isDesktop, setIsDesktop] = useState(false);
   const [openSections, setOpenSections] = useState({
     filters: false, // Will be set based on device type
@@ -94,88 +93,76 @@ const MapControls = (props) => {
 
   return (
     <div className="map-controls-panel">
-      {/* Toggle Button - Hidden on mobile */}
-      <button
-        type="button"
-        className={`panel-toggle-button ${showPanel ? 'panel-open' : 'panel-closed'}`}
-        onClick={() => setShowPanel(!showPanel)}
-      >
-        Controls
-        <span className="toggle-icon">{showPanel ? '−' : '+'}</span>
-      </button>
-
       {/* Unified Controls Panel */}
-      {showPanel && (
-        <div className="unified-controls-panel">
-          {/* Filters Section - Only show if not hidden */}
-          {!hideFilters && (
-            <div className="control-section">
-              <button
-                type="button"
-                className={`section-header ${openSections.filters ? 'active' : ''}`}
-                onClick={() => toggleSection('filters')}
-              >
-                <span className="section-title">Filters</span>
-                <span className="section-toggle">
-                  {openSections.filters ? '−' : '+'}
-                </span>
-              </button>
-              {openSections.filters && (
-                <FilterOverlay
-                  availableStates={availableStates}
-                  availableYears={availableYears}
-                  availableSublocations={availableSublocations}
-                  county={county}
-                  dataMode={dataMode}
-                  predictionYear={predictionYear}
-                  rangerDistrict={rangerDistrict}
-                  selectedState={selectedState}
-                  setCounty={setCounty}
-                  setPredictionYear={setPredictionYear}
-                  setRangerDistrict={setRangerDistrict}
-                  setState={setState}
-                  clearAllSelections={clearAllSelections}
-                  className="embedded-control"
-                  onClose={handleCloseFilters}
-                />
-              )}
-            </div>
+      <div className="unified-controls-panel">
+        {/* Filters Section - Only show if not hidden */}
+        {!hideFilters && (
+        <div className="control-section">
+          <button
+            type="button"
+            className={`section-header ${openSections.filters ? 'active' : ''}`}
+            onClick={() => toggleSection('filters')}
+          >
+            <span className="section-title">Filters</span>
+            <span className="section-toggle">
+              {openSections.filters ? '−' : '+'}
+            </span>
+          </button>
+          {openSections.filters && (
+          <FilterOverlay
+            availableStates={availableStates}
+            availableYears={availableYears}
+            availableSublocations={availableSublocations}
+            county={county}
+            dataMode={dataMode}
+            predictionYear={predictionYear}
+            rangerDistrict={rangerDistrict}
+            selectedState={selectedState}
+            setCounty={setCounty}
+            setPredictionYear={setPredictionYear}
+            setRangerDistrict={setRangerDistrict}
+            setState={setState}
+            clearAllSelections={clearAllSelections}
+            className="embedded-control"
+            onClose={handleCloseFilters}
+          />
           )}
-
-          {/* Legend Section */}
-          <div className="control-section">
-            <button
-              type="button"
-              className={`section-header ${openSections.legend ? 'active' : ''}`}
-              onClick={() => toggleSection('legend')}
-            >
-              <span className="section-title">Legend</span>
-              <span className="section-toggle">
-                {openSections.legend ? '−' : '+'}
-              </span>
-            </button>
-            {openSections.legend && (
-              <LegendOverlay
-                legendItems={legendItems}
-                title={legendTitle}
-                className="embedded-control"
-              />
-            )}
-          </div>
-
-          {/* Download Section */}
-          <div className="control-section">
-            <button
-              type="button"
-              className="section-header download-direct"
-              onClick={handleDownloadClick}
-              disabled={isDownloadingMap}
-            >
-              <span className="section-title">{isDownloadingMap ? 'Downloading...' : 'Download map'}</span>
-            </button>
-          </div>
         </div>
-      )}
+        )}
+
+        {/* Legend Section */}
+        <div className="control-section">
+          <button
+            type="button"
+            className={`section-header ${openSections.legend ? 'active' : ''}`}
+            onClick={() => toggleSection('legend')}
+          >
+            <span className="section-title">Legend</span>
+            <span className="section-toggle">
+              {openSections.legend ? '−' : '+'}
+            </span>
+          </button>
+          {openSections.legend && (
+          <LegendOverlay
+            legendItems={legendItems}
+            title={legendTitle}
+            className="embedded-control"
+          />
+          )}
+        </div>
+
+        {/* Download Section */}
+        <div className="control-section">
+          <button
+            type="button"
+            className="section-header download-direct"
+            onClick={handleDownloadClick}
+            disabled={isDownloadingMap}
+          >
+            <span className="section-title">{isDownloadingMap ? 'Downloading...' : 'Download map'}</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
