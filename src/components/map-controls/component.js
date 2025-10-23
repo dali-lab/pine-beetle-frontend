@@ -230,7 +230,7 @@ const MapControls = (props) => {
       </div>
 
       {/* Mobile Full-Screen Overlays */}
-      {openSections.filters && !hideFilters && (
+      {!isDesktop && openSections.filters && !hideFilters && (
         <FilterOverlay
           availableStates={availableStates}
           availableYears={availableYears}
@@ -250,7 +250,7 @@ const MapControls = (props) => {
         />
       )}
 
-      {openSections.legend && (
+      {!isDesktop && openSections.legend && (
         <LegendOverlay
           legendItems={legendItems}
           title={legendTitle}
