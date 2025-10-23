@@ -363,7 +363,7 @@
 
   .filter-mobile-fullscreen-overlay {
     position: fixed;
-    top: 5rem;
+    top: 4rem;
     left: 0;
     right: 0;
     bottom: 0;
@@ -375,8 +375,8 @@
     padding: 1.5rem;
     box-sizing: border-box;
     width: 100vw;
-    height: calc(100vh - 5rem);
-    z-index: 10;
+    height: calc(100vh - 4rem);
+    z-index: 99999;
     animation: slideUpMobile 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -505,8 +505,8 @@
       right: 1.5rem;
       width: 3rem;
       height: 3rem;
-      background: rgba($black, 0.08);
-      border: 1px solid rgba($black, 0.1);
+      background: none;
+      border: none;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
@@ -515,13 +515,11 @@
       font-size: 1.25rem;
       color: $greyBlue800;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(10px);
 
       &:hover {
-        background: rgba($black, 0.15);
+        background: none;
         color: $greyBlue900;
         transform: scale(1.05);
-        border-color: rgba($black, 0.2);
       }
 
       &:active {

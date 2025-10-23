@@ -103,16 +103,7 @@ const MapControls = (props) => {
           [section]: false,
         };
       }
-      // If clicking filters or legend, allow them to coexist
-      // Only close download section when opening filters or legend
-      if (section === 'filters' || section === 'legend') {
-        return {
-          ...prev,
-          download: false,
-          [section]: true,
-        };
-      }
-      // For download section, close all others
+      // For any section, close all others and open the clicked one
       return {
         filters: false,
         download: false,
