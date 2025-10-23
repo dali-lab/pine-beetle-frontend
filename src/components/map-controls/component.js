@@ -30,6 +30,7 @@ const MapControls = (props) => {
   } = props;
 
   const [isDesktop, setIsDesktop] = useState(false);
+  const [isPanelContentVisible, setIsPanelContentVisible] = useState(true); // Controls panel content visibility
   const [openSections, setOpenSections] = useState({
     filters: false, // Will be set based on device type
     download: false,
@@ -61,6 +62,8 @@ const MapControls = (props) => {
       legend: false, // Always closed by default
       download: false, // Always closed by default
     }));
+    // Show panel content by default on desktop
+    setIsPanelContentVisible(isDesktop);
   }, [isDesktop]);
 
   const handleDownloadClick = () => {
@@ -85,6 +88,10 @@ const MapControls = (props) => {
       ...prev,
       legend: false,
     }));
+  };
+
+  const togglePanelContentVisibility = () => {
+    setIsPanelContentVisible((prev) => !prev);
   };
 
   const toggleSection = (section) => {
@@ -118,74 +125,96 @@ const MapControls = (props) => {
   return (
     <div className="map-controls-panel">
       {/* Desktop Controls Panel */}
-      <div className="unified-controls-panel desktop-controls">
-        {/* Filters Section - Only show if not hidden */}
-        {!hideFilters && (
-        <div className="control-section">
-          <button
-            type="button"
-            className={`section-header ${openSections.filters ? 'active' : ''}`}
-            onClick={() => toggleSection('filters')}
-          >
-            <span className="section-title">Filters</span>
-            <span className="section-toggle">
-              {openSections.filters ? '−' : '+'}
-            </span>
-          </button>
-          {openSections.filters && (
-          <FilterOverlay
-            availableStates={availableStates}
-            availableYears={availableYears}
-            availableSublocations={availableSublocations}
-            county={county}
-            dataMode={dataMode}
-            predictionYear={predictionYear}
-            rangerDistrict={rangerDistrict}
-            selectedState={selectedState}
-            setCounty={setCounty}
-            setPredictionYear={setPredictionYear}
-            setRangerDistrict={setRangerDistrict}
-            setState={setState}
-            clearAllSelections={clearAllSelections}
-            className="embedded-control"
-            onClose={handleCloseFilters}
-          />
-          )}
-        </div>
+      <div className={`unified-controls-panel desktop-controls ${!isPanelContentVisible ? 'collapsed' : ''}`}>
+        {/* Controls Toggle Section - Desktop Only */}
+        {isDesktop && (
+          <div className="control-section">
+            <button
+              type="button"
+              className={`section-header controls-header ${isPanelContentVisible ? 'active' : ''}`}
+              onClick={togglePanelContentVisibility}
+              aria-label={isPanelContentVisible ? 'Hide controls' : 'Show controls'}
+            >
+              <span className="section-title">Controls</span>
+              <span className="section-toggle">
+                {isPanelContentVisible ? '−' : '+'}
+              </span>
+            </button>
+          </div>
         )}
 
-        {/* Legend Section */}
-        <div className="control-section">
-          <button
-            type="button"
-            className={`section-header ${openSections.legend ? 'active' : ''}`}
-            onClick={() => toggleSection('legend')}
-          >
-            <span className="section-title">Legend</span>
-            <span className="section-toggle">
-              {openSections.legend ? '−' : '+'}
-            </span>
-          </button>
-          {openSections.legend && (
-          <LegendOverlay
-            legendItems={legendItems}
-            title={legendTitle}
-            className="embedded-control"
-          />
-          )}
-        </div>
+        {/* Panel Content - Only show when panel content is visible */}
+        {isPanelContentVisible && (
+          <>
+            {/* Filters Section - Only show if not hidden */}
+            {!hideFilters && (
+              <div className="control-section">
+                <button
+                  type="button"
+                  className={`section-header ${openSections.filters ? 'active' : ''}`}
+                  onClick={() => toggleSection('filters')}
+                >
+                  <span className="section-title">Filters</span>
+                  <span className="section-toggle">
+                    {openSections.filters ? '−' : '+'}
+                  </span>
+                </button>
+                {openSections.filters && (
+                  <FilterOverlay
+                    availableStates={availableStates}
+                    availableYears={availableYears}
+                    availableSublocations={availableSublocations}
+                    county={county}
+                    dataMode={dataMode}
+                    predictionYear={predictionYear}
+                    rangerDistrict={rangerDistrict}
+                    selectedState={selectedState}
+                    setCounty={setCounty}
+                    setPredictionYear={setPredictionYear}
+                    setRangerDistrict={setRangerDistrict}
+                    setState={setState}
+                    clearAllSelections={clearAllSelections}
+                    className="embedded-control"
+                    onClose={handleCloseFilters}
+                  />
+                )}
+              </div>
+            )}
 
-        {/* Download Section */}
-        <div className="control-section">
-          <button
-            type="button"
-            className="section-header download-direct"
-            onClick={handleDownloadClick}
-            disabled={isDownloadingMap}
-          >
-            <span className="section-title">{isDownloadingMap ? 'Downloading...' : 'Download map'}</span>
-          </button>
-        </div>
+            {/* Legend Section */}
+            <div className="control-section">
+              <button
+                type="button"
+                className={`section-header ${openSections.legend ? 'active' : ''}`}
+                onClick={() => toggleSection('legend')}
+              >
+                <span className="section-title">Legend</span>
+                <span className="section-toggle">
+                  {openSections.legend ? '−' : '+'}
+                </span>
+              </button>
+              {openSections.legend && (
+                <LegendOverlay
+                  legendItems={legendItems}
+                  title={legendTitle}
+                  className="embedded-control"
+                />
+              )}
+            </div>
+
+            {/* Download Section */}
+            <div className="control-section">
+              <button
+                type="button"
+                className="section-header download-direct"
+                onClick={handleDownloadClick}
+                disabled={isDownloadingMap}
+              >
+                <span className="section-title">{isDownloadingMap ? 'Downloading...' : 'Download map'}</span>
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Mobile Bottom Navigation */}
