@@ -199,20 +199,6 @@
   width: 100%;
   overflow: visible;
 
-  .choice-input-wrapper,
-  .multi-select-container,
-  .selection-container {
-    width: 100%;
-    max-width: none;
-    overflow: visible;
-  }
-
-  .choice-input-button,
-  .multi-select-button {
-    width: 100%;
-    max-width: none;
-  }
-
   .action-button,
   .embedded-control .action-button,
   .map-controls-panel .action-button {
@@ -245,7 +231,6 @@
     }
   }
 
-  .filter-overlay,
   .legend-overlay {
     position: static;
     background: transparent;
@@ -260,28 +245,17 @@
     width: 100%;
   }
 
-  .filter-content {
-    width: calc(100% - 2rem);
-    padding: 0 1rem 1rem 1rem;
-    margin: 0;
-    max-width: calc(20rem - 2rem);
-    overflow: visible;
-  }
-
-  .filter-header,
   .legend-header {
     margin-bottom: 0.75rem;
     padding-bottom: 0.5rem;
     border-bottom: 1px solid rgba($black, 0.1);
   }
 
-  .filter-title,
   .legend-title {
     font-size: 0.875rem;
     margin: 0;
   }
 
-  .filter-close-button,
   .legend-close-button {
     display: none;
   }

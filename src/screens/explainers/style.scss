@@ -66,7 +66,7 @@
               display: flex;
               align-items: center;
               justify-content: center;
-              background: linear-gradient(135deg, rgba(25, 118, 210, 0.05) 0%, rgba(25, 118, 210, 0.1) 100%);
+              background: linear-gradient(135deg, rgba(26, 77, 46, 0.05) 0%, rgba(26, 77, 46, 0.1) 100%);
               border-radius: 6px;
 
               .video-icon {
@@ -74,7 +74,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                filter: drop-shadow(0 2px 4px rgba(25, 118, 210, 0.2));
+                filter: drop-shadow(0 2px 4px rgba(26, 77, 46, 0.2));
                 transition: all 0.3s ease;
               }
 
@@ -94,14 +94,14 @@
                   display: flex;
                   align-items: center;
                   justify-content: center;
-                  box-shadow: 0 4px 12px rgba($brandPrimary, 0.3);
+                  box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3);
                 }
               }
 
               &:hover {
                 .video-icon {
                   transform: scale(1.1);
-                  filter: drop-shadow(0 4px 8px rgba(25, 118, 210, 0.3));
+                  filter: drop-shadow(0 4px 8px rgba(26, 77, 46, 0.3));
                 }
 
                 .play-overlay {
@@ -118,7 +118,7 @@
               flex-direction: column;
               align-items: center;
               justify-content: center;
-              background: linear-gradient(135deg, rgba(56, 142, 60, 0.05) 0%, rgba(56, 142, 60, 0.1) 100%);
+              background: linear-gradient(135deg, rgba(107, 142, 107, 0.05) 0%, rgba(107, 142, 107, 0.1) 100%);
               border-radius: 6px;
 
               .methodology-icon {
@@ -127,29 +127,15 @@
                 align-items: center;
                 justify-content: center;
                 margin-bottom: 0.5rem;
-                filter: drop-shadow(0 2px 4px rgba(56, 142, 60, 0.2));
+                filter: drop-shadow(0 2px 4px rgba(107, 142, 107, 0.2));
                 transition: all 0.3s ease;
               }
 
-              .methodology-chart {
-                width: 100%;
-                height: 60%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                .methodology-svg {
-                  width: 100%;
-                  height: 100%;
-                  max-width: 160px;
-                  max-height: 80px;
-                }
-              }
 
               &:hover {
                 .methodology-icon {
                   transform: scale(1.1);
-                  filter: drop-shadow(0 4px 8px rgba(56, 142, 60, 0.3));
+                  filter: drop-shadow(0 4px 8px rgba(107, 142, 107, 0.3));
                 }
               }
             }
@@ -162,74 +148,24 @@
               flex-direction: column;
               align-items: center;
               justify-content: center;
-              background: linear-gradient(135deg, rgba(245, 124, 0, 0.05) 0%, rgba(245, 124, 0, 0.1) 100%);
+              background: linear-gradient(135deg, rgba(232, 152, 118, 0.05) 0%, rgba(232, 152, 118, 0.1) 100%);
               border-radius: 6px;
 
               .explorer-icon {
-                color: #f57c00;
+                color: #E89876;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 margin-bottom: 0.5rem;
-                filter: drop-shadow(0 2px 4px rgba(245, 124, 0, 0.2));
+                filter: drop-shadow(0 2px 4px rgba(232, 152, 118, 0.2));
                 transition: all 0.3s ease;
               }
 
-              .interactive-controls {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 0.5rem;
-
-                .control-slider {
-                  width: 80%;
-                  height: 4px;
-                  background: #e0e0e0;
-                  border-radius: 2px;
-                  position: relative;
-
-                  .slider-track {
-                    width: 100%;
-                    height: 100%;
-                    background: #e0e0e0;
-                    border-radius: 2px;
-                  }
-
-                  .slider-thumb {
-                    position: absolute;
-                    top: -6px;
-                    left: 30%;
-                    width: 16px;
-                    height: 16px;
-                    background: #f57c00;
-                    border-radius: 50%;
-                    box-shadow: 0 2px 4px rgba(245, 124, 0, 0.3);
-                  }
-                }
-
-                .control-buttons {
-                  display: flex;
-                  gap: 0.3rem;
-
-                  .control-btn {
-                    width: 12px;
-                    height: 12px;
-                    background: #f57c00;
-                    border-radius: 2px;
-                    opacity: 0.7;
-
-                    &:nth-child(2) {
-                      opacity: 1;
-                    }
-                  }
-                }
-              }
 
               &:hover {
                 .explorer-icon {
                   transform: scale(1.1);
-                  filter: drop-shadow(0 4px 8px rgba(245, 124, 0, 0.3));
+                  filter: drop-shadow(0 4px 8px rgba(232, 152, 118, 0.3));
                 }
               }
             }
@@ -242,48 +178,24 @@
               flex-direction: column;
               align-items: center;
               justify-content: center;
-              background: linear-gradient(135deg, rgba(156, 39, 176, 0.05) 0%, rgba(156, 39, 176, 0.1) 100%);
+              background: linear-gradient(135deg, rgba(115, 118, 126, 0.05) 0%, rgba(115, 118, 126, 0.1) 100%);
               border-radius: 6px;
 
               .resources-icon {
-                color: #9c27b0;
+                color: $greyBlue700;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 margin-bottom: 0.5rem;
-                filter: drop-shadow(0 2px 4px rgba(156, 39, 176, 0.2));
+                filter: drop-shadow(0 2px 4px rgba(115, 118, 126, 0.2));
                 transition: all 0.3s ease;
               }
 
-              .resource-items {
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                gap: 0.3rem;
-
-                .resource-item {
-                  display: flex;
-                  align-items: center;
-                  gap: 0.5rem;
-                  padding: 0.2rem 0.5rem;
-                  background: rgba($white, 0.8);
-                  border-radius: 4px;
-                  font-size: 0.7rem;
-                  color: $textColor;
-
-                  .resource-icon-small {
-                    color: #9c27b0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  }
-                }
-              }
 
               &:hover {
                 .resources-icon {
                   transform: scale(1.1);
-                  filter: drop-shadow(0 4px 8px rgba(156, 39, 176, 0.3));
+                  filter: drop-shadow(0 4px 8px rgba(115, 118, 126, 0.3));
                 }
               }
             }

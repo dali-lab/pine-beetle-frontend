@@ -35,6 +35,163 @@
   .filter-content {
     overflow: visible;
   }
+
+  // Embedded control styling for desktop map controls
+  &.embedded-control {
+    position: static;
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    max-height: none;
+    overflow: visible;
+    top: auto;
+    left: auto;
+    z-index: auto;
+
+    .filter-content {
+      padding: 0 1rem 1rem 1rem;
+      margin: 0;
+      max-width: calc(20rem - 2rem);
+      overflow: visible;
+    }
+
+    .filter-section {
+      margin-bottom: 0.75rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .filter-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: $greyBlue700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+    }
+
+    .filter-input {
+      margin-bottom: 0;
+
+      .choice-input-wrapper,
+      .multi-select-container {
+        width: 100%;
+        max-width: none;
+        overflow: visible;
+      }
+
+      .choice-input-button {
+        width: 100% !important;
+        height: 2rem !important;
+        min-height: 2rem !important;
+        border-radius: 4px !important;
+        border: 1px solid $greyBlue300 !important;
+        background-color: $white !important;
+        font-size: 0.75rem !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+        color: $greyBlue900 !important;
+        font-weight: 400 !important;
+        box-sizing: border-box !important;
+        padding: 0 8px !important;
+
+        &:focus {
+          outline: none !important;
+          border-color: $greyBlue500 !important;
+          box-shadow: 0 0 0 2px rgba(201, 205, 217, 0.2) !important;
+          background-color: $white !important;
+        }
+
+        &:hover:not(:focus) {
+          border-color: $greyBlue400 !important;
+        }
+
+        .choice-input-text {
+          font-size: 0.75rem !important;
+          font-weight: 400 !important;
+        }
+
+        .choice-input-arrow {
+          width: 12px !important;
+          height: 12px !important;
+        }
+      }
+
+      .multi-select-container .input-container {
+        width: 100% !important;
+        height: 2rem !important;
+        border-radius: 4px !important;
+        border: 1px solid $greyBlue300 !important;
+        background-color: $white !important;
+        font-size: 0.75rem !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+        color: $greyBlue900 !important;
+        font-weight: 400 !important;
+        box-sizing: border-box !important;
+
+        &:focus-within {
+          outline: none !important;
+          border-color: $greyBlue500 !important;
+          box-shadow: 0 0 0 2px rgba(201, 205, 217, 0.2) !important;
+        }
+
+        &:hover:not(:focus-within) {
+          border-color: $greyBlue400 !important;
+        }
+
+        .location-header {
+          height: 100% !important;
+          padding: 0 8px !important;
+
+          .location-header-title {
+            font-size: 0.75rem !important;
+            font-weight: 400 !important;
+          }
+
+          .location-header-arrow {
+            width: 12px !important;
+            height: 12px !important;
+          }
+        }
+      }
+    }
+
+    .filter-clear-section {
+      margin-top: 0.5rem;
+      margin-bottom: 0;
+      padding-left: 0;
+
+      .text-button {
+        background: none;
+        color: $brandPrimary;
+        border: none;
+        padding: 0.5rem 0;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        text-decoration-thickness: 1px;
+        text-align: left;
+
+        &:hover:not(:disabled) {
+          color: $greyBlue800;
+          text-decoration-thickness: 2px;
+        }
+
+        &:disabled {
+          color: $greyBlue300;
+          cursor: not-allowed;
+          text-decoration: none;
+        }
+      }
+    }
+  }
 }
 
 .filter-header {
@@ -373,6 +530,87 @@
 
     &.open {
       transform: rotate(-90deg);
+    }
+  }
+
+  // Embedded control dropdown positioning
+  &.embedded-control {
+    .choice-input-wrapper {
+      .choice-input-dropdown {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: auto !important;
+        width: 100% !important;
+        max-height: 200px !important;
+        z-index: 9999 !important;
+        transform: none !important;
+        margin-top: 4px !important;
+        margin-left: 0 !important;
+        border-radius: 4px !important;
+        border: 1px solid $greyBlue300 !important;
+        background-color: $white !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        padding: 4px 0 !important;
+
+        .choice-input-option {
+          padding: 6px 8px !important;
+          font-size: 0.75rem !important;
+          min-height: 28px !important;
+        }
+      }
+    }
+
+    .multi-select-container {
+      .location-list {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: auto !important;
+        width: 100% !important;
+        max-height: 200px !important;
+        z-index: 9999 !important;
+        transform: none !important;
+        margin-top: 4px !important;
+        margin-left: 0 !important;
+        border-radius: 4px !important;
+        border: 1px solid $greyBlue300 !important;
+        background-color: $white !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        padding: 4px 0 !important;
+
+        .location-list-item {
+          padding: 6px 8px !important;
+          font-size: 0.75rem !important;
+          min-height: 28px !important;
+
+          .location-list-item-select {
+            font-size: 0.75rem !important;
+          }
+
+          .children-list-item {
+            padding: 4px 8px 4px 24px !important;
+            font-size: 0.7rem !important;
+            min-height: 24px !important;
+          }
+        }
+      }
+    }
+
+    .choice-input-arrow {
+      transform: rotate(0deg) !important;
+
+      &.open {
+        transform: rotate(180deg) !important;
+      }
+    }
+
+    .location-header-arrow {
+      transform: rotate(0deg) !important;
+
+      &.open {
+        transform: rotate(180deg) !important;
+      }
     }
   }
 }
