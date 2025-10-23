@@ -122,9 +122,9 @@
 
 // Mobile fullscreen overlay styles
 @media (max-width: 768px) {
-  .mobile-fullscreen-overlay {
+  .legend-mobile-fullscreen-overlay {
     position: fixed;
-    top: 0;
+    top: 5rem;
     left: 0;
     right: 0;
     bottom: 0;
@@ -134,9 +134,10 @@
     border-radius: 0;
     box-shadow: none;
     padding: 1.5rem;
+    box-sizing: border-box;
     width: 100vw;
-    height: 100vh;
-    z-index: 1001;
+    height: calc(100vh - 5rem);
+    z-index: 99999;
     animation: slideUpMobile 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -174,6 +175,37 @@
       font-size: 0.875rem;
       font-weight: 500;
       color: $greyBlue800;
+    }
+
+    .legend-close-button {
+      display: block;
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 3rem;
+      height: 3rem;
+      background: rgba($black, 0.08);
+      border: 1px solid rgba($black, 0.1);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: $greyBlue800;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+
+      &:hover {
+        background: rgba($black, 0.15);
+        color: $greyBlue900;
+        transform: scale(1.05);
+        border-color: rgba($black, 0.2);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
     }
   }
 }

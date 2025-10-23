@@ -121,11 +121,6 @@
             pointer-events: none;
             margin-left: 8px;
             transition: transform 0.2s ease;
-            transform: rotate(-90deg); // Always point left
-
-            &.open {
-                transform: rotate(-90deg); // Keep pointing left when open
-            }
         }
     }
 

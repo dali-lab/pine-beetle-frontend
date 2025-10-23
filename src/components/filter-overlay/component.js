@@ -26,7 +26,7 @@ const FilterOverlay = (props) => {
     onClose,
   } = props;
 
-  const [showFilters, setShowFilters] = useState(props.className?.includes('embedded-control') || props.className?.includes('mobile-fullscreen-overlay'));
+  const [showFilters, setShowFilters] = useState(props.className?.includes('embedded-control') || props.className?.includes('filter-mobile-fullscreen-overlay'));
 
   // Logic to map state abbreviations to full names
   const statesMappedToNames = availableStates.map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
@@ -38,7 +38,7 @@ const FilterOverlay = (props) => {
   // Check for any active filters
   const hasActiveFilters = predictionYear || selectedStateName || county?.length > 0 || rangerDistrict?.length > 0;
 
-  if (!showFilters && !className?.includes('mobile-fullscreen-overlay')) {
+  if (!showFilters && !className?.includes('filter-mobile-fullscreen-overlay')) {
     return (
       <button
         type="button"

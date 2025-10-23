@@ -378,7 +378,7 @@
 }
 
 // Mobile Full-Screen Overlays
-.mobile-fullscreen-overlay {
+.map-controls-mobile-fullscreen-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -392,10 +392,12 @@
   padding: 1.5rem;
   width: 100vw;
   height: 100vh;
-  z-index: 1001;
+  z-index: 99999;
   animation: slideUpMobile 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  pointer-events: auto;
+  touch-action: manipulation;
 
   .filter-close-button,
   .legend-close-button {

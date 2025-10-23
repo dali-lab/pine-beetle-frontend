@@ -80,6 +80,13 @@ const MapControls = (props) => {
     }));
   };
 
+  const handleCloseLegend = () => {
+    setOpenSections((prev) => ({
+      ...prev,
+      legend: false,
+    }));
+  };
+
   const toggleSection = (section) => {
     setOpenSections((prev) => {
       // If clicking the same section, toggle it
@@ -245,7 +252,7 @@ const MapControls = (props) => {
           setRangerDistrict={setRangerDistrict}
           setState={setState}
           clearAllSelections={clearAllSelections}
-          className="mobile-fullscreen-overlay"
+          className="filter-mobile-fullscreen-overlay"
           onClose={handleCloseFilters}
         />
       )}
@@ -254,7 +261,8 @@ const MapControls = (props) => {
         <LegendOverlay
           legendItems={legendItems}
           title={legendTitle}
-          className="mobile-fullscreen-overlay"
+          className="legend-mobile-fullscreen-overlay"
+          onClose={handleCloseLegend}
         />
       )}
     </div>
