@@ -311,7 +311,7 @@
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    z-index: 9999 !important;
+    z-index: 99999 !important;
     pointer-events: none;
     top: auto !important;
     width: auto !important;
@@ -328,6 +328,7 @@
     padding-bottom: calc(0.25rem + env(safe-area-inset-bottom));
     box-shadow: 0 -4px 20px rgba($black, 0.1);
     pointer-events: auto;
+    touch-action: manipulation;
     min-height: 3rem;
   }
 
@@ -346,6 +347,8 @@
     min-height: 3.5rem;
     position: relative;
     outline: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 
     &:focus {
       outline: none;
@@ -380,19 +383,19 @@
   .nav-icon {
     width: 1.5rem;
     height: 1.5rem;
-    color: $greyBlue600;
+    color: $greyBlue800;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 0.25rem;
   }
 
   .nav-label {
     font-size: 0.75rem;
-    font-weight: 500;
-    color: $greyBlue600;
+    font-weight: 600;
+    color: $greyBlue800;
     text-align: center;
     line-height: 1.1;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    max-width: 3.5rem;
+    max-width: 4rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

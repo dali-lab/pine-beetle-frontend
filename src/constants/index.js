@@ -76,6 +76,7 @@ const ROUTES = {
   DATA: '/data',
   DATA_TABLE: '/data-table',
   DOWNLOAD_DATA: '/download-data',
+  EXPLAINERS: '/explainers',
   HOME: '/',
   HISTORICAL_GRAPH_VIEW: '/historical-graph-view',
   HISTORICAL_MAP_VIEW: '/historical-map-view',

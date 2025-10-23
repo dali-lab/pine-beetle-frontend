@@ -5,6 +5,7 @@ import Contact from './contact';
 import Data from './data';
 import DataTable from './data-table';
 import DownloadData from './download-data';
+import Explainers from './explainers';
 import HistoricalView from './historical-view';
 import Home from './home';
 import Methodology from './methodology';
@@ -23,6 +24,7 @@ export {
   Data,
   DataTable,
   DownloadData,
+  Explainers,
   HistoricalView,
   Home,
   Methodology,

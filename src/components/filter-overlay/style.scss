@@ -276,6 +276,48 @@
       font-size: 1rem;
       padding: 1rem 0;
     }
+
+    .filter-close-button {
+      display: block;
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 3rem;
+      height: 3rem;
+      background: rgba($black, 0.08);
+      border: 1px solid rgba($black, 0.1);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: $greyBlue800;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+
+      &:hover {
+        background: rgba($black, 0.15);
+        color: $greyBlue900;
+        transform: scale(1.05);
+        border-color: rgba($black, 0.2);
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+}
+
+@keyframes slideUpMobile {
+  from {
+    opacity: 0;
+    transform: translateY(2rem) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 

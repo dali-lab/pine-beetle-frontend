@@ -217,7 +217,8 @@
 
                     &:hover .dropdown-menu-how-it-works,
                     &:hover .dropdown-menu-about,
-                    &:hover .dropdown-menu-historical-data {
+                    &:hover .dropdown-menu-historical-data,
+                    &:hover .dropdown-menu-explainers {
                         display: block;
                         opacity: 1;
                         visibility: visible;
@@ -225,7 +226,8 @@
 
                     .dropdown-menu-historical-data,
                     .dropdown-menu-about,
-                    .dropdown-menu-how-it-works {
+                    .dropdown-menu-how-it-works,
+                    .dropdown-menu-explainers {
                         position: fixed;
                         width: 12rem;
                         max-width: 12rem;

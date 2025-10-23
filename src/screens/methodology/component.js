@@ -7,7 +7,7 @@ import zeroIcon from '../../assets/icons/zero.png';
 
 import './style.scss';
 
-const howItWorksContent = [
+const methodologyContent = [
   {
     title: 'Model the Outbreaks',
     icon: modelOutbreakIcon,
@@ -48,11 +48,10 @@ const Methodology = () => {
         </p>
       </div>
 
-      {/* How It Works Section */}
       <section className="methodology-how-it-works-section">
         <div className="methodology-how-it-works-container">
           <div className="methodology-content">
-            {howItWorksContent.map((element, index) => (
+            {methodologyContent.map((element, index) => (
               <div key={`how-it-works-${index + 1}`} className="methodology-step">
                 <div className="methodology-step-header">
                   <div className="methodology-step-number">{index + 1}</div>

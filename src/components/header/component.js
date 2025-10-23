@@ -11,18 +11,18 @@ import './style.scss';
 const Header = ({ setChartMode }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
-  const [howItWorksOpen, setHowItWorksOpen] = useState(false);
   const [historicalDataOpen, setHistoricalDataOpen] = useState(false);
+  const [explainersOpen, setExplainersOpen] = useState(false);
   const navRef = useRef(null);
   const aboutButtonRef = useRef(null);
-  const howItWorksButtonRef = useRef(null);
   const historicalDataButtonRef = useRef(null);
+  const explainersButtonRef = useRef(null);
   const historicalDataTimeoutRef = useRef(null);
-  const howItWorksTimeoutRef = useRef(null);
   const aboutTimeoutRef = useRef(null);
+  const explainersTimeoutRef = useRef(null);
   const [aboutDropdownPosition, setAboutDropdownPosition] = useState({ top: 0, left: 0 });
-  const [howItWorksDropdownPosition, setHowItWorksDropdownPosition] = useState({ top: 0, left: 0 });
   const [historicalDataDropdownPosition, setHistoricalDataDropdownPosition] = useState({ top: 0, left: 0 });
+  const [explainersDropdownPosition, setExplainersDropdownPosition] = useState({ top: 0, left: 0 });
 
   const location = useLocation();
 
@@ -31,8 +31,8 @@ const Header = ({ setChartMode }) => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
         setAboutOpen(false);
-        setHowItWorksOpen(false);
         setHistoricalDataOpen(false);
+        setExplainersOpen(false);
       }
     };
 
@@ -69,7 +69,15 @@ const Header = ({ setChartMode }) => {
               Prediction Map
             </Link>
 
-            {/* 2. Historical Data Dropdown */}
+            {/* 2. Observed Outcomes */}
+            <Link
+              to={ROUTES.RESULTS_COMPARISON}
+              className={`nav-item ${location.pathname === ROUTES.RESULTS_COMPARISON ? 'active' : ''}`}
+            >
+              Observed Outcomes
+            </Link>
+
+            {/* 3. Historical Data Dropdown */}
             <div
               className="nav-dropdown"
               ref={historicalDataButtonRef}
@@ -98,7 +106,6 @@ const Header = ({ setChartMode }) => {
                   });
                 }
                 setAboutOpen(false);
-                setHowItWorksOpen(false);
                 setHistoricalDataOpen(true);
               }}
             >
@@ -155,101 +162,108 @@ const Header = ({ setChartMode }) => {
               </div>
             </div>
 
-            {/* 3. Comparison */}
-            <Link
-              to={ROUTES.RESULTS_COMPARISON}
-              className={`nav-item ${location.pathname === ROUTES.RESULTS_COMPARISON ? 'active' : ''}`}
-            >
-              Comparison
-            </Link>
-
-            {/* 4. Model Explorer */}
-            <Link
-              to={ROUTES.PLAY_WITH_MODEL}
-              className={`nav-item ${location.pathname === ROUTES.PLAY_WITH_MODEL ? 'active' : ''}`}
-            >
-              Model Explorer
-            </Link>
-
-            {/* 5. How does it work Dropdown */}
+            {/* 4. Explainers and Other Details Dropdown */}
             <div
               className="nav-dropdown"
-              ref={howItWorksButtonRef}
+              ref={explainersButtonRef}
               onMouseLeave={() => {
-                howItWorksTimeoutRef.current = setTimeout(() => {
-                  setHowItWorksOpen(false);
+                explainersTimeoutRef.current = setTimeout(() => {
+                  setExplainersOpen(false);
                 }, 150);
               }}
               onMouseEnter={() => {
-                if (howItWorksTimeoutRef.current) {
-                  clearTimeout(howItWorksTimeoutRef.current);
+                if (explainersTimeoutRef.current) {
+                  clearTimeout(explainersTimeoutRef.current);
                 }
-                if (howItWorksButtonRef.current) {
-                  const rect = howItWorksButtonRef.current.getBoundingClientRect();
+                if (explainersButtonRef.current) {
+                  const rect = explainersButtonRef.current.getBoundingClientRect();
                   const dropdownWidth = 192; // min-width from CSS
                   const rightEdge = rect.left + dropdownWidth;
                   const viewportWidth = window.innerWidth;
 
-                  // If dropdown would overflow, position it to the left
                   const leftPosition = rightEdge > viewportWidth
                     ? rect.right - dropdownWidth
                     : rect.left;
 
-                  setHowItWorksDropdownPosition({
+                  setExplainersDropdownPosition({
                     top: rect.bottom,
                     left: leftPosition,
                   });
                 }
                 setAboutOpen(false);
-                setHowItWorksOpen(true);
+                setHistoricalDataOpen(false);
+                setExplainersOpen(true);
               }}
             >
-              <button
-                type="button"
-                className={`nav-item dropdown-trigger ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
+              <Link
+                to={ROUTES.EXPLAINERS}
+                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.EXPLAINERS || location.pathname === ROUTES.METHODOLOGY || location.pathname === ROUTES.PLAY_WITH_MODEL || location.pathname === ROUTES.RESOURCES) ? 'active' : ''}`}
+                onClick={() => setExplainersOpen(false)}
               >
-                How does it work
+                Explainers & Details
                 <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
-              </button>
+              </Link>
 
               <div
-                className={`dropdown-menu-how-it-works ${howItWorksOpen ? 'show' : ''}`}
+                className={`dropdown-menu-explainers ${explainersOpen ? 'show' : ''}`}
                 onMouseEnter={() => {
-                  if (howItWorksTimeoutRef.current) {
-                    clearTimeout(howItWorksTimeoutRef.current);
+                  if (explainersTimeoutRef.current) {
+                    clearTimeout(explainersTimeoutRef.current);
                   }
-                  setHowItWorksOpen(true);
+                  setExplainersOpen(true);
                 }}
                 onMouseLeave={() => {
-                  howItWorksTimeoutRef.current = setTimeout(() => {
-                    setHowItWorksOpen(false);
+                  explainersTimeoutRef.current = setTimeout(() => {
+                    setExplainersOpen(false);
                   }, 150);
                 }}
                 style={{
-                  top: `${howItWorksDropdownPosition.top}px`,
-                  left: `${howItWorksDropdownPosition.left}px`,
+                  top: `${explainersDropdownPosition.top}px`,
+                  left: `${explainersDropdownPosition.left}px`,
                 }}
               >
-                <Link
-                  to={ROUTES.METHODOLOGY}
-                  className={`dropdown-item ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
-                  onClick={() => setHowItWorksOpen(false)}
-                >
-                  Methodology
-                </Link>
                 <a
                   href="https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/view"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="dropdown-item"
-                  onClick={() => setHowItWorksOpen(false)}
+                  onClick={() => setExplainersOpen(false)}
                 >
-                  Learn more from the video
+                  Interpreting Probabilities (the video)
                 </a>
+                <Link
+                  to={ROUTES.METHODOLOGY}
+                  className={`dropdown-item ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
+                  onClick={() => setExplainersOpen(false)}
+                >
+                  Model Methodology
+                </Link>
+                <Link
+                  to={ROUTES.PLAY_WITH_MODEL}
+                  className={`dropdown-item ${location.pathname === ROUTES.PLAY_WITH_MODEL ? 'active' : ''}`}
+                  onClick={() => setExplainersOpen(false)}
+                >
+                  Model Explorer
+                </Link>
+                <Link
+                  to={ROUTES.RESOURCES}
+                  className={`dropdown-item ${location.pathname === ROUTES.RESOURCES ? 'active' : ''}`}
+                  onClick={() => setExplainersOpen(false)}
+                >
+                  Resources
+                </Link>
               </div>
             </div>
+
+            {/* 5. Blog */}
+            <Link
+              to={ROUTES.BLOG}
+              className={`nav-item ${location.pathname === ROUTES.BLOG ? 'active' : ''}`}
+            >
+              Blog
+            </Link>
 
             {/* 6. About Menu */}
             <div
@@ -270,7 +284,6 @@ const Header = ({ setChartMode }) => {
                   const rightEdge = rect.left + dropdownWidth;
                   const viewportWidth = window.innerWidth;
 
-                  // If dropdown would overflow, position it to the left
                   const leftPosition = rightEdge > viewportWidth
                     ? rect.right - dropdownWidth
                     : rect.left;
@@ -280,13 +293,12 @@ const Header = ({ setChartMode }) => {
                     left: leftPosition,
                   });
                 }
-                setHowItWorksOpen(false);
                 setAboutOpen(true);
               }}
             >
               <button
                 type="button"
-                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.BLOG) ? 'active' : ''}`}
+                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.ABOUT) ? 'active' : ''}`}
               >
                 About
                 <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -312,20 +324,6 @@ const Header = ({ setChartMode }) => {
                   left: `${aboutDropdownPosition.left}px`,
                 }}
               >
-                <Link
-                  to={ROUTES.BLOG}
-                  className={`dropdown-item ${location.pathname === ROUTES.BLOG ? 'active' : ''}`}
-                  onClick={() => setAboutOpen(false)}
-                >
-                  Blog
-                </Link>
-                <Link
-                  to={ROUTES.RESOURCES}
-                  className={`dropdown-item ${location.pathname === ROUTES.RESOURCES ? 'active' : ''}`}
-                  onClick={() => setAboutOpen(false)}
-                >
-                  Resources
-                </Link>
                 <Link
                   to={ROUTES.ABOUT}
                   className={`dropdown-item ${location.pathname === ROUTES.ABOUT ? 'active' : ''}`}
@@ -406,31 +404,16 @@ const Header = ({ setChartMode }) => {
             className="mobile-nav-link"
             onClick={() => setMobileMenuOpen(false)}
           >
-            Comparison
-          </Link>
-
-          <Link
-            to={ROUTES.PLAY_WITH_MODEL}
-            className="mobile-nav-link"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Model Explorer
+            Observed Outcomes
           </Link>
 
           <div className="mobile-nav-section">
             <Link
-              to={ROUTES.METHODOLOGY}
+              to={ROUTES.EXPLAINERS}
               className="mobile-nav-label"
               onClick={() => setMobileMenuOpen(false)}
             >
-              How does it work
-            </Link>
-            <Link
-              to={ROUTES.METHODOLOGY}
-              className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Methodology
+              Explainers and Other Details
             </Link>
             <a
               href="https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/view"
@@ -439,9 +422,38 @@ const Header = ({ setChartMode }) => {
               className="mobile-nav-sublink"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Learn more from the video
+              Interpreting Probabilities (the video)
             </a>
+            <Link
+              to={ROUTES.METHODOLOGY}
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Model Methodology
+            </Link>
+            <Link
+              to={ROUTES.PLAY_WITH_MODEL}
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Model Explorer
+            </Link>
+            <Link
+              to={ROUTES.RESOURCES}
+              className="mobile-nav-sublink"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Resources
+            </Link>
           </div>
+
+          <Link
+            to={ROUTES.BLOG}
+            className="mobile-nav-link"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            Blog
+          </Link>
 
           <div className="mobile-nav-section">
             <Link
@@ -450,20 +462,6 @@ const Header = ({ setChartMode }) => {
               onClick={() => setMobileMenuOpen(false)}
             >
               About
-            </Link>
-            <Link
-              to={ROUTES.BLOG}
-              className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Blog
-            </Link>
-            <Link
-              to={ROUTES.RESOURCES}
-              className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Resources
             </Link>
             <Link
               to={ROUTES.ABOUT}
