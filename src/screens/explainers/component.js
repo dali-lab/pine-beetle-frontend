@@ -33,13 +33,6 @@ const ExplainersScreen = () => {
                       <polygon points="5,3 19,12 5,21" />
                     </svg>
                   </div>
-                  <div className="play-overlay">
-                    <div className="play-button">
-                      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <polygon points="5,3 19,12 5,21" />
-                      </svg>
-                    </div>
-                  </div>
                 </div>
               </div>
               <div className="thumbnail-content">

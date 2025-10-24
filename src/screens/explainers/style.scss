@@ -78,34 +78,10 @@
                 transition: all 0.3s ease;
               }
 
-              .play-overlay {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                opacity: 0;
-                transition: all 0.3s ease;
-
-                .play-button {
-                  background: rgba($brandPrimary, 0.9);
-                  border-radius: 50%;
-                  padding: 1rem;
-                  color: $white;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  box-shadow: 0 4px 12px rgba(26, 77, 46, 0.3);
-                }
-              }
-
               &:hover {
                 .video-icon {
-                  transform: scale(1.1);
-                  filter: drop-shadow(0 4px 8px rgba(26, 77, 46, 0.3));
-                }
-
-                .play-overlay {
-                  opacity: 1;
+                  transform: scale(1.05);
+                  filter: drop-shadow(0 2px 4px rgba(26, 77, 46, 0.2));
                 }
               }
             }
@@ -148,16 +124,16 @@
               flex-direction: column;
               align-items: center;
               justify-content: center;
-              background: linear-gradient(135deg, rgba(232, 152, 118, 0.05) 0%, rgba(232, 152, 118, 0.1) 100%);
+              background: linear-gradient(135deg, rgba(139, 69, 19, 0.05) 0%, rgba(160, 82, 45, 0.1) 100%);
               border-radius: 6px;
 
               .explorer-icon {
-                color: #E89876;
+                color: #8B4513;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 margin-bottom: 0.5rem;
-                filter: drop-shadow(0 2px 4px rgba(232, 152, 118, 0.2));
+                filter: drop-shadow(0 2px 4px rgba(139, 69, 19, 0.2));
                 transition: all 0.3s ease;
               }
 
@@ -165,7 +141,7 @@
               &:hover {
                 .explorer-icon {
                   transform: scale(1.1);
-                  filter: drop-shadow(0 4px 8px rgba(232, 152, 118, 0.3));
+                  filter: drop-shadow(0 4px 8px rgba(139, 69, 19, 0.3));
                 }
               }
             }
