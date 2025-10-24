@@ -106,4 +106,12 @@
         padding: 0 !important;
         flex: none !important;
     }
+
+    // Ensure toggle buttons align with controls on home map
+    #toggles-overlay {
+        top: 0.5rem !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        margin-top: 0 !important;
+    }
 }
