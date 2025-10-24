@@ -3,11 +3,11 @@
 .results-comparison-page {
   min-height: auto;
   background-color: $backgroundColor;
-  padding: 2rem 0;
-  margin-top: 8.75rem;
+  padding: 3rem 0;
+  margin-top: 4.375rem;
 
   @media (max-width: 768px) {
-    padding: 1rem 0;
+    padding: 2rem 0;
   }
 
   .results-comparison-container {

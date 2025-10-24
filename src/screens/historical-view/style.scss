@@ -4,11 +4,11 @@
 .historical-view-page {
   min-height: auto;
   background-color: $backgroundColor;
-  padding: 2rem 0;
-  margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
+  padding: 3rem 0;
+  margin-top: 4.375rem;
 
   @media (max-width: 768px) {
-    padding: 1rem 0;
+    padding: 2rem 0;
   }
 
   .historical-view-container {
