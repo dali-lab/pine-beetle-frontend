@@ -42,7 +42,6 @@
             &:focus {
                 outline: none;
                 border-color: #4F772D;
-                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
             }
 
             .location-header-title {
@@ -279,7 +278,6 @@
 
                 &:focus {
                     border-color: $brandSecondary;
-                    box-shadow: 0 0 0 3px rgba($brandSecondary, 0.2);
                 }
 
                 .location-header-title {

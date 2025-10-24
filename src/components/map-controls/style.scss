@@ -17,7 +17,7 @@
   background: rgba($cleanWhite, 0.98);
   backdrop-filter: blur(0.75rem);
   border: 1px solid rgba($black, 0.1);
-  border-radius: 8px;
+  border-radius: 0;
   box-shadow: 0 0.5rem 1.5rem rgba($black, 0.15);
   overflow: visible;
   z-index: 997;
@@ -269,7 +269,7 @@
     background: $brandSecondary;
     color: $cleanWhite;
     border: 1px solid $brandSecondary;
-    border-radius: 6px;
+    border-radius: 0;
     padding: 0.75rem 1.5rem;
     font-family: 'Inter', sans-serif;
     font-size: 0.875rem;
@@ -322,120 +322,10 @@
 }
 
 
-// Desktop Controls - Hide on mobile
-@media (max-width: 48rem) {
-  .desktop-controls {
-    display: none;
-  }
+// Desktop Controls - Use same styles on mobile
+// No special mobile handling - desktop styles apply everywhere
 
-  // Hide the main desktop panel positioning on mobile
-  .map-controls-panel {
-    position: static;
-    top: auto;
-    left: auto;
-    width: auto;
-    z-index: auto;
-  }
-}
-
-// Mobile Bottom Navigation
-@media (max-width: 48rem) {
-  .map-controls-panel {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 99999 !important;
-    pointer-events: none;
-    top: auto !important;
-    width: auto !important;
-  }
-
-  .mobile-bottom-nav {
-    display: flex !important;
-    align-items: center;
-    justify-content: space-around;
-    background: rgba($cleanWhite, 0.95);
-    backdrop-filter: blur(20px);
-    border-top: 1px solid rgba($black, 0.1);
-    padding: 0.25rem 0.5rem;
-    padding-bottom: calc(0.25rem + env(safe-area-inset-bottom));
-    box-shadow: 0 -4px 20px rgba($black, 0.1);
-    pointer-events: auto;
-    touch-action: manipulation;
-    min-height: 3rem;
-  }
-
-  .nav-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 8px;
-    min-width: 3.5rem;
-    min-height: 3.5rem;
-    position: relative;
-    outline: none;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: transparent;
-
-    &:focus {
-      outline: none;
-      background: rgba($brandSecondary, 0.1);
-    }
-
-    &:active {
-      transform: scale(0.95);
-    }
-
-    &.active {
-      background: rgba($brandSecondary, 0.1);
-
-      .nav-icon {
-        color: $brandSecondary;
-        transform: scale(1.1);
-      }
-
-      .nav-label {
-        color: $brandSecondary;
-        font-weight: 600;
-      }
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-  }
-
-  .nav-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: $greyBlue800;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-bottom: 0.25rem;
-  }
-
-  .nav-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: $greyBlue800;
-    text-align: center;
-    line-height: 1.1;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    max-width: 4rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-}
+// Mobile uses same styles as desktop - no special mobile navigation
 
 // Mobile Full-Screen Overlays
 .map-controls-mobile-fullscreen-overlay {

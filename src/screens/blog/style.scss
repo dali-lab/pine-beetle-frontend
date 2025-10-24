@@ -1,80 +1,78 @@
 .blog-page-container {
     min-height: auto;
     background: $backgroundColor;
-    padding: 2rem 0;
-    margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
+    padding: 3rem 0;
+    margin-top: 4.375rem;
 
     @media (max-width: 768px) {
-        padding: 1rem 0;
+        padding: 2rem 0;
     }
 }
 
-// Blog hero section styles removed - now using global page-header styles
-
 .blog-content {
-    max-width: 1200px;
+    max-width: 75rem;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 2.5rem;
 
     @media (max-width: 1024px) {
-        max-width: 900px;
-        padding: 0 32px;
+        max-width: 56.25rem;
+        padding: 0 2rem;
     }
 
     @media (max-width: 768px) {
-        padding: 0 24px;
+        padding: 0 1.5rem;
     }
 
     @media (max-width: 480px) {
-        padding: 0 16px;
+        padding: 0 1rem;
     }
 }
 
 .blog-header {
-    margin-bottom: 60px;
+    margin-bottom: 3.75rem;
     border-bottom: 1px solid $greyBlue200;
-    padding-bottom: 20px;
+    padding-bottom: 1.25rem;
 
     @media (max-width: 768px) {
-        margin-bottom: 40px;
+        margin-bottom: 2.5rem;
     }
 }
 
 .blog-section-title {
     font-family: 'Inter';
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 600;
     color: $headingColor;
     margin: 0;
     line-height: 1.2;
 
     @media (max-width: 768px) {
-        font-size: 24px;
+        font-size: 1.5rem;
     }
 }
 
 .blog-posts-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 60px 40px;
+    gap: 3.75rem 2.5rem;
     width: 100%;
 
     @media (max-width: 1024px) {
-        gap: 50px 30px;
+        gap: 3.125rem 1.875rem;
     }
 
     @media (max-width: 768px) {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 2.5rem;
     }
 }
 
 .blog-page-no-posts {
-    font-size: 24px;
+    font-size: 1.5rem;
     width: 100%;
     text-align: center;
     color: $greyBlue700;
     grid-column: 1 / -1;
     font-style: italic;
-    margin: 60px 0;
+    margin: 3.75rem 0;
 }

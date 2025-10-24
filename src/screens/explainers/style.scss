@@ -3,16 +3,16 @@
 .explainers-screen {
   min-height: auto;
   background-color: $backgroundColor;
-  padding: 2rem 0;
-  margin-top: 140px; // Account for fixed header (70px) + navigation bar (70px)
+  padding: 3rem 0;
+  margin-top: 4.375rem;
 
   .explainers-container {
-    max-width: 1200px;
+    max-width: 75rem;
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 2rem;
 
     @media (max-width: 768px) {
-      padding: 0 16px;
+      padding: 0 1rem;
     }
 
     .explainers-thumbnails {
@@ -20,7 +20,7 @@
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 2rem;
-          max-width: 1200px;
+          max-width: 75rem;
           margin: 0 auto;
 
           @media (max-width: 768px) {
@@ -44,12 +44,12 @@
           overflow: hidden;
 
           &:hover {
-            transform: translateY(-2px);
+            transform: translateY(-0.125rem);
           }
 
           .thumbnail-visual {
             width: 100%;
-            height: 200px;
+            height: 12.5rem;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
@@ -74,14 +74,14 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                filter: drop-shadow(0 2px 4px rgba(26, 77, 46, 0.2));
+                filter: drop-shadow(0 0.125rem 0.25rem rgba(26, 77, 46, 0.2));
                 transition: all 0.3s ease;
               }
 
               &:hover {
                 .video-icon {
                   transform: scale(1.05);
-                  filter: drop-shadow(0 2px 4px rgba(26, 77, 46, 0.2));
+                  filter: drop-shadow(0 0.125rem 0.25rem rgba(26, 77, 46, 0.2));
                 }
               }
             }
@@ -103,7 +103,7 @@
                 align-items: center;
                 justify-content: center;
                 margin-bottom: 0.5rem;
-                filter: drop-shadow(0 2px 4px rgba(107, 142, 107, 0.2));
+                filter: drop-shadow(0 0.125rem 0.25rem rgba(107, 142, 107, 0.2));
                 transition: all 0.3s ease;
               }
 
@@ -111,7 +111,7 @@
               &:hover {
                 .methodology-icon {
                   transform: scale(1.1);
-                  filter: drop-shadow(0 4px 8px rgba(107, 142, 107, 0.3));
+                  filter: drop-shadow(0 0.25rem 0.5rem rgba(107, 142, 107, 0.3));
                 }
               }
             }
@@ -133,7 +133,7 @@
                 align-items: center;
                 justify-content: center;
                 margin-bottom: 0.5rem;
-                filter: drop-shadow(0 2px 4px rgba(139, 69, 19, 0.2));
+                filter: drop-shadow(0 0.125rem 0.25rem rgba(139, 69, 19, 0.2));
                 transition: all 0.3s ease;
               }
 
@@ -141,7 +141,7 @@
               &:hover {
                 .explorer-icon {
                   transform: scale(1.1);
-                  filter: drop-shadow(0 4px 8px rgba(139, 69, 19, 0.3));
+                  filter: drop-shadow(0 0.25rem 0.5rem rgba(139, 69, 19, 0.3));
                 }
               }
             }
@@ -163,7 +163,7 @@
                 align-items: center;
                 justify-content: center;
                 margin-bottom: 0.5rem;
-                filter: drop-shadow(0 2px 4px rgba(115, 118, 126, 0.2));
+                filter: drop-shadow(0 0.125rem 0.25rem rgba(115, 118, 126, 0.2));
                 transition: all 0.3s ease;
               }
 
@@ -171,7 +171,7 @@
               &:hover {
                 .resources-icon {
                   transform: scale(1.1);
-                  filter: drop-shadow(0 4px 8px rgba(115, 118, 126, 0.3));
+                  filter: drop-shadow(0 0.25rem 0.5rem rgba(115, 118, 126, 0.3));
                 }
               }
             }
@@ -202,10 +202,9 @@
   }
 }
 
-// Responsive design
 @media (max-width: 768px) {
   .explainers-screen {
-    padding: 1rem 0;
+    padding: 2rem 0;
 
     .explainers-container {
       padding: 0 1rem;
@@ -216,7 +215,7 @@
             padding: 1.5rem;
 
             .thumbnail-visual {
-              height: 180px;
+              height: 11.25rem;
 
               .video-preview,
               .methodology-preview,
@@ -226,8 +225,8 @@
                 .methodology-icon,
                 .explorer-icon,
                 .resources-icon {
-                  width: 80px;
-                  height: 80px;
+                  width: 5rem;
+                  height: 5rem;
                 }
               }
             }
@@ -248,11 +247,10 @@
   }
 }
 
-// Animation for page load
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(1.875rem);
   }
   to {
     opacity: 1;

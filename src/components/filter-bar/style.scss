@@ -97,7 +97,6 @@
     &:focus {
       outline: none !important;
       border-color: $greyBlue500;
-      box-shadow: 0 0 0 3px rgba(201, 205, 217, 0.2);
       background-color: $white;
     }
 
@@ -128,7 +127,6 @@
 
     &:focus-within {
       outline: none;
-      box-shadow: 0 0 0 3px rgba(201, 205, 217, 0.2);
     }
 
     &:hover:not(:focus-within) {
