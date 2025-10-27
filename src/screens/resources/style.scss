@@ -1,16 +1,18 @@
+@import '../../styles/breakpoints.scss';
+@import '../../styles/colors.scss';
+
 #resources-content {
     min-height: auto;
     background-color: $backgroundColor;
     padding: 3rem 0;
     margin-top: 4.375rem;
-    // Using global page-header styles from main.scss
 
     .resources-content-container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 32px;
 
-        @media (max-width: 768px) {
+        @media (max-width: $tablet) {
             padding: 0 16px;
         }
     }
@@ -33,7 +35,7 @@
             border-left: 4px solid $grey600;
             padding-left: 1rem;
 
-            @media (max-width: 768px) {
+            @media (max-width: $tablet) {
                 font-size: 1.5rem;
                 padding-left: 0.75rem;
             }
@@ -52,7 +54,7 @@
             gap: 2rem;
             margin-top: 2rem;
 
-            @media (max-width: 768px) {
+            @media (max-width: $tablet) {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
             }
@@ -235,8 +237,7 @@
         }
     }
 
-    // Responsive adjustments
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         .resource-card {
             padding: 1.5rem;
 

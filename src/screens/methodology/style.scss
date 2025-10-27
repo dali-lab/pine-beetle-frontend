@@ -1,3 +1,4 @@
+@import '../../styles/breakpoints.scss';
 @import '../../styles/colors.scss';
 
 .methodology-page {
@@ -6,23 +7,20 @@
   padding: 2rem 0;
   margin-top: 8.75rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     padding: 1rem 0;
   }
 }
 
-// Old header styles removed - now using global page-header styles
-
-// How It Works Section
 .methodology-how-it-works-section {
   padding: 5rem 0;
   background: $backgroundColor;
 
-  @media (max-width: 1024px) {
+  @media (max-width: $desktop) {
     padding: 4rem 0;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     padding: 3rem 0;
   }
 }
@@ -32,11 +30,11 @@
   margin: 0 auto;
   padding: 0 1.5rem;
 
-  @media (max-width: 1024px) {
+  @media (max-width: $desktop) {
     padding: 0 1.25rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     padding: 0 1rem;
   }
 }
@@ -46,7 +44,7 @@
   flex-direction: column;
   gap: 3rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     gap: 2rem;
   }
 }
@@ -60,7 +58,7 @@
     padding-bottom: 0;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     padding-bottom: 1.5rem;
   }
 }
@@ -71,7 +69,7 @@
   gap: 1rem;
   margin-bottom: 1rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     gap: 0.75rem;
     margin-bottom: 0.75rem;
   }
@@ -90,7 +88,7 @@
   font-size: 0.875rem;
   flex-shrink: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     width: 1.75rem;
     height: 1.75rem;
     font-size: 0.75rem;
@@ -104,11 +102,11 @@
   margin: 0;
   line-height: 1.3;
 
-  @media (max-width: 1024px) {
+  @media (max-width: $desktop) {
     font-size: 1.375rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     font-size: 1.25rem;
   }
 }
@@ -120,11 +118,11 @@
   margin: 0;
   margin-left: 3rem;
 
-  @media (max-width: 1024px) {
+  @media (max-width: $desktop) {
     font-size: 0.9375rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     margin-left: 2.5rem;
   }
 }
@@ -134,30 +132,27 @@
   margin: 0 auto;
   padding: 0 2rem;
   width: 100%;
-  text-align: left !important;
+  text-align: left;
 
-  @media (max-width: 1024px) {
+  @media (max-width: $desktop) {
     padding: 0 1.25rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     padding: 0 1rem;
   }
 }
 
-// Clean, minimal styling for professional appearance
-
-// Content Sections - Clean and minimal
 .methodology-content-section {
   padding: 3rem 0;
   border-bottom: 1px solid $greyBlue200;
   text-align: left;
 
-  @media (max-width: 1024px) {
+  @media (max-width: $desktop) {
     padding: 2.5rem 0;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     padding: 2rem 0;
   }
 
@@ -174,11 +169,11 @@
   line-height: 1.3;
   text-align: left;
 
-  @media (max-width: 1024px) {
+  @media (max-width: $desktop) {
     font-size: 1.625rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     font-size: 1.5rem;
   }
 }
@@ -190,7 +185,7 @@
   line-height: 1.6;
   text-align: left;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     font-size: 0.9375rem;
     margin-bottom: 1.25rem;
   }
@@ -203,7 +198,7 @@
   margin: 0 0 1.5rem 0;
   text-align: left;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     font-size: 0.9375rem;
   }
 }
@@ -218,13 +213,12 @@
     margin: 0 0 1rem 0;
     text-align: left;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
       font-size: 0.9375rem;
     }
   }
 }
 
-// Key Components - Clean list style
 .methodology-components-list {
   display: flex;
   flex-direction: column;
@@ -242,7 +236,7 @@
     border-bottom: none;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     gap: 0.75rem;
   }
 }
@@ -289,7 +283,7 @@
   margin: 0;
   line-height: 1.3;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     font-size: 1rem;
   }
 }
@@ -300,12 +294,11 @@
   line-height: 1.6;
   margin: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     font-size: 0.9375rem;
   }
 }
 
-// Data Sources - Clean list style
 .methodology-data-sources-list {
   display: flex;
   flex-direction: column;
@@ -313,7 +306,7 @@
   width: 100%;
   max-width: 37.5rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     width: 100%;
   }
 }
@@ -328,7 +321,7 @@
     border-bottom: none;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     gap: 0.625rem;
   }
 }
@@ -357,12 +350,11 @@
   line-height: 1.6;
   margin: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     font-size: 0.9375rem;
   }
 }
 
-// Validation Methods - Clean list style
 .methodology-validation-list {
   display: flex;
   flex-direction: column;
@@ -388,12 +380,11 @@
   line-height: 1.6;
   margin: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     font-size: 0.9375rem;
   }
 }
 
-// Prediction Outputs - Clean list style
 .methodology-prediction-outputs-list {
   display: flex;
   flex-direction: column;
@@ -411,7 +402,7 @@
     border-bottom: none;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     gap: 0.625rem;
   }
 }
@@ -440,12 +431,11 @@
   line-height: 1.6;
   margin: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     font-size: 0.9375rem;
   }
 }
 
-// References - Clean style
 .methodology-reference-content {
   border-left: 2px solid $headingColor;
   padding-left: 1rem;
@@ -457,7 +447,7 @@
   line-height: 1.6;
   margin: 0;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     font-size: 0.9375rem;
   }
 }

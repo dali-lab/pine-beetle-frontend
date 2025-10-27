@@ -1,3 +1,5 @@
+@import '../../styles/breakpoints.scss';
+
 .selection-button {
     padding: 0 40px 0 14px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -14,7 +16,6 @@
     background-size: 16px 16px;
     line-height: 1.5;
 
-    /* Remove all browser default styling */
     &:focus {
         outline: none;
     }
@@ -23,7 +24,6 @@
         display: none;
     }
 
-    // Enhanced option styling
     option {
         font-size: 16px;
         font-weight: 400;
@@ -34,34 +34,29 @@
         min-height: 44px;
         border-radius: 0;
 
-        // Better visual separation
         &:not(:last-child) {
             border-bottom: 1px solid #f3f4f6;
         }
     }
 
-    // Hover state for options (works in some browsers)
     option:hover {
-        background-color: #f9fafb !important;
-        color: #111827 !important;
+        background-color: #f9fafb;
+        color: #111827;
     }
 
-    // Selected/checked state
     option:checked,
     option:active {
-        background: linear-gradient(0deg, $brandSecondary 0%, $brandSecondary 100%) !important;
-        background-color: $brandSecondary !important;
-        color: #ffffff !important;
+        background: linear-gradient(0deg, $brandSecondary 0%, $brandSecondary 100%);
+        background-color: $brandSecondary;
+        color: #ffffff;
         font-weight: 500;
     }
 
-    // Placeholder option styling
     option:first-child {
         color: #9ca3af;
         font-style: normal;
     }
 
-    // Disabled option styling
     option:disabled {
         color: #d1d5db;
         background-color: #f9fafb;
@@ -72,7 +67,6 @@
     width: 100%;
 }
 
-// Custom Choice Input Dropdown Styles
 .choice-input-wrapper {
     position: relative;
     width: 100%;
@@ -141,7 +135,6 @@
         z-index: 9;
         padding: 4px 0;
 
-        /* Custom scrollbar styling */
         &::-webkit-scrollbar {
             width: 8px;
         }
@@ -205,17 +198,16 @@
             }
 
             &.selected .check-icon {
-                display: none; // Hide arrow for selected option
+                display: none;
             }
         }
     }
 
-    // Mobile touch-friendly enhancements
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         .choice-input-button {
             min-height: 48px;
             padding: 0 16px;
-            font-size: 16px; // Prevent zoom on iOS
+            font-size: 16px;
             border-radius: 8px;
             border-width: 2px;
 

@@ -1,3 +1,4 @@
+@import '../../styles/breakpoints.scss';
 @import '../../styles/colors.scss';
 
 .header {
@@ -15,11 +16,11 @@
         width: auto;
         padding: 0 1rem;
 
-        @media (min-width: 768px) {
+                @media (min-width: $tablet) {
             padding: 0 1.5rem;
         }
 
-        @media (min-width: 1024px) {
+        @media (min-width: $desktop) {
             padding: 0 2rem;
         }
 
@@ -71,12 +72,12 @@
                         letter-spacing: 0.5px;
                         line-height: 1.2;
 
-                        @media (max-width: 768px) {
+                        @media (max-width: $tablet) {
                             font-size: 1.125rem;
                             font-weight: 600;
                         }
 
-                        @media (max-width: 480px) {
+                        @media (max-width: $mobile) {
                             font-size: 1rem;
                             font-weight: 600;
                         }
@@ -92,11 +93,11 @@
                         letter-spacing: 0.3px;
                         line-height: 1.2;
 
-                        @media (max-width: 768px) {
+                        @media (max-width: $tablet) {
                             font-size: 0.875rem;
                         }
 
-                        @media (max-width: 480px) {
+                        @media (max-width: $mobile) {
                             font-size: 0.75rem;
                         }
                     }
@@ -109,7 +110,7 @@
                 gap: 0;
                 margin-left: auto;
 
-                @media (min-width: 1024px) {
+                @media (min-width: $desktop) {
                     display: flex;
                 }
 
@@ -303,7 +304,7 @@
                 flex-shrink: 0;
                 margin-left: auto;
 
-                @media (min-width: 768px) {
+                @media (min-width: $tablet) {
                     display: none;
                 }
 
@@ -320,14 +321,13 @@
         }
     }
 
-    // Mobile Navigation Menu
     .mobile-nav {
         display: block;
         background-color: $cleanWhite;
         border-top: 1px solid rgba(0, 0, 0, 0.1);
         padding: 0;
 
-        @media (min-width: 768px) {
+                @media (min-width: $tablet) {
             display: none;
         }
 

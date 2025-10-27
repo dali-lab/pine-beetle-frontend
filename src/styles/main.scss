@@ -1,3 +1,6 @@
+@import 'breakpoints.scss';
+@import 'colors.scss';
+
 * {
     margin: 0;
     padding: 0;
@@ -69,7 +72,7 @@ textarea {
     border-radius: 0px;
     text-align: center;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         padding: 0 1rem;
     }
 }
@@ -77,34 +80,25 @@ textarea {
 .flex-container {
     width: 100%;
     display: flex;
-    /* primary flex container */
     flex-direction: row;
-    /* horizontal alignment of flex items */
     align-items: stretch;
-    /* will apply equal heights to flex items*/
     height: 100%;
 }
 
 .flex-item {
     flex: 1;
     padding: 0px;
-    /* 15 */
     display: flex;
-    /* nested flex container */
     flex-direction: column;
-    /* vertical alignment of flex items */
     justify-content: center;
-    /* center flex items vertically */
 }
 
 .flex-item-left {
     margin-right: 0px;
-    /* 15 */
 }
 
 .flex-item-right {
     margin-left: 0px;
-    /* 15 */
 }
 
 .content {
@@ -145,54 +139,10 @@ textarea {
     transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-/* Transition to showing the bigger shadow on hover */
 .animated-button:hover {
     -webkit-transform: scale(1.1, 1.1);
     transform: scale(1.1, 1.1);
-}
-
-.animated-button:hover {
     opacity: 1;
-}
-
-.color-fill-with-shadow {
-    &.blue {
-        background-color: $blue500;
-        box-shadow: 0 6px 20px -2px rgba($blue500, 0.55);
-    }
-
-    &.yellow {
-        background-color: $yellow;
-        box-shadow: 0 6px 20px -2px rgba($yellow, 0.55);
-    }
-
-    &.orange {
-        background-color: $orange;
-        box-shadow: 0 6px 20px -2px rgba($orange, 0.55);
-    }
-
-    &.brightRed {
-        background-color: $red400;
-        box-shadow: 0 6px 20px -2px rgba($red400, 0.55);
-    }
-
-    &.darkerRed {
-        background-color: $red600;
-        box-shadow: 0 6px 20px -2px rgba($red600, 0.55);
-        color: $white;
-    }
-
-    &.darkRed {
-        background-color: $red900;
-        box-shadow: 0 6px 20px -2px rgba($red900, 0.55);
-        color: $white;
-    }
-
-    &.green {
-        background-color: $brandSecondary;
-        box-shadow: 0 6px 20px -2px rgba(107, 142, 107, 0.55);
-        color: $cleanWhite;
-    }
 }
 
 .action-button, .primary-button {
@@ -221,7 +171,7 @@ textarea {
     margin-right: auto;
     padding: 0 2rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         padding: 0 1rem;
         margin-bottom: 2.5rem;
     }
@@ -233,7 +183,7 @@ textarea {
         margin-bottom: 1.5rem;
         letter-spacing: -0.5px;
 
-        @media (max-width: 768px) {
+        @media (max-width: $tablet) {
             font-size: 2.2rem;
         }
     }
@@ -245,13 +195,12 @@ textarea {
         margin: 0 auto;
         line-height: 1.7;
 
-        @media (max-width: 768px) {
+        @media (max-width: $tablet) {
             font-size: 1rem;
         }
     }
 }
 
-// Generic toggle overlay styles for maps
 #toggles-overlay {
     display: flex;
     position: absolute;
@@ -260,15 +209,13 @@ textarea {
     z-index: 1;
 }
 
-// Map-specific toggle positioning - centered at top
 #map-container #toggles-overlay {
     top: 1rem;
     left: 50%;
     transform: translateX(-50%);
     margin-top: 0;
 
-    // Mobile-specific positioning improvements
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         top: 0.5rem;
         left: 50%;
         transform: translateX(-50%);
@@ -282,14 +229,12 @@ textarea {
         }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: $mobile) {
         top: 0.25rem;
         width: calc(100vw - 1rem);
         max-width: 12rem;
     }
 }
-
-
 
 .selection-p {
     display: flex;
@@ -344,8 +289,7 @@ textarea {
         }
     }
 
-    // Mobile-specific improvements for toggle buttons
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         height: 1.75rem;
         margin-top: 0.5vh;
         margin-left: 0.5vw;
@@ -386,8 +330,7 @@ textarea {
         }
     }
 
-    // Extra small mobile screens
-    @media (max-width: 480px) {
+    @media (max-width: $mobile) {
         height: 1.5rem;
         margin-top: 0.25vh;
         margin-left: 0.25vw;
@@ -407,50 +350,4 @@ textarea {
             }
         }
     }
-}
-
-// iOS Design System Enhancements
-@media (max-width: 768px) {
-  // iOS-style touch targets
-  button, .button {
-    min-height: 44px;
-    padding: 0.75rem 1rem;
-    font-size: 16px; // Prevent zoom on iOS
-    border-radius: 4px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    &:active {
-      transform: scale(0.98);
-    }
-  }
-
-  // iOS-style form elements
-  input, select, textarea {
-    font-size: 16px; // Prevent zoom on iOS
-    border-radius: 8px;
-    border-width: 2px;
-
-    &:focus {
-      outline: none;
-      border-color: $brandSecondary;
-      box-shadow: 0 0 0 3px rgba($brandSecondary, 0.2);
-    }
-  }
-
-  // iOS-style cards and containers
-  .card, .panel {
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-
-  // iOS-style typography
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-
-  // Better spacing for mobile
-  .section {
-    padding: 2rem 0;
-  }
 }
