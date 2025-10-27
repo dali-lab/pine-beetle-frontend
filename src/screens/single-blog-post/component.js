@@ -68,7 +68,7 @@ const SingleBlogPost = (props) => {
     return (
       <div className="single-blog-page-container">
         <div className="blog-content">
-          <div className="loading-message">Loading post...</div>
+          <div>Loading post...</div>
         </div>
       </div>
     );
