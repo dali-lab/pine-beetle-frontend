@@ -1,9 +1,12 @@
+@import '../../../../styles/breakpoints.scss';
+@import '../../../../styles/colors.scss';
+
 .home-hero-container {
     max-width: 75rem;
     margin: 0 auto;
     padding: 2rem 1rem;
 
-    @media (min-width: 768px) {
+    @media (min-width: $tablet) {
         padding: 2rem 1.5rem;
     }
 }
@@ -20,7 +23,7 @@
         color: #1a202c;
         line-height: 1.2;
 
-        @media (min-width: 768px) {
+        @media (min-width: $tablet) {
             font-size: 3rem;
         }
 
@@ -36,7 +39,7 @@
         margin: 0 auto;
         line-height: 1.6;
 
-        @media (min-width: 768px) {
+        @media (min-width: $tablet) {
             font-size: 1.25rem;
         }
     }

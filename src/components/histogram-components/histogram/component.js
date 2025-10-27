@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import SingleChart from '../single-chart/component';
 import Loader from '../../loader';
+import SingleChart from '../single-chart/component';
 
 import './style.scss';
 
@@ -81,7 +81,7 @@ const Histogram = ({ histogramData, getHistogram, probSpotsGT50 }) => {
       </div>
     ) : (
       <div className="histogram__loader">
-        <Loader />
+        <Loader inline message="" />
       </div>
     )
   );

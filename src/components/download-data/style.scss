@@ -1,4 +1,6 @@
-// Clean Form-Based Download Interface
+@import '../../styles/breakpoints.scss';
+@import '../../styles/colors.scss';
+
 .download-data-page-content {
   max-width: 800px;
   margin: 0 auto;
@@ -28,7 +30,7 @@
         grid-template-columns: 1fr 1fr;
         gap: 2rem;
 
-        @media (max-width: 768px) {
+        @media (max-width: $tablet) {
           grid-template-columns: 1fr;
           gap: 1rem;
         }
@@ -143,7 +145,7 @@
       padding-top: 2rem;
       border-top: 1px solid $greyBlue300;
 
-      @media (max-width: 768px) {
+      @media (max-width: $tablet) {
         flex-direction: column;
         gap: 1rem;
         align-items: stretch;
@@ -172,7 +174,7 @@
         align-items: flex-end;
         gap: 1rem;
 
-        @media (max-width: 768px) {
+        @media (max-width: $tablet) {
           align-items: stretch;
         }
 
@@ -245,7 +247,7 @@
     box-shadow: none;
     border: none;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
       margin-top: 4rem;
     }
 
@@ -260,7 +262,7 @@
         margin: 0 0 0.75rem 0;
         letter-spacing: -0.25px;
 
-        @media (max-width: 768px) {
+        @media (max-width: $tablet) {
           font-size: 1.5rem;
         }
       }
@@ -271,7 +273,7 @@
         margin: 0;
         line-height: 1.5;
 
-        @media (max-width: 768px) {
+        @media (max-width: $tablet) {
           font-size: 0.95rem;
         }
       }
@@ -285,7 +287,7 @@
       padding-bottom: 2rem;
       border-bottom: 1px solid rgba(79, 119, 45, 0.1);
 
-      @media (max-width: 768px) {
+      @media (max-width: $tablet) {
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }
@@ -311,7 +313,7 @@
           line-height: 1;
           margin-bottom: 0.5rem;
 
-          @media (max-width: 768px) {
+          @media (max-width: $tablet) {
             font-size: 2rem;
           }
         }
@@ -336,7 +338,7 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 2rem;
 
-      @media (max-width: 768px) {
+      @media (max-width: $tablet) {
         grid-template-columns: 1fr;
         gap: 1.5rem;
       }

@@ -1,3 +1,6 @@
+@import '../../../../styles/breakpoints.scss';
+@import '../../../../styles/colors.scss';
+
 .home-content-historical-data {
     .chartjs-render-monitor {
         max-height: 300px;

@@ -1,23 +1,37 @@
 import React from 'react';
-import Lottie from 'react-lottie';
+import Modal from 'react-modal';
 
-import animationData from '../../assets/animations/loading.json';
+import './style.scss';
 
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData,
-  rendererSettings: {
-    preserveAspectRatio: 'xMidYMid slice',
-  },
-};
+const Loader = ({ visible, message = 'Loading...', inline = false }) => {
+  const spinnerContent = (
+    <div className={inline ? 'loading-container loading-container--inline' : 'loading-container'}>
+      <div className="loading-spinner">
+        <div className="spinner-ring" />
+        <div className="spinner-ring" />
+        <div className="spinner-ring" />
+      </div>
+      {message && <p className="loading-message">{message}</p>}
+    </div>
+  );
 
-const Loader = () => {
+  // If inline mode, just return the spinner without Modal
+  if (inline) {
+    return spinnerContent;
+  }
+
+  // Modal mode (original behavior)
   return (
-    <Lottie
-      options={defaultOptions}
-      isClickToPauseDisabled
-    />
+    <Modal
+      ariaHideApp={false}
+      className="loading-modal"
+      closeTimeoutMS={200}
+      contentLabel="Loading Data Modal"
+      isOpen={visible}
+      overlayClassName="loading-overlay"
+    >
+      {spinnerContent}
+    </Modal>
   );
 };
 

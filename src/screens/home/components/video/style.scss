@@ -1,3 +1,6 @@
+@import '../../../../styles/breakpoints.scss';
+@import '../../../../styles/colors.scss';
+
 .video-page-container {
     display: block;
 }
@@ -8,7 +11,6 @@
     #video-wrapper {
         position: relative;
         padding-bottom: 56.25%;
-        /* aspect ratio 16:9 */
     }
 
     iframe {

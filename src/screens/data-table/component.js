@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Loading } from '../../components';
+import { Loader } from '../../components';
 import { stateAbbrevToStateName } from '../../constants';
 import { colors } from '../trapping-data/components/trapping-data-map/constants';
 
@@ -107,7 +107,7 @@ const DataTableScreen = ({
     return (
       <div className="data-table-screen">
         <div className="data-table-container">
-          <Loading visible={isLoading} message="Loading data..." />
+          <Loader visible={isLoading} message="Loading data..." />
         </div>
       </div>
     );

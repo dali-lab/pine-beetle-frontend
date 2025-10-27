@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Loading } from '../../components';
+import { Loader } from '../../components';
 import {
-  MapWithControls,
+    MapWithControls,
 } from './components';
 
 import './style.scss';
@@ -13,7 +13,7 @@ const Home = (props) => {
   return (
     <div className="map-page-wrapper">
       <div className="container">
-        <Loading visible={isLoading} />
+        <Loader visible={isLoading} />
       </div>
       <div className="fullscreen-map">
         <MapWithControls />

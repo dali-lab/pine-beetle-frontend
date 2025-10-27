@@ -3,14 +3,14 @@ import Modal from 'react-modal';
 import { useHistory } from 'react-router-dom';
 
 import {
-  AboutPredictions,
-  OverviewText,
-  PredictionDetails,
-  PredictionMap,
+    AboutPredictions,
+    OverviewText,
+    PredictionDetails,
+    PredictionMap,
 } from './components';
 
 import closeIcon from '../../assets/icons/close.png';
-import { FilterBar, Histogram, Loading } from '../../components';
+import { FilterBar, Histogram, Loader } from '../../components';
 import { ROUTES } from '../../constants';
 
 import './style.scss';
@@ -88,7 +88,7 @@ const Prediction = (props) => {
   return (
     <div className="prediction-page">
       <div className="prediction-container">
-        <Loading visible={isLoading} />
+        <Loader visible={isLoading} />
         {fetchErrorText.length > 0 && fetchErrorText.map((t) => <p>{t}</p>)}
         <OverviewText />
         <div className="container">

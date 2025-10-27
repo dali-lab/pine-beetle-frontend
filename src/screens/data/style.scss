@@ -1,3 +1,4 @@
+@import '../../styles/breakpoints.scss';
 @import '../../styles/colors.scss';
 
 .data-screen {
@@ -11,7 +12,7 @@
     margin: 0 auto;
     padding: 0 32px;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
       padding: 0 16px;
     }
 
@@ -23,7 +24,7 @@
           max-width: 1200px;
           margin: 0 auto;
 
-          @media (max-width: 768px) {
+          @media (max-width: $tablet) {
             grid-template-columns: 1fr;
             gap: 1.5rem;
           }
@@ -202,15 +203,13 @@
   }
 }
 
-// Responsive design
-@media (max-width: 768px) {
+@media (max-width: $tablet) {
   .data-screen {
     padding: 1rem 0;
 
     .data-container {
       padding: 0 1rem;
 
-      // Page header styles are now global
 
       .data-thumbnails {
         .thumbnail-grid {
@@ -239,7 +238,6 @@
   }
 }
 
-// Animation for page load
 @keyframes fadeInUp {
   from {
     opacity: 0;

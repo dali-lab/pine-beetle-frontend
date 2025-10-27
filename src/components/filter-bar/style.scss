@@ -1,3 +1,4 @@
+@import '../../styles/breakpoints.scss';
 @import '../../styles/colors.scss';
 .filter-bar {
   width: 72vw;
@@ -34,10 +35,9 @@
 
 // Filter Toggle Button - REMOVED
 .filter-toggle-button {
-  display: none !important;
+  display: none;
 }
 
-// Single line layout for filters
 .filter-bar-container {
   display: flex;
   align-items: end;
@@ -95,7 +95,7 @@
     box-sizing: border-box;
 
     &:focus {
-      outline: none !important;
+      outline: none;
       border-color: $greyBlue500;
       background-color: $white;
     }
@@ -117,7 +117,7 @@
     width: 100%;
     height: 2.75rem;
     border-radius: 0.375rem;
-    // border: 1px solid $greyBlue300;
+    border: 1px solid $greyBlue300;
     background-color: $white;
     font-size: 0.875rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -135,8 +135,6 @@
   }
 }
 
-
-// Clear All Button Styling
 .action-button {
   padding: 0.375rem 0.875rem;
   border-radius: 0.375rem;
@@ -171,7 +169,6 @@
   line-height: 1.5;
 }
 
-// Filter Tag Styling
 .filter-tag {
   display: inline-flex;
   align-items: center;
@@ -216,8 +213,7 @@
   }
 }
 
-// Responsive adjustments (keeping the original media queries structure)
-@media (max-width: 768px) {
+@media (max-width: $tablet) {
   .filter-bar {
     padding: 0;
 
@@ -257,7 +253,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: $mobile) {
   .filter-bar-content {
     padding: 1.125rem 1rem;
   }

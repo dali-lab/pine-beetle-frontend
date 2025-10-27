@@ -6,7 +6,7 @@ import './style.scss';
 
 import { LineChart, OverviewText, TrappingDataMap } from '../trapping-data/components';
 
-import { FilterBar, Loading } from '../../components';
+import { FilterBar, Loader } from '../../components';
 
 import graphSelectedIcon from '../../assets/icons/graph-selected.png';
 import graphUnselectedIcon from '../../assets/icons/graph-unselected.png';
@@ -45,7 +45,7 @@ const HistoricalView = (props) => {
   return (
     <div className="historical-view-page">
       <div className="historical-view-container">
-        <Loading visible={isLoading} />
+        <Loader visible={isLoading} />
         {errorText.length > 0 && errorText.map((t) => <p>{t}</p>)}
         <OverviewText title="Historical Data" />
         <div className="container">

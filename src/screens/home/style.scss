@@ -1,4 +1,4 @@
-
+@import '../../styles/breakpoints.scss';
 @import '../../styles/colors.scss';
 
 .filter-bar-wrapper {
@@ -13,7 +13,7 @@
     margin: 0;
     padding: 0 2rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         padding: 0 1rem;
     }
 }
@@ -37,7 +37,6 @@
     padding: 0;
     z-index: 1;
 
-    // Override the prediction map container styles more aggressively
     #map-container {
         width: 100vw !important;
         height: 100% !important;
@@ -60,13 +59,11 @@
         background-color: transparent !important;
         flex: none !important;
 
-        // On mobile, leave space for bottom navigation
         @media (max-width: 48rem) {
             bottom: 5rem !important; // Space for bottom nav + safe area
         }
     }
 
-    // Make the map fullscreen
     #map {
         width: 100vw !important;
         height: 100% !important;
@@ -78,7 +75,6 @@
         right: 0 !important;
         bottom: 0 !important;
 
-        // On mobile, leave space for bottom navigation
         @media (max-width: 48rem) {
             bottom: 5rem !important; // Space for bottom nav + safe area
         }
@@ -98,7 +94,6 @@
         bottom: 0 !important;
     }
 
-    // Override flex-item-left styles
     .flex-item-left {
         width: 100vw !important;
         height: 100% !important;
@@ -107,7 +102,6 @@
         flex: none !important;
     }
 
-    // Ensure toggle buttons align with controls on home map
     #toggles-overlay {
         top: 0.5rem !important;
         left: 50% !important;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { FilterBar, Loading } from '../../components';
+import { FilterBar, Loader } from '../../components';
 import {
-  ComparisonMap, OverviewText, ScatterChart, ScatterChartSelectionBar,
+    ComparisonMap, OverviewText, ScatterChart, ScatterChartSelectionBar,
 } from './components';
 
 import './style.scss';
@@ -11,7 +11,7 @@ const ResultsComparison = (props) => {
   return (
     <div className="results-comparison-page">
       <div className="results-comparison-container">
-        <Loading visible={isLoading} />
+        <Loader visible={isLoading} />
         <OverviewText />
         <div className="container">
           <FilterBar />

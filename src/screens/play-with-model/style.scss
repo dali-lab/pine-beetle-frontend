@@ -1,3 +1,4 @@
+@import '../../styles/breakpoints.scss';
 @import '../../styles/colors.scss';
 
 .play-with-model-page {
@@ -6,13 +7,12 @@
   padding: 3rem 0;
   margin-top: 4.375rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     padding: 2rem 0;
     margin-top: 120px;
   }
 }
 
-// Error Alert - Clean notification style
 .error-alert {
   background: $red100;
   border: 1px solid $red400;
@@ -29,7 +29,6 @@
   }
 }
 
-// Main Layout - Clean sectioned approach with better spacing
 .model-explorer-layout {
   display: flex;
   flex-direction: column;
@@ -39,14 +38,13 @@
   margin-left: auto;
   margin-right: auto;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     gap: 40px;
     margin-top: 32px;
     max-width: 100%;
   }
 }
 
-// Section Styling - Flat academic design with better spacing
 .location-section,
 .parameters-section,
 .results-section {
@@ -59,12 +57,11 @@
     border-bottom: none;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     padding: 32px 24px;
   }
 }
 
-// Section Headers - Clean typography with better spacing
 .play-model-header {
   text-align: left;
   margin-bottom: 32px;
@@ -84,7 +81,7 @@
     flex: 1;
     min-width: 200px;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
       font-size: 20px;
     }
   }
@@ -100,27 +97,25 @@
     text-align: right;
     flex-shrink: 0;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
       text-align: left;
       margin-top: 8px;
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
 }
 
-// Container Styling
 .selection-container,
 .parameters-container,
 .results-container {
   position: relative;
 }
 
-// Play with model specific input styling - arrows point down
 .play-model-header,
 .selection-container,
 .parameters-container,
@@ -145,7 +140,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $tablet) {
   .location-section,
   .parameters-section,
   .results-section {
@@ -181,19 +176,16 @@
   }
 }
 
-// Loading States
 .loading {
   opacity: 0.6;
   pointer-events: none;
 }
 
-// Success States
 .success {
   border-color: $green500;
   background: $green200;
 }
 
-// Academic Typography Enhancements
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   letter-spacing: -0.5px;
@@ -205,9 +197,6 @@ p {
   color: $textColor;
 }
 
-// Accessibility Improvements
-
-// Skip to content for screen readers
 .sr-only {
   position: absolute;
   width: 1px;
@@ -220,7 +209,6 @@ p {
   border: 0;
 }
 
-// High contrast mode support
 @media (prefers-contrast: high) {
   .location-section,
   .parameters-section,
@@ -230,7 +218,6 @@ p {
   }
 }
 
-// Reduced motion support
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

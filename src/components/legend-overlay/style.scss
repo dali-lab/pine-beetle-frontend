@@ -1,3 +1,4 @@
+@import '../../styles/breakpoints.scss';
 @import '../../styles/colors.scss';
 
 .legend-overlay {
@@ -120,8 +121,7 @@
   color: $greyBlue600;
 }
 
-// Mobile fullscreen overlay styles
-@media (max-width: 768px) {
+@media (max-width: $tablet) {
   .legend-mobile-fullscreen-overlay {
     position: fixed;
     top: 4rem;

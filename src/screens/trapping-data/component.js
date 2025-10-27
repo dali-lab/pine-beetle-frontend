@@ -6,7 +6,7 @@ import './style.scss';
 
 import { LineChart, OverviewText, TrappingDataMap } from './components';
 
-import { FilterBar, Loading } from '../../components';
+import { FilterBar, Loader } from '../../components';
 
 import graphSelectedIcon from '../../assets/icons/graph-selected.png';
 import graphUnselectedIcon from '../../assets/icons/graph-unselected.png';
@@ -43,7 +43,7 @@ const TrappingData = (props) => {
   return (
     <div className="trapping-data-page">
       <div className="trapping-data-container">
-        <Loading visible={isLoading} />
+        <Loader visible={isLoading} />
         {errorText.length > 0 && errorText.map((t) => <p>{t}</p>)}
         <OverviewText />
         <div className="container">
