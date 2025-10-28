@@ -111,7 +111,7 @@ const Header = ({ setChartMode }) => {
             >
               <Link
                 to={ROUTES.DATA}
-                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.DATA || location.pathname === ROUTES.DATA_TABLE || location.pathname === ROUTES.HISTORICAL_GRAPH_VIEW || location.pathname === ROUTES.HISTORICAL_MAP_VIEW || location.pathname === ROUTES.DOWNLOAD_DATA) ? 'active' : ''}`}
+                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.DATA || location.pathname === ROUTES.DATA_TABLE || location.pathname === ROUTES.TIME_SERIES || location.pathname === ROUTES.DOWNLOAD_DATA) ? 'active' : ''}`}
                 onClick={() => setHistoricalDataOpen(false)}
               >
                 Data
@@ -139,8 +139,8 @@ const Header = ({ setChartMode }) => {
                 }}
               >
                 <Link
-                  to={ROUTES.HISTORICAL_VIEW}
-                  className={`dropdown-item ${location.pathname === ROUTES.HISTORICAL_VIEW ? 'active' : ''}`}
+                  to={ROUTES.TIME_SERIES}
+                  className={`dropdown-item ${location.pathname === ROUTES.TIME_SERIES ? 'active' : ''}`}
                   onClick={() => setHistoricalDataOpen(false)}
                 >
                   Time Series

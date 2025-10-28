@@ -20,7 +20,7 @@ const DataScreen = () => {
         <div className="data-thumbnails">
           <div className="thumbnail-grid">
             {/* Time Series Thumbnail */}
-            <Link to={ROUTES.HISTORICAL_VIEW} className="thumbnail-card">
+            <Link to={ROUTES.TIME_SERIES} className="thumbnail-card">
               <div className="thumbnail-visual">
                 <div className="time-series-chart">
                   <div className="chart-title">SPB · trap⁻¹ · 14 days⁻¹</div>

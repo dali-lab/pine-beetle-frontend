@@ -42,11 +42,14 @@ const TimeSeries = (props) => {
     }
   };
 
+  // Deduplicate error messages to avoid duplicate keys
+  const uniqueErrors = Array.from(new Set(errorText));
+
   return (
-    <div className="historical-view-page">
-      <div className="historical-view-container">
+    <div className="time-series-page">
+      <div className="time-series-container">
         <Loader visible={isLoading} />
-        {errorText.length > 0 && errorText.map((t) => <p>{t}</p>)}
+        {uniqueErrors.length > 0 && uniqueErrors.map((t) => <p key={t}>{t}</p>)}
         <OverviewText title="Historical Data" />
         <div className="container">
           <FilterBar useHistoricalData title="Filter Historical Data" />

@@ -145,9 +145,7 @@ const App = (props) => {
           <Route path={ROUTES.DATA_TABLE} component={DataTable} />
           <Route path={ROUTES.DOWNLOAD_DATA} component={DownloadData} />
           <Route path={ROUTES.EXPLAINERS} component={Explainers} />
-          <Route path={ROUTES.HISTORICAL_GRAPH_VIEW} component={TimeSeries} />
-          <Route path={ROUTES.HISTORICAL_MAP_VIEW} component={TimeSeries} />
-          <Route path={ROUTES.HISTORICAL_VIEW} component={TimeSeries} />
+          <Route path={ROUTES.TIME_SERIES} component={TimeSeries} />
           <Route path={ROUTES.METHODOLOGY} component={Methodology} />
           <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModelScreen} />
           <Route path={ROUTES.RESOURCES} component={Resources} />

@@ -78,9 +78,7 @@ const ROUTES = {
   DOWNLOAD_DATA: '/download-data',
   EXPLAINERS: '/explainers',
   HOME: '/',
-  HISTORICAL_GRAPH_VIEW: '/historical-graph-view',
-  HISTORICAL_MAP_VIEW: '/historical-map-view',
-  HISTORICAL_VIEW: '/historical-view',
+  TIME_SERIES: '/time-series',
   METHODOLOGY: '/methodology',
   RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
@@ -215,7 +213,7 @@ const VECTOR_LAYER = 'map-choropleth-layer';
 
 const MAP_TITLES = {
   PREDICTION: 'Probability of (Any) SPB Spots',
-  HISTORICAL: 'Average Number of Spots',
+  TIME_SERIES: 'Average Number of Spots',
   COMPARISON: 'Observed vs Predicted',
 };
 
