@@ -6,13 +6,13 @@ import Data from './data';
 import DataTable from './data-table';
 import DownloadData from './download-data';
 import Explainers from './explainers';
-import HistoricalView from './historical-view';
 import Home from './home';
 import Methodology from './methodology';
 import PlayWithModelScreen from './play-with-model';
 import Resources from './resources';
 import ResultsComparison from './results-comparison';
 import SingleBlogPost from './single-blog-post';
+import TimeSeries from './time-series';
 import TrappingData from './trapping-data';
 
 export {
@@ -23,13 +23,10 @@ export {
   Data,
   DataTable,
   DownloadData,
-  Explainers,
-  HistoricalView,
-  Home,
+  Explainers, Home,
   Methodology,
   PlayWithModelScreen,
   Resources,
   ResultsComparison,
-  SingleBlogPost,
-  TrappingData,
+  SingleBlogPost, TimeSeries, TrappingData,
 };

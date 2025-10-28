@@ -7,7 +7,7 @@ import {
   setStartYear,
 } from '../../state/actions';
 
-import HistoricalView from './component';
+import TimeSeries from './component';
 
 const mapStateToProps = (state) => {
   const {
@@ -48,4 +48,4 @@ const mapDispatchToProps = (dispatch) => ({
   setStartYear: (year) => dispatch(setStartYear(year)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HistoricalView);
+export default connect(mapStateToProps, mapDispatchToProps)(TimeSeries);

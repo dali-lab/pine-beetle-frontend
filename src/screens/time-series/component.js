@@ -13,7 +13,7 @@ import graphUnselectedIcon from '../../assets/icons/graph-unselected.png';
 import mapSelectedIcon from '../../assets/icons/map-selected.png';
 import mapUnselectedIcon from '../../assets/icons/map-unselected.png';
 
-const HistoricalView = (props) => {
+const TimeSeries = (props) => {
   const {
     chartMode,
     dataMode,
@@ -109,4 +109,4 @@ const HistoricalView = (props) => {
   );
 };
 
-export default HistoricalView;
+export default TimeSeries;
