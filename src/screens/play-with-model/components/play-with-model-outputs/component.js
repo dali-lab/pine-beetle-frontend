@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getFillColor } from '../../../../../../utils';
+import React, { useEffect, useState } from 'react';
+import { getFillColor } from '../../../../utils';
 
 import './style.scss';
 

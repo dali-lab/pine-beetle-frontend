@@ -1,9 +1,7 @@
 import React from 'react';
 
 import { Loader } from '../../components';
-import {
-    MapWithControls,
-} from './components';
+import MapWithControls from './components';
 
 import './style.scss';
 

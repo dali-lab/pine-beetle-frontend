@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import {
-  PlayWithModelInputs,
-  PlayWithModelOutputs,
-  SelectionBar,
-} from '../home/components/play-with-model/components';
+import { PlayWithModelInputs, PlayWithModelOutputs, SelectionBar } from './components';
 
 import { DATA_MODES } from '../../constants';
 import { clearCustomPredictionError, clearSelections, runCustomPrediction } from '../../state/actions';

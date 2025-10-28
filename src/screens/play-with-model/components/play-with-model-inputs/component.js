@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Button } from '../../../../../../components';
-import { ChoiceInput } from '../../../../../../components/input-components';
+import { Button } from '../../../../components';
+import { ChoiceInput } from '../../../../components/input-components';
 
 import './style.scss';
 
