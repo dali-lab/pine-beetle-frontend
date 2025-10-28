@@ -1,5 +1,5 @@
 import React from 'react';
-import { PredictionMap } from '../../../prediction/components';
+import PredictionMap from '../prediction-map';
 import './style.scss';
 
 const MapWithControls = () => {

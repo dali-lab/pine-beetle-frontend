@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import StateMap from './component';
+import PredictionMap from './component';
 
 import {
   clearSelections,
@@ -71,4 +71,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(StateMap);
+)(PredictionMap);
