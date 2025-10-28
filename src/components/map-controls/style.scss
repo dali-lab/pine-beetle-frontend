@@ -1,5 +1,5 @@
-@import '../../styles/breakpoints.scss';
-@import '../../styles/colors.scss';
+@import '../../styles/breakpoints';
+@import '../../styles/colors';
 
 .map-controls-panel {
   position: absolute;
@@ -110,58 +110,58 @@
   }
 
   &.controls-header {
-    padding: 0.375rem 0.875rem; // Shorter padding for smaller row
-    min-height: 2rem; // Shorter minimum height
+    padding: 0.375rem 0.875rem;
+    min-height: 2rem;
 
     &:hover {
-      background: transparent; // Stay transparent on hover
+      background: transparent;
       transform: none;
 
       .section-title {
-        color: $greyBlue800; // Stay dark on hover
+        color: $greyBlue800;
       }
 
       .section-toggle {
-        color: $greyBlue600; // Stay dark on hover
+        color: $greyBlue600;
       }
     }
 
     &:active {
-      background: transparent; // Stay transparent on active
+      background: transparent;
       transform: none;
 
       .section-title {
-        color: $greyBlue800; // Stay dark on active
+        color: $greyBlue800;
       }
 
       .section-toggle {
-        color: $greyBlue600; // Stay dark on active
+        color: $greyBlue600;
       }
     }
 
     &.active {
-      background: transparent; // Stay transparent when active
+      background: transparent;
       transform: none;
 
       .section-title {
-        color: $greyBlue800; // Stay dark when active
+        color: $greyBlue800;
       }
 
       .section-toggle {
-        color: $greyBlue600; // Stay dark when active
+        color: $greyBlue600;
       }
     }
 
     &:focus {
-      background: transparent; // Stay transparent on focus
+      background: transparent;
       outline: none;
 
       .section-title {
-        color: $greyBlue800; // Stay dark on focus
+        color: $greyBlue800;
       }
 
       .section-toggle {
-        color: $greyBlue600; // Stay dark on focus
+        color: $greyBlue600;
       }
     }
   }

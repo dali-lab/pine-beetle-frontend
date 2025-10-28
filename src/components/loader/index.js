@@ -15,12 +15,10 @@ const Loader = ({ visible, message = 'Loading...', inline = false }) => {
     </div>
   );
 
-  // If inline mode, just return the spinner without Modal
   if (inline) {
     return spinnerContent;
   }
 
-  // Modal mode (original behavior)
   return (
     <Modal
       ariaHideApp={false}

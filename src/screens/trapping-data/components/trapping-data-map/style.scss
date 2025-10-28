@@ -1,3 +1,6 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
 #map {
     height: 700px;
     text-align: left;
@@ -17,7 +20,7 @@
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: $white;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         width: calc(100vw - 2rem) !important;
         margin-left: 1rem;
         margin-right: 1rem;

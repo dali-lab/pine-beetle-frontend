@@ -1,5 +1,6 @@
-@import '../../styles/colors.scss';
-@import '../home/style.scss';
+@import '../../styles/breakpoints';
+@import '../../styles/colors';
+@import '../home/style';
 
 .trapping-data-page {
   min-height: auto;
@@ -7,7 +8,7 @@
   padding: 2rem 0;
   margin-top: 8.75rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     padding: 1rem 0;
   }
 
@@ -16,7 +17,7 @@
     margin: 0 auto;
     padding: 0 2rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
       padding: 0 1rem;
     }
   }

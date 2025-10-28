@@ -1,3 +1,6 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
 .change-password-modal {
     position: fixed;
     top: 50%;
@@ -8,8 +11,7 @@
     padding: 30px;
     border-radius: 20px;
     background-color: $white;
-    // TODO: replace box shadow with grayer background later
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 
     #change-password-content-container {
         display: flex;
@@ -30,7 +32,7 @@
                 #error-input {
                     border: solid 2.5px $red500;
                 }
-                
+
                 input {
                     width: calc(100% - 30px);
                     height: 43px;
@@ -82,12 +84,10 @@
     }
 }
 
-// remove unnecessary blue outline from modal (does not impact accessibility)
 .change-password-modal:focus {
     outline:0;
 }
 
-// https://stackoverflow.com/questions/58355628/animate-react-modal
 .ReactModal__Overlay {
     opacity: 0;
     transition: all 150ms ease-in-out;

@@ -1,4 +1,5 @@
-@import '../../styles/colors.scss';
+@import '../../styles/breakpoints';
+@import '../../styles/colors';
 
 .prediction-page {
   min-height: auto;
@@ -6,7 +7,7 @@
   padding: 2rem 0;
   margin-top: 8.75rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: $tablet) {
     padding: 1rem 0;
   }
 
@@ -15,7 +16,7 @@
     margin: 0 auto;
     padding: 0 2rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
       padding: 0 1rem;
     }
   }
@@ -42,8 +43,7 @@
     left: 35vw;
     z-index: 1;
 
-    // Mobile-specific positioning improvements
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         left: 50%;
         transform: translateX(-50%);
         width: calc(100vw - 2rem);
@@ -135,8 +135,7 @@
         }
     }
 
-    // Mobile-specific improvements for prediction toggle buttons
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         height: 1.75rem;
         margin-top: 0.5vh;
         margin-left: 0.5vw;
@@ -190,7 +189,6 @@
         }
     }
 
-    // Extra small mobile screens
     @media (max-width: 480px) {
         height: 1.5rem;
         margin-top: 0.25vh;
@@ -263,12 +261,10 @@
     }
 }
 
-// remove unnecessary blue outline from modal (does not impact accessibility)
 .modal:focus {
     outline:0;
 }
 
-// https://stackoverflow.com/questions/58355628/animate-react-modal
 .ReactModal__Overlay {
     opacity: 0;
     transition: all 150ms ease-in-out;

@@ -1,3 +1,6 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
 .blog-post-item {
     display: flex;
     flex-direction: column;
@@ -10,7 +13,7 @@
     align-items: center;
     margin-bottom: 8px;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         flex-direction: column;
         align-items: flex-start;
         gap: 4px;
@@ -30,7 +33,7 @@
     font-size: 13px;
     color: $greyBlue600;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         gap: 12px;
     }
 }
@@ -62,7 +65,7 @@
         }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         font-size: 20px;
     }
 
@@ -87,7 +90,7 @@
     margin: 0;
     padding: 0;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         font-size: 15px;
     }
 }
@@ -99,7 +102,7 @@
     margin: 0;
     white-space: pre-line;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         font-size: 15px;
     }
 }

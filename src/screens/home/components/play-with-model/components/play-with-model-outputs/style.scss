@@ -1,4 +1,5 @@
-@import '../../../../../../styles/colors.scss';
+@import '../../../../../../styles/breakpoints';
+@import '../../../../../../styles/colors';
 
 #predictions-output {
   width: 100%;
@@ -87,7 +88,6 @@
   }
 }
 
-// Enhanced color fills for predictions - Academic neutral colors
 .color-fill-with-shadow {
   &.blue {
     background: $grey200;

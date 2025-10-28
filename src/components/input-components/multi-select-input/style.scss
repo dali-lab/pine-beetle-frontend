@@ -1,5 +1,5 @@
-@import '../../../styles/breakpoints.scss';
-@import '../../../styles/colors.scss';
+@import '../../../styles/breakpoints';
+@import '../../../styles/colors';
 .multi-select-container {
     background-color: transparent;
     z-index: 2;
@@ -267,14 +267,13 @@
     margin: 4px 0;
 }
 
-// Mobile touch-friendly enhancements
 @media (max-width: 768px) {
     .multi-select-container {
         .location-wrapper {
             .location-header {
                 min-height: 48px;
                 padding: 0 16px;
-                font-size: 16px; // Prevent zoom on iOS
+                font-size: 16px;
                 border-radius: 8px;
                 border-width: 2px;
 

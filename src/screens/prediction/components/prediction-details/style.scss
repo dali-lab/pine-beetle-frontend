@@ -1,3 +1,6 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
 .prediction-details-container {
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: $white;
@@ -6,7 +9,6 @@
 }
 
 .prediction-details {
-    // TODO: why is its margin left and right more than others?
     background-color: $white;
     border-radius: 26px;
 }
@@ -58,7 +60,7 @@
     width: 110px;
     height: 110px;
     border-radius: 50%;
-    color: $white; 
+    color: $white;
     font-weight: 700;
     text-align: center;
     justify-content: space-between;
@@ -97,13 +99,13 @@
 .bullet {
     position: relative;
     border: 2px solid $greyBlue300;
-    border-radius: 100%; 
-    width: 20px; 
+    border-radius: 100%;
+    width: 20px;
     height: 20px;
-    line-height: 40px; 
-    text-align: center; 
-    margin-top: 45px; 
-    background-color: $greyBlue300; 
+    line-height: 40px;
+    text-align: center;
+    margin-top: 45px;
+    background-color: $greyBlue300;
     z-index: 2;
 }
 
@@ -112,15 +114,15 @@
 }
 
 .bullet:before {
-    position: absolute; 
-    border: 1px solid $greyBlue300; 
-    width: 0; 
-    height: 50px; 
-    display: block; 
-    content: ''; 
-    left: 50%; 
-    z-index: 1; 
-    top: -54px; 
+    position: absolute;
+    border: 1px solid $greyBlue300;
+    width: 0;
+    height: 50px;
+    display: block;
+    content: '';
+    left: 50%;
+    z-index: 1;
+    top: -54px;
     margin-left: -1px;
 }
 
@@ -131,19 +133,19 @@
 .prediction-grid {
     display: grid;
     grid-template-columns: auto 200px;
-    grid-template-areas: 
+    grid-template-areas:
     'yeart2 yeart2-spots'
     'yeart1 yeart1-spots'
     'curr-year curr-spb'
     '. curr-endobrev';
 
-    @media (min-width: 1400px) {
+    @media (min-width: $wide) {
         grid-template-columns: auto 150px auto;
-        grid-template-areas: 
+        grid-template-areas:
         'yeart2 . yeart2-spots'
         'yeart1 yeart1 yeart1-spots'
         'curr-year curr-spb curr-endobrev';
-    } 
+    }
 }
 
 .prediction-grid > div {
@@ -194,9 +196,9 @@
     grid-area: curr-endobrev;
 
     .content-horizontal-rule {
-        display: none; 
+        display: none;
 
-        @media (min-width: 1400px) {
+        @media (min-width: $wide) {
             display: block
         }
     }
@@ -204,7 +206,7 @@
     .content-container {
         margin-top: 0;
 
-        @media (min-width: 1400px) {
+        @media (min-width: $wide) {
             margin-top: 12px;
         }
     }

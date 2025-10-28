@@ -1,3 +1,6 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
 #map {
     height: 700px;
     text-align: left;
@@ -19,7 +22,7 @@
     padding: 0;
     overflow: hidden;
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
         width: calc(100vw - 2rem);
         margin-left: 1rem;
         margin-right: 1rem;
@@ -274,7 +277,6 @@
 }
 
 #map-footer span {
-    // font-family: 'Open Sans', arial, serif;
     font-family: 'Inter';
 }
 

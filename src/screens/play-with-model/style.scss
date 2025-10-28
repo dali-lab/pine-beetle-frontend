@@ -1,5 +1,5 @@
-@import '../../styles/breakpoints.scss';
-@import '../../styles/colors.scss';
+@import '../../styles/breakpoints';
+@import '../../styles/colors';
 
 .play-with-model-page {
   min-height: auto;
@@ -123,17 +123,16 @@
   .choice-input-wrapper {
     .choice-input-button {
       .choice-input-arrow {
-        transform: rotate(0deg); // Point down
+        transform: rotate(0deg);
 
         &.open {
-          transform: rotate(180deg); // Point up when open
+          transform: rotate(180deg);
         }
       }
     }
   }
 }
 
-// Responsive Design
 @media (max-width: 1024px) {
   .model-explorer-layout {
     gap: 32px;

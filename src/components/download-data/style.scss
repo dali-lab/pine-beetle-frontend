@@ -1,5 +1,5 @@
-@import '../../styles/breakpoints.scss';
-@import '../../styles/colors.scss';
+@import '../../styles/breakpoints';
+@import '../../styles/colors';
 
 .download-data-page-content {
   max-width: 800px;
@@ -398,13 +398,11 @@
   }
 }
 
-// Loading animation
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-// Legacy styles for backward compatibility
 #download-button-container {
   display: flex;
   justify-content: flex-end;

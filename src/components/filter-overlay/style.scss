@@ -1,4 +1,5 @@
-@import '../../styles/colors.scss';
+@import '../../styles/breakpoints';
+@import '../../styles/colors';
 
 .filter-overlay {
   position: absolute;
@@ -354,7 +355,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $tablet) {
   .filter-toggle-button {
     left: 16px;
   }
@@ -688,7 +689,7 @@
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $tablet) {
       .choice-input-wrapper .choice-input-button .choice-input-arrow {
         transform: rotate(0deg);
 
@@ -766,7 +767,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $tablet) {
   .filter-overlay {
     .choice-input-wrapper .choice-input-button .choice-input-arrow {
       transform: rotate(0deg);

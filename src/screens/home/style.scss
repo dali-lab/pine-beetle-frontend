@@ -1,5 +1,5 @@
-@import '../../styles/breakpoints.scss';
-@import '../../styles/colors.scss';
+@import '../../styles/breakpoints';
+@import '../../styles/colors';
 
 .filter-bar-wrapper {
     position: fixed;
@@ -60,7 +60,7 @@
         flex: none !important;
 
         @media (max-width: 48rem) {
-            bottom: 5rem !important; // Space for bottom nav + safe area
+            bottom: 5rem !important;
         }
     }
 
@@ -76,11 +76,10 @@
         bottom: 0 !important;
 
         @media (max-width: 48rem) {
-            bottom: 5rem !important; // Space for bottom nav + safe area
+            bottom: 5rem !important;
         }
     }
 
-    // Override any container styles
     .container {
         width: 100vw !important;
         height: 100% !important;

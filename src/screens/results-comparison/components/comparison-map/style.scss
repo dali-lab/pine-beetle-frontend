@@ -1,3 +1,6 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
 .results-comparison-map {
     .legend-tag {
         font-size: 14px;
@@ -16,7 +19,7 @@
     box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
     background-color: $white;
     padding: 0;
-    overflow: hidden; // Ensure legend overlay stays within container bounds
+    overflow: hidden;
 }
 
 .results-comparison-message {
