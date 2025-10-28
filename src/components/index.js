@@ -21,5 +21,5 @@ export {
   LegendOverlay,
   Loader,
   Map,
-  Tabs,
+  Tabs
 };

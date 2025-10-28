@@ -1,15 +1,3 @@
-/*
- * DEV NOTE, Jeff Liu 2023:
- * this and the other map (prediction & trapping) should be rewritten
- * in the future and refactored to use composition. there's tons of
- * code duplication that can be combined so bug fixes are unified.
- *
- * also, there's a whole bunch of weird things based on switching the map
- * between county and federal land mode. I think a map subcomponent should be made
- * and there should be two different ones for county and RD that look at different fields.
- */
-
-/* eslint-disable prefer-destructuring */
 import mapboxgl from 'mapbox-gl';
 import React, { useEffect, useState } from 'react';
 
@@ -20,9 +8,9 @@ import {
   SOURCE_LAYERS,
   STATE_VECTOR_LAYER,
   VECTOR_LAYER,
-} from '../../../../constants';
+} from '../../../constants';
 
-import { api } from '../../../../services';
+import { api } from '../../../services';
 import {
   createHoverCallback,
   createMapClickCallback,
@@ -30,16 +18,16 @@ import {
   generateMap,
   getMapboxRDNameFormat,
   zoomToSelectedState,
-} from '../../../../utils';
+} from '../../../utils';
 
 import {
   colors,
   thresholds,
 } from './constants';
 
-import { Map } from '../../../../components';
-import MapControls from '../../../../components/map-controls/component';
-import { isInvalidNumber } from '../../../../utils/map';
+import { isInvalidNumber } from '../../../utils/map';
+import Map from '../../map';
+import MapControls from '../../map-controls/component';
 import './style.scss';
 
 const HistoricalMap = (props) => {
@@ -79,9 +67,7 @@ const HistoricalMap = (props) => {
 
       const data = allData.filter((p) => {
         return (
-        // either ranger district mode or have a matching state
           (mode === DATA_MODES.RANGER_DISTRICT || ((p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState))))
-      // and sublocation matches
       && ((p[sublocation] === location))
         );
       }).filter((p) => p.state === hoverState || mode === DATA_MODES.RANGER_DISTRICT);
@@ -107,7 +93,6 @@ const HistoricalMap = (props) => {
   };
 
   const colorFill = (d) => {
-    // keep trying until map styles are loaded
     if (!map.isStyleLoaded()) {
       setTimeout(() => {
         colorFill(d);
@@ -116,7 +101,6 @@ const HistoricalMap = (props) => {
       return;
     }
 
-    // remove county layer if already constructed
     if (map.getLayer(VECTOR_LAYER)) {
       map.removeLayer(VECTOR_LAYER);
     }
@@ -136,12 +120,6 @@ const HistoricalMap = (props) => {
       const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict)?.toUpperCase() : '';
 
       const localityDescription = dataMode === DATA_MODES.COUNTY ? countyFormatName : rangerDistrictFormatName;
-      // for some reason the below code doesn't work, despite that it's supposed to be more robust for a couple of places like Holly Springs
-      // const localityDescription = dataMode === DATA_MODES.COUNTY
-      //   ? countyFormatName
-      //   // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
-      //   : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD'), rangerDistrictFormatName.replace(' RD', '')]
-      //     .filter((str) => !!str);
 
       return {
         ...acc,
@@ -150,33 +128,32 @@ const HistoricalMap = (props) => {
     }, {});
 
     Object.entries(trappingsByLocality).forEach(([localityDescription, sumSpotst0]) => {
+      const [noData, zeroToNine, tenToNineteen, twentyToFortyNine, fiftyToNinetyNine, hundredToTwoFortyNine, twoFiftyPlus] = colors;
       let color;
 
       if (sumSpotst0 === null) {
-        color = colors[0];
+        color = noData;
       } else if (sumSpotst0 < 10) {
-        color = colors[1];
+        color = zeroToNine;
       } else if (sumSpotst0 < 20) {
-        color = colors[2];
+        color = tenToNineteen;
       } else if (sumSpotst0 < 50) {
-        color = colors[3];
+        color = twentyToFortyNine;
       } else if (sumSpotst0 < 100) {
-        color = colors[4];
+        color = fiftyToNinetyNine;
       } else if (sumSpotst0 < 250) {
-        color = colors[5];
+        color = hundredToTwoFortyNine;
       } else {
-        color = colors[6];
+        color = twoFiftyPlus;
       }
 
       fillExpression.push(localityDescription, color);
       strokeExpression.push(localityDescription, '#000000');
     });
 
-    // last value is the default, used where there is no data
     fillExpression.push('rgba(0,0,0,0)');
     strokeExpression.push('rgba(0,0,0,0)');
 
-    // add layer from the vector tile source with data-driven style
     map.addLayer({
       id: VECTOR_LAYER,
       type: 'fill',
@@ -196,7 +173,6 @@ const HistoricalMap = (props) => {
 
     setTimeout(() => {
       setMap(undefined);
-      // Wait for the map container to be available
       const checkContainer = () => {
         if (document.getElementById('map')) {
           generateMap(true, map, thresholds, colors, () => {}, dataMode, clickCallback, setMapClickCallback, hoverCallback, setMapHoverCallback, setMap);
@@ -206,7 +182,6 @@ const HistoricalMap = (props) => {
       };
       checkContainer();
 
-      // Calls function to download map when download control is clicked
       document.addEventListener('click', (event) => {
         if (!event.target.matches('.download-button')) return;
         downloadMap(
@@ -220,7 +195,6 @@ const HistoricalMap = (props) => {
         );
       }, false);
 
-      // Calls function to download map when download control is clicked
       document.addEventListener('click', (event) => {
         if (!event.target.matches('.download-button p')) return;
         downloadMap(
@@ -242,7 +216,7 @@ const HistoricalMap = (props) => {
     if (predictionYear.toString().length === 4) colorFill(rawData);
 
     zoomToSelectedState(selectedState, map);
-  }, [rawData, selectedState, map]); // predictionYear can prob be added. colorFill needs useCallback
+  }, [rawData, selectedState, map]);
 
   useEffect(() => {
     if (!initialFill && map && rawData.length > 0) {
@@ -251,10 +225,8 @@ const HistoricalMap = (props) => {
     }
 
     if (map && rawData) {
-      // remove current callback
       if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
 
-      // generate new callback
       const callback = createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, availableStates);
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
@@ -267,14 +239,12 @@ const HistoricalMap = (props) => {
     dataMode,
     selectedState,
     availableStates,
-  ]); // same thing with colorFill, createMapHoverCallback complicated
+  ]);
 
   useEffect(() => {
     if (map && availableStates && availableSublocations) {
-      // remove current callback
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
-      // generate new callback
       const callback = createMapClickCallback(availableStates, availableSublocations, selectedState, rawData, dataMode, props.county, setCounty, props.rangerDistrict, setRangerDistrict);
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
@@ -290,14 +260,11 @@ const HistoricalMap = (props) => {
 
   useEffect(() => {
     if (map) {
-      // remove current callback
       if (mapStateClickCallback) map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
 
-      // generate new callback
       const callback = (e) => {
         const { abbrev } = e?.features[0]?.properties || {};
 
-        // state must exist, not be current selection and must be a valid state
         if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
           setState(abbrev);
         }
@@ -310,10 +277,8 @@ const HistoricalMap = (props) => {
 
   useEffect(() => {
     if (map) {
-      // remove current callback
       if (mapLayerMouseLeaveCallback) map.off('click', VECTOR_LAYER, mapLayerMouseLeaveCallback);
 
-      // generate new callback
       const callback = () => setTrappingHover(null);
 
       setMapLayerMouseLeaveCallback(() => callback);
@@ -327,13 +292,11 @@ const HistoricalMap = (props) => {
     }
   }, [rawData]);
 
-  // Helper function to get risk level label
   const getRiskLevel = (index) => {
     const riskLevels = ['No Data', '0-9', '10-19', '20-49', '50-99', '100-249', '250+'];
     return riskLevels[index] || 'Unknown';
   };
 
-  // Prepare legend data for the overlay
   const legendItems = thresholds.map((threshold, index) => ({
     color: colors[index],
     label: `${threshold} (${getRiskLevel(index)})`,
@@ -345,9 +308,8 @@ const HistoricalMap = (props) => {
         hover={trappingHover}
       />
       <MapControls
-        // Filter props
         availableStates={availableStates}
-        availableYears={[]} // Historical data doesn't have years filter
+        availableYears={[]}
         availableSublocations={availableSublocations}
         county={props.county}
         dataMode={dataMode}
@@ -355,14 +317,12 @@ const HistoricalMap = (props) => {
         rangerDistrict={props.rangerDistrict}
         selectedState={selectedState}
         setCounty={setCounty}
-        setPredictionYear={() => {}} // No year setting for historical
+        setPredictionYear={() => {}}
         setRangerDistrict={setRangerDistrict}
         setState={setState}
         clearAllSelections={props.clearAllSelections}
-        // Legend props
         legendItems={legendItems}
         legendTitle="Total Number of Spots"
-        // Download props
         downloadCallback={() => downloadMap(
           map,
           predictionYear,
@@ -373,7 +333,6 @@ const HistoricalMap = (props) => {
           { titleDetails: { selectedState, period: predictionYear }, thresholds, colors },
         )}
         isDownloadingMap={isDownloadingMap}
-        // Hide filters
         hideFilters
       />
     </div>

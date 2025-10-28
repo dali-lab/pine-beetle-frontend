@@ -23,7 +23,6 @@ import {
   ResultsComparison,
   SingleBlogPost,
   TimeSeries,
-  TrappingData,
 } from '../screens';
 
 import {
@@ -149,7 +148,6 @@ const App = (props) => {
           <Route path={ROUTES.METHODOLOGY} component={Methodology} />
           <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModelScreen} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
-          <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
           {/* Redirect old prediction route to home page (new prediction page) */}
           <Route path={ROUTES.PREDICTIONS}>
             <Redirect to={ROUTES.HOME} />

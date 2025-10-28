@@ -83,7 +83,6 @@ const ROUTES = {
   RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
   PREDICTIONS: '/predict-outbreak',
-  TRAPPING_DATA: '/historical-data',
   RESULTS_COMPARISON: '/results-comparison',
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { getYearRange } from '../../../../../../constants';
+import { getYearRange } from '../../../../../constants';
 
 const AvgProbChart = (props) => {
   const {
@@ -56,7 +56,6 @@ const AvgProbChart = (props) => {
       }],
     },
     tooltips: {
-      // TODO: make tooltip hover over points on graph
       enabled: true,
       mode: 'index',
       intersect: false,
@@ -71,7 +70,6 @@ const AvgProbChart = (props) => {
       bodyFontColor: '#ffffff',
       bodyAlign: 'left',
 
-      // set custom label (rounds spb and clerid per 2 weeks)
       callbacks: {
         label: (tooltipItem, d) => {
           const { label } = d.datasets[tooltipItem.datasetIndex];
@@ -107,21 +105,17 @@ const AvgProbChart = (props) => {
 
     updatedAvgProbChartData.labels = getYearRange(startYear, endYear);
 
-    // get avg prob > 50 map
     const avgProbMap = yearData.reduce((acc, { year, avgProbGreater50 }) => ({
       ...acc,
       [year]: avgProbGreater50,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    // update chartData
     updatedAvgProbChartData.datasets[0].data = Object.values(avgProbMap);
 
-    // maximum value found in the array
     const max = Math.max(...[
       ...updatedAvgProbChartData.datasets[0].data,
     ]);
 
-    // set new y-axis height
     updatedChartOptions.scales.yAxes[0].ticks.max = max;
 
     setAvgProbChartData(updatedAvgProbChartData);

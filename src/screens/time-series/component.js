@@ -4,7 +4,7 @@ import { CHART_MODES, DATA_MODES } from '../../constants';
 
 import './style.scss';
 
-import { LineChart, OverviewText, TrappingDataMap } from '../trapping-data/components';
+import { LineChart, OverviewText, TrappingDataMap } from '../../components/historical-data';
 
 import { FilterBar, Loader } from '../../components';
 

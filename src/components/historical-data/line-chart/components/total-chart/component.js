@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { useLocation } from 'react-router-dom';
-import { ROUTES, getYearRange } from '../../../../../../constants';
+import { getYearRange } from '../../../../../constants';
 
-const SPBChart = (props) => {
+const TotalChart = (props) => {
   const {
-    yearData = [], startYear, endYear,
+    yearData = [],
+    startYear,
+    endYear,
   } = props;
 
-  const location = useLocation();
-  const isHomepage = location.pathname === ROUTES.HOME;
-
-  const [spbChartData, setSpbChartData] = useState({
+  const [totalChartData, setTotalChartData] = useState({
     labels: [],
     datasets: [
       {
@@ -21,7 +19,7 @@ const SPBChart = (props) => {
     ],
   });
 
-  const [spbChartOptions, setSpbChartOptions] = useState({
+  const [totalChartOptions, setTotalChartOptions] = useState({
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
@@ -30,8 +28,8 @@ const SPBChart = (props) => {
           labelString: 'Year',
           fontColor: '#7c7c96',
           fontFamily: 'Inter',
-          fontSize: isHomepage ? '14' : '22',
-          padding: isHomepage ? '1' : '8',
+          fontSize: '22',
+          padding: '8',
         },
         ticks: {
           fontFamily: 'Roboto',
@@ -42,11 +40,11 @@ const SPBChart = (props) => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Average count',
+          labelString: 'Count',
           fontColor: '#7c7c96',
           fontFamily: 'Inter',
-          fontSize: isHomepage ? '14' : '22',
-          padding: isHomepage ? '2' : '8',
+          fontSize: '22',
+          padding: '8',
         },
         ticks: {
           max: 1000,
@@ -58,7 +56,6 @@ const SPBChart = (props) => {
       }],
     },
     tooltips: {
-      // TODO: make tooltip hover over points on graph
       enabled: true,
       mode: 'index',
       intersect: false,
@@ -73,7 +70,6 @@ const SPBChart = (props) => {
       bodyFontColor: '#ffffff',
       bodyAlign: 'left',
 
-      // set custom label (rounds spb and clerid per 2 weeks)
       callbacks: {
         label: (tooltipItem, d) => {
           const { label } = d.datasets[tooltipItem.datasetIndex];
@@ -89,51 +85,45 @@ const SPBChart = (props) => {
   });
 
   useEffect(() => {
-    const updatedSPBChartData = {
+    const updatedTotalChartData = {
       labels: [],
       datasets: [
         {
           data: [],
-          label: 'SPB Per 2 Weeks',
-          borderColor: '#ff525c',
-          backgroundColor: '#ff525c',
+          label: 'Total Spots',
+          borderColor: '#5383ff',
+          backgroundColor: '#5383ff',
           fill: false,
           lineTension: 0,
-          borderDash: [5, 1],
+          borderDash: [10, 5],
         },
       ],
     };
 
     const updatedChartOptions = {
-      ...spbChartOptions,
+      ...totalChartOptions,
     };
 
-    updatedSPBChartData.labels = getYearRange(startYear, endYear);
+    updatedTotalChartData.labels = getYearRange(startYear, endYear);
 
-    // get sum of spb by year
-    const spbMap = yearData.reduce((acc, {
-      year, avgSpbPerTrapPer2Weeks,
-    }) => ({
+    const spotMap = yearData.reduce((acc, { year, sumSpotst0 }) => ({
       ...acc,
-      [year]: avgSpbPerTrapPer2Weeks,
+      [year]: sumSpotst0,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    // update chartData
-    updatedSPBChartData.datasets[0].data = Object.values(spbMap);
+    updatedTotalChartData.datasets[0].data = Object.values(spotMap);
 
-    // maximum value found in the array
     const max = Math.max(...[
-      ...updatedSPBChartData.datasets[0].data,
+      ...updatedTotalChartData.datasets[0].data,
     ]);
 
-    // set new y-axis height
     updatedChartOptions.scales.yAxes[0].ticks.max = max;
 
-    setSpbChartData(updatedSPBChartData);
-    setSpbChartOptions(updatedChartOptions);
+    setTotalChartData(updatedTotalChartData);
+    setTotalChartOptions(updatedChartOptions);
   }, [yearData]);
 
-  return <Line data={spbChartData} height={400} options={spbChartOptions} />;
+  return <Line data={totalChartData} height={400} options={totalChartOptions} />;
 };
 
-export default SPBChart;
+export default TotalChart;

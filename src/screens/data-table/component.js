@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Loader } from '../../components';
 import { stateAbbrevToStateName } from '../../constants';
-import { colors } from '../trapping-data/components/trapping-data-map/constants';
+import { colors } from '../../components/historical-data/trapping-data-map/constants';
 
 import './style.scss';
 

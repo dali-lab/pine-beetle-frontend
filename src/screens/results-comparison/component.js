@@ -1,7 +1,7 @@
 import React from 'react';
 import { FilterBar, Loader } from '../../components';
 import {
-    ComparisonMap, OverviewText, ScatterChart, ScatterChartSelectionBar,
+  ComparisonMap, OverviewText, ScatterChart, ScatterChartSelectionBar,
 } from './components';
 
 import './style.scss';

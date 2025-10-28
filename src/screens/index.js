@@ -13,7 +13,6 @@ import Resources from './resources';
 import ResultsComparison from './results-comparison';
 import SingleBlogPost from './single-blog-post';
 import TimeSeries from './time-series';
-import TrappingData from './trapping-data';
 
 export {
   About,
@@ -23,10 +22,12 @@ export {
   Data,
   DataTable,
   DownloadData,
-  Explainers, Home,
+  Explainers,
+  Home,
   Methodology,
   PlayWithModelScreen,
   Resources,
   ResultsComparison,
-  SingleBlogPost, TimeSeries, TrappingData,
+  SingleBlogPost,
+  TimeSeries,
 };

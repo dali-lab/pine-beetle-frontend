@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { getYearRange } from '../../../../../../constants';
+import { useLocation } from 'react-router-dom';
+import { ROUTES, getYearRange } from '../../../../../constants';
 
-const TotalChart = (props) => {
+const SPBChart = (props) => {
   const {
-    yearData = [],
-    startYear,
-    endYear,
+    yearData = [], startYear, endYear,
   } = props;
 
-  const [totalChartData, setTotalChartData] = useState({
+  const location = useLocation();
+  const isHomepage = location.pathname === ROUTES.HOME;
+
+  const [spbChartData, setSpbChartData] = useState({
     labels: [],
     datasets: [
       {
@@ -19,7 +21,7 @@ const TotalChart = (props) => {
     ],
   });
 
-  const [totalChartOptions, setTotalChartOptions] = useState({
+  const [spbChartOptions, setSpbChartOptions] = useState({
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
@@ -28,8 +30,8 @@ const TotalChart = (props) => {
           labelString: 'Year',
           fontColor: '#7c7c96',
           fontFamily: 'Inter',
-          fontSize: '22',
-          padding: '8',
+          fontSize: isHomepage ? '14' : '22',
+          padding: isHomepage ? '1' : '8',
         },
         ticks: {
           fontFamily: 'Roboto',
@@ -40,11 +42,11 @@ const TotalChart = (props) => {
       yAxes: [{
         scaleLabel: {
           display: true,
-          labelString: 'Count',
+          labelString: 'Average count',
           fontColor: '#7c7c96',
           fontFamily: 'Inter',
-          fontSize: '22',
-          padding: '8',
+          fontSize: isHomepage ? '14' : '22',
+          padding: isHomepage ? '2' : '8',
         },
         ticks: {
           max: 1000,
@@ -70,7 +72,6 @@ const TotalChart = (props) => {
       bodyFontColor: '#ffffff',
       bodyAlign: 'left',
 
-      // set custom label (rounds spb and clerid per 2 weeks)
       callbacks: {
         label: (tooltipItem, d) => {
           const { label } = d.datasets[tooltipItem.datasetIndex];
@@ -86,49 +87,47 @@ const TotalChart = (props) => {
   });
 
   useEffect(() => {
-    const updatedTotalChartData = {
+    const updatedSPBChartData = {
       labels: [],
       datasets: [
         {
           data: [],
-          label: 'Total Spots',
-          borderColor: '#5383ff',
-          backgroundColor: '#5383ff',
+          label: 'SPB Per 2 Weeks',
+          borderColor: '#ff525c',
+          backgroundColor: '#ff525c',
           fill: false,
           lineTension: 0,
-          borderDash: [10, 5],
+          borderDash: [5, 1],
         },
       ],
     };
 
     const updatedChartOptions = {
-      ...totalChartOptions,
+      ...spbChartOptions,
     };
 
-    updatedTotalChartData.labels = getYearRange(startYear, endYear);
+    updatedSPBChartData.labels = getYearRange(startYear, endYear);
 
-    // get sum of spots by year
-    const spotMap = yearData.reduce((acc, { year, sumSpotst0 }) => ({
+    const spbMap = yearData.reduce((acc, {
+      year, avgSpbPerTrapPer2Weeks,
+    }) => ({
       ...acc,
-      [year]: sumSpotst0,
+      [year]: avgSpbPerTrapPer2Weeks,
     }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
 
-    // update chartData
-    updatedTotalChartData.datasets[0].data = Object.values(spotMap);
+    updatedSPBChartData.datasets[0].data = Object.values(spbMap);
 
-    // maximum value found in the array
     const max = Math.max(...[
-      ...updatedTotalChartData.datasets[0].data,
+      ...updatedSPBChartData.datasets[0].data,
     ]);
 
-    // set new y-axis height
     updatedChartOptions.scales.yAxes[0].ticks.max = max;
 
-    setTotalChartData(updatedTotalChartData);
-    setTotalChartOptions(updatedChartOptions);
+    setSpbChartData(updatedSPBChartData);
+    setSpbChartOptions(updatedChartOptions);
   }, [yearData]);
 
-  return <Line data={totalChartData} height={400} options={totalChartOptions} />;
+  return <Line data={spbChartData} height={400} options={spbChartOptions} />;
 };
 
-export default TotalChart;
+export default SPBChart;
