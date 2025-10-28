@@ -64,7 +64,6 @@
     "react-circular-progressbar": "^2.0.3",
     "react-dom": "^16.8.6",
     "react-ga": "^3.3.0",
-    "react-lottie": "^1.2.3",
     "react-modal": "^3.11.2",
     "react-read-more-read-less": "^1.0.7",
     "react-redux": "^7.0.2",
