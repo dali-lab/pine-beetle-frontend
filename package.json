@@ -10,7 +10,7 @@
     "start": "MAIN_BACKEND_ENV=DEV AUTOMATION_ENV=DEV RESOURCE_ENV=DEV NODE_ENV=development webpack serve",
     "lint": "eslint src --cache",
     "ci:lint": "eslint src --rule 'react-hooks/exhaustive-deps: 0'",
-    "build": "npm clean; NODE_ENV=production webpack --color --progress; cp src/_redirects dist/_redirects",
+    "build": "rm -rf dist && NODE_ENV=production webpack --color --progress && cp src/_redirects dist/_redirects",
     "clean": "rimraf dist"
   },
   "devDependencies": {
