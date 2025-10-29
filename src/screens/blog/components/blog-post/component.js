@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import { ROUTES } from '../../../../constants';
 import { getDateToDisplay, truncateText } from '../../../../utils';
+import { getBlogPostLikes, getBlogPostComments } from '../../../../services/blog';
 
 import './style.scss';
 
@@ -22,16 +23,33 @@ const BlogPost = ({ post }) => {
   const isSinglePostPage = location.pathname.includes('/blog/') && location.pathname !== '/blog';
 
   useEffect(() => {
-    // Load likes and comments from localStorage (in a real app, this would be from API)
-    const savedLikes = localStorage.getItem(`blog-likes-${_id}`);
-    const savedComments = localStorage.getItem(`blog-comments-${_id}`);
+    const fetchStats = async () => {
+      if (!_id) return;
 
-    if (savedLikes) {
-      setLikes(parseInt(savedLikes, 10));
-    }
-    if (savedComments) {
-      setComments(JSON.parse(savedComments).length);
-    }
+      try {
+        // Fetch likes and comments from API
+        const [likesData, commentsData] = await Promise.all([
+          getBlogPostLikes(_id),
+          getBlogPostComments(_id),
+        ]);
+        setLikes(likesData.count);
+        setComments(commentsData.length);
+      } catch (error) {
+        console.error('Failed to fetch blog post stats:', error);
+        // Fallback to localStorage if API fails
+        const savedLikes = localStorage.getItem(`blog-likes-${_id}`);
+        const savedComments = localStorage.getItem(`blog-comments-${_id}`);
+
+        if (savedLikes) {
+          setLikes(parseInt(savedLikes, 10));
+        }
+        if (savedComments) {
+          setComments(JSON.parse(savedComments).length);
+        }
+      }
+    };
+
+    fetchStats();
   }, [_id]);
 
   const handleClick = () => {

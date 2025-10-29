@@ -3,6 +3,8 @@ import { ActionTypes } from '../actions';
 
 const initialState = {
   predictionYear: new Date().getFullYear(),
+  startYear: '',
+  endYear: '',
   state: '',
   county: [],
   rangerDistrict: [],
@@ -58,23 +60,48 @@ const SelectionsReducer = (state = initialState, action) => {
         rangerDistrict: [],
       };
 
-    case ActionTypes.CLEAR_SELECTIONS:
+    case ActionTypes.CLEAR_SELECTIONS: {
+      // Reset start and end year to defaults (oldest and latest)
+      const defaultStartYear = state.availableHistoricalYears.length > 0
+        ? state.availableHistoricalYears[0]
+        : '';
+      const defaultEndYear = state.availableHistoricalYears.length > 0
+        ? state.availableHistoricalYears[state.availableHistoricalYears.length - 1]
+        : '';
+
       return {
         ...initialState,
         availableYears: state.availableYears,
         availableStates: state.availableStates,
+        availableHistoricalYears: state.availableHistoricalYears,
+        availableHistoricalStates: state.availableHistoricalStates,
+        availableHistoricalSublocations: state.availableHistoricalSublocations,
+        availablePredictionYears: state.availablePredictionYears,
+        availablePredictionStates: state.availablePredictionStates,
+        availablePredictionSublocations: state.availablePredictionSublocations,
         dataMode: state.dataMode,
         chartMode: state.chartMode,
+        startYear: defaultStartYear,
+        endYear: defaultEndYear,
       };
+    }
 
     case ActionTypes.SET_CHART_MODE:
       return { ...state, chartMode: action.payload };
 
-    case ActionTypes.SET_AVAILABLE_YEARS_HISTORICAL:
+    case ActionTypes.SET_AVAILABLE_YEARS_HISTORICAL: {
+      const years = action.payload;
+      // Set default start year to oldest (first) and end year to latest (last)
+      const defaultStartYear = years.length > 0 ? years[0] : '';
+      const defaultEndYear = years.length > 0 ? years[years.length - 1] : '';
+
       return {
         ...state,
-        availableHistoricalYears: action.payload,
+        availableHistoricalYears: years,
+        startYear: state.startYear || defaultStartYear,
+        endYear: state.endYear || defaultEndYear,
       };
+    }
 
     case ActionTypes.SET_AVAILABLE_STATES_HISTORICAL:
       return { ...state, availableHistoricalStates: action.payload };
@@ -105,6 +132,18 @@ const SelectionsReducer = (state = initialState, action) => {
 
     case ActionTypes.SET_PREDICTION_MODAL:
       return { ...state, predictionModal: action.payload };
+
+    case ActionTypes.SET_START_YEAR: {
+      const castedYear = parseInt(action.payload.year, 10);
+      const startYear = Number.isNaN(castedYear) ? '' : castedYear;
+      return { ...state, startYear };
+    }
+
+    case ActionTypes.SET_END_YEAR: {
+      const castedYear = parseInt(action.payload.year, 10);
+      const endYear = Number.isNaN(castedYear) ? '' : castedYear;
+      return { ...state, endYear };
+    }
 
     default:
       return state;

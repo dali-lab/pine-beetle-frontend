@@ -59,15 +59,19 @@
       overflow: visible;
     }
 
-    .filter-section {
+    .filter-overlay-section {
       margin-bottom: 0.75rem;
+      margin-top: 0.75rem;
 
       &:last-child {
         margin-bottom: 0;
       }
+      &:first-child {
+        margin-top: 1.25rem;
+      }
     }
 
-    .filter-label {
+    .filter-overlay-label {
       font-size: 0.75rem;
       font-weight: 600;
       color: $greyBlue700;
@@ -76,7 +80,7 @@
       margin-bottom: 0.25rem;
     }
 
-    .filter-input {
+    .filter-overlay-input {
       margin-bottom: 0;
 
       .choice-input-wrapper,
@@ -157,12 +161,12 @@
       }
     }
 
-    .filter-clear-section {
+    .filter-overlay-clear-section {
       margin-top: 0.5rem;
       margin-bottom: 0;
       padding-left: 0;
 
-      .text-button {
+      .filter-overlay-text-button {
         background: none;
         color: $brandPrimary;
         border: none;
@@ -217,7 +221,7 @@
   overflow: visible;
 }
 
-.filter-section {
+.filter-overlay-section {
   display: flex;
   flex-direction: column;
   margin-bottom: 12px;
@@ -231,7 +235,7 @@
   }
 }
 
-.filter-label {
+.filter-overlay-label {
   font-size: 12px;
   font-weight: 600;
   color: $greyBlue700;
@@ -239,18 +243,20 @@
   letter-spacing: 0.5px;
 }
 
-.filter-input {
+.filter-overlay-input {
   margin-bottom: 0;
 }
 
-.filter-clear-section {
-  margin-top: -8px;
+.filter-overlay-clear-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.9rem;
   margin-bottom: 0;
   padding-left: 4px;
 }
 
 
-.action-button {
+.filter-overlay-action-button {
   background: $brandPrimary;
   color: white;
   border: none;
@@ -275,7 +281,7 @@
   }
 }
 
-.text-button {
+.filter-overlay-text-button {
   background: none;
   color: $brandPrimary;
   border: none;
@@ -301,7 +307,7 @@
   }
 }
 
-.clear-button {
+.filter-overlay-clear-button {
   width: 100%;
 }
 
@@ -473,18 +479,18 @@
       color: $greyBlue900;
     }
 
-    .filter-section {
+    .filter-overlay-section {
       margin-bottom: 1.5rem;
     }
 
-    .filter-label {
+    .filter-overlay-label {
       font-size: 0.875rem;
       font-weight: 600;
       color: $greyBlue800;
       margin-bottom: 0.5rem;
     }
 
-    .action-button {
+    .filter-overlay-action-button {
       width: 100%;
       padding: 1rem 1.5rem;
       font-size: 1rem;
@@ -492,7 +498,7 @@
       margin-top: 1rem;
     }
 
-    .text-button {
+    .filter-overlay-text-button {
       font-size: 1rem;
       padding: 1rem 0;
     }

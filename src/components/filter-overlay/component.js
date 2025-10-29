@@ -67,9 +67,9 @@ const FilterOverlay = (props) => {
       )}
       <div className="filter-content">
         {/* Year Selection */}
-        <div className="filter-section">
-          <div className="filter-label">Year</div>
-          <div className="filter-input">
+        <div className="filter-overlay-section">
+          <div className="filter-overlay-label">Year</div>
+          <div className="filter-overlay-input">
             <ChoiceInput
               id="year-input"
               setValue={setPredictionYear}
@@ -80,9 +80,9 @@ const FilterOverlay = (props) => {
         </div>
 
         {/* State / Location Selection */}
-        <div className="filter-section">
-          <div className="filter-label">State / Location</div>
-          <div className="filter-input">
+        <div className="filter-overlay-section">
+          <div className="filter-overlay-label">State / Location</div>
+          <div className="filter-overlay-input">
             <MultiSelectInput
               id="location-input"
               valueParent={selectedStateName}
@@ -96,9 +96,9 @@ const FilterOverlay = (props) => {
         </div>
 
         {/* Clear Button */}
-        <div className="filter-section filter-clear-section">
+        <div className="filter-overlay-clear-section">
           <button
-            className="text-button"
+            className="filter-overlay-text-button"
             onClick={clearAllSelections}
             type="button"
             disabled={!hasActiveFilters}

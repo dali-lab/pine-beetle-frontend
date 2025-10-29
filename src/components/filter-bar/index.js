@@ -6,8 +6,10 @@ import {
   clearSelections,
   setCounty,
   setDataMode,
+  setEndYear,
   setPredictionYear,
   setRangerDistrict,
+  setStartYear,
   setState,
 } from '../../state/actions';
 
@@ -15,6 +17,8 @@ const mapStateToProps = (state, ownProps) => {
   const {
     selections: {
       predictionYear: year,
+      startYear,
+      endYear,
       state: selectedState,
       county,
       rangerDistrict,
@@ -40,6 +44,9 @@ const mapStateToProps = (state, ownProps) => {
     selectedState,
     dataMode,
     predictionYear: year,
+    startYear,
+    endYear,
+    useHistoricalData: useHistorical,
   };
 };
 
@@ -49,6 +56,12 @@ const mapDispatchToProps = (dispatch) => ({
   },
   setPredictionYear: (year) => {
     dispatch(setPredictionYear(year));
+  },
+  setStartYear: (year) => {
+    dispatch(setStartYear(year));
+  },
+  setEndYear: (year) => {
+    dispatch(setEndYear(year));
   },
   setCounty: (county) => {
     dispatch(setCounty(county));

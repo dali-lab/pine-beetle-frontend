@@ -98,3 +98,65 @@ export const deleteBlogPost = async (id) => {
     throw error;
   }
 };
+
+export const getBlogPostLikes = async (postId) => {
+  const url = `${global.API_URL}/${SUBROUTE}/${postId}/likes`;
+
+  try {
+    const { data: response } = await axios.get(url);
+    const { data } = response;
+
+    return {
+      count: data.count || 0,
+      userHasLiked: data.userHasLiked || false,
+    };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const toggleBlogPostLike = async (postId) => {
+  const url = `${global.API_URL}/${SUBROUTE}/${postId}/likes`;
+
+  try {
+    const { data: response } = await axios.post(url);
+    const { data } = response;
+
+    return {
+      count: data.count || 0,
+      userHasLiked: data.userHasLiked || false,
+    };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getBlogPostComments = async (postId) => {
+  const url = `${global.API_URL}/${SUBROUTE}/${postId}/comments`;
+
+  try {
+    const { data: response } = await axios.get(url);
+    const { data } = response;
+
+    return data.comments || [];
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const createBlogPostComment = async (postId, commentData) => {
+  const url = `${global.API_URL}/${SUBROUTE}/${postId}/comments`;
+
+  try {
+    const { data: response } = await axios.post(url, commentData);
+    const { data } = response;
+
+    return data.comment;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
