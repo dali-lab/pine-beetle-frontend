@@ -368,7 +368,7 @@
 
     .choice-input-option {
       padding: 6px 8px;
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       min-height: 28px;
     }
   }
@@ -386,11 +386,11 @@
       min-height: 28px;
 
       .location-list-item-select {
-        font-size: 0.75rem;
+        font-size: 0.875rem;
       }
       .children-list-item {
         padding: 4px 8px 4px 24px;
-        font-size: 0.7rem;
+        font-size: 0.875rem;
         min-height: 24px;
       }
     }
@@ -447,6 +447,7 @@
       max-width: none;
       padding: 0;
       margin: 0;
+      margin-top: 4rem;
     }
 
     .filter-header {
