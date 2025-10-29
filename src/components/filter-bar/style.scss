@@ -1,5 +1,6 @@
 @import '../../styles/breakpoints';
 @import '../../styles/colors';
+
 .filter-bar {
   width: 72vw;
   max-width: 72vw;
@@ -85,32 +86,33 @@
     width: 100%;
   }
 
-  .selection-button {
-    width: 100%;
+  .selection-button,
+  .multi-select-container .input-container {
     height: 2.75rem;
     border-radius: 0.375rem;
-    border: 1px solid $greyBlue300;
-    background-color: $white;
     font-size: 0.875rem;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
     color: $greyBlue900;
     font-weight: 400;
     box-sizing: border-box;
+  }
+
+  .selection-button {
+    width: 100%;
+    border: 1px solid $greyBlue300;
+    background-color: $white;
 
     &:focus {
       outline: none;
       border-color: $greyBlue500;
       background-color: $white;
     }
-
     &:hover:not(:focus) {
       border-color: $greyBlue400;
     }
-
     &:active {
       background-color: $white;
     }
-
     &:-webkit-autofill {
       -webkit-box-shadow: 0 0 0 1000px white inset;
     }
@@ -118,19 +120,11 @@
 
   .multi-select-container .input-container {
     width: 100%;
-    height: 2.75rem;
-    border-radius: 0.375rem;
     background-color: transparent;
-    font-size: 0.875rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    color: $greyBlue900;
-    font-weight: 400;
-    box-sizing: border-box;
 
     &:focus-within {
       outline: none;
     }
-
     &:hover:not(:focus-within) {
       border-color: $greyBlue400;
     }
@@ -177,7 +171,6 @@
     background-color: $brandPrimary;
     border-color: $brandPrimary;
   }
-
   &:disabled {
     background-color: $greyBlue300;
     border-color: $greyBlue300;
@@ -238,7 +231,6 @@
     &:hover {
       background-color: rgba(255, 255, 255, 0.2);
     }
-
     &:active {
       background-color: rgba(255, 255, 255, 0.3);
     }
@@ -251,11 +243,6 @@
 }
 
 @media (max-width: $tablet) {
-  .filter-bar {
-    padding: 0;
-
-  }
-
   .filter-bar-content {
     padding: 1.25rem;
   }
@@ -264,11 +251,9 @@
     margin-bottom: 0.875rem;
   }
 
-  .filter-toggle-button {
-    .filter-arrow {
-      width: 1.125rem;
-      height: 1.125rem;
-    }
+  .filter-toggle-button .filter-arrow {
+    width: 1.125rem;
+    height: 1.125rem;
   }
 
   .filter-bar-container {

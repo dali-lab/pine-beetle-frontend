@@ -19,178 +19,14 @@
   &::-webkit-scrollbar {
     width: 8px;
   }
-
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-
   &::-webkit-scrollbar-thumb {
     background: $greyBlue400;
     border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: $greyBlue500;
-  }
-
-  .filter-content {
-    overflow: visible;
-  }
-
-  &.embedded-control {
-    position: static;
-    background: transparent;
-    backdrop-filter: none;
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
-    padding: 0;
-    max-height: none;
-    overflow: visible;
-    top: auto;
-    left: auto;
-    z-index: auto;
-
-    .filter-content {
-      padding: 0 1rem 1rem 1rem;
-      margin: 0;
-      width: 100%;
-      box-sizing: border-box;
-      overflow: visible;
-    }
-
-    .filter-overlay-section {
-      margin-bottom: 0.75rem;
-      margin-top: 0.75rem;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-      &:first-child {
-        margin-top: 1.25rem;
-      }
-    }
-
-    .filter-overlay-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: $greyBlue700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.25rem;
-    }
-
-    .filter-overlay-input {
-      margin-bottom: 0;
-
-      .choice-input-wrapper,
-      .multi-select-container {
-        width: 100%;
-        max-width: 100%;
-        overflow: visible;
-        box-sizing: border-box;
-      }
-
-      .choice-input-wrapper .choice-input-button {
-        width: 100%;
-        height: 2.5rem;
-        min-height: 2.5rem;
-        border-radius: 4px;
-        border: 1px solid $greyBlue300;
-        background-color: $white;
-        font-size: 0.875rem;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        color: $greyBlue900;
-        font-weight: 400;
-        box-sizing: border-box;
-        padding: 0 12px;
-
-        &:focus {
-          outline: none;
-          border-color: $greyBlue500;
-          background-color: $white;
-        }
-
-        &:hover:not(:focus) {
-          border-color: $greyBlue400;
-        }
-
-        .choice-input-text {
-          font-size: 0.875rem;
-          font-weight: 400;
-        }
-
-        .choice-input-arrow {
-          width: 14px;
-          height: 14px;
-        }
-      }
-
-      .multi-select-container .location-wrapper .location-header {
-        width: 100%;
-        height: 2.5rem;
-        min-height: 2.5rem;
-        border-radius: 4px;
-        border: 1px solid $greyBlue300;
-        background-color: $white;
-        font-size: 0.875rem;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        color: $greyBlue900;
-        font-weight: 400;
-        box-sizing: border-box;
-        padding: 0 12px;
-
-        &:focus {
-          outline: none;
-          border-color: $greyBlue500;
-        }
-
-        &:hover:not(:focus) {
-          border-color: $greyBlue400;
-        }
-
-        .location-header-title {
-          font-size: 0.875rem;
-          font-weight: 400;
-        }
-
-        .location-header-arrow {
-          width: 14px;
-          height: 14px;
-        }
-      }
-    }
-
-    .filter-overlay-clear-section {
-      margin-top: 0.5rem;
-      margin-bottom: 0;
-      padding-left: 0;
-
-      .filter-overlay-text-button {
-        background: none;
-        color: $brandPrimary;
-        border: none;
-        padding: 0.5rem 0;
-        font-size: 0.75rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-decoration: underline;
-        text-underline-offset: 2px;
-        text-decoration-thickness: 1px;
-        text-align: left;
-
-        &:hover:not(:disabled) {
-          color: $greyBlue800;
-          text-decoration-thickness: 2px;
-        }
-
-        &:disabled {
-          color: $greyBlue300;
-          cursor: not-allowed;
-          text-decoration: none;
-        }
-      }
+    &:hover {
+      background: $greyBlue500;
     }
   }
 }
@@ -229,7 +65,6 @@
   &:last-child {
     margin-bottom: 0;
   }
-
   &:not(:last-child) {
     margin-bottom: 4px;
   }
@@ -255,7 +90,6 @@
   padding-left: 4px;
 }
 
-
 .filter-overlay-action-button {
   background: $brandPrimary;
   color: white;
@@ -273,7 +107,6 @@
     background: $brandSecondary;
     transform: translateY(-1px);
   }
-
   &:disabled {
     background: $greyBlue300;
     cursor: not-allowed;
@@ -299,7 +132,6 @@
     color: $greyBlue800;
     text-decoration-thickness: 2px;
   }
-
   &:disabled {
     color: $greyBlue300;
     cursor: not-allowed;
@@ -350,14 +182,236 @@
   margin-left: 4px;
 }
 
-@media (max-height: 800px) {
-  .filter-overlay {
-    top: 20px;
-    max-height: 50vh;
+.filter-overlay {
+  .choice-input-wrapper,
+  .multi-select-container {
+    position: relative;
+    overflow: visible;
   }
 
+  .choice-input-wrapper .choice-input-dropdown {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 24px);
+    right: auto;
+    width: 200px;
+    max-height: 300px;
+    z-index: 8;
+    transform: none;
+    margin: 0;
+    border-radius: 0 8px 8px 8px;
+  }
+
+  .multi-select-container .location-list {
+    position: absolute;
+    top: 0;
+    left: calc(100% + 24px);
+    right: auto;
+    width: 280px;
+    max-height: 300px;
+    z-index: 8;
+    transform: none;
+    margin: 0;
+    border-radius: 0 8px 8px 8px;
+  }
+
+  .choice-input-arrow,
+  .location-header-arrow {
+    transform: rotate(-90deg);
+    &.open {
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+.filter-overlay.embedded-control {
+  position: static;
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  max-height: none;
+  overflow: visible;
+  top: auto;
+  left: auto;
+  z-index: auto;
+
+  .filter-content {
+    padding: 0 1rem 1rem 1rem;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
+  }
+
+  .filter-overlay-section {
+    margin-bottom: 0.75rem;
+    margin-top: 0.75rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
+    &:first-child {
+      margin-top: 1.25rem;
+    }
+  }
+
+  .filter-overlay-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $greyBlue700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+  }
+
+  .filter-overlay-input {
+    margin-bottom: 0;
+
+    .choice-input-wrapper,
+    .multi-select-container {
+      width: 100%;
+      max-width: 100%;
+      overflow: visible;
+      box-sizing: border-box;
+    }
+
+    .choice-input-wrapper .choice-input-button,
+    .multi-select-container .location-wrapper .location-header {
+      width: 100%;
+      height: 2.5rem;
+      min-height: 2.5rem;
+      border-radius: 4px;
+      border: 1px solid $greyBlue300;
+      background-color: $white;
+      font-size: 0.875rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      color: $greyBlue900;
+      font-weight: 400;
+      box-sizing: border-box;
+      padding: 0 12px;
+
+      &:focus {
+        outline: none;
+        border-color: $greyBlue500;
+      }
+      &:hover:not(:focus) {
+        border-color: $greyBlue400;
+      }
+    }
+
+    .choice-input-wrapper .choice-input-button {
+      &:focus {
+        background-color: $white;
+      }
+
+      .choice-input-text {
+        font-size: 0.875rem;
+        font-weight: 400;
+      }
+      .choice-input-arrow {
+        width: 14px;
+        height: 14px;
+      }
+    }
+
+    .multi-select-container .location-wrapper .location-header {
+      .location-header-title {
+        font-size: 0.875rem;
+        font-weight: 400;
+      }
+      .location-header-arrow {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  .filter-overlay-clear-section {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    padding-left: 0;
+
+    .filter-overlay-text-button {
+      background: none;
+      color: $brandPrimary;
+      border: none;
+      padding: 0.5rem 0;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-thickness: 1px;
+      text-align: left;
+
+      &:hover:not(:disabled) {
+        color: $greyBlue800;
+        text-decoration-thickness: 2px;
+      }
+      &:disabled {
+        color: $greyBlue300;
+        cursor: not-allowed;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .choice-input-wrapper .choice-input-dropdown {
+    left: calc(100% + 8px);
+    border: 1px solid $greyBlue300;
+    background-color: $white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 4px 0;
+
+    .choice-input-option {
+      padding: 6px 8px;
+      font-size: 0.75rem;
+      min-height: 28px;
+    }
+  }
+
+  .multi-select-container .location-list {
+    left: calc(100% + 8px);
+    border: 1px solid $greyBlue300;
+    background-color: $white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    padding: 4px 0;
+
+    .location-list-item {
+      padding: 6px 8px;
+      font-size: 0.75rem;
+      min-height: 28px;
+
+      .location-list-item-select {
+        font-size: 0.75rem;
+      }
+      .children-list-item {
+        padding: 4px 8px 4px 24px;
+        font-size: 0.7rem;
+        min-height: 24px;
+      }
+    }
+  }
+
+  .choice-input-arrow,
+  .location-header-arrow {
+    transform: rotate(-90deg);
+    &.open {
+      transform: rotate(-90deg);
+    }
+  }
+}
+
+@media (max-height: 800px) {
+  .filter-overlay,
   .filter-toggle-button {
     top: 20px;
+  }
+  .filter-overlay {
+    max-height: 50vh;
   }
 }
 
@@ -393,79 +447,6 @@
       max-width: none;
       padding: 0;
       margin: 0;
-    }
-
-    .filter-mobile-fullscreen-overlay .choice-input-wrapper {
-      position: relative;
-      z-index: 1;
-
-      .choice-input-dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: auto;
-        width: 100%;
-        max-height: 200px;
-        z-index: 9;
-        transform: none;
-        margin-top: 4px;
-        margin-left: 0;
-        border-radius: 8px;
-        border: 1px solid $greyBlue300;
-        background-color: $white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        padding: 4px 0;
-        pointer-events: auto;
-
-        .choice-input-option {
-          padding: 12px 16px;
-          font-size: 1rem;
-          min-height: 48px;
-          pointer-events: auto;
-        }
-      }
-    }
-
-    .filter-mobile-fullscreen-overlay .multi-select-container {
-      position: relative;
-      z-index: 1;
-
-      .location-list {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: auto;
-        width: 100%;
-        max-height: 200px;
-        z-index: 9;
-        transform: none;
-        margin-top: 4px;
-        margin-left: 0;
-        border-radius: 8px;
-        border: 1px solid $greyBlue300;
-        background-color: $white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        padding: 4px 0;
-        pointer-events: auto;
-
-        .location-list-item {
-          padding: 12px 16px;
-          font-size: 1rem;
-          min-height: 48px;
-          pointer-events: auto;
-
-          .location-list-item-select {
-            font-size: 1rem;
-          }
-
-          .children-list-item {
-            padding: 8px 16px 8px 32px;
-            font-size: 0.9rem;
-            min-height: 44px;
-            pointer-events: auto;
-          }
-        }
-      }
     }
 
     .filter-header {
@@ -504,7 +485,7 @@
     }
 
     .filter-close-button {
-      display: block;
+      display: flex;
       position: absolute;
       top: 1.5rem;
       right: 1.5rem;
@@ -514,7 +495,6 @@
       border: none;
       border-radius: 50%;
       cursor: pointer;
-      display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.25rem;
@@ -526,266 +506,83 @@
         color: $greyBlue900;
         transform: scale(1.05);
       }
-
       &:active {
         transform: scale(0.95);
       }
     }
-  }
-}
 
-@keyframes slideUpMobile {
-  from {
-    opacity: 0;
-    transform: translateY(2rem) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.filter-overlay {
-  .choice-input-wrapper,
-  .multi-select-container {
-    position: relative;
-    overflow: visible;
-  }
-
-  .choice-input-wrapper {
-    .choice-input-dropdown {
-      position: absolute;
-      top: 0;
-      left: calc(100% + 24px);
-      right: auto;
-      width: 200px;
-      max-height: 300px;
-      z-index: 8;
-      transform: none;
-      margin-top: 0;
-      margin-left: 0;
-      border-radius: 0 8px 8px 8px;
-    }
-  }
-
-  .multi-select-container {
-    .location-list {
-      position: absolute;
-      top: 0;
-      left: calc(100% + 24px);
-      right: auto;
-      width: 280px;
-      max-height: 300px;
-      z-index: 8;
-      transform: none;
-      margin-top: 0;
-      margin-left: 0;
-      border-radius: 0 8px 8px 8px;
-    }
-  }
-
-  .filter-mobile-fullscreen-overlay .choice-input-arrow {
-    transform: rotate(0deg);
-
-    &.open {
-      transform: rotate(180deg);
-    }
-  }
-
-  .filter-mobile-fullscreen-overlay .location-header-arrow {
-    transform: rotate(0deg);
-
-    &.open {
-      transform: rotate(180deg);
-    }
-  }
-
-  .choice-input-arrow {
-    transform: rotate(-90deg);
-
-    &.open {
-      transform: rotate(-90deg);
-    }
-  }
-
-  .location-header-arrow {
-    transform: rotate(-90deg);
-
-    &.open {
-      transform: rotate(-90deg);
-    }
-  }
-
-  &.embedded-control {
     .choice-input-wrapper {
+      position: relative;
+      z-index: 1;
+
       .choice-input-dropdown {
         position: absolute;
-        top: 0;
-        left: calc(100% + 8px);
-        right: auto;
-        width: 200px;
-        max-height: 300px;
-        z-index: 8;
-        transform: none;
-        margin-top: 0;
-        margin-left: 0;
-        border-radius: 0 8px 8px 8px;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        max-height: 200px;
+        z-index: 9;
+        margin-top: 4px;
+        border-radius: 8px;
         border: 1px solid $greyBlue300;
         background-color: $white;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         padding: 4px 0;
+        pointer-events: auto;
 
         .choice-input-option {
-          padding: 6px 8px;
-          font-size: 0.75rem;
-          min-height: 28px;
+          padding: 12px 16px;
+          font-size: 1rem;
+          min-height: 48px;
+          pointer-events: auto;
         }
       }
     }
 
     .multi-select-container {
+      position: relative;
+      z-index: 1;
+
       .location-list {
         position: absolute;
-        top: 0;
-        left: calc(100% + 8px);
-        right: auto;
-        width: 280px;
-        max-height: 300px;
-        z-index: 8;
-        transform: none;
-        margin-top: 0;
-        margin-left: 0;
-        border-radius: 0 8px 8px 8px;
-        border: 1px solid $greyBlue300;
-        background-color: $white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        padding: 4px 0;
-
-        .location-list-item {
-          padding: 6px 8px;
-          font-size: 0.75rem;
-          min-height: 28px;
-
-          .location-list-item-select {
-            font-size: 0.75rem;
-          }
-
-          .children-list-item {
-            padding: 4px 8px 4px 24px;
-            font-size: 0.7rem;
-            min-height: 24px;
-          }
-        }
-      }
-    }
-
-    .choice-input-arrow {
-      transform: rotate(-90deg);
-
-      &.open {
-        transform: rotate(-90deg);
-      }
-    }
-
-    .location-header-arrow {
-      transform: rotate(-90deg);
-
-      &.open {
-        transform: rotate(-90deg);
-      }
-    }
-
-    @media (max-width: $tablet) {
-      .choice-input-wrapper .choice-input-button .choice-input-arrow {
-        transform: rotate(0deg);
-
-        &.open {
-          transform: rotate(180deg);
-        }
-      }
-
-      .multi-select-container .location-wrapper .location-header .location-header-arrow {
-        transform: rotate(0deg);
-
-        &.open {
-          transform: rotate(180deg);
-        }
-      }
-
-      .choice-input-wrapper .choice-input-dropdown {
-        position: absolute;
         top: 100%;
         left: 0;
-        right: auto;
         width: 100%;
         max-height: 200px;
         z-index: 9;
-        transform: none;
         margin-top: 4px;
-        margin-left: 0;
         border-radius: 8px;
         border: 1px solid $greyBlue300;
         background-color: $white;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         padding: 4px 0;
-
-        .choice-input-option {
-          padding: 12px 16px;
-          font-size: 0.875rem;
-          min-height: 48px;
-        }
-      }
-
-      .multi-select-container .location-list {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: auto;
-        width: 100%;
-        max-height: 200px;
-        z-index: 9;
-        transform: none;
-        margin-top: 4px;
-        margin-left: 0;
-        border-radius: 8px;
-        border: 1px solid $greyBlue300;
-        background-color: $white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        padding: 4px 0;
+        pointer-events: auto;
 
         .location-list-item {
           padding: 12px 16px;
-          font-size: 0.875rem;
+          font-size: 1rem;
           min-height: 48px;
+          pointer-events: auto;
 
           .location-list-item-select {
-            font-size: 0.875rem;
+            font-size: 1rem;
           }
-
           .children-list-item {
             padding: 8px 16px 8px 32px;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             min-height: 44px;
+            pointer-events: auto;
           }
         }
       }
     }
   }
-}
 
-@media (max-width: $tablet) {
-  .filter-overlay {
-    .choice-input-wrapper .choice-input-button .choice-input-arrow {
-      transform: rotate(0deg);
-
-      &.open {
-        transform: rotate(180deg);
-      }
-    }
-
+  .filter-overlay,
+  .filter-overlay.embedded-control {
+    .choice-input-wrapper .choice-input-button .choice-input-arrow,
     .multi-select-container .location-wrapper .location-header .location-header-arrow {
       transform: rotate(0deg);
-
       &.open {
         transform: rotate(180deg);
       }
@@ -795,13 +592,10 @@
       position: absolute;
       top: 100%;
       left: 0;
-      right: auto;
       width: 100%;
       max-height: 200px;
       z-index: 9;
-      transform: none;
       margin-top: 4px;
-      margin-left: 0;
       border-radius: 8px;
       border: 1px solid $greyBlue300;
       background-color: $white;
@@ -819,13 +613,10 @@
       position: absolute;
       top: 100%;
       left: 0;
-      right: auto;
       width: 100%;
       max-height: 200px;
       z-index: 9;
-      transform: none;
       margin-top: 4px;
-      margin-left: 0;
       border-radius: 8px;
       border: 1px solid $greyBlue300;
       background-color: $white;
@@ -840,7 +631,6 @@
         .location-list-item-select {
           font-size: 0.875rem;
         }
-
         .children-list-item {
           padding: 8px 16px 8px 32px;
           font-size: 0.8rem;
@@ -848,5 +638,26 @@
         }
       }
     }
+  }
+
+  .filter-overlay .filter-mobile-fullscreen-overlay {
+    .choice-input-arrow,
+    .location-header-arrow {
+      transform: rotate(0deg);
+      &.open {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
+@keyframes slideUpMobile {
+  from {
+    opacity: 0;
+    transform: translateY(2rem) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
