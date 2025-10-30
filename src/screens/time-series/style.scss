@@ -28,6 +28,15 @@
     flex-direction: row;
     justify-content: flex-end;
     margin-top: 0px;
+
+    @media (max-width: $tablet) {
+        justify-content: center;
+        margin-top: 16px;
+    }
+
+    @media (max-width: $mobile) {
+        margin-top: 12px;
+    }
 }
 
 #toggles-overlay-h{
@@ -36,6 +45,25 @@
     margin-top: 5px;
     left: 35vw;
     z-index: 1;
+
+    @media (max-width: $desktop) {
+        left: 25vw;
+    }
+
+    @media (max-width: $tablet) {
+        position: relative;
+        left: auto;
+        flex-direction: column;
+        margin-top: 16px;
+        width: 100%;
+        align-items: center;
+        gap: 8px;
+    }
+
+    @media (max-width: $mobile) {
+        margin-top: 12px;
+        gap: 6px;
+    }
 }
 
 .selection {
@@ -51,6 +79,25 @@
     margin-top: 2vh;
     margin-left: 1vw;
 
+    @media (max-width: $tablet) {
+        height: auto;
+        min-height: 40px;
+        margin-top: 0;
+        margin-left: 0;
+        border: 3px solid $white;
+        max-width: 320px;
+        width: auto;
+    }
+
+    @media (max-width: $mobile) {
+        min-height: 36px;
+        margin-top: 0;
+        margin-left: 0;
+        border: 2px solid $white;
+        max-width: 280px;
+        width: 280px;
+    }
+
     .selected-option {
         display: flex;
         flex-direction: row;
@@ -62,12 +109,39 @@
         padding-top: 1.4px;
         padding-bottom: 1.4px;
 
+        @media (max-width: $tablet) {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        @media (max-width: $mobile) {
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+
         .selected-option-text {
             color: $white;
+
+            @media (max-width: $tablet) {
+                font-size: 14px;
+            }
+
+            @media (max-width: $mobile) {
+                font-size: 13px;
+            }
         }
         img {
             height: 20px;
             width: 20px;
+
+            @media (max-width: $mobile) {
+                height: 18px;
+                width: 18px;
+            }
         }
     }
     .selected-option-2 {
@@ -81,13 +155,45 @@
         padding-top: 1.4px;
         padding-bottom: 1.4px;
 
+        @media (max-width: $tablet) {
+            padding-left: 12px;
+            padding-right: 12px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        @media (max-width: $mobile) {
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+
         .selected-option-text {
             color: $white;
+
+            @media (max-width: $tablet) {
+                font-size: 14px;
+            }
+
+            @media (max-width: $mobile) {
+                font-size: 13px;
+            }
         }
         img {
             height: 20px;
             width: 20px;
             margin-right: 10px;
+
+            @media (max-width: $tablet) {
+                margin-right: 8px;
+            }
+
+            @media (max-width: $mobile) {
+                height: 18px;
+                width: 18px;
+                margin-right: 6px;
+            }
         }
     }
     .unselected-option {
@@ -99,13 +205,45 @@
         border-radius: 100px;
         cursor: pointer;
 
+        @media (max-width: $tablet) {
+            padding-left: 12px;
+            padding-right: 12px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        @media (max-width: $mobile) {
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+
         .unselected-option-text {
             color: $greyBlue600;
+
+            @media (max-width: $tablet) {
+                font-size: 14px;
+            }
+
+            @media (max-width: $mobile) {
+                font-size: 13px;
+            }
         }
         img {
             height: 20px;
             width: 20px;
             margin-right: 10px;
+
+            @media (max-width: $tablet) {
+                margin-right: 8px;
+            }
+
+            @media (max-width: $mobile) {
+                height: 18px;
+                width: 18px;
+                margin-right: 6px;
+            }
         }
     }
 }
