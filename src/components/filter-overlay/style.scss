@@ -1,23 +1,24 @@
 @import '../../styles/breakpoints';
 @import '../../styles/colors';
 
+/* Filter Overlay Main Container */
 .filter-overlay {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 1.25rem;
+  left: 1.25rem;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba($cleanWhite, 0.95);
   backdrop-filter: blur(8px);
   border-radius: 12px;
-  box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 60px -10px rgba($black, 0.2);
   border: 1px solid $greyBlue200;
-  padding: 20px;
+  padding: 1.25rem;
   max-height: 60vh;
   overflow-y: auto;
   overflow-x: visible;
 
   &::-webkit-scrollbar {
-    width: 8px;
+    width: 0.5rem;
   }
   &::-webkit-scrollbar-track {
     background: transparent;
@@ -31,19 +32,20 @@
   }
 }
 
+/* Filter Header */
 .filter-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 
 .filter-title {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   color: $greyBlue800;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.03125rem;
   margin: 0;
 }
 
@@ -51,61 +53,65 @@
   display: none;
 }
 
+/* Filter Content */
 .filter-content {
   display: flex;
   flex-direction: column;
   overflow: visible;
 }
 
+/* Filter Section */
 .filter-overlay-section {
   display: flex;
   flex-direction: column;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 
   &:last-child {
     margin-bottom: 0;
   }
   &:not(:last-child) {
-    margin-bottom: 4px;
+    margin-bottom: 0.25rem;
   }
 }
 
 .filter-overlay-label {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: $greyBlue700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.03125rem;
 }
 
 .filter-overlay-input {
   margin-bottom: 0;
 }
 
+/* Filter Clear Section */
 .filter-overlay-clear-section {
   display: flex;
   flex-direction: column;
   margin-top: 0.9rem;
   margin-bottom: 0;
-  padding-left: 4px;
+  padding-left: 0.25rem;
 }
 
+/* Filter Buttons */
 .filter-overlay-action-button {
   background: $brandPrimary;
-  color: white;
+  color: $cleanWhite;
   border: none;
   border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 12px;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.03125rem;
 
   &:hover:not(:disabled) {
     background: $brandSecondary;
-    transform: translateY(-1px);
+    transform: translateY(-0.0625rem);
   }
   &:disabled {
     background: $greyBlue300;
@@ -118,19 +124,19 @@
   background: none;
   color: $brandPrimary;
   border: none;
-  padding: 8px 0;
-  font-size: 14px;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 1px;
+  text-underline-offset: 0.125rem;
+  text-decoration-thickness: 0.0625rem;
   text-align: left;
 
   &:hover:not(:disabled) {
     color: $greyBlue800;
-    text-decoration-thickness: 2px;
+    text-decoration-thickness: 0.125rem;
   }
   &:disabled {
     color: $greyBlue300;
@@ -143,45 +149,47 @@
   width: 100%;
 }
 
+/* Filter Toggle Button */
 .filter-toggle-button {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 1.25rem;
+  left: 1.25rem;
   z-index: 10;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba($cleanWhite, 0.95);
   backdrop-filter: blur(8px);
   border: 1px solid $greyBlue200;
   border-radius: 12px;
-  padding: 16px 24px;
-  font-size: 14px;
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: $greyBlue800;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 12px;
-  box-shadow: 0 8px 30px -5px rgba(0, 0, 0, 0.15);
+  gap: 0.75rem;
+  box-shadow: 0 8px 30px -5px rgba($black, 0.15);
   transition: all 0.2s ease;
-  min-height: 48px;
+  min-height: 3rem;
 
   &:hover {
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0 12px 40px -5px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
+    background: $cleanWhite;
+    box-shadow: 0 12px 40px -5px rgba($black, 0.2);
+    transform: translateY(-0.125rem);
   }
 }
 
 .filter-icon {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: bold;
 }
 
 .active-indicator {
-  color: #ff6b6b;
-  font-size: 12px;
-  margin-left: 4px;
+  color: $red400;
+  font-size: 0.75rem;
+  margin-left: 0.25rem;
 }
 
+/* Filter Overlay with Nested Inputs - Horizontal Dropdown */
 .filter-overlay {
   .choice-input-wrapper,
   .multi-select-container {
@@ -192,10 +200,10 @@
   .choice-input-wrapper .choice-input-dropdown {
     position: absolute;
     top: 0;
-    left: calc(100% + 24px);
+    left: calc(100% + 1.5rem);
     right: auto;
-    width: 200px;
-    max-height: 300px;
+    width: 12.5rem;
+    max-height: 18.75rem;
     z-index: 8;
     transform: none;
     margin: 0;
@@ -205,10 +213,10 @@
   .multi-select-container .location-list {
     position: absolute;
     top: 0;
-    left: calc(100% + 24px);
+    left: calc(100% + 1.5rem);
     right: auto;
-    width: 280px;
-    max-height: 300px;
+    width: 17.5rem;
+    max-height: 18.75rem;
     z-index: 8;
     transform: none;
     margin: 0;
@@ -218,12 +226,14 @@
   .choice-input-arrow,
   .location-header-arrow {
     transform: rotate(-90deg);
+
     &.open {
       transform: rotate(-90deg);
     }
   }
 }
 
+/* Filter Overlay Embedded Control Variant */
 .filter-overlay.embedded-control {
   position: static;
   background: transparent;
@@ -249,9 +259,11 @@
   .filter-overlay-section {
     margin-bottom: 0.75rem;
     margin-top: 0.75rem;
+
     &:last-child {
       margin-bottom: 0;
     }
+
     &:first-child {
       margin-top: 1.25rem;
     }
@@ -262,7 +274,7 @@
     font-weight: 600;
     color: $greyBlue700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.03125rem;
     margin-bottom: 0.25rem;
   }
 
@@ -290,12 +302,13 @@
       color: $greyBlue900;
       font-weight: 400;
       box-sizing: border-box;
-      padding: 0 12px;
+      padding: 0 0.75rem;
 
       &:focus {
         outline: none;
         border-color: $greyBlue500;
       }
+
       &:hover:not(:focus) {
         border-color: $greyBlue400;
       }
@@ -310,9 +323,10 @@
         font-size: 0.875rem;
         font-weight: 400;
       }
+
       .choice-input-arrow {
-        width: 14px;
-        height: 14px;
+        width: 0.875rem;
+        height: 0.875rem;
       }
     }
 
@@ -321,9 +335,10 @@
         font-size: 0.875rem;
         font-weight: 400;
       }
+
       .location-header-arrow {
-        width: 14px;
-        height: 14px;
+        width: 0.875rem;
+        height: 0.875rem;
       }
     }
   }
@@ -343,14 +358,15 @@
       cursor: pointer;
       transition: all 0.2s ease;
       text-decoration: underline;
-      text-underline-offset: 2px;
-      text-decoration-thickness: 1px;
+      text-underline-offset: 0.125rem;
+      text-decoration-thickness: 0.0625rem;
       text-align: left;
 
       &:hover:not(:disabled) {
         color: $greyBlue800;
-        text-decoration-thickness: 2px;
+        text-decoration-thickness: 0.125rem;
       }
+
       &:disabled {
         color: $greyBlue300;
         cursor: not-allowed;
@@ -360,38 +376,39 @@
   }
 
   .choice-input-wrapper .choice-input-dropdown {
-    left: calc(100% + 8px);
+    left: calc(100% + 0.5rem);
     border: 1px solid $greyBlue300;
     background-color: $white;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    padding: 4px 0;
+    box-shadow: 0 4px 6px -1px rgba($black, 0.1);
+    padding: 0.25rem 0;
 
     .choice-input-option {
-      padding: 6px 8px;
+      padding: 0.375rem 0.5rem;
       font-size: 0.875rem;
-      min-height: 28px;
+      min-height: 1.75rem;
     }
   }
 
   .multi-select-container .location-list {
-    left: calc(100% + 8px);
+    left: calc(100% + 0.5rem);
     border: 1px solid $greyBlue300;
     background-color: $white;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    padding: 4px 0;
+    box-shadow: 0 4px 6px -1px rgba($black, 0.1);
+    padding: 0.25rem 0;
 
     .location-list-item {
-      padding: 6px 8px;
+      padding: 0.375rem 0.5rem;
       font-size: 0.75rem;
-      min-height: 28px;
+      min-height: 1.75rem;
 
       .location-list-item-select {
         font-size: 0.875rem;
       }
+
       .children-list-item {
-        padding: 4px 8px 4px 24px;
+        padding: 0.25rem 0.5rem 0.25rem 1.5rem;
         font-size: 0.875rem;
-        min-height: 24px;
+        min-height: 1.5rem;
       }
     }
   }
@@ -399,27 +416,31 @@
   .choice-input-arrow,
   .location-header-arrow {
     transform: rotate(-90deg);
+
     &.open {
       transform: rotate(-90deg);
     }
   }
 }
 
+/* Max Height Media Query */
 @media (max-height: 800px) {
   .filter-overlay,
   .filter-toggle-button {
-    top: 20px;
+    top: 1.25rem;
   }
   .filter-overlay {
     max-height: 50vh;
   }
 }
 
+/* Tablet and Mobile Styles */
 @media (max-width: $tablet) {
   .filter-toggle-button {
-    left: 16px;
+    left: 1rem;
   }
 
+  /* Mobile Fullscreen Overlay */
   .filter-mobile-fullscreen-overlay {
     position: fixed;
     top: 4rem;
@@ -507,6 +528,7 @@
         color: $greyBlue900;
         transform: scale(1.05);
       }
+
       &:active {
         transform: scale(0.95);
       }
@@ -521,20 +543,20 @@
         top: 100%;
         left: 0;
         width: 100%;
-        max-height: 200px;
+        max-height: 12.5rem;
         z-index: 9;
-        margin-top: 4px;
+        margin-top: 0.25rem;
         border-radius: 8px;
         border: 1px solid $greyBlue300;
         background-color: $white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        padding: 4px 0;
+        box-shadow: 0 4px 6px -1px rgba($black, 0.1);
+        padding: 0.25rem 0;
         pointer-events: auto;
 
         .choice-input-option {
-          padding: 12px 16px;
+          padding: 0.75rem 1rem;
           font-size: 1rem;
-          min-height: 48px;
+          min-height: 3rem;
           pointer-events: auto;
         }
       }
@@ -549,29 +571,30 @@
         top: 100%;
         left: 0;
         width: 100%;
-        max-height: 200px;
+        max-height: 12.5rem;
         z-index: 9;
-        margin-top: 4px;
+        margin-top: 0.25rem;
         border-radius: 8px;
         border: 1px solid $greyBlue300;
         background-color: $white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        padding: 4px 0;
+        box-shadow: 0 4px 6px -1px rgba($black, 0.1);
+        padding: 0.25rem 0;
         pointer-events: auto;
 
         .location-list-item {
-          padding: 12px 16px;
+          padding: 0.75rem 1rem;
           font-size: 1rem;
-          min-height: 48px;
+          min-height: 3rem;
           pointer-events: auto;
 
           .location-list-item-select {
             font-size: 1rem;
           }
+
           .children-list-item {
-            padding: 8px 16px 8px 32px;
+            padding: 0.5rem 1rem 0.5rem 2rem;
             font-size: 0.9rem;
-            min-height: 44px;
+            min-height: 2.75rem;
             pointer-events: auto;
           }
         }
@@ -579,11 +602,13 @@
     }
   }
 
+  /* Mobile dropdown positioning for filter-overlay and embedded-control */
   .filter-overlay,
   .filter-overlay.embedded-control {
-    .choice-input-wrapper .choice-input-button .choice-input-arrow,
-    .multi-select-container .location-wrapper .location-header .location-header-arrow {
+    .choice-input-arrow,
+    .location-header-arrow {
       transform: rotate(0deg);
+
       &.open {
         transform: rotate(180deg);
       }
@@ -594,19 +619,19 @@
       top: 100%;
       left: 0;
       width: 100%;
-      max-height: 200px;
+      max-height: 12.5rem;
       z-index: 9;
-      margin-top: 4px;
+      margin-top: 0.25rem;
       border-radius: 8px;
       border: 1px solid $greyBlue300;
       background-color: $white;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      padding: 4px 0;
+      box-shadow: 0 4px 6px -1px rgba($black, 0.1);
+      padding: 0.25rem 0;
 
       .choice-input-option {
-        padding: 12px 16px;
+        padding: 0.75rem 1rem;
         font-size: 0.875rem;
-        min-height: 48px;
+        min-height: 3rem;
       }
     }
 
@@ -615,27 +640,28 @@
       top: 100%;
       left: 0;
       width: 100%;
-      max-height: 200px;
+      max-height: 12.5rem;
       z-index: 9;
-      margin-top: 4px;
+      margin-top: 0.25rem;
       border-radius: 8px;
       border: 1px solid $greyBlue300;
       background-color: $white;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      padding: 4px 0;
+      box-shadow: 0 4px 6px -1px rgba($black, 0.1);
+      padding: 0.25rem 0;
 
       .location-list-item {
-        padding: 12px 16px;
+        padding: 0.75rem 1rem;
         font-size: 0.875rem;
-        min-height: 48px;
+        min-height: 3rem;
 
         .location-list-item-select {
           font-size: 0.875rem;
         }
+
         .children-list-item {
-          padding: 8px 16px 8px 32px;
+          padding: 0.5rem 1rem 0.5rem 2rem;
           font-size: 0.8rem;
-          min-height: 44px;
+          min-height: 2.75rem;
         }
       }
     }
@@ -645,6 +671,7 @@
     .choice-input-arrow,
     .location-header-arrow {
       transform: rotate(0deg);
+
       &.open {
         transform: rotate(180deg);
       }
@@ -652,6 +679,7 @@
   }
 }
 
+/* Animation */
 @keyframes slideUpMobile {
   from {
     opacity: 0;
