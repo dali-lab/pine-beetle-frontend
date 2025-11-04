@@ -14,7 +14,7 @@ const SERVER_ENDPOINTS = {
 const AUTOMATION_SERVER_ENDPOINTS = {
   LOCAL: 'http://localhost:9091/v3',
   DEV: 'https://pine-beetle-automation-dev.herokuapp.com/v3',
-  PROD: 'https://pine-beetle-automation.herokuapp.com/v3',
+  PROD: 'https://pine-beetle-automation-6ba2941e05d1.herokuapp.com/v3',
 };
 
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
@@ -217,8 +217,16 @@ const MAP_TITLES = {
 };
 
 export {
-  AUTOMATION_SERVER_ENDPOINTS, CHART_MODES, DATA_MODES, DATA_TYPE_EXTENSIONS,
-  DOWNLOAD_DATA_ROUTES, getAutomationServerUrl, getServerUrl, getYearRange, LOCAL_STORAGE_KEYS, MAP_SOURCE_NAME, MAP_SOURCES, MAP_TITLES, MIN_WIDTH_THRESHOLD, RESOURCE_LOCAL_URLS, RESOURCE_REMOTE_URLS,
-  RESOURCE_ROUTES, ROUTES, SERVER_ENDPOINTS, SOURCE_LAYERS, STATE_VECTOR_LAYER, stateAbbrevToStateId, stateAbbrevToStateName, stateAbbrevToZoomLevel,
-  stateNameToAbbrev, VECTOR_LAYER, VIDEO_URL
+  AUTOMATION_SERVER_ENDPOINTS,
+  CHART_MODES,
+  DATA_MODES,
+  DATA_TYPE_EXTENSIONS,
+  DOWNLOAD_DATA_ROUTES,
+  getAutomationServerUrl,
+  getServerUrl, getYearRange, LOCAL_STORAGE_KEYS, MAP_SOURCE_NAME, MAP_SOURCES, MAP_TITLES, MIN_WIDTH_THRESHOLD, RESOURCE_LOCAL_URLS, RESOURCE_REMOTE_URLS, RESOURCE_ROUTES, ROUTES,
+  SERVER_ENDPOINTS,
+  SOURCE_LAYERS, STATE_VECTOR_LAYER, stateAbbrevToStateId,
+  stateAbbrevToStateName,
+  stateAbbrevToZoomLevel,
+  stateNameToAbbrev, VECTOR_LAYER, VIDEO_URL,
 };
