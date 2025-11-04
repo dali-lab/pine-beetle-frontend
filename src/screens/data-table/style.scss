@@ -8,12 +8,12 @@
   margin-top: 4.375rem;
 
   .data-table-container {
-    max-width: 1400px;
+    max-width: 87.5rem;
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 2rem;
 
     @media (max-width: $tablet) {
-      padding: 0 16px;
+      padding: 0 1rem;
     }
 
     .table-controls {
@@ -70,12 +70,15 @@
     .table-container {
       background: transparent;
       border-radius: 0;
-      overflow: visible;
+      overflow-x: auto;
+      overflow-y: visible;
       box-shadow: none;
       border: none;
+      margin-bottom: 1rem;
 
       .data-table {
             width: 100%;
+            table-layout: auto;
             border-collapse: collapse;
 
             thead {
@@ -89,6 +92,7 @@
                 font-size: 0.9rem;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
+                white-space: nowrap;
 
                 &.sortable {
                   cursor: pointer;
@@ -124,6 +128,18 @@
                   padding: 1rem;
                   color: $textColor;
                   font-size: 0.95rem;
+                  white-space: nowrap;
+
+                  &.probability-cell {
+                    text-align: right;
+                    font-family: 'Courier New', monospace;
+                    font-weight: 500;
+                  }
+
+                  &.prediction-cell {
+                    text-align: right;
+                    font-family: 'Courier New', monospace;
+                  }
 
                   .outbreak-badge {
                     display: inline-block;
@@ -133,7 +149,8 @@
                     font-weight: 600;
                     font-size: 0.8rem;
                     text-transform: uppercase;
-                    letter-spacing: 0.5px;
+                    letter-spacing: 0.03125rem;
+                    white-space: nowrap;
                   }
                 }
               }
@@ -154,7 +171,7 @@
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          min-height: 400px;
+          min-height: 25rem;
           gap: 1rem;
           text-align: center;
 
@@ -209,18 +226,56 @@
             }
           }
 
+          .table-controls {
+            padding: 1rem 0;
+
+            .filters {
+              gap: 1rem;
+
+              .filter-group {
+                input {
+                  font-size: 0.9rem;
+                }
+              }
+            }
+          }
+
           .table-container {
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -1rem;
+            padding: 0 1rem;
 
             .data-table {
-              min-width: 600px;
-
               thead th,
               tbody td {
                 padding: 0.75rem 0.5rem;
                 font-size: 0.85rem;
+
+                &.probability-cell,
+                &.prediction-cell {
+                  font-size: 0.8rem;
+                }
+              }
+
+              thead th {
+                font-size: 0.8rem;
+                padding: 0.75rem 0.5rem;
+              }
+
+              tbody td {
+                .outbreak-badge {
+                  font-size: 0.7rem;
+                  padding: 0.2rem 0.6rem;
+                  letter-spacing: 0.03125rem;
+                }
               }
             }
+          }
+
+          .table-footer {
+            font-size: 0.85rem;
+            margin-top: 1rem;
           }
         }
       }

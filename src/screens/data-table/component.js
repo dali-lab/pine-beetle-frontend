@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { Loader } from '../../components';
-import { stateAbbrevToStateName } from '../../constants';
 import { colors } from '../../components/historical-data/trapping-data-map/constants';
+import { stateAbbrevToStateName } from '../../constants';
 
 import './style.scss';
 
@@ -27,14 +27,23 @@ const DataTableScreen = ({
       const locationName = dataMode === 'COUNTY' ? item.county : item.rangerDistrict;
 
       // Determine outbreak level based on spots using exact thresholds from trapping-data-map
+      // Use spotst0 if available, otherwise fall back to spots
+      // Only use spotst0 if it's actually defined and not null
+      let spotsValue = 0;
+      if (item.spotst0 !== undefined && item.spotst0 !== null) {
+        spotsValue = item.spotst0;
+      } else if (item.spots !== undefined && item.spots !== null) {
+        spotsValue = item.spots;
+      }
+
       // Thresholds: ['no spot data', '0-9', '10-19', '20-49', '50-99', '100-249', '>249']
       let outbreakLevel = 'no spot data';
-      if (item.spots > 249) outbreakLevel = '>249';
-      else if (item.spots >= 100) outbreakLevel = '100-249';
-      else if (item.spots >= 50) outbreakLevel = '50-99';
-      else if (item.spots >= 20) outbreakLevel = '20-49';
-      else if (item.spots >= 10) outbreakLevel = '10-19';
-      else if (item.spots > 0) outbreakLevel = '0-9';
+      if (spotsValue > 249) outbreakLevel = '>249';
+      else if (spotsValue >= 100) outbreakLevel = '100-249';
+      else if (spotsValue >= 50) outbreakLevel = '50-99';
+      else if (spotsValue >= 20) outbreakLevel = '20-49';
+      else if (spotsValue >= 10) outbreakLevel = '10-19';
+      else if (spotsValue > 0) outbreakLevel = '0-9';
       else outbreakLevel = 'no spot data';
 
       return {
@@ -42,10 +51,26 @@ const DataTableScreen = ({
         year: item.year,
         state: stateName,
         county: locationName,
-        beetles: item.spb || 0,
+        // Trapping details
+        trapCount: item.trapCount || 0,
+        totalTrappingDays: item.totalTrappingDays || 0,
+        daysPerTrap: item.daysPerTrap || 0,
+        // Beetle metrics
+        beetles: item.spb || item.spbCount || 0,
+        spbPer2Weeks: item.spbPer2Weeks || 0,
         outbreak: outbreakLevel,
         clerids: item.clerids || 0,
-        spots: item.spots || 0,
+        spots: spotsValue,
+        spotst1: item.spotst1 || 0,
+        // Probabilities (store as decimals, will format as percentages in display)
+        probSpotsGT0: item.probSpotsGT0 || 0,
+        probSpotsGT50: item.probSpotsGT50 || 0,
+        probSpotsGT150: item.probSpotsGT150 || 0,
+        probSpotsGT400: item.probSpotsGT400 || 0,
+        probSpotsGT1000: item.probSpotsGT1000 || 0,
+        // Predictions
+        predSpotsorigUnits: item.predSpotsorigUnits || 0,
+        residualSpotslogUnits: item.residualSpotslogUnits || 0,
       };
     });
   };
@@ -62,6 +87,15 @@ const DataTableScreen = ({
   if (sparseData && sparseData.length > 0) {
     console.log('DataTableScreen: First item structure =', sparseData[0]);
     console.log('DataTableScreen: Available fields =', Object.keys(sparseData[0]));
+    console.log('DataTableScreen: spots field value =', sparseData[0].spots);
+    console.log('DataTableScreen: spotst0 field value =', sparseData[0].spotst0);
+  }
+
+  // Debug: Log first transformed item to check outbreak calculation
+  if (data && data.length > 0) {
+    console.log('DataTableScreen: First transformed item =', data[0]);
+    console.log('DataTableScreen: Outbreak level =', data[0].outbreak);
+    console.log('DataTableScreen: Spots value used =', data[0].spots);
   }
 
   useEffect(() => {
@@ -81,9 +115,14 @@ const DataTableScreen = ({
 
   const filteredAndSortedData = data
     .filter((item) => {
+      // Filter by year and state
       const yearMatch = !filterYear || item.year.toString().includes(filterYear);
       const stateMatch = !filterState || item.state.toLowerCase().includes(filterState.toLowerCase());
-      return yearMatch && stateMatch;
+
+      // Exclude rows where trap count and SPB per 2 weeks are both 0
+      const hasData = item.trapCount > 0 || item.spbPer2Weeks > 0;
+
+      return yearMatch && stateMatch && hasData;
     })
     .sort((a, b) => {
       const aValue = a[sortField];
@@ -135,8 +174,9 @@ const DataTableScreen = ({
         <div className="page-header">
           <h1>Historical Data Table</h1>
           <p className="page-description">
-            Browse and analyze Southern Pine Beetle historical data in a structured table format.
-            Use the filters and sorting options to explore the data.
+            Browse and analyze Southern Pine Beetle data including trap counts, beetle activity,
+            outbreak levels, outbreak probability, and predictions. Use filters and sorting options to
+            explore trends across ranger districts and counties.
           </p>
         </div>
 
@@ -197,9 +237,17 @@ const DataTableScreen = ({
                     </span>
                   )}
                 </th>
-                <th onClick={() => handleSort('beetles')} className="sortable">
-                  Beetles Count
-                  {sortField === 'beetles' && (
+                <th onClick={() => handleSort('trapCount')} className="sortable">
+                  Trap Count
+                  {sortField === 'trapCount' && (
+                    <span className="sort-indicator">
+                      {sortDirection === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
+                </th>
+                <th onClick={() => handleSort('spbPer2Weeks')} className="sortable">
+                  SPB per 2 Weeks
+                  {sortField === 'spbPer2Weeks' && (
                     <span className="sort-indicator">
                       {sortDirection === 'asc' ? '↑' : '↓'}
                     </span>
@@ -213,6 +261,22 @@ const DataTableScreen = ({
                     </span>
                   )}
                 </th>
+                <th onClick={() => handleSort('probSpotsGT50')} className="sortable">
+                  Prob &gt; 50 Spots
+                  {sortField === 'probSpotsGT50' && (
+                    <span className="sort-indicator">
+                      {sortDirection === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
+                </th>
+                <th onClick={() => handleSort('predSpotsorigUnits')} className="sortable">
+                  Predicted Spots
+                  {sortField === 'predSpotsorigUnits' && (
+                    <span className="sort-indicator">
+                      {sortDirection === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -221,7 +285,8 @@ const DataTableScreen = ({
                   <td>{item.year}</td>
                   <td>{item.state}</td>
                   <td>{item.county}</td>
-                  <td>{item.beetles.toLocaleString()}</td>
+                  <td>{item.trapCount.toLocaleString()}</td>
+                  <td>{item.spbPer2Weeks.toLocaleString()}</td>
                   <td>
                     <span
                       className="outbreak-badge"
@@ -230,6 +295,8 @@ const DataTableScreen = ({
                       {item.outbreak}
                     </span>
                   </td>
+                  <td className="probability-cell">{(item.probSpotsGT50 * 100).toFixed(1)}%</td>
+                  <td className="prediction-cell">{item.predSpotsorigUnits.toFixed(1)}</td>
                 </tr>
               ))}
             </tbody>
