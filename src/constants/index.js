@@ -207,5 +207,5 @@ export {
   SOURCE_LAYERS, STATE_VECTOR_LAYER, stateAbbrevToStateId,
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
-  stateNameToAbbrev, VECTOR_LAYER, VIDEO_URL
+  stateNameToAbbrev, VECTOR_LAYER, VIDEO_URL,
 };
