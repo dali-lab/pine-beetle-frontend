@@ -5,50 +5,14 @@ import stateAbbrevToZoomLevel from './state-zoom-levels.json';
 
 const MIN_WIDTH_THRESHOLD = 725;
 
-const SERVER_ENDPOINTS = {
-  LOCAL: 'http://localhost:9090/v3',
-  DEV: 'https://pine-beetle-prediction-dev.herokuapp.com/v3',
-  PROD: 'https://pine-beetle-prediction.herokuapp.com/v3',
-};
-
-const AUTOMATION_SERVER_ENDPOINTS = {
-  LOCAL: 'http://localhost:9091/v3',
-  DEV: 'https://pine-beetle-automation-dev.herokuapp.com/v3',
-  PROD: 'https://pine-beetle-automation-6ba2941e05d1.herokuapp.com/v3',
-};
-
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
 const getServerUrl = () => {
-  switch (process.env.MAIN_BACKEND_ENV) {
-    case 'LOCAL':
-      return SERVER_ENDPOINTS.LOCAL;
-
-    case 'DEV':
-      return SERVER_ENDPOINTS.DEV;
-
-    case 'PROD':
-      return SERVER_ENDPOINTS.PROD;
-
-    default:
-      return SERVER_ENDPOINTS.DEV;
-  }
+  return process.env.MAIN_BACKEND_URL;
 };
 
 const getAutomationServerUrl = () => {
-  switch (process.env.AUTOMATION_ENV) {
-    case 'LOCAL':
-      return AUTOMATION_SERVER_ENDPOINTS.LOCAL;
-
-    case 'DEV':
-      return AUTOMATION_SERVER_ENDPOINTS.DEV;
-
-    case 'PROD':
-      return AUTOMATION_SERVER_ENDPOINTS.PROD;
-
-    default:
-      return AUTOMATION_SERVER_ENDPOINTS.DEV;
-  }
+  return process.env.AUTOMATION_BACKEND_URL;
 };
 
 const LOCAL_STORAGE_KEYS = {
@@ -95,22 +59,8 @@ const RESOURCE_ROUTES = {
   WEEKLY: '/SPB.southwide.Weekly.2011-2017.zip',
 };
 
-const RESOURCE_LOCAL_ROOTS = {
-  PROD: 'https://www.spbpredict.com',
-  DEV: 'https://pine-beetle-prediction.netlify.app',
-};
-
 const getResourceLocalRoot = () => {
-  switch (process.env.RESOURCE_ENV) {
-    case 'DEV':
-      return RESOURCE_LOCAL_ROOTS.DEV;
-
-    case 'PROD':
-      return RESOURCE_LOCAL_ROOTS.PROD;
-
-    default:
-      return RESOURCE_LOCAL_ROOTS.DEV;
-  }
+  return process.env.RESOURCE_LOCAL_URL;
 };
 
 const RESOURCE_LOCAL_ROOT = getResourceLocalRoot();
@@ -124,22 +74,8 @@ const RESOURCE_LOCAL_URLS = {
   WEEKLY: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.WEEKLY,
 };
 
-const RESOURCE_REMOTE_ROOTS = {
-  DEV: 'https://raw.githubusercontent.com/dali-lab/pine-beetle-frontend/dev/downloads',
-  PROD: 'https://raw.githubusercontent.com/dali-lab/pine-beetle-frontend/release/downloads',
-};
-
 const getResourceRemoteRoot = () => {
-  switch (process.env.RESOURCE_ENV) {
-    case 'DEV':
-      return RESOURCE_REMOTE_ROOTS.DEV;
-
-    case 'PROD':
-      return RESOURCE_REMOTE_ROOTS.PROD;
-
-    default:
-      return RESOURCE_REMOTE_ROOTS.DEV;
-  }
+  return process.env.RESOURCE_REMOTE_URL;
 };
 
 const RESOURCE_REMOTE_ROOT = getResourceRemoteRoot();
@@ -217,14 +153,12 @@ const MAP_TITLES = {
 };
 
 export {
-  AUTOMATION_SERVER_ENDPOINTS,
   CHART_MODES,
   DATA_MODES,
   DATA_TYPE_EXTENSIONS,
   DOWNLOAD_DATA_ROUTES,
   getAutomationServerUrl,
   getServerUrl, getYearRange, LOCAL_STORAGE_KEYS, MAP_SOURCE_NAME, MAP_SOURCES, MAP_TITLES, MIN_WIDTH_THRESHOLD, RESOURCE_LOCAL_URLS, RESOURCE_REMOTE_URLS, RESOURCE_ROUTES, ROUTES,
-  SERVER_ENDPOINTS,
   SOURCE_LAYERS, STATE_VECTOR_LAYER, stateAbbrevToStateId,
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
