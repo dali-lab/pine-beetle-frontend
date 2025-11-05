@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
 import { Provider } from 'react-redux';
-import { legacy_createStore as createStore, applyMiddleware, compose } from 'redux';
+import { applyMiddleware, compose, legacy_createStore as createStore } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './state/reducers';
 
@@ -10,8 +10,8 @@ import App from './app';
 import './styles/main.scss';
 
 // google analytics
-if (process.env.ANALYTICS_ENV === 'PROD') {
-  ReactGA.initialize('UA-133847731-1');
+if (process.env.ANALYTICS_TRACKING_ID) {
+  ReactGA.initialize(process.env.ANALYTICS_TRACKING_ID);
   ReactGA.pageview(window.location.pathname + window.location.search);
 }
 

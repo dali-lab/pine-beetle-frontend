@@ -34,7 +34,7 @@ const BlogReducer = (state = initialState, action) => {
     }
 
     case ActionTypes.API_ERROR:
-      return { ...state, error: { message: action.payload.error.response?.data?.error, action: action.payload.action } };
+      return { ...state, error: { message: action.payload.error?.response?.data?.error || action.payload.error?.message || 'An error occurred', action: action.payload.action } };
 
     case ActionTypes.CLEAR_API_ERROR:
       return { ...state, error: null };
