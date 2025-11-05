@@ -1,38 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import {
-  BrowserRouter as Router,
   Redirect,
   Route,
+  BrowserRouter as Router,
   Switch,
 } from 'react-router-dom';
 
 import {
   About,
   Admin,
-  Resources,
-  TrappingData,
+  Blog,
   Home,
   Prediction,
-  Blog,
-  SingleBlogPost,
+  Resources,
   ResultsComparison,
+  SingleBlogPost,
+  TrappingData,
 } from '../screens';
 
 import {
-  Header,
   Footer,
+  Header,
   MobileOverlay,
   ScrollToTop,
 } from '../components';
 
 import {
   DATA_MODES,
-  getAutomationServerUrl,
-  getServerUrl,
   MIN_WIDTH_THRESHOLD,
-  ROUTES,
-  RESOURCE_ROUTES,
   RESOURCE_REMOTE_URLS,
+  RESOURCE_ROUTES,
+  ROUTES,
 } from '../constants';
 
 import {
@@ -45,8 +43,8 @@ const FallBack = () => {
   return <div>URL not found</div>;
 };
 
-global.API_URL = getServerUrl();
-global.AUTOMATION_API_URL = getAutomationServerUrl();
+global.API_URL = process.env.MAIN_BACKEND_URL;
+global.AUTOMATION_API_URL = process.env.AUTOMATION_BACKEND_URL;
 
 const App = (props) => {
   const {
@@ -75,8 +73,8 @@ const App = (props) => {
   }, []);
 
   useEffect(() => {
-    global.API_URL = getServerUrl();
-    global.AUTOMATION_API_URL = getAutomationServerUrl();
+    global.API_URL = process.env.MAIN_BACKEND_URL;
+    global.AUTOMATION_API_URL = process.env.AUTOMATION_BACKEND_URL;
 
     // fetch user data if persist in browser
     if (getAuthTokenFromStorage() && getUserIdFromStorage()) {

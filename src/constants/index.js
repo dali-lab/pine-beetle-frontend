@@ -7,14 +7,6 @@ const MIN_WIDTH_THRESHOLD = 725;
 
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
-const getServerUrl = () => {
-  return process.env.MAIN_BACKEND_URL;
-};
-
-const getAutomationServerUrl = () => {
-  return process.env.AUTOMATION_BACKEND_URL;
-};
-
 const LOCAL_STORAGE_KEYS = {
   AUTH_TOKEN: 'DALI_PB_AUTH_TOKEN',
   CHART_MODE: 'DALI_PB_CHART_MODE',
@@ -53,11 +45,7 @@ const RESOURCE_ROUTES = {
   WEEKLY: '/SPB.southwide.Weekly.2011-2017.zip',
 };
 
-const getResourceLocalRoot = () => {
-  return process.env.RESOURCE_LOCAL_URL;
-};
-
-const RESOURCE_LOCAL_ROOT = getResourceLocalRoot();
+const RESOURCE_LOCAL_ROOT = process.env.RESOURCE_LOCAL_URL;
 
 const RESOURCE_LOCAL_URLS = {
   CODE: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.CODE,
@@ -68,11 +56,7 @@ const RESOURCE_LOCAL_URLS = {
   WEEKLY: RESOURCE_LOCAL_ROOT + RESOURCE_ROUTES.WEEKLY,
 };
 
-const getResourceRemoteRoot = () => {
-  return process.env.RESOURCE_REMOTE_URL;
-};
-
-const RESOURCE_REMOTE_ROOT = getResourceRemoteRoot();
+const RESOURCE_REMOTE_ROOT = process.env.RESOURCE_REMOTE_URL;
 
 const RESOURCE_REMOTE_URLS = {
   CODE: RESOURCE_REMOTE_ROOT + RESOURCE_ROUTES.CODE,
@@ -136,8 +120,7 @@ export {
   DATA_MODES,
   DATA_TYPE_EXTENSIONS,
   DOWNLOAD_DATA_ROUTES,
-  getAutomationServerUrl,
-  getServerUrl, getYearRange, LOCAL_STORAGE_KEYS, MAP_SOURCE_NAME, MAP_SOURCES, MAP_TITLES, MIN_WIDTH_THRESHOLD, RESOURCE_LOCAL_URLS, RESOURCE_REMOTE_URLS, RESOURCE_ROUTES, ROUTES,
+  getYearRange, LOCAL_STORAGE_KEYS, MAP_SOURCE_NAME, MAP_SOURCES, MAP_TITLES, MIN_WIDTH_THRESHOLD, RESOURCE_LOCAL_URLS, RESOURCE_REMOTE_URLS, RESOURCE_ROUTES, ROUTES,
   SOURCE_LAYERS, STATE_VECTOR_LAYER, stateAbbrevToStateId,
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
