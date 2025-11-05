@@ -13,7 +13,6 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -23,19 +22,20 @@ jobs:
 
     env: # uncomment if env vars needed for build step
       MAPBOX_ACCESS_TOKEN: $${ secrets.MAPBOX_ACCESS_TOKEN }}
-      ANALYTICS_ENV: $${ secrets.ANALYTICS_ENV }}
-      MAIN_BACKEND_ENV: $${ secrets.MAIN_BACKEND_ENV }}
-      AUTOMATION_ENV: $${ secrets.AUTOMATION_ENV }}
-      RESOURCE_ENV: $${ secrets.RESOURCE_ENV }}
+      ANALYTICS_TRACKING_ID: $${ secrets.ANALYTICS_TRACKING_ID }}
+      MAIN_BACKEND_URL: $${ secrets.MAIN_BACKEND_URL }}
+      AUTOMATION_BACKEND_URL: $${ secrets.AUTOMATION_BACKEND_URL }}
+      RESOURCE_LOCAL_URL: $${ secrets.RESOURCE_LOCAL_URL }}
+      RESOURCE_REMOTE_URL: $${ secrets.RESOURCE_REMOTE_URL }}
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: npm
-    - run: npm ci
-    - run: npm run ci:lint
-    - run: npm run build --if-present
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: npm run ci:lint
+      - run: npm run build --if-present
     # - run: npm run test

@@ -8,6 +8,13 @@
         "browser": true,
         "es6": true
     },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".jsx", ".json"]
+            }
+        }
+    },
     "rules": {
         "default-param-last": 0,
         "strict": 0,

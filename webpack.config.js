@@ -89,6 +89,7 @@ module.exports = {
     new DotenvPlugin({
       path: '.env',
       safe: true,
+      allowEmptyValues: true,
       systemvars: true,
     }),
     env === 'development' && new ReactRefreshWebpackPlugin(),
