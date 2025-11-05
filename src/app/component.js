@@ -28,12 +28,13 @@ import {
 import {
   Footer,
   Header,
+  MobileOverlay,
+  ScrollToTop,
 } from '../components';
 
 import {
   DATA_MODES,
-  getAutomationServerUrl,
-  getServerUrl,
+  MIN_WIDTH_THRESHOLD,
   RESOURCE_REMOTE_URLS,
   RESOURCE_ROUTES,
   ROUTES,
@@ -60,8 +61,8 @@ const ConditionalFooter = () => {
   return <Footer />;
 };
 
-global.API_URL = getServerUrl();
-global.AUTOMATION_API_URL = getAutomationServerUrl();
+global.API_URL = process.env.MAIN_BACKEND_URL;
+global.AUTOMATION_API_URL = process.env.AUTOMATION_BACKEND_URL;
 
 const App = (props) => {
   const {
@@ -81,8 +82,8 @@ const App = (props) => {
   } = props;
 
   useEffect(() => {
-    global.API_URL = getServerUrl();
-    global.AUTOMATION_API_URL = getAutomationServerUrl();
+    global.API_URL = process.env.MAIN_BACKEND_URL;
+    global.AUTOMATION_API_URL = process.env.AUTOMATION_BACKEND_URL;
 
     // fetch user data if persist in browser
     if (getAuthTokenFromStorage() && getUserIdFromStorage()) {
