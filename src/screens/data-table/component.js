@@ -1,30 +1,87 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { Loader } from '../../components';
 import { colors } from '../../components/historical-data/trapping-data-map/constants';
-import { stateAbbrevToStateName } from '../../constants';
+import { ChoiceInput, MultiSelectInput } from '../../components/input-components';
+import { DATA_MODES, stateAbbrevToStateName } from '../../constants';
+import {
+  getStateAbbreviationFromStateName,
+  getStateNameFromAbbreviation,
+} from '../../utils';
 
 import './style.scss';
 
 const DataTableScreen = ({
   sparseData,
+  sublocationData,
   isLoading,
   errorText,
   dataMode,
+  startYear: reduxStartYear,
+  endYear: reduxEndYear,
+  selectedState: reduxSelectedState,
+  county: reduxCounty,
+  rangerDistrict: reduxRangerDistrict,
+  availableHistoricalYears,
+  availableHistoricalStates,
+  availableHistoricalSublocations,
   getSparseData,
+  getAggregateLocationData,
+  getAvailableStates,
+  getAvailableYears,
+  setStartYear,
+  setEndYear,
+  setState,
+  setCounty,
+  setRangerDistrict,
 }) => {
   const [sortField, setSortField] = useState('year');
   const [sortDirection, setSortDirection] = useState('asc');
-  const [filterYear, setFilterYear] = useState('');
-  const [filterState, setFilterState] = useState('');
+  const [dataFormat, setDataFormat] = useState('raw');
+  const [showEmptyRecords, setShowEmptyRecords] = useState(false);
 
-  // Transform API data to table format
+  // Use local state for filters to prevent Redux re-renders
+  const [localStartYear, setLocalStartYear] = useState(reduxStartYear || '');
+  const [localEndYear, setLocalEndYear] = useState(reduxEndYear || '');
+  const [localState, setLocalState] = useState(reduxSelectedState || '');
+  const [localCounty, setLocalCounty] = useState(reduxCounty || []);
+  const [localRangerDistrict, setLocalRangerDistrict] = useState(reduxRangerDistrict || []);
+
+  // Sync local state with Redux when Redux changes (but not vice versa on every keystroke)
+  useEffect(() => {
+    if (reduxStartYear !== localStartYear) setLocalStartYear(reduxStartYear || '');
+    if (reduxEndYear !== localEndYear) setLocalEndYear(reduxEndYear || '');
+    if (reduxSelectedState !== localState) setLocalState(reduxSelectedState || '');
+    if (JSON.stringify(reduxCounty) !== JSON.stringify(localCounty)) setLocalCounty(reduxCounty || []);
+    if (JSON.stringify(reduxRangerDistrict) !== JSON.stringify(localRangerDistrict)) setLocalRangerDistrict(reduxRangerDistrict || []);
+  }, [reduxStartYear, reduxEndYear, reduxSelectedState, reduxCounty, reduxRangerDistrict]);
+
+  // Use refs to track previous values and prevent unnecessary fetches
+  const prevFiltersRef = useRef(null);
+  const prevDataFormatRef = useRef(null);
+  const isInitialMount = useRef(true);
+  const fetchTimeoutRef = useRef(null);
+  const actionsRef = useRef({
+    getSparseData,
+    getAggregateLocationData,
+    getAvailableStates,
+    getAvailableYears,
+  });
+
+  // Transform API data to table format (for raw/sparse data)
   const transformData = (rawData) => {
     if (!rawData || !Array.isArray(rawData)) return [];
 
     return rawData.map((item, index) => {
       const stateName = stateAbbrevToStateName[item.state] || item.state;
-      const locationName = dataMode === 'COUNTY' ? item.county : item.rangerDistrict;
+      const locationName = dataMode === DATA_MODES.COUNTY ? item.county : item.rangerDistrict;
 
       // Determine outbreak level based on spots using exact thresholds from trapping-data-map
       // Use spotst0 if available, otherwise fall back to spots
@@ -75,65 +132,242 @@ const DataTableScreen = ({
     });
   };
 
-  const data = transformData(sparseData);
+  // Transform aggregated data to table format
+  const transformAggregatedData = (rawData) => {
+    if (!rawData || !Array.isArray(rawData)) return [];
 
-  // Debug logging
-  console.log('DataTableScreen: sparseData =', sparseData);
-  console.log('DataTableScreen: isLoading =', isLoading);
-  console.log('DataTableScreen: errorText =', errorText);
-  console.log('DataTableScreen: transformed data =', data);
+    return rawData.map((item, index) => {
+      const stateName = stateAbbrevToStateName[item.state] || item.state;
+      const locationName = dataMode === DATA_MODES.COUNTY ? item.county : item.rangerDistrict;
 
-  // Debug: Log first item structure if data exists
-  if (sparseData && sparseData.length > 0) {
-    console.log('DataTableScreen: First item structure =', sparseData[0]);
-    console.log('DataTableScreen: Available fields =', Object.keys(sparseData[0]));
-    console.log('DataTableScreen: spots field value =', sparseData[0].spots);
-    console.log('DataTableScreen: spotst0 field value =', sparseData[0].spotst0);
-  }
+      // Aggregated data typically has sum of spots, spb, clerids
+      const spotsValue = item.spots || item.spotst0 || 0;
 
-  // Debug: Log first transformed item to check outbreak calculation
-  if (data && data.length > 0) {
-    console.log('DataTableScreen: First transformed item =', data[0]);
-    console.log('DataTableScreen: Outbreak level =', data[0].outbreak);
-    console.log('DataTableScreen: Spots value used =', data[0].spots);
-  }
+      // Thresholds: ['no spot data', '0-9', '10-19', '20-49', '50-99', '100-249', '>249']
+      let outbreakLevel = 'no spot data';
+      if (spotsValue > 249) outbreakLevel = '>249';
+      else if (spotsValue >= 100) outbreakLevel = '100-249';
+      else if (spotsValue >= 50) outbreakLevel = '50-99';
+      else if (spotsValue >= 20) outbreakLevel = '20-49';
+      else if (spotsValue >= 10) outbreakLevel = '10-19';
+      else if (spotsValue > 0) outbreakLevel = '0-9';
+      else outbreakLevel = 'no spot data';
 
+      return {
+        id: index + 1,
+        year: item.year || null, // Aggregated data may not have year if aggregated by location
+        state: stateName,
+        county: locationName,
+        // Trapping details (may be aggregated)
+        trapCount: item.trapCount || item.sumTrapCount || 0,
+        totalTrappingDays: item.totalTrappingDays || item.sumTotalTrappingDays || 0,
+        daysPerTrap: item.daysPerTrap || (item.sumTotalTrappingDays && item.sumTrapCount ? item.sumTotalTrappingDays / item.sumTrapCount : 0),
+        // Beetle metrics (aggregated sums)
+        beetles: item.spb || item.sumSpb || item.spbCount || 0,
+        spbPer2Weeks: item.spbPer2Weeks || item.sumSpbPer2Weeks || 0,
+        outbreak: outbreakLevel,
+        clerids: item.clerids || item.sumClerids || 0,
+        spots: spotsValue,
+        spotst1: item.spotst1 || item.sumSpotst1 || 0,
+        // Probabilities (may not be available in aggregated data)
+        probSpotsGT0: item.probSpotsGT0 || 0,
+        probSpotsGT50: item.probSpotsGT50 || 0,
+        probSpotsGT150: item.probSpotsGT150 || 0,
+        probSpotsGT400: item.probSpotsGT400 || 0,
+        probSpotsGT1000: item.probSpotsGT1000 || 0,
+        // Predictions (may not be available in aggregated data)
+        predSpotsorigUnits: item.predSpotsorigUnits || 0,
+        residualSpotslogUnits: item.residualSpotslogUnits || 0,
+      };
+    });
+  };
+
+  // Get the appropriate data source based on format (memoized)
+  const data = useMemo(() => {
+    const rawData = dataFormat === 'raw' ? sparseData : sublocationData;
+    return dataFormat === 'raw' ? transformData(rawData) : transformAggregatedData(rawData);
+  }, [dataFormat, sparseData, sublocationData, dataMode]);
+
+  // Prepare location filter data (memoized to prevent recalculation)
+  const statesMappedToNames = useMemo(() => {
+    return (availableHistoricalStates || []).map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
+  }, [availableHistoricalStates]);
+
+  const selectedStateName = useMemo(() => {
+    return getStateNameFromAbbreviation(localState);
+  }, [localState]);
+
+  const setStateAbbrev = useCallback((stateName) => {
+    const stateAbbrev = getStateAbbreviationFromStateName(stateName);
+    setLocalState(stateAbbrev);
+  }, []);
+
+  const revYears = useMemo(() => {
+    return [...(availableHistoricalYears || [])].reverse();
+  }, [availableHistoricalYears]);
+
+  // Update action refs when they change
   useEffect(() => {
-    // Fetch real data when component mounts
-    console.log('DataTableScreen: Fetching sparse data...');
-    getSparseData();
-  }, [getSparseData]);
+    actionsRef.current = {
+      getAvailableYears,
+      getAvailableStates,
+      getSparseData,
+      getAggregateLocationData,
+    };
+  }, [getAvailableYears, getAvailableStates, getSparseData, getAggregateLocationData]);
 
-  const handleSort = (field) => {
+  // Sync local filters to Redux with debounce (only when user stops changing)
+  const syncToReduxTimeoutRef = useRef(null);
+  const syncFiltersToRedux = useCallback(() => {
+    if (syncToReduxTimeoutRef.current) {
+      clearTimeout(syncToReduxTimeoutRef.current);
+    }
+
+    syncToReduxTimeoutRef.current = setTimeout(() => {
+      if (localStartYear !== reduxStartYear) setStartYear(localStartYear);
+      if (localEndYear !== reduxEndYear) setEndYear(localEndYear);
+      if (localState !== reduxSelectedState) setState(localState);
+      if (JSON.stringify(localCounty) !== JSON.stringify(reduxCounty)) setCounty(localCounty);
+      if (JSON.stringify(localRangerDistrict) !== JSON.stringify(reduxRangerDistrict)) setRangerDistrict(localRangerDistrict);
+    }, 500);
+  }, [
+    localStartYear,
+    localEndYear,
+    localState,
+    localCounty,
+    localRangerDistrict,
+    reduxStartYear,
+    reduxEndYear,
+    reduxSelectedState,
+    reduxCounty,
+    reduxRangerDistrict,
+    setStartYear,
+    setEndYear,
+    setState,
+    setCounty,
+    setRangerDistrict,
+  ]);
+
+  // Fetch available years and states only when filters actually change
+  useEffect(() => {
+    const currentFiltersKey = `${localStartYear}-${localEndYear}-${localState}-${Array.isArray(localCounty) ? localCounty.join(',') : localCounty}-${Array.isArray(localRangerDistrict) ? localRangerDistrict.join(',') : localRangerDistrict}-${dataMode}`;
+    const prevFiltersKey = prevFiltersRef.current;
+
+    if (isInitialMount.current || currentFiltersKey !== prevFiltersKey) {
+      if (fetchTimeoutRef.current) {
+        clearTimeout(fetchTimeoutRef.current);
+      }
+
+      fetchTimeoutRef.current = setTimeout(() => {
+        const filters = {
+          startYear: localStartYear,
+          endYear: localEndYear,
+          state: localState,
+          county: localCounty,
+          rangerDistrict: localRangerDistrict,
+        };
+        actionsRef.current.getAvailableYears({ ...filters, isHistorical: true });
+        actionsRef.current.getAvailableStates({ ...filters, isHistorical: true });
+        prevFiltersRef.current = currentFiltersKey;
+        syncFiltersToRedux();
+      }, 300);
+    }
+
+    return () => {
+      if (fetchTimeoutRef.current) {
+        clearTimeout(fetchTimeoutRef.current);
+      }
+    };
+  }, [localStartYear, localEndYear, localState, localCounty, localRangerDistrict, dataMode, syncFiltersToRedux]);
+
+  // Function to fetch data
+  const fetchData = useCallback(() => {
+    const filters = {
+      startYear: localStartYear,
+      endYear: localEndYear,
+      state: localState,
+      county: localCounty,
+      rangerDistrict: localRangerDistrict,
+    };
+
+    if (dataFormat === 'raw') {
+      actionsRef.current.getSparseData(filters);
+    } else {
+      actionsRef.current.getAggregateLocationData(filters);
+    }
+  }, [dataFormat, localStartYear, localEndYear, localState, localCounty, localRangerDistrict]);
+
+  // Fetch data only when format or filters actually change
+  useEffect(() => {
+    const currentFiltersKey = `${localStartYear}-${localEndYear}-${localState}-${Array.isArray(localCounty) ? localCounty.join(',') : localCounty}-${Array.isArray(localRangerDistrict) ? localRangerDistrict.join(',') : localRangerDistrict}`;
+    const prevFiltersKey = prevFiltersRef.current;
+    const filtersChanged = currentFiltersKey !== prevFiltersKey;
+    const dataFormatChanged = dataFormat !== prevDataFormatRef.current;
+
+    if (isInitialMount.current || filtersChanged || dataFormatChanged) {
+      if (fetchTimeoutRef.current) {
+        clearTimeout(fetchTimeoutRef.current);
+      }
+
+      fetchTimeoutRef.current = setTimeout(() => {
+        fetchData();
+        prevFiltersRef.current = currentFiltersKey;
+        prevDataFormatRef.current = dataFormat;
+        isInitialMount.current = false;
+      }, 300);
+    }
+
+    return () => {
+      if (fetchTimeoutRef.current) {
+        clearTimeout(fetchTimeoutRef.current);
+      }
+    };
+  }, [dataFormat, localStartYear, localEndYear, localState, localCounty, localRangerDistrict, fetchData]);
+
+  const handleSort = useCallback((field) => {
     if (sortField === field) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
       setSortField(field);
       setSortDirection('asc');
     }
-  };
+  }, [sortField, sortDirection]);
 
-  const filteredAndSortedData = data
-    .filter((item) => {
-      // Filter by year and state
-      const yearMatch = !filterYear || item.year.toString().includes(filterYear);
-      const stateMatch = !filterState || item.state.toLowerCase().includes(filterState.toLowerCase());
+  const filteredAndSortedData = useMemo(() => {
+    return data
+      .filter((item) => {
+        // Filter by year range (only if both startYear and endYear are set)
+        const yearMatch = !localStartYear || !localEndYear || !item.year || (item.year >= localStartYear && item.year <= localEndYear);
 
-      // Exclude rows where trap count and SPB per 2 weeks are both 0
-      const hasData = item.trapCount > 0 || item.spbPer2Weeks > 0;
+        // Filter by state
+        const stateMatch = !selectedStateName || item.state === selectedStateName;
 
-      return yearMatch && stateMatch && hasData;
-    })
-    .sort((a, b) => {
-      const aValue = a[sortField];
-      const bValue = b[sortField];
+        // Filter by county/ranger district
+        let locationMatch = true;
+        if (selectedStateName) {
+          if (dataMode === DATA_MODES.COUNTY) {
+            locationMatch = !localCounty || localCounty.length === 0 || localCounty.includes(item.county);
+          } else {
+            locationMatch = !localRangerDistrict || localRangerDistrict.length === 0 || localRangerDistrict.includes(item.county);
+          }
+        }
 
-      if (sortDirection === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
-    });
+        // Optionally exclude rows where trap count and SPB per 2 weeks are both 0
+        const hasData = showEmptyRecords || item.trapCount > 0 || item.spbPer2Weeks > 0;
+
+        return yearMatch && stateMatch && locationMatch && hasData;
+      })
+      .sort((a, b) => {
+        const aValue = a[sortField];
+        const bValue = b[sortField];
+
+        if (sortDirection === 'asc') {
+          return aValue > bValue ? 1 : -1;
+        } else {
+          return aValue < bValue ? 1 : -1;
+        }
+      });
+  }, [data, localStartYear, localEndYear, selectedStateName, localCounty, localRangerDistrict, dataMode, sortField, sortDirection, showEmptyRecords]);
 
   const getOutbreakColor = (outbreak) => {
     // Use exact colors from trapping-data-map constants
@@ -159,7 +393,7 @@ const DataTableScreen = ({
           <div className="error-container">
             <h2>Error Loading Data</h2>
             <p>{errorText}</p>
-            <button type="button" onClick={() => getSparseData()} className="retry-button">
+            <button type="button" onClick={() => fetchData()} className="retry-button">
               Retry
             </button>
           </div>
@@ -183,28 +417,74 @@ const DataTableScreen = ({
         <div className="table-controls">
           <div className="filters">
             <div className="filter-group">
-              <label htmlFor="year-filter">
-                Filter by Year:
-                <input
-                  id="year-filter"
-                  type="text"
-                  placeholder="Enter year..."
-                  value={filterYear}
-                  onChange={(e) => setFilterYear(e.target.value)}
-                />
-              </label>
+              <div className="filter-label">Data Format:</div>
+              <div className="radio-group">
+                <label className="radio-item" htmlFor="raw-data">
+                  <input
+                    type="radio"
+                    id="raw-data"
+                    name="data-format"
+                    value="raw"
+                    checked={dataFormat === 'raw'}
+                    onChange={(e) => setDataFormat(e.target.value)}
+                  />
+                  <span className="radio-label">
+                    <strong>Raw Data</strong>
+                    <small>Weekly trap captures with individual records</small>
+                  </span>
+                </label>
+                <label className="radio-item" htmlFor="aggregated-data">
+                  <input
+                    type="radio"
+                    id="aggregated-data"
+                    name="data-format"
+                    value="aggregated"
+                    checked={dataFormat === 'aggregated'}
+                    onChange={(e) => setDataFormat(e.target.value)}
+                  />
+                  <span className="radio-label">
+                    <strong>Aggregated Data</strong>
+                    <small>Annual summaries per administrative unit</small>
+                  </span>
+                </label>
+              </div>
             </div>
+
             <div className="filter-group">
-              <label htmlFor="state-filter">
-                Filter by State:
-                <input
-                  id="state-filter"
-                  type="text"
-                  placeholder="Enter state..."
-                  value={filterState}
-                  onChange={(e) => setFilterState(e.target.value)}
-                />
-              </label>
+              <div className="filter-label">Date Range:</div>
+              <div className="year-range-inputs">
+                <div className="year-input-group">
+                  <ChoiceInput
+                    id="start-year-input"
+                    options={availableHistoricalYears || []}
+                    value={localStartYear}
+                    setValue={setLocalStartYear}
+                    firstOptionText="Select start year"
+                  />
+                </div>
+                <div className="year-input-group">
+                  <ChoiceInput
+                    id="end-year-input"
+                    options={revYears}
+                    value={localEndYear}
+                    setValue={setLocalEndYear}
+                    firstOptionText="Select end year"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="filter-group">
+              <div className="filter-label">Location:</div>
+              <MultiSelectInput
+                id="location-input"
+                valueParent={selectedStateName}
+                valueChildren={dataMode === DATA_MODES.COUNTY ? localCounty : localRangerDistrict}
+                setValueParent={setStateAbbrev}
+                setValueChildren={dataMode === DATA_MODES.COUNTY ? setLocalCounty : setLocalRangerDistrict}
+                optionsParent={statesMappedToNames}
+                optionsChildren={availableHistoricalSublocations || []}
+              />
             </div>
           </div>
         </div>
@@ -282,7 +562,7 @@ const DataTableScreen = ({
             <tbody>
               {filteredAndSortedData.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.year}</td>
+                  <td>{item.year || 'N/A'}</td>
                   <td>{item.state}</td>
                   <td>{item.county}</td>
                   <td>{item.trapCount.toLocaleString()}</td>
@@ -304,11 +584,23 @@ const DataTableScreen = ({
         </div>
 
         <div className="table-footer">
-          <p>Showing {filteredAndSortedData.length} of {data.length} records</p>
+          <div className="table-footer-content">
+            <p>Showing {filteredAndSortedData.length} of {data.length} records</p>
+            <label className="show-empty-toggle" htmlFor="show-empty-records">
+              <input
+                id="show-empty-records"
+                type="checkbox"
+                checked={showEmptyRecords}
+                onChange={(e) => setShowEmptyRecords(e.target.checked)}
+              />
+              <span>Show records with no data</span>
+            </label>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default DataTableScreen;
+// Memoize component to prevent re-renders when props haven't changed
+export default memo(DataTableScreen);
