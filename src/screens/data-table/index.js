@@ -10,6 +10,7 @@ import {
   setState,
   setCounty,
   setRangerDistrict,
+  setDataMode,
 } from '../../state/actions';
 import DataTableScreen from './component';
 
@@ -66,6 +67,7 @@ const mapDispatchToProps = (dispatch) => ({
   setState: (state) => dispatch(setState(state)),
   setCounty: (county) => dispatch(setCounty(county)),
   setRangerDistrict: (rangerDistrict) => dispatch(setRangerDistrict(rangerDistrict)),
+  setDataMode: (mode) => dispatch(setDataMode(mode)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataTableScreen);

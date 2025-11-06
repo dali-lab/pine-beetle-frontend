@@ -41,6 +41,7 @@ const DataTableScreen = ({
   setState,
   setCounty,
   setRangerDistrict,
+  setDataMode,
 }) => {
   const [sortField, setSortField] = useState('year');
   const [sortDirection, setSortDirection] = useState('asc');
@@ -61,7 +62,7 @@ const DataTableScreen = ({
     if (reduxSelectedState !== localState) setLocalState(reduxSelectedState || '');
     if (JSON.stringify(reduxCounty) !== JSON.stringify(localCounty)) setLocalCounty(reduxCounty || []);
     if (JSON.stringify(reduxRangerDistrict) !== JSON.stringify(localRangerDistrict)) setLocalRangerDistrict(reduxRangerDistrict || []);
-  }, [reduxStartYear, reduxEndYear, reduxSelectedState, reduxCounty, reduxRangerDistrict]);
+  }, [reduxStartYear, reduxEndYear, reduxSelectedState, reduxCounty, reduxRangerDistrict, localStartYear, localEndYear, localState, localCounty, localRangerDistrict]);
 
   // Use refs to track previous values and prevent unnecessary fetches
   const prevFiltersRef = useRef(null);
@@ -415,76 +416,124 @@ const DataTableScreen = ({
         </div>
 
         <div className="table-controls">
+          <div className="filters-header">
+            <h2 className="filters-title">Data Analysis Filters</h2>
+            <p className="filters-subtitle">Configure your data parameters to refine your analysis</p>
+          </div>
           <div className="filters">
-            <div className="filter-group">
-              <div className="filter-label">Data Format:</div>
-              <div className="radio-group">
-                <label className="radio-item" htmlFor="raw-data">
-                  <input
-                    type="radio"
-                    id="raw-data"
-                    name="data-format"
-                    value="raw"
-                    checked={dataFormat === 'raw'}
-                    onChange={(e) => setDataFormat(e.target.value)}
-                  />
-                  <span className="radio-label">
-                    <strong>Raw Data</strong>
-                    <small>Weekly trap captures with individual records</small>
-                  </span>
-                </label>
-                <label className="radio-item" htmlFor="aggregated-data">
-                  <input
-                    type="radio"
-                    id="aggregated-data"
-                    name="data-format"
-                    value="aggregated"
-                    checked={dataFormat === 'aggregated'}
-                    onChange={(e) => setDataFormat(e.target.value)}
-                  />
-                  <span className="radio-label">
-                    <strong>Aggregated Data</strong>
-                    <small>Annual summaries per administrative unit</small>
-                  </span>
-                </label>
+            <div className="filter-card">
+              <div className="filter-card-header">
+                <div className="filter-label">Time Range</div>
               </div>
-            </div>
-
-            <div className="filter-group">
-              <div className="filter-label">Date Range:</div>
-              <div className="year-range-inputs">
-                <div className="year-input-group">
-                  <ChoiceInput
-                    id="start-year-input"
-                    options={availableHistoricalYears || []}
-                    value={localStartYear}
-                    setValue={setLocalStartYear}
-                    firstOptionText="Select start year"
-                  />
-                </div>
-                <div className="year-input-group">
-                  <ChoiceInput
-                    id="end-year-input"
-                    options={revYears}
-                    value={localEndYear}
-                    setValue={setLocalEndYear}
-                    firstOptionText="Select end year"
-                  />
+              <div className="filter-card-content">
+                <div className="year-range-inputs">
+                  <div className="year-input-group">
+                    <div className="input-label">Start Year</div>
+                    <ChoiceInput
+                      id="start-year-input"
+                      options={availableHistoricalYears || []}
+                      value={localStartYear}
+                      setValue={setLocalStartYear}
+                      firstOptionText="Select start year"
+                    />
+                  </div>
+                  <div className="year-input-group">
+                    <div className="input-label">End Year</div>
+                    <ChoiceInput
+                      id="end-year-input"
+                      options={revYears}
+                      value={localEndYear}
+                      setValue={setLocalEndYear}
+                      firstOptionText="Select end year"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="filter-group">
-              <div className="filter-label">Location:</div>
-              <MultiSelectInput
-                id="location-input"
-                valueParent={selectedStateName}
-                valueChildren={dataMode === DATA_MODES.COUNTY ? localCounty : localRangerDistrict}
-                setValueParent={setStateAbbrev}
-                setValueChildren={dataMode === DATA_MODES.COUNTY ? setLocalCounty : setLocalRangerDistrict}
-                optionsParent={statesMappedToNames}
-                optionsChildren={availableHistoricalSublocations || []}
-              />
+            <div className="filter-card">
+              <div className="filter-card-header">
+                <div className="filter-label">Geographic Area</div>
+              </div>
+              <div className="filter-card-content">
+                <div className="geographic-area-content">
+                  <div className="admin-level-group">
+                    <div className="input-label">Administrative Level</div>
+                    <div className="toggle-buttons">
+                      <button
+                        type="button"
+                        className={`toggle-btn ${dataMode === DATA_MODES.COUNTY ? 'active' : ''}`}
+                        onClick={() => setDataMode(DATA_MODES.COUNTY)}
+                      >
+                        County
+                      </button>
+                      <button
+                        type="button"
+                        className={`toggle-btn ${dataMode === DATA_MODES.RANGER_DISTRICT ? 'active' : ''}`}
+                        onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
+                      >
+                        Federal Land
+                      </button>
+                    </div>
+                  </div>
+                  <div className="location-group">
+                    <div className="input-label">Location</div>
+                    <MultiSelectInput
+                      id="location-input"
+                      valueParent={selectedStateName}
+                      valueChildren={dataMode === DATA_MODES.COUNTY ? localCounty : localRangerDistrict}
+                      setValueParent={setStateAbbrev}
+                      setValueChildren={dataMode === DATA_MODES.COUNTY ? setLocalCounty : setLocalRangerDistrict}
+                      optionsParent={statesMappedToNames}
+                      optionsChildren={availableHistoricalSublocations || []}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="filter-card">
+              <div className="filter-card-header">
+                <div className="filter-label">Data Format</div>
+              </div>
+              <div className="filter-card-content">
+                <div className="radio-group">
+                  <label
+                    className={`radio-item ${dataFormat === 'raw' ? 'selected' : ''}`}
+                    htmlFor="raw-data"
+                  >
+                    <input
+                      type="radio"
+                      id="raw-data"
+                      name="data-format"
+                      value="raw"
+                      checked={dataFormat === 'raw'}
+                      onChange={(e) => setDataFormat(e.target.value)}
+                    />
+                    <span className="radio-label">
+                      <strong>Raw Data</strong>
+                      <small>Weekly trap captures with individual records</small>
+                    </span>
+                  </label>
+                  <label
+                    className={`radio-item ${dataFormat === 'aggregated' ? 'selected' : ''}`}
+                    htmlFor="aggregated-data"
+                  >
+                    <input
+                      type="radio"
+                      id="aggregated-data"
+                      name="data-format"
+                      value="aggregated"
+                      checked={dataFormat === 'aggregated'}
+                      onChange={(e) => setDataFormat(e.target.value)}
+                    />
+                    <span className="radio-label">
+                      <strong>Aggregated Data</strong>
+                      <small>Annual summaries per administrative unit</small>
+                    </span>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
