@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 
 import { Loader } from '../../components';
-import { colors } from '../../components/historical-data/trapping-data-map/constants';
 import { ChoiceInput, MultiSelectInput } from '../../components/input-components';
 import { DATA_MODES, stateAbbrevToStateName } from '../../constants';
 import {
@@ -84,7 +83,6 @@ const DataTableScreen = ({
       const stateName = stateAbbrevToStateName[item.state] || item.state;
       const locationName = dataMode === DATA_MODES.COUNTY ? item.county : item.rangerDistrict;
 
-      // Determine outbreak level based on spots using exact thresholds from trapping-data-map
       // Use spotst0 if available, otherwise fall back to spots
       // Only use spotst0 if it's actually defined and not null
       let spotsValue = 0;
@@ -93,16 +91,6 @@ const DataTableScreen = ({
       } else if (item.spots !== undefined && item.spots !== null) {
         spotsValue = item.spots;
       }
-
-      // Thresholds: ['no spot data', '0-9', '10-19', '20-49', '50-99', '100-249', '>249']
-      let outbreakLevel = 'no spot data';
-      if (spotsValue > 249) outbreakLevel = '>249';
-      else if (spotsValue >= 100) outbreakLevel = '100-249';
-      else if (spotsValue >= 50) outbreakLevel = '50-99';
-      else if (spotsValue >= 20) outbreakLevel = '20-49';
-      else if (spotsValue >= 10) outbreakLevel = '10-19';
-      else if (spotsValue > 0) outbreakLevel = '0-9';
-      else outbreakLevel = 'no spot data';
 
       return {
         id: index + 1,
@@ -116,7 +104,6 @@ const DataTableScreen = ({
         // Beetle metrics
         beetles: item.spb || item.spbCount || 0,
         spbPer2Weeks: item.spbPer2Weeks || 0,
-        outbreak: outbreakLevel,
         clerids: item.clerids || 0,
         spots: spotsValue,
         spotst1: item.spotst1 || 0,
@@ -144,16 +131,6 @@ const DataTableScreen = ({
       // Aggregated data typically has sum of spots, spb, clerids
       const spotsValue = item.spots || item.spotst0 || 0;
 
-      // Thresholds: ['no spot data', '0-9', '10-19', '20-49', '50-99', '100-249', '>249']
-      let outbreakLevel = 'no spot data';
-      if (spotsValue > 249) outbreakLevel = '>249';
-      else if (spotsValue >= 100) outbreakLevel = '100-249';
-      else if (spotsValue >= 50) outbreakLevel = '50-99';
-      else if (spotsValue >= 20) outbreakLevel = '20-49';
-      else if (spotsValue >= 10) outbreakLevel = '10-19';
-      else if (spotsValue > 0) outbreakLevel = '0-9';
-      else outbreakLevel = 'no spot data';
-
       return {
         id: index + 1,
         year: item.year || null, // Aggregated data may not have year if aggregated by location
@@ -166,7 +143,6 @@ const DataTableScreen = ({
         // Beetle metrics (aggregated sums)
         beetles: item.spb || item.sumSpb || item.spbCount || 0,
         spbPer2Weeks: item.spbPer2Weeks || item.sumSpbPer2Weeks || 0,
-        outbreak: outbreakLevel,
         clerids: item.clerids || item.sumClerids || 0,
         spots: spotsValue,
         spotst1: item.spotst1 || item.sumSpotst1 || 0,
@@ -370,13 +346,6 @@ const DataTableScreen = ({
       });
   }, [data, localStartYear, localEndYear, selectedStateName, localCounty, localRangerDistrict, dataMode, sortField, sortDirection, showEmptyRecords]);
 
-  const getOutbreakColor = (outbreak) => {
-    // Use exact colors from trapping-data-map constants
-    // Colors: ['#D3D3D3', '#86CCFF', '#FFC148', '#FFA370', '#FF525C', '#CB4767', '#6B1B38']
-    const thresholdIndex = ['no spot data', '0-9', '10-19', '20-49', '50-99', '100-249', '>249'].indexOf(outbreak);
-    return thresholdIndex !== -1 ? colors[thresholdIndex] : '#AEAEAE';
-  };
-
   if (isLoading) {
     return (
       <div className="data-table-screen">
@@ -410,16 +379,12 @@ const DataTableScreen = ({
           <h1>Historical Data Table</h1>
           <p className="page-description">
             Browse and analyze Southern Pine Beetle data including trap counts, beetle activity,
-            outbreak levels, outbreak probability, and predictions. Use filters and sorting options to
+            outbreak probability, and predictions. Use filters and sorting options to
             explore trends across ranger districts and counties.
           </p>
         </div>
 
         <div className="table-controls">
-          <div className="filters-header">
-            <h2 className="filters-title">Data Analysis Filters</h2>
-            <p className="filters-subtitle">Configure your data parameters to refine your analysis</p>
-          </div>
           <div className="filters">
             <div className="filter-card">
               <div className="filter-card-header">
@@ -582,14 +547,6 @@ const DataTableScreen = ({
                     </span>
                   )}
                 </th>
-                <th onClick={() => handleSort('outbreak')} className="sortable">
-                  Outbreak Level
-                  {sortField === 'outbreak' && (
-                    <span className="sort-indicator">
-                      {sortDirection === 'asc' ? '↑' : '↓'}
-                    </span>
-                  )}
-                </th>
                 <th onClick={() => handleSort('probSpotsGT50')} className="sortable">
                   Prob &gt; 50 Spots
                   {sortField === 'probSpotsGT50' && (
@@ -616,14 +573,6 @@ const DataTableScreen = ({
                   <td>{item.county}</td>
                   <td>{item.trapCount.toLocaleString()}</td>
                   <td>{item.spbPer2Weeks.toLocaleString()}</td>
-                  <td>
-                    <span
-                      className="outbreak-badge"
-                      style={{ backgroundColor: getOutbreakColor(item.outbreak) }}
-                    >
-                      {item.outbreak}
-                    </span>
-                  </td>
                   <td className="probability-cell">{(item.probSpotsGT50 * 100).toFixed(1)}%</td>
                   <td className="prediction-cell">{item.predSpotsorigUnits.toFixed(1)}</td>
                 </tr>
@@ -651,5 +600,4 @@ const DataTableScreen = ({
   );
 };
 
-// Memoize component to prevent re-renders when props haven't changed
 export default memo(DataTableScreen);

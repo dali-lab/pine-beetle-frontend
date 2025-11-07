@@ -95,9 +95,10 @@
     }
 
     @media (max-width: $tablet) {
-        margin-left: 0;
-        margin-right: 0;
-        padding: 1.25rem;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 1.25rem 0.25rem;
 
         .scatter-chart-bar-selections {
             flex-direction: column;
