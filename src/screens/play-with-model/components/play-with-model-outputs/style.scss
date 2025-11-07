@@ -57,10 +57,54 @@
       border-color: $grey200;
     }
 
-    .darkRed {
+    // Color classes for prediction cards based on prediction results
+    .color-fill-with-shadow {
+      &.blue {
+        background: #649AD3;
+        border-color: #4a7ba8;
+      }
+
+      &.yellow {
+        background: #E6B951;
+        border-color: #d4a842;
+      }
+
+      &.orange {
+        background: #E89876;
+        border-color: #d8855f;
+      }
+
+      &.brightRed {
+        background: #D95557;
+        border-color: #c43f41;
+      }
+
+      &.darkerRed {
+        background: #AC5E7D;
+        border-color: #8d4a66;
+      }
+
+      &.darkRed {
+        background: #783F58;
+        border-color: #5d2f43;
+      }
+
+      &.green {
+        background: $grey300;
+        border-color: $grey500;
+      }
+
+      // All text should be strong dark regardless of background color
       #percent,
       #prob-text {
-        color: $white;
+        color: $headingColor;
+        font-weight: 700;
+
+        p {
+          color: $headingColor;
+          font-weight: 700;
+          margin: 0;
+        }
       }
     }
   }
@@ -82,47 +126,14 @@
     font-size: 14px;
     line-height: 1.4;
     text-align: center;
-    color: $textColor;
+    color: $headingColor;
     margin: 0;
-    font-weight: 500;
-  }
-}
+    font-weight: 700;
 
-.color-fill-with-shadow {
-  &.blue {
-    background: $grey200;
-    border-color: $grey400;
-  }
-
-  &.yellow {
-    background: $grey200;
-    border-color: $grey400;
-  }
-
-  &.orange {
-    background: $grey300;
-    border-color: $grey500;
-  }
-
-  &.brightRed {
-    background: $red100;
-    border-color: $red400;
-  }
-
-  &.darkerRed {
-    background: $red400;
-    border-color: $red600;
-    color: $white;
-  }
-
-  &.darkRed {
-    background: $red600;
-    border-color: $red700;
-    color: $white;
-  }
-
-  &.green {
-    background: $grey300;
-    border-color: $grey500;
+    p {
+      color: $headingColor;
+      font-weight: 700;
+      margin: 0;
+    }
   }
 }
