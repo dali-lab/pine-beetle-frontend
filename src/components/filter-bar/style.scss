@@ -87,7 +87,7 @@
   }
 
   .selection-button,
-  .multi-select-container .input-container {
+  .multi-select-container .location-header {
     height: 2.75rem;
     border-radius: 0.375rem;
     font-size: 0.875rem;
@@ -118,14 +118,15 @@
     }
   }
 
-  .multi-select-container .input-container {
+  .multi-select-container .location-header {
     width: 100%;
-    background-color: transparent;
+    background-color: $white;
 
-    &:focus-within {
+    &:focus {
       outline: none;
+      border-color: $greyBlue500;
     }
-    &:hover:not(:focus-within) {
+    &:hover:not(:focus) {
       border-color: $greyBlue400;
     }
   }

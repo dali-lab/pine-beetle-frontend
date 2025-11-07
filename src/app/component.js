@@ -28,13 +28,10 @@ import {
 import {
   Footer,
   Header,
-  MobileOverlay,
-  ScrollToTop,
 } from '../components';
 
 import {
   DATA_MODES,
-  MIN_WIDTH_THRESHOLD,
   RESOURCE_REMOTE_URLS,
   RESOURCE_ROUTES,
   ROUTES,

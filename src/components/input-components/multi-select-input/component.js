@@ -173,58 +173,50 @@ const MultiSelectInput = (props) => {
   if (listOnly) {
     return (
       <div className="multi-select-container">
-        <div className="input-container">
-          <div className="location-wrapper">
-            <div id="separation-line" />
-            {locationList()}
-          </div>
-        </div>
+        <div id="separation-line" />
+        {locationList()}
       </div>
     );
   } else {
     return (
       <div className="multi-select-container" ref={ref}>
-        <div className="input-container">
-          <div className="location-wrapper">
-            <div
-              id={id}
-              className="location-header"
-              onClick={() => setIsListOpen(!isListOpen)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  setIsListOpen(!isListOpen);
-                }
-              }}
-              aria-expanded={isListOpen}
-              aria-haspopup="listbox"
-            >
-              <div className="location-header-title">{statusText}</div>
-              <svg
-                className="location-header-arrow"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6L8 10L12 6"
-                  stroke="#73767e"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-            {/* Initial dropdown displaying all parent data (e.g. all states) */}
-            {isListOpen && (
-              locationList()
-            )}
-          </div>
+        <div
+          id={id}
+          className="location-header"
+          onClick={() => setIsListOpen(!isListOpen)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setIsListOpen(!isListOpen);
+            }
+          }}
+          aria-expanded={isListOpen}
+          aria-haspopup="listbox"
+        >
+          <div className="location-header-title">{statusText}</div>
+          <svg
+            className="location-header-arrow"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6L8 10L12 6"
+              stroke="#73767e"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </div>
+        {/* Initial dropdown displaying all parent data (e.g. all states) */}
+        {isListOpen && (
+          locationList()
+        )}
       </div>
     );
   }
