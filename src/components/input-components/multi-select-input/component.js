@@ -34,7 +34,6 @@ const MultiSelectInput = (props) => {
 
   const ref = useRef();
   const [statusText, setStatusText] = useState('');
-  const [allSelected, setAllSelected] = useState(true);
   const [isListOpen, setIsListOpen] = useState(false);
 
   // close dropdown when clicking outside the component
@@ -60,13 +59,6 @@ const MultiSelectInput = (props) => {
     }
   }, [valueChildren, optionsChildren, valueParent]);
 
-  // force "none selected" to be "all selected"
-  useEffect(() => {
-    if (!valueParent) {
-      setAllSelected(true);
-    }
-  }, [valueParent]);
-
   useEffect(() => {
     setValueChildren([]);
   }, [setValueChildren]);
@@ -78,11 +70,9 @@ const MultiSelectInput = (props) => {
   // set the parent and auto select all its children
   const selectParent = (parent) => {
     if (valueParent === parent) {
-      setAllSelected(true);
       setValueParent('');
       setIsListOpen(false);
     } else {
-      setAllSelected(false);
       setValueParent(parent);
       setIsListOpen(false);
     }
@@ -105,7 +95,6 @@ const MultiSelectInput = (props) => {
           <button type="button"
             className="location-list-instructions"
             onClick={() => {
-              setAllSelected(true);
               setValueParent('');
             }}
           >
@@ -121,7 +110,7 @@ const MultiSelectInput = (props) => {
         {
           optionsParent.map((item) => (
             <div
-              className={`location-list-item ${(valueParent === item || allSelected) ? 'active' : ''}`}
+              className={`location-list-item ${valueParent === item ? 'active' : ''}`}
               key={item}
             >
               <div
@@ -129,7 +118,7 @@ const MultiSelectInput = (props) => {
                 onClick={() => selectParent(item)}
               >
                 <div className="location-list-item-select-checkbox">
-                  {(valueParent === item || allSelected) ? <CheckboxChecked /> : <CheckboxEmpty />}
+                  {valueParent === item ? <CheckboxChecked /> : <CheckboxEmpty />}
                 </div>
                 {item}
                 {valueParent === item && (
@@ -149,12 +138,12 @@ const MultiSelectInput = (props) => {
                     {
                       optionsChildren.map((child) => (
                         <div
-                          className={`children-list-item ${(valueChildren.indexOf(child) > -1 || valueChildren.length === 0) ? 'active' : ''}`}
+                          className={`children-list-item ${valueChildren.indexOf(child) > -1 ? 'active' : ''}`}
                           key={child}
                           onClick={() => selectChildren(child)}
                         >
                           <div className="children-list-item-checkbox">
-                            {(valueChildren.indexOf(child) > -1 || valueChildren.length === 0) ? <CheckboxChecked /> : <CheckboxEmpty />}
+                            {valueChildren.indexOf(child) > -1 ? <CheckboxChecked /> : <CheckboxEmpty />}
                           </div>
                           {child}
                         </div>
