@@ -20,6 +20,7 @@ const mapStateToProps = (state) => {
       rangerDistrict,
       state: selectedState,
       predictionYear: year,
+      predictionModal,
       availablePredictionStates,
       availablePredictionSublocations,
       availablePredictionYears,
@@ -39,6 +40,7 @@ const mapStateToProps = (state) => {
     rangerDistrict,
     selectedState,
     year,
+    predictionModal,
   };
 };
 

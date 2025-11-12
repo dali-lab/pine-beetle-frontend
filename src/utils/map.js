@@ -12,7 +12,7 @@ import {
 import { getMapboxRDNameFormat } from './abbreviation-mappings';
 
 // twice-curried function for generating click callback
-const createMapClickCallback = (states, sublocations, currentState, data, dataMode, propsCounty, setCounty, propsRangerDistrict, setRangerDistrict) => (e) => {
+const createMapClickCallback = (states, sublocations, currentState, data, dataMode, propsCounty, setCounty, propsRangerDistrict, setRangerDistrict, setPredictionModal) => (e) => {
   if (!e?.features[0]?.properties) return;
 
   const {
@@ -35,14 +35,18 @@ const createMapClickCallback = (states, sublocations, currentState, data, dataMo
   if (dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
     if (propsCounty.length > 0) { // remove selection if user clicks selected county
       setCounty([]);
+      if (setPredictionModal) setPredictionModal(false);
     } else {
       setCounty([county]);
+      if (setPredictionModal) setPredictionModal(true);
     }
   } else if (sublocations.includes(rangerDistrictToSet)) {
     if (propsRangerDistrict.length > 0) { // remove selection if user clicks selected ranger district
       setRangerDistrict([]);
+      if (setPredictionModal) setPredictionModal(false);
     } else {
       setRangerDistrict([rangerDistrictToSet]);
+      if (setPredictionModal) setPredictionModal(true);
     }
   }
 };

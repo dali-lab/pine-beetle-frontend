@@ -45,6 +45,7 @@ import { Map } from '../../../../components';
 import MapControls from '../../../../components/map-controls/component';
 import TogglesOverlay from '../../../../components/map/components';
 import { isInvalidNumber } from '../../../../utils/map';
+import PredictionDetails from '../prediction-details';
 
 const PredictionMap = (props) => {
   const {
@@ -64,6 +65,7 @@ const PredictionMap = (props) => {
     setPredictionModal,
     clearAllSelections,
     year,
+    predictionModal,
   } = props;
 
   const [map, setMap] = useState();
@@ -188,6 +190,7 @@ const PredictionMap = (props) => {
       setCounty,
       props.rangerDistrict,
       setRangerDistrict,
+      setPredictionModal,
     );
     const hoverCallback = createMapHoverCallback(
       data,
@@ -257,11 +260,12 @@ const PredictionMap = (props) => {
         setCounty,
         props.rangerDistrict,
         setRangerDistrict,
+        setPredictionModal,
       );
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
-  }, [map, availableStates, availableSublocations, selectedState, data, dataMode]);
+  }, [map, availableStates, availableSublocations, selectedState, data, dataMode, setPredictionModal]);
 
   useEffect(() => {
     if (map) {
@@ -301,12 +305,6 @@ const PredictionMap = (props) => {
       map.removeLayer(VECTOR_LAYER);
     }
   }, [data, map]);
-
-  useEffect(() => {
-    if (data.length === 1) {
-      setPredictionModal(true);
-    }
-  }, [data]);
 
   // Helper function to get risk level label
   const getRiskLevel = (index) => {
@@ -366,6 +364,9 @@ const PredictionMap = (props) => {
         )}
         isDownloadingMap={isDownloadingMap}
       />
+      {predictionModal && data.length === 1 && (
+        <PredictionDetails />
+      )}
     </div>
   );
 };
