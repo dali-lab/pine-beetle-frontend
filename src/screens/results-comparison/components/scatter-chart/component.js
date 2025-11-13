@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useRef } from 'react';
 import * as echarts from 'echarts';
 import * as ecStat from 'echarts-stat';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import {
   getMapboxRDNameFormat,
