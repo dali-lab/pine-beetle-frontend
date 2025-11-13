@@ -329,13 +329,15 @@ export const clearSelections = () => {
     // clear out existing data
     dispatch(clearData());
 
-    // fetch new data
+    // Get the updated state after clearing (predictionYear will be reset to latest available)
+    const { predictionYear } = getState().selections;
+
+    // fetch new data (without state filter - will show all states on map)
     dispatch(getSparseData());
     dispatch(getAggregateYearData());
     dispatch(getAggregateStateData());
     dispatch(getAggregateLocationData());
-    dispatch(getPredictions());
-    const { predictionYear } = getState().selections;
+    dispatch(getPredictions(predictionYear));
     dispatch(getResultsComparisonData(predictionYear));
 
     // fetch new selection criteria

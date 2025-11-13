@@ -69,8 +69,17 @@ const SelectionsReducer = (state = initialState, action) => {
         ? state.availableHistoricalYears[state.availableHistoricalYears.length - 1]
         : '';
 
+      // Reset prediction year to latest available year, or current year if none available
+      const defaultPredictionYear = state.availablePredictionYears.length > 0
+        ? Math.max(...state.availablePredictionYears)
+        : initialState.predictionYear;
+
       return {
         ...initialState,
+        predictionYear: defaultPredictionYear,
+        state: '',
+        county: [],
+        rangerDistrict: [],
         availableYears: state.availableYears,
         availableStates: state.availableStates,
         availableHistoricalYears: state.availableHistoricalYears,
