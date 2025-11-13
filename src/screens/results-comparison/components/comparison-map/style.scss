@@ -44,3 +44,27 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 }
+
+#prediction-hover {
+    position: absolute;
+    background-color: rgba(17, 18, 22, 0.75);
+    padding: 15px;
+    color: white;
+    text-align: left;
+    border-radius: 10px;
+    -webkit-backdrop-filter: blur(70px);
+    backdrop-filter: blur(70px);
+    background-color: rgba(17, 18, 22, 0.75);
+    z-index: 1000;
+    pointer-events: none;
+
+    h3 {
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    p {
+        color: white;
+        margin: 5px 0;
+    }
+}

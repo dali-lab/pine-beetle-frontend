@@ -62,9 +62,7 @@ const createMapClickCallback = (states, sublocations, currentState, data, dataMo
   }
 };
 
-// twice-curried function for generating hover callback
 const createHoverCallback = (map, rangerDistricts, mode, callback, isMobile = false) => (e) => {
-  // Don't show hover on mobile devices
   if (isMobile) return;
 
   if (!map || !e || !map.isStyleLoaded()) return;
@@ -82,7 +80,6 @@ const createHoverCallback = (map, rangerDistricts, mode, callback, isMobile = fa
       forest: rawForest,
     } = counties[0].properties;
 
-    // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
     const hoverRD = rawForest.replaceAll('  ', ' ');
 
     const location = mode === DATA_MODES.COUNTY
@@ -91,6 +88,8 @@ const createHoverCallback = (map, rangerDistricts, mode, callback, isMobile = fa
         .find((rd) => getMapboxRDNameFormat(rd)?.includes(hoverRD));
 
     callback(hoverState, location, x, y, counties);
+  } else {
+    callback(null, null, null, null, []);
   }
 };
 

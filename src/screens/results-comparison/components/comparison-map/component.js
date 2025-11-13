@@ -70,10 +70,13 @@ const ComparisonMap = (props) => {
   const createMapHoverCallback = (resultsData, rangerDistricts, mode, state, availStates) => {
     const callback = (hoverState, location, x, y) => {
       const pred = resultsData.find((p) => {
-        // either ranger district mode or have a matching state
-        return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState)))
-            // and sublocation matches
-            && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState) || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
+        const stateMatches = mode === DATA_MODES.RANGER_DISTRICT
+          || (state ? (p.state === hoverState && p.state === state) : availStates.includes(hoverState));
+        const locationMatches = mode === DATA_MODES.COUNTY
+          ? (p.county === location && p.state === hoverState)
+          : (p.rangerDistrict === location);
+
+        return stateMatches && locationMatches;
       });
 
       if (pred && x && y) {
@@ -220,23 +223,18 @@ const ComparisonMap = (props) => {
     }
 
     if (map && data) {
-    // remove current callback
       if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
 
-      // generate new callback
       const callback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates);
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
     }
   }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates]);
 
-  // update the click callback handler when all RD or all states changes
   useEffect(() => {
     if (map && availableStates && availableSublocations) {
-    // remove current callback
       if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
 
-      // generate new callback
       const callback = createMapClickCallback(
         availableStates,
         availableSublocations,
@@ -255,14 +253,11 @@ const ComparisonMap = (props) => {
 
   useEffect(() => {
     if (map) {
-    // remove current callback
       if (mapStateClickCallback) map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
 
-      // generate new callback
       const callback = (e) => {
         const { abbrev } = e?.features[0]?.properties || {};
 
-        // state must exist, not be current selection and must be a valid state
         if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
           setState(abbrev);
         }
@@ -275,10 +270,8 @@ const ComparisonMap = (props) => {
 
   useEffect(() => {
     if (map) {
-    // remove current callback
-      if (mapLayerMouseLeaveCallback) map.off('click', VECTOR_LAYER, mapLayerMouseLeaveCallback);
+      if (mapLayerMouseLeaveCallback) map.off('mouseleave', VECTOR_LAYER, mapLayerMouseLeaveCallback);
 
-      // generate new callback
       const callback = () => setResultsHover(null);
 
       setMapLayerMouseLeaveCallback(() => callback);
