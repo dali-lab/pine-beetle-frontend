@@ -60,7 +60,7 @@ const ScatterChart = ({
         trigger: 'item',
         formatter: (params) => {
           const [x, y, location, year, spotst0] = params.data;
-          return `${location} (${year})<br/><br/>spots = exp(${y.toFixed(2)}) = ${spotst0}<br/>Percent chance > 50 spots: <b>${x.toFixed(0)}%</b>`;
+          return `${location} (${year})<br/><br/>spots = exp(${y.toFixed(2)}) - 1 = ${spotst0}<br/>Percent chance > 50 spots: <b>${x.toFixed(0)}%</b>`;
         },
         extraCssText: 'text-align: left;',
       },
