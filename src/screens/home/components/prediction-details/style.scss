@@ -1,7 +1,8 @@
 @import '../../../../styles/breakpoints';
 @import '../../../../styles/colors';
 
-.prediction-details-modal-overlay {
+// React Modal Overlay styles
+.ReactModal__Overlay.prediction-details-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,6 +15,30 @@
   justify-content: center;
   padding: 20px;
   overflow-y: auto;
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open.prediction-details-modal-overlay {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close.prediction-details-modal-overlay {
+  opacity: 0;
+}
+
+// React Modal Content styles
+.ReactModal__Content.prediction-details-modal {
+  position: relative;
+  outline: none;
+  max-width: 1200px;
+  max-height: 70vh;
+  width: 100%;
+  margin: auto;
+  padding: 0;
+  background: transparent;
+  border: none;
+  overflow: visible;
 }
 
 .prediction-details-container {
@@ -22,29 +47,16 @@
   padding: 39px;
   border-radius: 26px;
   position: relative;
-  max-width: 1200px;
   max-height: 70vh;
-  width: 100%;
-  margin: auto;
   overflow-y: auto;
   overflow-x: hidden;
 
+  // Hide scrollbar but keep scrolling functionality
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE and Edge
+
   &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: $grey100;
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $greyBlue400;
-    border-radius: 4px;
-
-    &:hover {
-      background: $greyBlue500;
-    }
+    display: none; // Chrome, Safari, Opera
   }
 }
 
@@ -383,6 +395,56 @@ hr {
   margin-bottom: 24px;
 }
 
+.prediction-histogram-scroll-container {
+  width: 100%;
+  overflow-x: visible;
+
+  @media (max-width: $mobile) {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba($greyBlue800, 0.3) transparent;
+
+    // Smooth scrolling with momentum on iOS
+    scroll-behavior: smooth;
+
+    // Enable touch scrolling - only allow horizontal panning
+    touch-action: pan-x;
+
+    // Prevent vertical scrolling on the histogram container itself
+    overscroll-behavior-x: contain;
+
+    // Custom scrollbar styling for webkit browsers
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba($greyBlue300, 0.1);
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba($greyBlue800, 0.3);
+      border-radius: 3px;
+
+      &:hover {
+        background-color: rgba($greyBlue800, 0.5);
+      }
+    }
+
+    // Ensure histogram content maintains its natural width for scrolling
+    // The histogram component has min-width: 450px on wrapper + 130px legend = ~580px
+    // We ensure it can expand naturally but maintain scrollability
+    .histogram {
+      // Let histogram maintain its natural width, but ensure it's scrollable
+      width: max-content;
+      min-width: 580px; // Minimum width based on legend (130px) + wrapper (450px)
+    }
+  }
+}
+
 .about-predictions {
   margin-top: 24px;
   padding-top: 24px;
@@ -403,23 +465,36 @@ hr {
 @media (max-width: $mobile) {
   .prediction-details-modal-overlay {
     padding: 10px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .ReactModal__Content.prediction-details-modal {
+    max-height: 90vh;
+    width: 100%;
   }
 
   .prediction-details-container {
     padding: 20px;
     border-radius: 16px;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .prediction-title h1 {
     font-size: 24px;
+    margin-bottom: 16px;
   }
 
   #prediction-subtitle {
     font-size: 18px;
+    margin-bottom: 20px;
   }
 
   .prediction-info {
     flex-direction: column;
+    gap: 24px;
   }
 
   .percentages {
@@ -430,5 +505,25 @@ hr {
     margin-left: 0;
     margin-right: 0;
     margin-bottom: 40px;
+  }
+
+  .prediction-histogram-section {
+    margin-top: 32px;
+    padding-top: 32px;
+  }
+
+  .prediction-histogram-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .about-predictions {
+    margin-top: 20px;
+    padding-top: 20px;
+
+    p {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
   }
 }

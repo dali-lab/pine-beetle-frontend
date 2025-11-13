@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
+import Modal from 'react-modal';
 
 import './style.scss';
 
@@ -22,15 +23,23 @@ const PredictionDetails = (props) => {
     probSpotsGT50,
   } = props;
 
-  if (!isOpen || !data || data.length === 0) {
+  if (!data || data.length === 0) {
     return null;
   }
 
   const currYear = data[0]?.year ?? (new Date()).getFullYear();
 
   return (
-    <div className="prediction-details-modal-overlay" onClick={onClose}>
-      <div className="prediction-details-container" onClick={(e) => e.stopPropagation()}>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      className="prediction-details-modal"
+      overlayClassName="prediction-details-modal-overlay"
+      ariaHideApp={false}
+      closeTimeoutMS={200}
+      contentLabel="County Detail Modal"
+    >
+      <div className="prediction-details-container">
         <button
           type="button"
           className="prediction-details-close-button"
@@ -125,7 +134,9 @@ const PredictionDetails = (props) => {
             <h3 className="prediction-histogram-title">
               Predicted vs. Observed Outcomes for All Data, 1987-2025 (n=3,964)
             </h3>
-            <Histogram probSpotsGT50={probSpotsGT50} />
+            <div className="prediction-histogram-scroll-container">
+              <Histogram probSpotsGT50={probSpotsGT50} />
+            </div>
             <div className="about-predictions">
               <p>
                 The predictive model gives the probability for various levels of southern pine beetle spot severity.
@@ -140,7 +151,7 @@ const PredictionDetails = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 };
 

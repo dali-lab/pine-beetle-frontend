@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import PredictionDetails from './component';
 
-import { setPredictionModal } from '../../../../state/actions';
+import { setCounty, setPredictionModal } from '../../../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
@@ -29,6 +29,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onClose: () => {
       dispatch(setPredictionModal(false));
+      // Reset county selection when closing modal
+      dispatch(setCounty([]));
     },
   };
 };

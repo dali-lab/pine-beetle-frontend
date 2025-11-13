@@ -12,7 +12,7 @@ import {
 import { getMapboxRDNameFormat } from './abbreviation-mappings';
 
 // twice-curried function for generating click callback
-const createMapClickCallback = (states, sublocations, currentState, data, dataMode, propsCounty, setCounty, propsRangerDistrict, setRangerDistrict, setPredictionModal) => (e) => {
+const createMapClickCallback = (states, sublocations, currentState, data, dataMode, propsCounty, setCounty, propsRangerDistrict, setRangerDistrict, setPredictionModal, isMobile = false) => (e) => {
   if (!e?.features[0]?.properties) return;
 
   const {
@@ -31,7 +31,18 @@ const createMapClickCallback = (states, sublocations, currentState, data, dataMo
   // ensure clicked on valid state
   if (!states.includes(state) || !currentState) return;
 
-  // select county or RD depending on mode
+  // On mobile, always open modal when clicking a county (don't toggle selection)
+  if (isMobile && dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
+    // Find the prediction data for this county
+    const countyData = data.find((p) => p.county === county && p.state === state);
+    if (countyData) {
+      setCounty([county]);
+      if (setPredictionModal) setPredictionModal(true);
+    }
+    return;
+  }
+
+  // Desktop behavior: select county or RD depending on mode
   if (dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
     if (propsCounty.length > 0) { // remove selection if user clicks selected county
       setCounty([]);
@@ -52,7 +63,10 @@ const createMapClickCallback = (states, sublocations, currentState, data, dataMo
 };
 
 // twice-curried function for generating hover callback
-const createHoverCallback = (map, rangerDistricts, mode, callback) => (e) => {
+const createHoverCallback = (map, rangerDistricts, mode, callback, isMobile = false) => (e) => {
+  // Don't show hover on mobile devices
+  if (isMobile) return;
+
   if (!map || !e || !map.isStyleLoaded()) return;
 
   const counties = map.getLayer(VECTOR_LAYER)
@@ -88,6 +102,7 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     style: 'mapbox://styles/pine-beetle-prediction/ckgrzijos0q5119paazko291z',
     center: [-84.3880, 33.7490], // starting position
     zoom: 4.8, // starting zoom
+    maxZoom: 6, // Limit zoom to state level only
     bearing: 0, // Lock map to north orientation
     options: {
       trackResize: true,

@@ -77,6 +77,24 @@ const PredictionMap = (props) => {
   const [mapStateClickCallback, setMapStateClickCallback] = useState();
   const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
   const [allRangerDistricts, setAllRangerDistricts] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Check on mount
+    checkIsMobile();
+
+    // Listen for resize events
+    window.addEventListener('resize', checkIsMobile);
+
+    return () => {
+      window.removeEventListener('resize', checkIsMobile);
+    };
+  }, []);
 
   useEffect(() => {
     if (dataMode === DATA_MODES.RANGER_DISTRICT) {
@@ -114,7 +132,7 @@ const PredictionMap = (props) => {
       }
     };
 
-    return createHoverCallback(map, rangerDistricts, dataMode, callback);
+    return createHoverCallback(map, rangerDistricts, dataMode, callback, isMobile);
   };
 
   const colorPredictions = (predictions) => {
@@ -191,6 +209,7 @@ const PredictionMap = (props) => {
       props.rangerDistrict,
       setRangerDistrict,
       setPredictionModal,
+      isMobile,
     );
     const hoverCallback = createMapHoverCallback(
       data,
@@ -216,7 +235,7 @@ const PredictionMap = (props) => {
         setMap,
       );
     }, 100);
-  }, [dataMode]);
+  }, [dataMode, isMobile]);
 
   useEffect(() => {
     if (!map) return;
@@ -241,7 +260,7 @@ const PredictionMap = (props) => {
       setMapHoverCallback(() => callback);
       map.on('mousemove', callback);
     }
-  }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates]);
+  }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates, isMobile]);
 
   // update the click callback handler when all RD or all states changes
   useEffect(() => {
@@ -261,11 +280,12 @@ const PredictionMap = (props) => {
         props.rangerDistrict,
         setRangerDistrict,
         setPredictionModal,
+        isMobile,
       );
       setMapClickCallback(() => callback);
       map.on('click', VECTOR_LAYER, callback);
     }
-  }, [map, availableStates, availableSublocations, selectedState, data, dataMode, setPredictionModal]);
+  }, [map, availableStates, availableSublocations, selectedState, data, dataMode, setPredictionModal, isMobile]);
 
   useEffect(() => {
     if (map) {

@@ -216,13 +216,16 @@
           .thumbnail-card {
             padding: 1.5rem;
 
-            .thumbnail-icon {
-              width: 60px;
-              height: 60px;
-              margin-bottom: 1rem;
+            .thumbnail-visual {
+              order: 2;
+              margin-bottom: 0;
+              margin-top: 1rem;
             }
 
             .thumbnail-content {
+              order: 1;
+              margin-bottom: 0;
+
               h3 {
                 font-size: 1.3rem;
               }
@@ -230,6 +233,12 @@
               p {
                 font-size: 0.9rem;
               }
+            }
+
+            .thumbnail-icon {
+              width: 60px;
+              height: 60px;
+              margin-bottom: 1rem;
             }
           }
         }

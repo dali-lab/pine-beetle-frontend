@@ -52,16 +52,22 @@ const MultiSelectInput = (props) => {
   }, [isListOpen]);
 
   useEffect(() => {
-    if (valueChildren.length === 0) {
-      setStatusText(valueParent ? `${valueParent} (${optionsChildren.length} selected)` : CLEAR_TEXT);
+    if (valueChildren.length === 0 && valueParent) {
+      // When valueChildren is empty and parent is selected, it means all counties are selected
+      setStatusText(`${valueParent} (${optionsChildren.length} selected)`);
+    } else if (valueChildren.length === 0) {
+      setStatusText(CLEAR_TEXT);
     } else {
       setStatusText(valueParent ? `${valueParent} (${valueChildren.length} selected)` : CLEAR_TEXT);
     }
   }, [valueChildren, optionsChildren, valueParent]);
 
   useEffect(() => {
-    setValueChildren([]);
-  }, [setValueChildren]);
+    // When parent changes, automatically select all children (empty array = all selected)
+    if (valueParent) {
+      setValueChildren([]);
+    }
+  }, [valueParent, setValueChildren]);
 
   const handleRemove = (element) => {
     setValueChildren(valueChildren.filter((e) => e !== element));
@@ -74,16 +80,31 @@ const MultiSelectInput = (props) => {
       setIsListOpen(false);
     } else {
       setValueParent(parent);
+      // Automatically select all children (empty array represents all selected)
+      setValueChildren([]);
       setIsListOpen(false);
     }
   };
 
   // add children to value list or remove it if previously selected
   const selectChildren = (child) => {
-    // if child has already been selected, then remove it
-    if (valueChildren.indexOf(child) > -1) {
+    // When valueChildren is empty, it means all counties are selected
+    const isAllSelected = valueChildren.length === 0;
+
+    if (isAllSelected) {
+      // If all are selected and user clicks one, deselect that one (select all except this one)
+      // Convert from "all selected" to explicit list of all except the clicked one
+      setValueChildren(optionsChildren.filter((c) => c !== child));
+    } else if (valueChildren.indexOf(child) > -1) {
+      // If child is already selected, remove it
+      // But prevent deselecting all counties - if this would be the last one, keep it selected
+      if (valueChildren.length === 1) {
+        // Cannot deselect the last county, so do nothing
+        return;
+      }
       handleRemove(child);
     } else {
+      // Add child to selection
       setValueChildren([...valueChildren, child]);
     }
   };
@@ -136,18 +157,23 @@ const MultiSelectInput = (props) => {
                 valueParent === item && (
                   <div className="children-list">
                     {
-                      optionsChildren.map((child) => (
-                        <div
-                          className={`children-list-item ${valueChildren.indexOf(child) > -1 ? 'active' : ''}`}
-                          key={child}
-                          onClick={() => selectChildren(child)}
-                        >
-                          <div className="children-list-item-checkbox">
-                            {valueChildren.indexOf(child) > -1 ? <CheckboxChecked /> : <CheckboxEmpty />}
+                      optionsChildren.map((child) => {
+                        // When valueChildren is empty, all counties are selected
+                        const isAllSelected = valueChildren.length === 0;
+                        const isChildSelected = isAllSelected || valueChildren.indexOf(child) > -1;
+                        return (
+                          <div
+                            className={`children-list-item ${isChildSelected ? 'active' : ''}`}
+                            key={child}
+                            onClick={() => selectChildren(child)}
+                          >
+                            <div className="children-list-item-checkbox">
+                              {isChildSelected ? <CheckboxChecked /> : <CheckboxEmpty />}
+                            </div>
+                            {child}
                           </div>
-                          {child}
-                        </div>
-                      ))
+                        );
+                      })
                     }
                   </div>
                 )
