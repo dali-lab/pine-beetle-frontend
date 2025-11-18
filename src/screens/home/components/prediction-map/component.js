@@ -6,6 +6,7 @@ import mapboxgl from 'mapbox-gl';
 import React, {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -15,6 +16,7 @@ import MapControls from '../../../../components/map-controls/component';
 import TogglesOverlay from '../../../../components/map/components';
 import {
   DATA_MODES,
+  MAP_INIT_CONSTANTS,
   MAP_TITLES,
   VECTOR_LAYER,
 } from '../../../../constants';
@@ -100,6 +102,7 @@ const PredictionMap = (props) => {
 
   const colorPredictionsTimeoutRef = useRef(null);
   const isMountedRef = useRef(true);
+  const styleRetryCountRef = useRef(0);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -144,7 +147,7 @@ const PredictionMap = (props) => {
   const colorPredictions = useCallback((predictions) => {
     if (!map) return;
 
-    if (!waitForStyleLoad(map, colorPredictions, [predictions], colorPredictionsTimeoutRef, isMountedRef)) {
+    if (!waitForStyleLoad(map, colorPredictions, [predictions], colorPredictionsTimeoutRef, isMountedRef, styleRetryCountRef)) {
       return;
     }
 
@@ -196,7 +199,7 @@ const PredictionMap = (props) => {
     rangerDistrict: props.rangerDistrict,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     latestValuesRef.current = {
       availableStates,
       availableSublocations,
@@ -207,7 +210,7 @@ const PredictionMap = (props) => {
       county: props.county,
       rangerDistrict: props.rangerDistrict,
     };
-  });
+  }, [availableStates, availableSublocations, selectedState, data, allRangerDistricts, isMobile, props.county, props.rangerDistrict]);
 
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
@@ -264,7 +267,7 @@ const PredictionMap = (props) => {
       mapInitializedRef.current = true;
       lastDataModeRef.current = dataMode;
       initTimeoutRef.current = null;
-    }, 100);
+    }, MAP_INIT_CONSTANTS.INIT_DELAY);
 
     // eslint-disable-next-line consistent-return
     return () => {
@@ -284,6 +287,7 @@ const PredictionMap = (props) => {
       }
       mapInitializedRef.current = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataMode]);
 
   useEffect(() => {
@@ -304,7 +308,8 @@ const PredictionMap = (props) => {
   const hoverCallback = useMemo(() => {
     if (!map || !data) return null;
     return createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates);
-  }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates, isMobile, createMapHoverCallback]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates, createMapHoverCallback]);
 
   const clickCallback = useMemo(() => {
     if (!map || !availableStates || !availableSublocations) return null;

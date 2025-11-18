@@ -2,11 +2,13 @@ import mapboxgl from 'mapbox-gl';
 import React, {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
 } from 'react';
 import {
   DATA_MODES,
+  MAP_INIT_CONSTANTS,
   MAP_TITLES,
   VECTOR_LAYER,
 } from '../../../constants';
@@ -65,6 +67,7 @@ const HistoricalMap = (props) => {
 
   const colorFillTimeoutRef = useRef(null);
   const isMountedRef = useRef(true);
+  const styleRetryCountRef = useRef(0);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -111,7 +114,7 @@ const HistoricalMap = (props) => {
   const colorFill = useCallback((d) => {
     if (!map) return;
 
-    if (!waitForStyleLoad(map, colorFill, [d], colorFillTimeoutRef, isMountedRef)) {
+    if (!waitForStyleLoad(map, colorFill, [d], colorFillTimeoutRef, isMountedRef, styleRetryCountRef)) {
       return;
     }
 
@@ -164,6 +167,7 @@ const HistoricalMap = (props) => {
   const mapInitializedRef = useRef(false);
   const lastDataModeRef = useRef(dataMode);
   const initTimeoutRef = useRef(null);
+  const containerRetryCountRef = useRef(0);
 
   const latestValuesRef = useRef({
     availableStates,
@@ -175,7 +179,7 @@ const HistoricalMap = (props) => {
     rangerDistrict: props.rangerDistrict,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     latestValuesRef.current = {
       availableStates,
       availableSublocations,
@@ -185,7 +189,7 @@ const HistoricalMap = (props) => {
       county: props.county,
       rangerDistrict: props.rangerDistrict,
     };
-  });
+  }, [availableStates, availableSublocations, selectedState, rawData, allRangerDistricts, props.county, props.rangerDistrict]);
 
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
@@ -225,7 +229,16 @@ const HistoricalMap = (props) => {
 
     initTimeoutRef.current = setTimeout(() => {
       const checkContainer = () => {
-        if (document.getElementById('map')) {
+        if (!isMountedRef.current) return;
+
+        if (containerRetryCountRef.current >= MAP_INIT_CONSTANTS.MAX_CONTAINER_CHECK_RETRIES) {
+          console.error('Map container not found after maximum retries');
+          return;
+        }
+
+        const container = document.getElementById('map');
+        if (container) {
+          containerRetryCountRef.current = 0;
           generateMap(
             true,
             currentMap,
@@ -243,11 +256,12 @@ const HistoricalMap = (props) => {
           lastDataModeRef.current = dataMode;
           initTimeoutRef.current = null;
         } else {
-          setTimeout(checkContainer, 50);
+          containerRetryCountRef.current += 1;
+          setTimeout(checkContainer, MAP_INIT_CONSTANTS.CONTAINER_CHECK_INTERVAL);
         }
       };
       checkContainer();
-    }, 100);
+    }, MAP_INIT_CONSTANTS.INIT_DELAY);
 
     // eslint-disable-next-line consistent-return
     return () => {
@@ -275,6 +289,7 @@ const HistoricalMap = (props) => {
     if (predictionYear.toString().length === 4) colorFill(rawData);
 
     zoomToSelectedState(selectedState, map);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawData, selectedState, map, predictionYear, colorFill]);
 
   useEffect(() => {

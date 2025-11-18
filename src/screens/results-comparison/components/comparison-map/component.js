@@ -1,12 +1,13 @@
 import mapboxgl from 'mapbox-gl';
 import React, {
-  useCallback, useEffect, useMemo, useRef,
+  useCallback, useEffect, useLayoutEffect, useMemo, useRef,
 } from 'react';
 import MapComponent from '../../../../components/map';
 import MapControls from '../../../../components/map-controls/component';
 import TogglesOverlay from '../../../../components/map/components';
 import {
   DATA_MODES,
+  MAP_INIT_CONSTANTS,
   MAP_TITLES,
   VECTOR_LAYER,
 } from '../../../../constants';
@@ -38,8 +39,7 @@ import {
 import { colors, thresholds } from './constants';
 import './style.scss';
 
-const MAP_INIT_DELAY = 100;
-const CONTAINER_CHECK_INTERVAL = 50;
+const { INIT_DELAY: MAP_INIT_DELAY, CONTAINER_CHECK_INTERVAL } = MAP_INIT_CONSTANTS;
 const PROBABILITY_THRESHOLD = 0.2;
 const SPOTS_THRESHOLD = 50;
 
@@ -100,6 +100,7 @@ const ComparisonMap = (props) => {
   const mapInitTimeoutRef = useRef(null);
   const containerCheckTimeoutRef = useRef(null);
   const isMountedRef = useRef(true);
+  const styleRetryCountRef = useRef(0);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -184,7 +185,7 @@ const ComparisonMap = (props) => {
   const colorResults = useCallback((comparisonData) => {
     if (!isMountedRef.current || !map) return;
 
-    if (!waitForStyleLoad(map, colorResults, [comparisonData], colorResultsTimeoutRef, isMountedRef)) {
+    if (!waitForStyleLoad(map, colorResults, [comparisonData], colorResultsTimeoutRef, isMountedRef, styleRetryCountRef)) {
       return;
     }
 
@@ -223,6 +224,7 @@ const ComparisonMap = (props) => {
 
   const mapInitializedRef = useRef(false);
   const lastDataModeRef = useRef(dataMode);
+  const containerRetryCountRef = useRef(0);
 
   const latestValuesRef = useRef({
     availableStates,
@@ -235,7 +237,7 @@ const ComparisonMap = (props) => {
     rangerDistrict: props.rangerDistrict,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     latestValuesRef.current = {
       availableStates,
       availableSublocations,
@@ -246,7 +248,7 @@ const ComparisonMap = (props) => {
       county: props.county,
       rangerDistrict: props.rangerDistrict,
     };
-  });
+  }, [availableStates, availableSublocations, selectedState, data, allRangerDistricts, dataLookupMap, props.county, props.rangerDistrict]);
 
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
@@ -297,8 +299,14 @@ const ComparisonMap = (props) => {
       const checkContainer = () => {
         if (!isMountedRef.current) return;
 
+        if (containerRetryCountRef.current >= MAP_INIT_CONSTANTS.MAX_CONTAINER_CHECK_RETRIES) {
+          console.error('Map container not found after maximum retries');
+          return;
+        }
+
         const container = document.getElementById('map');
         if (container) {
+          containerRetryCountRef.current = 0;
           generateMap(
             true,
             currentMap,
@@ -315,6 +323,7 @@ const ComparisonMap = (props) => {
           mapInitializedRef.current = true;
           lastDataModeRef.current = dataMode;
         } else {
+          containerRetryCountRef.current += 1;
           containerCheckTimeoutRef.current = setTimeout(() => {
             containerCheckTimeoutRef.current = null;
             if (isMountedRef.current) {
@@ -348,6 +357,7 @@ const ComparisonMap = (props) => {
       }
       mapInitializedRef.current = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataMode]);
 
   useEffect(() => {

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Modal from 'react-modal';
 
 import './style.scss';
 
 const Loader = ({ visible, message = 'Loading...', inline = false }) => {
+  const modalIdRef = useRef(`loader-modal-${Math.random().toString(36).substr(2, 9)}`);
+
   const spinnerContent = (
     <div className={inline ? 'loading-container loading-container--inline' : 'loading-container'}>
       <div className="loading-spinner">
@@ -21,12 +23,15 @@ const Loader = ({ visible, message = 'Loading...', inline = false }) => {
 
   return (
     <Modal
+      key={modalIdRef.current}
       ariaHideApp={false}
       className="loading-modal"
       closeTimeoutMS={200}
       contentLabel="Loading Data Modal"
       isOpen={visible}
       overlayClassName="loading-overlay"
+      shouldCloseOnOverlayClick={false}
+      shouldCloseOnEsc={false}
     >
       {spinnerContent}
     </Modal>

@@ -1,10 +1,7 @@
 import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { generateMap } from '../utils';
-
-// Constants
-const MAP_INIT_DELAY = 100; // ms - delay before initializing map
-const CONTAINER_CHECK_INTERVAL = 50; // ms - interval for checking if map container exists
+import MAP_INIT_CONSTANTS from '../constants/map-constants';
 
 /**
  * Custom hook to handle map initialization with proper cleanup and race condition prevention
@@ -28,14 +25,14 @@ const useMapInitialization = (
   const mapInitTimeoutRef = useRef(null);
   const containerCheckTimeoutRef = useRef(null);
   const isMountedRef = useRef(true);
+  const retryCountRef = useRef(0);
 
   useEffect(() => {
     isMountedRef.current = true;
+    retryCountRef.current = 0;
 
-    // Set mapbox access token
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
-    // Clear any existing timeouts
     if (mapInitTimeoutRef.current) {
       clearTimeout(mapInitTimeoutRef.current);
       mapInitTimeoutRef.current = null;
@@ -45,7 +42,6 @@ const useMapInitialization = (
       containerCheckTimeoutRef.current = null;
     }
 
-    // Delay map initialization
     mapInitTimeoutRef.current = setTimeout(() => {
       mapInitTimeoutRef.current = null;
 
@@ -53,41 +49,46 @@ const useMapInitialization = (
 
       setMap(null);
 
-      // Wait for the map container to be available
       const checkContainer = () => {
         if (!isMountedRef.current) return;
 
+        if (retryCountRef.current >= MAP_INIT_CONSTANTS.MAX_CONTAINER_CHECK_RETRIES) {
+          console.error('Map container not found after maximum retries');
+          return;
+        }
+
         const container = document.getElementById('map');
         if (container) {
-          // Only generate map if container exists and component is still mounted
+          retryCountRef.current = 0;
           generateMap(
             true,
-            null, // map is null since we're regenerating
+            null,
             thresholds,
             colors,
-            () => {}, // No-op function since we use LegendOverlay instead
+            () => {},
             dataMode,
             clickCallback,
-            () => {}, // setMapClickCallback - handled by useMapCallbacks
+            () => {},
             hoverCallback,
-            () => {}, // setMapHoverCallback - handled by useMapCallbacks
+            () => {},
             setMap,
           );
         } else {
+          retryCountRef.current += 1;
           containerCheckTimeoutRef.current = setTimeout(() => {
             containerCheckTimeoutRef.current = null;
             if (isMountedRef.current) {
               checkContainer();
             }
-          }, CONTAINER_CHECK_INTERVAL);
+          }, MAP_INIT_CONSTANTS.CONTAINER_CHECK_INTERVAL);
         }
       };
       checkContainer();
-    }, MAP_INIT_DELAY);
+    }, MAP_INIT_CONSTANTS.INIT_DELAY);
 
     return () => {
       isMountedRef.current = false;
-      // Cleanup timeouts on unmount or dependency change
+      retryCountRef.current = 0;
       if (mapInitTimeoutRef.current) {
         clearTimeout(mapInitTimeoutRef.current);
         mapInitTimeoutRef.current = null;

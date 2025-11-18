@@ -1,4 +1,5 @@
 // map of state abbreviations to their names
+import MAP_INIT_CONSTANTS from './map-constants';
 import stateAbbrevToStateName from './state-abbreviations.json';
 import stateAbbrevToStateId from './state-ids.json';
 import stateAbbrevToZoomLevel from './state-zoom-levels.json';
@@ -141,7 +142,7 @@ export {
   DATA_MODES,
   DATA_TYPE_EXTENSIONS,
   DOWNLOAD_DATA_ROUTES,
-  getYearRange, LOCAL_STORAGE_KEYS, MAP_SOURCE_NAME, MAP_SOURCES, MAP_TITLES, MIN_WIDTH_THRESHOLD, RESOURCE_LOCAL_URLS, RESOURCE_REMOTE_URLS, RESOURCE_ROUTES, ROUTES,
+  getYearRange, LOCAL_STORAGE_KEYS, MAP_INIT_CONSTANTS, MAP_SOURCE_NAME, MAP_SOURCES, MAP_TITLES, MIN_WIDTH_THRESHOLD, RESOURCE_LOCAL_URLS, RESOURCE_REMOTE_URLS, RESOURCE_ROUTES, ROUTES,
   SOURCE_LAYERS, STATE_VECTOR_LAYER, stateAbbrevToStateId,
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,

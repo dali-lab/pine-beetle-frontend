@@ -1,6 +1,7 @@
 import { MAP_SOURCE_NAME, VECTOR_LAYER } from '../constants';
+import MAP_INIT_CONSTANTS from '../constants/map-constants';
 
-const STYLE_CHECK_INTERVAL = 1000;
+const { STYLE_CHECK_INTERVAL, MAX_STYLE_CHECK_RETRIES } = MAP_INIT_CONSTANTS;
 
 /**
  * Waits for map style to be loaded before proceeding with coloring
@@ -10,18 +11,26 @@ const STYLE_CHECK_INTERVAL = 1000;
  * @param {Array} colorFunctionArgs - Arguments to pass to colorFunction on retry
  * @param {Object} timeoutRef - Ref to store timeout ID for cleanup
  * @param {Object} isMountedRef - Ref to check if component is still mounted
+ * @param {Object} retryCountRef - Ref to track retry attempts (prevents infinite loops)
  * @returns {boolean} True if style is loaded (continue execution), false if retry was scheduled
  */
-export const waitForStyleLoad = (map, colorFunction, colorFunctionArgs, timeoutRef, isMountedRef) => {
+export const waitForStyleLoad = (map, colorFunction, colorFunctionArgs, timeoutRef, isMountedRef, retryCountRef = { current: 0 }) => {
   if (!map || !isMountedRef?.current) {
     return false;
   }
 
   if (!map.isStyleLoaded()) {
+    if (retryCountRef.current >= MAX_STYLE_CHECK_RETRIES) {
+      console.error('Map style failed to load after maximum retries');
+      return false;
+    }
+
     if (timeoutRef?.current) {
       clearTimeout(timeoutRef.current);
     }
 
+    // eslint-disable-next-line no-param-reassign
+    retryCountRef.current += 1;
     const timeoutId = setTimeout(() => {
       if (isMountedRef?.current && map && colorFunction) {
         colorFunction(...colorFunctionArgs);
@@ -40,6 +49,8 @@ export const waitForStyleLoad = (map, colorFunction, colorFunctionArgs, timeoutR
     return false;
   }
 
+  // eslint-disable-next-line no-param-reassign
+  retryCountRef.current = 0;
   return true;
 };
 
