@@ -1,51 +1,53 @@
 /*
- * DEV NOTE, Jeff Liu 2023:
- * this and the other map (prediction & trapping) should be rewritten
- * in the future and refactored to use composition. there's tons of
- * code duplication that can be combined so bug fixes are unified.
- *
- * also, there's a whole bunch of weird things based on switching the map
- * between county and federal land mode. I think a map subcomponent should be made
- * and there should be two different ones for county and RD that look at different fields.
+ * DEV NOTE: Refactored to use composition pattern with shared hooks and utilities.
+ * All functionality preserved including mobile detection and prediction modal.
  */
-
-/* eslint-disable prefer-destructuring */
 import mapboxgl from 'mapbox-gl';
-import React, { useEffect, useState } from 'react';
-
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { Map } from '../../../../components';
+import MapControls from '../../../../components/map-controls/component';
+import TogglesOverlay from '../../../../components/map/components';
 import {
   DATA_MODES,
-  MAP_SOURCE_NAME,
   MAP_TITLES,
-  SOURCE_LAYERS,
-  STATE_VECTOR_LAYER,
   VECTOR_LAYER,
 } from '../../../../constants';
-
-import { api } from '../../../../services';
+import {
+  useMapCallbacks, useMapState, useRangerDistricts,
+} from '../../../../hooks';
 import {
   createHoverCallback,
   createMapClickCallback,
   downloadMap,
+  formatLocationForMapbox,
   generateMap,
   getFillColor,
   getMapboxRDNameFormat,
+  getSourceLayer,
   mapboxHoverStyle,
   zoomToSelectedState,
 } from '../../../../utils';
-
+import { isInvalidNumber } from '../../../../utils/map';
+import {
+  addDefaultExpressions,
+  addLocationToExpressions,
+  addMapLayer,
+  createBaseExpressions,
+  removeVectorLayer,
+  waitForStyleLoad,
+} from '../../../../utils/map-coloring';
+import PredictionDetails from '../prediction-details';
 import {
   colors,
   thresholds,
 } from './constants';
-
 import './style.scss';
-
-import { Map } from '../../../../components';
-import MapControls from '../../../../components/map-controls/component';
-import TogglesOverlay from '../../../../components/map/components';
-import { isInvalidNumber } from '../../../../utils/map';
-import PredictionDetails from '../prediction-details';
 
 const PredictionMap = (props) => {
   const {
@@ -68,27 +70,27 @@ const PredictionMap = (props) => {
     predictionModal,
   } = props;
 
-  const [map, setMap] = useState();
-  const [initialFill, setInitialFill] = useState(false);
-  const [predictionHover, setPredictionHover] = useState(null);
-  const [isDownloadingMap, setIsDownloadingMap] = useState(false);
-  const [mapClickCallback, setMapClickCallback] = useState();
-  const [mapHoverCallback, setMapHoverCallback] = useState();
-  const [mapStateClickCallback, setMapStateClickCallback] = useState();
-  const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
-  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  // Use shared hooks for state management
+  const {
+    map,
+    setMap,
+    initialFill,
+    setInitialFill,
+    hover: predictionHover,
+    setHover: setPredictionHover,
+    isDownloadingMap,
+    setIsDownloadingMap,
+  } = useMapState();
 
   // Mobile detection
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
 
-    // Check on mount
     checkIsMobile();
-
-    // Listen for resize events
     window.addEventListener('resize', checkIsMobile);
 
     return () => {
@@ -96,18 +98,29 @@ const PredictionMap = (props) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (dataMode === DATA_MODES.RANGER_DISTRICT) {
-      api.getAvailableSublocations(dataMode)
-        .then(setAllRangerDistricts)
-        .catch(console.error);
-    }
-  }, [dataMode]);
+  // Fetch ranger districts when in RD mode
+  const allRangerDistricts = useRangerDistricts(dataMode);
 
-  const createMapHoverCallback = (predictions, rangerDistricts, mode, state, availStates) => {
+  // Refs for cleanup and race condition prevention
+  const colorPredictionsTimeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (colorPredictionsTimeoutRef.current) {
+        clearTimeout(colorPredictionsTimeoutRef.current);
+        colorPredictionsTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
+  // Create hover callback
+  const createMapHoverCallback = useCallback((predictions, rangerDistricts, mode, state, availStates) => {
     const callback = (hoverState, location, x, y) => {
       const pred = predictions.find((p) => {
-      // either ranger district mode or have a matching state
+        // either ranger district mode or have a matching state
         return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState)))
               // and sublocation matches
               && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState) || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
@@ -133,72 +146,187 @@ const PredictionMap = (props) => {
     };
 
     return createHoverCallback(map, rangerDistricts, dataMode, callback, isMobile);
-  };
+  }, [map, dataMode, isMobile, setPredictionHover]);
 
-  const colorPredictions = (predictions) => {
-    // keep trying until map styles are loaded
-    if (!map.isStyleLoaded()) {
-      setTimeout(() => {
-        colorPredictions(predictions);
-      }, 1000);
+  // Color predictions function using shared utilities
+  const colorPredictions = useCallback((predictions) => {
+    if (!map) return;
 
+    // Wait for style to load with proper cleanup
+    if (!waitForStyleLoad(map, colorPredictions, [predictions], colorPredictionsTimeoutRef, isMountedRef)) {
       return;
     }
 
-    // remove county layer if already constructed
-    if (map.getLayer(VECTOR_LAYER)) {
-      map.removeLayer(VECTOR_LAYER);
-    }
+    // Remove existing layer
+    removeVectorLayer(map);
 
-    const fillExpression = ['match', ['upcase', ['get', 'forest']]];
-    const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
+    // Create base expressions
+    const { fillExpression, strokeExpression } = createBaseExpressions();
 
-    predictions.forEach(({
-      county: countyName,
-      probSpotsGT50: fillProb,
-      rangerDistrict: rangerDistrictName,
-      state,
-    }) => {
-      const color = getFillColor(fillProb).color;
+    predictions.forEach((prediction) => {
+      const {
+        county: countyName,
+        probSpotsGT50: fillProb,
+        rangerDistrict: rangerDistrictName,
+        state,
+      } = prediction;
+      const { color } = getFillColor(fillProb);
 
-      const countyFormatName = countyName && state ? `${countyName.toUpperCase()} ${state}` : '';
-      const rangerDistrictFormatName = rangerDistrictName ? getMapboxRDNameFormat(rangerDistrictName).toUpperCase() : '';
+      const locationName = formatLocationForMapbox(dataMode, {
+        county: countyName,
+        rangerDistrict: rangerDistrictName,
+        state,
+      });
 
-      const locationName = dataMode === DATA_MODES.COUNTY
-        ? countyFormatName
-        // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
-        : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD'), rangerDistrictFormatName.replace(' RD', '')]
-          .filter((str) => !!str);
-
-      if (locationName?.length !== 0) {
-        fillExpression.push(locationName, color);
-        strokeExpression.push(locationName, '#000000');
+      // Handle both string (county) and array (RD with variants)
+      if (locationName) {
+        const names = Array.isArray(locationName) ? locationName : [locationName];
+        const validNames = names.filter((str) => !!str);
+        if (validNames.length > 0) {
+          addLocationToExpressions(fillExpression, strokeExpression, validNames, color);
+        }
       }
     });
 
-    // last value is the default, used where there is no data
-    fillExpression.push('rgba(0,0,0,0)');
-    strokeExpression.push('rgba(0,0,0,0)');
+    // Add default expressions
+    addDefaultExpressions(fillExpression, strokeExpression);
 
-    // add layer from the vector tile source with data-driven style
-    // double-checking if we have valid fillExpression for paint
-    if (fillExpression.length > 3) {
-      map.addLayer({
-        id: VECTOR_LAYER,
-        type: 'fill',
-        source: MAP_SOURCE_NAME,
-        'source-layer': dataMode === DATA_MODES.COUNTY ? SOURCE_LAYERS.COUNTY : SOURCE_LAYERS.RANGER_DISTRICT,
-        paint: {
-          'fill-color': fillExpression,
-          'fill-outline-color': strokeExpression,
-        },
-      }, 'water-point-label');
-    }
-  };
+    // Add layer to map
+    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
+  }, [map, dataMode]);
+
+  const mapInitializedRef = useRef(false);
+  const lastDataModeRef = useRef(dataMode);
+  const initTimeoutRef = useRef(null);
+
+  const latestValuesRef = useRef({
+    availableStates,
+    availableSublocations,
+    selectedState,
+    data,
+    allRangerDistricts,
+    isMobile,
+    county: props.county,
+    rangerDistrict: props.rangerDistrict,
+  });
 
   useEffect(() => {
+    latestValuesRef.current = {
+      availableStates,
+      availableSublocations,
+      selectedState,
+      data,
+      allRangerDistricts,
+      isMobile,
+      county: props.county,
+      rangerDistrict: props.rangerDistrict,
+    };
+  });
+
+  useEffect(() => {
+    const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
+
+    if (!shouldRegenerate && mapInitializedRef.current) {
+      return;
+    }
+
+    if (initTimeoutRef.current) {
+      clearTimeout(initTimeoutRef.current);
+      initTimeoutRef.current = null;
+    }
+
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
+
+    const latest = latestValuesRef.current;
     const clickCallback = createMapClickCallback(
+      latest.availableStates,
+      latest.availableSublocations,
+      latest.selectedState,
+      latest.data,
+      dataMode,
+      latest.county,
+      setCounty,
+      latest.rangerDistrict,
+      setRangerDistrict,
+      setPredictionModal,
+      latest.isMobile,
+    );
+    const hoverCallback = createMapHoverCallback(
+      latest.data,
+      latest.allRangerDistricts,
+      dataMode,
+      latest.selectedState,
+      latest.availableStates,
+    );
+
+    const currentMap = map;
+
+    initTimeoutRef.current = setTimeout(() => {
+      generateMap(
+        true,
+        currentMap,
+        thresholds,
+        colors,
+        () => {},
+        dataMode,
+        clickCallback,
+        () => {},
+        hoverCallback,
+        () => {},
+        setMap,
+      );
+      mapInitializedRef.current = true;
+      lastDataModeRef.current = dataMode;
+      initTimeoutRef.current = null;
+    }, 100);
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      if (initTimeoutRef.current) {
+        clearTimeout(initTimeoutRef.current);
+        initTimeoutRef.current = null;
+      }
+      if (map && typeof map.remove === 'function' && map.getContainer) {
+        try {
+          const container = map.getContainer();
+          if (container) {
+            map.remove();
+          }
+        } catch (error) {
+          // Silently ignore - map may already be removed or in invalid state
+        }
+      }
+      mapInitializedRef.current = false;
+    };
+  }, [dataMode]);
+
+  // Color predictions when data changes
+  useEffect(() => {
+    if (!map) return;
+
+    if (year.toString().length === 4 && data.length > 0) colorPredictions(data);
+
+    zoomToSelectedState(selectedState, map);
+  }, [data, selectedState, map, year, colorPredictions]);
+
+  // Initial fill
+  useEffect(() => {
+    if (!initialFill && map && data.length > 0) {
+      colorPredictions(data);
+      setInitialFill(true);
+    }
+  }, [initialFill, map, data, colorPredictions, setInitialFill]);
+
+  // Set up hover callback - create the actual mapbox event handler
+  const hoverCallback = useMemo(() => {
+    if (!map || !data) return null;
+    return createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates);
+  }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates, isMobile, createMapHoverCallback]);
+
+  // Set up click callback - create the actual mapbox event handler
+  const clickCallback = useMemo(() => {
+    if (!map || !availableStates || !availableSublocations) return null;
+    return createMapClickCallback(
       availableStates,
       availableSublocations,
       selectedState,
@@ -211,118 +339,41 @@ const PredictionMap = (props) => {
       setPredictionModal,
       isMobile,
     );
-    const hoverCallback = createMapHoverCallback(
-      data,
-      allRangerDistricts,
-      dataMode,
-      selectedState,
-      availableStates,
-    );
+  }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict, setPredictionModal, isMobile]);
 
-    setTimeout(() => {
-      setMap(undefined);
-      generateMap(
-        true,
-        map,
-        thresholds,
-        colors,
-        () => {}, // No-op function since we use LegendOverlay instead
-        dataMode,
-        clickCallback,
-        setMapClickCallback,
-        hoverCallback,
-        setMapHoverCallback,
-        setMap,
-      );
-    }, 100);
-  }, [dataMode, isMobile]);
-
-  useEffect(() => {
-    if (!map) return;
-
-    if (year.toString().length === 4 && data.length > 0) colorPredictions(data);
-
-    zoomToSelectedState(selectedState, map);
-  }, [data, selectedState, map]);
-
-  useEffect(() => {
-    if (!initialFill && map && data.length > 0) {
-      colorPredictions(data);
-      setInitialFill(true);
+  // Set up state click callback
+  const stateClickCallback = useCallback((e) => {
+    const { abbrev } = e?.features[0]?.properties || {};
+    if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
+      setState(abbrev);
     }
+  }, [selectedState, availableStates, setState]);
 
-    if (map && data) {
-      // remove current callback
-      if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
+  // Set up mouse leave callback
+  const mouseLeaveCallback = useCallback(() => {
+    setPredictionHover(null);
+  }, [setPredictionHover]);
 
-      // generate new callback
-      const callback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates);
-      setMapHoverCallback(() => callback);
-      map.on('mousemove', callback);
-    }
-  }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates, isMobile]);
+  // Use shared callback hook
+  useMapCallbacks(
+    map,
+    clickCallback,
+    hoverCallback,
+    stateClickCallback,
+    mouseLeaveCallback,
+    [availableStates, availableSublocations, selectedState, data, dataMode, allRangerDistricts, isMobile],
+  );
 
-  // update the click callback handler when all RD or all states changes
+  // Remove layer when data is empty
   useEffect(() => {
-    if (map && availableStates && availableSublocations) {
-      // remove current callback
-      if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
-
-      // generate new callback
-      const callback = createMapClickCallback(
-        availableStates,
-        availableSublocations,
-        selectedState,
-        data,
-        dataMode,
-        props.county,
-        setCounty,
-        props.rangerDistrict,
-        setRangerDistrict,
-        setPredictionModal,
-        isMobile,
-      );
-      setMapClickCallback(() => callback);
-      map.on('click', VECTOR_LAYER, callback);
-    }
-  }, [map, availableStates, availableSublocations, selectedState, data, dataMode, setPredictionModal, isMobile]);
-
-  useEffect(() => {
-    if (map) {
-      // remove current callback
-      if (mapStateClickCallback) map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
-
-      // generate new callback
-      const callback = (e) => {
-        const { abbrev } = e?.features[0]?.properties || {};
-
-        // state must exist, not be current selection and must be a valid state
-        if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
-          setState(abbrev);
+    if (data.length === 0 && map && map.isStyleLoaded && map.isStyleLoaded() && typeof map.getLayer === 'function') {
+      try {
+        if (map.getLayer(VECTOR_LAYER)) {
+          map.removeLayer(VECTOR_LAYER);
         }
-      };
-
-      setMapStateClickCallback(() => callback);
-      map.on('click', STATE_VECTOR_LAYER, callback);
-    }
-  }, [map, availableStates, selectedState]);
-
-  useEffect(() => {
-    if (map) {
-      // remove current callback
-      if (mapLayerMouseLeaveCallback) map.off('click', VECTOR_LAYER, mapLayerMouseLeaveCallback);
-
-      // generate new callback
-      const callback = () => setPredictionHover(null);
-
-      setMapLayerMouseLeaveCallback(() => callback);
-      map.on('mouseleave', VECTOR_LAYER, callback);
-    }
-  }, [map]);
-
-  useEffect(() => {
-    if (data.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
-      map.removeLayer(VECTOR_LAYER);
+      } catch (error) {
+        console.warn('Error removing layer:', error);
+      }
     }
   }, [data, map]);
 

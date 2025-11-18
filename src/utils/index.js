@@ -41,6 +41,9 @@ import {
   zoomToSelectedState,
 } from './map';
 
+export * from './map-coloring';
+export * from './map-mode-utils';
+
 export {
   createHoverCallback,
   createMapClickCallback,

@@ -1,33 +1,40 @@
 import mapboxgl from 'mapbox-gl';
-import React, { useEffect, useState } from 'react';
-
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import {
   DATA_MODES,
-  MAP_SOURCE_NAME,
   MAP_TITLES,
-  SOURCE_LAYERS,
-  STATE_VECTOR_LAYER,
   VECTOR_LAYER,
 } from '../../../constants';
-
-import { api } from '../../../services';
+import { useMapCallbacks, useMapState, useRangerDistricts } from '../../../hooks';
 import {
   createHoverCallback,
   createMapClickCallback,
   downloadMap,
+  formatLocationForMapbox,
   generateMap,
-  getMapboxRDNameFormat,
+  getSourceLayer,
   zoomToSelectedState,
 } from '../../../utils';
-
+import { isInvalidNumber } from '../../../utils/map';
+import {
+  addDefaultExpressions,
+  addLocationToExpressions,
+  addMapLayer,
+  createBaseExpressions,
+  removeVectorLayer,
+  waitForStyleLoad,
+} from '../../../utils/map-coloring';
+import Map from '../../map';
+import MapControls from '../../map-controls/component';
 import {
   colors,
   thresholds,
 } from './constants';
-
-import { isInvalidNumber } from '../../../utils/map';
-import Map from '../../map';
-import MapControls from '../../map-controls/component';
 import './style.scss';
 
 const HistoricalMap = (props) => {
@@ -43,25 +50,38 @@ const HistoricalMap = (props) => {
     sublocationData: rawData,
   } = props;
 
-  const [map, setMap] = useState();
-  const [initialFill, setInitialFill] = useState(false);
-  const [trappingHover, setTrappingHover] = useState(null);
-  const [isDownloadingMap, setIsDownloadingMap] = useState(false);
-  const [mapClickCallback, setMapClickCallback] = useState();
-  const [mapHoverCallback, setMapHoverCallback] = useState();
-  const [mapStateClickCallback, setMapStateClickCallback] = useState();
-  const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
-  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
+  // Use shared hooks for state management
+  const {
+    map,
+    setMap,
+    initialFill,
+    setInitialFill,
+    hover: trappingHover,
+    setHover: setTrappingHover,
+    isDownloadingMap,
+    setIsDownloadingMap,
+  } = useMapState();
+
+  // Fetch ranger districts when in RD mode
+  const allRangerDistricts = useRangerDistricts(dataMode);
+
+  // Refs for cleanup and race condition prevention
+  const colorFillTimeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
-    if (dataMode === DATA_MODES.RANGER_DISTRICT) {
-      api.getAvailableSublocations(dataMode)
-        .then(setAllRangerDistricts)
-        .catch(console.error);
-    }
-  }, [dataMode]);
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (colorFillTimeoutRef.current) {
+        clearTimeout(colorFillTimeoutRef.current);
+        colorFillTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
-  const createMapHoverCallback = (allData, rangerDistricts, mode, state, availStates) => {
+  // Create hover callback
+  const createMapHoverCallback = useCallback((allData, rangerDistricts, mode, state, availStates) => {
     const callback = (hoverState, location, x, y, counties) => {
       const sublocation = mode === DATA_MODES.COUNTY ? 'county' : 'rangerDistrict';
 
@@ -90,43 +110,38 @@ const HistoricalMap = (props) => {
     };
 
     return createHoverCallback(map, rangerDistricts, dataMode, callback);
-  };
+  }, [map, dataMode, setTrappingHover]);
 
-  const colorFill = (d) => {
-    if (!map.isStyleLoaded()) {
-      setTimeout(() => {
-        colorFill(d);
-      }, 1000);
+  // Color fill function using shared utilities
+  const colorFill = useCallback((d) => {
+    if (!map) return;
 
+    // Wait for style to load with proper cleanup
+    if (!waitForStyleLoad(map, colorFill, [d], colorFillTimeoutRef, isMountedRef)) {
       return;
     }
 
-    if (map.getLayer(VECTOR_LAYER)) {
-      map.removeLayer(VECTOR_LAYER);
-    }
+    // Remove existing layer
+    removeVectorLayer(map);
 
-    const fillExpression = ['match', ['upcase', ['get', 'forest']]];
-    const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
+    // Create base expressions
+    const { fillExpression, strokeExpression } = createBaseExpressions();
 
+    // Group trappings by locality
     const trappingsByLocality = d.reduce((acc, curr) => {
-      const {
-        county,
-        rangerDistrict,
-        state,
-        sumSpotst0,
-      } = curr;
+      const localityDescription = formatLocationForMapbox(dataMode, curr);
+      const key = Array.isArray(localityDescription) ? localityDescription[0] : localityDescription;
 
-      const countyFormatName = `${county} ${state}`.toUpperCase();
-      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict)?.toUpperCase() : '';
-
-      const localityDescription = dataMode === DATA_MODES.COUNTY ? countyFormatName : rangerDistrictFormatName;
-
-      return {
-        ...acc,
-        [localityDescription]: sumSpotst0,
-      };
+      if (key) {
+        return {
+          ...acc,
+          [key]: curr.sumSpotst0,
+        };
+      }
+      return acc;
     }, {});
 
+    // Determine color based on spots count
     Object.entries(trappingsByLocality).forEach(([localityDescription, sumSpotst0]) => {
       const [noData, zeroToNine, tenToNineteen, twentyToFortyNine, fiftyToNinetyNine, hundredToTwoFortyNine, twoFiftyPlus] = colors;
       let color;
@@ -147,150 +162,222 @@ const HistoricalMap = (props) => {
         color = twoFiftyPlus;
       }
 
-      fillExpression.push(localityDescription, color);
-      strokeExpression.push(localityDescription, '#000000');
+      // Add location to expressions (handle both string and array)
+      const locationName = Array.isArray(localityDescription) ? localityDescription : [localityDescription];
+      addLocationToExpressions(fillExpression, strokeExpression, locationName, color);
     });
 
-    fillExpression.push('rgba(0,0,0,0)');
-    strokeExpression.push('rgba(0,0,0,0)');
+    // Add default expressions
+    addDefaultExpressions(fillExpression, strokeExpression);
 
-    map.addLayer({
-      id: VECTOR_LAYER,
-      type: 'fill',
-      source: MAP_SOURCE_NAME,
-      'source-layer': dataMode === DATA_MODES.COUNTY ? SOURCE_LAYERS.COUNTY : SOURCE_LAYERS.RANGER_DISTRICT,
-      paint: {
-        'fill-color': fillExpression,
-        'fill-outline-color': strokeExpression,
-      },
-    }, 'water-point-label');
-  };
+    // Add layer to map
+    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
+  }, [map, dataMode]);
+
+  const mapInitializedRef = useRef(false);
+  const lastDataModeRef = useRef(dataMode);
+  const initTimeoutRef = useRef(null);
+
+  const latestValuesRef = useRef({
+    availableStates,
+    availableSublocations,
+    selectedState,
+    rawData,
+    allRangerDistricts,
+    county: props.county,
+    rangerDistrict: props.rangerDistrict,
+  });
 
   useEffect(() => {
-    mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
-    const clickCallback = createMapClickCallback(availableStates, availableSublocations, selectedState, rawData, dataMode, props.county, setCounty, props.rangerDistrict, setRangerDistrict);
-    const hoverCallback = createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, availableStates);
+    latestValuesRef.current = {
+      availableStates,
+      availableSublocations,
+      selectedState,
+      rawData,
+      allRangerDistricts,
+      county: props.county,
+      rangerDistrict: props.rangerDistrict,
+    };
+  });
 
-    setTimeout(() => {
-      setMap(undefined);
+  useEffect(() => {
+    const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
+
+    if (!shouldRegenerate && mapInitializedRef.current) {
+      return;
+    }
+
+    if (initTimeoutRef.current) {
+      clearTimeout(initTimeoutRef.current);
+      initTimeoutRef.current = null;
+    }
+
+    mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
+
+    const latest = latestValuesRef.current;
+    const clickCallback = createMapClickCallback(
+      latest.availableStates,
+      latest.availableSublocations,
+      latest.selectedState,
+      latest.rawData,
+      dataMode,
+      latest.county,
+      setCounty,
+      latest.rangerDistrict,
+      setRangerDistrict,
+    );
+    const hoverCallback = createMapHoverCallback(
+      latest.rawData,
+      latest.allRangerDistricts,
+      dataMode,
+      latest.selectedState,
+      latest.availableStates,
+    );
+
+    const currentMap = map;
+
+    initTimeoutRef.current = setTimeout(() => {
       const checkContainer = () => {
         if (document.getElementById('map')) {
-          generateMap(true, map, thresholds, colors, () => {}, dataMode, clickCallback, setMapClickCallback, hoverCallback, setMapHoverCallback, setMap);
+          generateMap(
+            true,
+            currentMap,
+            thresholds,
+            colors,
+            () => {},
+            dataMode,
+            clickCallback,
+            () => {},
+            hoverCallback,
+            () => {},
+            setMap,
+          );
+          mapInitializedRef.current = true;
+          lastDataModeRef.current = dataMode;
+          initTimeoutRef.current = null;
         } else {
           setTimeout(checkContainer, 50);
         }
       };
       checkContainer();
-
-      document.addEventListener('click', (event) => {
-        if (!event.target.matches('.download-button')) return;
-        downloadMap(
-          map,
-          predictionYear,
-          isDownloadingMap,
-          setIsDownloadingMap,
-          selectedState,
-          MAP_TITLES.HISTORICAL,
-          { titleDetails: { selectedState, period: predictionYear }, thresholds, colors },
-        );
-      }, false);
-
-      document.addEventListener('click', (event) => {
-        if (!event.target.matches('.download-button p')) return;
-        downloadMap(
-          map,
-          predictionYear,
-          isDownloadingMap,
-          setIsDownloadingMap,
-          selectedState,
-          MAP_TITLES.HISTORICAL,
-          { titleDetails: { selectedState, period: predictionYear }, thresholds, colors },
-        );
-      }, false);
     }, 100);
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      if (initTimeoutRef.current) {
+        clearTimeout(initTimeoutRef.current);
+        initTimeoutRef.current = null;
+      }
+      if (map && typeof map.remove === 'function' && map.getContainer) {
+        try {
+          const container = map.getContainer();
+          if (container) {
+            map.remove();
+          }
+        } catch (error) {
+          // Silently ignore - map may already be removed or in invalid state
+        }
+      }
+      mapInitializedRef.current = false;
+    };
   }, [dataMode]);
 
+  // Color fill when data changes
   useEffect(() => {
     if (!map) return;
 
     if (predictionYear.toString().length === 4) colorFill(rawData);
 
     zoomToSelectedState(selectedState, map);
-  }, [rawData, selectedState, map]);
+  }, [rawData, selectedState, map, predictionYear, colorFill]);
 
+  // Initial fill
   useEffect(() => {
     if (!initialFill && map && rawData.length > 0) {
       colorFill(rawData);
       setInitialFill(true);
     }
+  }, [initialFill, map, rawData, colorFill, setInitialFill]);
 
-    if (map && rawData) {
-      if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
+  // Set up hover callback - create the actual mapbox event handler
+  const hoverCallback = useMemo(() => {
+    if (!map || !rawData) return null;
+    return createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, availableStates);
+  }, [map, rawData, allRangerDistricts, dataMode, selectedState, availableStates, createMapHoverCallback]);
 
-      const callback = createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, availableStates);
-      setMapHoverCallback(() => callback);
-      map.on('mousemove', callback);
+  // Set up click callback - create the actual mapbox event handler
+  const clickCallback = useMemo(() => {
+    if (!map || !availableStates || !availableSublocations) return null;
+    return createMapClickCallback(
+      availableStates,
+      availableSublocations,
+      selectedState,
+      rawData,
+      dataMode,
+      props.county,
+      setCounty,
+      props.rangerDistrict,
+      setRangerDistrict,
+    );
+  }, [map, availableStates, availableSublocations, selectedState, rawData, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict]);
+
+  // Set up state click callback
+  const stateClickCallback = useCallback((e) => {
+    const { abbrev } = e?.features[0]?.properties || {};
+    if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
+      setState(abbrev);
     }
-  }, [
+  }, [selectedState, availableStates, setState]);
+
+  // Set up mouse leave callback
+  const mouseLeaveCallback = useCallback(() => {
+    setTrappingHover(null);
+  }, [setTrappingHover]);
+
+  // Use shared callback hook
+  useMapCallbacks(
     map,
-    rawData,
-    allRangerDistricts,
-    availableSublocations,
-    dataMode,
-    selectedState,
-    availableStates,
-  ]);
+    clickCallback,
+    hoverCallback,
+    stateClickCallback,
+    mouseLeaveCallback,
+    [availableStates, availableSublocations, selectedState, rawData, dataMode, allRangerDistricts],
+  );
 
+  // Remove layer when data is empty
   useEffect(() => {
-    if (map && availableStates && availableSublocations) {
-      if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
-
-      const callback = createMapClickCallback(availableStates, availableSublocations, selectedState, rawData, dataMode, props.county, setCounty, props.rangerDistrict, setRangerDistrict);
-      setMapClickCallback(() => callback);
-      map.on('click', VECTOR_LAYER, callback);
-    }
-  }, [
-    map,
-    availableStates,
-    availableSublocations,
-    selectedState,
-    rawData,
-    dataMode,
-  ]);
-
-  useEffect(() => {
-    if (map) {
-      if (mapStateClickCallback) map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
-
-      const callback = (e) => {
-        const { abbrev } = e?.features[0]?.properties || {};
-
-        if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
-          setState(abbrev);
+    if (rawData.length === 0 && map && map.isStyleLoaded && map.isStyleLoaded() && typeof map.getLayer === 'function') {
+      try {
+        if (map.getLayer(VECTOR_LAYER)) {
+          map.removeLayer(VECTOR_LAYER);
         }
-      };
-
-      setMapStateClickCallback(() => callback);
-      map.on('click', STATE_VECTOR_LAYER, callback);
+      } catch (error) {
+        console.warn('Error removing layer:', error);
+      }
     }
-  }, [map, availableStates, selectedState]);
+  }, [rawData, map]);
 
+  // Download button event listeners (preserved from original)
   useEffect(() => {
-    if (map) {
-      if (mapLayerMouseLeaveCallback) map.off('click', VECTOR_LAYER, mapLayerMouseLeaveCallback);
+    const handleDownloadClick = (event) => {
+      if (!event.target.matches('.download-button') && !event.target.matches('.download-button p')) return;
+      downloadMap(
+        map,
+        predictionYear,
+        isDownloadingMap,
+        setIsDownloadingMap,
+        selectedState,
+        MAP_TITLES.HISTORICAL,
+        { titleDetails: { selectedState, period: predictionYear }, thresholds, colors },
+      );
+    };
 
-      const callback = () => setTrappingHover(null);
+    document.addEventListener('click', handleDownloadClick, false);
 
-      setMapLayerMouseLeaveCallback(() => callback);
-      map.on('mouseleave', VECTOR_LAYER, callback);
-    }
-  }, [map]);
-
-  useEffect(() => {
-    if (rawData.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
-      map.removeLayer(VECTOR_LAYER);
-    }
-  }, [rawData]);
+    return () => {
+      document.removeEventListener('click', handleDownloadClick, false);
+    };
+  }, [map, predictionYear, isDownloadingMap, setIsDownloadingMap, selectedState]);
 
   const getRiskLevel = (index) => {
     const riskLevels = ['No Data', '0-9', '10-19', '20-49', '50-99', '100-249', '250+'];

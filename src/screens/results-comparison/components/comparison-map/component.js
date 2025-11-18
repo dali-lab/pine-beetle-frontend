@@ -1,30 +1,44 @@
 import mapboxgl from 'mapbox-gl';
 import React, {
-  useCallback, useEffect, useMemo, useRef, useState,
+  useCallback, useEffect, useMemo, useRef,
 } from 'react';
-import Map from '../../../../components/map';
+import MapComponent from '../../../../components/map';
 import MapControls from '../../../../components/map-controls/component';
 import TogglesOverlay from '../../../../components/map/components';
 import {
-  DATA_MODES, MAP_SOURCE_NAME, MAP_TITLES, SOURCE_LAYERS, STATE_VECTOR_LAYER, VECTOR_LAYER,
+  DATA_MODES,
+  MAP_TITLES,
+  VECTOR_LAYER,
 } from '../../../../constants';
-import { api } from '../../../../services';
+import {
+  useMapCallbacks,
+  useMapState,
+  useRangerDistricts,
+} from '../../../../hooks';
 import {
   createHoverCallback,
   createMapClickCallback,
   downloadMap,
+  formatLocationForMapbox,
   generateMap,
   getMapboxRDNameFormat,
+  getSourceLayer,
   mapboxHoverStyle,
   zoomToSelectedState,
 } from '../../../../utils';
-import { colors, thresholds } from './constants';
-
 import { isInvalidNumber } from '../../../../utils/map';
+import {
+  addDefaultExpressions,
+  addLocationToExpressions,
+  addMapLayer,
+  createBaseExpressions,
+  removeVectorLayer,
+  waitForStyleLoad,
+} from '../../../../utils/map-coloring';
+import { colors, thresholds } from './constants';
 import './style.scss';
 
 // Constants for magic numbers
-const STYLE_CHECK_INTERVAL = 1000; // ms - interval for checking if map styles are loaded
 const MAP_INIT_DELAY = 100; // ms - delay before initializing map
 const CONTAINER_CHECK_INTERVAL = 50; // ms - interval for checking if map container exists
 const PROBABILITY_THRESHOLD = 0.2; // probability threshold for outbreak prediction
@@ -69,15 +83,21 @@ const ComparisonMap = (props) => {
     year,
     isLoading,
   } = props;
-  const [map, setMap] = useState();
-  const [initialFill, setInitialFill] = useState(false);
-  const [resultsHover, setResultsHover] = useState(null);
-  const [isDownloadingMap, setIsDownloadingMap] = useState(false);
-  const [mapClickCallback, setMapClickCallback] = useState();
-  const [mapHoverCallback, setMapHoverCallback] = useState();
-  const [mapStateClickCallback, setMapStateClickCallback] = useState();
-  const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
-  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
+
+  // Use shared hooks for state management
+  const {
+    map,
+    setMap,
+    initialFill,
+    setInitialFill,
+    hover: resultsHover,
+    setHover: setResultsHover,
+    isDownloadingMap,
+    setIsDownloadingMap,
+  } = useMapState();
+
+  // Fetch ranger districts when in RD mode
+  const allRangerDistricts = useRangerDistricts(dataMode);
 
   // Refs for cleanup and abort mechanisms
   const colorResultsTimeoutRef = useRef(null);
@@ -92,28 +112,18 @@ const ComparisonMap = (props) => {
       // Cleanup all timeouts on unmount
       if (colorResultsTimeoutRef.current) {
         clearTimeout(colorResultsTimeoutRef.current);
+        colorResultsTimeoutRef.current = null;
       }
       if (mapInitTimeoutRef.current) {
         clearTimeout(mapInitTimeoutRef.current);
+        mapInitTimeoutRef.current = null;
       }
       if (containerCheckTimeoutRef.current) {
         clearTimeout(containerCheckTimeoutRef.current);
+        containerCheckTimeoutRef.current = null;
       }
     };
   }, []);
-
-  useEffect(() => {
-    if (dataMode === DATA_MODES.RANGER_DISTRICT) {
-      api.getAvailableSublocations(dataMode)
-        .then(setAllRangerDistricts)
-        .catch((error) => {
-          console.error('Failed to fetch ranger districts:', error);
-          // Could add user-facing error notification here
-        });
-    } else {
-      setAllRangerDistricts([]);
-    }
-  }, [dataMode]);
 
   // Create optimized data lookup map for O(1) lookups
   const dataLookupMap = useMemo(() => {
@@ -178,36 +188,22 @@ const ComparisonMap = (props) => {
     };
 
     return createHoverCallback(map, rangerDistricts, dataMode, callback);
-  }, [map, dataMode]);
+  }, [map, dataMode, setResultsHover]);
 
-  const colorResults = (comparisonData) => {
+  const colorResults = useCallback((comparisonData) => {
     // Abort if component is unmounted
     if (!isMountedRef.current || !map) return;
 
-    // keep trying until map styles are loaded
-    if (!map.isStyleLoaded()) {
-      // Clear any existing timeout
-      if (colorResultsTimeoutRef.current) {
-        clearTimeout(colorResultsTimeoutRef.current);
-      }
-
-      colorResultsTimeoutRef.current = setTimeout(() => {
-        colorResultsTimeoutRef.current = null;
-        if (isMountedRef.current) {
-          colorResults(comparisonData);
-        }
-      }, STYLE_CHECK_INTERVAL);
-
+    // Wait for style to load with proper cleanup
+    if (!waitForStyleLoad(map, colorResults, [comparisonData], colorResultsTimeoutRef, isMountedRef)) {
       return;
     }
 
-    // remove county layer if already constructed
-    if (map.getLayer(VECTOR_LAYER)) {
-      map.removeLayer(VECTOR_LAYER);
-    }
+    // Remove existing layer
+    removeVectorLayer(map);
 
-    const fillExpression = ['match', ['upcase', ['get', 'forest']]];
-    const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
+    // Create base expressions
+    const { fillExpression, strokeExpression } = createBaseExpressions();
 
     comparisonData.forEach(({
       county,
@@ -218,100 +214,122 @@ const ComparisonMap = (props) => {
     }) => {
       const color = getFillColor(fillProb, sumSpots);
 
-      const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
-      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict).toUpperCase() : '';
+      const locationName = formatLocationForMapbox(dataMode, {
+        county,
+        rangerDistrict,
+        state,
+      });
 
-      // Make locationName handling consistent for both modes - always return array
-      const locationName = dataMode === DATA_MODES.COUNTY
-        ? [countyFormatName].filter((str) => !!str)
-        // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
-        : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD'), rangerDistrictFormatName.replace(' RD', '')]
-          .filter((str) => !!str);
-
-      // Handle array of location names (for ranger districts) or single location (for counties)
-      if (locationName.length > 0) {
-        locationName.forEach((name) => {
-          fillExpression.push(name, color);
-          strokeExpression.push(name, '#000000');
-        });
+      // Handle both string (county) and array (RD with variants)
+      if (locationName) {
+        const names = Array.isArray(locationName) ? locationName : [locationName];
+        const validNames = names.filter((str) => !!str);
+        if (validNames.length > 0) {
+          addLocationToExpressions(fillExpression, strokeExpression, validNames, color);
+        }
       }
     });
 
-    // last value is the default, used where there is no data
-    fillExpression.push('rgba(0,0,0,0)');
-    strokeExpression.push('rgba(0,0,0,0)');
-    // add layer from the vector tile source with data-driven style
-    // double-checking if we have valid fillExpression for paint
-    if (fillExpression.length > 3) {
-      map.addLayer({
-        id: VECTOR_LAYER,
-        type: 'fill',
-        source: MAP_SOURCE_NAME,
-        'source-layer': dataMode === DATA_MODES.COUNTY ? SOURCE_LAYERS.COUNTY : SOURCE_LAYERS.RANGER_DISTRICT,
-        paint: {
-          'fill-color': fillExpression,
-          'fill-outline-color': strokeExpression,
-        },
-      }, 'water-point-label');
-    }
-  };
+    // Add default expressions
+    addDefaultExpressions(fillExpression, strokeExpression);
+
+    // Add layer to map
+    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
+  }, [map, dataMode]);
+
+  const mapInitializedRef = useRef(false);
+  const lastDataModeRef = useRef(dataMode);
+
+  const latestValuesRef = useRef({
+    availableStates,
+    availableSublocations,
+    selectedState,
+    data,
+    allRangerDistricts,
+    dataLookupMap,
+    county: props.county,
+    rangerDistrict: props.rangerDistrict,
+  });
 
   useEffect(() => {
-    // Clear any existing timeouts
-    if (mapInitTimeoutRef.current) {
-      clearTimeout(mapInitTimeoutRef.current);
-    }
-    if (containerCheckTimeoutRef.current) {
-      clearTimeout(containerCheckTimeoutRef.current);
-    }
-
-    mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
-    const clickCallback = createMapClickCallback(
+    latestValuesRef.current = {
       availableStates,
       availableSublocations,
       selectedState,
       data,
+      allRangerDistricts,
+      dataLookupMap,
+      county: props.county,
+      rangerDistrict: props.rangerDistrict,
+    };
+  });
+
+  useEffect(() => {
+    const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
+
+    if (!shouldRegenerate && mapInitializedRef.current) {
+      return;
+    }
+
+    if (mapInitTimeoutRef.current) {
+      clearTimeout(mapInitTimeoutRef.current);
+      mapInitTimeoutRef.current = null;
+    }
+    if (containerCheckTimeoutRef.current) {
+      clearTimeout(containerCheckTimeoutRef.current);
+      containerCheckTimeoutRef.current = null;
+    }
+
+    mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
+
+    const latest = latestValuesRef.current;
+    const clickCallback = createMapClickCallback(
+      latest.availableStates,
+      latest.availableSublocations,
+      latest.selectedState,
+      latest.data,
       dataMode,
-      props.county,
+      latest.county,
       setCounty,
-      props.rangerDistrict,
+      latest.rangerDistrict,
       setRangerDistrict,
     );
     const hoverCallback = createMapHoverCallback(
-      data,
-      allRangerDistricts,
+      latest.data,
+      latest.allRangerDistricts,
       dataMode,
-      selectedState,
-      availableStates,
-      dataLookupMap,
+      latest.selectedState,
+      latest.availableStates,
+      latest.dataLookupMap,
     );
+
+    const currentMap = map;
 
     mapInitTimeoutRef.current = setTimeout(() => {
       mapInitTimeoutRef.current = null;
 
       if (!isMountedRef.current) return;
 
-      setMap(undefined);
-      // Wait for the map container to be available
       const checkContainer = () => {
         if (!isMountedRef.current) return;
 
         const container = document.getElementById('map');
         if (container) {
-          // Only generate map if container exists and component is still mounted
           generateMap(
             true,
-            map,
+            currentMap,
             thresholds,
             colors,
             () => {},
             dataMode,
             clickCallback,
-            setMapClickCallback,
+            () => {},
             hoverCallback,
-            setMapHoverCallback,
+            () => {},
             setMap,
           );
+          mapInitializedRef.current = true;
+          lastDataModeRef.current = dataMode;
         } else {
           containerCheckTimeoutRef.current = setTimeout(() => {
             containerCheckTimeoutRef.current = null;
@@ -324,8 +342,8 @@ const ComparisonMap = (props) => {
       checkContainer();
     }, MAP_INIT_DELAY);
 
+    // eslint-disable-next-line consistent-return
     return () => {
-      // Cleanup timeouts on unmount or dependency change
       if (mapInitTimeoutRef.current) {
         clearTimeout(mapInitTimeoutRef.current);
         mapInitTimeoutRef.current = null;
@@ -334,126 +352,91 @@ const ComparisonMap = (props) => {
         clearTimeout(containerCheckTimeoutRef.current);
         containerCheckTimeoutRef.current = null;
       }
+      if (map && typeof map.remove === 'function' && map.getContainer) {
+        try {
+          const container = map.getContainer();
+          if (container) {
+            map.remove();
+          }
+        } catch (error) {
+          // Silently ignore - map may already be removed or in invalid state
+        }
+      }
+      mapInitializedRef.current = false;
     };
-  }, [dataMode, availableStates, availableSublocations, selectedState, data, allRangerDistricts, dataLookupMap]);
+  }, [dataMode]);
 
+  // Color results when data changes
   useEffect(() => {
     if (!map) return;
     if (year.toString().length === 4 && data.length > 0) colorResults(data);
 
     zoomToSelectedState(selectedState, map);
-  }, [data, selectedState, map, dataMode, year]);
+  }, [data, selectedState, map, dataMode, year, colorResults]);
 
+  // Initial fill
   useEffect(() => {
     if (!initialFill && map && data.length > 0) {
       colorResults(data);
       setInitialFill(true);
     }
+  }, [initialFill, map, data, colorResults, setInitialFill]);
 
-    if (map && data) {
-      // Remove current callback
-      if (mapHoverCallback) {
-        map.off('mousemove', mapHoverCallback);
-      }
-
-      const callback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates, dataLookupMap);
-      // Store callback directly instead of function wrapper
-      setMapHoverCallback(callback);
-      map.on('mousemove', callback);
-    }
-
-    return () => {
-      // Cleanup on unmount or dependency change
-      if (map && mapHoverCallback) {
-        map.off('mousemove', mapHoverCallback);
-      }
-    };
+  // Set up hover callback - create the actual mapbox event handler
+  const hoverCallback = useMemo(() => {
+    if (!map || !data) return null;
+    return createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates, dataLookupMap);
   }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates, dataLookupMap, createMapHoverCallback]);
 
-  useEffect(() => {
-    if (map && availableStates && availableSublocations) {
-      // Remove current callback
-      if (mapClickCallback) {
-        map.off('click', VECTOR_LAYER, mapClickCallback);
-      }
-
-      const callback = createMapClickCallback(
-        availableStates,
-        availableSublocations,
-        selectedState,
-        data,
-        dataMode,
-        props.county,
-        setCounty,
-        props.rangerDistrict,
-        setRangerDistrict,
-      );
-      // Store callback directly instead of function wrapper
-      setMapClickCallback(callback);
-      map.on('click', VECTOR_LAYER, callback);
-    }
-
-    return () => {
-      // Cleanup on unmount or dependency change
-      if (map && mapClickCallback) {
-        map.off('click', VECTOR_LAYER, mapClickCallback);
-      }
-    };
+  // Set up click callback - create the actual mapbox event handler
+  const clickCallback = useMemo(() => {
+    if (!map || !availableStates || !availableSublocations) return null;
+    return createMapClickCallback(
+      availableStates,
+      availableSublocations,
+      selectedState,
+      data,
+      dataMode,
+      props.county,
+      setCounty,
+      props.rangerDistrict,
+      setRangerDistrict,
+    );
   }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict]);
 
+  // Set up state click callback
+  const stateClickCallback = useCallback((e) => {
+    const { abbrev } = e?.features[0]?.properties || {};
+    if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
+      setState(abbrev);
+    }
+  }, [selectedState, availableStates, setState]);
+
+  // Set up mouse leave callback
+  const mouseLeaveCallback = useCallback(() => {
+    setResultsHover(null);
+  }, [setResultsHover]);
+
+  // Use shared callback hook
+  useMapCallbacks(
+    map,
+    clickCallback,
+    hoverCallback,
+    stateClickCallback,
+    mouseLeaveCallback,
+    [availableStates, availableSublocations, selectedState, data, dataMode, allRangerDistricts, dataLookupMap],
+  );
+
+  // Remove layer when data is empty
   useEffect(() => {
-    if (map) {
-      // Remove current callback
-      if (mapStateClickCallback) {
-        map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
-      }
-
-      const callback = (e) => {
-        const { abbrev } = e?.features[0]?.properties || {};
-
-        if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
-          setState(abbrev);
+    if (data.length === 0 && map && map.isStyleLoaded && map.isStyleLoaded() && typeof map.getLayer === 'function') {
+      try {
+        if (map.getLayer(VECTOR_LAYER)) {
+          map.removeLayer(VECTOR_LAYER);
         }
-      };
-
-      // Store callback directly instead of function wrapper
-      setMapStateClickCallback(callback);
-      map.on('click', STATE_VECTOR_LAYER, callback);
-    }
-
-    return () => {
-      // Cleanup on unmount or dependency change
-      if (map && mapStateClickCallback) {
-        map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
+      } catch (error) {
+        console.warn('Error removing layer:', error);
       }
-    };
-  }, [map, availableStates, selectedState, setState]);
-
-  useEffect(() => {
-    if (map) {
-      // Remove current callback
-      if (mapLayerMouseLeaveCallback) {
-        map.off('mouseleave', VECTOR_LAYER, mapLayerMouseLeaveCallback);
-      }
-
-      const callback = () => setResultsHover(null);
-
-      // Store callback directly instead of function wrapper
-      setMapLayerMouseLeaveCallback(callback);
-      map.on('mouseleave', VECTOR_LAYER, callback);
-    }
-
-    return () => {
-      // Cleanup on unmount or dependency change
-      if (map && mapLayerMouseLeaveCallback) {
-        map.off('mouseleave', VECTOR_LAYER, mapLayerMouseLeaveCallback);
-      }
-    };
-  }, [map]);
-
-  useEffect(() => {
-    if (data.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
-      map.removeLayer(VECTOR_LAYER);
     }
   }, [data, map]);
 
@@ -476,7 +459,7 @@ const ComparisonMap = (props) => {
   return (
     <div className="container flex-item-left results-comparison-map" id="map-container">
       <TogglesOverlay dataMode={dataMode} setDataMode={setDataMode} />
-      <Map
+      <MapComponent
         hover={resultsHover}
       />
       <MapControls

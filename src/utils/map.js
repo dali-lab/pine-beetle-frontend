@@ -93,8 +93,55 @@ const createHoverCallback = (map, rangerDistricts, mode, callback, isMobile = fa
   }
 };
 
+// Track the current map instance to ensure proper cleanup
+let currentMapInstance = null;
+
 const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, dataMode, mapClickCallback, setMapClickCallback, mapHoverCallback, setMapHoverCallback, setMap) => {
   if (map && !forceRegenerate) return;
+
+  // CRITICAL: Destroy existing map instance before creating a new one to prevent WebGL context leaks
+  // Clean up any existing map instance (from parameter or tracked instance)
+  const mapToCleanup = map || currentMapInstance;
+  if (mapToCleanup) {
+    try {
+      // Check if map is in a valid state before cleanup
+      // Verify the map has a container and hasn't been removed already
+      const isValidMap = mapToCleanup
+        && typeof mapToCleanup.remove === 'function'
+        && mapToCleanup.getContainer
+        && mapToCleanup.getContainer(); // Check if container still exists
+
+      if (isValidMap) {
+        // Destroy the map instance to free WebGL context
+        // This will automatically clean up all event listeners and resources
+        mapToCleanup.remove();
+      }
+    } catch (error) {
+      // Silently ignore errors - map may already be removed or in invalid state
+      // This is expected when maps are being rapidly created/destroyed
+    }
+    // Clear the tracked instance
+    if (mapToCleanup === currentMapInstance) {
+      currentMapInstance = null;
+    }
+  }
+
+  // Also check if container has an existing map instance attached
+  const existingMapContainer = document.getElementById('map');
+  if (existingMapContainer) {
+    // Try to find and clean up any map instance attached to the container
+    // Mapbox GL JS may attach the map instance to the container element
+    const containerMap = existingMapContainer._mapboxgl_map
+                         || (existingMapContainer.firstChild && existingMapContainer.firstChild._mapboxgl_map);
+    if (containerMap && containerMap !== mapToCleanup && typeof containerMap.remove === 'function') {
+      try {
+        // map.remove() handles all cleanup internally
+        containerMap.remove();
+      } catch (error) {
+        console.warn('Error cleaning up container map instance:', error);
+      }
+    }
+  }
 
   const createdMap = new mapboxgl.Map({
     container: 'map', // container id
@@ -147,6 +194,8 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     createdMap.on('mousemove', mapHoverCallback);
   }
 
+  // Track the new map instance
+  currentMapInstance = createdMap;
   setMap(createdMap);
 };
 
