@@ -25,19 +25,16 @@ const useMapCallbacks = (
     mouseLeave: null,
   });
 
-  // Vector layer click callback
   useEffect(() => {
     if (!map || !onVectorClick) {
       return;
     }
 
-    // Remove previous callback if exists
     const previousCallback = callbacksRef.current.vectorClick;
     if (previousCallback) {
       map.off('click', VECTOR_LAYER, previousCallback);
     }
 
-    // Set new callback
     callbacksRef.current.vectorClick = onVectorClick;
     map.on('click', VECTOR_LAYER, onVectorClick);
 
@@ -50,19 +47,16 @@ const useMapCallbacks = (
     };
   }, [map, onVectorClick, ...dependencies]);
 
-  // Hover callback
   useEffect(() => {
     if (!map || !onHover) {
       return;
     }
 
-    // Remove previous callback if exists
     const previousCallback = callbacksRef.current.hover;
     if (previousCallback) {
       map.off('mousemove', previousCallback);
     }
 
-    // Set new callback
     callbacksRef.current.hover = onHover;
     map.on('mousemove', onHover);
 
@@ -75,19 +69,16 @@ const useMapCallbacks = (
     };
   }, [map, onHover, ...dependencies]);
 
-  // State click callback
   useEffect(() => {
     if (!map || !onStateClick) {
       return;
     }
 
-    // Remove previous callback if exists
     const previousCallback = callbacksRef.current.stateClick;
     if (previousCallback) {
       map.off('click', STATE_VECTOR_LAYER, previousCallback);
     }
 
-    // Set new callback
     callbacksRef.current.stateClick = onStateClick;
     map.on('click', STATE_VECTOR_LAYER, onStateClick);
 
@@ -100,19 +91,16 @@ const useMapCallbacks = (
     };
   }, [map, onStateClick, ...dependencies]);
 
-  // Mouse leave callback
   useEffect(() => {
     if (!map || !onMouseLeave) {
       return;
     }
 
-    // Remove previous callback if exists
     const previousCallback = callbacksRef.current.mouseLeave;
     if (previousCallback) {
       map.off('mouseleave', VECTOR_LAYER, previousCallback);
     }
 
-    // Set new callback
     callbacksRef.current.mouseLeave = onMouseLeave;
     map.on('mouseleave', VECTOR_LAYER, onMouseLeave);
 

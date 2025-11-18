@@ -39,7 +39,6 @@ export const formatCountyName = (countyName, state) => {
 export const formatRangerDistrictName = (rangerDistrictName) => {
   if (!rangerDistrictName) return [];
   const formatted = getMapboxRDNameFormat(rangerDistrictName).toUpperCase();
-  // Handles case where tileset has two spaces instead of one, or is missing the word RD altogether
   return [
     formatted,
     formatted.replace(' RD', '  RD'),

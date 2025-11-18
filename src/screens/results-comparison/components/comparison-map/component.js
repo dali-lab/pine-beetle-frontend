@@ -38,11 +38,10 @@ import {
 import { colors, thresholds } from './constants';
 import './style.scss';
 
-// Constants for magic numbers
-const MAP_INIT_DELAY = 100; // ms - delay before initializing map
-const CONTAINER_CHECK_INTERVAL = 50; // ms - interval for checking if map container exists
-const PROBABILITY_THRESHOLD = 0.2; // probability threshold for outbreak prediction
-const SPOTS_THRESHOLD = 50; // spots count threshold for outbreak classification
+const MAP_INIT_DELAY = 100;
+const CONTAINER_CHECK_INTERVAL = 50;
+const PROBABILITY_THRESHOLD = 0.2;
+const SPOTS_THRESHOLD = 50;
 
 /**
  * Determines fill color based on prediction probability and actual spots count.
@@ -55,18 +54,18 @@ const SPOTS_THRESHOLD = 50; // spots count threshold for outbreak classification
  */
 const getFillColor = (fillProb, sumSpots) => {
   if (fillProb >= PROBABILITY_THRESHOLD && sumSpots > SPOTS_THRESHOLD) {
-    return colors[0]; // Predicted, Occurred
+    return colors[0];
   }
   if (fillProb < PROBABILITY_THRESHOLD && sumSpots <= SPOTS_THRESHOLD) {
-    return colors[1]; // Not Predicted, Did Not Occur
+    return colors[1];
   }
   if (fillProb < PROBABILITY_THRESHOLD && sumSpots > SPOTS_THRESHOLD) {
-    return colors[2]; // Not Predicted, Occurred (false negative)
+    return colors[2];
   }
   if (fillProb >= PROBABILITY_THRESHOLD && sumSpots <= SPOTS_THRESHOLD) {
-    return colors[3]; // Predicted, Did Not Occur (false positive)
+    return colors[3];
   }
-  return colors[4]; // Fallback (should rarely be reached)
+  return colors[4];
 };
 
 const ComparisonMap = (props) => {
@@ -84,7 +83,6 @@ const ComparisonMap = (props) => {
     isLoading,
   } = props;
 
-  // Use shared hooks for state management
   const {
     map,
     setMap,
@@ -96,10 +94,8 @@ const ComparisonMap = (props) => {
     setIsDownloadingMap,
   } = useMapState();
 
-  // Fetch ranger districts when in RD mode
   const allRangerDistricts = useRangerDistricts(dataMode);
 
-  // Refs for cleanup and abort mechanisms
   const colorResultsTimeoutRef = useRef(null);
   const mapInitTimeoutRef = useRef(null);
   const containerCheckTimeoutRef = useRef(null);
@@ -109,7 +105,6 @@ const ComparisonMap = (props) => {
     isMountedRef.current = true;
     return () => {
       isMountedRef.current = false;
-      // Cleanup all timeouts on unmount
       if (colorResultsTimeoutRef.current) {
         clearTimeout(colorResultsTimeoutRef.current);
         colorResultsTimeoutRef.current = null;
@@ -125,7 +120,6 @@ const ComparisonMap = (props) => {
     };
   }, []);
 
-  // Create optimized data lookup map for O(1) lookups
   const dataLookupMap = useMemo(() => {
     if (!data || data.length === 0) return new Map();
 
@@ -142,7 +136,6 @@ const ComparisonMap = (props) => {
     return lookup;
   }, [data, dataMode]);
 
-  // Memoized function to create hover callback
   const createMapHoverCallback = useCallback((resultsData, rangerDistricts, mode, state, availStates, lookupMap) => {
     const callback = (hoverState, location, x, y) => {
       if (!hoverState || !location) {
@@ -150,13 +143,11 @@ const ComparisonMap = (props) => {
         return;
       }
 
-      // Use lookup map for O(1) access instead of O(n) find
       let pred = null;
       if (lookupMap && lookupMap.size > 0) {
         const key = `${hoverState}-${location}`;
         pred = lookupMap.get(key);
       } else {
-        // Fallback to find if lookup map is not available
         pred = resultsData.find((p) => {
           const stateMatches = mode === DATA_MODES.RANGER_DISTRICT
             || (state ? (p.state === hoverState && p.state === state) : availStates.includes(hoverState));
@@ -191,18 +182,14 @@ const ComparisonMap = (props) => {
   }, [map, dataMode, setResultsHover]);
 
   const colorResults = useCallback((comparisonData) => {
-    // Abort if component is unmounted
     if (!isMountedRef.current || !map) return;
 
-    // Wait for style to load with proper cleanup
     if (!waitForStyleLoad(map, colorResults, [comparisonData], colorResultsTimeoutRef, isMountedRef)) {
       return;
     }
 
-    // Remove existing layer
     removeVectorLayer(map);
 
-    // Create base expressions
     const { fillExpression, strokeExpression } = createBaseExpressions();
 
     comparisonData.forEach(({
@@ -220,7 +207,6 @@ const ComparisonMap = (props) => {
         state,
       });
 
-      // Handle both string (county) and array (RD with variants)
       if (locationName) {
         const names = Array.isArray(locationName) ? locationName : [locationName];
         const validNames = names.filter((str) => !!str);
@@ -230,10 +216,8 @@ const ComparisonMap = (props) => {
       }
     });
 
-    // Add default expressions
     addDefaultExpressions(fillExpression, strokeExpression);
 
-    // Add layer to map
     addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
   }, [map, dataMode]);
 
@@ -359,14 +343,13 @@ const ComparisonMap = (props) => {
             map.remove();
           }
         } catch (error) {
-          // Silently ignore - map may already be removed or in invalid state
+          console.error('Error cleaning up map:', error);
         }
       }
       mapInitializedRef.current = false;
     };
   }, [dataMode]);
 
-  // Color results when data changes
   useEffect(() => {
     if (!map) return;
     if (year.toString().length === 4 && data.length > 0) colorResults(data);
@@ -374,7 +357,6 @@ const ComparisonMap = (props) => {
     zoomToSelectedState(selectedState, map);
   }, [data, selectedState, map, dataMode, year, colorResults]);
 
-  // Initial fill
   useEffect(() => {
     if (!initialFill && map && data.length > 0) {
       colorResults(data);
@@ -382,13 +364,11 @@ const ComparisonMap = (props) => {
     }
   }, [initialFill, map, data, colorResults, setInitialFill]);
 
-  // Set up hover callback - create the actual mapbox event handler
   const hoverCallback = useMemo(() => {
     if (!map || !data) return null;
     return createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates, dataLookupMap);
   }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates, dataLookupMap, createMapHoverCallback]);
 
-  // Set up click callback - create the actual mapbox event handler
   const clickCallback = useMemo(() => {
     if (!map || !availableStates || !availableSublocations) return null;
     return createMapClickCallback(
@@ -404,7 +384,6 @@ const ComparisonMap = (props) => {
     );
   }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict]);
 
-  // Set up state click callback
   const stateClickCallback = useCallback((e) => {
     const { abbrev } = e?.features[0]?.properties || {};
     if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
@@ -412,12 +391,10 @@ const ComparisonMap = (props) => {
     }
   }, [selectedState, availableStates, setState]);
 
-  // Set up mouse leave callback
   const mouseLeaveCallback = useCallback(() => {
     setResultsHover(null);
   }, [setResultsHover]);
 
-  // Use shared callback hook
   useMapCallbacks(
     map,
     clickCallback,
@@ -427,7 +404,6 @@ const ComparisonMap = (props) => {
     [availableStates, availableSublocations, selectedState, data, dataMode, allRangerDistricts, dataLookupMap],
   );
 
-  // Remove layer when data is empty
   useEffect(() => {
     if (data.length === 0 && map && map.isStyleLoaded && map.isStyleLoaded() && typeof map.getLayer === 'function') {
       try {
@@ -440,7 +416,6 @@ const ComparisonMap = (props) => {
     }
   }, [data, map]);
 
-  // Prepare legend data for the overlay with shorter labels
   const getShortLabel = (threshold) => {
     const labelMap = {
       'outbreak predicted, outbreak occurred': 'Predicted, Occurred',
@@ -463,7 +438,6 @@ const ComparisonMap = (props) => {
         hover={resultsHover}
       />
       <MapControls
-          // Filter props
         availableStates={availableStates}
         availableYears={[]} // Results comparison doesn't have years filter
         availableSublocations={availableSublocations}
@@ -477,10 +451,8 @@ const ComparisonMap = (props) => {
         setRangerDistrict={setRangerDistrict}
         setState={setState}
         clearAllSelections={props.clearAllSelections}
-          // Legend props
         legendItems={legendItems}
         legendTitle="Results comparison"
-          // Download props
         downloadCallback={() => downloadMap(
           map,
           year,
@@ -491,7 +463,6 @@ const ComparisonMap = (props) => {
           { titleDetails: { selectedState, period: year }, thresholds, colors },
         )}
         isDownloadingMap={isDownloadingMap}
-          // Hide filters
         hideFilters
       />
       {!isLoading && !data.length && (

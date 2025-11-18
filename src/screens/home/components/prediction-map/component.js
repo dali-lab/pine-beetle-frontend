@@ -70,7 +70,6 @@ const PredictionMap = (props) => {
     predictionModal,
   } = props;
 
-  // Use shared hooks for state management
   const {
     map,
     setMap,
@@ -82,7 +81,6 @@ const PredictionMap = (props) => {
     setIsDownloadingMap,
   } = useMapState();
 
-  // Mobile detection
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -98,10 +96,8 @@ const PredictionMap = (props) => {
     };
   }, []);
 
-  // Fetch ranger districts when in RD mode
   const allRangerDistricts = useRangerDistricts(dataMode);
 
-  // Refs for cleanup and race condition prevention
   const colorPredictionsTimeoutRef = useRef(null);
   const isMountedRef = useRef(true);
 
@@ -116,13 +112,10 @@ const PredictionMap = (props) => {
     };
   }, []);
 
-  // Create hover callback
   const createMapHoverCallback = useCallback((predictions, rangerDistricts, mode, state, availStates) => {
     const callback = (hoverState, location, x, y) => {
       const pred = predictions.find((p) => {
-        // either ranger district mode or have a matching state
         return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState)))
-              // and sublocation matches
               && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState) || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
       });
 
@@ -148,19 +141,15 @@ const PredictionMap = (props) => {
     return createHoverCallback(map, rangerDistricts, dataMode, callback, isMobile);
   }, [map, dataMode, isMobile, setPredictionHover]);
 
-  // Color predictions function using shared utilities
   const colorPredictions = useCallback((predictions) => {
     if (!map) return;
 
-    // Wait for style to load with proper cleanup
     if (!waitForStyleLoad(map, colorPredictions, [predictions], colorPredictionsTimeoutRef, isMountedRef)) {
       return;
     }
 
-    // Remove existing layer
     removeVectorLayer(map);
 
-    // Create base expressions
     const { fillExpression, strokeExpression } = createBaseExpressions();
 
     predictions.forEach((prediction) => {
@@ -178,7 +167,6 @@ const PredictionMap = (props) => {
         state,
       });
 
-      // Handle both string (county) and array (RD with variants)
       if (locationName) {
         const names = Array.isArray(locationName) ? locationName : [locationName];
         const validNames = names.filter((str) => !!str);
@@ -188,10 +176,8 @@ const PredictionMap = (props) => {
       }
     });
 
-    // Add default expressions
     addDefaultExpressions(fillExpression, strokeExpression);
 
-    // Add layer to map
     addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
   }, [map, dataMode]);
 
@@ -293,14 +279,13 @@ const PredictionMap = (props) => {
             map.remove();
           }
         } catch (error) {
-          // Silently ignore - map may already be removed or in invalid state
+          console.error('Error cleaning up map:', error);
         }
       }
       mapInitializedRef.current = false;
     };
   }, [dataMode]);
 
-  // Color predictions when data changes
   useEffect(() => {
     if (!map) return;
 
@@ -309,7 +294,6 @@ const PredictionMap = (props) => {
     zoomToSelectedState(selectedState, map);
   }, [data, selectedState, map, year, colorPredictions]);
 
-  // Initial fill
   useEffect(() => {
     if (!initialFill && map && data.length > 0) {
       colorPredictions(data);
@@ -317,13 +301,11 @@ const PredictionMap = (props) => {
     }
   }, [initialFill, map, data, colorPredictions, setInitialFill]);
 
-  // Set up hover callback - create the actual mapbox event handler
   const hoverCallback = useMemo(() => {
     if (!map || !data) return null;
     return createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates);
   }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates, isMobile, createMapHoverCallback]);
 
-  // Set up click callback - create the actual mapbox event handler
   const clickCallback = useMemo(() => {
     if (!map || !availableStates || !availableSublocations) return null;
     return createMapClickCallback(
@@ -341,7 +323,6 @@ const PredictionMap = (props) => {
     );
   }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict, setPredictionModal, isMobile]);
 
-  // Set up state click callback
   const stateClickCallback = useCallback((e) => {
     const { abbrev } = e?.features[0]?.properties || {};
     if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
@@ -349,12 +330,10 @@ const PredictionMap = (props) => {
     }
   }, [selectedState, availableStates, setState]);
 
-  // Set up mouse leave callback
   const mouseLeaveCallback = useCallback(() => {
     setPredictionHover(null);
   }, [setPredictionHover]);
 
-  // Use shared callback hook
   useMapCallbacks(
     map,
     clickCallback,
@@ -364,7 +343,6 @@ const PredictionMap = (props) => {
     [availableStates, availableSublocations, selectedState, data, dataMode, allRangerDistricts, isMobile],
   );
 
-  // Remove layer when data is empty
   useEffect(() => {
     if (data.length === 0 && map && map.isStyleLoaded && map.isStyleLoaded() && typeof map.getLayer === 'function') {
       try {
@@ -377,13 +355,11 @@ const PredictionMap = (props) => {
     }
   }, [data, map]);
 
-  // Helper function to get risk level label
   const getRiskLevel = (index) => {
     const riskLevels = ['Very Low', 'Low', 'Moderate', 'High', 'Very High', 'Extreme'];
     return riskLevels[index] || 'Unknown';
   };
 
-  // Prepare legend data for the overlay
   const legendItems = thresholds.map((threshold, index) => ({
     color: colors[index],
     label: `${threshold} (${getRiskLevel(index)})`,
@@ -406,7 +382,6 @@ const PredictionMap = (props) => {
         isDownloadingMap={isDownloadingMap}
       />
       <MapControls
-        // Filter props
         availableStates={availableStates}
         availableYears={availableYears || []}
         availableSublocations={availableSublocations}
@@ -420,10 +395,8 @@ const PredictionMap = (props) => {
         setRangerDistrict={setRangerDistrict}
         setState={setState}
         clearAllSelections={clearAllSelections}
-        // Legend props
         legendItems={legendItems}
         legendTitle="Outbreak Probability (%)"
-        // Download props
         downloadCallback={() => downloadMap(
           map,
           year,

@@ -50,7 +50,6 @@ const HistoricalMap = (props) => {
     sublocationData: rawData,
   } = props;
 
-  // Use shared hooks for state management
   const {
     map,
     setMap,
@@ -62,10 +61,8 @@ const HistoricalMap = (props) => {
     setIsDownloadingMap,
   } = useMapState();
 
-  // Fetch ranger districts when in RD mode
   const allRangerDistricts = useRangerDistricts(dataMode);
 
-  // Refs for cleanup and race condition prevention
   const colorFillTimeoutRef = useRef(null);
   const isMountedRef = useRef(true);
 
@@ -80,7 +77,6 @@ const HistoricalMap = (props) => {
     };
   }, []);
 
-  // Create hover callback
   const createMapHoverCallback = useCallback((allData, rangerDistricts, mode, state, availStates) => {
     const callback = (hoverState, location, x, y, counties) => {
       const sublocation = mode === DATA_MODES.COUNTY ? 'county' : 'rangerDistrict';
@@ -112,22 +108,17 @@ const HistoricalMap = (props) => {
     return createHoverCallback(map, rangerDistricts, dataMode, callback);
   }, [map, dataMode, setTrappingHover]);
 
-  // Color fill function using shared utilities
   const colorFill = useCallback((d) => {
     if (!map) return;
 
-    // Wait for style to load with proper cleanup
     if (!waitForStyleLoad(map, colorFill, [d], colorFillTimeoutRef, isMountedRef)) {
       return;
     }
 
-    // Remove existing layer
     removeVectorLayer(map);
 
-    // Create base expressions
     const { fillExpression, strokeExpression } = createBaseExpressions();
 
-    // Group trappings by locality
     const trappingsByLocality = d.reduce((acc, curr) => {
       const localityDescription = formatLocationForMapbox(dataMode, curr);
       const key = Array.isArray(localityDescription) ? localityDescription[0] : localityDescription;
@@ -141,7 +132,6 @@ const HistoricalMap = (props) => {
       return acc;
     }, {});
 
-    // Determine color based on spots count
     Object.entries(trappingsByLocality).forEach(([localityDescription, sumSpotst0]) => {
       const [noData, zeroToNine, tenToNineteen, twentyToFortyNine, fiftyToNinetyNine, hundredToTwoFortyNine, twoFiftyPlus] = colors;
       let color;
@@ -162,15 +152,12 @@ const HistoricalMap = (props) => {
         color = twoFiftyPlus;
       }
 
-      // Add location to expressions (handle both string and array)
       const locationName = Array.isArray(localityDescription) ? localityDescription : [localityDescription];
       addLocationToExpressions(fillExpression, strokeExpression, locationName, color);
     });
 
-    // Add default expressions
     addDefaultExpressions(fillExpression, strokeExpression);
 
-    // Add layer to map
     addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
   }, [map, dataMode]);
 
@@ -275,14 +262,13 @@ const HistoricalMap = (props) => {
             map.remove();
           }
         } catch (error) {
-          // Silently ignore - map may already be removed or in invalid state
+          console.error('Error cleaning up map:', error);
         }
       }
       mapInitializedRef.current = false;
     };
   }, [dataMode]);
 
-  // Color fill when data changes
   useEffect(() => {
     if (!map) return;
 
@@ -291,7 +277,6 @@ const HistoricalMap = (props) => {
     zoomToSelectedState(selectedState, map);
   }, [rawData, selectedState, map, predictionYear, colorFill]);
 
-  // Initial fill
   useEffect(() => {
     if (!initialFill && map && rawData.length > 0) {
       colorFill(rawData);
@@ -299,13 +284,11 @@ const HistoricalMap = (props) => {
     }
   }, [initialFill, map, rawData, colorFill, setInitialFill]);
 
-  // Set up hover callback - create the actual mapbox event handler
   const hoverCallback = useMemo(() => {
     if (!map || !rawData) return null;
     return createMapHoverCallback(rawData, allRangerDistricts, dataMode, selectedState, availableStates);
   }, [map, rawData, allRangerDistricts, dataMode, selectedState, availableStates, createMapHoverCallback]);
 
-  // Set up click callback - create the actual mapbox event handler
   const clickCallback = useMemo(() => {
     if (!map || !availableStates || !availableSublocations) return null;
     return createMapClickCallback(
@@ -321,7 +304,6 @@ const HistoricalMap = (props) => {
     );
   }, [map, availableStates, availableSublocations, selectedState, rawData, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict]);
 
-  // Set up state click callback
   const stateClickCallback = useCallback((e) => {
     const { abbrev } = e?.features[0]?.properties || {};
     if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
@@ -329,12 +311,10 @@ const HistoricalMap = (props) => {
     }
   }, [selectedState, availableStates, setState]);
 
-  // Set up mouse leave callback
   const mouseLeaveCallback = useCallback(() => {
     setTrappingHover(null);
   }, [setTrappingHover]);
 
-  // Use shared callback hook
   useMapCallbacks(
     map,
     clickCallback,
@@ -344,7 +324,6 @@ const HistoricalMap = (props) => {
     [availableStates, availableSublocations, selectedState, rawData, dataMode, allRangerDistricts],
   );
 
-  // Remove layer when data is empty
   useEffect(() => {
     if (rawData.length === 0 && map && map.isStyleLoaded && map.isStyleLoaded() && typeof map.getLayer === 'function') {
       try {
@@ -357,7 +336,6 @@ const HistoricalMap = (props) => {
     }
   }, [rawData, map]);
 
-  // Download button event listeners (preserved from original)
   useEffect(() => {
     const handleDownloadClick = (event) => {
       if (!event.target.matches('.download-button') && !event.target.matches('.download-button p')) return;

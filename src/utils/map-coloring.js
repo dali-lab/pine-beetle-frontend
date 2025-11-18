@@ -1,7 +1,6 @@
 import { MAP_SOURCE_NAME, VECTOR_LAYER } from '../constants';
 
-// Constants
-const STYLE_CHECK_INTERVAL = 1000; // ms - interval for checking if map styles are loaded
+const STYLE_CHECK_INTERVAL = 1000;
 
 /**
  * Waits for map style to be loaded before proceeding with coloring
@@ -19,25 +18,20 @@ export const waitForStyleLoad = (map, colorFunction, colorFunctionArgs, timeoutR
   }
 
   if (!map.isStyleLoaded()) {
-    // Clear any existing timeout to prevent multiple retries
     if (timeoutRef?.current) {
       clearTimeout(timeoutRef.current);
     }
 
-    // Schedule retry - will call the color function again when timeout fires
     const timeoutId = setTimeout(() => {
-      // Only retry if component is still mounted and map exists
       if (isMountedRef?.current && map && colorFunction) {
         colorFunction(...colorFunctionArgs);
       }
-      // Clear timeout ref after execution
       if (timeoutRef) {
         // eslint-disable-next-line no-param-reassign
         timeoutRef.current = null;
       }
     }, STYLE_CHECK_INTERVAL);
 
-    // Store timeout ID for cleanup
     if (timeoutRef) {
       // eslint-disable-next-line no-param-reassign
       timeoutRef.current = timeoutId;
@@ -46,7 +40,6 @@ export const waitForStyleLoad = (map, colorFunction, colorFunctionArgs, timeoutR
     return false;
   }
 
-  // Style is loaded, caller can continue with coloring
   return true;
 };
 
@@ -89,7 +82,6 @@ export const addDefaultExpressions = (fillExpression, strokeExpression) => {
  * @param {string} sourceLayer - Source layer name
  */
 export const addMapLayer = (map, fillExpression, strokeExpression, sourceLayer) => {
-  // Double-checking if we have valid fillExpression for paint
   if (fillExpression.length > 3) {
     map.addLayer({
       id: VECTOR_LAYER,
