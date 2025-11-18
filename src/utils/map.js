@@ -10,6 +10,8 @@ import {
   VECTOR_LAYER,
 } from '../constants';
 import { getMapboxRDNameFormat } from './abbreviation-mappings';
+import { isMapRemoved, markMapAsRemoved } from './map-instance-tracker';
+import { logError, logWarning } from './logger';
 
 // twice-curried function for generating click callback
 const createMapClickCallback = (states, sublocations, currentState, data, dataMode, propsCounty, setCounty, propsRangerDistrict, setRangerDistrict, setPredictionModal, isMobile = false) => (e) => {
@@ -106,23 +108,28 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     try {
       // Check if map is in a valid state before cleanup
       // Verify the map has a container and hasn't been removed already
-      const container = mapToCleanup.getContainer && mapToCleanup.getContainer();
-      const isValidMap = mapToCleanup
-        && typeof mapToCleanup.remove === 'function'
-        && mapToCleanup.getContainer
-        && container
-        && container.parentNode
-        && !mapToCleanup._removed;
+      if (!isMapRemoved(mapToCleanup)) {
+        const hasGetContainer = mapToCleanup.getContainer && typeof mapToCleanup.getContainer === 'function';
+        const hasRemove = typeof mapToCleanup.remove === 'function';
 
-      if (isValidMap) {
-        try {
-          mapToCleanup._removed = true;
-          mapToCleanup.remove();
-        } catch (error) {
-          if (mapToCleanup) {
-            mapToCleanup._removed = true;
+        if (hasGetContainer && hasRemove) {
+          let container = null;
+          try {
+            container = mapToCleanup.getContainer();
+          } catch (error) {
+            // getContainer failed, mark as removed and skip cleanup
+            markMapAsRemoved(mapToCleanup);
           }
-          console.warn('Error removing map in generateMap:', error);
+
+          if (container && container.parentNode && !isMapRemoved(mapToCleanup)) {
+            try {
+              markMapAsRemoved(mapToCleanup);
+              mapToCleanup.remove();
+            } catch (error) {
+              markMapAsRemoved(mapToCleanup);
+              logWarning('Error removing map in generateMap', error, { function: 'generateMap' });
+            }
+          }
         }
       }
     } catch (error) {
@@ -139,12 +146,12 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
   if (existingMapContainer) {
     const containerMap = existingMapContainer._mapboxgl_map
                          || (existingMapContainer.firstChild && existingMapContainer.firstChild._mapboxgl_map);
-    if (containerMap && containerMap !== mapToCleanup && typeof containerMap.remove === 'function' && !containerMap._removed) {
+    if (containerMap && containerMap !== mapToCleanup && typeof containerMap.remove === 'function' && !isMapRemoved(containerMap)) {
       try {
-        containerMap._removed = true;
+        markMapAsRemoved(containerMap);
         containerMap.remove();
       } catch (error) {
-        console.warn('Error cleaning up container map instance:', error);
+        logWarning('Error cleaning up container map instance', error, { function: 'generateMap' });
       }
     }
   }
@@ -303,7 +310,7 @@ const downloadMap = (map, year, isDownloadingMap, setIsDownloadingMap, selectedS
       setIsDownloadingMap(false);
     })
     .catch((error) => {
-      console.error(error);
+      logError('Error downloading map', error, { function: 'downloadMap' });
     });
 };
 

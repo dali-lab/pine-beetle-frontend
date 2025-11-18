@@ -27,6 +27,7 @@ import {
   mapboxHoverStyle,
   zoomToSelectedState,
 } from '../../../../utils';
+import { logError, logWarning } from '../../../../utils/logger';
 import { isInvalidNumber } from '../../../../utils/map';
 import {
   addDefaultExpressions,
@@ -36,6 +37,7 @@ import {
   removeVectorLayer,
   waitForStyleLoad,
 } from '../../../../utils/map-coloring';
+import { isMapRemoved as checkMapRemoved, markMapAsRemoved as markMapRemoved } from '../../../../utils/map-instance-tracker';
 import { colors, thresholds } from './constants';
 import './style.scss';
 
@@ -300,7 +302,7 @@ const ComparisonMap = (props) => {
         if (!isMountedRef.current) return;
 
         if (containerRetryCountRef.current >= MAP_INIT_CONSTANTS.MAX_CONTAINER_CHECK_RETRIES) {
-          console.error('Map container not found after maximum retries');
+          logError('Map container not found after maximum retries', null, { component: 'ComparisonMap' });
           return;
         }
 
@@ -345,18 +347,18 @@ const ComparisonMap = (props) => {
         clearTimeout(containerCheckTimeoutRef.current);
         containerCheckTimeoutRef.current = null;
       }
-      if (map && typeof map.remove === 'function' && map.getContainer && !map._removed) {
+      if (map && typeof map.remove === 'function' && map.getContainer && !checkMapRemoved(map)) {
         try {
           const container = map.getContainer();
           if (container && container.parentNode) {
-            map._removed = true;
+            markMapRemoved(map);
             map.remove();
           }
         } catch (error) {
           if (map) {
-            map._removed = true;
+            markMapRemoved(map);
           }
-          console.error('Error cleaning up map:', error);
+          logError('Error cleaning up map', error, { component: 'ComparisonMap' });
         }
       }
       mapInitializedRef.current = false;
@@ -425,7 +427,7 @@ const ComparisonMap = (props) => {
           map.removeLayer(VECTOR_LAYER);
         }
       } catch (error) {
-        console.warn('Error removing layer:', error);
+        logWarning('Error removing layer', error, { component: 'ComparisonMap' });
       }
     }
   }, [data, map]);

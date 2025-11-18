@@ -22,6 +22,7 @@ import {
   getSourceLayer,
   zoomToSelectedState,
 } from '../../../utils';
+import { logError, logWarning } from '../../../utils/logger';
 import { isInvalidNumber } from '../../../utils/map';
 import {
   addDefaultExpressions,
@@ -31,6 +32,7 @@ import {
   removeVectorLayer,
   waitForStyleLoad,
 } from '../../../utils/map-coloring';
+import { isMapRemoved as checkMapRemoved, markMapAsRemoved as markMapRemoved } from '../../../utils/map-instance-tracker';
 import Map from '../../map';
 import MapControls from '../../map-controls/component';
 import {
@@ -232,7 +234,7 @@ const HistoricalMap = (props) => {
         if (!isMountedRef.current) return;
 
         if (containerRetryCountRef.current >= MAP_INIT_CONSTANTS.MAX_CONTAINER_CHECK_RETRIES) {
-          console.error('Map container not found after maximum retries');
+          logError('Map container not found after maximum retries', null, { component: 'TrappingDataMap' });
           return;
         }
 
@@ -269,18 +271,18 @@ const HistoricalMap = (props) => {
         clearTimeout(initTimeoutRef.current);
         initTimeoutRef.current = null;
       }
-      if (map && typeof map.remove === 'function' && map.getContainer && !map._removed) {
+      if (map && typeof map.remove === 'function' && map.getContainer && !checkMapRemoved(map)) {
         try {
           const container = map.getContainer();
           if (container && container.parentNode) {
-            map._removed = true;
+            markMapRemoved(map);
             map.remove();
           }
         } catch (error) {
           if (map) {
-            map._removed = true;
+            markMapRemoved(map);
           }
-          console.error('Error cleaning up map:', error);
+          logError('Error cleaning up map', error, { component: 'TrappingDataMap' });
         }
       }
       mapInitializedRef.current = false;
@@ -350,7 +352,7 @@ const HistoricalMap = (props) => {
           map.removeLayer(VECTOR_LAYER);
         }
       } catch (error) {
-        console.warn('Error removing layer:', error);
+        logWarning('Error removing layer', error, { component: 'TrappingDataMap' });
       }
     }
   }, [rawData, map]);

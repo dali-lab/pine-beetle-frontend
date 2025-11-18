@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { generateMap } from '../utils';
 import MAP_INIT_CONSTANTS from '../constants/map-constants';
+import { logError } from '../utils/logger';
 
 /**
  * Custom hook to handle map initialization with proper cleanup and race condition prevention
@@ -53,7 +54,7 @@ const useMapInitialization = (
         if (!isMountedRef.current) return;
 
         if (retryCountRef.current >= MAP_INIT_CONSTANTS.MAX_CONTAINER_CHECK_RETRIES) {
-          console.error('Map container not found after maximum retries');
+          logError('Map container not found after maximum retries', null, { hook: 'useMapInitialization' });
           return;
         }
 

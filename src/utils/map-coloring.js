@@ -1,5 +1,7 @@
 import { MAP_SOURCE_NAME, VECTOR_LAYER } from '../constants';
 import MAP_INIT_CONSTANTS from '../constants/map-constants';
+import { isMapRemoved } from './map-instance-tracker';
+import { logError } from './logger';
 
 const { STYLE_CHECK_INTERVAL, MAX_STYLE_CHECK_RETRIES } = MAP_INIT_CONSTANTS;
 
@@ -21,7 +23,7 @@ export const waitForStyleLoad = (map, colorFunction, colorFunctionArgs, timeoutR
 
   if (!map.isStyleLoaded()) {
     if (retryCountRef.current >= MAX_STYLE_CHECK_RETRIES) {
-      console.error('Map style failed to load after maximum retries');
+      logError('Map style failed to load after maximum retries', null, { function: 'waitForStyleLoad' });
       return false;
     }
 
@@ -59,8 +61,23 @@ export const waitForStyleLoad = (map, colorFunction, colorFunctionArgs, timeoutR
  * @param {Object} map - Mapbox map instance
  */
 export const removeVectorLayer = (map) => {
-  if (map && map.getLayer(VECTOR_LAYER)) {
-    map.removeLayer(VECTOR_LAYER);
+  if (!map || isMapRemoved(map)) {
+    return;
+  }
+
+  const hasGetLayer = map.getLayer && typeof map.getLayer === 'function';
+  const hasRemoveLayer = map.removeLayer && typeof map.removeLayer === 'function';
+
+  if (!hasGetLayer || !hasRemoveLayer) {
+    return;
+  }
+
+  try {
+    if (map.getLayer(VECTOR_LAYER)) {
+      map.removeLayer(VECTOR_LAYER);
+    }
+  } catch (error) {
+    // Silently ignore - map may be in invalid state
   }
 };
 

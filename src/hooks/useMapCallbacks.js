@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { STATE_VECTOR_LAYER, VECTOR_LAYER } from '../constants';
+import { isMapRemoved } from '../utils/map-instance-tracker';
 
 /**
  * Custom hook to manage map event callbacks with proper cleanup
@@ -31,8 +32,12 @@ const useMapCallbacks = (
     }
 
     const previousCallback = callbacksRef.current.vectorClick;
-    if (previousCallback) {
-      map.off('click', VECTOR_LAYER, previousCallback);
+    if (previousCallback && !isMapRemoved(map) && map.off && typeof map.off === 'function') {
+      try {
+        map.off('click', VECTOR_LAYER, previousCallback);
+      } catch (error) {
+        // Silently ignore - map may be in invalid state
+      }
     }
 
     callbacksRef.current.vectorClick = onVectorClick;
@@ -40,8 +45,12 @@ const useMapCallbacks = (
 
     // eslint-disable-next-line consistent-return
     return () => {
-      if (map && callbacksRef.current.vectorClick) {
-        map.off('click', VECTOR_LAYER, callbacksRef.current.vectorClick);
+      if (map && !isMapRemoved(map) && callbacksRef.current.vectorClick && map.off && typeof map.off === 'function') {
+        try {
+          map.off('click', VECTOR_LAYER, callbacksRef.current.vectorClick);
+        } catch (error) {
+          // Silently ignore - map may be in invalid state
+        }
         callbacksRef.current.vectorClick = null;
       }
     };
@@ -53,8 +62,12 @@ const useMapCallbacks = (
     }
 
     const previousCallback = callbacksRef.current.hover;
-    if (previousCallback) {
-      map.off('mousemove', previousCallback);
+    if (previousCallback && !isMapRemoved(map) && map.off && typeof map.off === 'function') {
+      try {
+        map.off('mousemove', previousCallback);
+      } catch (error) {
+        // Silently ignore - map may be in invalid state
+      }
     }
 
     callbacksRef.current.hover = onHover;
@@ -62,8 +75,12 @@ const useMapCallbacks = (
 
     // eslint-disable-next-line consistent-return
     return () => {
-      if (map && callbacksRef.current.hover) {
-        map.off('mousemove', callbacksRef.current.hover);
+      if (map && !isMapRemoved(map) && callbacksRef.current.hover && map.off && typeof map.off === 'function') {
+        try {
+          map.off('mousemove', callbacksRef.current.hover);
+        } catch (error) {
+          // Silently ignore - map may be in invalid state
+        }
         callbacksRef.current.hover = null;
       }
     };
@@ -75,8 +92,12 @@ const useMapCallbacks = (
     }
 
     const previousCallback = callbacksRef.current.stateClick;
-    if (previousCallback) {
-      map.off('click', STATE_VECTOR_LAYER, previousCallback);
+    if (previousCallback && !isMapRemoved(map) && map.off && typeof map.off === 'function') {
+      try {
+        map.off('click', STATE_VECTOR_LAYER, previousCallback);
+      } catch (error) {
+        // Silently ignore - map may be in invalid state
+      }
     }
 
     callbacksRef.current.stateClick = onStateClick;
@@ -84,8 +105,12 @@ const useMapCallbacks = (
 
     // eslint-disable-next-line consistent-return
     return () => {
-      if (map && callbacksRef.current.stateClick) {
-        map.off('click', STATE_VECTOR_LAYER, callbacksRef.current.stateClick);
+      if (map && !isMapRemoved(map) && callbacksRef.current.stateClick && map.off && typeof map.off === 'function') {
+        try {
+          map.off('click', STATE_VECTOR_LAYER, callbacksRef.current.stateClick);
+        } catch (error) {
+          // Silently ignore - map may be in invalid state
+        }
         callbacksRef.current.stateClick = null;
       }
     };
@@ -97,8 +122,12 @@ const useMapCallbacks = (
     }
 
     const previousCallback = callbacksRef.current.mouseLeave;
-    if (previousCallback) {
-      map.off('mouseleave', VECTOR_LAYER, previousCallback);
+    if (previousCallback && !isMapRemoved(map) && map.off && typeof map.off === 'function') {
+      try {
+        map.off('mouseleave', VECTOR_LAYER, previousCallback);
+      } catch (error) {
+        // Silently ignore - map may be in invalid state
+      }
     }
 
     callbacksRef.current.mouseLeave = onMouseLeave;
@@ -106,8 +135,12 @@ const useMapCallbacks = (
 
     // eslint-disable-next-line consistent-return
     return () => {
-      if (map && callbacksRef.current.mouseLeave) {
-        map.off('mouseleave', VECTOR_LAYER, callbacksRef.current.mouseLeave);
+      if (map && !isMapRemoved(map) && callbacksRef.current.mouseLeave && map.off && typeof map.off === 'function') {
+        try {
+          map.off('mouseleave', VECTOR_LAYER, callbacksRef.current.mouseLeave);
+        } catch (error) {
+          // Silently ignore - map may be in invalid state
+        }
         callbacksRef.current.mouseLeave = null;
       }
     };

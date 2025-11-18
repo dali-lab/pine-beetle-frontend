@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import './style.scss';
 
 const Loader = ({ visible, message = 'Loading...', inline = false }) => {
-  const modalIdRef = useRef(`loader-modal-${Math.random().toString(36).substr(2, 9)}`);
+  const modalIdRef = useRef(`loader-modal-${Math.random().toString(36).substring(2, 11)}`);
 
   const spinnerContent = (
     <div className={inline ? 'loading-container loading-container--inline' : 'loading-container'}>

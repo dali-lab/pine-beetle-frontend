@@ -51,10 +51,10 @@ const truncateText = (text, maxLength) => {
   }
 
   // Find the last space within maxLength
-  const truncated = text.substr(0, maxLength);
+  const truncated = text.substring(0, maxLength);
   const lastSpaceIndex = truncated.lastIndexOf(' ');
   if (lastSpaceIndex > 0) {
-    return `${truncated.substr(0, lastSpaceIndex)}...`;
+    return `${truncated.substring(0, lastSpaceIndex)}...`;
   }
 
   return `${truncated}...`;

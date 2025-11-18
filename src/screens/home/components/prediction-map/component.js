@@ -35,6 +35,7 @@ import {
   mapboxHoverStyle,
   zoomToSelectedState,
 } from '../../../../utils';
+import { logError, logWarning } from '../../../../utils/logger';
 import { isInvalidNumber } from '../../../../utils/map';
 import {
   addDefaultExpressions,
@@ -44,6 +45,7 @@ import {
   removeVectorLayer,
   waitForStyleLoad,
 } from '../../../../utils/map-coloring';
+import { isMapRemoved as checkMapRemoved, markMapAsRemoved as markMapRemoved } from '../../../../utils/map-instance-tracker';
 import PredictionDetails from '../prediction-details';
 import {
   colors,
@@ -275,18 +277,18 @@ const PredictionMap = (props) => {
         clearTimeout(initTimeoutRef.current);
         initTimeoutRef.current = null;
       }
-      if (map && typeof map.remove === 'function' && map.getContainer && !map._removed) {
+      if (map && typeof map.remove === 'function' && map.getContainer && !checkMapRemoved(map)) {
         try {
           const container = map.getContainer();
           if (container && container.parentNode) {
-            map._removed = true;
+            markMapRemoved(map);
             map.remove();
           }
         } catch (error) {
           if (map) {
-            map._removed = true;
+            markMapRemoved(map);
           }
-          console.error('Error cleaning up map:', error);
+          logError('Error cleaning up map', error, { component: 'PredictionMap' });
         }
       }
       mapInitializedRef.current = false;
@@ -353,13 +355,13 @@ const PredictionMap = (props) => {
   );
 
   useEffect(() => {
-    if (data.length === 0 && map && map.isStyleLoaded && map.isStyleLoaded() && typeof map.getLayer === 'function') {
+    if (data.length === 0 && map && !checkMapRemoved(map) && map.isStyleLoaded && map.isStyleLoaded() && typeof map.getLayer === 'function') {
       try {
         if (map.getLayer(VECTOR_LAYER)) {
           map.removeLayer(VECTOR_LAYER);
         }
       } catch (error) {
-        console.warn('Error removing layer:', error);
+        logWarning('Error removing layer', error, { component: 'PredictionMap' });
       }
     }
   }, [data, map]);
