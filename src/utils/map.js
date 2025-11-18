@@ -106,15 +106,24 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     try {
       // Check if map is in a valid state before cleanup
       // Verify the map has a container and hasn't been removed already
+      const container = mapToCleanup.getContainer && mapToCleanup.getContainer();
       const isValidMap = mapToCleanup
         && typeof mapToCleanup.remove === 'function'
         && mapToCleanup.getContainer
-        && mapToCleanup.getContainer(); // Check if container still exists
+        && container
+        && container.parentNode
+        && !mapToCleanup._removed;
 
       if (isValidMap) {
-        // Destroy the map instance to free WebGL context
-        // This will automatically clean up all event listeners and resources
-        mapToCleanup.remove();
+        try {
+          mapToCleanup._removed = true;
+          mapToCleanup.remove();
+        } catch (error) {
+          if (mapToCleanup) {
+            mapToCleanup._removed = true;
+          }
+          console.warn('Error removing map in generateMap:', error);
+        }
       }
     } catch (error) {
       // Silently ignore errors - map may already be removed or in invalid state
@@ -126,16 +135,13 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     }
   }
 
-  // Also check if container has an existing map instance attached
   const existingMapContainer = document.getElementById('map');
   if (existingMapContainer) {
-    // Try to find and clean up any map instance attached to the container
-    // Mapbox GL JS may attach the map instance to the container element
     const containerMap = existingMapContainer._mapboxgl_map
                          || (existingMapContainer.firstChild && existingMapContainer.firstChild._mapboxgl_map);
-    if (containerMap && containerMap !== mapToCleanup && typeof containerMap.remove === 'function') {
+    if (containerMap && containerMap !== mapToCleanup && typeof containerMap.remove === 'function' && !containerMap._removed) {
       try {
-        // map.remove() handles all cleanup internally
+        containerMap._removed = true;
         containerMap.remove();
       } catch (error) {
         console.warn('Error cleaning up container map instance:', error);

@@ -275,13 +275,17 @@ const PredictionMap = (props) => {
         clearTimeout(initTimeoutRef.current);
         initTimeoutRef.current = null;
       }
-      if (map && typeof map.remove === 'function' && map.getContainer) {
+      if (map && typeof map.remove === 'function' && map.getContainer && !map._removed) {
         try {
           const container = map.getContainer();
-          if (container) {
+          if (container && container.parentNode) {
+            map._removed = true;
             map.remove();
           }
         } catch (error) {
+          if (map) {
+            map._removed = true;
+          }
           console.error('Error cleaning up map:', error);
         }
       }
