@@ -36,7 +36,6 @@ const MultiSelectInput = (props) => {
   const [statusText, setStatusText] = useState('');
   const [isListOpen, setIsListOpen] = useState(false);
 
-  // close dropdown when clicking outside the component
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
       if (isListOpen && ref.current && !ref.current.contains(e.target)) {
@@ -63,7 +62,6 @@ const MultiSelectInput = (props) => {
   }, [valueChildren, optionsChildren, valueParent]);
 
   useEffect(() => {
-    // When parent changes, automatically select all children (empty array = all selected)
     if (valueParent) {
       setValueChildren([]);
     }
@@ -73,38 +71,28 @@ const MultiSelectInput = (props) => {
     setValueChildren(valueChildren.filter((e) => e !== element));
   };
 
-  // set the parent and auto select all its children
   const selectParent = (parent) => {
     if (valueParent === parent) {
       setValueParent('');
       setIsListOpen(false);
     } else {
       setValueParent(parent);
-      // Automatically select all children (empty array represents all selected)
       setValueChildren([]);
       setIsListOpen(false);
     }
   };
 
-  // add children to value list or remove it if previously selected
   const selectChildren = (child) => {
-    // When valueChildren is empty, it means all counties are selected
     const isAllSelected = valueChildren.length === 0;
 
     if (isAllSelected) {
-      // If all are selected and user clicks one, deselect that one (select all except this one)
-      // Convert from "all selected" to explicit list of all except the clicked one
       setValueChildren(optionsChildren.filter((c) => c !== child));
     } else if (valueChildren.indexOf(child) > -1) {
-      // If child is already selected, remove it
-      // But prevent deselecting all counties - if this would be the last one, keep it selected
       if (valueChildren.length === 1) {
-        // Cannot deselect the last county, so do nothing
         return;
       }
       handleRemove(child);
     } else {
-      // Add child to selection
       setValueChildren([...valueChildren, child]);
     }
   };

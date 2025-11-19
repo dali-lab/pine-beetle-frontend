@@ -1,11 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import FilterOverlay from '../filter-overlay';
 import LegendOverlay from '../legend-overlay';
 import './style.scss';
 
+// Constants
+const DESKTOP_BREAKPOINT = 768;
+const RESIZE_DEBOUNCE_MS = 150;
+
 const MapControls = (props) => {
   const {
-    // Filter props
     availableStates,
     availableYears,
     availableSublocations,
@@ -19,91 +27,121 @@ const MapControls = (props) => {
     setRangerDistrict,
     setState,
     clearAllSelections,
-    // Legend props
     legendItems,
     legendTitle = 'Outbreak Probability (%)',
-    // Download props
     downloadCallback,
     isDownloadingMap,
-    // Control visibility
     hideFilters = false,
   } = props;
 
   const [isDesktop, setIsDesktop] = useState(false);
-  const [isPanelContentVisible, setIsPanelContentVisible] = useState(true); // Controls panel content visibility
+  const [isPanelContentVisible, setIsPanelContentVisible] = useState(false);
   const [openSections, setOpenSections] = useState({
-    filters: false, // Will be set based on device type
+    filters: false,
     download: false,
     legend: false,
   });
 
-  // Detect if device is desktop (screen width > 768px)
+  const filterOverlayProps = useMemo(() => ({
+    availableStates,
+    availableYears,
+    availableSublocations,
+    county,
+    dataMode,
+    predictionYear,
+    rangerDistrict,
+    selectedState,
+    setCounty,
+    setPredictionYear,
+    setRangerDistrict,
+    setState,
+    clearAllSelections,
+  }), [
+    availableStates,
+    availableYears,
+    availableSublocations,
+    county,
+    dataMode,
+    predictionYear,
+    rangerDistrict,
+    selectedState,
+    setCounty,
+    setPredictionYear,
+    setRangerDistrict,
+    setState,
+    clearAllSelections,
+  ]);
+
   useEffect(() => {
     const checkIsDesktop = () => {
-      setIsDesktop(window.innerWidth > 768);
+      setIsDesktop(window.innerWidth > DESKTOP_BREAKPOINT);
     };
 
-    // Check on mount
     checkIsDesktop();
 
-    // Listen for resize events
-    window.addEventListener('resize', checkIsDesktop);
+    let resizeTimeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(checkIsDesktop, RESIZE_DEBOUNCE_MS);
+    };
+
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', checkIsDesktop);
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimeout);
     };
   }, []);
 
-  // Set default filter state based on device type
   useEffect(() => {
-    setOpenSections((prev) => ({
-      ...prev,
-      filters: isDesktop, // Open filters by default on desktop only
-      legend: false, // Always closed by default
-      download: false, // Always closed by default
-    }));
-    // Show panel content by default on desktop
+    setOpenSections({
+      filters: isDesktop,
+      legend: false,
+      download: false,
+    });
     setIsPanelContentVisible(isDesktop);
   }, [isDesktop]);
 
-  const handleDownloadClick = () => {
-    // Close filters and legend when downloading
+  const handleDownloadClick = useCallback(() => {
+    if (!downloadCallback) {
+      console.warn('MapControls: downloadCallback is not provided');
+      return;
+    }
+
     setOpenSections((prev) => ({
       ...prev,
       filters: false,
       legend: false,
     }));
     downloadCallback();
-  };
+  }, [downloadCallback]);
 
-  const handleCloseFilters = () => {
+  const handleCloseFilters = useCallback(() => {
     setOpenSections((prev) => ({
       ...prev,
       filters: false,
     }));
-  };
+  }, []);
 
-  const handleCloseLegend = () => {
+  const handleCloseLegend = useCallback(() => {
     setOpenSections((prev) => ({
       ...prev,
       legend: false,
     }));
-  };
+  }, []);
 
-  const togglePanelContentVisibility = () => {
+  const togglePanelContentVisibility = useCallback(() => {
     setIsPanelContentVisible((prev) => !prev);
-  };
+  }, []);
 
-  const toggleSection = (section) => {
+  const toggleSection = useCallback((section) => {
     setOpenSections((prev) => {
-      // If clicking the same section, toggle it
       if (prev[section]) {
         return {
           ...prev,
           [section]: false,
         };
       }
-      // For any section, close all others and open the clicked one
       return {
         filters: false,
         download: false,
@@ -111,7 +149,7 @@ const MapControls = (props) => {
         [section]: true,
       };
     });
-  };
+  }, []);
 
   return (
     <div className="map-controls-panel">
@@ -125,6 +163,8 @@ const MapControls = (props) => {
               className={`section-header controls-header ${isPanelContentVisible ? 'active' : ''}`}
               onClick={togglePanelContentVisibility}
               aria-label={isPanelContentVisible ? 'Hide controls' : 'Show controls'}
+              aria-expanded={isPanelContentVisible}
+              aria-controls="map-controls-content"
             >
               <span className="section-title">Controls</span>
               <span className="section-toggle">
@@ -136,7 +176,7 @@ const MapControls = (props) => {
 
         {/* Panel Content - Only show when panel content is visible */}
         {isPanelContentVisible && (
-          <>
+          <div id="map-controls-content">
             {/* Filters Section - Only show if not hidden */}
             {!hideFilters && (
               <div className="control-section">
@@ -144,6 +184,8 @@ const MapControls = (props) => {
                   type="button"
                   className={`section-header ${openSections.filters ? 'active' : ''}`}
                   onClick={() => toggleSection('filters')}
+                  aria-expanded={openSections.filters}
+                  aria-controls="filters-content"
                 >
                   <span className="section-title">Filters</span>
                   <span className="section-toggle">
@@ -151,23 +193,25 @@ const MapControls = (props) => {
                   </span>
                 </button>
                 {openSections.filters && (
-                  <FilterOverlay
-                    availableStates={availableStates}
-                    availableYears={availableYears}
-                    availableSublocations={availableSublocations}
-                    county={county}
-                    dataMode={dataMode}
-                    predictionYear={predictionYear}
-                    rangerDistrict={rangerDistrict}
-                    selectedState={selectedState}
-                    setCounty={setCounty}
-                    setPredictionYear={setPredictionYear}
-                    setRangerDistrict={setRangerDistrict}
-                    setState={setState}
-                    clearAllSelections={clearAllSelections}
-                    className="embedded-control"
-                    onClose={handleCloseFilters}
-                  />
+                  <div id="filters-content">
+                    <FilterOverlay
+                      availableStates={filterOverlayProps.availableStates}
+                      availableYears={filterOverlayProps.availableYears}
+                      availableSublocations={filterOverlayProps.availableSublocations}
+                      county={filterOverlayProps.county}
+                      dataMode={filterOverlayProps.dataMode}
+                      predictionYear={filterOverlayProps.predictionYear}
+                      rangerDistrict={filterOverlayProps.rangerDistrict}
+                      selectedState={filterOverlayProps.selectedState}
+                      setCounty={filterOverlayProps.setCounty}
+                      setPredictionYear={filterOverlayProps.setPredictionYear}
+                      setRangerDistrict={filterOverlayProps.setRangerDistrict}
+                      setState={filterOverlayProps.setState}
+                      clearAllSelections={filterOverlayProps.clearAllSelections}
+                      className="embedded-control"
+                      onClose={handleCloseFilters}
+                    />
+                  </div>
                 )}
               </div>
             )}
@@ -178,6 +222,8 @@ const MapControls = (props) => {
                 type="button"
                 className={`section-header ${openSections.legend ? 'active' : ''}`}
                 onClick={() => toggleSection('legend')}
+                aria-expanded={openSections.legend}
+                aria-controls="legend-content"
               >
                 <span className="section-title">Legend</span>
                 <span className="section-toggle">
@@ -185,11 +231,13 @@ const MapControls = (props) => {
                 </span>
               </button>
               {openSections.legend && (
-                <LegendOverlay
-                  legendItems={legendItems}
-                  title={legendTitle}
-                  className="embedded-control"
-                />
+                <div id="legend-content">
+                  <LegendOverlay
+                    legendItems={legendItems}
+                    title={legendTitle}
+                    className="embedded-control"
+                  />
+                </div>
               )}
             </div>
 
@@ -200,11 +248,12 @@ const MapControls = (props) => {
                 className="section-header download-direct"
                 onClick={handleDownloadClick}
                 disabled={isDownloadingMap}
+                aria-label={isDownloadingMap ? 'Downloading map' : 'Download map'}
               >
                 <span className="section-title">{isDownloadingMap ? 'Downloading...' : 'Download map'}</span>
               </button>
             </div>
-          </>
+          </div>
         )}
       </div>
 
@@ -216,6 +265,8 @@ const MapControls = (props) => {
           type="button"
           className={`nav-button ${openSections.filters ? 'active' : ''}`}
           onClick={() => toggleSection('filters')}
+          aria-expanded={openSections.filters}
+          aria-label="Toggle filters"
         >
           <div className="nav-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -231,6 +282,8 @@ const MapControls = (props) => {
           type="button"
           className={`nav-button ${openSections.legend ? 'active' : ''}`}
           onClick={() => toggleSection('legend')}
+          aria-expanded={openSections.legend}
+          aria-label="Toggle legend"
         >
           <div className="nav-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -246,6 +299,7 @@ const MapControls = (props) => {
           className="nav-button"
           onClick={handleDownloadClick}
           disabled={isDownloadingMap}
+          aria-label={isDownloadingMap ? 'Downloading map' : 'Download map'}
         >
           <div className="nav-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -256,22 +310,21 @@ const MapControls = (props) => {
         </button>
       </div>
 
-      {/* Mobile Full-Screen Overlays */}
       {!isDesktop && openSections.filters && !hideFilters && (
         <FilterOverlay
-          availableStates={availableStates}
-          availableYears={availableYears}
-          availableSublocations={availableSublocations}
-          county={county}
-          dataMode={dataMode}
-          predictionYear={predictionYear}
-          rangerDistrict={rangerDistrict}
-          selectedState={selectedState}
-          setCounty={setCounty}
-          setPredictionYear={setPredictionYear}
-          setRangerDistrict={setRangerDistrict}
-          setState={setState}
-          clearAllSelections={clearAllSelections}
+          availableStates={filterOverlayProps.availableStates}
+          availableYears={filterOverlayProps.availableYears}
+          availableSublocations={filterOverlayProps.availableSublocations}
+          county={filterOverlayProps.county}
+          dataMode={filterOverlayProps.dataMode}
+          predictionYear={filterOverlayProps.predictionYear}
+          rangerDistrict={filterOverlayProps.rangerDistrict}
+          selectedState={filterOverlayProps.selectedState}
+          setCounty={filterOverlayProps.setCounty}
+          setPredictionYear={filterOverlayProps.setPredictionYear}
+          setRangerDistrict={filterOverlayProps.setRangerDistrict}
+          setState={filterOverlayProps.setState}
+          clearAllSelections={filterOverlayProps.clearAllSelections}
           className="filter-mobile-fullscreen-overlay"
           onClose={handleCloseFilters}
         />
