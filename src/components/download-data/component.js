@@ -1,14 +1,19 @@
+import axios from 'axios';
+import JSZip from 'jszip';
 import React, { useState } from 'react';
 
 import { ChoiceInput, MultiSelectInput } from '../input-components';
 
-import { DATA_MODES } from '../../constants';
+import { DATA_MODES, DOWNLOAD_DATA_ROUTES } from '../../constants';
 
 import {
-  downloadCsv,
   getStateAbbreviationFromStateName,
   getStateNameFromAbbreviation,
 } from '../../utils';
+
+// Import PDF files as assets
+import annualSummariesMetadata from '../../assets/files/SPBpredict_annualSummaries_metadata.pdf';
+import unsummarizedMetadata from '../../assets/files/SPBpredict_unsummarized_metadata.pdf';
 
 import './style.scss';
 
@@ -54,12 +59,36 @@ const DownloadData = (props) => {
     [fieldName]: e.target.checked,
   });
 
-  // function for handling trapping data download
+  // Helper function to fetch CSV data as blob
+  const fetchCsvData = async (dataType, queryParams = {}) => {
+    const query = Object.entries(queryParams)
+      .filter(([_, val]) => val !== null && val !== undefined && val !== '')
+      .map(([key, value]) => `${key}=${value}`)
+      .join('&');
+
+    const url = `${global.AUTOMATION_API_URL}${DOWNLOAD_DATA_ROUTES[dataType]}${query.length > 0 ? '?' : ''}${query}`;
+    const { data } = await axios.get(url, { responseType: 'blob' });
+    return data;
+  };
+
+  // Helper function to fetch PDF as blob
+  const fetchPdfAsBlob = async (pdfPath) => {
+    const response = await axios.get(pdfPath, { responseType: 'blob' });
+    return response.data;
+  };
+
+  // function for handling trapping data download as zip
   const handleDownload = async () => {
     try {
       setError('');
-      const promises = Object.entries(fieldsToDownload).map(async ([fieldName, value]) => {
-        if (!value) return null;
+      setIsDownloading(true);
+
+      const zip = new JSZip();
+      const csvPromises = [];
+
+      // Fetch both CSV files
+      Object.entries(fieldsToDownload).forEach(([fieldName, value]) => {
+        if (!value) return;
 
         const dataTypeName = countyMode ? 'COUNTY' : 'RD';
         const dataName = fieldName === 'SUMMARIZED'
@@ -70,23 +99,71 @@ const DownloadData = (props) => {
         const countyString = county.join('&county=');
         const rangerDistrictString = rangerDistrict.join('&rangerDistrict=');
 
-        return downloadCsv(dataName, {
+        const queryParams = {
           state: selectedState,
           [countyMode ? 'county' : 'rangerDistrict']: countyMode ? countyString : rangerDistrictString,
           startYear,
           endYear,
-        });
-      }).filter((f) => !!f);
+        };
 
-      if (promises.length > 0) {
-        setIsDownloading(true);
-        await Promise.all(promises);
-        setIsDownloading(false);
+        csvPromises.push(
+          fetchCsvData(dataName, queryParams).then((blob) => {
+            const fileName = `${dataName}.csv`;
+            zip.file(fileName, blob);
+          }),
+        );
+      });
+
+      // Fetch PDF metadata files
+      const pdfPromises = [
+        fetchPdfAsBlob(annualSummariesMetadata)
+          .then((blob) => {
+            zip.file('SPBpredict_annualSummaries_metadata.pdf', blob);
+          })
+          .catch((err) => {
+            console.warn('Could not fetch annual summaries metadata PDF:', err);
+          }),
+        fetchPdfAsBlob(unsummarizedMetadata)
+          .then((blob) => {
+            zip.file('SPBpredict_unsummarized_metadata.pdf', blob);
+          })
+          .catch((err) => {
+            console.warn('Could not fetch unsummarized metadata PDF:', err);
+          }),
+      ];
+
+      // Wait for all files to be fetched
+      await Promise.all([...csvPromises, ...pdfPromises]);
+
+      // Generate zip file
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+
+      // Download the zip file
+      const objectUrl = URL.createObjectURL(zipBlob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+
+      // Create a meaningful filename
+      let locationStr;
+      if (countyMode) {
+        locationStr = county.length > 0 ? county.join('-') : 'all-counties';
+      } else {
+        locationStr = rangerDistrict.length > 0 ? rangerDistrict.join('-') : 'all-districts';
       }
+      const yearStr = startYear && endYear ? `${startYear}-${endYear}` : 'all-years';
+      const filename = `SPB-data-${selectedState || 'all-states'}-${locationStr}-${yearStr}.zip`;
+
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+
+      setIsDownloading(false);
     } catch (err) {
       setIsDownloading(false);
       console.log(err);
-      setError('There was an error.');
+      setError('There was an error downloading the data.');
     }
   };
 
@@ -245,6 +322,18 @@ const DownloadData = (props) => {
             <h4>What You&apos;ll Get</h4>
             <p><strong>Raw Data:</strong> Individual trap records with exact dates and locations for detailed analysis</p>
             <p><strong>Summary Data:</strong> Annual totals by county or federal land for trend analysis and mapping</p>
+            <p><strong>Metadata Files:</strong> PDF documentation files explaining data structure, field descriptions, and collection methods (always included)</p>
+          </div>
+          <div className="detail-section">
+            <h4>File Details</h4>
+            <p>
+              All files are packaged in a single ZIP archive. CSV files use UTF-8 encoding for
+              compatibility with Excel, R, Python, ArcGIS, and other analysis tools.
+            </p>
+            <p>
+              Each download includes metadata PDF files with detailed field descriptions and
+              data collection methodology.
+            </p>
           </div>
           <div className="detail-section">
             <h4>How to Use This Data</h4>
@@ -253,10 +342,6 @@ const DownloadData = (props) => {
           <div className="detail-section">
             <h4>Data Collection</h4>
             <p>Traps are deployed March through June each year using standardized protocols. All data is field-verified for accuracy and consistency.</p>
-          </div>
-          <div className="detail-section">
-            <h4>File Details</h4>
-            <p>CSV format with UTF-8 encoding ensures compatibility with all major software. Files include column headers and clear field descriptions.</p>
           </div>
         </div>
       </div>

@@ -1,16 +1,16 @@
 import React from 'react';
-import ReactTooltip from 'react-tooltip';
 import Modal from 'react-modal';
+import ReactTooltip from 'react-tooltip';
 
 import './style.scss';
 
 import { DATA_MODES } from '../../../../constants';
 
-import trapIcon from '../../../../assets/icons/trap.png';
 import cleridIcon from '../../../../assets/icons/clerids.png';
+import trapIcon from '../../../../assets/icons/trap.png';
 
-import { getFillColor } from '../../../../utils';
 import Histogram from '../../../../components/histogram-components/histogram';
+import { getFillColor } from '../../../../utils';
 
 const spbText = 'SPB per two weeks, averaged across traps';
 
