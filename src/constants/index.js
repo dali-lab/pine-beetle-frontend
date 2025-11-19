@@ -39,7 +39,6 @@ const ROUTES = {
   METHODOLOGY: '/methodology',
   RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
-  PREDICTIONS: '/predict-outbreak',
   RESULTS_COMPARISON: '/results-comparison',
 };
 

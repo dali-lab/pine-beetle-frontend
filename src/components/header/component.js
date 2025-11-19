@@ -1,38 +1,38 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { connect } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import pineBeetleImage from '../../assets/icons/black-beetle-logo.png';
-import { ROUTES } from '../../constants';
-import { setChartMode as setChartModeAction } from '../../state/actions';
+import { ROUTES, VIDEO_URL } from '../../constants';
+import useDropdown from '../../hooks/useDropdown';
 
 import './style.scss';
 
-const Header = ({ setChartMode }) => {
+const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
-  const [historicalDataOpen, setHistoricalDataOpen] = useState(false);
-  const [explainersOpen, setExplainersOpen] = useState(false);
   const navRef = useRef(null);
-  const aboutButtonRef = useRef(null);
-  const historicalDataButtonRef = useRef(null);
-  const explainersButtonRef = useRef(null);
-  const historicalDataTimeoutRef = useRef(null);
-  const aboutTimeoutRef = useRef(null);
-  const explainersTimeoutRef = useRef(null);
-  const [aboutDropdownPosition, setAboutDropdownPosition] = useState({ top: 0, left: 0 });
-  const [historicalDataDropdownPosition, setHistoricalDataDropdownPosition] = useState({ top: 0, left: 0 });
-  const [explainersDropdownPosition, setExplainersDropdownPosition] = useState({ top: 0, left: 0 });
-
+  const history = useHistory();
   const location = useLocation();
 
-  // Close all dropdowns when clicking outside
+  const aboutDropdown = useDropdown(false);
+  const historicalDataDropdown = useDropdown(false);
+  const explainersDropdown = useDropdown(false);
+
+  const closeAllDropdownsRef = useRef(() => {});
+
+  useEffect(() => {
+    closeAllDropdownsRef.current = () => {
+      aboutDropdown.closeDropdown();
+      historicalDataDropdown.closeDropdown();
+      explainersDropdown.closeDropdown();
+    };
+  });
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
-        setAboutOpen(false);
-        setHistoricalDataOpen(false);
-        setExplainersOpen(false);
+        closeAllDropdownsRef.current();
       }
     };
 
@@ -42,14 +42,61 @@ const Header = ({ setChartMode }) => {
     };
   }, []);
 
-  const handleContactClick = () => {
-    window.location.href = '/contact';
-  };
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        closeAllDropdownsRef.current();
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const handleContactClick = useCallback(() => {
+    history.push(ROUTES.CONTACT);
+  }, [history]);
+
+  const handleMobileMenuToggle = useCallback(() => {
+    setMobileMenuOpen((prev) => !prev);
+  }, []);
+
+  const handleMobileMenuClose = useCallback(() => {
+    setMobileMenuOpen(false);
+  }, []);
+
+  const handleAboutMouseEnter = useCallback(() => {
+    historicalDataDropdown.closeDropdown();
+    explainersDropdown.closeDropdown();
+    aboutDropdown.handleMouseEnter();
+  }, [aboutDropdown, historicalDataDropdown, explainersDropdown]);
+
+  const handleHistoricalDataMouseEnter = useCallback(() => {
+    aboutDropdown.closeDropdown();
+    explainersDropdown.closeDropdown();
+    historicalDataDropdown.handleMouseEnter();
+  }, [aboutDropdown, historicalDataDropdown, explainersDropdown]);
+
+  const handleExplainersMouseEnter = useCallback(() => {
+    aboutDropdown.closeDropdown();
+    historicalDataDropdown.closeDropdown();
+    explainersDropdown.handleMouseEnter();
+  }, [aboutDropdown, historicalDataDropdown, explainersDropdown]);
+
+  const isActiveRoute = useCallback((routes) => {
+    if (Array.isArray(routes)) {
+      return routes.some((route) => location.pathname === route);
+    }
+    return location.pathname === routes;
+  }, [location.pathname]);
 
   return (
     <header className="header">
       <div className="header-container">
-        <nav className="header-nav">
+        <nav className="header-nav" ref={navRef}>
           <Link to={ROUTES.HOME} className="header-logo-title">
             <div className="logo-image">
               <img src={pineBeetleImage} alt="SPB Logo" />
@@ -64,7 +111,7 @@ const Header = ({ setChartMode }) => {
             {/* 1. Prediction Map */}
             <Link
               to={ROUTES.HOME}
-              className={`nav-item ${location.pathname === ROUTES.HOME ? 'active' : ''}`}
+              className={`nav-item ${isActiveRoute(ROUTES.HOME) ? 'active' : ''}`}
             >
               Prediction Map
             </Link>
@@ -72,7 +119,7 @@ const Header = ({ setChartMode }) => {
             {/* 2. Observed Outcomes */}
             <Link
               to={ROUTES.RESULTS_COMPARISON}
-              className={`nav-item ${location.pathname === ROUTES.RESULTS_COMPARISON ? 'active' : ''}`}
+              className={`nav-item ${isActiveRoute(ROUTES.RESULTS_COMPARISON) ? 'active' : ''}`}
             >
               Observed Outcomes
             </Link>
@@ -80,82 +127,53 @@ const Header = ({ setChartMode }) => {
             {/* 3. Historical Data Dropdown */}
             <div
               className="nav-dropdown"
-              ref={historicalDataButtonRef}
-              onMouseLeave={() => {
-                historicalDataTimeoutRef.current = setTimeout(() => {
-                  setHistoricalDataOpen(false);
-                }, 150);
-              }}
-              onMouseEnter={() => {
-                if (historicalDataTimeoutRef.current) {
-                  clearTimeout(historicalDataTimeoutRef.current);
-                }
-                if (historicalDataButtonRef.current) {
-                  const rect = historicalDataButtonRef.current.getBoundingClientRect();
-                  const dropdownWidth = 192;
-                  const rightEdge = rect.left + dropdownWidth;
-                  const viewportWidth = window.innerWidth;
-
-                  const leftPosition = rightEdge > viewportWidth
-                    ? rect.right - dropdownWidth
-                    : rect.left;
-
-                  setHistoricalDataDropdownPosition({
-                    top: rect.bottom,
-                    left: leftPosition,
-                  });
-                }
-                setAboutOpen(false);
-                setHistoricalDataOpen(true);
-              }}
+              ref={historicalDataDropdown.buttonRef}
+              onMouseLeave={historicalDataDropdown.handleMouseLeave}
+              onMouseEnter={handleHistoricalDataMouseEnter}
             >
               <Link
                 to={ROUTES.DATA}
-                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.DATA || location.pathname === ROUTES.DATA_TABLE || location.pathname === ROUTES.TIME_SERIES || location.pathname === ROUTES.DOWNLOAD_DATA) ? 'active' : ''}`}
-                onClick={() => setHistoricalDataOpen(false)}
+                className={`nav-item dropdown-trigger ${isActiveRoute([ROUTES.DATA, ROUTES.DATA_TABLE, ROUTES.TIME_SERIES, ROUTES.DOWNLOAD_DATA]) ? 'active' : ''}`}
+                onClick={historicalDataDropdown.closeDropdown}
+                aria-expanded={historicalDataDropdown.isOpen}
+                aria-haspopup="true"
               >
                 Data
-                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </Link>
 
               <div
-                className={`dropdown-menu-historical-data ${historicalDataOpen ? 'show' : ''}`}
-                onMouseEnter={() => {
-                  if (historicalDataTimeoutRef.current) {
-                    clearTimeout(historicalDataTimeoutRef.current);
-                  }
-                  setHistoricalDataOpen(true);
-                }}
-                onMouseLeave={() => {
-                  historicalDataTimeoutRef.current = setTimeout(() => {
-                    setHistoricalDataOpen(false);
-                  }, 150);
-                }}
+                className={`dropdown-menu-historical-data ${historicalDataDropdown.isOpen ? 'show' : ''}`}
+                onMouseEnter={historicalDataDropdown.handleDropdownMouseEnter}
+                onMouseLeave={historicalDataDropdown.handleDropdownMouseLeave}
                 style={{
-                  top: `${historicalDataDropdownPosition.top}px`,
-                  left: `${historicalDataDropdownPosition.left}px`,
+                  top: `${historicalDataDropdown.position.top}px`,
+                  left: `${historicalDataDropdown.position.left}px`,
                 }}
               >
                 <Link
                   to={ROUTES.TIME_SERIES}
-                  className={`dropdown-item ${location.pathname === ROUTES.TIME_SERIES ? 'active' : ''}`}
-                  onClick={() => setHistoricalDataOpen(false)}
+                  className={`dropdown-item ${isActiveRoute(ROUTES.TIME_SERIES) ? 'active' : ''}`}
+                  onClick={historicalDataDropdown.closeDropdown}
+                  role="menuitem"
                 >
                   Time Series
                 </Link>
                 <Link
                   to={ROUTES.DATA_TABLE}
-                  className={`dropdown-item ${location.pathname === ROUTES.DATA_TABLE ? 'active' : ''}`}
-                  onClick={() => setHistoricalDataOpen(false)}
+                  className={`dropdown-item ${isActiveRoute(ROUTES.DATA_TABLE) ? 'active' : ''}`}
+                  onClick={historicalDataDropdown.closeDropdown}
+                  role="menuitem"
                 >
                   Data Tables
                 </Link>
                 <Link
                   to={ROUTES.DOWNLOAD_DATA}
-                  className={`dropdown-item ${location.pathname === ROUTES.DOWNLOAD_DATA ? 'active' : ''}`}
-                  onClick={() => setHistoricalDataOpen(false)}
+                  className={`dropdown-item ${isActiveRoute(ROUTES.DOWNLOAD_DATA) ? 'active' : ''}`}
+                  onClick={historicalDataDropdown.closeDropdown}
+                  role="menuitem"
                 >
                   Download Data
                 </Link>
@@ -165,92 +183,63 @@ const Header = ({ setChartMode }) => {
             {/* 4. Explainers and Other Details Dropdown */}
             <div
               className="nav-dropdown"
-              ref={explainersButtonRef}
-              onMouseLeave={() => {
-                explainersTimeoutRef.current = setTimeout(() => {
-                  setExplainersOpen(false);
-                }, 150);
-              }}
-              onMouseEnter={() => {
-                if (explainersTimeoutRef.current) {
-                  clearTimeout(explainersTimeoutRef.current);
-                }
-                if (explainersButtonRef.current) {
-                  const rect = explainersButtonRef.current.getBoundingClientRect();
-                  const dropdownWidth = 192; // min-width from CSS
-                  const rightEdge = rect.left + dropdownWidth;
-                  const viewportWidth = window.innerWidth;
-
-                  const leftPosition = rightEdge > viewportWidth
-                    ? rect.right - dropdownWidth
-                    : rect.left;
-
-                  setExplainersDropdownPosition({
-                    top: rect.bottom,
-                    left: leftPosition,
-                  });
-                }
-                setAboutOpen(false);
-                setHistoricalDataOpen(false);
-                setExplainersOpen(true);
-              }}
+              ref={explainersDropdown.buttonRef}
+              onMouseLeave={explainersDropdown.handleMouseLeave}
+              onMouseEnter={handleExplainersMouseEnter}
             >
               <Link
                 to={ROUTES.EXPLAINERS}
-                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.EXPLAINERS || location.pathname === ROUTES.METHODOLOGY || location.pathname === ROUTES.PLAY_WITH_MODEL || location.pathname === ROUTES.RESOURCES) ? 'active' : ''}`}
-                onClick={() => setExplainersOpen(false)}
+                className={`nav-item dropdown-trigger ${isActiveRoute([ROUTES.EXPLAINERS, ROUTES.METHODOLOGY, ROUTES.PLAY_WITH_MODEL, ROUTES.RESOURCES]) ? 'active' : ''}`}
+                onClick={explainersDropdown.closeDropdown}
+                aria-expanded={explainersDropdown.isOpen}
+                aria-haspopup="true"
               >
                 Explainers & Details
-                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </Link>
 
               <div
-                className={`dropdown-menu-explainers ${explainersOpen ? 'show' : ''}`}
-                onMouseEnter={() => {
-                  if (explainersTimeoutRef.current) {
-                    clearTimeout(explainersTimeoutRef.current);
-                  }
-                  setExplainersOpen(true);
-                }}
-                onMouseLeave={() => {
-                  explainersTimeoutRef.current = setTimeout(() => {
-                    setExplainersOpen(false);
-                  }, 150);
-                }}
+                className={`dropdown-menu-explainers ${explainersDropdown.isOpen ? 'show' : ''}`}
+                onMouseEnter={explainersDropdown.handleDropdownMouseEnter}
+                onMouseLeave={explainersDropdown.handleDropdownMouseLeave}
                 style={{
-                  top: `${explainersDropdownPosition.top}px`,
-                  left: `${explainersDropdownPosition.left}px`,
+                  top: `${explainersDropdown.position.top}px`,
+                  left: `${explainersDropdown.position.left}px`,
                 }}
               >
                 <a
-                  href="https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/view"
+                  href={VIDEO_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="dropdown-item"
-                  onClick={() => setExplainersOpen(false)}
+                  onClick={explainersDropdown.closeDropdown}
+                  role="menuitem"
                 >
                   Interpreting Probabilities (the video)
                 </a>
                 <Link
                   to={ROUTES.METHODOLOGY}
-                  className={`dropdown-item ${location.pathname === ROUTES.METHODOLOGY ? 'active' : ''}`}
-                  onClick={() => setExplainersOpen(false)}
+                  className={`dropdown-item ${isActiveRoute(ROUTES.METHODOLOGY) ? 'active' : ''}`}
+                  onClick={explainersDropdown.closeDropdown}
+                  role="menuitem"
                 >
                   Model Methodology
                 </Link>
                 <Link
                   to={ROUTES.PLAY_WITH_MODEL}
-                  className={`dropdown-item ${location.pathname === ROUTES.PLAY_WITH_MODEL ? 'active' : ''}`}
-                  onClick={() => setExplainersOpen(false)}
+                  className={`dropdown-item ${isActiveRoute(ROUTES.PLAY_WITH_MODEL) ? 'active' : ''}`}
+                  onClick={explainersDropdown.closeDropdown}
+                  role="menuitem"
                 >
                   Model Explorer
                 </Link>
                 <Link
                   to={ROUTES.RESOURCES}
-                  className={`dropdown-item ${location.pathname === ROUTES.RESOURCES ? 'active' : ''}`}
-                  onClick={() => setExplainersOpen(false)}
+                  className={`dropdown-item ${isActiveRoute(ROUTES.RESOURCES) ? 'active' : ''}`}
+                  onClick={explainersDropdown.closeDropdown}
+                  role="menuitem"
                 >
                   Resources
                 </Link>
@@ -260,7 +249,7 @@ const Header = ({ setChartMode }) => {
             {/* 5. Blog */}
             <Link
               to={ROUTES.BLOG}
-              className={`nav-item ${location.pathname === ROUTES.BLOG ? 'active' : ''}`}
+              className={`nav-item ${isActiveRoute(ROUTES.BLOG) ? 'active' : ''}`}
             >
               Blog
             </Link>
@@ -268,66 +257,36 @@ const Header = ({ setChartMode }) => {
             {/* 6. About Menu */}
             <div
               className="nav-dropdown"
-              ref={aboutButtonRef}
-              onMouseLeave={() => {
-                aboutTimeoutRef.current = setTimeout(() => {
-                  setAboutOpen(false);
-                }, 150);
-              }}
-              onMouseEnter={() => {
-                if (aboutTimeoutRef.current) {
-                  clearTimeout(aboutTimeoutRef.current);
-                }
-                if (aboutButtonRef.current) {
-                  const rect = aboutButtonRef.current.getBoundingClientRect();
-                  const dropdownWidth = 192; // min-width from CSS
-                  const rightEdge = rect.left + dropdownWidth;
-                  const viewportWidth = window.innerWidth;
-
-                  const leftPosition = rightEdge > viewportWidth
-                    ? rect.right - dropdownWidth
-                    : rect.left;
-
-                  setAboutDropdownPosition({
-                    top: rect.bottom,
-                    left: leftPosition,
-                  });
-                }
-                setAboutOpen(true);
-              }}
+              ref={aboutDropdown.buttonRef}
+              onMouseLeave={aboutDropdown.handleMouseLeave}
+              onMouseEnter={handleAboutMouseEnter}
             >
               <button
                 type="button"
-                className={`nav-item dropdown-trigger ${(location.pathname === ROUTES.ABOUT) ? 'active' : ''}`}
+                className={`nav-item dropdown-trigger ${isActiveRoute(ROUTES.ABOUT) ? 'active' : ''}`}
+                aria-expanded={aboutDropdown.isOpen}
+                aria-haspopup="true"
               >
                 About
-                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
               <div
-                className={`dropdown-menu-about ${aboutOpen ? 'show' : ''}`}
-                onMouseEnter={() => {
-                  if (aboutTimeoutRef.current) {
-                    clearTimeout(aboutTimeoutRef.current);
-                  }
-                  setAboutOpen(true);
-                }}
-                onMouseLeave={() => {
-                  aboutTimeoutRef.current = setTimeout(() => {
-                    setAboutOpen(false);
-                  }, 150);
-                }}
+                className={`dropdown-menu-about ${aboutDropdown.isOpen ? 'show' : ''}`}
+                onMouseEnter={aboutDropdown.handleDropdownMouseEnter}
+                onMouseLeave={aboutDropdown.handleDropdownMouseLeave}
                 style={{
-                  top: `${aboutDropdownPosition.top}px`,
-                  left: `${aboutDropdownPosition.left}px`,
+                  top: `${aboutDropdown.position.top}px`,
+                  left: `${aboutDropdown.position.left}px`,
                 }}
               >
                 <Link
                   to={ROUTES.ABOUT}
-                  className={`dropdown-item ${location.pathname === ROUTES.ABOUT ? 'active' : ''}`}
-                  onClick={() => setAboutOpen(false)}
+                  className={`dropdown-item ${isActiveRoute(ROUTES.ABOUT) ? 'active' : ''}`}
+                  onClick={aboutDropdown.closeDropdown}
+                  role="menuitem"
                 >
                   About The Project
                 </Link>
@@ -336,8 +295,9 @@ const Header = ({ setChartMode }) => {
                   className="dropdown-item"
                   onClick={() => {
                     handleContactClick();
-                    setAboutOpen(false);
+                    aboutDropdown.closeDropdown();
                   }}
+                  role="menuitem"
                 >
                   Contact
                 </button>
@@ -348,9 +308,11 @@ const Header = ({ setChartMode }) => {
           <button
             type="button"
             className="mobile-menu-button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={handleMobileMenuToggle}
+            aria-expanded={mobileMenuOpen}
+            aria-label="Toggle mobile menu"
           >
-            <svg className="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="hamburger-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
@@ -359,11 +321,11 @@ const Header = ({ setChartMode }) => {
 
       {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
-        <div className="mobile-nav">
+        <div className="mobile-nav" role="navigation" aria-label="Mobile navigation">
           <Link
             to={ROUTES.HOME}
             className="mobile-nav-link"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={handleMobileMenuClose}
           >
             Prediction Map
           </Link>
@@ -372,28 +334,28 @@ const Header = ({ setChartMode }) => {
             <Link
               to={ROUTES.DATA}
               className="mobile-nav-label"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               Historical Data
             </Link>
             <Link
-              to={ROUTES.DATA}
+              to={ROUTES.TIME_SERIES}
               className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               Time Series
             </Link>
             <Link
               to={ROUTES.DATA_TABLE}
               className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               Data Table
             </Link>
             <Link
               to={ROUTES.DOWNLOAD_DATA}
               className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               Download Data
             </Link>
@@ -402,7 +364,7 @@ const Header = ({ setChartMode }) => {
           <Link
             to={ROUTES.RESULTS_COMPARISON}
             className="mobile-nav-link"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={handleMobileMenuClose}
           >
             Observed Outcomes
           </Link>
@@ -411,37 +373,37 @@ const Header = ({ setChartMode }) => {
             <Link
               to={ROUTES.EXPLAINERS}
               className="mobile-nav-label"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               Explainers and Other Details
             </Link>
             <a
-              href="https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/view"
+              href={VIDEO_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               Interpreting Probabilities (the video)
             </a>
             <Link
               to={ROUTES.METHODOLOGY}
               className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               Model Methodology
             </Link>
             <Link
               to={ROUTES.PLAY_WITH_MODEL}
               className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               Model Explorer
             </Link>
             <Link
               to={ROUTES.RESOURCES}
               className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               Resources
             </Link>
@@ -450,7 +412,7 @@ const Header = ({ setChartMode }) => {
           <Link
             to={ROUTES.BLOG}
             className="mobile-nav-link"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={handleMobileMenuClose}
           >
             Blog
           </Link>
@@ -459,14 +421,14 @@ const Header = ({ setChartMode }) => {
             <Link
               to={ROUTES.ABOUT}
               className="mobile-nav-label"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               About
             </Link>
             <Link
               to={ROUTES.ABOUT}
               className="mobile-nav-sublink"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={handleMobileMenuClose}
             >
               About The Project
             </Link>
@@ -475,7 +437,7 @@ const Header = ({ setChartMode }) => {
               className="mobile-nav-sublink"
               onClick={() => {
                 handleContactClick();
-                setMobileMenuOpen(false);
+                handleMobileMenuClose();
               }}
             >
               Contact
@@ -483,13 +445,8 @@ const Header = ({ setChartMode }) => {
           </div>
         </div>
       )}
-
     </header>
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setChartMode: (mode) => dispatch(setChartModeAction(mode)),
-});
-
-export default connect(null, mapDispatchToProps)(Header);
+export default Header;

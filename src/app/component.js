@@ -125,8 +125,6 @@ const App = (props) => {
     getAvailableStates,
   ]);
 
-  // Mobile blockade disabled - app now works on mobile devices
-
   return (
     <Router>
       <Header />
@@ -146,10 +144,6 @@ const App = (props) => {
           <Route path={ROUTES.METHODOLOGY} component={Methodology} />
           <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModelScreen} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
-          {/* Redirect old prediction route to home page (new prediction page) */}
-          <Route path={ROUTES.PREDICTIONS}>
-            <Redirect to={ROUTES.HOME} />
-          </Route>
           <Route path={ROUTES.RESULTS_COMPARISON} component={ResultsComparison} />
           {Object.entries(RESOURCE_ROUTES).map(([TYPE, ROUTE]) => (
             <Route
