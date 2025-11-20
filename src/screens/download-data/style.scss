@@ -28,5 +28,44 @@
       padding: 0;
       margin-bottom: 0;
     }
+
+    .page-footer-actions {
+      margin-top: 3rem;
+      display: flex;
+      justify-content: center;
+
+      @media (max-width: $tablet) {
+        margin-top: 2rem;
+      }
+
+      .resources-link-button {
+        display: inline-flex;
+        align-items: center;
+        background-color: $brandPrimary;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+
+        &:hover {
+          background-color: $brandSecondary;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+
+        @media (max-width: $tablet) {
+          font-size: 0.9rem;
+          padding: 0.625rem 1.25rem;
+        }
+      }
+    }
   }
 }

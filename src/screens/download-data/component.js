@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { DownloadData } from '../../components';
+import { ROUTES } from '../../constants';
 
 import './style.scss';
 
@@ -35,6 +37,12 @@ const DownloadDataScreen = (props) => {
             setRangerDistrict={props.setRangerDistrict}
             setState={props.setState}
           />
+        </div>
+
+        <div className="page-footer-actions">
+          <Link to={ROUTES.RESOURCES} className="resources-link-button">
+            View Resources
+          </Link>
         </div>
       </div>
     </div>
