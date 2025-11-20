@@ -8,12 +8,12 @@
   margin-top: 4.375rem;
 
   .data-container {
-    max-width: 1200px;
+    max-width: 75rem;
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 2rem;
 
     @media (max-width: $tablet) {
-      padding: 0 16px;
+      padding: 0 1rem;
     }
 
     .data-thumbnails {
@@ -21,8 +21,9 @@
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 2rem;
-          max-width: 1200px;
-          margin: 0 auto;
+          max-width: 75rem;
+          margin: 0;
+          justify-items: start;
 
           @media (max-width: $tablet) {
             grid-template-columns: 1fr;
@@ -30,66 +31,83 @@
           }
 
         .thumbnail-card {
-          background: transparent;
-          border-radius: 0;
-          padding: 1.5rem;
-          border: none;
+          background: $white;
+          border-radius: 12px;
+          padding: 0;
+          border: 1px solid $greyBlue300;
           transition: all 0.3s ease;
           text-decoration: none;
           color: inherit;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          text-align: center;
           position: relative;
           overflow: hidden;
 
           &:hover {
-            transform: translateY(-2px);
+            transform: translateY(-0.125rem);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: rgba($brandPrimary, 0.3);
           }
 
           .thumbnail-visual {
             width: 100%;
-            height: 200px;
-            margin-bottom: 1rem;
+            aspect-ratio: 16 / 9;
+            margin-bottom: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: $white;
-            border: 1px solid $greyBlue300;
-            border-radius: 8px;
-            padding: 1rem;
+            background: $greyBlue200;
+            border: none;
+            border-radius: 0;
+            padding: 0.75rem;
+            overflow: hidden;
+            border-bottom: 1px solid $greyBlue300;
+            box-sizing: border-box;
 
             .time-series-chart {
               width: 100%;
               height: 100%;
+              max-width: 100%;
+              max-height: 100%;
               position: relative;
               display: flex;
               flex-direction: column;
+              background: $white;
+              border-radius: 4px;
+              padding: 0.5rem;
+              transition: transform 0.5s ease;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+              box-sizing: border-box;
 
               .chart-title {
-                font-size: 0.7rem;
+                font-size: 0.65rem;
                 font-weight: 600;
                 color: $textColor;
                 text-align: center;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.4rem;
                 padding: 0.3rem;
-                background: rgba($greyBlue200, 0.3);
+                background: rgba($brandPrimary, 0.08);
                 border-radius: 4px;
+                color: $brandPrimary;
+                flex-shrink: 0;
               }
 
               .chart-area {
                 flex: 1;
+                min-height: 0;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                padding: 0.5rem;
+                padding: 0.3rem;
+                background: rgba($greyBlue100, 0.3);
+                border-radius: 4px;
+                overflow: hidden;
 
                 .line-chart {
                   width: 100%;
                   height: 100%;
-                  max-width: 180px;
-                  max-height: 120px;
+                  max-width: 100%;
+                  max-height: 100%;
                 }
               }
             }
@@ -97,28 +115,36 @@
             .data-table-preview {
               width: 100%;
               height: 100%;
-              font-size: 0.7rem;
+              max-width: 100%;
+              max-height: 100%;
+              font-size: 0.65rem;
               display: flex;
               flex-direction: column;
               border: 1px solid $greyBlue300;
               border-radius: 4px;
               overflow: hidden;
+              background: $white;
+              transition: transform 0.5s ease;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+              box-sizing: border-box;
 
               .table-header {
                 display: flex;
-                background: $brandSecondary;
+                background: $brandPrimary;
                 color: $white;
                 font-weight: 600;
                 flex-shrink: 0;
 
                 .header-cell {
                   flex: 1;
-                  padding: 0.5rem 0.3rem;
+                  padding: 0.4rem 0.3rem;
                   text-align: center;
                   border-right: 1px solid rgba($white, 0.2);
                   display: flex;
                   align-items: center;
                   justify-content: center;
+                  font-size: 0.65rem;
+                  min-width: 0;
 
                   &:last-child {
                     border-right: none;
@@ -129,8 +155,14 @@
               .table-row {
                 display: flex;
                 flex: 1;
+                min-height: 0;
                 border-bottom: 1px solid $greyBlue300;
                 background: $white;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                  background: rgba($brandPrimary, 0.03);
+                }
 
                 &:last-child {
                   border-bottom: none;
@@ -138,16 +170,20 @@
 
                 .table-cell {
                   flex: 1;
-                  padding: 0.5rem 0.3rem;
+                  padding: 0.4rem 0.3rem;
                   text-align: center;
                   color: $textColor;
                   border-right: 1px solid $greyBlue300;
                   display: flex;
                   align-items: center;
                   justify-content: center;
+                  font-size: 0.65rem;
+                  min-width: 0;
 
                   &:last-child {
                     border-right: none;
+                    font-weight: 600;
+                    color: $brandPrimary;
                   }
                 }
               }
@@ -156,11 +192,14 @@
             .download-preview {
               width: 100%;
               height: 100%;
+              max-width: 100%;
+              max-height: 100%;
               display: flex;
               align-items: center;
               justify-content: center;
-              background: linear-gradient(135deg, rgba(79, 119, 45, 0.05) 0%, rgba(107, 142, 107, 0.05) 100%);
-              border-radius: 6px;
+              background: $white;
+              transition: transform 0.5s ease;
+              box-sizing: border-box;
 
               .download-icon-data {
                 color: $brandSecondary;
@@ -169,10 +208,12 @@
                 justify-content: center;
                 filter: drop-shadow(0 2px 4px rgba(79, 119, 45, 0.2));
                 transition: all 0.3s ease;
+                width: 5rem;
+                height: 5rem;
 
-                &:hover {
-                  transform: scale(1.1);
-                  filter: drop-shadow(0 4px 8px rgba(79, 119, 45, 0.3));
+                svg {
+                  width: 100%;
+                  height: 100%;
                 }
               }
             }
@@ -182,19 +223,64 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            padding: 1.5rem;
 
             h3 {
-              font-size: 1.3rem;
+              font-size: 1.25rem;
               font-weight: 600;
               color: $brandPrimary;
-              margin-bottom: 0.5rem;
+              margin-bottom: 0.75rem;
+              transition: color 0.3s ease;
             }
 
             p {
               font-size: 0.9rem;
               color: $textColor;
-              line-height: 1.5;
-              margin: 0;
+              line-height: 1.6;
+              margin: 0 0 1rem 0;
+              flex-grow: 1;
+            }
+
+            .card-action {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              color: $brandPrimary;
+              font-weight: 600;
+              font-size: 0.875rem;
+              margin-top: auto;
+
+              svg {
+                transition: transform 0.3s ease;
+              }
+            }
+          }
+
+          &:hover {
+            .thumbnail-visual {
+              .time-series-chart,
+              .data-table-preview {
+                transform: scale(1.05);
+              }
+
+              .download-preview {
+                transform: scale(1.05);
+
+                .download-icon-data {
+                  transform: scale(1.1);
+                  filter: drop-shadow(0 4px 8px rgba(79, 119, 45, 0.3));
+                }
+              }
+            }
+
+            .thumbnail-content {
+              h3 {
+                color: darken($brandPrimary, 5%);
+              }
+
+              .card-action svg {
+                transform: translateX(4px);
+              }
             }
           }
         }
@@ -205,40 +291,28 @@
 
 @media (max-width: $tablet) {
   .data-screen {
-    padding: 1rem 0;
+    padding: 2rem 0;
 
     .data-container {
       padding: 0 1rem;
 
-
       .data-thumbnails {
         .thumbnail-grid {
           .thumbnail-card {
-            padding: 1.5rem;
-
             .thumbnail-visual {
-              order: 2;
-              margin-bottom: 0;
-              margin-top: 1rem;
+              aspect-ratio: 16 / 9;
             }
 
             .thumbnail-content {
-              order: 1;
-              margin-bottom: 0;
+              padding: 1.25rem;
 
               h3 {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
               }
 
               p {
-                font-size: 0.9rem;
+                font-size: 0.875rem;
               }
-            }
-
-            .thumbnail-icon {
-              width: 60px;
-              height: 60px;
-              margin-bottom: 1rem;
             }
           }
         }
@@ -250,7 +324,7 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(1.875rem);
   }
   to {
     opacity: 1;

@@ -37,32 +37,31 @@ const DataScreen = () => {
                       {/* Line chart data points - representing SPB data over time */}
                       <polyline
                         fill="none"
-                        stroke="#e74c3c"
-                        strokeWidth="2"
-                        strokeDasharray="3,2"
+                        stroke="#1A4D2E"
+                        strokeWidth="2.5"
                         points="10,80 20,75 30,70 40,65 50,60 60,55 70,50 80,45 90,40 100,35 110,30 120,25 130,20 140,25 150,30 160,35 170,40 180,45 190,50"
                       />
 
                       {/* Data points */}
-                      <circle cx="10" cy="80" r="2" fill="#e74c3c" />
-                      <circle cx="20" cy="75" r="2" fill="#e74c3c" />
-                      <circle cx="30" cy="70" r="2" fill="#e74c3c" />
-                      <circle cx="40" cy="65" r="2" fill="#e74c3c" />
-                      <circle cx="50" cy="60" r="2" fill="#e74c3c" />
-                      <circle cx="60" cy="55" r="2" fill="#e74c3c" />
-                      <circle cx="70" cy="50" r="2" fill="#e74c3c" />
-                      <circle cx="80" cy="45" r="2" fill="#e74c3c" />
-                      <circle cx="90" cy="40" r="2" fill="#e74c3c" />
-                      <circle cx="100" cy="35" r="2" fill="#e74c3c" />
-                      <circle cx="110" cy="30" r="2" fill="#e74c3c" />
-                      <circle cx="120" cy="25" r="2" fill="#e74c3c" />
-                      <circle cx="130" cy="20" r="2" fill="#e74c3c" />
-                      <circle cx="140" cy="25" r="2" fill="#e74c3c" />
-                      <circle cx="150" cy="30" r="2" fill="#e74c3c" />
-                      <circle cx="160" cy="35" r="2" fill="#e74c3c" />
-                      <circle cx="170" cy="40" r="2" fill="#e74c3c" />
-                      <circle cx="180" cy="45" r="2" fill="#e74c3c" />
-                      <circle cx="190" cy="50" r="2" fill="#e74c3c" />
+                      <circle cx="10" cy="80" r="2.5" fill="#1A4D2E" />
+                      <circle cx="20" cy="75" r="2.5" fill="#1A4D2E" />
+                      <circle cx="30" cy="70" r="2.5" fill="#1A4D2E" />
+                      <circle cx="40" cy="65" r="2.5" fill="#1A4D2E" />
+                      <circle cx="50" cy="60" r="2.5" fill="#1A4D2E" />
+                      <circle cx="60" cy="55" r="2.5" fill="#1A4D2E" />
+                      <circle cx="70" cy="50" r="2.5" fill="#1A4D2E" />
+                      <circle cx="80" cy="45" r="2.5" fill="#1A4D2E" />
+                      <circle cx="90" cy="40" r="2.5" fill="#1A4D2E" />
+                      <circle cx="100" cy="35" r="2.5" fill="#1A4D2E" />
+                      <circle cx="110" cy="30" r="2.5" fill="#1A4D2E" />
+                      <circle cx="120" cy="25" r="2.5" fill="#1A4D2E" />
+                      <circle cx="130" cy="20" r="2.5" fill="#1A4D2E" />
+                      <circle cx="140" cy="25" r="2.5" fill="#1A4D2E" />
+                      <circle cx="150" cy="30" r="2.5" fill="#1A4D2E" />
+                      <circle cx="160" cy="35" r="2.5" fill="#1A4D2E" />
+                      <circle cx="170" cy="40" r="2.5" fill="#1A4D2E" />
+                      <circle cx="180" cy="45" r="2.5" fill="#1A4D2E" />
+                      <circle cx="190" cy="50" r="2.5" fill="#1A4D2E" />
 
                       {/* Axes */}
                       <line x1="10" y1="100" x2="190" y2="100" stroke="#333" strokeWidth="1" />
@@ -78,6 +77,13 @@ const DataScreen = () => {
               <div className="thumbnail-content">
                 <h3>Time Series</h3>
                 <p>View a graph of Southern Pine Beetle statistics for a chosen area over time.</p>
+                <div className="card-action">
+                  View Chart
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12,5 19,12 12,19" />
+                  </svg>
+                </div>
               </div>
             </Link>
 
@@ -114,6 +120,13 @@ const DataScreen = () => {
               <div className="thumbnail-content">
                 <h3>Data Tables</h3>
                 <p>View the Southern Pine Beetle data in tabular format for a selected area.</p>
+                <div className="card-action">
+                  View Table
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12,5 19,12 12,19" />
+                  </svg>
+                </div>
               </div>
             </Link>
 
@@ -133,6 +146,13 @@ const DataScreen = () => {
               <div className="thumbnail-content">
                 <h3>Download Data</h3>
                 <p>Download raw data files in various formats for offline analysis and research purposes.</p>
+                <div className="card-action">
+                  Browse Downloads
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12,5 19,12 12,19" />
+                  </svg>
+                </div>
               </div>
             </Link>
           </div>
