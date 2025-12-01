@@ -125,7 +125,7 @@ const SPBChart = (props) => {
 
     setSpbChartData(updatedSPBChartData);
     setSpbChartOptions(updatedChartOptions);
-  }, [yearData]);
+  }, [yearData, startYear, endYear]);
 
   return <Line data={spbChartData} height={400} options={spbChartOptions} />;
 };

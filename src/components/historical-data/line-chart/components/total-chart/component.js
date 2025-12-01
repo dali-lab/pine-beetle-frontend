@@ -121,7 +121,7 @@ const TotalChart = (props) => {
 
     setTotalChartData(updatedTotalChartData);
     setTotalChartOptions(updatedChartOptions);
-  }, [yearData]);
+  }, [yearData, startYear, endYear]);
 
   return <Line data={totalChartData} height={400} options={totalChartOptions} />;
 };

@@ -120,7 +120,7 @@ const AvgProbChart = (props) => {
 
     setAvgProbChartData(updatedAvgProbChartData);
     setAvgProbChartOptions(updatedChartOptions);
-  }, [yearData]);
+  }, [yearData, startYear, endYear]);
 
   return <Line data={avgProbChartData} height={400} options={avgProbChartOptions} />;
 };

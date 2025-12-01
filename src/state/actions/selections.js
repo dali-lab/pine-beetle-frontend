@@ -193,8 +193,11 @@ export const setPredictionYear = (year) => {
  * @param {Number} year year to set as start year
  */
 export const setStartYear = (year) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: ActionTypes.SET_START_YEAR, payload: { year } });
+
+    // Fetch new data with updated start year filter
+    dispatch(getAggregateYearData({ startYear: year }));
   };
 };
 
@@ -203,8 +206,11 @@ export const setStartYear = (year) => {
  * @param {Number} year year to set as end year
  */
 export const setEndYear = (year) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: ActionTypes.SET_END_YEAR, payload: { year } });
+
+    // Fetch new data with updated end year filter
+    dispatch(getAggregateYearData({ endYear: year }));
   };
 };
 
