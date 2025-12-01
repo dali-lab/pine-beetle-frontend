@@ -218,7 +218,7 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
 const buildHeader = (mapTitle) => {
   return (
     `<div id="map-header" style="text-align: center;">
-          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">${MAP_TITLES[mapTitle]}</h2>
+          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">${mapTitle || ''}</h2>
         </div>`
   );
 };

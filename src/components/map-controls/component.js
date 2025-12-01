@@ -37,9 +37,9 @@ const MapControls = (props) => {
   const [isDesktop, setIsDesktop] = useState(false);
   const [isPanelContentVisible, setIsPanelContentVisible] = useState(false);
   const [openSections, setOpenSections] = useState({
-    filters: false,
+    filters: true,
     download: false,
-    legend: false,
+    legend: true,
   });
 
   const filterOverlayProps = useMemo(() => ({
@@ -95,8 +95,8 @@ const MapControls = (props) => {
 
   useEffect(() => {
     setOpenSections({
-      filters: isDesktop,
-      legend: false,
+      filters: true,
+      legend: true,
       download: false,
     });
     setIsPanelContentVisible(isDesktop);
