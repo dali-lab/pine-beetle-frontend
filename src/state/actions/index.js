@@ -14,11 +14,13 @@ import {
   setAllYears,
   setChartMode,
   setCounty,
+  setCountyFilter,
   setDataMode,
   setEndYear,
   setPredictionModal, // eslint-disable-line no-unused-vars
   setPredictionYear,
   setRangerDistrict,
+  setRangerDistrictFilter,
   setStartYear,
   setState,
 } from './selections';
@@ -83,9 +85,11 @@ export {
   setAllYears,
   setChartMode,
   setCounty,
+  setCountyFilter,
   setDataMode,
   setEndYear, setPredictionModal, setPredictionYear,
   setRangerDistrict,
+  setRangerDistrictFilter,
   setStartYear,
   setState, signOut,
 };

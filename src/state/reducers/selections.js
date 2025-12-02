@@ -48,7 +48,13 @@ const SelectionsReducer = (state = initialState, action) => {
     case ActionTypes.SET_COUNTY:
       return { ...state, county: action.payload.county };
 
+    case ActionTypes.SET_COUNTY_FILTER:
+      return { ...state, county: action.payload.county };
+
     case ActionTypes.SET_RANGER_DISTRICT:
+      return { ...state, rangerDistrict: action.payload.rangerDistrict };
+
+    case ActionTypes.SET_RANGER_DISTRICT_FILTER:
       return { ...state, rangerDistrict: action.payload.rangerDistrict };
 
     case ActionTypes.SET_DATA_MODE:

@@ -120,7 +120,6 @@ const DataTableScreen = ({
     });
   };
 
-  // Transform aggregated data to table format
   const transformAggregatedData = (rawData) => {
     if (!rawData || !Array.isArray(rawData)) return [];
 
@@ -128,44 +127,37 @@ const DataTableScreen = ({
       const stateName = stateAbbrevToStateName[item.state] || item.state;
       const locationName = dataMode === DATA_MODES.COUNTY ? item.county : item.rangerDistrict;
 
-      // Aggregated data typically has sum of spots, spb, clerids
       const spotsValue = item.spots || item.spotst0 || 0;
 
       return {
         id: index + 1,
-        year: item.year || null, // Aggregated data may not have year if aggregated by location
+        year: item.year || null,
         state: stateName,
         county: locationName,
-        // Trapping details (may be aggregated)
         trapCount: item.trapCount || item.sumTrapCount || 0,
         totalTrappingDays: item.totalTrappingDays || item.sumTotalTrappingDays || 0,
         daysPerTrap: item.daysPerTrap || (item.sumTotalTrappingDays && item.sumTrapCount ? item.sumTotalTrappingDays / item.sumTrapCount : 0),
-        // Beetle metrics (aggregated sums)
         beetles: item.spb || item.sumSpb || item.spbCount || 0,
         spbPer2Weeks: item.spbPer2Weeks || item.sumSpbPer2Weeks || 0,
         clerids: item.clerids || item.sumClerids || 0,
         spots: spotsValue,
         spotst1: item.spotst1 || item.sumSpotst1 || 0,
-        // Probabilities (may not be available in aggregated data)
         probSpotsGT0: item.probSpotsGT0 || 0,
         probSpotsGT50: item.probSpotsGT50 || 0,
         probSpotsGT150: item.probSpotsGT150 || 0,
         probSpotsGT400: item.probSpotsGT400 || 0,
         probSpotsGT1000: item.probSpotsGT1000 || 0,
-        // Predictions (may not be available in aggregated data)
         predSpotsorigUnits: item.predSpotsorigUnits || 0,
         residualSpotslogUnits: item.residualSpotslogUnits || 0,
       };
     });
   };
 
-  // Get the appropriate data source based on format (memoized)
   const data = useMemo(() => {
     const rawData = dataFormat === 'raw' ? sparseData : sublocationData;
     return dataFormat === 'raw' ? transformData(rawData) : transformAggregatedData(rawData);
   }, [dataFormat, sparseData, sublocationData, dataMode]);
 
-  // Prepare location filter data (memoized to prevent recalculation)
   const statesMappedToNames = useMemo(() => {
     return (availableHistoricalStates || []).map((abbrev) => getStateNameFromAbbreviation(abbrev)).filter((s) => !!s);
   }, [availableHistoricalStates]);
@@ -183,7 +175,6 @@ const DataTableScreen = ({
     return [...(availableHistoricalYears || [])].reverse();
   }, [availableHistoricalYears]);
 
-  // Update action refs when they change
   useEffect(() => {
     actionsRef.current = {
       getAvailableYears,
@@ -193,7 +184,6 @@ const DataTableScreen = ({
     };
   }, [getAvailableYears, getAvailableStates, getSparseData, getAggregateLocationData]);
 
-  // Sync local filters to Redux with debounce (only when user stops changing)
   const syncToReduxTimeoutRef = useRef(null);
   const syncFiltersToRedux = useCallback(() => {
     if (syncToReduxTimeoutRef.current) {
@@ -225,7 +215,6 @@ const DataTableScreen = ({
     setRangerDistrict,
   ]);
 
-  // Fetch available years and states only when filters actually change
   useEffect(() => {
     const currentFiltersKey = `${localStartYear}-${localEndYear}-${localState}-${Array.isArray(localCounty) ? localCounty.join(',') : localCounty}-${Array.isArray(localRangerDistrict) ? localRangerDistrict.join(',') : localRangerDistrict}-${dataMode}`;
     const prevFiltersKey = prevFiltersRef.current;
@@ -257,7 +246,6 @@ const DataTableScreen = ({
     };
   }, [localStartYear, localEndYear, localState, localCounty, localRangerDistrict, dataMode, syncFiltersToRedux]);
 
-  // Function to fetch data
   const fetchData = useCallback(() => {
     const filters = {
       startYear: localStartYear,
@@ -274,7 +262,6 @@ const DataTableScreen = ({
     }
   }, [dataFormat, localStartYear, localEndYear, localState, localCounty, localRangerDistrict]);
 
-  // Fetch data only when format or filters actually change
   useEffect(() => {
     const currentFiltersKey = `${localStartYear}-${localEndYear}-${localState}-${Array.isArray(localCounty) ? localCounty.join(',') : localCounty}-${Array.isArray(localRangerDistrict) ? localRangerDistrict.join(',') : localRangerDistrict}`;
     const prevFiltersKey = prevFiltersRef.current;
@@ -313,13 +300,10 @@ const DataTableScreen = ({
   const filteredAndSortedData = useMemo(() => {
     return data
       .filter((item) => {
-        // Filter by year range (only if both startYear and endYear are set)
         const yearMatch = !localStartYear || !localEndYear || !item.year || (item.year >= localStartYear && item.year <= localEndYear);
 
-        // Filter by state
         const stateMatch = !selectedStateName || item.state === selectedStateName;
 
-        // Filter by county/ranger district
         let locationMatch = true;
         if (selectedStateName) {
           if (dataMode === DATA_MODES.COUNTY) {
@@ -329,7 +313,6 @@ const DataTableScreen = ({
           }
         }
 
-        // Optionally exclude rows where trap count and SPB per 2 weeks are both 0
         const hasData = showEmptyRecords || item.trapCount > 0 || item.spbPer2Weeks > 0;
 
         return yearMatch && stateMatch && locationMatch && hasData;

@@ -64,9 +64,11 @@ const PredictionMap = (props) => {
     rangerDistrict,
     selectedState,
     setCounty,
+    setCountyFilter,
     setDataMode,
     setPredictionYear,
     setRangerDistrict,
+    setRangerDistrictFilter,
     setState,
     setPredictionModal,
     clearAllSelections,
@@ -157,7 +159,18 @@ const PredictionMap = (props) => {
 
     const { fillExpression, strokeExpression } = createBaseExpressions();
 
-    predictions.forEach((prediction) => {
+    const filteredPredictions = predictions.filter((prediction) => {
+      if (dataMode === DATA_MODES.COUNTY) {
+        if (county && county.length > 0) {
+          return county.includes(prediction.county);
+        }
+      } else if (rangerDistrict && rangerDistrict.length > 0) {
+        return rangerDistrict.includes(prediction.rangerDistrict);
+      }
+      return true;
+    });
+
+    filteredPredictions.forEach((prediction) => {
       const {
         county: countyName,
         probSpotsGT50: fillProb,
@@ -184,7 +197,7 @@ const PredictionMap = (props) => {
     addDefaultExpressions(fillExpression, strokeExpression);
 
     addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
-  }, [map, dataMode]);
+  }, [map, dataMode, county, rangerDistrict]);
 
   const mapInitializedRef = useRef(false);
   const lastDataModeRef = useRef(dataMode);
@@ -302,7 +315,7 @@ const PredictionMap = (props) => {
     if (year.toString().length === 4 && data.length > 0) colorPredictions(data);
 
     zoomToSelectedState(selectedState, map);
-  }, [data, selectedState, map, year, colorPredictions]);
+  }, [data, selectedState, map, year, colorPredictions, county, rangerDistrict]);
 
   useEffect(() => {
     if (!initialFill && map && data.length > 0) {
@@ -401,9 +414,9 @@ const PredictionMap = (props) => {
         predictionYear={year}
         rangerDistrict={rangerDistrict}
         selectedState={selectedState}
-        setCounty={setCounty}
+        setCounty={setCountyFilter}
         setPredictionYear={setPredictionYear}
-        setRangerDistrict={setRangerDistrict}
+        setRangerDistrict={setRangerDistrictFilter}
         setState={setState}
         clearAllSelections={clearAllSelections}
         legendItems={legendItems}

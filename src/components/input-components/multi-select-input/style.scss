@@ -187,6 +187,27 @@
     position: relative;
     margin-left: 1.75rem;
     background-color: transparent;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* Custom scrollbar styling */
+    &::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $greyBlue400;
+        border-radius: 4px;
+
+        &:hover {
+            background: $greyBlue500;
+        }
+    }
 }
 
 .children-list-item {
@@ -277,6 +298,30 @@
             transform: scale(0.98);
             background-color: $brandSecondary;
             color: $white;
+        }
+    }
+
+    .children-list {
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        /* Custom scrollbar styling */
+        &::-webkit-scrollbar {
+            width: 0.5rem;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $greyBlue400;
+            border-radius: 4px;
+
+            &:hover {
+                background: $greyBlue500;
+            }
         }
     }
 

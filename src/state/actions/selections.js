@@ -20,7 +20,9 @@ export const ActionTypes = {
   SET_END_YEAR: 'SET_END_YEAR',
   SET_STATE: 'SET_STATE',
   SET_COUNTY: 'SET_COUNTY',
+  SET_COUNTY_FILTER: 'SET_COUNTY_FILTER',
   SET_RANGER_DISTRICT: 'SET_RANGER_DISTRICT',
+  SET_RANGER_DISTRICT_FILTER: 'SET_RANGER_DISTRICT_FILTER',
   CLEAR_SELECTIONS: 'CLEAR_SELECTIONS',
   SET_ALL_STATES: 'SET_ALL_STATES',
   SET_ALL_COUNTIES: 'SET_ALL_COUNTIES',
@@ -322,6 +324,34 @@ export const setRangerDistrict = (newRangerDistrict) => {
 
     // fetch new drop down values
     dispatch(getAvailableYears({ rangerDistrict }));
+  };
+};
+
+/**
+ * @description action creator for setting county filter (without fetching data)
+ * Used for filtering map visualization without reloading
+ * @param {Array} newCounty county names array
+ */
+export const setCountyFilter = (newCounty) => {
+  return (dispatch) => {
+    const county = newCounty === '' // guard against emptystring from input
+      ? []
+      : newCounty;
+    dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county } });
+  };
+};
+
+/**
+ * @description action creator for setting ranger district filter (without fetching data)
+ * Used for filtering map visualization without reloading
+ * @param {Array} newRangerDistrict ranger district names array
+ */
+export const setRangerDistrictFilter = (newRangerDistrict) => {
+  return (dispatch) => {
+    const rangerDistrict = newRangerDistrict === '' // guard against emptystring from input
+      ? []
+      : newRangerDistrict;
+    dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict } });
   };
 };
 

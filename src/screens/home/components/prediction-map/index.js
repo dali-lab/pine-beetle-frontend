@@ -5,10 +5,12 @@ import PredictionMap from './component';
 import {
   clearSelections,
   setCounty,
+  setCountyFilter,
   setDataMode,
   setPredictionModal,
   setPredictionYear,
   setRangerDistrict,
+  setRangerDistrictFilter,
   setState,
 } from '../../../../state/actions';
 
@@ -49,11 +51,17 @@ const mapDispatchToProps = (dispatch) => {
     setCounty: (county) => {
       dispatch(setCounty(county));
     },
+    setCountyFilter: (county) => {
+      dispatch(setCountyFilter(county));
+    },
     setDataMode: (mode) => {
       dispatch(setDataMode(mode));
     },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));
+    },
+    setRangerDistrictFilter: (rangerDistrict) => {
+      dispatch(setRangerDistrictFilter(rangerDistrict));
     },
     setState: (state) => {
       dispatch(setState(state));
