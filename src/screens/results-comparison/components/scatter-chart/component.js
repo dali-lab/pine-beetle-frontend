@@ -163,7 +163,7 @@ const ScatterChart = ({
 
   return (
     <div className="container scatter-chart">
-      <div ref={chartRef} style={{ width: '100%', height: '500px' }} />
+      <div ref={chartRef} style={{ width: '100%', height: '600px' }} />
     </div>
   );
 };

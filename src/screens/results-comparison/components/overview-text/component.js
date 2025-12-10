@@ -1,18 +1,18 @@
 import React from 'react';
 
+import './style.scss';
+
 const OverviewText = (_props) => (
-  <div className="page-header">
+  <div className="results-overview-header">
     <h1>How did we do?</h1>
-    <div className="overview-text-container">
-      <p className="page-description">
+    <div className="results-overview-description">
+      <p>
         This map compares the observed number of spots with the predicted outcome.
         Because our model offers a probabilistic prediction, rather than a yes or no outcome, we had to choose a threshold
         for which the percent probability and the number of spots would mean &quot;outbreak predicted.&quot;
       </p>
 
-      <br />
-
-      <p className="page-description">
+      <p>
         The legend on this map is keyed to a 20% threshold, and a probability of &gt;50 spots.
         So &quot;outbreak predicted&quot; means there was a 20% or greater chance of there being 20 or more spots in any given location.
         &quot;Outbreak not predicted&quot; means there was a less than 20% chance of there being 20 or more spots.
