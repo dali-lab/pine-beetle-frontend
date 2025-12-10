@@ -43,15 +43,14 @@ const DiagramPreview = () => {
 const ToolPreview = () => {
   return (
     <div className="preview-visual tool-preview-visual">
-      <div className="tool-interface">
-        <div className="tool-controls">
-          <div className="control-line" />
-          <div className="control-line short" />
-          <div className="control-slider primary" />
-          <div className="control-slider secondary" />
+      <div className="prediction-results-preview">
+        <div className="prediction-card prob-spots">
+          <div className="prediction-percent">3.4%</div>
+          <div className="prediction-label">Predicted % Chance of Any Spots (&gt;0 spots)</div>
         </div>
-        <div className="tool-visualization">
-          <div className="viz-pattern" />
+        <div className="prediction-card prob-outbreak">
+          <div className="prediction-percent">0.2%</div>
+          <div className="prediction-label">Predicted % Chance of Outbreak (&gt;50 spots)</div>
         </div>
       </div>
     </div>
