@@ -99,66 +99,68 @@ const PlayWithModelScreen = (props) => {
 
   return (
     <div className="play-with-model-page">
-      <div className="page-header">
-        <h1>Model Explorer</h1>
-        <p className="page-description">
-          Interactive tool for exploring Southern Pine Beetle outbreak predictions through parameter manipulation and real-time analysis.
-        </p>
-      </div>
+      <div className="play-with-model-container">
+        <div className="page-header">
+          <h1>Model Explorer</h1>
+          <p className="page-description">
+            Interactive tool for exploring Southern Pine Beetle outbreak predictions through parameter manipulation and real-time analysis.
+          </p>
+        </div>
 
-      <div className="container">
-        {fetchErrorText.length > 0 && (
-          <div className="error-alert">
-            {fetchErrorText.map((error) => (
-              <p key={error} className="error-text">{error}</p>
-            ))}
+        <div className="play-with-model-content">
+          {fetchErrorText.length > 0 && (
+            <div className="error-alert">
+              {fetchErrorText.map((error) => (
+                <p key={error} className="error-text">{error}</p>
+              ))}
+            </div>
+          )}
+
+          <div className="model-explorer-layout">
+            {/* Location Selection Section */}
+            <section className="location-section">
+              <div className="play-model-header">
+                <h2>Location Selection</h2>
+                <p className="section-subtitle">Choose your analysis area</p>
+              </div>
+              <div className="selection-container">
+                <SelectionBar />
+              </div>
+            </section>
+
+            {/* Model Parameters Section */}
+            <section className="parameters-section">
+              <div className="play-model-header">
+                <h2>Model Parameters</h2>
+                <p className="section-subtitle">Adjust input variables to explore predictions</p>
+              </div>
+              <div className="parameters-container">
+                <PlayWithModelInputs
+                  modelInputs={modelInputs}
+                  runModel={runModel}
+                  updateModelInputs={updateModelInputs}
+                  defaultModelVersion={DEFAULT_MODEL_VERSION}
+                />
+              </div>
+            </section>
+
+            {/* Prediction Results Section */}
+            <section className="results-section">
+              <div className="play-model-header">
+                <h2>Prediction Results</h2>
+                <p className="section-subtitle">View model outputs and analysis</p>
+              </div>
+              <div className="results-container">
+                <PlayWithModelOutputs
+                  county={county}
+                  dataMode={dataMode}
+                  rangerDistrict={rangerDistrict}
+                  selectedState={selectedState}
+                  year={year}
+                />
+              </div>
+            </section>
           </div>
-        )}
-
-        <div className="model-explorer-layout">
-          {/* Location Selection Section */}
-          <section className="location-section">
-            <div className="play-model-header">
-              <h2>Location Selection</h2>
-              <p className="section-subtitle">Choose your analysis area</p>
-            </div>
-            <div className="selection-container">
-              <SelectionBar />
-            </div>
-          </section>
-
-          {/* Model Parameters Section */}
-          <section className="parameters-section">
-            <div className="play-model-header">
-              <h2>Model Parameters</h2>
-              <p className="section-subtitle">Adjust input variables to explore predictions</p>
-            </div>
-            <div className="parameters-container">
-              <PlayWithModelInputs
-                modelInputs={modelInputs}
-                runModel={runModel}
-                updateModelInputs={updateModelInputs}
-                defaultModelVersion={DEFAULT_MODEL_VERSION}
-              />
-            </div>
-          </section>
-
-          {/* Prediction Results Section */}
-          <section className="results-section">
-            <div className="play-model-header">
-              <h2>Prediction Results</h2>
-              <p className="section-subtitle">View model outputs and analysis</p>
-            </div>
-            <div className="results-container">
-              <PlayWithModelOutputs
-                county={county}
-                dataMode={dataMode}
-                rangerDistrict={rangerDistrict}
-                selectedState={selectedState}
-                year={year}
-              />
-            </div>
-          </section>
         </div>
       </div>
     </div>

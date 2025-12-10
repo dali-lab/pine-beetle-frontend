@@ -41,11 +41,13 @@ const methodologyContent = [
 const Methodology = () => {
   return (
     <div className="methodology-page">
-      <div className="page-header">
-        <h1>Methodology</h1>
-        <p className="page-description">
-          Our prediction model uses statistical analysis of historical outbreak data combined with current environmental conditions to provide accurate Southern Pine Beetle outbreak predictions.
-        </p>
+      <div className="methodology-container">
+        <div className="page-header">
+          <h1>Methodology</h1>
+          <p className="page-description">
+            Our prediction model uses statistical analysis of historical outbreak data combined with current environmental conditions to provide accurate Southern Pine Beetle outbreak predictions.
+          </p>
+        </div>
       </div>
 
       <section className="methodology-how-it-works-section">

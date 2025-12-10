@@ -4,11 +4,21 @@
 .methodology-page {
   min-height: auto;
   background: $backgroundColor;
-  padding: 2rem 0;
+  padding: 3rem 0;
   margin-top: 4.375rem;
 
   @media (max-width: $tablet) {
-    padding: 1rem 0;
+    padding: 2rem 0;
+  }
+
+  .methodology-container {
+    max-width: 87.5rem;
+    margin: 0 auto;
+    padding: 0 10rem;
+
+    @media (max-width: $tablet) {
+      padding: 0 1.5rem;
+    }
   }
 }
 
@@ -26,16 +36,12 @@
 }
 
 .methodology-how-it-works-container {
-  max-width: 50rem;
+  max-width: 87.5rem;
   margin: 0 auto;
-  padding: 0 1.5rem;
-
-  @media (max-width: $desktop) {
-    padding: 0 1.25rem;
-  }
+  padding: 0 10rem;
 
   @media (max-width: $tablet) {
-    padding: 0 1rem;
+    padding: 0 1.5rem;
   }
 }
 

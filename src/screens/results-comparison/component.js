@@ -13,20 +13,22 @@ const ResultsComparison = (props) => {
       <div className="results-comparison-container">
         <Loader visible={isLoading} />
         <OverviewText />
-        <div className="container">
-          <FilterBar />
+        <div className="results-comparison-content">
+          <div className="container">
+            <FilterBar />
+          </div>
+          <ComparisonMap />
+          <div className="container">
+            <h2 className="prediction-chart-title">Predictions versus outcomes</h2>
+            <p className="prediction-chart-text">Each point represents one county or ranger district in one year.
+              The regression line indicates the overall relationship between predictions and outcomes.
+              Points above the line had more SPB spots than predicted. Points below the line had fewer spots than predicted.
+              Highlighted points are for the indicated year.
+            </p>
+          </div>
+          <ScatterChartSelectionBar />
+          <ScatterChart />
         </div>
-        <ComparisonMap />
-        <div className="container">
-          <h2 className="prediction-chart-title">Predictions versus outcomes</h2>
-          <p className="prediction-chart-text">Each point represents one county or ranger district in one year.
-            The regression line indicates the overall relationship between predictions and outcomes.
-            Points above the line had more SPB spots than predicted. Points below the line had fewer spots than predicted.
-            Highlighted points are for the indicated year.
-          </p>
-        </div>
-        <ScatterChartSelectionBar />
-        <ScatterChart />
       </div>
     </div>
   );

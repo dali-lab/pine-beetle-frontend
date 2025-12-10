@@ -1,11 +1,9 @@
 import React from 'react';
 
-import './style.scss';
-
 const OverviewText = (_props) => (
-  <div className="results-overview-header">
+  <div className="page-header">
     <h1>How did we do?</h1>
-    <div className="results-overview-description">
+    <div className="page-description">
       <p>
         This map compares the observed number of spots with the predicted outcome.
         Because our model offers a probabilistic prediction, rather than a yes or no outcome, we had to choose a threshold

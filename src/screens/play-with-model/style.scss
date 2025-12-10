@@ -9,8 +9,21 @@
 
   @media (max-width: $tablet) {
     padding: 2rem 0;
-    margin-top: 4.375rem;
   }
+}
+
+.play-with-model-container {
+  max-width: 87.5rem;
+  margin: 0 auto;
+  padding: 0 10rem;
+
+  @media (max-width: $tablet) {
+    padding: 0 1.5rem;
+  }
+}
+
+.play-with-model-content {
+  // treść strony
 }
 
 .error-alert {

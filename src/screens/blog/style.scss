@@ -1,7 +1,7 @@
 @import '../../styles/breakpoints';
 @import '../../styles/colors';
 
-.blog-page-container {
+.blog-page {
     min-height: auto;
     background: $backgroundColor;
     padding: 3rem 0;
@@ -12,23 +12,22 @@
     }
 }
 
-.blog-content {
-    max-width: 75rem;
+.blog-container {
+    max-width: 87.5rem;
     margin: 0 auto;
-    padding: 0 2.5rem;
-
-    @media (max-width: $desktop) {
-        max-width: 56.25rem;
-        padding: 0 2rem;
-    }
+    padding: 0 10rem;
+    display: block;
 
     @media (max-width: $tablet) {
         padding: 0 1.5rem;
     }
+}
 
-    @media (max-width: $mobile) {
-        padding: 0 1rem;
-    }
+.blog-content {
+    display: block;
+    width: 100%;
+    clear: both;
+    margin-top: 0;
 }
 
 .blog-header {
@@ -43,14 +42,21 @@
 
 .blog-section-title {
     font-family: 'Inter';
-    font-size: 2rem;
-    font-weight: 600;
-    color: $headingColor;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: $brandPrimary;
     margin: 0;
+    letter-spacing: -0.5px;
     line-height: 1.2;
+    position: relative;
+    padding-left: 0;
+    border-left: 4px solid $brandPrimary;
+    padding-left: 2rem;
 
     @media (max-width: $tablet) {
         font-size: 1.5rem;
+        border-left-width: 3px;
+        padding-left: 1.5rem;
     }
 }
 
