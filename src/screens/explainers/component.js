@@ -83,10 +83,6 @@ const ExplainersScreen = () => {
       <div className="explainers-container">
         <div className="page-header">
           <h1>Explainer & Details</h1>
-          <p className="page-description">
-            Explore detailed explanations, methodologies, and interactive tools to better understand
-            Southern Pine Beetle prediction models and research findings.
-          </p>
         </div>
 
         <div className="explainers-thumbnails">

@@ -102,9 +102,6 @@ const PlayWithModelScreen = (props) => {
       <div className="play-with-model-container">
         <div className="page-header">
           <h1>Model Explorer</h1>
-          <p className="page-description">
-            Interactive tool for exploring Southern Pine Beetle outbreak predictions through parameter manipulation and real-time analysis.
-          </p>
         </div>
 
         <div className="play-with-model-content">

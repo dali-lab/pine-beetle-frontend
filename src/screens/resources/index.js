@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import {
   RESOURCE_ROUTES,
-  VIDEO_URL,
 } from '../../constants';
 
 import './style.scss';
@@ -28,21 +27,6 @@ const Resources = (_props) => {
             </p>
 
             <div className="resource-grid">
-              <div className="resource-card">
-                <div className="resource-header">
-                  <h3>System Overview Video</h3>
-                  <span className="resource-type">Video</span>
-                </div>
-                <p className="resource-description">
-                  A comprehensive explainer video covering the Southern Pine Beetle prediction system, its methodology, and applications.
-                </p>
-                <div className="resource-actions">
-                  <a href={VIDEO_URL} target="_blank" rel="noopener noreferrer" className="resource-link">
-                    Watch Video
-                  </a>
-                </div>
-              </div>
-
               <div className="resource-card">
                 <div className="resource-header">
                   <h3>Utility and Reliability Report</h3>
