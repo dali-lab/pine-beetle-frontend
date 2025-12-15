@@ -249,7 +249,7 @@ export async function rangerDistrictAggregateByRangerDistrict(filters = {}) {
 export async function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev, modelVersion) {
   const params = {
     cleridst1,
-    endobrev: +endobrev, // note: this casts true to 1 and false to 0 if it is a boolean
+    endobrev: +endobrev,
     SPB,
     spotst1,
     spotst2,
@@ -413,37 +413,30 @@ export async function getRDScatterChart() {
 }
 
 /**
- * @description retrieves unsummarized trapping data as JSON (same data as download but in JSON format)
- * @param {Object} filters optional filters (startYear, endYear, state, county, rangerDistrict)
+ * @description retrieves unsummarized trapping data from v3 endpoint
+ * @param {Object} filters optional filters (startYear, endYear, state, county, rangerDistrict, etc.)
  * @returns {Promise<Array>} API response with unsummarized data
  */
-export async function getUnsummarizedData(filters) {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'api.js:420', message: 'getUnsummarizedData entry', data: { filters }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'A',
-    }),
-  }).catch(() => {});
-  // #endregion
+export async function getUnsummarizedData(filters = {}) {
+  console.log('🔍 [DEBUG] getUnsummarizedData - FUNCTION CALLED');
+  console.log('🔍 [DEBUG] getUnsummarizedData - Filters received:', filters);
+
   const params = toQueryParams({
     ...filters,
-    county: filters.county && Array.isArray(filters.county) ? filters.county.join('&county=') : filters.county,
-    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join('&rangerDistrict=') : filters.rangerDistrict,
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
   });
 
-  // Try to get JSON instead of CSV - use the same endpoint but request JSON
-  const url = `${global.AUTOMATION_API_URL}/unsummarized-trapping${params ? `?${params}` : ''}`;
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'api.js:428', message: 'getUnsummarizedData URL', data: { url, automationApiUrl: global.AUTOMATION_API_URL, params }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'A',
-    }),
-  }).catch(() => {});
-  // #endregion
+  const baseUrl = global.API_URL.endsWith('/') ? global.API_URL.slice(0, -1) : global.API_URL;
+  const endpoint = baseUrl.endsWith('/v3')
+    ? 'unsummarized-trapping'
+    : 'v3/unsummarized-trapping';
+  const url = `${baseUrl}/${endpoint}${params ? `?${params}` : ''}`;
+
+  console.log('🔍 [DEBUG] getUnsummarizedData - URL:', url);
+  console.log('🔍 [DEBUG] getUnsummarizedData - Filters:', filters);
+  console.log('🔍 [DEBUG] getUnsummarizedData - API_URL:', global.API_URL);
+  console.log('🔍 [DEBUG] getUnsummarizedData - AUTOMATION_API_URL:', global.AUTOMATION_API_URL);
 
   try {
     const response = await axios.get(url, {
@@ -451,80 +444,57 @@ export async function getUnsummarizedData(filters) {
         Accept: 'application/json',
       },
     });
-    const { data, headers } = response;
-    // #region agent log
-    const contentType = headers['content-type'];
-    let firstItem = null;
-    let firstItemKeys = [];
-    if (Array.isArray(data) && data.length > 0) {
-      const [first] = data;
-      firstItem = first;
-      firstItemKeys = Object.keys(first);
-    } else if (typeof data === 'object' && data !== null) {
-      firstItem = data;
-      firstItemKeys = Object.keys(data);
-    }
-    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'api.js:436',
-        message: 'getUnsummarizedData response',
-        data: {
-          contentType,
-          isArray: Array.isArray(data),
-          dataType: typeof data,
-          hasStatus: data?.status !== undefined,
-          hasType: data?.type !== undefined,
-          hasDataField: data?.data !== undefined,
-          firstItem,
-          firstItemKeys,
-          dataKeys: typeof data === 'object' && data !== null ? Object.keys(data) : null,
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'run1',
-        hypothesisId: 'C',
-      }),
-    }).catch(() => {});
-    // #endregion
-    // If response is already an array, return it; otherwise check for data.data
-    let result;
-    if (Array.isArray(data)) {
-      result = data;
-    } else if (data && data.data) {
-      result = data.data;
+
+    const { data } = response;
+
+    console.log('🔍 [DEBUG] Response status:', response.status);
+    console.log('🔍 [DEBUG] Response data type:', typeof data);
+    console.log('🔍 [DEBUG] Response data is array:', Array.isArray(data));
+    console.log('🔍 [DEBUG] Response data keys:', typeof data === 'object' && data !== null ? Object.keys(data) : 'N/A');
+
+    let resultData = null;
+    if (data && data.status === 200 && data.type === 'SUCCESS' && Array.isArray(data.data)) {
+      resultData = data.data;
+    } else if (Array.isArray(data)) {
+      resultData = data;
+    } else if (data && data.data && Array.isArray(data.data)) {
+      resultData = data.data;
+    } else if (data && data.status && data.status !== 200) {
+      const errorMessage = data.error || data.message || `API returned status ${data.status}`;
+      throw new Error(errorMessage);
     } else {
-      result = data;
+      throw new Error('Unexpected response format from unsummarized-trapping endpoint');
     }
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'api.js:465', message: 'getUnsummarizedData result', data: { resultLength: Array.isArray(result) ? result.length : 'not array', resultType: typeof result, firstResult: Array.isArray(result) && result.length > 0 ? result[0] : result }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'C',
-      }),
-    }).catch(() => {});
-    // #endregion
-    return result;
+
+    if (resultData && resultData.length > 0) {
+      console.log('🔍 [DEBUG] First item keys:', Object.keys(resultData[0]));
+      console.log('🔍 [DEBUG] First item:', JSON.stringify(resultData[0], null, 2));
+      console.log('🔍 [DEBUG] Has week1-week6 fields:', Object.keys(resultData[0]).some((k) => /^week\d+$/i.test(k)));
+      console.log('🔍 [DEBUG] Has weekNumber field:', 'weekNumber' in resultData[0]);
+      console.log('🔍 [DEBUG] Has spbCount field:', 'spbCount' in resultData[0]);
+      console.log('🔍 [DEBUG] Has trap field:', 'trap' in resultData[0]);
+      console.log('🔍 [DEBUG] Has collectionDate field:', 'collectionDate' in resultData[0]);
+      console.log('🔍 [DEBUG] Total records:', resultData.length);
+    }
+
+    return resultData;
   } catch (error) {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'api.js:474',
-        message: 'getUnsummarizedData error',
-        data: {
-          message: error.message, response: error.response?.data, status: error.response?.status, url,
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'run1',
-        hypothesisId: 'A',
-      }),
-    }).catch(() => {});
-    // #endregion
-    throw error;
+    if (error.response) {
+      const { status, data: errorData } = error.response;
+      const errorMessage = errorData?.error || errorData?.message || `HTTP ${status}: ${error.message}`;
+      console.error('Error fetching unsummarized trapping data:', {
+        url,
+        status,
+        error: errorMessage,
+        response: errorData,
+      });
+      throw new Error(errorMessage);
+    } else if (error.request) {
+      console.error('Error fetching unsummarized trapping data: No response received', { url });
+      throw new Error('No response from server. Please check your connection.');
+    } else {
+      console.error('Error fetching unsummarized trapping data:', error.message);
+      throw error;
+    }
   }
 }

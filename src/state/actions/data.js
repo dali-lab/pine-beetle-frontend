@@ -2,11 +2,11 @@ import { DATA_MODES } from '../../constants';
 import { api } from '../../services';
 
 export const ActionTypes = {
-  SET_PREDICTIONS: 'SET_PREDICTIONS', // predictions for single year
+  SET_PREDICTIONS: 'SET_PREDICTIONS',
   SET_SPARSE_DATA: 'SET_SPARSE_DATA',
-  SET_AGGREGATE_YEAR_DATA: 'SET_AGGREGATE_YEAR_DATA', // data grouped by year
-  SET_AGGREGATE_STATE_DATA: 'SET_AGGREGATE_STATE_DATA', // data grouped by state
-  SET_AGGREGATE_LOCATION_DATA: 'SET_AGGREGATE_LOCATION_DATA', // data grouped by county/RD
+  SET_AGGREGATE_YEAR_DATA: 'SET_AGGREGATE_YEAR_DATA',
+  SET_AGGREGATE_STATE_DATA: 'SET_AGGREGATE_STATE_DATA',
+  SET_AGGREGATE_LOCATION_DATA: 'SET_AGGREGATE_LOCATION_DATA',
   SET_CUSTOM_PREDICTION: 'SET_CUSTOM_PREDICTION',
   SET_RESULTS_COMPARISON_DATA: 'SET_RESULTS_COMPARISON_DATA',
   SET_SCATTER_CHART_DATA: 'SET_SCATTER_CHART_DATA',
@@ -125,15 +125,7 @@ export function getSparseData(overrideFilter = {}) {
  */
 export function getUnsummarizedData(overrideFilter = {}) {
   return async (dispatch, getState) => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'actions/data.js:126', message: 'getUnsummarizedData action entry', data: { overrideFilter }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'D',
-      }),
-    }).catch(() => {});
-    // #endregion
+    console.log('🔍 [DEBUG] getUnsummarizedData ACTION - Called');
     const {
       county,
       endYear,
@@ -151,48 +143,17 @@ export function getUnsummarizedData(overrideFilter = {}) {
       ...overrideFilter,
     };
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'actions/data.js:145', message: 'getUnsummarizedData dispatching FETCHING_SPARSE_DATA', data: { filters }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'D',
-      }),
-    }).catch(() => {});
-    // #endregion
+    console.log('🔍 [DEBUG] getUnsummarizedData ACTION - Filters:', filters);
+
     dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: true });
 
     try {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'actions/data.js:148', message: 'getUnsummarizedData calling api.getUnsummarizedData', data: { filters }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'D',
-        }),
-      }).catch(() => {});
-      // #endregion
+      console.log('🔍 [DEBUG] getUnsummarizedData ACTION - Calling api.getUnsummarizedData');
       const response = await api.getUnsummarizedData(filters);
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'actions/data.js:149', message: 'getUnsummarizedData got response', data: { responseLength: Array.isArray(response) ? response.length : 'not array', responseType: typeof response, firstItem: Array.isArray(response) && response.length > 0 ? response[0] : response }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'D',
-        }),
-      }).catch(() => {});
-      // #endregion
+      console.log('🔍 [DEBUG] getUnsummarizedData ACTION - Response received, length:', response?.length || 0);
+      console.log('🔍 [DEBUG] getUnsummarizedData ACTION - First item:', response?.[0] ? JSON.stringify(response[0], null, 2) : 'N/A');
       dispatch({ type: ActionTypes.SET_SPARSE_DATA, payload: response });
     } catch (error) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'actions/data.js:151', message: 'getUnsummarizedData error', data: { message: error.message, error }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'D',
-        }),
-      }).catch(() => {});
-      // #endregion
       dispatch({
         type: ActionTypes.SET_DATA_FETCH_ERROR,
         payload: {
