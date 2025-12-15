@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import {
   getSparseData,
+  getUnsummarizedData,
   getAggregateLocationData,
   getAvailableStates,
   getAvailableYears,
@@ -59,6 +60,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getSparseData: (filters) => dispatch(getSparseData(filters)),
+  getUnsummarizedData: (filters) => dispatch(getUnsummarizedData(filters)),
   getAggregateLocationData: (filters) => dispatch(getAggregateLocationData(filters)),
   getAvailableStates: (filters) => dispatch(getAvailableStates(filters)),
   getAvailableYears: (filters) => dispatch(getAvailableYears(filters)),

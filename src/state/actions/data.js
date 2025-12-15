@@ -121,6 +121,94 @@ export function getSparseData(overrideFilter = {}) {
 }
 
 /**
+ * @description action creator for fetching unsummarized (raw) trapping data
+ */
+export function getUnsummarizedData(overrideFilter = {}) {
+  return async (dispatch, getState) => {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        location: 'actions/data.js:126', message: 'getUnsummarizedData action entry', data: { overrideFilter }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'D',
+      }),
+    }).catch(() => {});
+    // #endregion
+    const {
+      county,
+      endYear,
+      rangerDistrict,
+      startYear,
+      state,
+    } = getState().selections;
+
+    const filters = {
+      startYear,
+      endYear,
+      state,
+      county,
+      rangerDistrict,
+      ...overrideFilter,
+    };
+
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        location: 'actions/data.js:145', message: 'getUnsummarizedData dispatching FETCHING_SPARSE_DATA', data: { filters }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'D',
+      }),
+    }).catch(() => {});
+    // #endregion
+    dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: true });
+
+    try {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          location: 'actions/data.js:148', message: 'getUnsummarizedData calling api.getUnsummarizedData', data: { filters }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'D',
+        }),
+      }).catch(() => {});
+      // #endregion
+      const response = await api.getUnsummarizedData(filters);
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          location: 'actions/data.js:149', message: 'getUnsummarizedData got response', data: { responseLength: Array.isArray(response) ? response.length : 'not array', responseType: typeof response, firstItem: Array.isArray(response) && response.length > 0 ? response[0] : response }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'D',
+        }),
+      }).catch(() => {});
+      // #endregion
+      dispatch({ type: ActionTypes.SET_SPARSE_DATA, payload: response });
+    } catch (error) {
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          location: 'actions/data.js:151', message: 'getUnsummarizedData error', data: { message: error.message, error }, timestamp: Date.now(), sessionId: 'debug-session', runId: 'run1', hypothesisId: 'D',
+        }),
+      }).catch(() => {});
+      // #endregion
+      dispatch({
+        type: ActionTypes.SET_DATA_FETCH_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch unsummarized data',
+        },
+      });
+    } finally {
+      setTimeout(() => {
+        dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: false });
+      }, 1000);
+    }
+  };
+}
+
+/**
  * @description action creator for setting aggregate year data
  */
 export function getAggregateYearData(overrideFilter = {}) {

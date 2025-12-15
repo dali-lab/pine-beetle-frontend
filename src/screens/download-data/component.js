@@ -11,11 +11,7 @@ const DownloadDataScreen = (props) => {
     <div className="download-data-screen">
       <div className="download-data-container">
         <div className="page-header">
-          <h1>Data Export</h1>
-          <p className="page-description">
-            Download Southern Pine Beetle trapping data for research and analysis.
-            Select temporal and spatial parameters to generate customized datasets in CSV format.
-          </p>
+          <h1>Download Data</h1>
         </div>
 
         <div className="download-data-content">

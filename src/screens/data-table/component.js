@@ -359,12 +359,7 @@ const DataTableScreen = ({
     <div className="data-table-screen">
       <div className="data-table-container">
         <div className="page-header">
-          <h1>Historical Data Table</h1>
-          <p className="page-description">
-            Browse and analyze Southern Pine Beetle data including trap counts, beetle activity,
-            outbreak probability, and predictions. Use filters and sorting options to
-            explore trends across ranger districts and counties.
-          </p>
+          <h1>Data Tables</h1>
         </div>
 
         <div className="table-controls">

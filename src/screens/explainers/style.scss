@@ -29,8 +29,6 @@
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 1.5rem;
-          max-width: 75rem;
-          margin: 0 auto;
 
           .resources-card-wrapper {
             grid-column: 1;

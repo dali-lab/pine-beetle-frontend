@@ -51,12 +51,7 @@ const TimeSeries = (props) => {
         <Loader visible={isLoading} />
         {uniqueErrors.length > 0 && uniqueErrors.map((t) => <p key={t}>{t}</p>)}
         <div className="page-header">
-          <h1>Historical Data</h1>
-          <p className="page-description">
-            Southern pine beetle trapping data have been collected across the southeast since 1988.
-            All historical data are collected here in one place for researchers, forest resource managers, and the general public to access.
-            Using the filter below, you can explore totals for different locations across your chosen length of time.
-          </p>
+          <h1>Time Series</h1>
         </div>
         <div className="time-series-content">
           <div className="container">

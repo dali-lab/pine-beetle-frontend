@@ -36,6 +36,7 @@ import {
   getResultsComparisonData,
   getScatterChartData,
   getSparseData,
+  getUnsummarizedData,
   runCustomPrediction,
 } from './data';
 
@@ -79,7 +80,11 @@ export {
   getAvailableYears,
   getHistogram,
   getPredictions,
-  getResultsComparisonData, getScatterChartData, getSparseData, getUserFromStorage,
+  getResultsComparisonData,
+  getScatterChartData,
+  getSparseData,
+  getUnsummarizedData,
+  getUserFromStorage,
   login,
   runCustomPrediction,
   setAllYears,
