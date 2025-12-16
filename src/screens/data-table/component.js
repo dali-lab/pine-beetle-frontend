@@ -226,7 +226,12 @@ const DataTableScreen = ({
     }
   }, [dataFormat, filters, getUnsummarizedData, getAggregateLocationData]);
 
-  if (isLoading) {
+  // Show loader only on initial load when there's no data yet
+  const hasNoData = !sparseData || sparseData.length === 0;
+  const hasNoAggregatedData = !sublocationData || sublocationData.length === 0;
+  const shouldShowLoader = isLoading && hasNoData && hasNoAggregatedData;
+
+  if (shouldShowLoader) {
     return (
       <div className="data-table-screen">
         <div className="data-table-container">

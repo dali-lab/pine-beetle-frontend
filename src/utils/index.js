@@ -88,5 +88,5 @@ export {
   transformAggregatedData,
   transformRawData,
   truncateText,
-  zoomToSelectedState
+  zoomToSelectedState,
 };
