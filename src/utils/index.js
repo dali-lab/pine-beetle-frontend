@@ -23,18 +23,28 @@ import {
 } from './network';
 
 import {
-  sortBlogPosts,
+  formatPostDates,
   getDateToDisplay,
   getLatestBlogPost,
-  formatPostDates,
+  sortBlogPosts,
   truncateText,
 } from './blog';
+
+import {
+  extractWeekNumber,
+  formatCollectionDate,
+  getValue,
+  normalizeWeeklyData,
+  parseYearFromItem,
+  transformAggregatedData,
+  transformRawData,
+} from './data-table';
 
 import getFillColor from './colors';
 
 import {
-  createMapClickCallback,
   createHoverCallback,
+  createMapClickCallback,
   downloadMap,
   generateMap,
   mapboxHoverStyle,
@@ -49,6 +59,9 @@ export {
   createMapClickCallback,
   downloadCsv,
   downloadMap,
+  extractWeekNumber,
+  formatCollectionDate,
+  formatPostDates,
   generateMap,
   getAuthTokenFromStorage,
   getChartModeFromStorage,
@@ -60,8 +73,10 @@ export {
   getStateAbbreviationFromStateName,
   getStateNameFromAbbreviation,
   getUserIdFromStorage,
-  formatPostDates,
+  getValue,
   mapboxHoverStyle,
+  normalizeWeeklyData,
+  parseYearFromItem,
   removeAuthTokenFromStorage,
   removeUserIdFromStorage,
   setAuthTokenInStorage,
@@ -70,6 +85,8 @@ export {
   setUserIdInStorage,
   sortBlogPosts,
   toQueryParams,
+  transformAggregatedData,
+  transformRawData,
   truncateText,
-  zoomToSelectedState,
+  zoomToSelectedState
 };

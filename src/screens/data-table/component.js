@@ -10,8 +10,11 @@ import { Loader } from '../../components';
 import { ChoiceInput, MultiSelectInput } from '../../components/input-components';
 import { DATA_MODES, stateAbbrevToStateName } from '../../constants';
 import {
+  formatCollectionDate,
   getStateAbbreviationFromStateName,
   getStateNameFromAbbreviation,
+  transformAggregatedData,
+  transformRawData,
 } from '../../utils';
 
 import './style.scss';
@@ -60,195 +63,6 @@ const DataTableScreen = ({
     [reduxStartYear, reduxEndYear, reduxSelectedState, reduxCounty, reduxRangerDistrict],
   );
 
-  const extractWeekNumber = useCallback((item) => {
-    if (item.weekNumber !== undefined && item.weekNumber !== null) {
-      return item.weekNumber;
-    }
-
-    if (item.season) {
-      const seasonMatch = String(item.season).match(/(\d+)/);
-      if (seasonMatch) {
-        const weekNum = Number.parseInt(seasonMatch[1], 10);
-        if (weekNum >= 1 && weekNum <= 6) {
-          return weekNum;
-        }
-      }
-    }
-
-    if (item.collectionDate && item.startDate) {
-      try {
-        const date = new Date(item.collectionDate);
-        const startDate = new Date(item.startDate);
-        if (!Number.isNaN(date.getTime()) && !Number.isNaN(startDate.getTime())) {
-          const diffTime = date.getTime() - startDate.getTime();
-          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-          const weekNum = Math.floor(diffDays / 14) + 1;
-          if (weekNum >= 1 && weekNum <= 6) {
-            return weekNum;
-          }
-        }
-      } catch (e) {
-        // eslint-disable-line no-empty
-      }
-    }
-
-    return null;
-  }, []);
-
-  const normalizeWeeklyData = useCallback((rawData) => {
-    if (!rawData || !Array.isArray(rawData)) {
-      return [];
-    }
-
-    const normalized = [];
-
-    rawData.forEach((item) => {
-      const weekFields = Object.keys(item).filter((key) => /^week\d+$/i.test(key));
-
-      if (weekFields.length > 0) {
-        weekFields.forEach((weekField) => {
-          const weekNumber = Number.parseInt(weekField.replace(/week/i, ''), 10);
-          const spbCount = item[weekField];
-
-          if (spbCount !== null && spbCount !== undefined && spbCount > 0) {
-            normalized.push({
-              ...item,
-              weekNumber,
-              spbCount,
-            });
-          }
-        });
-      } else {
-        const weekNumber = extractWeekNumber(item);
-        normalized.push({
-          ...item,
-          weekNumber: weekNumber !== null ? weekNumber : null,
-        });
-      }
-    });
-
-    return normalized;
-  }, [extractWeekNumber]);
-
-  const transformRawData = useCallback((rawData) => {
-    if (!rawData || !Array.isArray(rawData)) {
-      return [];
-    }
-
-    const normalizedData = normalizeWeeklyData(rawData);
-    if (normalizedData.length === 0) return [];
-
-    return normalizedData.map((item, index) => {
-      const stateName = stateAbbrevToStateName[item.state] || item.state;
-      const locationName = dataMode === DATA_MODES.COUNTY ? item.county : item.rangerDistrict;
-
-      return {
-        id: `raw-${index}`,
-        year: item.year || null,
-        state: stateName || 'N/A',
-        county: locationName || 'N/A',
-        trap: item.trap || 'N/A',
-        weekNumber: item.weekNumber !== undefined && item.weekNumber !== null ? item.weekNumber : null,
-        spbCount: item.spbCount !== undefined && item.spbCount !== null ? item.spbCount : 0,
-        cleridCount: item.cleridCount !== undefined && item.cleridCount !== null ? item.cleridCount : 0,
-        collectionDate: item.collectionDate || null,
-        daysActive: item.daysActive || 0,
-        latitude: item.latitude || null,
-        longitude: item.longitude || null,
-        lure: item.lure || null,
-        endobrev: item.endobrev || null,
-        season: item.season || null,
-      };
-    });
-  }, [dataMode, normalizeWeeklyData]);
-
-  const transformAggregatedData = useCallback((rawData) => {
-    if (!rawData || !Array.isArray(rawData)) {
-      return [];
-    }
-
-    return rawData.map((item, index) => {
-      const stateName = stateAbbrevToStateName[item.state] || item.state;
-      const locationName = dataMode === DATA_MODES.COUNTY ? item.county : item.rangerDistrict;
-
-      const getValue = (primary, ...fallbacks) => {
-        if (primary !== undefined && primary !== null) {
-          return primary;
-        }
-        for (const fallback of fallbacks) {
-          if (fallback !== undefined && fallback !== null) {
-            return fallback;
-          }
-        }
-        return 0;
-      };
-
-      const spotsValue = getValue(item.spots, item.spotst0);
-
-      const trapCount = getValue(item.trapCount, item.sumTrapCount);
-
-      const totalTrappingDays = getValue(item.totalTrappingDays, item.sumTotalTrappingDays);
-
-      const beetles = getValue(item.spb, item.sumSpb, item.spbCount);
-
-      const spbPer2Weeks = getValue(item.spbPer2Weeks, item.sumSpbPer2Weeks);
-
-      const clerids = getValue(item.clerids, item.sumClerids);
-
-      const spotst1 = getValue(item.spotst1, item.sumSpotst1);
-
-      let daysPerTrap = 0;
-      if (item.daysPerTrap !== undefined && item.daysPerTrap !== null) {
-        daysPerTrap = item.daysPerTrap;
-      } else if (totalTrappingDays > 0 && trapCount > 0) {
-        daysPerTrap = totalTrappingDays / trapCount;
-      }
-
-      let yearValue = null;
-      const yearFields = ['year', 'Year', 'YEAR', 'yr', 'Yr', 'YR'];
-
-      for (const fieldName of yearFields) {
-        if (item[fieldName] !== undefined && item[fieldName] !== null && item[fieldName] !== '') {
-          const yearData = item[fieldName];
-          if (typeof yearData === 'string') {
-            const parsedYear = Number.parseInt(yearData.trim(), 10);
-            if (!Number.isNaN(parsedYear) && parsedYear > 1900 && parsedYear < 2100) {
-              yearValue = parsedYear;
-              break;
-            }
-          } else if (typeof yearData === 'number') {
-            if (!Number.isNaN(yearData) && yearData > 1900 && yearData < 2100) {
-              yearValue = yearData;
-              break;
-            }
-          }
-        }
-      }
-
-      return {
-        id: `agg-${index}`,
-        year: yearValue,
-        state: stateName || 'N/A',
-        county: locationName || 'N/A',
-        trapCount,
-        totalTrappingDays,
-        daysPerTrap,
-        beetles,
-        spbPer2Weeks,
-        clerids,
-        spots: spotsValue,
-        spotst1,
-        probSpotsGT0: getValue(item.probSpotsGT0),
-        probSpotsGT50: getValue(item.probSpotsGT50),
-        probSpotsGT150: getValue(item.probSpotsGT150),
-        probSpotsGT400: getValue(item.probSpotsGT400),
-        probSpotsGT1000: getValue(item.probSpotsGT1000),
-        predSpotsorigUnits: getValue(item.predSpotsorigUnits),
-        residualSpotslogUnits: getValue(item.residualSpotslogUnits),
-      };
-    });
-  }, [dataMode]);
-
   const rawData = useMemo(() => {
     if (dataFormat === 'raw') {
       return sparseData || [];
@@ -258,10 +72,10 @@ const DataTableScreen = ({
 
   const transformedData = useMemo(() => {
     if (dataFormat === 'raw') {
-      return transformRawData(rawData);
+      return transformRawData(rawData, dataMode, stateAbbrevToStateName);
     }
-    return transformAggregatedData(rawData);
-  }, [dataFormat, rawData, transformRawData, transformAggregatedData]);
+    return transformAggregatedData(rawData, dataMode, stateAbbrevToStateName);
+  }, [dataFormat, rawData, dataMode]);
 
   const filteredAndSortedData = useMemo(() => {
     const selectedStateName = getStateNameFromAbbreviation(reduxSelectedState);
@@ -711,23 +525,7 @@ const DataTableScreen = ({
                           <td>{item.spbCount !== undefined && item.spbCount !== null ? item.spbCount.toLocaleString() : 'N/A'}</td>
                           <td>{item.cleridCount !== undefined && item.cleridCount !== null ? item.cleridCount.toLocaleString() : 'N/A'}</td>
                           <td>
-                            {item.collectionDate
-                              ? (() => {
-                                try {
-                                  const date = new Date(item.collectionDate);
-                                  if (!Number.isNaN(date.getTime())) {
-                                    return date.toLocaleDateString('en-US', {
-                                      year: 'numeric',
-                                      month: 'short',
-                                      day: 'numeric',
-                                    });
-                                  }
-                                  return item.collectionDate;
-                                } catch (e) {
-                                  return item.collectionDate;
-                                }
-                              })()
-                              : 'N/A'}
+                            {formatCollectionDate(item.collectionDate)}
                           </td>
                         </>
                       ) : (
