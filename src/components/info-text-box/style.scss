@@ -1,0 +1,240 @@
+@import '../../styles/breakpoints';
+@import '../../styles/colors';
+
+/* Info Text Box Toggle Button */
+.info-text-box-toggle-button {
+  position: absolute;
+  bottom: 4rem;
+  right: 1.5rem;
+  z-index: 10;
+  background: rgba($cleanWhite, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid $greyBlue200;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $greyBlue800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 8px 30px -5px rgba($black, 0.15);
+  transition: all 0.2s ease;
+  min-height: 3rem;
+  font-family: 'Inter', sans-serif;
+
+  &:hover {
+    background: $cleanWhite;
+    box-shadow: 0 12px 40px -5px rgba($black, 0.2);
+    transform: translateY(-0.125rem);
+  }
+
+  @media (max-width: 48rem) {
+    bottom: 6rem;
+    right: 1rem;
+  }
+
+  @media (max-width: $mobile) {
+    bottom: 6rem;
+    right: 1rem;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.8125rem;
+  }
+}
+
+.info-text-box-icon {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: $greyBlue600;
+}
+
+.info-text-box-toggle-text {
+  white-space: nowrap;
+}
+
+/* Info Text Box Overlay */
+.info-text-box {
+  position: absolute;
+  bottom: 4rem;
+  right: 1.5rem;
+  z-index: 10;
+  background: rgba($cleanWhite, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px -10px rgba($black, 0.2);
+  border: 1px solid $greyBlue200;
+  max-width: 24rem;
+  min-width: 20rem;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+
+  @media (max-width: $tablet) {
+    max-width: calc(100vw - 3rem);
+    min-width: auto;
+    width: calc(100vw - 3rem);
+    right: 1.5rem;
+    bottom: 4rem;
+  }
+
+  @media (max-width: 48rem) {
+    bottom: 6rem;
+    max-width: calc(100vw - 2rem);
+    width: calc(100vw - 2rem);
+    right: 1rem;
+  }
+
+  @media (max-width: $mobile) {
+    max-width: calc(100vw - 2rem);
+    width: calc(100vw - 2rem);
+    right: 1rem;
+    bottom: 6rem;
+  }
+}
+
+/* Info Text Box Header */
+.info-text-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: $brandSecondary;
+  border-bottom: 1px solid $greyBlue200;
+  flex-shrink: 0;
+}
+
+.info-text-box-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.info-text-box-header-icon {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: $cleanWhite;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($cleanWhite, 0.1);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.info-text-box-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: $cleanWhite;
+  text-transform: uppercase;
+  letter-spacing: 0.03125rem;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.info-text-box-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-text-box-collapse-button,
+.info-text-box-close-button {
+  background: none;
+  border: none;
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: $cleanWhite;
+  cursor: pointer;
+  padding: 0.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background-color: rgba($cleanWhite, 0.1);
+    color: $cleanWhite;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+
+/* Info Text Box Content Wrapper (Scrollable) */
+.info-text-box-content-wrapper {
+  overflow-y: auto;
+  overflow-x: visible;
+  flex: 1;
+  min-height: 0;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $greyBlue400;
+    border-radius: 4px;
+
+    &:hover {
+      background: $greyBlue500;
+    }
+  }
+}
+
+.info-text-box-content {
+  padding: 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: $greyBlue800;
+  line-height: 1.6;
+  text-align: left;
+
+  p {
+    margin: 0;
+    line-height: 1.6;
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+
+  @media (max-width: $tablet) {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    padding: 1rem;
+  }
+
+  @media (max-width: $mobile) {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    padding: 0.875rem;
+  }
+}
+
+/* Max Height Media Query */
+@media (max-height: 800px) {
+  .info-text-box,
+  .info-text-box-toggle-button {
+    bottom: 3.5rem;
+  }
+
+  .info-text-box {
+    max-height: 81vh;
+  }
+}

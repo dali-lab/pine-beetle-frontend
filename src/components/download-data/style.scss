@@ -50,11 +50,12 @@
 
       .toggle-buttons {
         display: flex;
-        background: $greyBlue200;
+        background: transparent;
+        border: 1px solid $greyBlue200;
         border-radius: 6px;
-        height: 44px;
+        height: 40px;
         align-items: stretch;
-        margin: 10px 0;
+        gap: 0.25rem;
 
         .toggle-btn {
           flex: 1;
@@ -62,7 +63,7 @@
           border: none;
           background: transparent;
           border-radius: 4px;
-          font-size: 0.9rem;
+          font-size: 0.875rem;
           font-weight: 500;
           color: $greyBlue600;
           cursor: pointer;
@@ -70,7 +71,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          min-height: 40px;
+          min-height: 36px;
           height: 100%;
 
           &.active {
@@ -81,12 +82,12 @@
 
           &:hover:not(.active) {
             color: $brandSecondary;
-            background: rgba(79, 119, 45, 0.1);
+            background: rgba(79, 119, 45, 0.08);
           }
 
           &:focus {
             outline: none;
-            box-shadow: 0 0 0 2px rgba(79, 119, 45, 0.2);
+            box-shadow: 0 0 0 2px rgba(79, 119, 45, 0.15);
           }
         }
       }

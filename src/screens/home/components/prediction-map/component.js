@@ -12,6 +12,7 @@ import React, {
   useState,
 } from 'react';
 import { Map } from '../../../../components';
+import InfoTextBox from '../../../../components/info-text-box';
 import MapControls from '../../../../components/map-controls/component';
 import TogglesOverlay from '../../../../components/map/components';
 import {
@@ -405,6 +406,7 @@ const PredictionMap = (props) => {
         )}
         isDownloadingMap={isDownloadingMap}
       />
+      <InfoTextBox />
       <MapControls
         availableStates={availableStates}
         availableYears={availableYears || []}
