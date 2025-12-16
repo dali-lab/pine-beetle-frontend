@@ -49,7 +49,6 @@ const DataTableScreen = ({
   const [showEmptyRecords, setShowEmptyRecords] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Build filters object
   const filters = useMemo(
     () => ({
       startYear: reduxStartYear || undefined,
@@ -61,7 +60,6 @@ const DataTableScreen = ({
     [reduxStartYear, reduxEndYear, reduxSelectedState, reduxCounty, reduxRangerDistrict],
   );
 
-  // Extract week number from various field formats
   const extractWeekNumber = useCallback((item) => {
     if (item.weekNumber !== undefined && item.weekNumber !== null) {
       return item.weekNumber;
@@ -90,14 +88,13 @@ const DataTableScreen = ({
           }
         }
       } catch (e) {
-        // Ignore date parsing errors
+        // eslint-disable-line no-empty
       }
     }
 
     return null;
   }, []);
 
-  // Normalize weekly data (expand week1-week6 fields into separate records)
   const normalizeWeeklyData = useCallback((rawData) => {
     if (!rawData || !Array.isArray(rawData)) {
       return [];
@@ -133,7 +130,6 @@ const DataTableScreen = ({
     return normalized;
   }, [extractWeekNumber]);
 
-  // Transform raw (unsummarized) data
   const transformRawData = useCallback((rawData) => {
     if (!rawData || !Array.isArray(rawData)) {
       return [];
@@ -166,7 +162,6 @@ const DataTableScreen = ({
     });
   }, [dataMode, normalizeWeeklyData]);
 
-  // Transform aggregated data
   const transformAggregatedData = useCallback((rawData) => {
     if (!rawData || !Array.isArray(rawData)) {
       return [];
@@ -176,7 +171,6 @@ const DataTableScreen = ({
       const stateName = stateAbbrevToStateName[item.state] || item.state;
       const locationName = dataMode === DATA_MODES.COUNTY ? item.county : item.rangerDistrict;
 
-      // Helper function to get value with fallbacks
       const getValue = (primary, ...fallbacks) => {
         if (primary !== undefined && primary !== null) {
           return primary;
@@ -189,28 +183,20 @@ const DataTableScreen = ({
         return 0;
       };
 
-      // Handle spots - can be spots, spotst0, or sumSpots
       const spotsValue = getValue(item.spots, item.spotst0);
 
-      // Handle trapCount - can be trapCount or sumTrapCount
       const trapCount = getValue(item.trapCount, item.sumTrapCount);
 
-      // Handle totalTrappingDays
       const totalTrappingDays = getValue(item.totalTrappingDays, item.sumTotalTrappingDays);
 
-      // Handle beetles/spb
       const beetles = getValue(item.spb, item.sumSpb, item.spbCount);
 
-      // Handle spbPer2Weeks
       const spbPer2Weeks = getValue(item.spbPer2Weeks, item.sumSpbPer2Weeks);
 
-      // Handle clerids
       const clerids = getValue(item.clerids, item.sumClerids);
 
-      // Handle spotst1
       const spotst1 = getValue(item.spotst1, item.sumSpotst1);
 
-      // Calculate daysPerTrap
       let daysPerTrap = 0;
       if (item.daysPerTrap !== undefined && item.daysPerTrap !== null) {
         daysPerTrap = item.daysPerTrap;
@@ -218,8 +204,6 @@ const DataTableScreen = ({
         daysPerTrap = totalTrappingDays / trapCount;
       }
 
-      // Handle year - check multiple possible field names
-      // API might return year in different fields: year, Year, YEAR, or it might be missing
       let yearValue = null;
       const yearFields = ['year', 'Year', 'YEAR', 'yr', 'Yr', 'YR'];
 
@@ -239,17 +223,6 @@ const DataTableScreen = ({
             }
           }
         }
-      }
-
-      // If still no year found, log for debugging
-      if (index === 0 && process.env.NODE_ENV === 'development') {
-        console.log('🔍 [DEBUG] Year field check:', {
-          hasYear: 'year' in item,
-          yearValue: item.year,
-          yearType: typeof item.year,
-          allKeys: Object.keys(item),
-          itemSample: item,
-        });
       }
 
       return {
@@ -276,7 +249,6 @@ const DataTableScreen = ({
     });
   }, [dataMode]);
 
-  // Get the appropriate data source based on format
   const rawData = useMemo(() => {
     if (dataFormat === 'raw') {
       return sparseData || [];
@@ -284,87 +256,38 @@ const DataTableScreen = ({
     return sublocationData || [];
   }, [dataFormat, sparseData, sublocationData]);
 
-  // Transform data based on format
   const transformedData = useMemo(() => {
     if (dataFormat === 'raw') {
       return transformRawData(rawData);
     }
-    const transformed = transformAggregatedData(rawData);
-    // Debug: log data counts for aggregated data
-    if (dataFormat === 'aggregated' && process.env.NODE_ENV === 'development') {
-      console.log('🔍 [DEBUG] Aggregated Data:', {
-        rawDataCount: rawData.length,
-        transformedCount: transformed.length,
-        rawDataSample: rawData.slice(0, 3),
-        firstTransformed: transformed[0],
-        yearFields: rawData.slice(0, 5).map((item) => ({
-          year: item.year,
-          yearType: typeof item.year,
-          hasYear: 'year' in item,
-        })),
-      });
-    }
-    return transformed;
+    return transformAggregatedData(rawData);
   }, [dataFormat, rawData, transformRawData, transformAggregatedData]);
 
-  // Filter and sort data
   const filteredAndSortedData = useMemo(() => {
     const selectedStateName = getStateNameFromAbbreviation(reduxSelectedState);
 
-    // Debug: log filtering stats for aggregated data
-    if (dataFormat === 'aggregated' && process.env.NODE_ENV === 'development') {
-      console.log('🔍 [DEBUG] Filtering Stats:', {
-        transformedDataCount: transformedData.length,
-        reduxStartYear,
-        reduxEndYear,
-        selectedStateName,
-        reduxCounty: dataMode === DATA_MODES.COUNTY ? reduxCounty : null,
-        reduxRangerDistrict: dataMode === DATA_MODES.RANGER_DISTRICT ? reduxRangerDistrict : null,
-        showEmptyRecords,
-      });
-    }
-
-    // Debug counters for aggregated data
-    let yearFiltered = 0;
-    let stateFiltered = 0;
-    let locationFiltered = 0;
-    let emptyFiltered = 0;
-
     const filtered = transformedData
       .filter((item) => {
-        // Year filter
         let yearMatch = true;
         if (dataFormat === 'aggregated') {
-          // For aggregated data, if year is null/undefined, include it
-          // Only filter by year if both startYear and endYear are provided
           if (item.year === null || item.year === undefined) {
             yearMatch = true;
           } else if (reduxStartYear && reduxEndYear) {
             yearMatch = item.year >= reduxStartYear && item.year <= reduxEndYear;
-            if (!yearMatch && dataFormat === 'aggregated') {
-              yearFiltered += 1;
-            }
           } else {
-            // If no year filter is set, include all records
             yearMatch = true;
           }
         } else {
-          // For raw data, only filter if year filters are set
           yearMatch = !reduxStartYear || !reduxEndYear || !item.year
             || (item.year >= reduxStartYear && item.year <= reduxEndYear);
         }
 
         if (!yearMatch) return false;
 
-        // State filter
         const stateMatch = !selectedStateName || item.state === selectedStateName;
-        if (!stateMatch && dataFormat === 'aggregated') {
-          stateFiltered += 1;
-        }
 
         if (!stateMatch) return false;
 
-        // Location filter
         let locationMatch = true;
         if (selectedStateName) {
           if (dataMode === DATA_MODES.COUNTY) {
@@ -374,51 +297,21 @@ const DataTableScreen = ({
               || reduxRangerDistrict.includes(item.county);
           }
         }
-        if (!locationMatch && dataFormat === 'aggregated') {
-          locationFiltered += 1;
-        }
 
         if (!locationMatch) return false;
 
-        // Empty records filter
-        // For aggregated data, always show all records (they're summaries, so even 0 values are meaningful)
-        // The showEmptyRecords checkbox doesn't apply to aggregated data since all records are meaningful
         let hasData = true;
         if (dataFormat === 'aggregated') {
-          // Always show aggregated records - they're summaries and all are meaningful
           hasData = true;
         } else {
-          // For raw data, filter based on showEmptyRecords
           hasData = showEmptyRecords
             || (item.spbCount !== undefined && item.spbCount > 0)
             || (item.cleridCount !== undefined && item.cleridCount > 0)
             || (item.trap !== undefined && item.trap !== 'N/A');
         }
-        if (!hasData && dataFormat === 'aggregated') {
-          emptyFiltered += 1;
-        }
 
         return hasData;
       });
-
-    // Debug: log filtered count for aggregated data
-    if (dataFormat === 'aggregated' && process.env.NODE_ENV === 'development') {
-      console.log('🔍 [DEBUG] Filtered Count:', {
-        beforeFilter: transformedData.length,
-        afterFilter: filtered.length,
-        yearFiltered,
-        stateFiltered,
-        locationFiltered,
-        emptyFiltered,
-        filters: {
-          reduxStartYear,
-          reduxEndYear,
-          selectedStateName,
-          reduxCounty: dataMode === DATA_MODES.COUNTY ? reduxCounty : null,
-          reduxRangerDistrict: dataMode === DATA_MODES.RANGER_DISTRICT ? reduxRangerDistrict : null,
-        },
-      });
-    }
 
     const sorted = filtered
       .sort((a, b) => {
@@ -449,7 +342,6 @@ const DataTableScreen = ({
     dataFormat,
   ]);
 
-  // Paginated data
   const paginatedData = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -458,7 +350,6 @@ const DataTableScreen = ({
 
   const totalPages = Math.ceil(filteredAndSortedData.length / ITEMS_PER_PAGE);
 
-  // Fetch available options when filters change
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       getAvailableYears({ ...filters, isHistorical: true });
@@ -468,7 +359,6 @@ const DataTableScreen = ({
     return () => clearTimeout(timeoutId);
   }, [filters, dataMode, getAvailableYears, getAvailableStates]);
 
-  // Fetch data when filters, dataMode, or dataFormat change
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (dataFormat === 'raw') {
@@ -481,7 +371,6 @@ const DataTableScreen = ({
     return () => clearTimeout(timeoutId);
   }, [filters, dataMode, dataFormat, getUnsummarizedData, getAggregateLocationData]);
 
-  // Reset to first page when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [filters, dataMode, dataFormat, sortField, sortDirection, showEmptyRecords]);
@@ -793,7 +682,6 @@ const DataTableScreen = ({
                 </tr>
               ) : (
                 paginatedData.map((item) => {
-                  // Display year - handle null, undefined, and ensure it's a number
                   let yearDisplay = 'N/A';
                   if (item.year !== null && item.year !== undefined) {
                     let yearNum = null;
@@ -806,11 +694,9 @@ const DataTableScreen = ({
                     if (yearNum !== null && !Number.isNaN(yearNum) && yearNum > 1900 && yearNum < 2100) {
                       yearDisplay = yearNum;
                     } else if (dataFormat === 'aggregated') {
-                      // For aggregated data, show dash if year is invalid
                       yearDisplay = '—';
                     }
                   } else if (dataFormat === 'aggregated') {
-                    // For aggregated data without year, show dash
                     yearDisplay = '—';
                   }
                   return (
