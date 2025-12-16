@@ -374,6 +374,10 @@
                 letter-spacing: 0.5px;
                 white-space: nowrap;
 
+                &.text-left {
+                  text-align: left;
+                }
+
                 &.sortable {
                   cursor: pointer;
                   transition: all 0.3s ease;
@@ -411,12 +415,24 @@
                   white-space: nowrap;
                   text-align: center;
 
+                  &.text-left {
+                    text-align: left;
+                  }
+
                   &.probability-cell {
                     text-align: center;
                   }
 
                   &.prediction-cell {
                     text-align: center;
+                  }
+
+                  &.no-data {
+                    text-align: center;
+                    padding: 3rem 1rem;
+                    color: $greyBlue600;
+                    font-style: italic;
+                    white-space: normal;
                   }
 
                   .outbreak-badge {
@@ -454,6 +470,23 @@
               align-items: flex-start;
             }
 
+            p {
+              margin: 0;
+              color: $textColor;
+            }
+
+            .table-footer-controls {
+              display: flex;
+              align-items: center;
+              gap: 1.5rem;
+              flex-wrap: wrap;
+
+              @media (max-width: $tablet) {
+                width: 100%;
+                justify-content: space-between;
+              }
+            }
+
             .show-empty-toggle {
               display: flex;
               align-items: center;
@@ -475,6 +508,41 @@
 
               &:hover span {
                 color: $brandSecondary;
+              }
+            }
+
+            .pagination {
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+
+              .pagination-info {
+                color: $textColor;
+                font-size: 0.9rem;
+                white-space: nowrap;
+              }
+
+              .pagination-btn {
+                padding: 0.5rem 1rem;
+                background: $white;
+                color: $textColor;
+                border: 1px solid $greyBlue300;
+                border-radius: 4px;
+                font-size: 0.9rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:hover:not(:disabled) {
+                  background: $greyBlue100;
+                  border-color: $brandPrimary;
+                  color: $brandPrimary;
+                }
+
+                &:disabled {
+                  opacity: 0.5;
+                  cursor: not-allowed;
+                }
               }
             }
           }
