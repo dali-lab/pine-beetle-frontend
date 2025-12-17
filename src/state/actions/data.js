@@ -287,30 +287,6 @@ export function getAggregateLocationData(overrideFilter = {}) {
       // because aggregate endpoints don't return year field, but full data does
       const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyData(filters) : api.getRangerDistrictData(filters));
 
-      // Debug: log response structure
-      if (process.env.NODE_ENV === 'development' && response && response.length > 0) {
-        console.log('🔍 [DEBUG] getAggregateLocationData - Response:', {
-          length: response.length,
-          firstItem: response[0],
-          firstItemKeys: Object.keys(response[0]),
-          yearField: response[0].year,
-          yearType: typeof response[0].year,
-          hasYear: 'year' in response[0],
-          allFields: Object.keys(response[0]).map((key) => ({
-            key,
-            value: response[0][key],
-            type: typeof response[0][key],
-          })),
-          first3Items: response.slice(0, 3).map((item) => ({
-            keys: Object.keys(item),
-            year: item.year,
-            state: item.state,
-            rangerDistrict: item.rangerDistrict,
-            county: item.county,
-          })),
-        });
-      }
-
       dispatch({ type: ActionTypes.SET_AGGREGATE_LOCATION_DATA, payload: response });
     } catch (error) {
       dispatch({

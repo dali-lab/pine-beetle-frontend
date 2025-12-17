@@ -118,24 +118,6 @@ const HistoricalMap = (props) => {
       return itemYear === selectedYear;
     });
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🔍 [DEBUG] colorFill - Data:', {
-        totalData: d.length,
-        filteredData: filteredData.length,
-        selectedYear,
-        sampleItems: filteredData.slice(0, 3).map((item) => ({
-          county: item.county,
-          rangerDistrict: item.rangerDistrict,
-          state: item.state,
-          sumSpotst0: item.sumSpotst0,
-          spotst0: item.spotst0,
-          spots: item.spots,
-          allKeys: Object.keys(item),
-          year: parseYearFromItem(item),
-        })),
-      });
-    }
-
     const trappingsByLocality = filteredData.reduce((acc, curr) => {
       const {
         county,
@@ -170,17 +152,6 @@ const HistoricalMap = (props) => {
       }
       return acc;
     }, {});
-
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🔍 [DEBUG] colorFill - TrappingsByLocality:', {
-        totalLocations: Object.keys(trappingsByLocality).length,
-        sampleLocations: Object.entries(trappingsByLocality).slice(0, 5).map(([loc, spots]) => ({
-          location: loc,
-          spots,
-        })),
-        uniqueSpotValues: [...new Set(Object.values(trappingsByLocality))].sort((a, b) => (a || 0) - (b || 0)),
-      });
-    }
 
     Object.entries(trappingsByLocality).forEach(([localityDescription, sumSpotst0]) => {
       const [noData, zeroToNine, tenToNineteen, twentyToFortyNine, fiftyToNinetyNine, hundredToTwoFortyNine, twoFiftyPlus] = colors;
