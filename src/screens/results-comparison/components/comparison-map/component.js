@@ -280,7 +280,7 @@ const ComparisonMap = (props) => {
       latest.county,
       setCounty,
       latest.rangerDistrict,
-      setRangerDistrict,
+      setRangerDistrict
     );
     const hoverCallback = createMapHoverCallback(
       latest.data,
@@ -288,7 +288,7 @@ const ComparisonMap = (props) => {
       dataMode,
       latest.selectedState,
       latest.availableStates,
-      latest.dataLookupMap,
+      latest.dataLookupMap
     );
 
     const currentMap = map;
@@ -320,7 +320,7 @@ const ComparisonMap = (props) => {
             () => {},
             hoverCallback,
             () => {},
-            setMap,
+            setMap
           );
           mapInitializedRef.current = true;
           lastDataModeRef.current = dataMode;
@@ -396,7 +396,7 @@ const ComparisonMap = (props) => {
       props.county,
       setCounty,
       props.rangerDistrict,
-      setRangerDistrict,
+      setRangerDistrict
     );
   }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict]);
 
@@ -417,7 +417,7 @@ const ComparisonMap = (props) => {
     hoverCallback,
     stateClickCallback,
     mouseLeaveCallback,
-    [availableStates, availableSublocations, selectedState, data, dataMode, allRangerDistricts, dataLookupMap],
+    [availableStates, availableSublocations, selectedState, data, dataMode, allRangerDistricts, dataLookupMap]
   );
 
   useEffect(() => {
@@ -476,7 +476,7 @@ const ComparisonMap = (props) => {
           setIsDownloadingMap,
           selectedState,
           MAP_TITLES.COMPARISON,
-          { titleDetails: { selectedState, period: year }, thresholds, colors },
+          { titleDetails: { selectedState, period: year }, thresholds, colors }
         )}
         isDownloadingMap={isDownloadingMap}
         hideFilters

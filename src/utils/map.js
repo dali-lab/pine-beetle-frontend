@@ -10,8 +10,21 @@ import {
   VECTOR_LAYER,
 } from '../constants';
 import { getMapboxRDNameFormat } from './abbreviation-mappings';
-import { isMapRemoved, markMapAsRemoved } from './map-instance-tracker';
 import { logError, logWarning } from './logger';
+import { isMapRemoved, markMapAsRemoved } from './map-instance-tracker';
+
+// Map configuration constants
+const MAP_CONTAINER_ID = 'map';
+const MAP_STYLE_URL = 'mapbox://styles/pine-beetle-prediction/ckgrzijos0q5119paazko291z';
+const DEFAULT_CENTER = [-84.3880, 33.7490];
+const DEFAULT_ZOOM = 4.8;
+const MAX_ZOOM = 6;
+
+// Hover tooltip positioning constants
+const HOVER_BOUNDARY_X = 300;
+const HOVER_BOUNDARY_Y = 200;
+const HOVER_TOOLTIP_OFFSET_X = 280;
+const HOVER_TOOLTIP_OFFSET_Y = 125;
 
 // twice-curried function for generating click callback
 const createMapClickCallback = (states, sublocations, currentState, data, dataMode, propsCounty, setCounty, propsRangerDistrict, setRangerDistrict, setPredictionModal, isMobile = false) => (e) => {
@@ -142,7 +155,7 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     }
   }
 
-  const existingMapContainer = document.getElementById('map');
+  const existingMapContainer = document.getElementById(MAP_CONTAINER_ID);
   if (existingMapContainer) {
     const containerMap = existingMapContainer._mapboxgl_map
                          || (existingMapContainer.firstChild && existingMapContainer.firstChild._mapboxgl_map);
@@ -157,11 +170,11 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
   }
 
   const createdMap = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/pine-beetle-prediction/ckgrzijos0q5119paazko291z',
-    center: [-84.3880, 33.7490], // starting position
-    zoom: 4.8, // starting zoom
-    maxZoom: 6, // Limit zoom to state level only
+    container: MAP_CONTAINER_ID,
+    style: MAP_STYLE_URL,
+    center: DEFAULT_CENTER,
+    zoom: DEFAULT_ZOOM,
+    maxZoom: MAX_ZOOM,
     bearing: 0, // Lock map to north orientation
     options: {
       trackResize: true,
@@ -311,41 +324,35 @@ const downloadMap = (map, year, isDownloadingMap, setIsDownloadingMap, selectedS
     })
     .catch((error) => {
       logError('Error downloading map', error, { function: 'downloadMap' });
+      setIsDownloadingMap(false);
     });
 };
 
 const zoomToSelectedState = (selectedState, map) => {
-  if (selectedState) {
-    const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
+  if (!map) return;
 
-    map.flyTo({
-      center: zoom[0],
-      zoom: zoom[1],
-    });
-  } else {
-    map.flyTo({
-      center: [-84.3880, 33.7490],
-      zoom: 4.8,
-    });
-  }
+  const zoomConfig = selectedState && stateAbbrevToZoomLevel[selectedState]
+    ? stateAbbrevToZoomLevel[selectedState]
+    : [DEFAULT_CENTER, DEFAULT_ZOOM];
+
+  map.flyTo({
+    center: zoomConfig[0],
+    zoom: zoomConfig[1],
+  });
 };
 
 const mapboxHoverStyle = (x, y) => {
-  if (x < 300 && y < 200) {
-    return ({ left: `${x}px`, top: `${y}px` });
-  } else if (y < 200) {
-    return ({ left: `${x - 280}px`, top: `${y}px` });
-  } else if (x < 300) {
-    return ({ left: `${x}px`, top: `${y - 125}px` });
-  } else {
-    return ({ left: `${x - 280}px`, top: `${y - 125}px` });
-  }
+  const left = x < HOVER_BOUNDARY_X ? x : x - HOVER_TOOLTIP_OFFSET_X;
+  const top = y < HOVER_BOUNDARY_Y ? y : y - HOVER_TOOLTIP_OFFSET_Y;
+  return { left: `${left}px`, top: `${top}px` };
 };
 
 const isInvalidNumber = (num) => Number.isNaN(num) || num === null || num === undefined;
 
 export {
-  createHoverCallback, createMapClickCallback, downloadMap,
+  createHoverCallback,
+  createMapClickCallback,
+  downloadMap,
   generateMap,
   isInvalidNumber,
   mapboxHoverStyle,

@@ -29,5 +29,5 @@ const mapDispatchToProps = (_dispatch) => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(PlayWithModelOutputs);

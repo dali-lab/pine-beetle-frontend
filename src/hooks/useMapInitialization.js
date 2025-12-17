@@ -21,7 +21,7 @@ const useMapInitialization = (
   hoverCallback,
   thresholds,
   colors,
-  dependencies = [],
+  dependencies = []
 ) => {
   const mapInitTimeoutRef = useRef(null);
   const containerCheckTimeoutRef = useRef(null);
@@ -72,7 +72,7 @@ const useMapInitialization = (
             () => {},
             hoverCallback,
             () => {},
-            setMap,
+            setMap
           );
         } else {
           retryCountRef.current += 1;

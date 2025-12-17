@@ -23,7 +23,7 @@ const BlogReducer = (state = initialState, action) => {
       const updatedBlogPosts = state.blogPostsByUser.map(
         (post) => (post._id === action.payload._id
           ? action.payload
-          : post),
+          : post)
       );
       return { ...state, blogPostsByUser: updatedBlogPosts };
     }

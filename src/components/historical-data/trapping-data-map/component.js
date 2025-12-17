@@ -217,14 +217,14 @@ const HistoricalMap = (props) => {
       latest.county,
       setCounty,
       latest.rangerDistrict,
-      setRangerDistrict,
+      setRangerDistrict
     );
     const hoverCallback = createMapHoverCallback(
       latest.rawData,
       latest.allRangerDistricts,
       dataMode,
       latest.selectedState,
-      latest.availableStates,
+      latest.availableStates
     );
 
     const currentMap = map;
@@ -252,7 +252,7 @@ const HistoricalMap = (props) => {
             () => {},
             hoverCallback,
             () => {},
-            setMap,
+            setMap
           );
           mapInitializedRef.current = true;
           lastDataModeRef.current = dataMode;
@@ -321,7 +321,7 @@ const HistoricalMap = (props) => {
       props.county,
       setCounty,
       props.rangerDistrict,
-      setRangerDistrict,
+      setRangerDistrict
     );
   }, [map, availableStates, availableSublocations, selectedState, rawData, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict]);
 
@@ -342,7 +342,7 @@ const HistoricalMap = (props) => {
     hoverCallback,
     stateClickCallback,
     mouseLeaveCallback,
-    [availableStates, availableSublocations, selectedState, rawData, dataMode, allRangerDistricts],
+    [availableStates, availableSublocations, selectedState, rawData, dataMode, allRangerDistricts]
   );
 
   useEffect(() => {
@@ -367,7 +367,7 @@ const HistoricalMap = (props) => {
         setIsDownloadingMap,
         selectedState,
         MAP_TITLES.HISTORICAL,
-        { titleDetails: { selectedState, period: predictionYear }, thresholds, colors },
+        { titleDetails: { selectedState, period: predictionYear }, thresholds, colors }
       );
     };
 
@@ -416,7 +416,7 @@ const HistoricalMap = (props) => {
           setIsDownloadingMap,
           selectedState,
           MAP_TITLES.HISTORICAL,
-          { titleDetails: { selectedState, period: predictionYear }, thresholds, colors },
+          { titleDetails: { selectedState, period: predictionYear }, thresholds, colors }
         )}
         isDownloadingMap={isDownloadingMap}
         hideFilters

@@ -40,7 +40,7 @@ const ScatterChart = ({
 
   const selectedYearData = useMemo(
     () => formattedData.filter((d) => d[3] === predictionYear),
-    [formattedData, predictionYear],
+    [formattedData, predictionYear]
   );
 
   useEffect(() => {

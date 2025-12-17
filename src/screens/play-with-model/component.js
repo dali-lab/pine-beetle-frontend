@@ -55,7 +55,7 @@ const PlayWithModelScreen = (props) => {
       modelInputs.spotst2,
       modelInputs.spb,
       modelInputs.endobrev,
-      modelInputs.modelVersion,
+      modelInputs.modelVersion
     );
   };
 

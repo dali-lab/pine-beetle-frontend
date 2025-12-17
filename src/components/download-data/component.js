@@ -110,7 +110,7 @@ const DownloadData = (props) => {
           fetchCsvData(dataName, queryParams).then((blob) => {
             const fileName = `${dataName}.csv`;
             zip.file(fileName, blob);
-          }),
+          })
         );
       });
 

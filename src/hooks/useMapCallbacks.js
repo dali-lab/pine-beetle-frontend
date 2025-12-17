@@ -17,7 +17,7 @@ const useMapCallbacks = (
   onHover,
   onStateClick,
   onMouseLeave,
-  dependencies = [],
+  dependencies = []
 ) => {
   const callbacksRef = useRef({
     vectorClick: null,

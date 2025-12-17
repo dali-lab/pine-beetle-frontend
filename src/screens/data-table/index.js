@@ -8,5 +8,5 @@ import DataTableScreen from './component';
 
 export default connect(
   mapDataTableStateToProps,
-  mapDataTableDispatchToProps,
+  mapDataTableDispatchToProps
 )(DataTableScreen);

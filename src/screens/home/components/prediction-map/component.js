@@ -254,14 +254,14 @@ const PredictionMap = (props) => {
       latest.rangerDistrict,
       setRangerDistrict,
       setPredictionModal,
-      latest.isMobile,
+      latest.isMobile
     );
     const hoverCallback = createMapHoverCallback(
       latest.data,
       latest.allRangerDistricts,
       dataMode,
       latest.selectedState,
-      latest.availableStates,
+      latest.availableStates
     );
 
     const currentMap = map;
@@ -278,7 +278,7 @@ const PredictionMap = (props) => {
         () => {},
         hoverCallback,
         () => {},
-        setMap,
+        setMap
       );
       mapInitializedRef.current = true;
       lastDataModeRef.current = dataMode;
@@ -344,7 +344,7 @@ const PredictionMap = (props) => {
       props.rangerDistrict,
       setRangerDistrict,
       setPredictionModal,
-      isMobile,
+      isMobile
     );
   }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict, setPredictionModal, isMobile]);
 
@@ -365,7 +365,7 @@ const PredictionMap = (props) => {
     hoverCallback,
     stateClickCallback,
     mouseLeaveCallback,
-    [availableStates, availableSublocations, selectedState, data, dataMode, allRangerDistricts, isMobile],
+    [availableStates, availableSublocations, selectedState, data, dataMode, allRangerDistricts, isMobile]
   );
 
   useEffect(() => {
@@ -402,7 +402,7 @@ const PredictionMap = (props) => {
           setIsDownloadingMap,
           selectedState,
           MAP_TITLES.PREDICTION,
-          { titleDetails: { selectedState, period: year }, thresholds, colors },
+          { titleDetails: { selectedState, period: year }, thresholds, colors }
         )}
         isDownloadingMap={isDownloadingMap}
       />
@@ -430,7 +430,7 @@ const PredictionMap = (props) => {
           setIsDownloadingMap,
           selectedState,
           MAP_TITLES.PREDICTION,
-          { titleDetails: { selectedState, period: year }, thresholds, colors },
+          { titleDetails: { selectedState, period: year }, thresholds, colors }
         )}
         isDownloadingMap={isDownloadingMap}
       />

@@ -60,7 +60,7 @@ const DataTableScreen = ({
       county: reduxCounty && reduxCounty.length > 0 ? reduxCounty : undefined,
       rangerDistrict: reduxRangerDistrict && reduxRangerDistrict.length > 0 ? reduxRangerDistrict : undefined,
     }),
-    [reduxStartYear, reduxEndYear, reduxSelectedState, reduxCounty, reduxRangerDistrict],
+    [reduxStartYear, reduxEndYear, reduxSelectedState, reduxCounty, reduxRangerDistrict]
   );
 
   const rawData = useMemo(() => {
@@ -203,7 +203,7 @@ const DataTableScreen = ({
       const stateAbbrev = getStateAbbreviationFromStateName(stateName);
       setState(stateAbbrev);
     },
-    [setState],
+    [setState]
   );
 
   const statesMappedToNames = useMemo(() => {
