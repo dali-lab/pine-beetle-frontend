@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Redirect,
   Route,
@@ -32,6 +32,7 @@ import {
 
 import {
   DATA_MODES,
+  MIN_WIDTH_THRESHOLD,
   RESOURCE_REMOTE_URLS,
   RESOURCE_ROUTES,
   ROUTES,
@@ -77,6 +78,15 @@ const App = (props) => {
     getResultsComparisonData,
     getScatterChartData,
   } = props;
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
+
+  useEffect(() => {
+    const resizeListener = (e) => setIsMobile(e.target.innerWidth < MIN_WIDTH_THRESHOLD);
+    window.addEventListener('resize', resizeListener);
+
+    return () => window.removeEventListener('resize', resizeListener);
+  }, []);
 
   useEffect(() => {
     global.API_URL = process.env.MAIN_BACKEND_URL;
