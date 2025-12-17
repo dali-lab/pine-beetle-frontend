@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DATA_MODES } from '../../constants';
+import { CHART_MODES, DATA_MODES } from '../../constants';
 import {
   getStateAbbreviationFromStateName,
   getStateNameFromAbbreviation,
@@ -16,6 +16,7 @@ const FilterBar = (props) => {
     availableSublocations,
     county,
     dataMode,
+    chartMode,
     predictionYear,
     startYear,
     endYear,
@@ -38,13 +39,106 @@ const FilterBar = (props) => {
 
   const revYears = [...availableYears].reverse();
 
-  const hasActiveFilters = useHistoricalData
-    ? (startYear || endYear || selectedStateName || county?.length > 0 || rangerDistrict?.length > 0)
-    : (predictionYear || selectedStateName || county?.length > 0 || rangerDistrict?.length > 0);
+  const isMapView = useHistoricalData && chartMode === CHART_MODES.MAP;
+  const isChartView = useHistoricalData && chartMode === CHART_MODES.GRAPH;
+
+  let hasActiveFilters = false;
+  if (useHistoricalData) {
+    if (isMapView) {
+      hasActiveFilters = !!(predictionYear || selectedStateName || county?.length > 0 || rangerDistrict?.length > 0);
+    } else {
+      hasActiveFilters = !!(startYear || endYear || selectedStateName || county?.length > 0 || rangerDistrict?.length > 0);
+    }
+  } else {
+    hasActiveFilters = !!(predictionYear || selectedStateName || county?.length > 0 || rangerDistrict?.length > 0);
+  }
+
+  const renderYearFilterTags = () => {
+    if (useHistoricalData && isMapView) {
+      return predictionYear ? (
+        <span className="filter-tag">
+          Year: {predictionYear}
+          <button
+            onClick={() => setPredictionYear('')}
+            className="filter-tag-remove"
+            type="button"
+            aria-label="Remove year filter"
+          >
+            <svg className="filter-tag-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </span>
+      ) : null;
+    }
+
+    if (useHistoricalData && isChartView) {
+      return (
+        <>
+          {startYear && (
+            <span className="filter-tag">
+              Start Year: {startYear}
+              <button
+                onClick={() => setStartYear('')}
+                className="filter-tag-remove"
+                type="button"
+                aria-label="Remove start year filter"
+              >
+                <svg className="filter-tag-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </span>
+          )}
+
+          {endYear && (
+            <span className="filter-tag">
+              End Year: {endYear}
+              <button
+                onClick={() => setEndYear('')}
+                className="filter-tag-remove"
+                type="button"
+                aria-label="Remove end year filter"
+              >
+                <svg className="filter-tag-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </span>
+          )}
+        </>
+      );
+    }
+
+    return predictionYear ? (
+      <span className="filter-tag">
+        Year: {predictionYear}
+        <button
+          onClick={() => setPredictionYear('')}
+          className="filter-tag-remove"
+          type="button"
+          aria-label="Remove year filter"
+        >
+          <svg className="filter-tag-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </span>
+    ) : null;
+  };
 
   const renderYearSelection = () => {
     if (useHistoricalData) {
-      // For historical data, show start and end year inputs
+      if (isMapView) {
+        return (
+          <ChoiceInput
+            id="year-input"
+            options={revYears}
+            value={predictionYear}
+            setValue={setPredictionYear}
+          />
+        );
+      }
       return (
         <div className="year-range-inputs">
           <div className="year-input-group">
@@ -70,7 +164,6 @@ const FilterBar = (props) => {
         </div>
       );
     } else {
-      // For prediction data, show single year input
       return (
         <ChoiceInput
           id="year-input"
@@ -132,57 +225,7 @@ const FilterBar = (props) => {
             <div className="active-filters-content">
               <span className="active-filters-label">Active filters:</span>
 
-              {useHistoricalData ? (
-                <>
-                  {startYear && (
-                    <span className="filter-tag">
-                      Start Year: {startYear}
-                      <button
-                        onClick={() => setStartYear('')}
-                        className="filter-tag-remove"
-                        type="button"
-                        aria-label="Remove start year filter"
-                      >
-                        <svg className="filter-tag-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </span>
-                  )}
-
-                  {endYear && (
-                    <span className="filter-tag">
-                      End Year: {endYear}
-                      <button
-                        onClick={() => setEndYear('')}
-                        className="filter-tag-remove"
-                        type="button"
-                        aria-label="Remove end year filter"
-                      >
-                        <svg className="filter-tag-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </span>
-                  )}
-                </>
-              ) : (
-                predictionYear && (
-                  <span className="filter-tag">
-                    Year: {predictionYear}
-                    <button
-                      onClick={() => setPredictionYear('')}
-                      className="filter-tag-remove"
-                      type="button"
-                      aria-label="Remove year filter"
-                    >
-                      <svg className="filter-tag-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </span>
-                )
-              )}
+              {renderYearFilterTags()}
 
               {selectedStateName && (
                 <span className="filter-tag">
