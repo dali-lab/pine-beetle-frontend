@@ -37,14 +37,6 @@ const InfoTextBox = ({
               <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
-          <button
-            type="button"
-            onClick={() => setIsExpanded(false)}
-            className="info-text-box-close-button"
-            aria-label="Close"
-          >
-            ×
-          </button>
         </div>
       </div>
       <div className="info-text-box-content-wrapper">
