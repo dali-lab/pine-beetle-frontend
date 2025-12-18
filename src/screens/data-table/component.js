@@ -60,7 +60,7 @@ const DataTableScreen = () => {
 
   const sparseData = useSelector(selectSparseData);
   const sublocationData = useSelector(selectSublocationData);
-  const isLoading = useSelector(selectIsDataTableLoading); // eslint-disable-line no-unused-vars
+  const isLoading = useSelector(selectIsDataTableLoading);
   const errorText = useSelector(selectDataTableErrorText);
   const dataMode = useSelector(selectDataMode);
   const reduxStartYear = useSelector(selectStartYear);
@@ -253,32 +253,51 @@ const DataTableScreen = () => {
 
   const yearsLoaded = availableHistoricalYears && availableHistoricalYears.length > 0;
 
-  // Fetch available years and states when API filters change (not on county/RD changes)
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      fetchAvailableYears({ ...apiFilters, isHistorical: true });
-      fetchAvailableStates({ ...apiFilters, isHistorical: true });
-    }, 300);
 
-    return () => clearTimeout(timeoutId);
-  }, [apiFilters, dataMode, fetchAvailableYears, fetchAvailableStates]);
-
-  // Fetch data when API filters change (not on county/RD changes - those filter client-side)
+  // Set default years (last 5 years) when years are loaded and no years are selected
   useEffect(() => {
-    if (!yearsLoaded) {
+    if (yearsLoaded && !reduxStartYear && !reduxEndYear) {
+      const sortedYears = [...availableHistoricalYears].sort((a, b) => b - a);
+      const latestYear = sortedYears[0];
+      const startYear = sortedYears[Math.min(4, sortedYears.length - 1)];
+      setStartYear(startYear);
+      setEndYear(latestYear);
+    }
+  }, [yearsLoaded, availableHistoricalYears, reduxStartYear, reduxEndYear, setStartYear, setEndYear]);
+
+  useEffect(() => {
+    fetchAvailableYears({ isHistorical: true });
+    fetchAvailableStates({ isHistorical: true });
+  }, [dataMode, fetchAvailableYears, fetchAvailableStates]);
+
+  useEffect(() => {
+    if (!reduxStartYear || !reduxEndYear) {
       return undefined;
     }
 
+    if (dataFormat === DATA_FORMATS.RAW && !reduxSelectedState) {
+      return undefined;
+    }
+
+    const maxYearRange = dataFormat === DATA_FORMATS.RAW ? 2 : 5;
+    const effectiveStartYear = Math.max(reduxStartYear, reduxEndYear - maxYearRange + 1);
+
+    const safeFilters = {
+      ...apiFilters,
+      startYear: effectiveStartYear,
+      endYear: reduxEndYear,
+    };
+
     const timeoutId = setTimeout(() => {
       if (dataFormat === DATA_FORMATS.RAW) {
-        fetchUnsummarizedData(apiFilters);
+        fetchUnsummarizedData(safeFilters);
       } else {
-        fetchAggregateLocationData(apiFilters);
+        fetchAggregateLocationData(safeFilters);
       }
-    }, 300);
+    }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [apiFilters, dataMode, dataFormat, fetchUnsummarizedData, fetchAggregateLocationData, yearsLoaded]);
+  }, [apiFilters, dataMode, dataFormat, fetchUnsummarizedData, fetchAggregateLocationData, reduxStartYear, reduxEndYear, reduxSelectedState]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -331,14 +350,18 @@ const DataTableScreen = () => {
     }
   }, [dataFormat, apiFilters, fetchUnsummarizedData, fetchAggregateLocationData]);
 
-  // Show loader only during initial page load
-  const isDataLoading = isInitialLoad;
+  const isDataLoading = isInitialLoad || isLoading;
 
   if (isDataLoading) {
     return (
       <div className="data-table-screen">
         <div className="data-table-container">
-          <Loader visible message="Loading data..." />
+          <div className="page-header">
+            <h1>Data Tables</h1>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem 0' }}>
+            <Loader visible inline message="Loading data..." />
+          </div>
         </div>
       </div>
     );
@@ -398,14 +421,21 @@ const DataTableScreen = () => {
           </div>
         </div>
 
-        <DataTableView
-          dataFormat={dataFormat}
-          dataMode={dataMode}
-          paginatedData={paginatedData}
-          sortField={sortField}
-          sortDirection={sortDirection}
-          handleSort={handleSort}
-        />
+        {dataFormat === DATA_FORMATS.RAW && !reduxSelectedState ? (
+          <div className="info-message" style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
+            <p>Please select a state to view raw trapping data.</p>
+            <p style={{ fontSize: '0.9em' }}>Raw data queries are limited to prevent server overload.</p>
+          </div>
+        ) : (
+          <DataTableView
+            dataFormat={dataFormat}
+            dataMode={dataMode}
+            paginatedData={paginatedData}
+            sortField={sortField}
+            sortDirection={sortDirection}
+            handleSort={handleSort}
+          />
+        )}
 
         <TableFooter
           currentPage={currentPage}

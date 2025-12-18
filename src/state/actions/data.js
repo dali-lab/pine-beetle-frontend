@@ -295,6 +295,10 @@ export const clearCustomPredictionError = () => {
 
 export const getResultsComparisonData = (year, overrideFilter = {}) => {
   return async (dispatch, getState) => {
+    if (!year) {
+      return;
+    }
+
     const {
       county,
       dataMode,
@@ -337,6 +341,12 @@ export const getScatterChartData = () => {
     const {
       dataMode,
     } = getState().selections;
+
+    const { scatterChartData } = getState().data;
+
+    if (scatterChartData && scatterChartData.length > 0) {
+      return;
+    }
 
     dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: true });
 

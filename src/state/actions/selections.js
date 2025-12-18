@@ -1,11 +1,7 @@
 import {
   clearData,
-  getAggregateLocationData,
-  getAggregateStateData,
   getAggregateYearData,
   getPredictions,
-  getResultsComparisonData,
-  getSparseData,
 } from './data';
 
 import {
@@ -229,11 +225,6 @@ export const setAllYears = () => {
     // clear out existing data
     dispatch(clearData());
 
-    // fetch new data
-    dispatch(getSparseData({ year }));
-    dispatch(getAggregateYearData({ year }));
-    dispatch(getAggregateStateData({ year }));
-    dispatch(getAggregateLocationData({ year }));
     dispatch(getPredictions(year));
 
     // fetch new drop down values
@@ -253,15 +244,8 @@ export const setState = (state) => {
     // clear out existing data
     dispatch(clearData());
 
-    // fetch new data
-    dispatch(getSparseData({ state }));
-    dispatch(getAggregateYearData({ state }));
-    dispatch(getAggregateStateData({ state }));
-    dispatch(getAggregateLocationData({ state }));
-
     const { predictionYear } = getState().selections;
     dispatch(getPredictions(predictionYear, { state }));
-    dispatch(getResultsComparisonData(predictionYear, { state }));
 
     // fetch new drop down values
     dispatch(getAvailableYears({ state }));
@@ -283,15 +267,8 @@ export const setCounty = (newCounty) => {
     // clear out existing data
     dispatch(clearData());
 
-    // fetch new data
-    dispatch(getSparseData({ county }));
-    dispatch(getAggregateYearData({ county }));
-    dispatch(getAggregateStateData({ county }));
-    dispatch(getAggregateLocationData({ county }));
-
     const { predictionYear } = getState().selections;
     dispatch(getPredictions(predictionYear, { county }));
-    dispatch(getResultsComparisonData(predictionYear, { county }));
 
     // fetch new drop down values
     dispatch(getAvailableYears({ county }));
@@ -312,14 +289,8 @@ export const setRangerDistrict = (newRangerDistrict) => {
     // clear out existing data
     dispatch(clearData());
 
-    // fetch new data
-    dispatch(getSparseData({ rangerDistrict }));
-    dispatch(getAggregateYearData({ rangerDistrict }));
-    dispatch(getAggregateStateData({ rangerDistrict }));
-    dispatch(getAggregateLocationData({ rangerDistrict }));
     const { predictionYear } = getState().selections;
     dispatch(getPredictions(predictionYear, { rangerDistrict }));
-    dispatch(getResultsComparisonData(predictionYear, { rangerDistrict }));
 
     // fetch new drop down values
     dispatch(getAvailableYears({ rangerDistrict }));
@@ -372,15 +343,7 @@ export const clearSelections = ({ skipDataFetch = false } = {}) => {
     // Get the updated state after clearing (predictionYear will be reset to latest available)
     const { predictionYear } = getState().selections;
 
-    // fetch new data (without state filter - will show all states on map)
-    dispatch(getSparseData());
-    dispatch(getAggregateYearData());
-    dispatch(getAggregateStateData());
-    dispatch(getAggregateLocationData());
     dispatch(getPredictions(predictionYear));
-    dispatch(getResultsComparisonData(predictionYear));
-
-    // fetch new selection criteria
     dispatch(getAvailableYears());
     dispatch(getAvailableStates());
     dispatch({ type: ActionTypes.SET_AVAILABLE_SUBLOCATIONS_HISTORICAL, payload: [] });
@@ -411,18 +374,12 @@ export const setDataMode = (mode, { skipDataFetch = false } = {}) => {
       dispatch(clearData());
     }
 
-    // Skip data fetching on initial app load - pages will fetch their own data
     if (skipDataFetch) {
       return;
     }
 
-    dispatch(getSparseData());
-    dispatch(getAggregateYearData());
-    dispatch(getAggregateStateData());
-    dispatch(getAggregateLocationData());
     const { predictionYear } = getState().selections;
     dispatch(getPredictions(predictionYear));
-    dispatch(getResultsComparisonData(predictionYear));
 
     dispatch(getAvailableYears());
     dispatch(getAvailableStates());

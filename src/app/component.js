@@ -130,8 +130,7 @@ const App = (props) => {
       getAllBlogPosts();
     }
 
-    // Results comparison page needs specific data
-    if (isResultsPage) {
+    if (isResultsPage && predictionYear) {
       getResultsComparisonData(predictionYear);
       getScatterChartData();
     }
