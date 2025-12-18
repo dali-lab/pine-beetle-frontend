@@ -1,8 +1,13 @@
 import { DATA_MODES } from '../constants';
+import { logWarning } from './logger';
 
 // Pre-compiled regex patterns for better performance
 const WEEK_FIELD_REGEX = /^week\d+$/i;
 const SEASON_NUMBER_REGEX = /(\d+)/;
+
+// Trapping period constants
+const DAYS_PER_TRAPPING_PERIOD = 14; // Two-week trapping periods
+const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
 /**
  * Extracts week number from various data sources
@@ -30,14 +35,18 @@ export const extractWeekNumber = (item) => {
       const startDate = new Date(item.startDate);
       if (!Number.isNaN(date.getTime()) && !Number.isNaN(startDate.getTime())) {
         const diffTime = date.getTime() - startDate.getTime();
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        const weekNum = Math.floor(diffDays / 14) + 1;
+        const diffDays = Math.floor(diffTime / MILLISECONDS_PER_DAY);
+        const weekNum = Math.floor(diffDays / DAYS_PER_TRAPPING_PERIOD) + 1;
         if (weekNum >= 1 && weekNum <= 6) {
           return weekNum;
         }
       }
-    } catch (e) {
-      // eslint-disable-line no-empty
+    } catch (error) {
+      logWarning('Failed to parse week number from dates', error, {
+        function: 'extractWeekNumber',
+        collectionDate: item.collectionDate,
+        startDate: item.startDate,
+      });
     }
   }
 

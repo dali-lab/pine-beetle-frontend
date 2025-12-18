@@ -2,7 +2,6 @@ import mapboxgl from 'mapbox-gl';
 import React, {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
 } from 'react';
@@ -109,7 +108,7 @@ const HistoricalMap = (props) => {
 
     removeVectorLayer(map);
 
-    const { fillExpression, strokeExpression } = createBaseExpressions();
+    const { fillExpression, strokeExpression } = createBaseExpressions(dataMode);
 
     const selectedYear = typeof predictionYear === 'string' ? parseInt(predictionYear, 10) : predictionYear;
     const filteredData = d.filter((item) => {
@@ -187,28 +186,6 @@ const HistoricalMap = (props) => {
   const initTimeoutRef = useRef(null);
   const containerRetryCountRef = useRef(0);
 
-  const latestValuesRef = useRef({
-    availableStates,
-    availableSublocations,
-    selectedState,
-    rawData,
-    allRangerDistricts,
-    county: props.county,
-    rangerDistrict: props.rangerDistrict,
-  });
-
-  useLayoutEffect(() => {
-    latestValuesRef.current = {
-      availableStates,
-      availableSublocations,
-      selectedState,
-      rawData,
-      allRangerDistricts,
-      county: props.county,
-      rangerDistrict: props.rangerDistrict,
-    };
-  }, [availableStates, availableSublocations, selectedState, rawData, allRangerDistricts, props.county, props.rangerDistrict]);
-
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
 
@@ -223,26 +200,6 @@ const HistoricalMap = (props) => {
 
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
-    const latest = latestValuesRef.current;
-    const clickCallback = createMapClickCallback({
-      states: latest.availableStates,
-      sublocations: latest.availableSublocations,
-      currentState: latest.selectedState,
-      data: latest.rawData,
-      dataMode,
-      county: latest.county,
-      setCounty,
-      rangerDistrict: latest.rangerDistrict,
-      setRangerDistrict,
-    });
-    const hoverCallback = createMapHoverCallback(
-      latest.rawData,
-      latest.allRangerDistricts,
-      dataMode,
-      latest.selectedState,
-      latest.availableStates
-    );
-
     const currentMap = map;
 
     initTimeoutRef.current = setTimeout(() => {
@@ -255,19 +212,12 @@ const HistoricalMap = (props) => {
         const container = document.getElementById('map');
         if (container) {
           containerRetryCountRef.current = 0;
-          generateMap(
-            true,
-            currentMap,
-            thresholds,
-            colors,
-            () => {},
+          generateMap({
+            forceRegenerate: true,
+            map: currentMap,
             dataMode,
-            clickCallback,
-            () => {},
-            hoverCallback,
-            () => {},
-            setMap
-          );
+            setMap,
+          });
           mapInitializedRef.current = true;
           lastDataModeRef.current = dataMode;
           initTimeoutRef.current = null;

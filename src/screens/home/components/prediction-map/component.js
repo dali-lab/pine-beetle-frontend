@@ -6,7 +6,6 @@ import mapboxgl from 'mapbox-gl';
 import React, {
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -158,7 +157,7 @@ const PredictionMap = (props) => {
 
     removeVectorLayer(map);
 
-    const { fillExpression, strokeExpression } = createBaseExpressions();
+    const { fillExpression, strokeExpression } = createBaseExpressions(dataMode);
 
     const filteredPredictions = predictions.filter((prediction) => {
       if (dataMode === DATA_MODES.COUNTY) {
@@ -204,30 +203,6 @@ const PredictionMap = (props) => {
   const lastDataModeRef = useRef(dataMode);
   const initTimeoutRef = useRef(null);
 
-  const latestValuesRef = useRef({
-    availableStates,
-    availableSublocations,
-    selectedState,
-    data,
-    allRangerDistricts,
-    isMobile,
-    county: props.county,
-    rangerDistrict: props.rangerDistrict,
-  });
-
-  useLayoutEffect(() => {
-    latestValuesRef.current = {
-      availableStates,
-      availableSublocations,
-      selectedState,
-      data,
-      allRangerDistricts,
-      isMobile,
-      county: props.county,
-      rangerDistrict: props.rangerDistrict,
-    };
-  }, [availableStates, availableSublocations, selectedState, data, allRangerDistricts, isMobile, props.county, props.rangerDistrict]);
-
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
 
@@ -242,44 +217,15 @@ const PredictionMap = (props) => {
 
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
-    const latest = latestValuesRef.current;
-    const clickCallback = createMapClickCallback({
-      states: latest.availableStates,
-      sublocations: latest.availableSublocations,
-      currentState: latest.selectedState,
-      data: latest.data,
-      dataMode,
-      county: latest.county,
-      setCounty,
-      rangerDistrict: latest.rangerDistrict,
-      setRangerDistrict,
-      setPredictionModal,
-      isMobile: latest.isMobile,
-    });
-    const hoverCallback = createMapHoverCallback(
-      latest.data,
-      latest.allRangerDistricts,
-      dataMode,
-      latest.selectedState,
-      latest.availableStates
-    );
-
     const currentMap = map;
 
     initTimeoutRef.current = setTimeout(() => {
-      generateMap(
-        true,
-        currentMap,
-        thresholds,
-        colors,
-        () => {},
+      generateMap({
+        forceRegenerate: true,
+        map: currentMap,
         dataMode,
-        clickCallback,
-        () => {},
-        hoverCallback,
-        () => {},
-        setMap
-      );
+        setMap,
+      });
       mapInitializedRef.current = true;
       lastDataModeRef.current = dataMode;
       initTimeoutRef.current = null;

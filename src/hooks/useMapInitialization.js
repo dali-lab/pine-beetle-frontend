@@ -6,21 +6,14 @@ import { logError } from '../utils/logger';
 
 /**
  * Custom hook to handle map initialization with proper cleanup and race condition prevention
+ * Note: Event callbacks (click, hover) should be managed separately via useMapCallbacks hook
  * @param {Function} setMap - Setter for map instance
  * @param {string} dataMode - Current data mode
- * @param {Function} clickCallback - Click callback function
- * @param {Function} hoverCallback - Hover callback function
- * @param {Array} thresholds - Legend thresholds
- * @param {Array} colors - Legend colors
  * @param {Array} dependencies - Dependencies array for useEffect
  */
 const useMapInitialization = (
   setMap,
   dataMode,
-  clickCallback,
-  hoverCallback,
-  thresholds,
-  colors,
   dependencies = []
 ) => {
   const mapInitTimeoutRef = useRef(null);
@@ -61,19 +54,12 @@ const useMapInitialization = (
         const container = document.getElementById('map');
         if (container) {
           retryCountRef.current = 0;
-          generateMap(
-            true,
-            null,
-            thresholds,
-            colors,
-            () => {},
+          generateMap({
+            forceRegenerate: true,
+            map: null,
             dataMode,
-            clickCallback,
-            () => {},
-            hoverCallback,
-            () => {},
-            setMap
-          );
+            setMap,
+          });
         } else {
           retryCountRef.current += 1;
           containerCheckTimeoutRef.current = setTimeout(() => {

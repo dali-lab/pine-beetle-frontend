@@ -104,6 +104,21 @@ export function getPredictions(year = new Date().getFullYear(), overrideFilter =
  */
 export function getSparseData(overrideFilter = {}) {
   return async (dispatch, getState) => {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        location: 'data.js:getSparseData',
+        message: 'getSparseData action called',
+        data: { overrideFilter, stack: new Error().stack?.split('\n').slice(0, 5) },
+        timestamp: Date.now(),
+        sessionId: 'debug-session',
+        hypothesisId: 'H4',
+      }),
+    }).catch(() => {});
+    // #endregion
+
     const { dataMode } = getState().selections;
     const filters = buildFilters(getState().selections, overrideFilter);
 
@@ -211,6 +226,21 @@ export function getAggregateStateData(overrideFilter = {}) {
  */
 export function getAggregateLocationData(overrideFilter = {}) {
   return async (dispatch, getState) => {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        location: 'data.js:getAggregateLocationData',
+        message: 'getAggregateLocationData action called',
+        data: { overrideFilter, stack: new Error().stack?.split('\n').slice(0, 5) },
+        timestamp: Date.now(),
+        sessionId: 'debug-session',
+        hypothesisId: 'H4',
+      }),
+    }).catch(() => {});
+    // #endregion
+
     const { dataMode } = getState().selections;
     const filters = buildFilters(getState().selections, overrideFilter);
 

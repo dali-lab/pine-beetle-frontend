@@ -1,5 +1,6 @@
 /**
  * Sorts blog posts from newest to oldest
+ * Uses timestamp caching for O(n log n) performance on large datasets
  * @param {Array} blogPosts - Array of blog post objects
  * @returns {Array} Sorted array of blog posts
  */
@@ -8,12 +9,16 @@ export const sortBlogPosts = (blogPosts) => {
     return [];
   }
 
-  return [...blogPosts].sort((a, b) => {
-    const dateA = new Date(a.date_created);
-    const dateB = new Date(b.date_created);
+  // Cache timestamps to avoid creating Date objects during each comparison
+  const timestampCache = new Map();
+  const getTimestamp = (post) => {
+    if (!timestampCache.has(post)) {
+      timestampCache.set(post, new Date(post.date_created).getTime());
+    }
+    return timestampCache.get(post);
+  };
 
-    return dateB - dateA;
-  });
+  return [...blogPosts].sort((a, b) => getTimestamp(b) - getTimestamp(a));
 };
 
 /**

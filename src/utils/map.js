@@ -1,6 +1,5 @@
 import mapboxgl from 'mapbox-gl';
 import mapboxPrintPdf from 'mapbox-print-pdf';
-import React from 'react';
 import {
   DATA_MODES,
   MAP_SOURCE_NAME,
@@ -162,7 +161,25 @@ const createHoverCallback = (map, rangerDistricts, mode, callback, isMobile = fa
 // Track the current map instance to ensure proper cleanup
 let currentMapInstance = null;
 
-const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, dataMode, mapClickCallback, setMapClickCallback, mapHoverCallback, setMapHoverCallback, setMap) => {
+/**
+ * @typedef {Object} GenerateMapOptions
+ * @property {boolean} forceRegenerate - Whether to force map regeneration
+ * @property {Object|null} map - Existing map instance
+ * @property {string} dataMode - Current data mode (COUNTY or RANGER_DISTRICT)
+ * @property {Function} setMap - Setter for map instance
+ */
+
+/**
+ * Generates a new Mapbox map instance with proper cleanup of existing instances
+ * Event callbacks (click, hover) should be registered via useMapCallbacks hook
+ * @param {GenerateMapOptions} options - Map configuration options
+ */
+const generateMap = ({
+  forceRegenerate,
+  map,
+  dataMode,
+  setMap,
+}) => {
   if (map && !forceRegenerate) return;
 
   // CRITICAL: Destroy existing map instance before creating a new one to prevent WebGL context leaks
@@ -237,20 +254,6 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     showZoom: true,
   }));
 
-  const legendTagsToSet = thresholds.map((threshold, index) => {
-    const color = colors[index];
-
-    return (
-      <div key={color}>
-        <span className="legend-key" style={{ backgroundColor: color }} />
-        <span className="legend-tag">{threshold}</span>
-      </div>
-    );
-  });
-
-  // add legend tags
-  setLegendTags(legendTagsToSet);
-
   // add map source on load
   if (!createdMap._listeners.load) {
     createdMap.on('load', () => {
@@ -260,16 +263,9 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     });
   }
 
-  // select county/RD when user clicks on it
-  if (!createdMap._listeners.click) {
-    setMapClickCallback(() => mapClickCallback);
-    createdMap.on('click', VECTOR_LAYER, mapClickCallback);
-  }
-
-  if (createdMap._listeners.mousemove === undefined) {
-    setMapHoverCallback(() => mapHoverCallback);
-    createdMap.on('mousemove', mapHoverCallback);
-  }
+  // NOTE: Click and hover callbacks are NOT registered here.
+  // They are managed by the useMapCallbacks hook in components,
+  // which handles dynamic updates when filters/data change.
 
   // Track the new map instance
   currentMapInstance = createdMap;

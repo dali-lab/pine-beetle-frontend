@@ -2,6 +2,7 @@ import {
   getMapboxRDNameFormat,
   getStateAbbreviationFromStateName,
   getStateNameFromAbbreviation,
+  separatePascalCase,
 } from './abbreviation-mappings';
 
 import {
@@ -79,6 +80,7 @@ export {
   parseYearFromItem,
   removeAuthTokenFromStorage,
   removeUserIdFromStorage,
+  separatePascalCase,
   setAuthTokenInStorage,
   setChartModeInStorage,
   setDataModeInStorage,

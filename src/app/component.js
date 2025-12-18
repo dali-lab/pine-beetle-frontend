@@ -72,6 +72,7 @@ const App = (props) => {
     getAggregateLocationData,
     getPredictions,
     getAvailableStates,
+    getAvailableYears,
     getSparseData,
     getAllBlogPosts,
     getResultsComparisonData,
@@ -93,23 +94,53 @@ const App = (props) => {
       loginUserFromStorage();
     }
 
-    // set data mode if persist in browser
-    setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
+    // set data mode if persist in browser (skip data fetch - pages will fetch their own data)
+    setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY, { skipDataFetch: true });
 
-    // fetch initial data
-    getAggregateYearData();
-    getAggregateStateData();
-    getAggregateLocationData();
-    getAllBlogPosts();
-    getSparseData();
-    getPredictions();
-    getResultsComparisonData(predictionYear);
-    getScatterChartData();
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        location: 'app/component.js:100',
+        message: 'Initial data fetch triggered',
+        data: { pathname: window.location.pathname },
+        timestamp: Date.now(),
+        sessionId: 'debug-session',
+        hypothesisId: 'H1',
+      }),
+    }).catch(() => {});
+    // #endregion
+
+    // Only fetch data needed for current page - other pages fetch their own data
+    const { pathname } = window.location;
+    const isHomePage = pathname === '/' || pathname === '/home';
+    const isBlogPage = pathname.startsWith('/blog');
+    const isResultsPage = pathname === '/results-comparison';
+
+    // Home page needs predictions and sparse data for the map
+    // First fetch available years to ensure predictionYear is valid (e.g., 2024 not 2025)
+    // The reducer will auto-correct predictionYear, which triggers the other useEffect to fetch predictions
+    if (isHomePage) {
+      getAvailableYears();
+    }
+
+    // Blog pages need blog posts
+    if (isBlogPage) {
+      getAllBlogPosts();
+    }
+
+    // Results comparison page needs specific data
+    if (isResultsPage) {
+      getResultsComparisonData(predictionYear);
+      getScatterChartData();
+    }
   }, [
     getAggregateLocationData,
     getAggregateStateData,
     getAggregateYearData,
     getAllBlogPosts,
+    getAvailableYears,
     getPredictions,
     getSparseData,
     getResultsComparisonData,

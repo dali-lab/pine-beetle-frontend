@@ -13,6 +13,21 @@ const R_MODEL_SUBROUTE = 'r-model';
  * @returns {Promise<Object>} API response
  */
 export async function getCountyData(filters) {
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      location: 'api.js:15',
+      message: 'getCountyData called',
+      data: { filters, hasLimit: !!filters.limit },
+      timestamp: Date.now(),
+      sessionId: 'debug-session',
+      hypothesisId: 'H1-H3',
+    }),
+  }).catch(() => {});
+  // #endregion
+
   const params = toQueryParams({
     ...filters,
     county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
@@ -36,6 +51,21 @@ export async function getCountyData(filters) {
  * @returns {Promise<Object>} API response
  */
 export async function getSparseCountyData(filters) {
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      location: 'api.js:38',
+      message: 'getSparseCountyData called',
+      data: { filters },
+      timestamp: Date.now(),
+      sessionId: 'debug-session',
+      hypothesisId: 'H1',
+    }),
+  }).catch(() => {});
+  // #endregion
+
   const params = toQueryParams({
     ...filters,
     county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
@@ -418,6 +448,21 @@ export async function getRDScatterChart() {
  * @returns {Promise<Array>} API response with unsummarized data
  */
 export async function getUnsummarizedData(filters = {}) {
+  // #region agent log
+  fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      location: 'api.js:420',
+      message: 'getUnsummarizedData called',
+      data: { filters, hasLimit: !!filters.limit },
+      timestamp: Date.now(),
+      sessionId: 'debug-session',
+      hypothesisId: 'H2-H3',
+    }),
+  }).catch(() => {});
+  // #endregion
+
   const params = toQueryParams({
     ...filters,
     county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,

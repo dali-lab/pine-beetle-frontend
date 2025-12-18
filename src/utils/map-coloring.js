@@ -1,4 +1,4 @@
-import { MAP_SOURCE_NAME, VECTOR_LAYER } from '../constants';
+import { DATA_MODES, MAP_SOURCE_NAME, VECTOR_LAYER } from '../constants';
 import MAP_INIT_CONSTANTS from '../constants/map-constants';
 import { isMapRemoved } from './map-instance-tracker';
 import { logError } from './logger';
@@ -83,12 +83,21 @@ export const removeVectorLayer = (map) => {
 
 /**
  * Creates base fill and stroke expressions for mapbox style
+ * For COUNTY mode, matches against concatenation of COUNTYNAME and STATE fields
+ * For RANGER_DISTRICT mode, matches against forest field
+ * @param {string} dataMode - Current data mode (COUNTY or RANGER_DISTRICT)
  * @returns {Object} Object with fillExpression and strokeExpression arrays
  */
-export const createBaseExpressions = () => {
+export const createBaseExpressions = (dataMode) => {
+  // For county mode, the tileset has COUNTYNAME and STATE as separate fields
+  // We need to concatenate them with a space to match our formatted data (e.g., "FULTON GA")
+  const matchExpression = dataMode === DATA_MODES.COUNTY
+    ? ['upcase', ['concat', ['get', 'COUNTYNAME'], ' ', ['get', 'STATE']]]
+    : ['upcase', ['get', 'forest']];
+
   return {
-    fillExpression: ['match', ['upcase', ['get', 'forest']]],
-    strokeExpression: ['match', ['upcase', ['get', 'forest']]],
+    fillExpression: ['match', matchExpression],
+    strokeExpression: ['match', matchExpression],
   };
 };
 

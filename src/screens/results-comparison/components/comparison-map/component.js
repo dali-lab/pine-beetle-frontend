@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl';
 import React, {
-  useCallback, useEffect, useLayoutEffect, useMemo, useRef,
+  useCallback, useEffect, useMemo, useRef,
 } from 'react';
 import MapComponent from '../../../../components/map';
 import MapControls from '../../../../components/map-controls/component';
@@ -193,7 +193,7 @@ const ComparisonMap = (props) => {
 
     removeVectorLayer(map);
 
-    const { fillExpression, strokeExpression } = createBaseExpressions();
+    const { fillExpression, strokeExpression } = createBaseExpressions(dataMode);
 
     comparisonData.forEach(({
       county,
@@ -228,30 +228,6 @@ const ComparisonMap = (props) => {
   const lastDataModeRef = useRef(dataMode);
   const containerRetryCountRef = useRef(0);
 
-  const latestValuesRef = useRef({
-    availableStates,
-    availableSublocations,
-    selectedState,
-    data,
-    allRangerDistricts,
-    dataLookupMap,
-    county: props.county,
-    rangerDistrict: props.rangerDistrict,
-  });
-
-  useLayoutEffect(() => {
-    latestValuesRef.current = {
-      availableStates,
-      availableSublocations,
-      selectedState,
-      data,
-      allRangerDistricts,
-      dataLookupMap,
-      county: props.county,
-      rangerDistrict: props.rangerDistrict,
-    };
-  }, [availableStates, availableSublocations, selectedState, data, allRangerDistricts, dataLookupMap, props.county, props.rangerDistrict]);
-
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
 
@@ -269,27 +245,6 @@ const ComparisonMap = (props) => {
     }
 
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
-
-    const latest = latestValuesRef.current;
-    const clickCallback = createMapClickCallback({
-      states: latest.availableStates,
-      sublocations: latest.availableSublocations,
-      currentState: latest.selectedState,
-      data: latest.data,
-      dataMode,
-      county: latest.county,
-      setCounty,
-      rangerDistrict: latest.rangerDistrict,
-      setRangerDistrict,
-    });
-    const hoverCallback = createMapHoverCallback(
-      latest.data,
-      latest.allRangerDistricts,
-      dataMode,
-      latest.selectedState,
-      latest.availableStates,
-      latest.dataLookupMap
-    );
 
     const currentMap = map;
 
@@ -309,19 +264,12 @@ const ComparisonMap = (props) => {
         const container = document.getElementById('map');
         if (container) {
           containerRetryCountRef.current = 0;
-          generateMap(
-            true,
-            currentMap,
-            thresholds,
-            colors,
-            () => {},
+          generateMap({
+            forceRegenerate: true,
+            map: currentMap,
             dataMode,
-            clickCallback,
-            () => {},
-            hoverCallback,
-            () => {},
-            setMap
-          );
+            setMap,
+          });
           mapInitializedRef.current = true;
           lastDataModeRef.current = dataMode;
         } else {

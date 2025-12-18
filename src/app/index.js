@@ -5,6 +5,7 @@ import {
   getAggregateStateData,
   getAggregateLocationData,
   getAvailableStates,
+  getAvailableYears,
   getAllBlogPosts,
   getSparseData,
   getPredictions,
@@ -65,11 +66,14 @@ const mapDispatchToProps = (dispatch) => {
     setChartMode: (mode) => {
       dispatch(setChartMode(mode));
     },
-    setDataMode: (mode) => {
-      dispatch(setDataMode(mode));
+    setDataMode: (mode, options) => {
+      dispatch(setDataMode(mode, options));
     },
     getScatterChartData: () => {
       dispatch(getScatterChartData());
+    },
+    getAvailableYears: () => {
+      dispatch(getAvailableYears());
     },
   };
 };

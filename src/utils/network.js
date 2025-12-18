@@ -17,9 +17,7 @@ export const toQueryParams = (obj) => {
     ...(val ? { [key]: val } : {}),
   }), {});
 
-  return Object.entries(cleanedObj).map(([key, value]) => {
-    return `${key}=${value}`;
-  }).join('&');
+  return Object.entries(cleanedObj).map(([key, value]) => `${key}=${value}`).join('&');
 };
 
 /**

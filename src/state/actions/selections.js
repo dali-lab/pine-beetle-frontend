@@ -387,7 +387,7 @@ export const clearSelections = () => {
  * @description action creator for setting data mode
  * @param {String} mode data mode
  */
-export const setDataMode = (mode) => {
+export const setDataMode = (mode, { skipDataFetch = false } = {}) => {
   return (dispatch, getState) => {
     const { dataMode: currentMode } = getState().selections;
     const { predictions } = getState().data;
@@ -404,6 +404,11 @@ export const setDataMode = (mode) => {
     if (modeChanged) {
       dispatch({ type: ActionTypes.SET_DATA_MODE, payload: { mode } });
       dispatch(clearData());
+    }
+
+    // Skip data fetching on initial app load - pages will fetch their own data
+    if (skipDataFetch) {
+      return;
     }
 
     dispatch(getSparseData());

@@ -14,10 +14,10 @@ import {
   getAvailableStates,
   getAvailableYears,
   getUnsummarizedData,
-  setCounty as setCountyAction,
+  setCountyFilter as setCountyFilterAction,
   setDataMode as setDataModeAction,
   setEndYear as setEndYearAction,
-  setRangerDistrict as setRangerDistrictAction,
+  setRangerDistrictFilter as setRangerDistrictFilterAction,
   setStartYear as setStartYearAction,
   setState as setStateAction,
 } from '../../state/actions';
@@ -60,7 +60,7 @@ const DataTableScreen = () => {
 
   const sparseData = useSelector(selectSparseData);
   const sublocationData = useSelector(selectSublocationData);
-  const isLoading = useSelector(selectIsDataTableLoading);
+  const isLoading = useSelector(selectIsDataTableLoading); // eslint-disable-line no-unused-vars
   const errorText = useSelector(selectDataTableErrorText);
   const dataMode = useSelector(selectDataMode);
   const reduxStartYear = useSelector(selectStartYear);
@@ -108,12 +108,12 @@ const DataTableScreen = () => {
   );
 
   const setCounty = useCallback(
-    (county) => dispatch(setCountyAction(county)),
+    (county) => dispatch(setCountyFilterAction(county)),
     [dispatch]
   );
 
   const setRangerDistrict = useCallback(
-    (rangerDistrict) => dispatch(setRangerDistrictAction(rangerDistrict)),
+    (rangerDistrict) => dispatch(setRangerDistrictFilterAction(rangerDistrict)),
     [dispatch]
   );
 
@@ -127,17 +127,27 @@ const DataTableScreen = () => {
   const [dataFormat, setDataFormat] = useState(DATA_FORMATS.RAW);
   const [showEmptyRecords, setShowEmptyRecords] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  const filters = useMemo(
+  // Filters that require API fetch (year range, state, data mode)
+  const apiFilters = useMemo(
     () => ({
       startYear: reduxStartYear || undefined,
       endYear: reduxEndYear || undefined,
       state: reduxSelectedState || undefined,
+    }),
+    [reduxStartYear, reduxEndYear, reduxSelectedState]
+  );
+
+  // Full filters including client-side filters (county/rangerDistrict)
+  // These don't trigger API calls - filtering happens in filteredAndSortedData
+  const filters = useMemo(
+    () => ({
+      ...apiFilters,
       county: reduxCounty && reduxCounty.length > 0 ? reduxCounty : undefined,
       rangerDistrict: reduxRangerDistrict && reduxRangerDistrict.length > 0 ? reduxRangerDistrict : undefined,
     }),
-    [reduxStartYear, reduxEndYear, reduxSelectedState, reduxCounty, reduxRangerDistrict]
+    [apiFilters, reduxCounty, reduxRangerDistrict]
   );
 
   const rawData = useMemo(() => {
@@ -243,15 +253,17 @@ const DataTableScreen = () => {
 
   const yearsLoaded = availableHistoricalYears && availableHistoricalYears.length > 0;
 
+  // Fetch available years and states when API filters change (not on county/RD changes)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      fetchAvailableYears({ ...filters, isHistorical: true });
-      fetchAvailableStates({ ...filters, isHistorical: true });
+      fetchAvailableYears({ ...apiFilters, isHistorical: true });
+      fetchAvailableStates({ ...apiFilters, isHistorical: true });
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [filters, dataMode, fetchAvailableYears, fetchAvailableStates]);
+  }, [apiFilters, dataMode, fetchAvailableYears, fetchAvailableStates]);
 
+  // Fetch data when API filters change (not on county/RD changes - those filter client-side)
   useEffect(() => {
     if (!yearsLoaded) {
       return undefined;
@@ -259,28 +271,28 @@ const DataTableScreen = () => {
 
     const timeoutId = setTimeout(() => {
       if (dataFormat === DATA_FORMATS.RAW) {
-        fetchUnsummarizedData(filters);
+        fetchUnsummarizedData(apiFilters);
       } else {
-        fetchAggregateLocationData(filters);
+        fetchAggregateLocationData(apiFilters);
       }
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [filters, dataMode, dataFormat, fetchUnsummarizedData, fetchAggregateLocationData, yearsLoaded]);
+  }, [apiFilters, dataMode, dataFormat, fetchUnsummarizedData, fetchAggregateLocationData, yearsLoaded]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [filters, dataMode, dataFormat, sortField, sortDirection, showEmptyRecords]);
 
+  // Hide initial loader after first render cycle completes
   useEffect(() => {
-    const hasData = dataFormat === DATA_FORMATS.RAW
-      ? sparseData && sparseData.length > 0
-      : sublocationData && sublocationData.length > 0;
+    // Small delay to allow first API call to start, then hide loader
+    const timeoutId = setTimeout(() => {
+      setIsInitialLoad(false);
+    }, 500);
 
-    if (hasData && !isLoading) {
-      setIsInitializing(false);
-    }
-  }, [sparseData, sublocationData, dataFormat, isLoading]);
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   const handleSort = useCallback((field) => {
     if (sortField === field) {
@@ -313,13 +325,14 @@ const DataTableScreen = () => {
 
   const handleRetry = useCallback(() => {
     if (dataFormat === DATA_FORMATS.RAW) {
-      fetchUnsummarizedData(filters);
+      fetchUnsummarizedData(apiFilters);
     } else {
-      fetchAggregateLocationData(filters);
+      fetchAggregateLocationData(apiFilters);
     }
-  }, [dataFormat, filters, fetchUnsummarizedData, fetchAggregateLocationData]);
+  }, [dataFormat, apiFilters, fetchUnsummarizedData, fetchAggregateLocationData]);
 
-  const isDataLoading = !yearsLoaded || isLoading || isInitializing;
+  // Show loader only during initial page load
+  const isDataLoading = isInitialLoad;
 
   if (isDataLoading) {
     return (
