@@ -99,5 +99,5 @@ export {
   setRangerDistrictFilter,
   setStartYear,
   setState,
-  signOut
+  signOut,
 };

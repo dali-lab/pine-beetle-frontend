@@ -357,12 +357,17 @@ export const setRangerDistrictFilter = (newRangerDistrict) => {
 /**
  * @description action creator for clearing all selections
  */
-export const clearSelections = () => {
+export const clearSelections = ({ skipDataFetch = false } = {}) => {
   return (dispatch, getState) => {
     dispatch({ type: ActionTypes.CLEAR_SELECTIONS });
 
     // clear out existing data
     dispatch(clearData());
+
+    // If skipDataFetch is true, don't fetch any data (used when component will fetch its own data)
+    if (skipDataFetch) {
+      return;
+    }
 
     // Get the updated state after clearing (predictionYear will be reset to latest available)
     const { predictionYear } = getState().selections;

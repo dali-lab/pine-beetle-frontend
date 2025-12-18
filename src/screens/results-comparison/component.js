@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FilterBar, Loader } from '../../components';
 import {
   ComparisonMap, OverviewText, ScatterChart, ScatterChartSelectionBar,
@@ -7,7 +7,22 @@ import {
 import './style.scss';
 
 const ResultsComparison = (props) => {
-  const { isLoading } = props;
+  const {
+    isLoading, predictionYear, hasData, fetchData, yearsLoaded, fetchAvailableYears,
+  } = props;
+
+  // Fetch available years on mount
+  useEffect(() => {
+    fetchAvailableYears();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch data once years are loaded and we have a valid year
+  useEffect(() => {
+    if (!hasData && yearsLoaded && predictionYear) {
+      fetchData(predictionYear);
+    }
+  }, [hasData, predictionYear, fetchData, yearsLoaded]);
+
   return (
     <div className="results-comparison-page">
       <div className="results-comparison-container">

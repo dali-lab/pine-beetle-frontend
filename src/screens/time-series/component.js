@@ -24,15 +24,32 @@ const TimeSeries = (props) => {
     clearAllSelections,
     setStartYear,
     availableYears,
+    fetchAvailableYears,
+    fetchGraphData,
+    fetchMapData,
+    mapYear,
   } = props;
 
   const isGraphView = chartMode === CHART_MODES.GRAPH;
-  const setMapView = () => setChartMode(CHART_MODES.MAP);
 
+  // Clear selections and fetch graph data on mount
   useEffect(() => {
-    clearAllSelections(); // clears selections initially when switching to this tab
-    setChartMode(CHART_MODES.GRAPH); // ensure graph view is shown by default
-  }, [clearAllSelections, setChartMode]);
+    clearAllSelections();
+    setChartMode(CHART_MODES.GRAPH);
+    fetchAvailableYears();
+    fetchGraphData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch map data when in map view and mapYear changes
+  useEffect(() => {
+    if (!isGraphView && mapYear) {
+      fetchMapData(mapYear);
+    }
+  }, [mapYear, isGraphView, fetchMapData]);
+
+  const setMapView = () => {
+    setChartMode(CHART_MODES.MAP);
+  };
 
   // TODO handle other way here as well
   const handleChangeToGraphView = () => {
