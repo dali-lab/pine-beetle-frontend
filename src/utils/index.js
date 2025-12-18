@@ -40,7 +40,7 @@ import {
   transformRawData,
 } from './data-table';
 
-import getFillColor from './colors';
+import { getFillColor } from './colors';
 
 import {
   createHoverCallback,

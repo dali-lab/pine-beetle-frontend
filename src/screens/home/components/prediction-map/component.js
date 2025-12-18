@@ -243,19 +243,19 @@ const PredictionMap = (props) => {
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
     const latest = latestValuesRef.current;
-    const clickCallback = createMapClickCallback(
-      latest.availableStates,
-      latest.availableSublocations,
-      latest.selectedState,
-      latest.data,
+    const clickCallback = createMapClickCallback({
+      states: latest.availableStates,
+      sublocations: latest.availableSublocations,
+      currentState: latest.selectedState,
+      data: latest.data,
       dataMode,
-      latest.county,
+      county: latest.county,
       setCounty,
-      latest.rangerDistrict,
+      rangerDistrict: latest.rangerDistrict,
       setRangerDistrict,
       setPredictionModal,
-      latest.isMobile
-    );
+      isMobile: latest.isMobile,
+    });
     const hoverCallback = createMapHoverCallback(
       latest.data,
       latest.allRangerDistricts,
@@ -333,19 +333,19 @@ const PredictionMap = (props) => {
 
   const clickCallback = useMemo(() => {
     if (!map || !availableStates || !availableSublocations) return null;
-    return createMapClickCallback(
-      availableStates,
-      availableSublocations,
-      selectedState,
+    return createMapClickCallback({
+      states: availableStates,
+      sublocations: availableSublocations,
+      currentState: selectedState,
       data,
       dataMode,
-      props.county,
+      county: props.county,
       setCounty,
-      props.rangerDistrict,
+      rangerDistrict: props.rangerDistrict,
       setRangerDistrict,
       setPredictionModal,
-      isMobile
-    );
+      isMobile,
+    });
   }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict, setPredictionModal, isMobile]);
 
   const stateClickCallback = useCallback((e) => {

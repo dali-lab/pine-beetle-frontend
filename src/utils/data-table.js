@@ -1,5 +1,9 @@
 import { DATA_MODES } from '../constants';
 
+// Pre-compiled regex patterns for better performance
+const WEEK_FIELD_REGEX = /^week\d+$/i;
+const SEASON_NUMBER_REGEX = /(\d+)/;
+
 /**
  * Extracts week number from various data sources
  * @param {Object} item - Data item containing week information
@@ -11,7 +15,7 @@ export const extractWeekNumber = (item) => {
   }
 
   if (item.season) {
-    const seasonMatch = String(item.season).match(/(\d+)/);
+    const seasonMatch = String(item.season).match(SEASON_NUMBER_REGEX);
     if (seasonMatch) {
       const weekNum = Number.parseInt(seasonMatch[1], 10);
       if (weekNum >= 1 && weekNum <= 6) {
@@ -53,7 +57,7 @@ export const normalizeWeeklyData = (rawData) => {
   const normalized = [];
 
   rawData.forEach((item) => {
-    const weekFields = Object.keys(item).filter((key) => /^week\d+$/i.test(key));
+    const weekFields = Object.keys(item).filter((key) => WEEK_FIELD_REGEX.test(key));
 
     if (weekFields.length > 0) {
       weekFields.forEach((weekField) => {

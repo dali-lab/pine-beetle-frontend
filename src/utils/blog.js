@@ -1,5 +1,9 @@
-// Sort posts from the newest to the oldest
-const sortBlogPosts = (blogPosts) => {
+/**
+ * Sorts blog posts from newest to oldest
+ * @param {Array} blogPosts - Array of blog post objects
+ * @returns {Array} Sorted array of blog posts
+ */
+export const sortBlogPosts = (blogPosts) => {
   if (!blogPosts || !Array.isArray(blogPosts)) {
     return [];
   }
@@ -12,24 +16,44 @@ const sortBlogPosts = (blogPosts) => {
   });
 };
 
-// Get the latest blog post
-const getLatestBlogPost = (blogPosts) => {
+/**
+ * Gets the latest blog post - O(n) complexity
+ * @param {Array} blogPosts - Array of blog post objects
+ * @returns {Object|null} Latest blog post or null if empty
+ */
+export const getLatestBlogPost = (blogPosts) => {
   if (!blogPosts || blogPosts.length === 0) {
-    return null; // Handle the empty array case
+    return null;
   }
 
-  const sortedPosts = sortBlogPosts(blogPosts);
-  return sortedPosts[0];
+  return blogPosts.reduce((latest, post) => {
+    if (!latest) return post;
+    const latestDate = new Date(latest.date_created);
+    const postDate = new Date(post.date_created);
+    return postDate > latestDate ? post : latest;
+  }, null);
 };
 
-// Return string with US date format
-const getDateToDisplay = (dateToParse) => {
+/**
+ * Formats date to US date format (MM/DD/YYYY)
+ * @param {string|Date} dateToParse - Date to format
+ * @returns {string} Formatted date string
+ */
+export const getDateToDisplay = (dateToParse) => {
   const date = new Date(dateToParse);
+  if (Number.isNaN(date.getTime())) {
+    return 'Invalid Date';
+  }
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 };
 
-// Return string with blog post creation and editing dates
-const formatPostDates = (created, updated) => {
+/**
+ * Formats blog post creation and update dates for display
+ * @param {string|Date} created - Creation date
+ * @param {string|Date} updated - Update date
+ * @returns {string} Formatted date string
+ */
+export const formatPostDates = (created, updated) => {
   const options = {
     year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit',
   };
@@ -44,8 +68,13 @@ const formatPostDates = (created, updated) => {
   return dateString;
 };
 
-// truncate text for the blog post preview on home page
-const truncateText = (text, maxLength) => {
+/**
+ * Truncates text for blog post preview, breaking at word boundaries
+ * @param {string} text - Text to truncate
+ * @param {number} maxLength - Maximum length before truncation
+ * @returns {string} Truncated text with ellipsis if needed
+ */
+export const truncateText = (text, maxLength) => {
   if (text.length <= maxLength) {
     return text;
   }
@@ -58,12 +87,4 @@ const truncateText = (text, maxLength) => {
   }
 
   return `${truncated}...`;
-};
-
-export {
-  formatPostDates,
-  getDateToDisplay,
-  getLatestBlogPost,
-  sortBlogPosts,
-  truncateText,
 };

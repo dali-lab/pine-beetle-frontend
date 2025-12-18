@@ -271,17 +271,17 @@ const ComparisonMap = (props) => {
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
     const latest = latestValuesRef.current;
-    const clickCallback = createMapClickCallback(
-      latest.availableStates,
-      latest.availableSublocations,
-      latest.selectedState,
-      latest.data,
+    const clickCallback = createMapClickCallback({
+      states: latest.availableStates,
+      sublocations: latest.availableSublocations,
+      currentState: latest.selectedState,
+      data: latest.data,
       dataMode,
-      latest.county,
+      county: latest.county,
       setCounty,
-      latest.rangerDistrict,
-      setRangerDistrict
-    );
+      rangerDistrict: latest.rangerDistrict,
+      setRangerDistrict,
+    });
     const hoverCallback = createMapHoverCallback(
       latest.data,
       latest.allRangerDistricts,
@@ -387,17 +387,17 @@ const ComparisonMap = (props) => {
 
   const clickCallback = useMemo(() => {
     if (!map || !availableStates || !availableSublocations) return null;
-    return createMapClickCallback(
-      availableStates,
-      availableSublocations,
-      selectedState,
+    return createMapClickCallback({
+      states: availableStates,
+      sublocations: availableSublocations,
+      currentState: selectedState,
       data,
       dataMode,
-      props.county,
+      county: props.county,
       setCounty,
-      props.rangerDistrict,
-      setRangerDistrict
-    );
+      rangerDistrict: props.rangerDistrict,
+      setRangerDistrict,
+    });
   }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict]);
 
   const stateClickCallback = useCallback((e) => {

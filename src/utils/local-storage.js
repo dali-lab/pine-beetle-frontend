@@ -1,8 +1,19 @@
 import { LOCAL_STORAGE_KEYS } from '../constants';
 
 /**
+ * SECURITY NOTE: Auth tokens stored in localStorage are vulnerable to XSS attacks.
+ * For improved security, consider migrating to HttpOnly cookies for authentication tokens.
+ * This requires backend changes to:
+ * 1. Set auth token as HttpOnly cookie on login
+ * 2. Include credentials in API requests
+ * 3. Remove client-side token storage
+ *
+ * Non-sensitive data (dataMode, chartMode) can safely remain in localStorage.
+ */
+
+/**
  * @description retrieves key from local storage
- * @returns {String} value in local storage
+ * @returns {string} value in local storage
  */
 const getLocal = (key) => () => localStorage.getItem(key);
 

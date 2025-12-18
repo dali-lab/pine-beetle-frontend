@@ -20,14 +20,65 @@ const DEFAULT_CENTER = [-84.3880, 33.7490];
 const DEFAULT_ZOOM = 4.8;
 const MAX_ZOOM = 6;
 
+/**
+ * Escapes HTML special characters to prevent XSS attacks
+ * @param {string} text - Text to escape
+ * @returns {string} - Escaped text safe for HTML insertion
+ */
+const escapeHtml = (text) => {
+  if (!text) return '';
+  const htmlEscapes = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    '\'': '&#x27;',
+  };
+  return String(text).replace(/[&<>"']/g, (char) => htmlEscapes[char]);
+};
+
 // Hover tooltip positioning constants
 const HOVER_BOUNDARY_X = 300;
 const HOVER_BOUNDARY_Y = 200;
 const HOVER_TOOLTIP_OFFSET_X = 280;
 const HOVER_TOOLTIP_OFFSET_Y = 125;
 
-// twice-curried function for generating click callback
-const createMapClickCallback = (states, sublocations, currentState, data, dataMode, propsCounty, setCounty, propsRangerDistrict, setRangerDistrict, setPredictionModal, isMobile = false) => (e) => {
+/**
+ * Configuration options for map click callback
+ * @typedef {Object} MapClickOptions
+ * @property {Array<string>} states - Available states
+ * @property {Array<string>} sublocations - Available sublocations (counties or ranger districts)
+ * @property {string} currentState - Currently selected state
+ * @property {Array<Object>} data - Prediction/trapping data
+ * @property {string} dataMode - Current data mode (COUNTY or RANGER_DISTRICT)
+ * @property {Array<string>} county - Currently selected county
+ * @property {Function} setCounty - County setter function
+ * @property {Array<string>} rangerDistrict - Currently selected ranger district
+ * @property {Function} setRangerDistrict - Ranger district setter function
+ * @property {Function} [setPredictionModal] - Optional modal setter function
+ * @property {boolean} [isMobile=false] - Whether on mobile device
+ */
+
+/**
+ * Creates a click callback for map interactions
+ * @param {MapClickOptions} options - Configuration options
+ * @returns {Function} Click event handler
+ */
+const createMapClickCallback = (options) => (e) => {
+  const {
+    states,
+    sublocations,
+    currentState,
+    data,
+    dataMode,
+    county: propsCounty,
+    setCounty,
+    rangerDistrict: propsRangerDistrict,
+    setRangerDistrict,
+    setPredictionModal,
+    isMobile = false,
+  } = options;
+
   if (!e?.features[0]?.properties) return;
 
   const {
@@ -59,7 +110,7 @@ const createMapClickCallback = (states, sublocations, currentState, data, dataMo
 
   // Desktop behavior: select county or RD depending on mode
   if (dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
-    if (propsCounty.length > 0) { // remove selection if user clicks selected county
+    if (propsCounty.length > 0) {
       setCounty([]);
       if (setPredictionModal) setPredictionModal(false);
     } else {
@@ -67,7 +118,7 @@ const createMapClickCallback = (states, sublocations, currentState, data, dataMo
       if (setPredictionModal) setPredictionModal(true);
     }
   } else if (sublocations.includes(rangerDistrictToSet)) {
-    if (propsRangerDistrict.length > 0) { // remove selection if user clicks selected ranger district
+    if (propsRangerDistrict.length > 0) {
       setRangerDistrict([]);
       if (setPredictionModal) setPredictionModal(false);
     } else {
@@ -175,15 +226,15 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     center: DEFAULT_CENTER,
     zoom: DEFAULT_ZOOM,
     maxZoom: MAX_ZOOM,
-    bearing: 0, // Lock map to north orientation
+    bearing: 0,
     options: {
       trackResize: true,
     },
   });
 
   createdMap.addControl(new mapboxgl.NavigationControl({
-    showCompass: true, // Show compass/rotation controls
-    showZoom: true, // Keep zoom controls
+    showCompass: true,
+    showZoom: true,
   }));
 
   const legendTagsToSet = thresholds.map((threshold, index) => {
@@ -229,9 +280,10 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
 // Creates and returns HTML with the title for the header
 // of the downloaded maps. This object is used by the mapbox-print-pdf library.
 const buildHeader = (mapTitle) => {
+  const safeTitle = escapeHtml(mapTitle);
   return (
     `<div id="map-header" style="text-align: center;">
-          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">${mapTitle || ''}</h2>
+          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">${safeTitle}</h2>
         </div>`
   );
 };
@@ -246,15 +298,18 @@ const buildFooter = (titleDetails, thresholds, colors, mapTitle) => {
   const isHistoricalMap = mapTitle === MAP_TITLES.HISTORICAL;
   const isComparisonMap = mapTitle === MAP_TITLES.COMPARISON;
 
-  const title = `Southern Pine Beetle Outbreak ${isPredictionMap ? 'Prediction' : 'Spot'} Maps: ${titleDetails.selectedState} ${titleDetails.period}`;
+  const safeState = escapeHtml(titleDetails.selectedState);
+  const safePeriod = escapeHtml(titleDetails.period);
+  const title = `Southern Pine Beetle Outbreak ${isPredictionMap ? 'Prediction' : 'Spot'} Maps: ${safeState} ${safePeriod}`;
 
   // creates the color boxes and text fields for the legend in the footer
   const legendString = thresholds.reduce((acc, curr, index) => {
-    const layer = curr;
+    const safeLayer = escapeHtml(curr);
     const color = colors[index];
+    const safeColor = /^#[0-9A-Fa-f]{6}$|^[a-zA-Z]+$/.test(color) ? color : '#000000';
     const spanString = `
-          <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${color};display:
-          inline-block;border-radius: 20%;width: 20px;height: 20px;margin-right: 5px;margin-left: 5px;"></div><span>${layer}</span>`;
+          <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${safeColor};display:
+          inline-block;border-radius: 20%;width: 20px;height: 20px;margin-right: 5px;margin-left: 5px;"></div><span>${safeLayer}</span>`;
     return acc.concat(spanString);
   }, '');
 
