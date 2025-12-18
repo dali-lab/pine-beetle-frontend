@@ -30,6 +30,31 @@ export const ActionTypes = {
 };
 
 /**
+ * @description builds filter object from selections state
+ * @param {Object} selections selections state from redux
+ * @param {Object} [overrides={}] optional overrides for filter values
+ * @returns {Object} filter object for API calls
+ */
+const buildFilters = (selections, overrides = {}) => {
+  const {
+    county,
+    endYear,
+    rangerDistrict,
+    startYear,
+    state,
+  } = selections;
+
+  return {
+    startYear,
+    endYear,
+    state,
+    county,
+    rangerDistrict,
+    ...overrides,
+  };
+};
+
+/**
  * @description action creator that fetches data with predictions for given filter
  * @param {Number} year year to fetch predictions on
  * @param {Object} [overrideFilter={}] optional filter for state, etc.
@@ -69,9 +94,7 @@ export function getPredictions(year = new Date().getFullYear(), overrideFilter =
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_PREDICTIONS, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_PREDICTIONS, payload: false });
     }
   };
 }
@@ -81,23 +104,8 @@ export function getPredictions(year = new Date().getFullYear(), overrideFilter =
  */
 export function getSparseData(overrideFilter = {}) {
   return async (dispatch, getState) => {
-    const {
-      county,
-      dataMode,
-      endYear,
-      rangerDistrict,
-      startYear,
-      state,
-    } = getState().selections;
-
-    const filters = {
-      startYear,
-      endYear,
-      state,
-      county,
-      rangerDistrict,
-      ...overrideFilter,
-    };
+    const { dataMode } = getState().selections;
+    const filters = buildFilters(getState().selections, overrideFilter);
 
     dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: true });
 
@@ -113,9 +121,7 @@ export function getSparseData(overrideFilter = {}) {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: false });
     }
   };
 }
@@ -125,33 +131,12 @@ export function getSparseData(overrideFilter = {}) {
  */
 export function getUnsummarizedData(overrideFilter = {}) {
   return async (dispatch, getState) => {
-    console.log('🔍 [DEBUG] getUnsummarizedData ACTION - Called');
-    const {
-      county,
-      endYear,
-      rangerDistrict,
-      startYear,
-      state,
-    } = getState().selections;
-
-    const filters = {
-      startYear,
-      endYear,
-      state,
-      county,
-      rangerDistrict,
-      ...overrideFilter,
-    };
-
-    console.log('🔍 [DEBUG] getUnsummarizedData ACTION - Filters:', filters);
+    const filters = buildFilters(getState().selections, overrideFilter);
 
     dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: true });
 
     try {
-      console.log('🔍 [DEBUG] getUnsummarizedData ACTION - Calling api.getUnsummarizedData');
       const response = await api.getUnsummarizedData(filters);
-      console.log('🔍 [DEBUG] getUnsummarizedData ACTION - Response received, length:', response?.length || 0);
-      console.log('🔍 [DEBUG] getUnsummarizedData ACTION - First item:', response?.[0] ? JSON.stringify(response[0], null, 2) : 'N/A');
       dispatch({ type: ActionTypes.SET_SPARSE_DATA, payload: response });
     } catch (error) {
       dispatch({
@@ -162,9 +147,7 @@ export function getUnsummarizedData(overrideFilter = {}) {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: false });
     }
   };
 }
@@ -174,23 +157,8 @@ export function getUnsummarizedData(overrideFilter = {}) {
  */
 export function getAggregateYearData(overrideFilter = {}) {
   return async (dispatch, getState) => {
-    const {
-      county,
-      dataMode,
-      endYear,
-      rangerDistrict,
-      startYear,
-      state,
-    } = getState().selections;
-
-    const filters = {
-      startYear,
-      endYear,
-      state,
-      county,
-      rangerDistrict,
-      ...overrideFilter,
-    };
+    const { dataMode } = getState().selections;
+    const filters = buildFilters(getState().selections, overrideFilter);
 
     dispatch({ type: ActionTypes.FETCHING_AGGREGATE_YEAR_DATA, payload: true });
 
@@ -206,9 +174,7 @@ export function getAggregateYearData(overrideFilter = {}) {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_AGGREGATE_YEAR_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_AGGREGATE_YEAR_DATA, payload: false });
     }
   };
 }
@@ -218,23 +184,8 @@ export function getAggregateYearData(overrideFilter = {}) {
  */
 export function getAggregateStateData(overrideFilter = {}) {
   return async (dispatch, getState) => {
-    const {
-      county,
-      dataMode,
-      endYear,
-      rangerDistrict,
-      startYear,
-      state,
-    } = getState().selections;
-
-    const filters = {
-      startYear,
-      endYear,
-      state,
-      county,
-      rangerDistrict,
-      ...overrideFilter,
-    };
+    const { dataMode } = getState().selections;
+    const filters = buildFilters(getState().selections, overrideFilter);
 
     dispatch({ type: ActionTypes.FETCHING_AGGREGATE_STATE_DATA, payload: true });
 
@@ -250,9 +201,7 @@ export function getAggregateStateData(overrideFilter = {}) {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_AGGREGATE_STATE_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_AGGREGATE_STATE_DATA, payload: false });
     }
   };
 }
@@ -262,23 +211,8 @@ export function getAggregateStateData(overrideFilter = {}) {
  */
 export function getAggregateLocationData(overrideFilter = {}) {
   return async (dispatch, getState) => {
-    const {
-      county,
-      dataMode,
-      endYear,
-      rangerDistrict,
-      startYear,
-      state,
-    } = getState().selections;
-
-    const filters = {
-      startYear,
-      endYear,
-      state,
-      county,
-      rangerDistrict,
-      ...overrideFilter,
-    };
+    const { dataMode } = getState().selections;
+    const filters = buildFilters(getState().selections, overrideFilter);
 
     dispatch({ type: ActionTypes.FETCHING_AGGREGATE_LOCATION_DATA, payload: true });
 
@@ -297,9 +231,7 @@ export function getAggregateLocationData(overrideFilter = {}) {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_AGGREGATE_LOCATION_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_AGGREGATE_LOCATION_DATA, payload: false });
     }
   };
 }
@@ -388,9 +320,7 @@ export const getResultsComparisonData = (year, overrideFilter = {}) => {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_RESULTS_COMPARISON_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_RESULTS_COMPARISON_DATA, payload: false });
     }
   };
 };
@@ -418,9 +348,7 @@ export const getScatterChartData = () => {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: false });
     }
   };
 };

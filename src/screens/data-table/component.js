@@ -5,52 +5,129 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Loader } from '../../components';
-import { ChoiceInput, MultiSelectInput } from '../../components/input-components';
 import { DATA_MODES, stateAbbrevToStateName } from '../../constants';
 import {
-  formatCollectionDate,
+  getAggregateLocationData,
+  getAvailableStates,
+  getAvailableYears,
+  getUnsummarizedData,
+  setCounty as setCountyAction,
+  setDataMode as setDataModeAction,
+  setEndYear as setEndYearAction,
+  setRangerDistrict as setRangerDistrictAction,
+  setStartYear as setStartYearAction,
+  setState as setStateAction,
+} from '../../state/actions';
+import {
+  selectAvailableHistoricalStates,
+  selectAvailableHistoricalSublocations,
+  selectAvailableHistoricalYears,
+  selectCounty,
+  selectDataMode,
+  selectDataTableErrorText,
+  selectEndYear,
+  selectIsDataTableLoading,
+  selectRangerDistrict,
+  selectSelectedState,
+  selectSparseData,
+  selectStartYear,
+  selectSublocationData,
+} from '../../state/selectors';
+import {
   getStateAbbreviationFromStateName,
   getStateNameFromAbbreviation,
   transformAggregatedData,
   transformRawData,
 } from '../../utils';
 
+import {
+  DATA_FORMATS,
+  DataFormatFilter,
+  DataTableView,
+  GeographicAreaFilter,
+  ITEMS_PER_PAGE,
+  TableFooter,
+  TimeRangeFilter,
+} from './components';
+
 import './style.scss';
 
-const ITEMS_PER_PAGE = 100;
+const DataTableScreen = () => {
+  const dispatch = useDispatch();
 
-const DataTableScreen = ({
-  sparseData,
-  sublocationData,
-  isLoading,
-  errorText,
-  dataMode,
-  startYear: reduxStartYear,
-  endYear: reduxEndYear,
-  selectedState: reduxSelectedState,
-  county: reduxCounty,
-  rangerDistrict: reduxRangerDistrict,
-  availableHistoricalYears,
-  availableHistoricalStates,
-  availableHistoricalSublocations,
-  getUnsummarizedData,
-  getAggregateLocationData,
-  getAvailableStates,
-  getAvailableYears,
-  setStartYear,
-  setEndYear,
-  setState,
-  setCounty,
-  setRangerDistrict,
-  setDataMode,
-}) => {
+  const sparseData = useSelector(selectSparseData);
+  const sublocationData = useSelector(selectSublocationData);
+  const isLoading = useSelector(selectIsDataTableLoading);
+  const errorText = useSelector(selectDataTableErrorText);
+  const dataMode = useSelector(selectDataMode);
+  const reduxStartYear = useSelector(selectStartYear);
+  const reduxEndYear = useSelector(selectEndYear);
+  const reduxSelectedState = useSelector(selectSelectedState);
+  const reduxCounty = useSelector(selectCounty);
+  const reduxRangerDistrict = useSelector(selectRangerDistrict);
+  const availableHistoricalYears = useSelector(selectAvailableHistoricalYears);
+  const availableHistoricalStates = useSelector(selectAvailableHistoricalStates);
+  const availableHistoricalSublocations = useSelector(selectAvailableHistoricalSublocations);
+
+  const fetchUnsummarizedData = useCallback(
+    (filters) => dispatch(getUnsummarizedData(filters)),
+    [dispatch]
+  );
+
+  const fetchAggregateLocationData = useCallback(
+    (filters) => dispatch(getAggregateLocationData(filters)),
+    [dispatch]
+  );
+
+  const fetchAvailableStates = useCallback(
+    (filters) => dispatch(getAvailableStates(filters)),
+    [dispatch]
+  );
+
+  const fetchAvailableYears = useCallback(
+    (filters) => dispatch(getAvailableYears(filters)),
+    [dispatch]
+  );
+
+  const setStartYear = useCallback(
+    (year) => dispatch(setStartYearAction(year)),
+    [dispatch]
+  );
+
+  const setEndYear = useCallback(
+    (year) => dispatch(setEndYearAction(year)),
+    [dispatch]
+  );
+
+  const setState = useCallback(
+    (state) => dispatch(setStateAction(state)),
+    [dispatch]
+  );
+
+  const setCounty = useCallback(
+    (county) => dispatch(setCountyAction(county)),
+    [dispatch]
+  );
+
+  const setRangerDistrict = useCallback(
+    (rangerDistrict) => dispatch(setRangerDistrictAction(rangerDistrict)),
+    [dispatch]
+  );
+
+  const setDataMode = useCallback(
+    (mode) => dispatch(setDataModeAction(mode)),
+    [dispatch]
+  );
+
   const [sortField, setSortField] = useState('year');
   const [sortDirection, setSortDirection] = useState('asc');
-  const [dataFormat, setDataFormat] = useState('raw');
+  const [dataFormat, setDataFormat] = useState(DATA_FORMATS.RAW);
   const [showEmptyRecords, setShowEmptyRecords] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   const filters = useMemo(
     () => ({
@@ -64,14 +141,14 @@ const DataTableScreen = ({
   );
 
   const rawData = useMemo(() => {
-    if (dataFormat === 'raw') {
+    if (dataFormat === DATA_FORMATS.RAW) {
       return sparseData || [];
     }
     return sublocationData || [];
   }, [dataFormat, sparseData, sublocationData]);
 
   const transformedData = useMemo(() => {
-    if (dataFormat === 'raw') {
+    if (dataFormat === DATA_FORMATS.RAW) {
       return transformRawData(rawData, dataMode, stateAbbrevToStateName);
     }
     return transformAggregatedData(rawData, dataMode, stateAbbrevToStateName);
@@ -83,7 +160,7 @@ const DataTableScreen = ({
     const filtered = transformedData
       .filter((item) => {
         let yearMatch = true;
-        if (dataFormat === 'aggregated') {
+        if (dataFormat === DATA_FORMATS.AGGREGATED) {
           if (item.year === null || item.year === undefined) {
             yearMatch = true;
           } else if (reduxStartYear && reduxEndYear) {
@@ -115,7 +192,7 @@ const DataTableScreen = ({
         if (!locationMatch) return false;
 
         let hasData = true;
-        if (dataFormat === 'aggregated') {
+        if (dataFormat === DATA_FORMATS.AGGREGATED) {
           hasData = true;
         } else {
           hasData = showEmptyRecords
@@ -164,30 +241,46 @@ const DataTableScreen = ({
 
   const totalPages = Math.ceil(filteredAndSortedData.length / ITEMS_PER_PAGE);
 
+  const yearsLoaded = availableHistoricalYears && availableHistoricalYears.length > 0;
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      getAvailableYears({ ...filters, isHistorical: true });
-      getAvailableStates({ ...filters, isHistorical: true });
+      fetchAvailableYears({ ...filters, isHistorical: true });
+      fetchAvailableStates({ ...filters, isHistorical: true });
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [filters, dataMode, getAvailableYears, getAvailableStates]);
+  }, [filters, dataMode, fetchAvailableYears, fetchAvailableStates]);
 
   useEffect(() => {
+    if (!yearsLoaded) {
+      return undefined;
+    }
+
     const timeoutId = setTimeout(() => {
-      if (dataFormat === 'raw') {
-        getUnsummarizedData(filters);
+      if (dataFormat === DATA_FORMATS.RAW) {
+        fetchUnsummarizedData(filters);
       } else {
-        getAggregateLocationData(filters);
+        fetchAggregateLocationData(filters);
       }
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [filters, dataMode, dataFormat, getUnsummarizedData, getAggregateLocationData]);
+  }, [filters, dataMode, dataFormat, fetchUnsummarizedData, fetchAggregateLocationData, yearsLoaded]);
 
   useEffect(() => {
     setCurrentPage(1);
   }, [filters, dataMode, dataFormat, sortField, sortDirection, showEmptyRecords]);
+
+  useEffect(() => {
+    const hasData = dataFormat === DATA_FORMATS.RAW
+      ? sparseData && sparseData.length > 0
+      : sublocationData && sublocationData.length > 0;
+
+    if (hasData && !isLoading) {
+      setIsInitializing(false);
+    }
+  }, [sparseData, sublocationData, dataFormat, isLoading]);
 
   const handleSort = useCallback((field) => {
     if (sortField === field) {
@@ -219,23 +312,20 @@ const DataTableScreen = ({
   }, [availableHistoricalYears]);
 
   const handleRetry = useCallback(() => {
-    if (dataFormat === 'raw') {
-      getUnsummarizedData(filters);
+    if (dataFormat === DATA_FORMATS.RAW) {
+      fetchUnsummarizedData(filters);
     } else {
-      getAggregateLocationData(filters);
+      fetchAggregateLocationData(filters);
     }
-  }, [dataFormat, filters, getUnsummarizedData, getAggregateLocationData]);
+  }, [dataFormat, filters, fetchUnsummarizedData, fetchAggregateLocationData]);
 
-  // Show loader only on initial load when there's no data yet
-  const hasNoData = !sparseData || sparseData.length === 0;
-  const hasNoAggregatedData = !sublocationData || sublocationData.length === 0;
-  const shouldShowLoader = isLoading && hasNoData && hasNoAggregatedData;
+  const isDataLoading = !yearsLoaded || isLoading || isInitializing;
 
-  if (shouldShowLoader) {
+  if (isDataLoading) {
     return (
       <div className="data-table-screen">
         <div className="data-table-container">
-          <Loader visible={isLoading} message="Loading data..." />
+          <Loader visible message="Loading data..." />
         </div>
       </div>
     );
@@ -266,336 +356,53 @@ const DataTableScreen = ({
 
         <div className="table-controls">
           <div className="filters">
-            <div className="filter-card">
-              <div className="filter-card-header">
-                <div className="filter-label">Time Range</div>
-              </div>
-              <div className="filter-card-content">
-                <div className="year-range-inputs">
-                  <div className="year-input-group">
-                    <div className="input-label">Start Year</div>
-                    <ChoiceInput
-                      id="start-year-input"
-                      options={availableHistoricalYears || []}
-                      value={reduxStartYear}
-                      setValue={setStartYear}
-                      firstOptionText="Select start year"
-                    />
-                  </div>
-                  <div className="year-input-group">
-                    <div className="input-label">End Year</div>
-                    <ChoiceInput
-                      id="end-year-input"
-                      options={revYears}
-                      value={reduxEndYear}
-                      setValue={setEndYear}
-                      firstOptionText="Select end year"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <TimeRangeFilter
+              availableYears={availableHistoricalYears}
+              revYears={revYears}
+              startYear={reduxStartYear}
+              endYear={reduxEndYear}
+              setStartYear={setStartYear}
+              setEndYear={setEndYear}
+            />
 
-            <div className="filter-card">
-              <div className="filter-card-header">
-                <div className="filter-label">Geographic Area</div>
-              </div>
-              <div className="filter-card-content">
-                <div className="geographic-area-content">
-                  <div className="admin-level-group">
-                    <div className="input-label">Administrative Level</div>
-                    <div className="toggle-buttons">
-                      <button
-                        type="button"
-                        className={`toggle-btn ${dataMode === DATA_MODES.COUNTY ? 'active' : ''}`}
-                        onClick={() => setDataMode(DATA_MODES.COUNTY)}
-                      >
-                        County
-                      </button>
-                      <button
-                        type="button"
-                        className={`toggle-btn ${dataMode === DATA_MODES.RANGER_DISTRICT ? 'active' : ''}`}
-                        onClick={() => setDataMode(DATA_MODES.RANGER_DISTRICT)}
-                      >
-                        Federal Land
-                      </button>
-                    </div>
-                  </div>
-                  <div className="location-group">
-                    <div className="input-label">Location</div>
-                    <MultiSelectInput
-                      id="location-input"
-                      valueParent={selectedStateName}
-                      valueChildren={dataMode === DATA_MODES.COUNTY ? reduxCounty : reduxRangerDistrict}
-                      setValueParent={setStateAbbrev}
-                      setValueChildren={dataMode === DATA_MODES.COUNTY ? setCounty : setRangerDistrict}
-                      optionsParent={statesMappedToNames}
-                      optionsChildren={availableHistoricalSublocations || []}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <GeographicAreaFilter
+              dataMode={dataMode}
+              setDataMode={setDataMode}
+              selectedStateName={selectedStateName}
+              setStateAbbrev={setStateAbbrev}
+              statesMappedToNames={statesMappedToNames}
+              county={reduxCounty}
+              rangerDistrict={reduxRangerDistrict}
+              setCounty={setCounty}
+              setRangerDistrict={setRangerDistrict}
+              availableSublocations={availableHistoricalSublocations}
+            />
 
-            <div className="filter-card">
-              <div className="filter-card-header">
-                <div className="filter-label">Data Format</div>
-              </div>
-              <div className="filter-card-content">
-                <div className="radio-group">
-                  <label
-                    className={`radio-item ${dataFormat === 'raw' ? 'selected' : ''}`}
-                    htmlFor="raw-data"
-                  >
-                    <input
-                      type="radio"
-                      id="raw-data"
-                      name="data-format"
-                      value="raw"
-                      checked={dataFormat === 'raw'}
-                      onChange={(e) => setDataFormat(e.target.value)}
-                    />
-                    <span className="radio-label">
-                      <strong>Raw Data</strong>
-                      <small>Weekly trap captures with individual records</small>
-                    </span>
-                  </label>
-                  <label
-                    className={`radio-item ${dataFormat === 'aggregated' ? 'selected' : ''}`}
-                    htmlFor="aggregated-data"
-                  >
-                    <input
-                      type="radio"
-                      id="aggregated-data"
-                      name="data-format"
-                      value="aggregated"
-                      checked={dataFormat === 'aggregated'}
-                      onChange={(e) => setDataFormat(e.target.value)}
-                    />
-                    <span className="radio-label">
-                      <strong>Aggregated Data</strong>
-                      <small>Annual summaries per administrative unit</small>
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
+            <DataFormatFilter
+              dataFormat={dataFormat}
+              setDataFormat={setDataFormat}
+            />
           </div>
         </div>
 
-        <div className="table-container">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th onClick={() => handleSort('year')} className="sortable">
-                  Year
-                  {sortField === 'year' && (
-                    <span className="sort-indicator">
-                      {sortDirection === 'asc' ? '↑' : '↓'}
-                    </span>
-                  )}
-                </th>
-                <th onClick={() => handleSort('state')} className="sortable text-left">
-                  State
-                  {sortField === 'state' && (
-                    <span className="sort-indicator">
-                      {sortDirection === 'asc' ? '↑' : '↓'}
-                    </span>
-                  )}
-                </th>
-                <th onClick={() => handleSort('county')} className="sortable text-left">
-                  {dataMode === 'COUNTY' ? 'County' : 'Ranger District'}
-                  {sortField === 'county' && (
-                    <span className="sort-indicator">
-                      {sortDirection === 'asc' ? '↑' : '↓'}
-                    </span>
-                  )}
-                </th>
-                {dataFormat === 'raw' ? (
-                  <>
-                    <th onClick={() => handleSort('trap')} className="sortable">
-                      Trap
-                      {sortField === 'trap' && (
-                        <span className="sort-indicator">
-                          {sortDirection === 'asc' ? '↑' : '↓'}
-                        </span>
-                      )}
-                    </th>
-                    <th onClick={() => handleSort('weekNumber')} className="sortable">
-                      Week Number
-                      {sortField === 'weekNumber' && (
-                        <span className="sort-indicator">
-                          {sortDirection === 'asc' ? '↑' : '↓'}
-                        </span>
-                      )}
-                    </th>
-                    <th onClick={() => handleSort('spbCount')} className="sortable">
-                      SPB Count
-                      {sortField === 'spbCount' && (
-                        <span className="sort-indicator">
-                          {sortDirection === 'asc' ? '↑' : '↓'}
-                        </span>
-                      )}
-                    </th>
-                    <th onClick={() => handleSort('cleridCount')} className="sortable">
-                      Clerid Count
-                      {sortField === 'cleridCount' && (
-                        <span className="sort-indicator">
-                          {sortDirection === 'asc' ? '↑' : '↓'}
-                        </span>
-                      )}
-                    </th>
-                    <th onClick={() => handleSort('collectionDate')} className="sortable">
-                      Collection Date
-                      {sortField === 'collectionDate' && (
-                        <span className="sort-indicator">
-                          {sortDirection === 'asc' ? '↑' : '↓'}
-                        </span>
-                      )}
-                    </th>
-                  </>
-                ) : (
-                  <>
-                    <th onClick={() => handleSort('trapCount')} className="sortable">
-                      Trap Count
-                      {sortField === 'trapCount' && (
-                        <span className="sort-indicator">
-                          {sortDirection === 'asc' ? '↑' : '↓'}
-                        </span>
-                      )}
-                    </th>
-                    <th onClick={() => handleSort('spbPer2Weeks')} className="sortable">
-                      SPB per 2 Weeks
-                      {sortField === 'spbPer2Weeks' && (
-                        <span className="sort-indicator">
-                          {sortDirection === 'asc' ? '↑' : '↓'}
-                        </span>
-                      )}
-                    </th>
-                    <th onClick={() => handleSort('probSpotsGT50')} className="sortable">
-                      Prob &gt; 50 Spots
-                      {sortField === 'probSpotsGT50' && (
-                        <span className="sort-indicator">
-                          {sortDirection === 'asc' ? '↑' : '↓'}
-                        </span>
-                      )}
-                    </th>
-                    <th onClick={() => handleSort('predSpotsorigUnits')} className="sortable">
-                      Predicted Spots
-                      {sortField === 'predSpotsorigUnits' && (
-                        <span className="sort-indicator">
-                          {sortDirection === 'asc' ? '↑' : '↓'}
-                        </span>
-                      )}
-                    </th>
-                  </>
-                )}
-              </tr>
-            </thead>
-            <tbody>
-              {paginatedData.length === 0 ? (
-                <tr>
-                  <td colSpan={dataFormat === 'raw' ? 8 : 7} className="no-data">
-                    No data available for the selected filters
-                  </td>
-                </tr>
-              ) : (
-                paginatedData.map((item) => {
-                  let yearDisplay = 'N/A';
-                  if (item.year !== null && item.year !== undefined) {
-                    let yearNum = null;
-                    if (typeof item.year === 'number') {
-                      yearNum = item.year;
-                    } else if (typeof item.year === 'string') {
-                      yearNum = Number.parseInt(item.year.trim(), 10);
-                    }
+        <DataTableView
+          dataFormat={dataFormat}
+          dataMode={dataMode}
+          paginatedData={paginatedData}
+          sortField={sortField}
+          sortDirection={sortDirection}
+          handleSort={handleSort}
+        />
 
-                    if (yearNum !== null && !Number.isNaN(yearNum) && yearNum > 1900 && yearNum < 2100) {
-                      yearDisplay = yearNum;
-                    } else if (dataFormat === 'aggregated') {
-                      yearDisplay = '—';
-                    }
-                  } else if (dataFormat === 'aggregated') {
-                    yearDisplay = '—';
-                  }
-                  return (
-                    <tr key={item.id}>
-                      <td>{yearDisplay}</td>
-                      <td className="text-left">{item.state}</td>
-                      <td className="text-left">{item.county}</td>
-                      {dataFormat === 'raw' ? (
-                        <>
-                          <td>{item.trap || 'N/A'}</td>
-                          <td>{item.weekNumber !== null && item.weekNumber !== undefined ? item.weekNumber : 'N/A'}</td>
-                          <td>{item.spbCount !== undefined && item.spbCount !== null ? item.spbCount.toLocaleString() : 'N/A'}</td>
-                          <td>{item.cleridCount !== undefined && item.cleridCount !== null ? item.cleridCount.toLocaleString() : 'N/A'}</td>
-                          <td>
-                            {formatCollectionDate(item.collectionDate)}
-                          </td>
-                        </>
-                      ) : (
-                        <>
-                          <td>{item.trapCount !== undefined ? item.trapCount.toLocaleString() : 'N/A'}</td>
-                          <td>{item.spbPer2Weeks !== undefined ? item.spbPer2Weeks.toLocaleString() : 'N/A'}</td>
-                          <td className="probability-cell">
-                            {item.probSpotsGT50 !== undefined ? `${(item.probSpotsGT50 * 100).toFixed(1)}%` : 'N/A'}
-                          </td>
-                          <td className="prediction-cell">
-                            {item.predSpotsorigUnits !== undefined ? item.predSpotsorigUnits.toFixed(1) : 'N/A'}
-                          </td>
-                        </>
-                      )}
-                    </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="table-footer">
-          <div className="table-footer-content">
-            <p>
-              Showing {paginatedData.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0} -{' '}
-              {Math.min(currentPage * ITEMS_PER_PAGE, filteredAndSortedData.length)} of{' '}
-              {filteredAndSortedData.length} records
-            </p>
-            <div className="table-footer-controls">
-              <label className="show-empty-toggle" htmlFor="show-empty-records">
-                <input
-                  id="show-empty-records"
-                  type="checkbox"
-                  checked={showEmptyRecords}
-                  onChange={(e) => setShowEmptyRecords(e.target.checked)}
-                />
-                <span>Show records with no data</span>
-              </label>
-              {totalPages > 1 && (
-                <div className="pagination">
-                  <button
-                    type="button"
-                    onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                    disabled={currentPage === 1}
-                    className="pagination-btn"
-                  >
-                    Previous
-                  </button>
-                  <span className="pagination-info">
-                    Page {currentPage} of {totalPages}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
-                    disabled={currentPage === totalPages}
-                    className="pagination-btn"
-                  >
-                    Next
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <TableFooter
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalRecords={filteredAndSortedData.length}
+          paginatedDataLength={paginatedData.length}
+          showEmptyRecords={showEmptyRecords}
+          setShowEmptyRecords={setShowEmptyRecords}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
     </div>
   );

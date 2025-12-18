@@ -1,70 +1,26 @@
-import {
-  getAggregateLocationData,
-  getAvailableStates,
-  getAvailableYears,
-  getSparseData,
-  getUnsummarizedData,
-  setCounty,
-  setDataMode,
-  setEndYear,
-  setRangerDistrict,
-  setStartYear,
-  setState,
-} from '../actions';
+// Data selectors
+export const selectSparseData = (state) => state.data.sparseData;
+export const selectSublocationData = (state) => state.data.sublocationData;
+export const selectFetchingSparseData = (state) => state.data.fetchingSparseData;
+export const selectFetchingAggregateLocationData = (state) => state.data.fetchingAggregateLocationData;
 
-export const mapDataTableStateToProps = (state) => {
-  const {
-    data: {
-      sparseData,
-      fetchingSparseData,
-      sublocationData,
-      fetchingAggregateLocationData,
-    },
-    error: {
-      fetchError: {
-        text: errorText,
-      },
-    },
-    selections: {
-      dataMode,
-      startYear,
-      endYear,
-      state: selectedState,
-      county,
-      rangerDistrict,
-      availableHistoricalYears,
-      availableHistoricalStates,
-      availableHistoricalSublocations,
-    },
-  } = state;
+export const selectIsDataTableLoading = (state) => (
+  state.data.fetchingSparseData || state.data.fetchingAggregateLocationData
+);
 
-  return {
-    sparseData,
-    sublocationData,
-    isLoading: fetchingSparseData || fetchingAggregateLocationData,
-    errorText: errorText && errorText.length > 0 ? errorText[errorText.length - 1] : null,
-    dataMode,
-    startYear,
-    endYear,
-    selectedState,
-    county,
-    rangerDistrict,
-    availableHistoricalYears,
-    availableHistoricalStates,
-    availableHistoricalSublocations,
-  };
+// Error selectors
+export const selectDataTableErrorText = (state) => {
+  const { text } = state.error.fetchError;
+  return text && text.length > 0 ? text[text.length - 1] : null;
 };
 
-export const mapDataTableDispatchToProps = (dispatch) => ({
-  getSparseData: (filters) => dispatch(getSparseData(filters)),
-  getUnsummarizedData: (filters) => dispatch(getUnsummarizedData(filters)),
-  getAggregateLocationData: (filters) => dispatch(getAggregateLocationData(filters)),
-  getAvailableStates: (filters) => dispatch(getAvailableStates(filters)),
-  getAvailableYears: (filters) => dispatch(getAvailableYears(filters)),
-  setStartYear: (year) => dispatch(setStartYear(year)),
-  setEndYear: (year) => dispatch(setEndYear(year)),
-  setState: (state) => dispatch(setState(state)),
-  setCounty: (county) => dispatch(setCounty(county)),
-  setRangerDistrict: (rangerDistrict) => dispatch(setRangerDistrict(rangerDistrict)),
-  setDataMode: (mode) => dispatch(setDataMode(mode)),
-});
+// Selection selectors
+export const selectDataMode = (state) => state.selections.dataMode;
+export const selectStartYear = (state) => state.selections.startYear;
+export const selectEndYear = (state) => state.selections.endYear;
+export const selectSelectedState = (state) => state.selections.state;
+export const selectCounty = (state) => state.selections.county;
+export const selectRangerDistrict = (state) => state.selections.rangerDistrict;
+export const selectAvailableHistoricalYears = (state) => state.selections.availableHistoricalYears;
+export const selectAvailableHistoricalStates = (state) => state.selections.availableHistoricalStates;
+export const selectAvailableHistoricalSublocations = (state) => state.selections.availableHistoricalSublocations;

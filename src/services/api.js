@@ -418,9 +418,6 @@ export async function getRDScatterChart() {
  * @returns {Promise<Array>} API response with unsummarized data
  */
 export async function getUnsummarizedData(filters = {}) {
-  console.log('🔍 [DEBUG] getUnsummarizedData - FUNCTION CALLED');
-  console.log('🔍 [DEBUG] getUnsummarizedData - Filters received:', filters);
-
   const params = toQueryParams({
     ...filters,
     county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
@@ -433,11 +430,6 @@ export async function getUnsummarizedData(filters = {}) {
     : 'v3/unsummarized-trapping';
   const url = `${baseUrl}/${endpoint}${params ? `?${params}` : ''}`;
 
-  console.log('🔍 [DEBUG] getUnsummarizedData - URL:', url);
-  console.log('🔍 [DEBUG] getUnsummarizedData - Filters:', filters);
-  console.log('🔍 [DEBUG] getUnsummarizedData - API_URL:', global.API_URL);
-  console.log('🔍 [DEBUG] getUnsummarizedData - AUTOMATION_API_URL:', global.AUTOMATION_API_URL);
-
   try {
     const response = await axios.get(url, {
       headers: {
@@ -446,11 +438,6 @@ export async function getUnsummarizedData(filters = {}) {
     });
 
     const { data } = response;
-
-    console.log('🔍 [DEBUG] Response status:', response.status);
-    console.log('🔍 [DEBUG] Response data type:', typeof data);
-    console.log('🔍 [DEBUG] Response data is array:', Array.isArray(data));
-    console.log('🔍 [DEBUG] Response data keys:', typeof data === 'object' && data !== null ? Object.keys(data) : 'N/A');
 
     let resultData = null;
     if (data && data.status === 200 && data.type === 'SUCCESS' && Array.isArray(data.data)) {
@@ -464,17 +451,6 @@ export async function getUnsummarizedData(filters = {}) {
       throw new Error(errorMessage);
     } else {
       throw new Error('Unexpected response format from unsummarized-trapping endpoint');
-    }
-
-    if (resultData && resultData.length > 0) {
-      console.log('🔍 [DEBUG] First item keys:', Object.keys(resultData[0]));
-      console.log('🔍 [DEBUG] First item:', JSON.stringify(resultData[0], null, 2));
-      console.log('🔍 [DEBUG] Has week1-week6 fields:', Object.keys(resultData[0]).some((k) => /^week\d+$/i.test(k)));
-      console.log('🔍 [DEBUG] Has weekNumber field:', 'weekNumber' in resultData[0]);
-      console.log('🔍 [DEBUG] Has spbCount field:', 'spbCount' in resultData[0]);
-      console.log('🔍 [DEBUG] Has trap field:', 'trap' in resultData[0]);
-      console.log('🔍 [DEBUG] Has collectionDate field:', 'collectionDate' in resultData[0]);
-      console.log('🔍 [DEBUG] Total records:', resultData.length);
     }
 
     return resultData;

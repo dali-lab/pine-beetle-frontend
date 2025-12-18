@@ -17,7 +17,7 @@ import {
   setCountyFilter,
   setDataMode,
   setEndYear,
-  setPredictionModal, // eslint-disable-line no-unused-vars
+  setPredictionModal,
   setPredictionYear,
   setRangerDistrict,
   setRangerDistrictFilter,
@@ -92,9 +92,12 @@ export {
   setCounty,
   setCountyFilter,
   setDataMode,
-  setEndYear, setPredictionModal, setPredictionYear,
+  setEndYear,
+  setPredictionModal,
+  setPredictionYear,
   setRangerDistrict,
   setRangerDistrictFilter,
   setStartYear,
-  setState, signOut,
+  setState,
+  signOut
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Redirect,
   Route,
@@ -78,7 +78,13 @@ const App = (props) => {
     getScatterChartData,
   } = props;
 
+  const initialLoadDone = useRef(false);
+
+  // Initial data fetch - only runs once on mount
   useEffect(() => {
+    if (initialLoadDone.current) return;
+    initialLoadDone.current = true;
+
     global.API_URL = process.env.MAIN_BACKEND_URL;
     global.AUTOMATION_API_URL = process.env.AUTOMATION_BACKEND_URL;
 
@@ -91,7 +97,6 @@ const App = (props) => {
     setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
 
     // fetch initial data
-    // TODO rework redux to only have stuff fetched here
     getAggregateYearData();
     getAggregateStateData();
     getAggregateLocationData();
@@ -115,9 +120,14 @@ const App = (props) => {
     predictionYear,
   ]);
 
-  // TODO rework redux to only have stuff fetched here
+  // Re-fetch predictions when predictionYear changes (but not on mount)
+  const hasMounted = useRef(false);
   useEffect(() => {
-    getPredictions(predictionYear, predictionYear);
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
+    getPredictions(predictionYear);
     getAvailableStates({ predictionYear });
   }, [
     predictionYear,
