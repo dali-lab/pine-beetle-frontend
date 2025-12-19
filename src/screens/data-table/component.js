@@ -128,6 +128,7 @@ const DataTableScreen = () => {
   const [showEmptyRecords, setShowEmptyRecords] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [defaultYearsSet, setDefaultYearsSet] = useState(false);
 
   // Filters that require API fetch (year range, state, data mode)
   const apiFilters = useMemo(
@@ -139,17 +140,6 @@ const DataTableScreen = () => {
     [reduxStartYear, reduxEndYear, reduxSelectedState]
   );
 
-  // Full filters including client-side filters (county/rangerDistrict)
-  // These don't trigger API calls - filtering happens in filteredAndSortedData
-  const filters = useMemo(
-    () => ({
-      ...apiFilters,
-      county: reduxCounty && reduxCounty.length > 0 ? reduxCounty : undefined,
-      rangerDistrict: reduxRangerDistrict && reduxRangerDistrict.length > 0 ? reduxRangerDistrict : undefined,
-    }),
-    [apiFilters, reduxCounty, reduxRangerDistrict]
-  );
-
   const rawData = useMemo(() => {
     if (dataFormat === DATA_FORMATS.RAW) {
       return sparseData || [];
@@ -158,11 +148,16 @@ const DataTableScreen = () => {
   }, [dataFormat, sparseData, sublocationData]);
 
   const transformedData = useMemo(() => {
-    if (dataFormat === DATA_FORMATS.RAW) {
-      return transformRawData(rawData, dataMode, stateAbbrevToStateName);
+    try {
+      if (dataFormat === DATA_FORMATS.RAW) {
+        return transformRawData(rawData, dataMode, stateAbbrevToStateName);
+      }
+      return transformAggregatedData(rawData, dataMode, stateAbbrevToStateName);
+    } catch (error) {
+      console.error('Error transforming data:', error);
+      return [];
     }
-    return transformAggregatedData(rawData, dataMode, stateAbbrevToStateName);
-  }, [dataFormat, rawData, dataMode]);
+  }, [dataFormat, rawData, dataMode, stateAbbrevToStateName]);
 
   const filteredAndSortedData = useMemo(() => {
     const selectedStateName = getStateNameFromAbbreviation(reduxSelectedState);
@@ -178,9 +173,12 @@ const DataTableScreen = () => {
           } else {
             yearMatch = true;
           }
+        } else if (!reduxStartYear || !reduxEndYear) {
+          yearMatch = true;
+        } else if (!item.year) {
+          yearMatch = true;
         } else {
-          yearMatch = !reduxStartYear || !reduxEndYear || !item.year
-            || (item.year >= reduxStartYear && item.year <= reduxEndYear);
+          yearMatch = item.year >= reduxStartYear && item.year <= reduxEndYear;
         }
 
         if (!yearMatch) return false;
@@ -214,19 +212,29 @@ const DataTableScreen = () => {
         return hasData;
       });
 
-    const sorted = filtered
-      .sort((a, b) => {
-        const aValue = a[sortField];
-        const bValue = b[sortField];
+    const sorted = filtered.sort((a, b) => {
+      const aValue = a[sortField];
+      const bValue = b[sortField];
 
-        if (aValue === null || aValue === undefined) return 1;
-        if (bValue === null || bValue === undefined) return -1;
+      // Handle null/undefined - put them at the end
+      const aIsNil = aValue === null || aValue === undefined;
+      const bIsNil = bValue === null || bValue === undefined;
+      if (aIsNil && bIsNil) return 0;
+      if (aIsNil) return 1;
+      if (bIsNil) return -1;
 
-        if (sortDirection === 'asc') {
-          return aValue > bValue ? 1 : -1;
-        }
-        return aValue < bValue ? 1 : -1;
-      });
+      // String comparison
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        const comparison = aValue.localeCompare(bValue);
+        return sortDirection === 'asc' ? comparison : -comparison;
+      }
+
+      // Numeric comparison
+      if (sortDirection === 'asc') {
+        return aValue > bValue ? 1 : -1;
+      }
+      return aValue < bValue ? 1 : -1;
+    });
 
     return sorted;
   }, [
@@ -253,22 +261,37 @@ const DataTableScreen = () => {
 
   const yearsLoaded = availableHistoricalYears && availableHistoricalYears.length > 0;
 
-
   // Set default years (last 5 years) when years are loaded and no years are selected
   useEffect(() => {
-    if (yearsLoaded && !reduxStartYear && !reduxEndYear) {
+    if (yearsLoaded && !reduxStartYear && !reduxEndYear && !defaultYearsSet) {
       const sortedYears = [...availableHistoricalYears].sort((a, b) => b - a);
-      const latestYear = sortedYears[0];
-      const startYear = sortedYears[Math.min(4, sortedYears.length - 1)];
-      setStartYear(startYear);
-      setEndYear(latestYear);
+      if (sortedYears.length > 0) {
+        const latestYear = sortedYears[0];
+        const startYear = sortedYears[Math.min(4, sortedYears.length - 1)];
+        setStartYear(startYear);
+        setEndYear(latestYear);
+        setDefaultYearsSet(true);
+      }
     }
-  }, [yearsLoaded, availableHistoricalYears, reduxStartYear, reduxEndYear, setStartYear, setEndYear]);
+
+    // Reset flag if years are manually cleared
+    if ((!reduxStartYear || !reduxEndYear) && defaultYearsSet && !yearsLoaded) {
+      setDefaultYearsSet(false);
+    }
+  }, [
+    yearsLoaded,
+    availableHistoricalYears,
+    reduxStartYear,
+    reduxEndYear,
+    setStartYear,
+    setEndYear,
+    defaultYearsSet,
+  ]);
 
   useEffect(() => {
     fetchAvailableYears({ isHistorical: true });
     fetchAvailableStates({ isHistorical: true });
-  }, [dataMode, fetchAvailableYears, fetchAvailableStates]);
+  }, [dataMode]);
 
   useEffect(() => {
     if (!reduxStartYear || !reduxEndYear) {
@@ -283,9 +306,9 @@ const DataTableScreen = () => {
     const effectiveStartYear = Math.max(reduxStartYear, reduxEndYear - maxYearRange + 1);
 
     const safeFilters = {
-      ...apiFilters,
       startYear: effectiveStartYear,
       endYear: reduxEndYear,
+      state: reduxSelectedState || undefined,
     };
 
     const timeoutId = setTimeout(() => {
@@ -297,11 +320,29 @@ const DataTableScreen = () => {
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [apiFilters, dataMode, dataFormat, fetchUnsummarizedData, fetchAggregateLocationData, reduxStartYear, reduxEndYear, reduxSelectedState]);
+  }, [
+    reduxStartYear,
+    reduxEndYear,
+    reduxSelectedState,
+    dataFormat,
+    fetchUnsummarizedData,
+    fetchAggregateLocationData,
+  ]);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [filters, dataMode, dataFormat, sortField, sortDirection, showEmptyRecords]);
+  }, [
+    reduxStartYear,
+    reduxEndYear,
+    reduxSelectedState,
+    reduxCounty,
+    reduxRangerDistrict,
+    dataMode,
+    dataFormat,
+    sortField,
+    sortDirection,
+    showEmptyRecords,
+  ]);
 
   // Hide initial loader after first render cycle completes
   useEffect(() => {

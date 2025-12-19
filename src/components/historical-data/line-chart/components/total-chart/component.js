@@ -85,6 +85,10 @@ const TotalChart = (props) => {
   });
 
   useEffect(() => {
+    if (!startYear || !endYear || startYear > endYear) {
+      return;
+    }
+
     const updatedTotalChartData = {
       labels: [],
       datasets: [
@@ -104,20 +108,26 @@ const TotalChart = (props) => {
       ...totalChartOptions,
     };
 
-    updatedTotalChartData.labels = getYearRange(startYear, endYear);
+    const yearRange = getYearRange(startYear, endYear);
+    if (yearRange.length === 0) {
+      return;
+    }
+
+    updatedTotalChartData.labels = yearRange;
 
     const spotMap = yearData.reduce((acc, { year, sumSpotst0 }) => ({
       ...acc,
       [year]: sumSpotst0,
-    }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
+    }), yearRange.reduce((p, c) => ({ ...p, [c]: null }), {}));
 
     updatedTotalChartData.datasets[0].data = Object.values(spotMap);
 
-    const max = Math.max(...[
-      ...updatedTotalChartData.datasets[0].data,
-    ]);
-
-    updatedChartOptions.scales.yAxes[0].ticks.max = max;
+    const maxValue = Math.max(
+      ...updatedTotalChartData.datasets[0].data.filter((v) => v !== null && v !== undefined)
+    );
+    if (!Number.isNaN(maxValue) && maxValue > 0) {
+      updatedChartOptions.scales.yAxes[0].ticks.max = maxValue;
+    }
 
     setTotalChartData(updatedTotalChartData);
     setTotalChartOptions(updatedChartOptions);

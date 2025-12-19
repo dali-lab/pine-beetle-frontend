@@ -190,11 +190,18 @@ export const setPredictionYear = (year) => {
  * @param {Number} year year to set as start year
  */
 export const setStartYear = (year) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: ActionTypes.SET_START_YEAR, payload: { year } });
 
-    // Fetch new data with updated start year filter
-    dispatch(getAggregateYearData({ startYear: year }));
+    // Get current state values to ensure we use the latest endYear
+    const { endYear: currentEndYear } = getState().selections;
+
+    // Fetch new data with updated start year filter, using current endYear if available
+    const filters = { startYear: year };
+    if (currentEndYear) {
+      filters.endYear = currentEndYear;
+    }
+    dispatch(getAggregateYearData(filters));
   };
 };
 
@@ -203,11 +210,18 @@ export const setStartYear = (year) => {
  * @param {Number} year year to set as end year
  */
 export const setEndYear = (year) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: ActionTypes.SET_END_YEAR, payload: { year } });
 
-    // Fetch new data with updated end year filter
-    dispatch(getAggregateYearData({ endYear: year }));
+    // Get current state values to ensure we use the latest startYear
+    const { startYear: currentStartYear } = getState().selections;
+
+    // Fetch new data with updated end year filter, using current startYear if available
+    const filters = { endYear: year };
+    if (currentStartYear) {
+      filters.startYear = currentStartYear;
+    }
+    dispatch(getAggregateYearData(filters));
   };
 };
 
@@ -241,13 +255,26 @@ export const setState = (state) => {
   return (dispatch, getState) => {
     dispatch({ type: ActionTypes.SET_STATE, payload: { state } });
 
-    // clear out existing data
     dispatch(clearData());
 
-    const { predictionYear } = getState().selections;
+    const {
+      predictionYear,
+      startYear,
+      endYear,
+      county,
+      rangerDistrict,
+    } = getState().selections;
+
     dispatch(getPredictions(predictionYear, { state }));
 
-    // fetch new drop down values
+    dispatch(getAggregateYearData({
+      state,
+      county,
+      rangerDistrict,
+      startYear,
+      endYear,
+    }));
+
     dispatch(getAvailableYears({ state }));
     dispatch(getAvailableSublocations(state));
   };
@@ -264,13 +291,26 @@ export const setCounty = (newCounty) => {
       : newCounty;
     dispatch({ type: ActionTypes.SET_COUNTY, payload: { county } });
 
-    // clear out existing data
     dispatch(clearData());
 
-    const { predictionYear } = getState().selections;
+    const {
+      predictionYear,
+      state,
+      startYear,
+      endYear,
+      rangerDistrict,
+    } = getState().selections;
+
     dispatch(getPredictions(predictionYear, { county }));
 
-    // fetch new drop down values
+    dispatch(getAggregateYearData({
+      state,
+      county,
+      rangerDistrict,
+      startYear,
+      endYear,
+    }));
+
     dispatch(getAvailableYears({ county }));
   };
 };
@@ -286,13 +326,26 @@ export const setRangerDistrict = (newRangerDistrict) => {
       : newRangerDistrict;
     dispatch({ type: ActionTypes.SET_RANGER_DISTRICT, payload: { rangerDistrict } });
 
-    // clear out existing data
     dispatch(clearData());
 
-    const { predictionYear } = getState().selections;
+    const {
+      predictionYear,
+      state,
+      startYear,
+      endYear,
+      county,
+    } = getState().selections;
+
     dispatch(getPredictions(predictionYear, { rangerDistrict }));
 
-    // fetch new drop down values
+    dispatch(getAggregateYearData({
+      state,
+      county,
+      rangerDistrict,
+      startYear,
+      endYear,
+    }));
+
     dispatch(getAvailableYears({ rangerDistrict }));
   };
 };

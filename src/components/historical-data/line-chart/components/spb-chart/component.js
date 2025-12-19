@@ -87,6 +87,10 @@ const SPBChart = (props) => {
   });
 
   useEffect(() => {
+    if (!startYear || !endYear || startYear > endYear) {
+      return;
+    }
+
     const updatedSPBChartData = {
       labels: [],
       datasets: [
@@ -106,22 +110,28 @@ const SPBChart = (props) => {
       ...spbChartOptions,
     };
 
-    updatedSPBChartData.labels = getYearRange(startYear, endYear);
+    const yearRange = getYearRange(startYear, endYear);
+    if (yearRange.length === 0) {
+      return;
+    }
+
+    updatedSPBChartData.labels = yearRange;
 
     const spbMap = yearData.reduce((acc, {
       year, avgSpbPerTrapPer2Weeks,
     }) => ({
       ...acc,
       [year]: avgSpbPerTrapPer2Weeks,
-    }), getYearRange(startYear, endYear).reduce((p, c) => ({ ...p, [c]: null }), {}));
+    }), yearRange.reduce((p, c) => ({ ...p, [c]: null }), {}));
 
     updatedSPBChartData.datasets[0].data = Object.values(spbMap);
 
-    const max = Math.max(...[
-      ...updatedSPBChartData.datasets[0].data,
-    ]);
-
-    updatedChartOptions.scales.yAxes[0].ticks.max = max;
+    const maxValue = Math.max(
+      ...updatedSPBChartData.datasets[0].data.filter((v) => v !== null && v !== undefined)
+    );
+    if (!Number.isNaN(maxValue) && maxValue > 0) {
+      updatedChartOptions.scales.yAxes[0].ticks.max = maxValue;
+    }
 
     setSpbChartData(updatedSPBChartData);
     setSpbChartOptions(updatedChartOptions);

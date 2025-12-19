@@ -153,15 +153,28 @@ export const transformRawData = (rawData, dataMode, stateAbbrevToStateName) => {
     return [];
   }
 
+  const stateMap = stateAbbrevToStateName && typeof stateAbbrevToStateName === 'object'
+    ? stateAbbrevToStateName
+    : {};
+
   const normalizedData = normalizeWeeklyData(rawData);
   if (normalizedData.length === 0) return [];
 
   return normalizedData.map((item, index) => {
-    const stateName = stateAbbrevToStateName[item.state] || item.state;
+    const stateName = stateMap[item.state] || item.state;
     const locationName = dataMode === DATA_MODES.COUNTY ? item.county : item.rangerDistrict;
 
+    const id = [
+      'raw',
+      item.state || 'no-state',
+      locationName || 'no-location',
+      item.year || 'no-year',
+      item.trap || 'no-trap',
+      index,
+    ].join('-');
+
     return {
-      id: `raw-${index}`,
+      id,
       year: item.year || null,
       state: stateName || 'N/A',
       county: locationName || 'N/A',
@@ -192,8 +205,12 @@ export const transformAggregatedData = (rawData, dataMode, stateAbbrevToStateNam
     return [];
   }
 
+  const stateMap = stateAbbrevToStateName && typeof stateAbbrevToStateName === 'object'
+    ? stateAbbrevToStateName
+    : {};
+
   return rawData.map((item, index) => {
-    const stateName = stateAbbrevToStateName[item.state] || item.state;
+    const stateName = stateMap[item.state] || item.state;
     const locationName = dataMode === DATA_MODES.COUNTY ? item.county : item.rangerDistrict;
 
     const spotsValue = getValue(item.spots, item.spotst0);
@@ -213,8 +230,16 @@ export const transformAggregatedData = (rawData, dataMode, stateAbbrevToStateNam
 
     const yearValue = parseYearFromItem(item);
 
+    const id = [
+      'agg',
+      item.state || 'no-state',
+      locationName || 'no-location',
+      yearValue || 'no-year',
+      index,
+    ].join('-');
+
     return {
-      id: `agg-${index}`,
+      id,
       year: yearValue,
       state: stateName || 'N/A',
       county: locationName || 'N/A',
