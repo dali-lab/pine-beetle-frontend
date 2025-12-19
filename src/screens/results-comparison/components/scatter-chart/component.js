@@ -20,15 +20,19 @@ const getCustomRegressionLine = () => {
 };
 
 const ScatterChart = ({
-  data, predictionYear, getChartData, dataMode,
+  data, predictionYear, getChartData, dataMode, selectedState, county, rangerDistrict,
 }) => {
+  // Fetch data on mount and when filters change
   useEffect(() => {
     getChartData();
-  }, [dataMode]);
+  }, [dataMode, selectedState, county, rangerDistrict, getChartData]);
 
   const chartRef = useRef(null);
 
   const formattedData = useMemo(() => {
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      return [];
+    }
     return data.map((item) => [
       item.probSpotsGT50 * 100,
       item.lnSpots,
@@ -159,7 +163,7 @@ const ScatterChart = ({
       chart.dispose();
       window.removeEventListener('resize', handleResize);
     };
-  }, [formattedData]);
+  }, [formattedData, selectedYearData, predictionYear]);
 
   return (
     <div className="container scatter-chart">

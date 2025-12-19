@@ -97,21 +97,6 @@ const App = (props) => {
     // set data mode if persist in browser (skip data fetch - pages will fetch their own data)
     setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY, { skipDataFetch: true });
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/2a337e4f-e878-4fa8-92e2-9b11a26435ec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'app/component.js:100',
-        message: 'Initial data fetch triggered',
-        data: { pathname: window.location.pathname },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        hypothesisId: 'H1',
-      }),
-    }).catch(() => {});
-    // #endregion
-
     // Only fetch data needed for current page - other pages fetch their own data
     const { pathname } = window.location;
     const isHomePage = pathname === '/' || pathname === '/home';

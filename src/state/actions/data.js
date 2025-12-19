@@ -342,9 +342,27 @@ export const getScatterChartData = () => {
       dataMode,
     } = getState().selections;
 
-    const { scatterChartData } = getState().data;
+    // Check localStorage cache first (based on dataMode only, like the old version)
+    const cacheKey = `scatterChart_${dataMode}`;
+    const cachedData = localStorage.getItem(cacheKey);
+    if (cachedData) {
+      try {
+        const { data: cachedScatterChart, timestamp } = JSON.parse(cachedData);
+        // Use cache if it's less than 1 hour old
+        const cacheAge = Date.now() - timestamp;
+        const oneHour = 60 * 60 * 1000;
+        if (cacheAge < oneHour && cachedScatterChart && cachedScatterChart.length > 0) {
+          dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: cachedScatterChart });
+          return;
+        }
+      } catch (e) {
+        // Invalid cache, continue to fetch
+      }
+    }
 
-    if (scatterChartData && scatterChartData.length > 0) {
+    // Check if we already have data in Redux store for this dataMode
+    const { scatterChart } = getState().data;
+    if (scatterChart && scatterChart.length > 0) {
       return;
     }
 
@@ -353,6 +371,15 @@ export const getScatterChartData = () => {
     try {
       const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyScatterChart() : api.getRDScatterChart());
       dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: response.data });
+      try {
+        const cacheValue = JSON.stringify({
+          data: response.data,
+          timestamp: Date.now(),
+        });
+        localStorage.setItem(cacheKey, cacheValue);
+      } catch (e) {
+        // localStorage might be full, ignore
+      }
     } catch (error) {
       dispatch({
         type: ActionTypes.CLEAR_DATA_FETCH_ERROR,
@@ -365,7 +392,9 @@ export const getScatterChartData = () => {
         },
       });
     } finally {
-      dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: false });
+      setTimeout(() => {
+        dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: false });
+      }, 1000);
     }
   };
 };

@@ -11,13 +11,20 @@ const mapStateToProps = (state) => {
     selections: {
       predictionYear,
       dataMode,
+      state: selectedState,
+      county,
+      rangerDistrict,
     },
   } = state;
+
 
   return {
     data: scatterChart,
     predictionYear,
     dataMode,
+    selectedState,
+    county,
+    rangerDistrict,
   };
 };
 
