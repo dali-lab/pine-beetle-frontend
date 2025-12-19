@@ -8,7 +8,6 @@ import FilterOverlay from '../filter-overlay';
 import LegendOverlay from '../legend-overlay';
 import './style.scss';
 
-// Constants
 const DESKTOP_BREAKPOINT = 768;
 const RESIZE_DEBOUNCE_MS = 150;
 

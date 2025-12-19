@@ -3,3 +3,8 @@ export { default as useRangerDistricts } from './useRangerDistricts';
 export { default as useMapCallbacks } from './useMapCallbacks';
 export { default as useMapInitialization } from './useMapInitialization';
 export { default as useDropdown } from './useDropdown';
+export { default as useDataTableFilters } from './useDataTableFilters';
+export { default as useDataTableData } from './useDataTableData';
+export { default as useDataTableSorting } from './useDataTableSorting';
+export { default as useDefaultYears } from './useDefaultYears';
+export { default as usePagination } from './usePagination';

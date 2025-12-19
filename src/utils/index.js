@@ -54,6 +54,7 @@ import {
 
 export * from './map-coloring';
 export * from './map-mode-utils';
+export { default as filterAndSortData } from './data-table-filters';
 
 export {
   createHoverCallback,

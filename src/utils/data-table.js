@@ -1,12 +1,10 @@
 import { DATA_MODES } from '../constants';
 import { logWarning } from './logger';
 
-// Pre-compiled regex patterns for better performance
 const WEEK_FIELD_REGEX = /^week\d+$/i;
 const SEASON_NUMBER_REGEX = /(\d+)/;
 
-// Trapping period constants
-const DAYS_PER_TRAPPING_PERIOD = 14; // Two-week trapping periods
+const DAYS_PER_TRAPPING_PERIOD = 14;
 const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
 /**
