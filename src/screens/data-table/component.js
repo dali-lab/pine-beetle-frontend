@@ -317,7 +317,7 @@ const DataTableScreen = () => {
       } else {
         fetchAggregateLocationData(safeFilters);
       }
-    }, 500);
+    }, 300);
 
     return () => clearTimeout(timeoutId);
   }, [

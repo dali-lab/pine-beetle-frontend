@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import ScatterChart from './component';
 import { getScatterChartData } from '../../../../state/actions';
+import ScatterChart from './component';
 
 const mapStateToProps = (state) => {
   const {
