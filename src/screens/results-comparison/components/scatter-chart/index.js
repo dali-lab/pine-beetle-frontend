@@ -17,7 +17,6 @@ const mapStateToProps = (state) => {
     },
   } = state;
 
-
   return {
     data: scatterChart,
     predictionYear,

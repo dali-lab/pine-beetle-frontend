@@ -13,7 +13,6 @@ const R_MODEL_SUBROUTE = 'r-model';
  * @returns {Promise<Object>} API response
  */
 export async function getCountyData(filters) {
-
   const params = toQueryParams({
     ...filters,
     county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
@@ -37,7 +36,6 @@ export async function getCountyData(filters) {
  * @returns {Promise<Object>} API response
  */
 export async function getSparseCountyData(filters) {
-
   const params = toQueryParams({
     ...filters,
     county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
@@ -430,7 +428,6 @@ export async function getRDScatterChart(filters = {}) {
  * @returns {Promise<Array>} API response with unsummarized data
  */
 export async function getUnsummarizedData(filters = {}) {
-
   const params = toQueryParams({
     ...filters,
     county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
