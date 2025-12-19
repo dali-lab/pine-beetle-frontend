@@ -106,13 +106,16 @@ const SelectionsReducer = (state = initialState, action) => {
 
     case ActionTypes.SET_AVAILABLE_YEARS_HISTORICAL: {
       const years = action.payload;
+      // Sort years to ensure oldest is first and newest is last
+      const sortedYears = [...years].sort((a, b) => a - b);
       // Set default start year to oldest (first) and end year to latest (last)
-      const defaultStartYear = years.length > 0 ? years[0] : '';
-      const defaultEndYear = years.length > 0 ? years[years.length - 1] : '';
+      const defaultStartYear = sortedYears.length > 0 ? sortedYears[0] : '';
+      const defaultEndYear = sortedYears.length > 0 ? sortedYears[sortedYears.length - 1] : '';
 
       return {
         ...state,
-        availableHistoricalYears: years,
+        availableHistoricalYears: sortedYears,
+        // Set defaults if current values are empty/falsy
         startYear: state.startYear || defaultStartYear,
         endYear: state.endYear || defaultEndYear,
       };
