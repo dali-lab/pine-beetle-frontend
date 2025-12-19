@@ -1,81 +1,48 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import { ROUTES } from '../../constants';
+import ThumbnailCard from '../../components/thumbnail-card';
+import {
+  VideoPreview, DiagramPreview, ToolPreview, DocPreview,
+} from './components';
 
 import './style.scss';
 
-const VideoPreview = () => {
-  return (
-    <div className="preview-visual video-preview-visual">
-      <div className="video-overlay" />
-      <div className="play-button-container">
-        <div className="play-button">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
-            <polygon points="5,3 19,12 5,21" />
-          </svg>
-        </div>
-      </div>
-      <div className="progress-bar">
-        <div className="progress-fill" />
-      </div>
-    </div>
-  );
-};
-
-const DiagramPreview = () => {
-  return (
-    <div className="preview-visual diagram-preview-visual">
-      <div className="flowchart">
-        <div className="flow-box input-box">INPUT</div>
-        <div className="flow-connector" />
-        <div className="flow-row">
-          <div className="flow-box process-box">PROCESS</div>
-          <div className="flow-box process-box">ANALYZE</div>
-        </div>
-        <div className="flow-connector" />
-        <div className="flow-box output-box">OUTPUT</div>
-      </div>
-    </div>
-  );
-};
-
-const ToolPreview = () => {
-  return (
-    <div className="preview-visual tool-preview-visual">
-      <div className="prediction-results-preview">
-        <div className="prediction-card prob-spots">
-          <div className="prediction-percent">3.4%</div>
-          <div className="prediction-label">Predicted % Chance of Any Spots (&gt;0 spots)</div>
-        </div>
-        <div className="prediction-card prob-outbreak">
-          <div className="prediction-percent">0.2%</div>
-          <div className="prediction-label">Predicted % Chance of Outbreak (&gt;50 spots)</div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const DocPreview = () => {
-  return (
-    <div className="preview-visual doc-preview-visual">
-      <div className="documents-stack">
-        <div className="document doc-1">
-          <div className="doc-line" />
-          <div className="doc-line" />
-          <div className="doc-line" />
-          <div className="doc-line short" />
-          <div className="doc-spacer" />
-          <div className="doc-line" />
-          <div className="doc-line short" />
-        </div>
-        <div className="document doc-2" />
-        <div className="document doc-3" />
-      </div>
-    </div>
-  );
-};
+const EXPLAINER_CARDS = [
+  {
+    href: 'https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/view',
+    visual: <VideoPreview />,
+    title: 'Interpreting Probabilities',
+    description: 'Watch the video explanation of how to interpret Southern Pine Beetle outbreak probability predictions.',
+    actionText: 'Watch Video',
+    id: 'interpreting-probabilities',
+  },
+  {
+    to: ROUTES.METHODOLOGY,
+    visual: <DiagramPreview />,
+    title: 'Model Methodology',
+    description: 'Learn about the scientific methodology behind the Southern Pine Beetle prediction model.',
+    actionText: 'View Methodology',
+    id: 'model-methodology',
+  },
+  {
+    to: ROUTES.PLAY_WITH_MODEL,
+    visual: <ToolPreview />,
+    title: 'Model Explorer',
+    description: 'Interact with the prediction model by adjusting parameters and exploring different scenarios.',
+    actionText: 'Launch Explorer',
+    id: 'model-explorer',
+  },
+  {
+    to: ROUTES.RESOURCES,
+    visual: <DocPreview />,
+    title: 'Resources',
+    description: 'Access research papers, datasets, code repositories, and other valuable resources.',
+    actionText: 'Browse Files',
+    wrapperClassName: 'resources-card-wrapper',
+    id: 'resources',
+  },
+];
 
 const ExplainersScreen = () => {
   return (
@@ -87,84 +54,27 @@ const ExplainersScreen = () => {
 
         <div className="explainers-thumbnails">
           <div className="thumbnail-grid">
-            {/* Interpreting Probabilities Video Thumbnail */}
-            <a
-              href="https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/view"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="thumbnail-card"
-            >
-              <div className="thumbnail-visual">
-                <VideoPreview />
-              </div>
-              <div className="thumbnail-content">
-                <h3>Interpreting Probabilities</h3>
-                <p>Watch the video explanation of how to interpret Southern Pine Beetle outbreak probability predictions.</p>
-                <div className="card-action">
-                  Watch Video
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12,5 19,12 12,19" />
-                  </svg>
-                </div>
-              </div>
-            </a>
+            {EXPLAINER_CARDS.map((card) => {
+              const cardElement = (
+                <ThumbnailCard
+                  key={card.id}
+                  to={card.to}
+                  href={card.href}
+                  visual={card.visual}
+                  title={card.title}
+                  description={card.description}
+                  actionText={card.actionText}
+                />
+              );
 
-            {/* Model Methodology Thumbnail */}
-            <Link to={ROUTES.METHODOLOGY} className="thumbnail-card">
-              <div className="thumbnail-visual">
-                <DiagramPreview />
-              </div>
-              <div className="thumbnail-content">
-                <h3>Model Methodology</h3>
-                <p>Learn about the scientific methodology behind the Southern Pine Beetle prediction model.</p>
-                <div className="card-action">
-                  View Methodology
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12,5 19,12 12,19" />
-                  </svg>
+              return card.wrapperClassName ? (
+                <div key={card.id} className={card.wrapperClassName}>
+                  {cardElement}
                 </div>
-              </div>
-            </Link>
-
-            {/* Model Explorer Thumbnail */}
-            <Link to={ROUTES.PLAY_WITH_MODEL} className="thumbnail-card">
-              <div className="thumbnail-visual">
-                <ToolPreview />
-              </div>
-              <div className="thumbnail-content">
-                <h3>Model Explorer</h3>
-                <p>Interact with the prediction model by adjusting parameters and exploring different scenarios.</p>
-                <div className="card-action">
-                  Launch Explorer
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="5" y1="12" x2="19" y2="12" />
-                    <polyline points="12,5 19,12 12,19" />
-                  </svg>
-                </div>
-              </div>
-            </Link>
-
-            {/* Resources Thumbnail */}
-            <div className="resources-card-wrapper">
-              <Link to={ROUTES.RESOURCES} className="thumbnail-card">
-                <div className="thumbnail-visual">
-                  <DocPreview />
-                </div>
-                <div className="thumbnail-content">
-                  <h3>Resources</h3>
-                  <p>Access research papers, datasets, code repositories, and other valuable resources.</p>
-                  <div className="card-action">
-                    Browse Files
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                      <polyline points="12,5 19,12 12,19" />
-                    </svg>
-                  </div>
-                </div>
-              </Link>
-            </div>
+              ) : (
+                cardElement
+              );
+            })}
           </div>
         </div>
       </div>
