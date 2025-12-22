@@ -21,19 +21,38 @@
     @media (max-width: $tablet) {
         padding: 0 1.5rem;
     }
+
+    .page-header {
+        max-width: 100%;
+        margin-left: 0;
+        padding-left: 0;
+        margin-right: 0;
+        padding-right: 0;
+
+        h1 {
+            margin-left: 0;
+            padding-left: 0;
+        }
+    }
 }
 
-.blog-content {
+.blog-list-content {
     display: block;
     width: 100%;
     clear: both;
-    margin-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0 1rem;
 }
 
 .blog-header {
     margin-bottom: 3.75rem;
     border-bottom: 1px solid $greyBlue200;
     padding-bottom: 1.25rem;
+    padding-left: 0;
+    margin-left: 0;
+    padding-right: 0;
+    margin-right: 0;
 
     @media (max-width: $tablet) {
         margin-bottom: 2.5rem;
@@ -50,29 +69,32 @@
     line-height: 1.2;
     position: relative;
     padding-left: 0;
-    border-left: 4px solid $brandPrimary;
-    padding-left: 2rem;
+    margin-left: 0;
+    padding-right: 0;
+    margin-right: 0;
 
     @media (max-width: $tablet) {
         font-size: 1.5rem;
-        border-left-width: 3px;
-        padding-left: 1.5rem;
     }
 }
 
 .blog-posts-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 3.75rem 2.5rem;
+    gap: 3.5rem 3rem;
     width: 100%;
+    align-items: stretch;
+    padding: 0;
+    margin: 0;
+    justify-items: start;
 
     @media (max-width: $desktop) {
-        gap: 3.125rem 1.875rem;
+        gap: 3rem 2.5rem;
     }
 
     @media (max-width: $tablet) {
         grid-template-columns: 1fr;
-        gap: 2.5rem;
+        gap: 3rem;
     }
 }
 

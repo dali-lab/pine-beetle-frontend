@@ -8,11 +8,25 @@
     transform: translate(-50%, -50%);
     width: 55vw;
     height: 70vh;
-    padding: 50px;
+    padding: 3.125rem;
     border-radius: 20px;
     background-color: $white;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     overflow: scroll;
+
+    @media (max-width: $tablet) {
+        width: 90vw;
+        height: 85vh;
+        padding: 1.875rem;
+        border-radius: 16px;
+    }
+
+    @media (max-width: $mobile) {
+        width: 95vw;
+        height: 90vh;
+        padding: 1.25rem;
+        border-radius: 12px;
+    }
 
     .add-blog-post-container {
         width: auto;

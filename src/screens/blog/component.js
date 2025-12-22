@@ -24,7 +24,7 @@ const Blog = (props) => {
           <h1>Blog</h1>
         </div>
 
-        <div className="blog-content">
+        <div className="blog-list-content">
           <div className="blog-header">
             <h2 className="blog-section-title">Latest posts</h2>
           </div>

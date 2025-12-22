@@ -7,13 +7,21 @@
     justify-content: center;
     align-items: center;
     margin: 15px;
+    padding-top: 5rem;
+    min-height: calc(100vh - 5rem);
+
+    @media (max-width: $tablet) {
+        padding-top: 4.5rem;
+        min-height: calc(100vh - 4.5rem);
+    }
 
     h1 {
-        margin-top: 35px;
-        margin-bottom: 35px;
+        margin-top: 2.1875rem;
+        margin-bottom: 2.1875rem;
         letter-spacing: normal;
         font-weight: 800;
-        color: $greyBlue900;
+        color: $headingColor;
+        font-size: 2rem;
     }
 
     #sign-up-button {
@@ -27,10 +35,17 @@
     }
 
     #input-button-container {
-        padding: 19px 52px 53px;
-        border-radius: 26px;
-        box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+        padding: 2.5rem 3.25rem 3.3125rem;
+        border-radius: 1.625rem;
+        box-shadow: 0 2.1875rem 5.625rem -0.625rem rgba(0, 0, 0, 0.06);
         background-color: $white;
+        width: 100%;
+        max-width: 450px;
+
+        @media (max-width: $tablet) {
+            padding: 2rem 1.5rem;
+            max-width: 100%;
+        }
 
         #input-fields {
             display: flex;
@@ -42,89 +57,130 @@
                 margin-top: 20px;
 
                 #error-input {
-                    border: solid 2.5px $red500;
+                    border: 2px solid $red500 !important;
+                    background-color: rgba(255, 54, 78, 0.05) !important;
+
+                    &:focus {
+                        border-color: $red500 !important;
+                        box-shadow: 0 0 0 3px rgba(255, 54, 78, 0.1) !important;
+                    }
                 }
 
                 p {
-                    margin-bottom: 5px;
-                    font-size: 18px;
+                    margin-bottom: 0.3125rem;
+                    font-size: 1rem;
                     font-weight: 600;
-                    color: $greyBlue800;
+                    color: $textColor;
                 }
 
                 input {
-                    padding: 5px 10px;
-                    width: 300px;
+                    padding: 0.625rem 0.875rem;
+                    width: 100%;
+                    max-width: 300px;
                     background-color: $greyBlue200;
+                    border: 1px solid $greyBlue300;
+                    border-radius: 0.5rem;
+                    font-size: 1rem;
+                    color: $deepCharcoal;
+                    transition: all 0.2s ease;
+
+                    @media (max-width: $tablet) {
+                        max-width: 100%;
+                    }
+
+                    &:focus {
+                        outline: none;
+                        border-color: $brandPrimary;
+                        background-color: $white;
+                        box-shadow: 0 0 0 3px rgba(26, 77, 46, 0.1);
+                    }
+
+                    &::placeholder {
+                        color: $greyBlue500;
+                    }
                 }
             }
         }
 
         #forgot-password {
-            font-size: 13px;
-            color: $greyBlue800;
-            margin-top: 10px;
+            font-size: 0.875rem;
+            color: $brandPrimary;
+            margin-top: 0.625rem;
             background-color: transparent;
             border: 0;
-        }
-
-        #forgot-password:hover {
+            text-decoration: underline;
+            transition: color 0.2s ease;
             cursor: pointer;
+
+            &:hover {
+                color: $brandSecondary;
+            }
         }
 
         #error-success-container {
-            margin-top: 15px;
+            margin-top: 1rem;
             max-width: 300px;
             margin-left: auto;
             margin-right: auto;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
 
             p {
-                font-weight: bold;
-                text-align: left;
-                line-height: 20px;
+                font-weight: 600;
+                text-align: center;
+                line-height: 1.5;
+                font-size: 0.875rem;
+                margin: 0;
             }
 
             #error {
                 color: $red500;
+                background-color: rgba(255, 54, 78, 0.1);
             }
 
             #success {
-                color: $blue500;
+                color: $blue800;
+                background-color: rgba(38, 86, 181, 0.1);
             }
         }
 
-        #login-button {
+        #login-button,
+        #reset-password-button {
             width: 150px;
             border: none;
-            padding: 10px;
-            background-color: $greyBlue400;
-            font-size: 18px;
+            padding: 0.625rem 1.25rem;
+            background-color: $brandPrimary;
+            font-size: 1.125rem;
             font-weight: 600;
-            color: $greyBlue800;
-            border-radius: 8px;
-            margin-top: 20px;
+            color: $white;
+            border-radius: 0.5rem;
+            margin-top: 1.25rem;
             display: block;
             margin-left: auto;
             margin-right: auto;
+            transition: all 0.2s ease;
+            cursor: pointer;
+
+            &:hover:not(:disabled) {
+                background-color: $brandSecondary;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+            &:active:not(:disabled) {
+                transform: translateY(0);
+            }
+
+            &:disabled {
+                background-color: $greyBlue300;
+                color: $greyBlue600;
+                cursor: not-allowed;
+                opacity: 0.6;
+            }
         }
 
         #reset-password-button {
             width: 200px;
-            border: none;
-            padding: 10px;
-            background-color: $greyBlue400;
-            font-size: 18px;
-            font-weight: 600;
-            color: $greyBlue800;
-            border-radius: 8px;
-            margin-top: 20px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        button:hover {
-            cursor: pointer;
         }
     }
 }

@@ -2,9 +2,15 @@
 @import '../../../../styles/colors';
 
 #sign-up-title {
-    font-size: 16px;
-    color: $greyBlue900;
-    margin-bottom: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: $headingColor;
+    margin-bottom: 1.25rem;
+
+    @media (max-width: $mobile) {
+        font-size: 1.125rem;
+        margin-bottom: 1rem;
+    }
 }
 
 #input-fields {
@@ -13,53 +19,136 @@
     align-content: stretch;
 
     #success-message {
-        color: green;
+        color: $blue800;
+        background-color: rgba(38, 86, 181, 0.1);
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
         text-align: center;
-        width: 300px;
-        margin-bottom: 20px;
+        width: 100%;
+        max-width: 25rem;
+        margin-bottom: 1rem;
         align-self: center;
+        font-weight: 600;
+        font-size: 0.875rem;
+
+        @media (max-width: $mobile) {
+            padding: 0.625rem 0.875rem;
+            font-size: 0.8125rem;
+            max-width: 100%;
+        }
     }
 
     #input-names {
         display: flex;
-        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+
+        @media (max-width: $mobile) {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-container {
+            flex: 1;
+        }
     }
 
     .input-container {
+        margin-bottom: 0.5rem;
+
+        @media (max-width: $mobile) {
+            margin-bottom: 0.4375rem;
+        }
 
         input {
             width: 100%;
             box-sizing: border-box;
-            margin-bottom: 8px;
-            padding: 5px 16px;
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 6px 40px 0 rgba(0, 0, 0, 0.04);
-            background-color: $white;
-            font-size: 15px;
-            line-height: 1.51;
-            color: $greyBlue800;
+            padding: 0.75rem 1rem;
+            border: 1px solid $greyBlue300;
+            border-radius: 0.5rem;
+            background-color: $greyBlue200;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: $deepCharcoal;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+
+            @media (max-width: $mobile) {
+                padding: 0.625rem 0.875rem;
+                font-size: 0.9375rem;
+            }
+
+            &:focus {
+                outline: none;
+                border-color: $brandPrimary;
+                background-color: $white;
+                box-shadow: 0 0 0 3px rgba(26, 77, 46, 0.1);
+            }
+
+            &::placeholder {
+                color: $greyBlue500;
+            }
         }
     }
 }
 
 #error-container {
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+
     p {
-        color: red;
+        color: $red500;
+        background-color: rgba(255, 54, 78, 0.1);
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.875rem;
+
+        @media (max-width: $mobile) {
+            padding: 0.625rem 0.875rem;
+            font-size: 0.8125rem;
+        }
     }
 }
 
 #add-user-button {
-    width: 114px;
-    margin: 19px 67px 0 0;
-    padding: 4px 39px 0;
-    border-radius: 6px;
-    background-color: $greyBlue400;
-    margin-top: 20px;
-    font-size: 18px;
+    width: 7.125rem;
+    margin: 1.25rem auto 0;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    background-color: $brandPrimary;
+    font-size: 1.125rem;
     font-weight: 600;
     line-height: 1.8;
-    color: $greyBlue900;
-    margin-left: auto;
-    margin-right: auto;
+    color: $white;
+    border: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    display: block;
+
+    @media (max-width: $mobile) {
+        width: 100%;
+        max-width: 12.5rem;
+        padding: 0.625rem 0.875rem;
+        font-size: 0.9375rem;
+        margin: 1rem auto 0;
+    }
+
+    &:hover:not(:disabled) {
+        background-color: $brandSecondary;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active:not(:disabled) {
+        transform: translateY(0);
+    }
+
+    &:disabled {
+        background-color: $greyBlue300;
+        color: $greyBlue600;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
 }

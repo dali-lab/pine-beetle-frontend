@@ -118,7 +118,9 @@ const BlogPostForm = (props) => {
         >
           Submit
         </button>
-        <div className="blog-form-error">{shouldErrorDisplay && error.message}</div>
+        {shouldErrorDisplay && error?.message && (
+          <div className="blog-form-error">{error.message}</div>
+        )}
       </form>
     </div>
   );
