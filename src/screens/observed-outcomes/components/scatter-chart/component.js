@@ -48,12 +48,27 @@ const ScatterChart = ({
   );
 
   useEffect(() => {
+    // Guard: ensure chartRef is available and data is ready
+    if (!chartRef.current) {
+      return undefined;
+    }
+
+    // Guard: ensure we have valid data before initializing
+    if (!formattedData || formattedData.length === 0) {
+      return undefined;
+    }
+
     const chart = echarts.init(chartRef.current);
+
+    // Guard: ensure chart was initialized successfully
+    if (!chart) {
+      return undefined;
+    }
 
     const option = {
       dataset: [
-        { id: 'all', source: formattedData },
-        { id: 'selected', source: selectedYearData },
+        { id: 'all', source: formattedData || [] },
+        { id: 'selected', source: selectedYearData || [] },
         { id: 'manualRegression', source: getCustomRegressionLine() },
       ],
       title: {
@@ -157,13 +172,17 @@ const ScatterChart = ({
     chart.setOption(option);
 
     const handleResize = () => {
-      chart.resize();
+      if (chart && !chart.isDisposed()) {
+        chart.resize();
+      }
     };
 
     window.addEventListener('resize', handleResize);
 
     return () => {
-      chart.dispose();
+      if (chart && !chart.isDisposed()) {
+        chart.dispose();
+      }
       window.removeEventListener('resize', handleResize);
     };
   }, [formattedData, selectedYearData, predictionYear]);

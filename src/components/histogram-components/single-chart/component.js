@@ -7,6 +7,28 @@ const SingleChart = ({
   frequency,
   data,
 }) => {
+  // Guard: ensure data is valid
+  if (!data || !Array.isArray(data)) {
+    return (
+      <div className={`single-chart-wrapper ${withBorder && 'with-border'}`}>
+        <div
+          style={{
+            height: 250,
+            width: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <p>No data available</p>
+        </div>
+        <p className="single-chart__text">
+          Frequency (n&nbsp;=&nbsp;{frequency || 0})
+        </p>
+      </div>
+    );
+  }
+
   const options = {
     grid: {
       top: 10,
@@ -55,7 +77,7 @@ const SingleChart = ({
         length: 3,
         lineStyle: { color: '#000', width: 1 },
       },
-      max: data.frequency,
+      max: data?.frequency || 0,
     },
     series: [
       {
