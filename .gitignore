@@ -8,3 +8,4 @@ yarn-error.log
 
 .eslintcache
 .vscode
+.cursor/rules.mdc

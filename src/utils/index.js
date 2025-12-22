@@ -2,6 +2,7 @@ import {
   getMapboxRDNameFormat,
   getStateAbbreviationFromStateName,
   getStateNameFromAbbreviation,
+  separatePascalCase,
 } from './abbreviation-mappings';
 
 import {
@@ -23,29 +24,46 @@ import {
 } from './network';
 
 import {
-  sortBlogPosts,
+  formatPostDates,
   getDateToDisplay,
   getLatestBlogPost,
-  formatPostDates,
+  sortBlogPosts,
   truncateText,
 } from './blog';
 
-import getFillColor from './colors';
+import {
+  extractWeekNumber,
+  formatCollectionDate,
+  getValue,
+  normalizeWeeklyData,
+  parseYearFromItem,
+  transformAggregatedData,
+  transformRawData,
+} from './data-table';
+
+import { getFillColor } from './colors';
 
 import {
-  createMapClickCallback,
   createHoverCallback,
+  createMapClickCallback,
   downloadMap,
   generateMap,
   mapboxHoverStyle,
   zoomToSelectedState,
 } from './map';
 
+export * from './map-coloring';
+export * from './map-mode-utils';
+export { default as filterAndSortData } from './data-table-filters';
+
 export {
   createHoverCallback,
   createMapClickCallback,
   downloadCsv,
   downloadMap,
+  extractWeekNumber,
+  formatCollectionDate,
+  formatPostDates,
   generateMap,
   getAuthTokenFromStorage,
   getChartModeFromStorage,
@@ -57,16 +75,21 @@ export {
   getStateAbbreviationFromStateName,
   getStateNameFromAbbreviation,
   getUserIdFromStorage,
-  formatPostDates,
+  getValue,
   mapboxHoverStyle,
+  normalizeWeeklyData,
+  parseYearFromItem,
   removeAuthTokenFromStorage,
   removeUserIdFromStorage,
+  separatePascalCase,
   setAuthTokenInStorage,
   setChartModeInStorage,
   setDataModeInStorage,
   setUserIdInStorage,
   sortBlogPosts,
   toQueryParams,
+  transformAggregatedData,
+  transformRawData,
   truncateText,
   zoomToSelectedState,
 };

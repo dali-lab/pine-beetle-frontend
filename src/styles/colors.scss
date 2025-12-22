@@ -1,56 +1,67 @@
-$white: #ffffff;
+// New Pine Beetle Color Palette
+// -----------------------------
+// Core brand colors
+$brandPrimary: #1A4D2E;    // Primary navigation, main actions (formerly $forestGreen)
+$brandSecondary: #6B8E6B;  // Secondary / interactive accents (formerly $dropdownGreen / $pineNeedle)
+$deepCharcoal: #333333;    // Main body text and titles
+$cleanWhite: #FFFFFF;      // Primary background, content sections
+
+// Global neutrals
+$white: #FFFFFF;
 $black: #000000;
 
-$backgroundColor: #FBFBFD;
-$footerColor: #f1f1fb;
+$backgroundColor: $cleanWhite;
 
 $grey100: #F5F5F5;
 $grey200: #F3F3F3;
-$grey300: #dbdbdb;
+$grey300: #DBDBDB;
 $grey400: #D3D3D3;
 $grey500: #AEAEAE;
 $grey600: #898989;
 $grey800: #505050;
 
-$greyBlue100: #f8f9ff;
-$greyBlue200: #f0f2f8;
-$greyBlue300: #e9eaef;
-$greyBlue400: #c9cdd9;
-$greyBlue500: #7c7c96;
+// Grey‑blue UI colors
+$greyBlue100: #F8F9FF;
+$greyBlue200: #F0F2F8;
+$greyBlue300: #E9EAEF;
+$greyBlue400: #C9CDD9;
+$greyBlue500: #7C7C96;
 $greyBlue600: #93949B;
-$greyBlue700: #73767e;
+$greyBlue700: #73767E;
 $greyBlue800: #424755;
-$greyBlue900: #2f303a;
+$greyBlue900: #2F303A;
 
+// Semantic / accent colors
 $yellow: #FFC148;
 
 $orange: #FFA370;
 $orangeLight: #FFE0B0;
 
-$green200: #cbffe0;
-$green300: #c7ffb4;
+$green200: #CBFFE0;
+$green300: #C7FFB4;
 $green500: #4CD791;
 
-$purple400: #e2cbff;
-$purple500: #deb4ff;
+$purple400: #E2CBFF;
+$purple500: #DEB4FF;
 $purple600: #ACA0F9;
 
-$beige100: #fff6dd;
-$beige300: #ffe5b4;
+$beige100: #FFF6DD;
+$beige300: #FFE5B4;
 $beige600: #E4C89D;
 
 $red100: #F9A0A1;
 $red400: #FF525C;
-$red500: #ff364e;
+$red500: #FF364E;
 $red600: #CB4767;
-$red700: #cc0002;
+$red700: #CC0002;
 $red900: #6B1B38;
 
 $blue200: #DFFBFF;
-$blue300: #cbecff;
-$blue400: #b4dbff;
+$blue300: #CBECFF;
+$blue400: #B4DBFF;
 $blue500: #86CCFF;
 $blue800: #2656B5;
 
-$textColor: #5e6076;
-$headingColor: #212122;
+// Typography
+$textColor: $deepCharcoal;
+$headingColor: $deepCharcoal;

@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useRef } from 'react';
 import * as echarts from 'echarts';
 import * as ecStat from 'echarts-stat';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import {
   getMapboxRDNameFormat,
@@ -20,15 +20,19 @@ const getCustomRegressionLine = () => {
 };
 
 const ScatterChart = ({
-  data, predictionYear, getChartData, dataMode,
+  data, predictionYear, getChartData, dataMode, selectedState, county, rangerDistrict,
 }) => {
+  // Fetch data on mount and when filters change
   useEffect(() => {
     getChartData();
-  }, [dataMode]);
+  }, [dataMode, selectedState, county, rangerDistrict, getChartData]);
 
   const chartRef = useRef(null);
 
   const formattedData = useMemo(() => {
+    if (!data || !Array.isArray(data) || data.length === 0) {
+      return [];
+    }
     return data.map((item) => [
       item.probSpotsGT50 * 100,
       item.lnSpots,
@@ -40,7 +44,7 @@ const ScatterChart = ({
 
   const selectedYearData = useMemo(
     () => formattedData.filter((d) => d[3] === predictionYear),
-    [formattedData, predictionYear],
+    [formattedData, predictionYear]
   );
 
   useEffect(() => {
@@ -60,7 +64,7 @@ const ScatterChart = ({
         trigger: 'item',
         formatter: (params) => {
           const [x, y, location, year, spotst0] = params.data;
-          return `${location} (${year})<br/><br/>spots = exp(${y.toFixed(2)}) = ${spotst0}<br/>Percent chance > 50 spots: <b>${x.toFixed(0)}%</b>`;
+          return `${location} (${year})<br/><br/>spots = exp(${y.toFixed(2)}) - 1 = ${spotst0}<br/>Percent chance > 50 spots: <b>${x.toFixed(0)}%</b>`;
         },
         extraCssText: 'text-align: left;',
       },
@@ -159,11 +163,11 @@ const ScatterChart = ({
       chart.dispose();
       window.removeEventListener('resize', handleResize);
     };
-  }, [formattedData]);
+  }, [formattedData, selectedYearData, predictionYear]);
 
   return (
     <div className="container scatter-chart">
-      <div ref={chartRef} style={{ width: '100%', height: '500px' }} />
+      <div ref={chartRef} style={{ width: '100%', height: '600px' }} />
     </div>
   );
 };

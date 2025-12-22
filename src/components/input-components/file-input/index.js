@@ -93,7 +93,7 @@ const FileInput = (props) => {
             component.uploadFile,
             component.file,
             component.selectFile,
-            component.id,
+            component.id
           )}
         >
           Upload File

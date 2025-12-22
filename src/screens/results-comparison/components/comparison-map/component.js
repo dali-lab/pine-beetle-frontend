@@ -1,37 +1,73 @@
-import React, { useEffect, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
-import Map from '../../../../components/map';
+import React, {
+  useCallback, useEffect, useMemo, useRef,
+} from 'react';
+import MapComponent from '../../../../components/map';
+import MapControls from '../../../../components/map-controls/component';
+import TogglesOverlay from '../../../../components/map/components';
 import {
-  DATA_MODES, MAP_SOURCE_NAME, MAP_TITLES, SOURCE_LAYERS, STATE_VECTOR_LAYER, VECTOR_LAYER,
+  DATA_MODES,
+  MAP_INIT_CONSTANTS,
+  MAP_TITLES,
+  VECTOR_LAYER,
 } from '../../../../constants';
+import {
+  useMapCallbacks,
+  useMapState,
+  useRangerDistricts,
+} from '../../../../hooks';
 import {
   createHoverCallback,
   createMapClickCallback,
   downloadMap,
+  formatLocationForMapbox,
   generateMap,
   getMapboxRDNameFormat,
+  getSourceLayer,
   mapboxHoverStyle,
   zoomToSelectedState,
 } from '../../../../utils';
-import { api } from '../../../../services';
-import TogglesOverlay from '../../../../components/map/components';
-import { colors, thresholds } from './constants';
-
-import './style.scss';
+import { logError, logWarning } from '../../../../utils/logger';
 import { isInvalidNumber } from '../../../../utils/map';
+import {
+  addDefaultExpressions,
+  addLocationToExpressions,
+  addMapLayer,
+  createBaseExpressions,
+  removeVectorLayer,
+  waitForStyleLoad,
+} from '../../../../utils/map-coloring';
+import { isMapRemoved as checkMapRemoved, markMapAsRemoved as markMapRemoved } from '../../../../utils/map-instance-tracker';
+import { colors, thresholds } from './constants';
+import './style.scss';
 
+const { INIT_DELAY: MAP_INIT_DELAY, CONTAINER_CHECK_INTERVAL } = MAP_INIT_CONSTANTS;
+const PROBABILITY_THRESHOLD = 0.2;
+const SPOTS_THRESHOLD = 50;
+
+/**
+ * Determines fill color based on prediction probability and actual spots count.
+ * Color mapping:
+ * - colors[0]: Predicted outbreak (prob >= 0.2) AND outbreak occurred (spots > 50)
+ * - colors[1]: No prediction (prob < 0.2) AND no outbreak (spots <= 50)
+ * - colors[2]: No prediction (prob < 0.2) BUT outbreak occurred (spots > 50) - false negative
+ * - colors[3]: Predicted outbreak (prob >= 0.2) BUT no outbreak (spots <= 50) - false positive
+ * - colors[4]: Fallback/default color (should rarely be used)
+ */
 const getFillColor = (fillProb, sumSpots) => {
-  if (fillProb >= 0.2 && sumSpots > 50) {
+  if (fillProb >= PROBABILITY_THRESHOLD && sumSpots > SPOTS_THRESHOLD) {
     return colors[0];
-  } else if (fillProb < 0.2 && sumSpots < 50) {
-    return colors[1];
-  } else if (fillProb < 0.2 && sumSpots > 50) {
-    return colors[2];
-  } else if (fillProb >= 0.2 && sumSpots <= 50) {
-    return colors[3];
-  } else {
-    return colors[4];
   }
+  if (fillProb < PROBABILITY_THRESHOLD && sumSpots <= SPOTS_THRESHOLD) {
+    return colors[1];
+  }
+  if (fillProb < PROBABILITY_THRESHOLD && sumSpots > SPOTS_THRESHOLD) {
+    return colors[2];
+  }
+  if (fillProb >= PROBABILITY_THRESHOLD && sumSpots <= SPOTS_THRESHOLD) {
+    return colors[3];
+  }
+  return colors[4];
 };
 
 const ComparisonMap = (props) => {
@@ -42,38 +78,89 @@ const ComparisonMap = (props) => {
     dataMode,
     selectedState,
     setCounty,
+    setDataMode,
     setRangerDistrict,
     setState,
     year,
     isLoading,
   } = props;
-  const [map, setMap] = useState();
-  const [initialFill, setInitialFill] = useState(false);
-  const [legendTags, setLegendTags] = useState([]);
-  const [resultsHover, setResultsHover] = useState(null);
-  const [isDownloadingMap, setIsDownloadingMap] = useState(false);
-  const [mapClickCallback, setMapClickCallback] = useState();
-  const [mapHoverCallback, setMapHoverCallback] = useState();
-  const [mapStateClickCallback, setMapStateClickCallback] = useState();
-  const [mapLayerMouseLeaveCallback, setMapLayerMouseLeaveCallback] = useState();
-  const [allRangerDistricts, setAllRangerDistricts] = useState([]);
+
+  const {
+    map,
+    setMap,
+    initialFill,
+    setInitialFill,
+    hover: resultsHover,
+    setHover: setResultsHover,
+    isDownloadingMap,
+    setIsDownloadingMap,
+  } = useMapState();
+
+  const allRangerDistricts = useRangerDistricts(dataMode);
+
+  const colorResultsTimeoutRef = useRef(null);
+  const mapInitTimeoutRef = useRef(null);
+  const containerCheckTimeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
+  const styleRetryCountRef = useRef(0);
 
   useEffect(() => {
-    if (dataMode === DATA_MODES.RANGER_DISTRICT) {
-      api.getAvailableSublocations(dataMode)
-        .then(setAllRangerDistricts)
-        .catch(console.error);
-    }
-  }, [dataMode]);
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (colorResultsTimeoutRef.current) {
+        clearTimeout(colorResultsTimeoutRef.current);
+        colorResultsTimeoutRef.current = null;
+      }
+      if (mapInitTimeoutRef.current) {
+        clearTimeout(mapInitTimeoutRef.current);
+        mapInitTimeoutRef.current = null;
+      }
+      if (containerCheckTimeoutRef.current) {
+        clearTimeout(containerCheckTimeoutRef.current);
+        containerCheckTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
-  const createMapHoverCallback = (resultsData, rangerDistricts, mode, state, availStates) => {
+  const dataLookupMap = useMemo(() => {
+    if (!data || data.length === 0) return new Map();
+
+    const lookup = new Map();
+    data.forEach((p) => {
+      if (dataMode === DATA_MODES.COUNTY) {
+        const key = `${p.state}-${p.county}`;
+        lookup.set(key, p);
+      } else {
+        const key = `${p.state || ''}-${p.rangerDistrict || ''}`;
+        if (key !== '-') lookup.set(key, p);
+      }
+    });
+    return lookup;
+  }, [data, dataMode]);
+
+  const createMapHoverCallback = useCallback((resultsData, rangerDistricts, mode, state, availStates, lookupMap) => {
     const callback = (hoverState, location, x, y) => {
-      const pred = resultsData.find((p) => {
-      // either ranger district mode or have a matching state
-        return (mode === DATA_MODES.RANGER_DISTRICT || (p.state === hoverState && p.state === state) || (!state && availStates.includes(hoverState)))
-              // and sublocation matches
-              && ((p.county === location && mode === DATA_MODES.COUNTY && p.state === hoverState) || (p.rangerDistrict === location && mode === DATA_MODES.RANGER_DISTRICT));
-      });
+      if (!hoverState || !location) {
+        setResultsHover(null);
+        return;
+      }
+
+      let pred = null;
+      if (lookupMap && lookupMap.size > 0) {
+        const key = `${hoverState}-${location}`;
+        pred = lookupMap.get(key);
+      } else {
+        pred = resultsData.find((p) => {
+          const stateMatches = mode === DATA_MODES.RANGER_DISTRICT
+            || (state ? (p.state === hoverState && p.state === state) : availStates.includes(hoverState));
+          const locationMatches = mode === DATA_MODES.COUNTY
+            ? (p.county === location && p.state === hoverState)
+            : (p.rangerDistrict === location);
+
+          return stateMatches && locationMatches;
+        });
+      }
 
       if (pred && x && y) {
         const {
@@ -95,25 +182,18 @@ const ComparisonMap = (props) => {
     };
 
     return createHoverCallback(map, rangerDistricts, dataMode, callback);
-  };
+  }, [map, dataMode, setResultsHover]);
 
-  const colorResults = (comparisonData) => {
-    // keep trying until map styles are loaded
-    if (!map.isStyleLoaded()) {
-      setTimeout(() => {
-        colorResults(comparisonData);
-      }, 1000);
+  const colorResults = useCallback((comparisonData) => {
+    if (!isMountedRef.current || !map) return;
 
+    if (!waitForStyleLoad(map, colorResults, [comparisonData], colorResultsTimeoutRef, isMountedRef, styleRetryCountRef)) {
       return;
     }
 
-    // remove county layer if already constructed
-    if (map.getLayer(VECTOR_LAYER)) {
-      map.removeLayer(VECTOR_LAYER);
-    }
+    removeVectorLayer(map);
 
-    const fillExpression = ['match', ['upcase', ['get', 'forest']]];
-    const strokeExpression = ['match', ['upcase', ['get', 'forest']]];
+    const { fillExpression, strokeExpression } = createBaseExpressions(dataMode);
 
     comparisonData.forEach(({
       county,
@@ -124,77 +204,114 @@ const ComparisonMap = (props) => {
     }) => {
       const color = getFillColor(fillProb, sumSpots);
 
-      const countyFormatName = county && state ? `${county.toUpperCase()} ${state}` : '';
-      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict).toUpperCase() : '';
+      const locationName = formatLocationForMapbox(dataMode, {
+        county,
+        rangerDistrict,
+        state,
+      });
 
-      const locationName = dataMode === DATA_MODES.COUNTY
-        ? countyFormatName
-        // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
-        : [rangerDistrictFormatName, rangerDistrictFormatName.replace(' RD', '  RD'), rangerDistrictFormatName.replace(' RD', '')]
-          .filter((str) => !!str);
-
-      if (locationName?.length !== 0) {
-        fillExpression.push(locationName, color);
-        strokeExpression.push(locationName, '#000000');
+      if (locationName) {
+        const names = Array.isArray(locationName) ? locationName : [locationName];
+        const validNames = names.filter((str) => !!str);
+        if (validNames.length > 0) {
+          addLocationToExpressions(fillExpression, strokeExpression, validNames, color);
+        }
       }
     });
 
-    // last value is the default, used where there is no data
-    fillExpression.push('rgba(0,0,0,0)');
-    strokeExpression.push('rgba(0,0,0,0)');
-    // add layer from the vector tile source with data-driven style
-    // double-checking if we have valid fillExpression for paint
-    if (fillExpression.length > 3) {
-      map.addLayer({
-        id: VECTOR_LAYER,
-        type: 'fill',
-        source: MAP_SOURCE_NAME,
-        'source-layer': dataMode === DATA_MODES.COUNTY ? SOURCE_LAYERS.COUNTY : SOURCE_LAYERS.RANGER_DISTRICT,
-        paint: {
-          'fill-color': fillExpression,
-          'fill-outline-color': strokeExpression,
-        },
-      }, 'water-point-label');
-    }
-  };
+    addDefaultExpressions(fillExpression, strokeExpression);
+
+    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
+  }, [map, dataMode]);
+
+  const mapInitializedRef = useRef(false);
+  const lastDataModeRef = useRef(dataMode);
+  const containerRetryCountRef = useRef(0);
 
   useEffect(() => {
-    mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
-    const clickCallback = createMapClickCallback(
-      availableStates,
-      availableSublocations,
-      selectedState,
-      data,
-      dataMode,
-      props.county,
-      setCounty,
-      props.rangerDistrict,
-      setRangerDistrict,
-    );
-    const hoverCallback = createMapHoverCallback(
-      data,
-      allRangerDistricts,
-      dataMode,
-      selectedState,
-      availableStates,
-    );
+    const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
 
-    setTimeout(() => {
-      setMap(undefined);
-      generateMap(
-        true,
-        map,
-        thresholds,
-        colors,
-        setLegendTags,
-        dataMode,
-        clickCallback,
-        setMapClickCallback,
-        hoverCallback,
-        setMapHoverCallback,
-        setMap,
-      );
-    }, 100);
+    if (!shouldRegenerate && mapInitializedRef.current) {
+      return;
+    }
+
+    if (mapInitTimeoutRef.current) {
+      clearTimeout(mapInitTimeoutRef.current);
+      mapInitTimeoutRef.current = null;
+    }
+    if (containerCheckTimeoutRef.current) {
+      clearTimeout(containerCheckTimeoutRef.current);
+      containerCheckTimeoutRef.current = null;
+    }
+
+    mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
+
+    const currentMap = map;
+
+    mapInitTimeoutRef.current = setTimeout(() => {
+      mapInitTimeoutRef.current = null;
+
+      if (!isMountedRef.current) return;
+
+      const checkContainer = () => {
+        if (!isMountedRef.current) return;
+
+        if (containerRetryCountRef.current >= MAP_INIT_CONSTANTS.MAX_CONTAINER_CHECK_RETRIES) {
+          logError('Map container not found after maximum retries', null, { component: 'ComparisonMap' });
+          return;
+        }
+
+        const container = document.getElementById('map');
+        if (container) {
+          containerRetryCountRef.current = 0;
+          generateMap({
+            forceRegenerate: true,
+            map: currentMap,
+            dataMode,
+            setMap,
+          });
+          mapInitializedRef.current = true;
+          lastDataModeRef.current = dataMode;
+        } else {
+          containerRetryCountRef.current += 1;
+          containerCheckTimeoutRef.current = setTimeout(() => {
+            containerCheckTimeoutRef.current = null;
+            if (isMountedRef.current) {
+              checkContainer();
+            }
+          }, CONTAINER_CHECK_INTERVAL);
+        }
+      };
+      checkContainer();
+    }, MAP_INIT_DELAY);
+
+    // eslint-disable-next-line consistent-return
+    return () => {
+      if (mapInitTimeoutRef.current) {
+        clearTimeout(mapInitTimeoutRef.current);
+        mapInitTimeoutRef.current = null;
+      }
+      if (containerCheckTimeoutRef.current) {
+        clearTimeout(containerCheckTimeoutRef.current);
+        containerCheckTimeoutRef.current = null;
+      }
+      if (map && typeof map.remove === 'function' && map.getContainer && !checkMapRemoved(map)) {
+        try {
+          const container = map.getContainer();
+          if (container && container.parentNode) {
+            markMapRemoved(map);
+            map.remove();
+          }
+        } catch (error) {
+          if (map) {
+            markMapRemoved(map);
+          }
+          logError('Error cleaning up map', error, { component: 'ComparisonMap' });
+        }
+      }
+      mapInitializedRef.current = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataMode]);
 
   useEffect(() => {
@@ -202,119 +319,124 @@ const ComparisonMap = (props) => {
     if (year.toString().length === 4 && data.length > 0) colorResults(data);
 
     zoomToSelectedState(selectedState, map);
-  }, [data, selectedState, map, dataMode]);
+  }, [data, selectedState, map, dataMode, year, colorResults]);
 
   useEffect(() => {
     if (!initialFill && map && data.length > 0) {
       colorResults(data);
       setInitialFill(true);
     }
+  }, [initialFill, map, data, colorResults, setInitialFill]);
 
-    if (map && data) {
-      // remove current callback
-      if (mapHoverCallback) map.off('mousemove', mapHoverCallback);
+  const hoverCallback = useMemo(() => {
+    if (!map || !data) return null;
+    return createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates, dataLookupMap);
+  }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates, dataLookupMap, createMapHoverCallback]);
 
-      // generate new callback
-      const callback = createMapHoverCallback(data, allRangerDistricts, dataMode, selectedState, availableStates);
-      setMapHoverCallback(() => callback);
-      map.on('mousemove', callback);
+  const clickCallback = useMemo(() => {
+    if (!map || !availableStates || !availableSublocations) return null;
+    return createMapClickCallback({
+      states: availableStates,
+      sublocations: availableSublocations,
+      currentState: selectedState,
+      data,
+      dataMode,
+      county: props.county,
+      setCounty,
+      rangerDistrict: props.rangerDistrict,
+      setRangerDistrict,
+    });
+  }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict]);
+
+  const stateClickCallback = useCallback((e) => {
+    const { abbrev } = e?.features[0]?.properties || {};
+    if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
+      setState(abbrev);
     }
-  }, [map, data, allRangerDistricts, dataMode, selectedState, availableStates]);
+  }, [selectedState, availableStates, setState]);
 
-  // update the click callback handler when all RD or all states changes
-  useEffect(() => {
-    if (map && availableStates && availableSublocations) {
-      // remove current callback
-      if (mapClickCallback) map.off('click', VECTOR_LAYER, mapClickCallback);
+  const mouseLeaveCallback = useCallback(() => {
+    setResultsHover(null);
+  }, [setResultsHover]);
 
-      // generate new callback
-      const callback = createMapClickCallback(
-        availableStates,
-        availableSublocations,
-        selectedState,
-        data,
-        dataMode,
-        props.county,
-        setCounty,
-        props.rangerDistrict,
-        setRangerDistrict,
-      );
-      setMapClickCallback(() => callback);
-      map.on('click', VECTOR_LAYER, callback);
-    }
-  }, [map, availableStates, availableSublocations, selectedState, data, dataMode]);
+  useMapCallbacks(
+    map,
+    clickCallback,
+    hoverCallback,
+    stateClickCallback,
+    mouseLeaveCallback,
+    [availableStates, availableSublocations, selectedState, data, dataMode, allRangerDistricts, dataLookupMap]
+  );
 
   useEffect(() => {
-    if (map) {
-      // remove current callback
-      if (mapStateClickCallback) map.off('click', STATE_VECTOR_LAYER, mapStateClickCallback);
-
-      // generate new callback
-      const callback = (e) => {
-        const { abbrev } = e?.features[0]?.properties || {};
-
-        // state must exist, not be current selection and must be a valid state
-        if (abbrev && selectedState !== abbrev && availableStates.includes(abbrev)) {
-          setState(abbrev);
+    if (data.length === 0 && map && map.isStyleLoaded && map.isStyleLoaded() && typeof map.getLayer === 'function') {
+      try {
+        if (map.getLayer(VECTOR_LAYER)) {
+          map.removeLayer(VECTOR_LAYER);
         }
-      };
-
-      setMapStateClickCallback(() => callback);
-      map.on('click', STATE_VECTOR_LAYER, callback);
-    }
-  }, [map, availableStates, selectedState]);
-
-  useEffect(() => {
-    if (map) {
-      // remove current callback
-      if (mapLayerMouseLeaveCallback) map.off('click', VECTOR_LAYER, mapLayerMouseLeaveCallback);
-
-      // generate new callback
-      const callback = () => setResultsHover(null);
-
-      setMapLayerMouseLeaveCallback(() => callback);
-      map.on('mouseleave', VECTOR_LAYER, callback);
-    }
-  }, [map]);
-
-  useEffect(() => {
-    if (data.length === 0 && map && map.getLayer(VECTOR_LAYER)) {
-      map.removeLayer(VECTOR_LAYER);
+      } catch (error) {
+        logWarning('Error removing layer', error, { component: 'ComparisonMap' });
+      }
     }
   }, [data, map]);
 
+  const getShortLabel = (threshold) => {
+    const labelMap = {
+      'outbreak predicted, outbreak occurred': 'Predicted, Occurred',
+      'outbreak not predicted, outbreak did not occur': 'Not Predicted, Did Not Occur',
+      'outbreak not predicted, outbreak occurred': 'Not Predicted, Occurred',
+      'outbreak predicted, outbreak did not occur': 'Predicted, Did Not Occur',
+    };
+    return labelMap[threshold] || threshold;
+  };
+
+  const legendItems = thresholds.map((threshold, index) => ({
+    color: colors[index],
+    label: getShortLabel(threshold),
+  }));
+
   return (
-    <>
-      <TogglesOverlay />
-      <div className="container results-comparison-map" id="map-container">
-        <Map
-          legend={(
-            <>
-              <div className="legend-key-title">Results comparison</div>
-              {legendTags}
-            </>
-            )}
-          hover={resultsHover}
-          isDownloadingMap={isDownloadingMap}
-          downloadCallback={() => downloadMap(
-            map,
-            year,
-            isDownloadingMap,
-            setIsDownloadingMap,
-            selectedState,
-            MAP_TITLES.COMPARISON,
-            { titleDetails: { selectedState, period: year }, thresholds, colors },
-          )}
-        />
-        {!isLoading && !data.length && (
+    <div className="container flex-item-left results-comparison-map" id="map-container">
+      <TogglesOverlay dataMode={dataMode} setDataMode={setDataMode} />
+      <MapComponent
+        hover={resultsHover}
+      />
+      <MapControls
+        availableStates={availableStates}
+        availableYears={[]} // Results comparison doesn't have years filter
+        availableSublocations={availableSublocations}
+        county={props.county}
+        dataMode={dataMode}
+        predictionYear={year}
+        rangerDistrict={props.rangerDistrict}
+        selectedState={selectedState}
+        setCounty={setCounty}
+        setPredictionYear={() => {}} // No year setting for results comparison
+        setRangerDistrict={setRangerDistrict}
+        setState={setState}
+        clearAllSelections={props.clearAllSelections}
+        legendItems={legendItems}
+        legendTitle="Results comparison"
+        downloadCallback={() => downloadMap(
+          map,
+          year,
+          isDownloadingMap,
+          setIsDownloadingMap,
+          selectedState,
+          MAP_TITLES.COMPARISON,
+          { titleDetails: { selectedState, period: year }, thresholds, colors }
+        )}
+        isDownloadingMap={isDownloadingMap}
+        hideFilters
+      />
+      {!isLoading && !data.length && (
         <div className="results-comparison-message">
           <p>
             {`Map for ${year} not yet available. Spot data for the previous year usually come online sometime in January or February of the following year.`}
           </p>
         </div>
-        )}
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 

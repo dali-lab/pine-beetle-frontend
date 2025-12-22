@@ -1,0 +1,529 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
+// React Modal Overlay styles
+.ReactModal__Overlay.prediction-details-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($black, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+
+.ReactModal__Overlay--after-open.prediction-details-modal-overlay {
+  opacity: 1;
+}
+
+.ReactModal__Overlay--before-close.prediction-details-modal-overlay {
+  opacity: 0;
+}
+
+// React Modal Content styles
+.ReactModal__Content.prediction-details-modal {
+  position: relative;
+  outline: none;
+  max-width: 1200px;
+  max-height: 70vh;
+  width: 100%;
+  margin: auto;
+  padding: 0;
+  background: transparent;
+  border: none;
+  overflow: visible;
+}
+
+.prediction-details-container {
+  box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+  background-color: $white;
+  padding: 39px;
+  border-radius: 26px;
+  position: relative;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  // Hide scrollbar but keep scrolling functionality
+  scrollbar-width: none; // Firefox
+  -ms-overflow-style: none; // IE and Edge
+
+  &::-webkit-scrollbar {
+    display: none; // Chrome, Safari, Opera
+  }
+}
+
+.prediction-details-close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: $greyBlue800;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $greyBlue900;
+  }
+
+  &:focus {
+    outline: 2px solid $blue500;
+    outline-offset: 2px;
+  }
+}
+
+.prediction-details {
+  // TODO: why is its margin left and right more than others?
+  background-color: $white;
+  border-radius: 26px;
+}
+
+.prediction-title h1 {
+  font-size: 32px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: $greyBlue900;
+  margin-bottom: 13px;
+}
+
+#prediction-subtitle {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.31;
+  text-align: left;
+  color: $greyBlue800;
+  margin-bottom: 24px;
+}
+
+.prediction-info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.percentages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.prediction-circle #percent {
+  line-height: 110px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 800;
+  text-shadow: rgba($textColor, 0.2) 1px 0 10px;
+}
+
+.prediction-circle p {
+  font-size: 16px;
+  text-align: center;
+}
+
+.circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  color: $white;
+  font-weight: 700;
+  text-align: center;
+  justify-content: space-between;
+  margin-left: 40px;
+  margin-right: 30px;
+  margin-bottom: 100px;
+}
+
+.circle p {
+  width: 110px;
+  text-align: center;
+  align-content: center;
+  width: 160px;
+  height: 42px;
+  margin: 13px 37px 12px -20px;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.31;
+  letter-spacing: normal;
+  text-align: center;
+  color: $white;
+}
+
+// Color classes for prediction circles
+.color-fill-with-shadow {
+  &.blue {
+    background: #649AD3;
+    box-shadow: 0 4px 12px rgba(100, 154, 211, 0.4);
+  }
+
+  &.yellow {
+    background: #E6B951;
+    box-shadow: 0 4px 12px rgba(230, 185, 81, 0.4);
+  }
+
+  &.orange {
+    background: #E89876;
+    box-shadow: 0 4px 12px rgba(232, 152, 118, 0.4);
+  }
+
+  &.brightRed {
+    background: #D95557;
+    box-shadow: 0 4px 12px rgba(217, 85, 87, 0.4);
+  }
+
+  &.darkerRed {
+    background: #AC5E7D;
+    box-shadow: 0 4px 12px rgba(172, 94, 125, 0.4);
+  }
+
+  &.darkRed {
+    background: #783F58;
+    box-shadow: 0 4px 12px rgba(120, 63, 88, 0.4);
+  }
+}
+
+.prediction-grid-title-container {
+  flex: 1;
+  min-width: 300px;
+}
+
+.prediction-grid-container {
+  margin-top: -20px;
+  display: flex;
+}
+
+.bullets {
+  margin-top: 18px;
+  margin-right: 10px;
+}
+
+.bullet {
+  position: relative;
+  border: 2px solid $greyBlue300;
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  line-height: 40px;
+  text-align: center;
+  margin-top: 45px;
+  background-color: $greyBlue300;
+  z-index: 2;
+}
+
+.bullet:first-child {
+  margin-top: 7px;
+}
+
+.bullet:before {
+  position: absolute;
+  border: 1px solid $greyBlue300;
+  width: 0;
+  height: 50px;
+  display: block;
+  content: '';
+  left: 50%;
+  z-index: 1;
+  top: -54px;
+  margin-left: -1px;
+}
+
+.bullet:first-child:before {
+  display: none;
+}
+
+.prediction-grid {
+  display: grid;
+  grid-template-columns: auto 200px;
+  grid-template-areas:
+    'yeart2 yeart2-spots'
+    'yeart1 yeart1-spots'
+    'curr-year curr-spb'
+    '. curr-endobrev';
+
+  @media (min-width: 1400px) {
+    grid-template-columns: auto 150px auto;
+    grid-template-areas:
+      'yeart2 . yeart2-spots'
+      'yeart1 yeart1 yeart1-spots'
+      'curr-year curr-spb curr-endobrev';
+  }
+}
+
+.prediction-grid > div {
+  text-align: left;
+  font-family: 'Inter';
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.prediction-grid .year-title {
+  margin-top: 23px;
+  font-size: 20px;
+  font-weight: bold;
+  color: $greyBlue900;
+}
+
+.yeart2 {
+  grid-area: yeart2;
+}
+
+.yeart2-spots {
+  grid-area: yeart2-spots;
+}
+
+.yeart1 {
+  grid-area: yeart1;
+}
+
+.yeart1-clerids {
+  grid-area: yeart1-clerids;
+}
+
+.yeart1-spots {
+  grid-area: yeart1-spots;
+}
+
+.curr-year {
+  grid-area: curr-year;
+}
+
+.curr-spb {
+  grid-area: curr-spb;
+}
+
+.curr-endobrev {
+  grid-area: curr-endobrev;
+
+  .content-horizontal-rule {
+    display: none;
+
+    @media (min-width: 1400px) {
+      display: block;
+    }
+  }
+
+  .content-container {
+    margin-top: 0;
+
+    @media (min-width: 1400px) {
+      margin-top: 12px;
+    }
+  }
+}
+
+.content-container {
+  margin: 12px;
+  padding: 7px 9px 9px 7px;
+  border-radius: 6px;
+  box-shadow: 0 7px 22px -2px rgba(0, 0, 0, 0.08);
+  background-color: $white;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+hr {
+  height: 1px;
+  border: none;
+  background-color: $grey300;
+}
+
+.prediction-grid img {
+  width: 17px;
+  height: 17px;
+  float: left;
+  padding: 5px;
+  margin-right: 5px;
+}
+
+.prediction-grid #clerids img {
+  background-color: $beige300;
+  border-radius: 6px;
+}
+
+.prediction-grid #spots img {
+  background-color: $green300;
+  border-radius: 6px;
+}
+
+.prediction-grid #spb img {
+  background-color: $blue400;
+  border-radius: 6px;
+}
+
+.content-text {
+  padding-top: 5px;
+  font-size: 16px;
+}
+
+.prediction-histogram-section {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid $grey300;
+  width: 100%;
+}
+
+.prediction-histogram-title {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.31;
+  text-align: left;
+  color: $greyBlue800;
+  margin-bottom: 24px;
+}
+
+.prediction-histogram-scroll-container {
+  width: 100%;
+  overflow-x: visible;
+
+  @media (max-width: $mobile) {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba($greyBlue800, 0.3) transparent;
+
+    // Smooth scrolling with momentum on iOS
+    scroll-behavior: smooth;
+
+    // Enable touch scrolling - only allow horizontal panning
+    touch-action: pan-x;
+
+    // Prevent vertical scrolling on the histogram container itself
+    overscroll-behavior-x: contain;
+
+    // Custom scrollbar styling for webkit browsers
+    &::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba($greyBlue300, 0.1);
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba($greyBlue800, 0.3);
+      border-radius: 3px;
+
+      &:hover {
+        background-color: rgba($greyBlue800, 0.5);
+      }
+    }
+
+    // Ensure histogram content maintains its natural width for scrolling
+    // The histogram component has min-width: 450px on wrapper + 130px legend = ~580px
+    // We ensure it can expand naturally but maintain scrollability
+    .histogram {
+      // Let histogram maintain its natural width, but ensure it's scrollable
+      width: max-content;
+      min-width: 580px; // Minimum width based on legend (130px) + wrapper (450px)
+    }
+  }
+}
+
+.about-predictions {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid $grey200;
+
+  p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: $greyBlue800;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@media (max-width: $mobile) {
+  .prediction-details-modal-overlay {
+    padding: 10px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .ReactModal__Content.prediction-details-modal {
+    max-height: 90vh;
+    width: 100%;
+  }
+
+  .prediction-details-container {
+    padding: 20px;
+    border-radius: 16px;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .prediction-title h1 {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  #prediction-subtitle {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .prediction-info {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .percentages {
+    justify-content: center;
+  }
+
+  .circle {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 40px;
+  }
+
+  .prediction-histogram-section {
+    margin-top: 32px;
+    padding-top: 32px;
+  }
+
+  .prediction-histogram-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .about-predictions {
+    margin-top: 20px;
+    padding-top: 20px;
+
+    p {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+  }
+}

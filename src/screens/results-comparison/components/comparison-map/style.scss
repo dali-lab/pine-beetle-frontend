@@ -1,7 +1,26 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
 .results-comparison-map {
     .legend-tag {
         font-size: 14px;
     }
+}
+
+#map-container {
+    position: relative;
+    margin-bottom: 100px;
+    margin-top: 0px;
+    width: 100% !important;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    flex: 1.1 !important;
+    border-radius: 20px;
+    box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
+    background-color: $white;
+    padding: 0;
+    overflow: hidden;
 }
 
 .results-comparison-message {
@@ -23,6 +42,30 @@
         padding: 30px;
         border-radius: 20px;
         background-color: $white;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+}
+
+#prediction-hover {
+    position: absolute;
+    background-color: rgba(17, 18, 22, 0.75);
+    padding: 15px;
+    color: white;
+    text-align: left;
+    border-radius: 10px;
+    -webkit-backdrop-filter: blur(70px);
+    backdrop-filter: blur(70px);
+    background-color: rgba(17, 18, 22, 0.75);
+    z-index: 1000;
+    pointer-events: none;
+
+    h3 {
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    p {
+        color: white;
+        margin: 5px 0;
     }
 }

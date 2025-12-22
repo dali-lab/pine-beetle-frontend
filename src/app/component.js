@@ -1,33 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Redirect,
   Route,
   BrowserRouter as Router,
   Switch,
+  useLocation,
 } from 'react-router-dom';
 
 import {
   About,
   Admin,
   Blog,
+  Contact,
+  Data,
+  DataTable,
+  DownloadData,
+  Explainers,
   Home,
-  Prediction,
+  Methodology,
+  PlayWithModelScreen,
   Resources,
   ResultsComparison,
   SingleBlogPost,
-  TrappingData,
+  TimeSeries,
 } from '../screens';
 
 import {
   Footer,
   Header,
-  MobileOverlay,
-  ScrollToTop,
 } from '../components';
 
 import {
   DATA_MODES,
-  MIN_WIDTH_THRESHOLD,
   RESOURCE_REMOTE_URLS,
   RESOURCE_ROUTES,
   ROUTES,
@@ -41,6 +45,17 @@ import {
 
 const FallBack = () => {
   return <div>URL not found</div>;
+};
+
+const ConditionalFooter = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === ROUTES.HOME;
+
+  if (isHomePage) {
+    return null;
+  }
+
+  return <Footer />;
 };
 
 global.API_URL = process.env.MAIN_BACKEND_URL;
@@ -57,22 +72,20 @@ const App = (props) => {
     getAggregateLocationData,
     getPredictions,
     getAvailableStates,
+    getAvailableYears,
     getSparseData,
     getAllBlogPosts,
     getResultsComparisonData,
     getScatterChartData,
   } = props;
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < MIN_WIDTH_THRESHOLD);
+  const initialLoadDone = useRef(false);
 
+  // Initial data fetch - only runs once on mount
   useEffect(() => {
-    const resizeListener = (e) => setIsMobile(e.target.innerWidth < MIN_WIDTH_THRESHOLD);
-    window.addEventListener('resize', resizeListener);
+    if (initialLoadDone.current) return;
+    initialLoadDone.current = true;
 
-    return () => window.removeEventListener('resize', resizeListener);
-  }, []);
-
-  useEffect(() => {
     global.API_URL = process.env.MAIN_BACKEND_URL;
     global.AUTOMATION_API_URL = process.env.AUTOMATION_BACKEND_URL;
 
@@ -81,24 +94,37 @@ const App = (props) => {
       loginUserFromStorage();
     }
 
-    // set data mode if persist in browser
-    setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY);
+    // set data mode if persist in browser (skip data fetch - pages will fetch their own data)
+    setDataMode(getDataModeFromStorage() || DATA_MODES.COUNTY, { skipDataFetch: true });
 
-    // fetch initial data
-    // TODO rework redux to only have stuff fetched here
-    getAggregateYearData();
-    getAggregateStateData();
-    getAggregateLocationData();
-    getAllBlogPosts();
-    getSparseData();
-    getPredictions();
-    getResultsComparisonData(predictionYear);
-    getScatterChartData();
+    // Only fetch data needed for current page - other pages fetch their own data
+    const { pathname } = window.location;
+    const isHomePage = pathname === '/' || pathname === '/home';
+    const isBlogPage = pathname.startsWith('/blog');
+    const isResultsPage = pathname === '/results-comparison';
+
+    // Home page needs predictions and sparse data for the map
+    // First fetch available years to ensure predictionYear is valid (e.g., 2024 not 2025)
+    // The reducer will auto-correct predictionYear, which triggers the other useEffect to fetch predictions
+    if (isHomePage) {
+      getAvailableYears();
+    }
+
+    // Blog pages need blog posts
+    if (isBlogPage) {
+      getAllBlogPosts();
+    }
+
+    if (isResultsPage && predictionYear) {
+      getResultsComparisonData(predictionYear);
+      getScatterChartData();
+    }
   }, [
     getAggregateLocationData,
     getAggregateStateData,
     getAggregateYearData,
     getAllBlogPosts,
+    getAvailableYears,
     getPredictions,
     getSparseData,
     getResultsComparisonData,
@@ -109,9 +135,14 @@ const App = (props) => {
     predictionYear,
   ]);
 
-  // TODO rework redux to only have stuff fetched here
+  // Re-fetch predictions when predictionYear changes (but not on mount)
+  const hasMounted = useRef(false);
   useEffect(() => {
-    getPredictions(predictionYear, predictionYear);
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      return;
+    }
+    getPredictions(predictionYear);
     getAvailableStates({ predictionYear });
   }, [
     predictionYear,
@@ -119,11 +150,8 @@ const App = (props) => {
     getAvailableStates,
   ]);
 
-  if (isMobile) return <MobileOverlay />;
-
   return (
     <Router>
-      <ScrollToTop />
       <Header />
       <div className="content">
         <Switch>
@@ -132,9 +160,15 @@ const App = (props) => {
           <Route path={ROUTES.ADMIN} component={Admin} />
           <Route path={`${ROUTES.BLOG}/:id`} component={SingleBlogPost} />
           <Route path={ROUTES.BLOG} component={Blog} />
+          <Route path={ROUTES.CONTACT} component={Contact} />
+          <Route path={ROUTES.DATA} component={Data} />
+          <Route path={ROUTES.DATA_TABLE} component={DataTable} />
+          <Route path={ROUTES.DOWNLOAD_DATA} component={DownloadData} />
+          <Route path={ROUTES.EXPLAINERS} component={Explainers} />
+          <Route path={ROUTES.TIME_SERIES} component={TimeSeries} />
+          <Route path={ROUTES.METHODOLOGY} component={Methodology} />
+          <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModelScreen} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
-          <Route path={ROUTES.TRAPPING_DATA} component={TrappingData} />
-          <Route path={ROUTES.PREDICTIONS} component={Prediction} />
           <Route path={ROUTES.RESULTS_COMPARISON} component={ResultsComparison} />
           {Object.entries(RESOURCE_ROUTES).map(([TYPE, ROUTE]) => (
             <Route
@@ -149,7 +183,7 @@ const App = (props) => {
           <Route component={FallBack} />
         </Switch>
       </div>
-      <Footer />
+      <ConditionalFooter />
     </Router>
   );
 };

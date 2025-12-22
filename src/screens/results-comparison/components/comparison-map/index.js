@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import {
-  setCounty, setRangerDistrict, setState,
+  setCounty, setDataMode, setRangerDistrict, setState,
 } from '../../../../state/actions';
 import ComparisonMap from './component';
 
@@ -39,6 +39,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setCounty: (county) => {
       dispatch(setCounty(county));
+    },
+    setDataMode: (mode) => {
+      dispatch(setDataMode(mode));
     },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));

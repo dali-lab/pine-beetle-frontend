@@ -72,7 +72,7 @@ const BlogPosts = (props) => {
       <div className="blog-posts-title">Your blog posts</div>
       {sortedBlogPosts.length > 0
         ? sortedBlogPosts.map(
-          (post) => <BlogPost post={post} onClickEdit={() => openEditForm(post)} onDelete={() => openDeleteModal(post)} key={post.id} />,
+          (post) => <BlogPost post={post} onClickEdit={() => openEditForm(post)} onDelete={() => openDeleteModal(post)} key={post.id} />
         ) : <div>You haven&#39;t written any blog posts yet!</div>}
       <EditBlogPost isOpen={showEditForm} setIsOpen={setShowEditForm} post={selectedBlogPost} onSubmit={handleFormSubmit} />
       <DeleteModal handleDelete={handleDeleteBlogPost} isOpen={showDeleteModal} setIsOpen={setShowDeleteModal} title={selectedBlogPost.title} />

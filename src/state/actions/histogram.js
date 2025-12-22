@@ -11,7 +11,6 @@ export const getHistogram = () => {
       const data = await getHistogramService();
       dispatch({ type: ActionTypes.GET_HISTOGRAM, payload: data });
     } catch (error) {
-      console.log('error', error);
       dispatch({
         type: ActionTypes.HISTOGRAM_API_ERROR,
         payload: 'GET HISTOGRAM DATA',

@@ -1,10 +1,10 @@
+import { CHART_MODES, DATA_MODES } from '../../constants';
 import { ActionTypes } from '../actions';
-import { DATA_MODES, CHART_MODES } from '../../constants';
 
 const initialState = {
-  startYear: 1988,
-  endYear: new Date().getFullYear(),
   predictionYear: new Date().getFullYear(),
+  startYear: '',
+  endYear: '',
   state: '',
   county: [],
   rangerDistrict: [],
@@ -22,40 +22,6 @@ const initialState = {
 
 const SelectionsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionTypes.SET_START_YEAR: {
-      const castedYear = parseInt(action.payload.startYear, 10);
-
-      // try choosing earliest possible year
-      const defaultYear = state.availableHistoricalYears.length
-        ? state.availablePredictionYears[0]
-        : initialState.startYear;
-
-      // guards against null, undefined, ''
-      const startYear = Number.isNaN(castedYear)
-        ? defaultYear
-        : castedYear;
-
-      const endYear = Math.max(state.endYear, startYear); // ensure endYear >= startYear
-      return { ...state, startYear, endYear };
-    }
-
-    case ActionTypes.SET_END_YEAR: {
-      const castedYear = parseInt(action.payload.endYear, 10);
-
-      // try choosing latest possible year
-      const defaultYear = state.availableHistoricalYears.length
-        ? state.availablePredictionYears.slice(-1)
-        : initialState.endYear;
-
-      // guards against null, undefined, ''
-      const endYear = Number.isNaN(castedYear)
-        ? defaultYear
-        : castedYear;
-
-      const startYear = Math.min(state.startYear, endYear); // ensure endYear >= startYear
-      return { ...state, endYear, startYear };
-    }
-
     case ActionTypes.SET_PREDICTION_YEAR: {
       const castedYear = parseInt(action.payload.year, 10);
 
@@ -82,7 +48,13 @@ const SelectionsReducer = (state = initialState, action) => {
     case ActionTypes.SET_COUNTY:
       return { ...state, county: action.payload.county };
 
+    case ActionTypes.SET_COUNTY_FILTER:
+      return { ...state, county: action.payload.county };
+
     case ActionTypes.SET_RANGER_DISTRICT:
+      return { ...state, rangerDistrict: action.payload.rangerDistrict };
+
+    case ActionTypes.SET_RANGER_DISTRICT_FILTER:
       return { ...state, rangerDistrict: action.payload.rangerDistrict };
 
     case ActionTypes.SET_DATA_MODE:
@@ -94,32 +66,60 @@ const SelectionsReducer = (state = initialState, action) => {
         rangerDistrict: [],
       };
 
-    case ActionTypes.CLEAR_SELECTIONS:
+    case ActionTypes.CLEAR_SELECTIONS: {
+      // Reset start and end year to defaults (oldest and latest)
+      const defaultStartYear = state.availableHistoricalYears.length > 0
+        ? state.availableHistoricalYears[0]
+        : '';
+      const defaultEndYear = state.availableHistoricalYears.length > 0
+        ? state.availableHistoricalYears[state.availableHistoricalYears.length - 1]
+        : '';
+
+      // Reset prediction year to latest available year, or current year if none available
+      const defaultPredictionYear = state.availablePredictionYears.length > 0
+        ? Math.max(...state.availablePredictionYears)
+        : initialState.predictionYear;
+
       return {
         ...initialState,
+        predictionYear: defaultPredictionYear,
+        state: '',
+        county: [],
+        rangerDistrict: [],
         availableYears: state.availableYears,
         availableStates: state.availableStates,
+        availableHistoricalYears: state.availableHistoricalYears,
+        availableHistoricalStates: state.availableHistoricalStates,
+        availableHistoricalSublocations: state.availableHistoricalSublocations,
+        availablePredictionYears: state.availablePredictionYears,
+        availablePredictionStates: state.availablePredictionStates,
+        availablePredictionSublocations: state.availablePredictionSublocations,
         dataMode: state.dataMode,
         chartMode: state.chartMode,
+        startYear: defaultStartYear,
+        endYear: defaultEndYear,
       };
+    }
 
     case ActionTypes.SET_CHART_MODE:
       return { ...state, chartMode: action.payload };
 
-    case ActionTypes.SET_AGGREGATE_YEAR_DATA:
-      return {
-        ...state,
-        startYear: action.payload.map(({ year }) => year).includes(state.startYear) ? parseInt(state.startYear, 10) : parseInt(Math.min(...action.payload.map(({ year }) => year)), 10),
-        endYear: action.payload.map(({ year }) => year).includes(state.endYear) ? parseInt(state.endYear, 10) : parseInt(Math.max(...action.payload.map(({ year }) => year)), 10),
-      };
+    case ActionTypes.SET_AVAILABLE_YEARS_HISTORICAL: {
+      const years = action.payload;
+      // Sort years to ensure oldest is first and newest is last
+      const sortedYears = [...years].sort((a, b) => a - b);
+      // Set default start year to oldest (first) and end year to latest (last)
+      const defaultStartYear = sortedYears.length > 0 ? sortedYears[0] : '';
+      const defaultEndYear = sortedYears.length > 0 ? sortedYears[sortedYears.length - 1] : '';
 
-    case ActionTypes.SET_AVAILABLE_YEARS_HISTORICAL:
       return {
         ...state,
-        availableHistoricalYears: action.payload,
-        startYear: action.payload.includes(state.startYear) ? parseInt(state.startYear, 10) : parseInt(Math.min(...action.payload), 10),
-        endYear: action.payload.includes(state.endYear) ? parseInt(state.endYear, 10) : parseInt(Math.max(...action.payload), 10),
+        availableHistoricalYears: sortedYears,
+        // Set defaults if current values are empty/falsy
+        startYear: state.startYear || defaultStartYear,
+        endYear: state.endYear || defaultEndYear,
       };
+    }
 
     case ActionTypes.SET_AVAILABLE_STATES_HISTORICAL:
       return { ...state, availableHistoricalStates: action.payload };
@@ -150,6 +150,18 @@ const SelectionsReducer = (state = initialState, action) => {
 
     case ActionTypes.SET_PREDICTION_MODAL:
       return { ...state, predictionModal: action.payload };
+
+    case ActionTypes.SET_START_YEAR: {
+      const castedYear = parseInt(action.payload.year, 10);
+      const startYear = Number.isNaN(castedYear) ? '' : castedYear;
+      return { ...state, startYear };
+    }
+
+    case ActionTypes.SET_END_YEAR: {
+      const castedYear = parseInt(action.payload.year, 10);
+      const endYear = Number.isNaN(castedYear) ? '' : castedYear;
+      return { ...state, endYear };
+    }
 
     default:
       return state;

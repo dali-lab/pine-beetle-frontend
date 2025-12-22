@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import './style.scss';
 
-import arrowDown from '../../../assets/icons/arrow-down.png';
-import emptyCheckbox from '../../../assets/icons/empty_checkbox.png';
-import selectedCheckbox from '../../../assets/icons/selected_checkbox.png';
 import closeIcon from '../../../assets/icons/close.png';
+import { CheckboxChecked, CheckboxEmpty, LocationHeaderArrowIcon } from './Icons';
 
 const CLEAR_TEXT = 'All Locations';
 
 const MultiSelectInput = (props) => {
   const {
+    id,
     valueParent,
     valueChildren,
     setValueParent,
@@ -22,10 +21,8 @@ const MultiSelectInput = (props) => {
 
   const ref = useRef();
   const [statusText, setStatusText] = useState('');
-  const [allSelected, setAllSelected] = useState(true);
   const [isListOpen, setIsListOpen] = useState(false);
 
-  // close dropdown when clicking outside the component
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
       if (isListOpen && ref.current && !ref.current.contains(e.target)) {
@@ -41,43 +38,46 @@ const MultiSelectInput = (props) => {
   }, [isListOpen]);
 
   useEffect(() => {
-    if (valueChildren.length === 0) {
-      setStatusText(valueParent ? `${valueParent} (${optionsChildren.length} selected)` : CLEAR_TEXT);
+    if (valueChildren.length === 0 && valueParent) {
+      // When valueChildren is empty and parent is selected, it means all counties are selected
+      setStatusText(`${valueParent} (${optionsChildren.length} selected)`);
+    } else if (valueChildren.length === 0) {
+      setStatusText(CLEAR_TEXT);
     } else {
       setStatusText(valueParent ? `${valueParent} (${valueChildren.length} selected)` : CLEAR_TEXT);
     }
   }, [valueChildren, optionsChildren, valueParent]);
 
-  // force "none selected" to be "all selected"
   useEffect(() => {
-    if (!valueParent) {
-      setAllSelected(true);
+    if (valueParent) {
+      setValueChildren([]);
     }
-  }, [valueParent]);
-
-  useEffect(() => {
-    setValueChildren([]);
-  }, [setValueChildren]);
+  }, [valueParent, setValueChildren]);
 
   const handleRemove = (element) => {
     setValueChildren(valueChildren.filter((e) => e !== element));
   };
 
-  // set the parent and auto select all its children
   const selectParent = (parent) => {
     if (valueParent === parent) {
-      setAllSelected(true);
       setValueParent('');
+      setIsListOpen(false);
     } else {
-      setAllSelected(false);
       setValueParent(parent);
+      setValueChildren([]);
+      setIsListOpen(false);
     }
   };
 
-  // add children to value list or remove it if previously selected
   const selectChildren = (child) => {
-    // if child has already been selected, then remove it
-    if (valueChildren.indexOf(child) > -1) {
+    const isAllSelected = valueChildren.length === 0;
+
+    if (isAllSelected) {
+      setValueChildren(optionsChildren.filter((c) => c !== child));
+    } else if (valueChildren.indexOf(child) > -1) {
+      if (valueChildren.length === 1) {
+        return;
+      }
       handleRemove(child);
     } else {
       setValueChildren([...valueChildren, child]);
@@ -91,7 +91,6 @@ const MultiSelectInput = (props) => {
           <button type="button"
             className="location-list-instructions"
             onClick={() => {
-              setAllSelected(true);
               setValueParent('');
             }}
           >
@@ -107,18 +106,16 @@ const MultiSelectInput = (props) => {
         {
           optionsParent.map((item) => (
             <div
-              className="location-list-item"
+              className={`location-list-item ${valueParent === item ? 'active' : ''}`}
               key={item}
             >
               <div
                 className="location-list-item-select"
                 onClick={() => selectParent(item)}
               >
-                <img
-                  src={(valueParent === item || allSelected) ? selectedCheckbox : emptyCheckbox}
-                  alt="Parent checkbox"
-                  className="location-list-item-select-checkbox"
-                />
+                <div className="location-list-item-select-checkbox">
+                  {valueParent === item ? <CheckboxChecked /> : <CheckboxEmpty />}
+                </div>
                 {item}
                 {valueParent === item && (
                   <span className="location-list-item-select-status">(
@@ -135,20 +132,23 @@ const MultiSelectInput = (props) => {
                 valueParent === item && (
                   <div className="children-list">
                     {
-                      optionsChildren.map((child) => (
-                        <div
-                          className="children-list-item"
-                          key={child}
-                          onClick={() => selectChildren(child)}
-                        >
-                          <img
-                            src={(valueChildren.indexOf(child) > -1 || valueChildren.length === 0) ? selectedCheckbox : emptyCheckbox}
-                            alt="Child checkbox"
-                            className="location-list-item-select-checkbox"
-                          />
-                          {child}
-                        </div>
-                      ))
+                      optionsChildren.map((child) => {
+                        // When valueChildren is empty, all counties are selected
+                        const isAllSelected = valueChildren.length === 0;
+                        const isChildSelected = isAllSelected || valueChildren.indexOf(child) > -1;
+                        return (
+                          <div
+                            className={`children-list-item ${isChildSelected ? 'active' : ''}`}
+                            key={child}
+                            onClick={() => selectChildren(child)}
+                          >
+                            <div className="children-list-item-checkbox">
+                              {isChildSelected ? <CheckboxChecked /> : <CheckboxEmpty />}
+                            </div>
+                            {child}
+                          </div>
+                        );
+                      })
                     }
                   </div>
                 )
@@ -163,33 +163,35 @@ const MultiSelectInput = (props) => {
   if (listOnly) {
     return (
       <div className="multi-select-container">
-        <div className="input-container">
-          <div className="location-wrapper">
-            <div id="separation-line" />
-            {locationList()}
-          </div>
-        </div>
+        <div id="separation-line" />
+        {locationList()}
       </div>
     );
   } else {
     return (
       <div className="multi-select-container" ref={ref}>
-        <div className="input-container">
-          <div className="location-wrapper">
-            <div className="location-header" onClick={() => setIsListOpen(!isListOpen)}>
-              <div className="location-header-title">{statusText}</div>
-              <img
-                src={arrowDown}
-                alt="Arrow down"
-                className="location-header-arrow"
-              />
-            </div>
-            {/* Initial dropdown displaying all parent data (e.g. all states) */}
-            {isListOpen && (
-              locationList()
-            )}
-          </div>
+        <div
+          id={id}
+          className="location-header"
+          onClick={() => setIsListOpen(!isListOpen)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setIsListOpen(!isListOpen);
+            }
+          }}
+          aria-expanded={isListOpen}
+          aria-haspopup="listbox"
+        >
+          <div className="location-header-title">{statusText}</div>
+          <LocationHeaderArrowIcon />
         </div>
+        {/* Initial dropdown displaying all parent data (e.g. all states) */}
+        {isListOpen && (
+          locationList()
+        )}
       </div>
     );
   }

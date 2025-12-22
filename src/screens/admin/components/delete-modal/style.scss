@@ -1,3 +1,6 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
 .delete-modal {
     position: fixed;
     top: 50%;
@@ -23,9 +26,32 @@
     margin-top: 20px;
 
     .single-button {
-        padding: 6px 20px;
-        border-radius: 6px;
-        background-color: $greyBlue400;
+        padding: 0.625rem 1.25rem;
+        border-radius: 0.5rem;
+        background-color: $brandPrimary;
+        color: $white;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+
+        &:hover:not(:disabled) {
+            background-color: $brandSecondary;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        &:disabled {
+            background-color: $greyBlue300;
+            color: $greyBlue600;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
     }
 }
 

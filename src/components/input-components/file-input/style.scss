@@ -1,3 +1,6 @@
+@import '../../../styles/breakpoints';
+@import '../../../styles/colors';
+
 #file-selected {
     overflow: hidden;
     white-space: nowrap;
@@ -33,7 +36,7 @@ input[type=file] {
 
     h3 {
         text-align: center;
-        margin-bottom: 50px;
+        margin-bottom: 25px;
         padding-left: 20px;
         padding-right: 20px;
     }
