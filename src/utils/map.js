@@ -407,5 +407,5 @@ export {
   generateMap,
   isInvalidNumber,
   mapboxHoverStyle,
-  zoomToSelectedState
+  zoomToSelectedState,
 };

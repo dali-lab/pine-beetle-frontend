@@ -83,11 +83,14 @@ const SingleChart = ({
       {
         name: 'Frequency',
         type: 'bar',
-        data,
+        data: Array.isArray(data) ? data.filter((item) => item != null && !Number.isNaN(item)) : [],
         barWidth: '98%',
         barCategoryGap: '1%',
         itemStyle: {
           color: (params) => {
+            if (!params || !params.name) {
+              return '#86CCFF';
+            }
             const categoriesAbove50 = ['>249', '100-249', '50-99'];
             return categoriesAbove50.includes(params.name)
               ? '#FFC148'
