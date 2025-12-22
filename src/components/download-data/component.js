@@ -11,7 +11,6 @@ import {
   getStateNameFromAbbreviation,
 } from '../../utils';
 
-// Import PDF files as assets
 import annualSummariesMetadata from '../../assets/files/SPBpredict_annualSummaries_metadata.pdf';
 import unsummarizedMetadata from '../../assets/files/SPBpredict_unsummarized_metadata.pdf';
 
@@ -48,7 +47,6 @@ const DownloadData = (props) => {
 
   const [error, setError] = useState('');
 
-  // vars for selecting types of data
   const [fieldsToDownload, setFieldsToDownload] = useState({
     SUMMARIZED: true,
     UNSUMMARIZED: true,
@@ -59,7 +57,6 @@ const DownloadData = (props) => {
     [fieldName]: e.target.checked,
   });
 
-  // Helper function to fetch CSV data as blob
   const fetchCsvData = async (dataType, queryParams = {}) => {
     const query = Object.entries(queryParams)
       .filter(([_, val]) => val !== null && val !== undefined && val !== '')
@@ -71,13 +68,11 @@ const DownloadData = (props) => {
     return data;
   };
 
-  // Helper function to fetch PDF as blob
   const fetchPdfAsBlob = async (pdfPath) => {
     const response = await axios.get(pdfPath, { responseType: 'blob' });
     return response.data;
   };
 
-  // function for handling trapping data download as zip
   const handleDownload = async () => {
     try {
       setError('');
@@ -132,18 +127,14 @@ const DownloadData = (props) => {
           }),
       ];
 
-      // Wait for all files to be fetched
       await Promise.all([...csvPromises, ...pdfPromises]);
 
-      // Generate zip file
       const zipBlob = await zip.generateAsync({ type: 'blob' });
 
-      // Download the zip file
       const objectUrl = URL.createObjectURL(zipBlob);
       const link = document.createElement('a');
       link.href = objectUrl;
 
-      // Create a meaningful filename
       let locationStr;
       if (countyMode) {
         locationStr = county.length > 0 ? county.join('-') : 'all-counties';
