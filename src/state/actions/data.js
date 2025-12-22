@@ -8,7 +8,7 @@ export const ActionTypes = {
   SET_AGGREGATE_STATE_DATA: 'SET_AGGREGATE_STATE_DATA',
   SET_AGGREGATE_LOCATION_DATA: 'SET_AGGREGATE_LOCATION_DATA',
   SET_CUSTOM_PREDICTION: 'SET_CUSTOM_PREDICTION',
-  SET_RESULTS_COMPARISON_DATA: 'SET_RESULTS_COMPARISON_DATA',
+  SET_OBSERVED_OUTCOMES_DATA: 'SET_OBSERVED_OUTCOMES_DATA',
   SET_SCATTER_CHART_DATA: 'SET_SCATTER_CHART_DATA',
 
   FETCHING_PREDICTIONS: 'FETCHING_PREDICTIONS',
@@ -17,7 +17,7 @@ export const ActionTypes = {
   FETCHING_AGGREGATE_STATE_DATA: 'FETCHING_AGGREGATE_STATE_DATA',
   FETCHING_AGGREGATE_LOCATION_DATA: 'FETCHING_AGGREGATE_LOCATION_DATA',
   FETCHING_CUSTOM_PREDICTION: 'FETCHING_CUSTOM_PREDICTION',
-  FETCHING_RESULTS_COMPARISON_DATA: 'FETCHING_RESULTS_COMPARISON_DATA',
+  FETCHING_OBSERVED_OUTCOMES_DATA: 'FETCHING_OBSERVED_OUTCOMES_DATA',
   FETCHING_SCATTER_CHART_DATA: 'FETCHING_SCATTER_CHART_DATA',
 
   SET_DATA_FETCH_ERROR: 'SET_DATA_FETCH_ERROR',
@@ -293,7 +293,7 @@ export const clearCustomPredictionError = () => {
   };
 };
 
-export const getResultsComparisonData = (year, overrideFilter = {}) => {
+export const getObservedOutcomesData = (year, overrideFilter = {}) => {
   return async (dispatch, getState) => {
     if (!year) {
       return;
@@ -306,7 +306,7 @@ export const getResultsComparisonData = (year, overrideFilter = {}) => {
       state,
     } = getState().selections;
 
-    dispatch({ type: ActionTypes.FETCHING_RESULTS_COMPARISON_DATA, payload: true });
+    dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: true });
 
     const filters = {
       state,
@@ -318,7 +318,7 @@ export const getResultsComparisonData = (year, overrideFilter = {}) => {
 
     try {
       const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyResultsComparison(filters) : api.getRDResultsComparison(filters));
-      dispatch({ type: ActionTypes.SET_RESULTS_COMPARISON_DATA, payload: response });
+      dispatch({ type: ActionTypes.SET_OBSERVED_OUTCOMES_DATA, payload: response });
     } catch (error) {
       dispatch({
         type: ActionTypes.CLEAR_DATA_FETCH_ERROR,
@@ -327,11 +327,11 @@ export const getResultsComparisonData = (year, overrideFilter = {}) => {
         type: ActionTypes.SET_DATA_FETCH_ERROR,
         payload: {
           error,
-          text: 'Failed to fetch results comparison data',
+          text: 'Failed to fetch observed outcomes data',
         },
       });
     } finally {
-      dispatch({ type: ActionTypes.FETCHING_RESULTS_COMPARISON_DATA, payload: false });
+      dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: false });
     }
   };
 };

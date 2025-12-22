@@ -39,7 +39,7 @@ const ROUTES = {
   METHODOLOGY: '/methodology',
   RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
-  RESULTS_COMPARISON: '/results-comparison',
+  OBSERVED_OUTCOMES: '/observed-outcomes',
 };
 
 const RESOURCE_ROUTES = {
@@ -160,5 +160,5 @@ export {
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
   VECTOR_LAYER,
-  VIDEO_URL,
+  VIDEO_URL
 };

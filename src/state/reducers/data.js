@@ -40,7 +40,7 @@ const DataReducer = (state = initialState, action) => {
     case ActionTypes.SET_CUSTOM_PREDICTION:
       return { ...state, customPrediction: action.payload };
 
-    case ActionTypes.SET_RESULTS_COMPARISON_DATA:
+    case ActionTypes.SET_OBSERVED_OUTCOMES_DATA:
       return { ...state, resultsComparison: action.payload };
 
     case ActionTypes.SET_SCATTER_CHART_DATA:
@@ -64,7 +64,7 @@ const DataReducer = (state = initialState, action) => {
     case ActionTypes.FETCHING_CUSTOM_PREDICTION:
       return { ...state, fetchingCustomPrediction: action.payload };
 
-    case ActionTypes.FETCHING_RESULTS_COMPARISON_DATA:
+    case ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA:
       return { ...state, fetchingResultsComparisonData: action.payload };
 
     case ActionTypes.FETCHING_SCATTER_CHART_DATA:

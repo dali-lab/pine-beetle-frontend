@@ -10,7 +10,7 @@ import Home from './home';
 import Methodology from './methodology';
 import PlayWithModelScreen from './play-with-model';
 import Resources from './resources';
-import ResultsComparison from './results-comparison';
+import ObservedOutcomes from './observed-outcomes';
 import SingleBlogPost from './single-blog-post';
 import TimeSeries from './time-series';
 
@@ -27,7 +27,7 @@ export {
   Methodology,
   PlayWithModelScreen,
   Resources,
-  ResultsComparison,
+  ObservedOutcomes,
   SingleBlogPost,
   TimeSeries,
 };

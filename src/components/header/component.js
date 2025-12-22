@@ -118,8 +118,8 @@ const Header = () => {
 
             {/* 2. Observed Outcomes */}
             <Link
-              to={ROUTES.RESULTS_COMPARISON}
-              className={`nav-item ${isActiveRoute(ROUTES.RESULTS_COMPARISON) ? 'active' : ''}`}
+              to={ROUTES.OBSERVED_OUTCOMES}
+              className={`nav-item ${isActiveRoute(ROUTES.OBSERVED_OUTCOMES) ? 'active' : ''}`}
             >
               Observed Outcomes
             </Link>
@@ -362,7 +362,7 @@ const Header = () => {
           </div>
 
           <Link
-            to={ROUTES.RESULTS_COMPARISON}
+            to={ROUTES.OBSERVED_OUTCOMES}
             className="mobile-nav-link"
             onClick={handleMobileMenuClose}
           >
