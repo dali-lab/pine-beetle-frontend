@@ -1,6 +1,5 @@
 /*
- * DEV NOTE: Refactored to use composition pattern with shared hooks and utilities.
- * All functionality preserved including mobile detection and prediction modal.
+ * DEV NOTE: Fixed map coloring on navigation - force recolor on mount
  */
 import mapboxgl from 'mapbox-gl';
 import React, {
@@ -74,13 +73,12 @@ const PredictionMap = (props) => {
     clearAllSelections,
     year,
     predictionModal,
+    getPredictions,
   } = props;
 
   const {
     map,
     setMap,
-    initialFill,
-    setInitialFill,
     hover: predictionHover,
     setHover: setPredictionHover,
     isDownloadingMap,
@@ -88,6 +86,7 @@ const PredictionMap = (props) => {
   } = useMapState();
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const hasColoredRef = useRef(false);
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -108,15 +107,26 @@ const PredictionMap = (props) => {
   const isMountedRef = useRef(true);
   const styleRetryCountRef = useRef(0);
 
+  const hasCheckedEmptyDataRef = useRef(false);
+
   useEffect(() => {
     isMountedRef.current = true;
+    hasColoredRef.current = false;
+
+    if (!hasCheckedEmptyDataRef.current && data.length === 0 && year && year.toString().length === 4 && getPredictions) {
+      hasCheckedEmptyDataRef.current = true;
+      getPredictions(year);
+    }
+
     return () => {
       isMountedRef.current = false;
+      hasCheckedEmptyDataRef.current = false;
       if (colorPredictionsTimeoutRef.current) {
         clearTimeout(colorPredictionsTimeoutRef.current);
         colorPredictionsTimeoutRef.current = null;
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const createMapHoverCallback = useCallback((predictions, rangerDistricts, mode, state, availStates) => {
@@ -148,11 +158,11 @@ const PredictionMap = (props) => {
     return createHoverCallback(map, rangerDistricts, dataMode, callback, isMobile);
   }, [map, dataMode, isMobile, setPredictionHover]);
 
-  const colorPredictions = useCallback((predictions) => {
-    if (!map) return;
+  const colorPredictions = useCallback((predictions, forceRecolor = false) => {
+    if (!map) return false;
 
-    if (!waitForStyleLoad(map, colorPredictions, [predictions], colorPredictionsTimeoutRef, isMountedRef, styleRetryCountRef)) {
-      return;
+    if (!waitForStyleLoad(map, colorPredictions, [predictions, forceRecolor], colorPredictionsTimeoutRef, isMountedRef, styleRetryCountRef)) {
+      return false;
     }
 
     removeVectorLayer(map);
@@ -197,6 +207,8 @@ const PredictionMap = (props) => {
     addDefaultExpressions(fillExpression, strokeExpression);
 
     addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
+
+    return true;
   }, [map, dataMode, county, rangerDistrict]);
 
   const mapInitializedRef = useRef(false);
@@ -257,19 +269,33 @@ const PredictionMap = (props) => {
   }, [dataMode]);
 
   useEffect(() => {
-    if (!map) return;
-
-    if (year.toString().length === 4 && data.length > 0) colorPredictions(data);
-
-    zoomToSelectedState(selectedState, map);
-  }, [data, selectedState, map, year, colorPredictions, county, rangerDistrict]);
-
-  useEffect(() => {
-    if (!initialFill && map && data.length > 0) {
-      colorPredictions(data);
-      setInitialFill(true);
+    if (!map || data.length === 0 || year.toString().length !== 4) {
+      return undefined;
     }
-  }, [initialFill, map, data, colorPredictions, setInitialFill]);
+
+    const attemptColoring = () => {
+      if (map.isStyleLoaded && map.isStyleLoaded()) {
+        const didColor = colorPredictions(data, true);
+        if (didColor) {
+          hasColoredRef.current = true;
+          zoomToSelectedState(selectedState, map);
+        }
+      } else {
+        map.once('styledata', () => {
+          const didColor = colorPredictions(data, true);
+          if (didColor) {
+            hasColoredRef.current = true;
+            zoomToSelectedState(selectedState, map);
+          }
+        });
+      }
+    };
+
+    const timer = setTimeout(attemptColoring, 50);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [map, data, year, selectedState, county, rangerDistrict, colorPredictions]);
 
   const hoverCallback = useMemo(() => {
     if (!map || !data) return null;

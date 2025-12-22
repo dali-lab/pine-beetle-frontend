@@ -160,5 +160,5 @@ export {
   stateAbbrevToZoomLevel,
   stateNameToAbbrev,
   VECTOR_LAYER,
-  VIDEO_URL
+  VIDEO_URL,
 };
