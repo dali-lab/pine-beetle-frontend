@@ -369,11 +369,17 @@ export const getScatterChartData = () => {
     dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: true });
 
     try {
-      const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyScatterChart() : api.getRDScatterChart());
-      dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: response.data });
+      const response = await (dataMode === DATA_MODES.COUNTY
+        ? api.getCountyScatterChart()
+        : api.getRDScatterChart());
+
+      // API already returns the array (not wrapped in { data }), so normalize before dispatch/cache
+      const chartData = Array.isArray(response) ? response : response?.data || [];
+      dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: chartData });
+
       try {
         const cacheValue = JSON.stringify({
-          data: response.data,
+          data: chartData,
           timestamp: Date.now(),
         });
         localStorage.setItem(cacheKey, cacheValue);
