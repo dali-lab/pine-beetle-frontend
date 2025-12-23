@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { ROUTES } from '../../../../constants';
 import { getDateToDisplay, truncateText } from '../../../../utils';
-import { getBlogPostLikes, getBlogPostComments } from '../../../../services/blog';
+// TODO: Re-enable likes/comments stats when backend endpoints are available
+// import { getBlogPostLikes, getBlogPostComments } from '../../../../services/blog';
 
 import './style.scss';
 
@@ -15,42 +16,31 @@ const BlogPost = ({ post }) => {
     _id,
   } = post;
 
-  const [likes, setLikes] = useState(0);
-  const [comments, setComments] = useState(0);
+  // TODO: Re-enable likes/comments stats when backend endpoints are available
+  // const [likes, setLikes] = useState(0);
+  // const [comments, setComments] = useState(0);
 
   const history = useHistory();
   const location = useLocation();
   const isSinglePostPage = location.pathname.includes('/blog/') && location.pathname !== '/blog';
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      if (!_id) return;
-
-      try {
-        // Fetch likes and comments from API
-        const [likesData, commentsData] = await Promise.all([
-          getBlogPostLikes(_id),
-          getBlogPostComments(_id),
-        ]);
-        setLikes(likesData.count);
-        setComments(commentsData.length);
-      } catch (error) {
-        console.error('Failed to fetch blog post stats:', error);
-        // Fallback to localStorage if API fails
-        const savedLikes = localStorage.getItem(`blog-likes-${_id}`);
-        const savedComments = localStorage.getItem(`blog-comments-${_id}`);
-
-        if (savedLikes) {
-          setLikes(parseInt(savedLikes, 10));
-        }
-        if (savedComments) {
-          setComments(JSON.parse(savedComments).length);
-        }
-      }
-    };
-
-    fetchStats();
-  }, [_id]);
+  // TODO: Re-enable likes/comments stats when backend endpoints are available
+  // useEffect(() => {
+  //   const fetchStats = async () => {
+  //     if (!_id) return;
+  //     try {
+  //       const [likesData, commentsData] = await Promise.all([
+  //         getBlogPostLikes(_id),
+  //         getBlogPostComments(_id),
+  //       ]);
+  //       setLikes(likesData.count);
+  //       setComments(commentsData.length);
+  //     } catch (error) {
+  //       console.error('Failed to fetch blog post stats:', error);
+  //     }
+  //   };
+  //   fetchStats();
+  // }, [_id]);
 
   const handleClick = () => {
     if (!isSinglePostPage) {
@@ -64,10 +54,7 @@ const BlogPost = ({ post }) => {
         <div className="blog-post-date">
           {getDateToDisplay(createdAt)}
         </div>
-        <div className="blog-post-stats">
-          <span className="blog-post-likes">{likes} likes</span>
-          <span className="blog-post-comments">{comments} comments</span>
-        </div>
+        {/* Likes/comments stats hidden until backend is ready */}
       </div>
       <h2 className={`blog-post-title ${isSinglePostPage ? 'no-click' : ''}`} onClick={handleClick}>
         {title}
