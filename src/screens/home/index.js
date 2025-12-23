@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import Home from './component';
+import { clearSelections } from '../../state/actions';
 
 const mapStateToProps = (state) => {
   const {
@@ -19,8 +20,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = () => {
-  return {};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearAllSelections: () => {
+      dispatch(clearSelections());
+    },
+  };
 };
 
 export default connect(
