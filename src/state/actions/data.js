@@ -44,10 +44,8 @@ const buildFilters = (selections, overrides = {}) => {
     state,
   } = selections;
 
-  // Extract year from overrides (used for single-year queries)
   const { year, ...restOverrides } = overrides;
 
-  // If year is provided in overrides, use it for both startYear and endYear
   const yearFilter = year
     ? { startYear: year, endYear: year }
     : { startYear: restOverrides.startYear || startYear, endYear: restOverrides.endYear || endYear };
@@ -342,13 +340,11 @@ export const getScatterChartData = () => {
       dataMode,
     } = getState().selections;
 
-    // Check localStorage cache first (based on dataMode only, like the old version)
     const cacheKey = `scatterChart_${dataMode}`;
     const cachedData = localStorage.getItem(cacheKey);
     if (cachedData) {
       try {
         const { data: cachedScatterChart, timestamp } = JSON.parse(cachedData);
-        // Use cache if it's less than 1 hour old
         const cacheAge = Date.now() - timestamp;
         const oneHour = 60 * 60 * 1000;
         if (cacheAge < oneHour && cachedScatterChart && cachedScatterChart.length > 0) {
@@ -356,11 +352,9 @@ export const getScatterChartData = () => {
           return;
         }
       } catch (e) {
-        // Invalid cache, continue to fetch
       }
     }
 
-    // Check if we already have data in Redux store for this dataMode
     const { scatterChart } = getState().data;
     if (scatterChart && scatterChart.length > 0) {
       return;
@@ -373,7 +367,6 @@ export const getScatterChartData = () => {
         ? api.getCountyScatterChart()
         : api.getRDScatterChart());
 
-      // API already returns the array (not wrapped in { data }), so normalize before dispatch/cache
       const chartData = Array.isArray(response) ? response : response?.data || [];
       dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: chartData });
 
@@ -384,7 +377,6 @@ export const getScatterChartData = () => {
         });
         localStorage.setItem(cacheKey, cacheValue);
       } catch (e) {
-        // localStorage might be full, ignore
       }
     } catch (error) {
       dispatch({
@@ -430,15 +422,11 @@ export const fetchAllObservedOutcomesData = (year) => {
       },
     } = state;
 
-    // Skip if a fetch is already in progress
     if (fetchingResultsComparisonData || fetchingScatterChartData) {
       return;
     }
 
-    // Skip scatter chart fetch if we already have it (it's not year-specific)
     const hasChartData = scatterChart && scatterChart.length > 0;
-    // Always fetch map data (resultsComparison) when year changes since it's year-specific
-    // We don't check hasMapData because resultsComparison is year-specific and should be refetched
 
     const filters = {
       state: selectedState,
@@ -449,19 +437,15 @@ export const fetchAllObservedOutcomesData = (year) => {
 
     dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: true });
 
-    // Only fetch scatter chart if we don't already have it
     if (!hasChartData) {
       dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: true });
     }
 
     try {
-      // Prepare scatter chart promise - use existing data, cache, or fetch from API
       let scatterPromise;
       if (hasChartData) {
-        // We already have scatter chart data, use it
         scatterPromise = Promise.resolve(scatterChart);
       } else {
-        // Try cache first for scatter chart (1h TTL)
         const cacheKey = `scatterChart_${dataMode}`;
         const cachedData = localStorage.getItem(cacheKey);
         if (cachedData) {
@@ -474,11 +458,9 @@ export const fetchAllObservedOutcomesData = (year) => {
               scatterPromise = Promise.resolve(cachedScatterChart);
             }
           } catch (e) {
-            // ignore cache parse errors
           }
         }
 
-        // If cache not used, fallback to API
         if (!scatterPromise) {
           scatterPromise = (dataMode === DATA_MODES.COUNTY
             ? api.getCountyScatterChart()
@@ -499,12 +481,10 @@ export const fetchAllObservedOutcomesData = (year) => {
 
       dispatch({ type: ActionTypes.SET_OBSERVED_OUTCOMES_DATA, payload: mapResponse });
 
-      // Only update scatter chart if we fetched new data
       if (!hasChartData) {
         dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: chartData });
       }
 
-      // Cache scatter chart data for this dataMode (only if we fetched new data)
       if (!hasChartData) {
         try {
           const cacheKey = `scatterChart_${dataMode}`;
