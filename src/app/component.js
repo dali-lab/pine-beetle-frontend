@@ -20,7 +20,7 @@ import {
   Methodology,
   PlayWithModelScreen,
   Resources,
-  ResultsComparison,
+  ObservedOutcomes,
   SingleBlogPost,
   TimeSeries,
 } from '../screens';
@@ -75,7 +75,7 @@ const App = (props) => {
     getAvailableYears,
     getSparseData,
     getAllBlogPosts,
-    getResultsComparisonData,
+    getObservedOutcomesData,
     getScatterChartData,
   } = props;
 
@@ -101,7 +101,7 @@ const App = (props) => {
     const { pathname } = window.location;
     const isHomePage = pathname === '/' || pathname === '/home';
     const isBlogPage = pathname.startsWith('/blog');
-    const isResultsPage = pathname === '/results-comparison';
+    const isResultsPage = pathname === '/observed-outcomes';
 
     // Home page needs predictions and sparse data for the map
     // First fetch available years to ensure predictionYear is valid (e.g., 2024 not 2025)
@@ -116,7 +116,7 @@ const App = (props) => {
     }
 
     if (isResultsPage && predictionYear) {
-      getResultsComparisonData(predictionYear);
+      getObservedOutcomesData(predictionYear);
       getScatterChartData();
     }
   }, [
@@ -127,7 +127,7 @@ const App = (props) => {
     getAvailableYears,
     getPredictions,
     getSparseData,
-    getResultsComparisonData,
+    getObservedOutcomesData,
     getScatterChartData,
     loginUserFromStorage,
     setChartMode,
@@ -169,7 +169,7 @@ const App = (props) => {
           <Route path={ROUTES.METHODOLOGY} component={Methodology} />
           <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModelScreen} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
-          <Route path={ROUTES.RESULTS_COMPARISON} component={ResultsComparison} />
+          <Route path={ROUTES.OBSERVED_OUTCOMES} component={ObservedOutcomes} />
           {Object.entries(RESOURCE_ROUTES).map(([TYPE, ROUTE]) => (
             <Route
               key={ROUTE}

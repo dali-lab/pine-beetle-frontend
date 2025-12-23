@@ -12,7 +12,7 @@ import {
   getUserFromStorage,
   setChartMode,
   setDataMode,
-  getResultsComparisonData,
+  getObservedOutcomesData,
   getScatterChartData,
 } from '../state/actions';
 
@@ -54,8 +54,8 @@ const mapDispatchToProps = (dispatch) => {
     getSparseData: (overrideFilter) => {
       dispatch(getSparseData(overrideFilter));
     },
-    getResultsComparisonData: (year) => {
-      dispatch(getResultsComparisonData(year));
+    getObservedOutcomesData: (year) => {
+      dispatch(getObservedOutcomesData(year));
     },
     getPredictions: (startYear, endYear) => {
       dispatch(getPredictions(startYear, endYear));

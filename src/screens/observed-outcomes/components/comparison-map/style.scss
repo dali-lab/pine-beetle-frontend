@@ -1,7 +1,7 @@
 @import '../../../../styles/breakpoints';
 @import '../../../../styles/colors';
 
-.results-comparison-map {
+.observed-outcomes-map {
     .legend-tag {
         font-size: 14px;
     }
@@ -23,7 +23,7 @@
     overflow: hidden;
 }
 
-.results-comparison-message {
+.observed-outcomes-message {
     position: absolute;
     top: 0;
     bottom: 0;

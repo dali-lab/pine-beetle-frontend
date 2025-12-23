@@ -39,7 +39,7 @@ const ROUTES = {
   METHODOLOGY: '/methodology',
   RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
-  RESULTS_COMPARISON: '/results-comparison',
+  OBSERVED_OUTCOMES: '/observed-outcomes',
 };
 
 const RESOURCE_ROUTES = {

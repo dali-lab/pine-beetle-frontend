@@ -6,7 +6,7 @@ import {
 
 import './style.scss';
 
-const ResultsComparison = (props) => {
+const ObservedOutcomes = (props) => {
   const {
     isLoading, predictionYear, hasData, fetchData, yearsLoaded, fetchAvailableYears,
   } = props;
@@ -24,11 +24,11 @@ const ResultsComparison = (props) => {
   }, [hasData, predictionYear, fetchData, yearsLoaded]);
 
   return (
-    <div className="results-comparison-page">
-      <div className="results-comparison-container">
+    <div className="observed-outcomes-page">
+      <div className="observed-outcomes-container">
         <Loader visible={isLoading} />
         <OverviewText />
-        <div className="results-comparison-content">
+        <div className="observed-outcomes-content">
           <div className="container">
             <FilterBar />
           </div>
@@ -49,4 +49,4 @@ const ResultsComparison = (props) => {
   );
 };
 
-export default ResultsComparison;
+export default ObservedOutcomes;

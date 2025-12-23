@@ -1,7 +1,7 @@
 @import '../../styles/breakpoints';
 @import '../../styles/colors';
 
-.results-comparison-page {
+.observed-outcomes-page {
   min-height: auto;
   background-color: $backgroundColor;
   padding: 3rem 0;
@@ -11,7 +11,7 @@
     padding: 2rem 0;
   }
 
-  .results-comparison-container {
+  .observed-outcomes-container {
     max-width: 87.5rem;
     margin: 0 auto;
     padding: 0 10rem;
@@ -20,7 +20,7 @@
       padding: 0 1.5rem;
     }
 
-    .results-comparison-content {
+    .observed-outcomes-content {
       .container {
         text-align: left;
         padding: 0;

@@ -6,6 +6,7 @@ const usePagination = (data, dependencies = []) => {
 
   useEffect(() => {
     setCurrentPage(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies);
 
   const paginatedData = useMemo(() => {

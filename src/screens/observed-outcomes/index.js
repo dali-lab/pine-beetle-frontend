@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import ResultsComparison from './component';
+import ObservedOutcomes from './component';
 import {
   getAvailableYears,
-  getResultsComparisonData,
+  getObservedOutcomesData,
   getScatterChartData,
 } from '../../state/actions';
 
@@ -29,9 +29,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   fetchAvailableYears: () => dispatch(getAvailableYears()),
   fetchData: (year) => {
-    dispatch(getResultsComparisonData(year));
+    dispatch(getObservedOutcomesData(year));
     dispatch(getScatterChartData());
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResultsComparison);
+export default connect(mapStateToProps, mapDispatchToProps)(ObservedOutcomes);

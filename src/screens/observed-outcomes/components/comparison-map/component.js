@@ -396,7 +396,7 @@ const ComparisonMap = (props) => {
   }));
 
   return (
-    <div className="container flex-item-left results-comparison-map" id="map-container">
+    <div className="container flex-item-left observed-outcomes-map" id="map-container">
       <TogglesOverlay dataMode={dataMode} setDataMode={setDataMode} />
       <MapComponent
         hover={resultsHover}
@@ -430,7 +430,7 @@ const ComparisonMap = (props) => {
         hideFilters
       />
       {!isLoading && !data.length && (
-        <div className="results-comparison-message">
+        <div className="observed-outcomes-message">
           <p>
             {`Map for ${year} not yet available. Spot data for the previous year usually come online sometime in January or February of the following year.`}
           </p>

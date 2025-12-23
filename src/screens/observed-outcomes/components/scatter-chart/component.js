@@ -33,13 +33,35 @@ const ScatterChart = ({
     if (!data || !Array.isArray(data) || data.length === 0) {
       return [];
     }
-    return data.map((item) => [
-      item.probSpotsGT50 * 100,
-      item.lnSpots,
-      `${item.county || `${getMapboxRDNameFormat(item.rangerDistrict).slice(0, -3)} Ranger District`}, ${item.state}`,
-      item.year,
-      item.spotst0,
-    ]);
+    return data
+      .filter((item) => {
+        // Filter out invalid data points
+        return item
+          && typeof item.probSpotsGT50 === 'number'
+          && !Number.isNaN(item.probSpotsGT50)
+          && typeof item.lnSpots === 'number'
+          && !Number.isNaN(item.lnSpots)
+          && item.year
+          && item.state;
+      })
+      .map((item) => {
+        let locationName = '';
+        if (item.county) {
+          locationName = item.county;
+        } else if (item.rangerDistrict) {
+          const rdFormat = getMapboxRDNameFormat(item.rangerDistrict);
+          locationName = rdFormat ? `${rdFormat.slice(0, -3)} Ranger District` : 'Unknown Ranger District';
+        } else {
+          locationName = 'Unknown Location';
+        }
+        return [
+          item.probSpotsGT50 * 100,
+          item.lnSpots,
+          `${locationName}, ${item.state}`,
+          item.year,
+          item.spotst0 || 0,
+        ];
+      });
   }, [data]);
 
   const selectedYearData = useMemo(
@@ -48,13 +70,44 @@ const ScatterChart = ({
   );
 
   useEffect(() => {
-    const chart = echarts.init(chartRef.current);
+    // Guard: ensure chartRef is available and data is ready
+    if (!chartRef.current) {
+      return undefined;
+    }
+
+    // Guard: ensure we have valid data before initializing
+    if (!formattedData || formattedData.length === 0) {
+      return undefined;
+    }
+
+    // Guard: ensure DOM element is actually in the DOM
+    if (!chartRef.current.offsetParent && chartRef.current.offsetWidth === 0) {
+      return undefined;
+    }
+
+    let chart;
+    try {
+      chart = echarts.init(chartRef.current);
+    } catch (error) {
+      console.error('Error initializing ECharts:', error);
+      return undefined;
+    }
+
+    // Guard: ensure chart was initialized successfully
+    if (!chart) {
+      return undefined;
+    }
+
+    // Ensure all datasets have valid data
+    const allData = (formattedData && formattedData.length > 0) ? formattedData : [];
+    const selectedData = (selectedYearData && selectedYearData.length > 0) ? selectedYearData : [];
+    const regressionData = getCustomRegressionLine();
 
     const option = {
       dataset: [
-        { id: 'all', source: formattedData },
-        { id: 'selected', source: selectedYearData },
-        { id: 'manualRegression', source: getCustomRegressionLine() },
+        { id: 'all', source: allData },
+        { id: 'selected', source: selectedData },
+        { id: 'manualRegression', source: regressionData },
       ],
       title: {
         text: `Year ${predictionYear} highlighted`,
@@ -63,8 +116,14 @@ const ScatterChart = ({
       tooltip: {
         trigger: 'item',
         formatter: (params) => {
+          if (!params || !params.data || !Array.isArray(params.data)) {
+            return '';
+          }
           const [x, y, location, year, spotst0] = params.data;
-          return `${location} (${year})<br/><br/>spots = exp(${y.toFixed(2)}) - 1 = ${spotst0}<br/>Percent chance > 50 spots: <b>${x.toFixed(0)}%</b>`;
+          if (typeof x !== 'number' || typeof y !== 'number' || Number.isNaN(x) || Number.isNaN(y)) {
+            return '';
+          }
+          return `${location || 'Unknown'} (${year || 'N/A'})<br/><br/>spots = exp(${y.toFixed(2)}) - 1 = ${spotst0 || 0}<br/>Percent chance > 50 spots: <b>${x.toFixed(0)}%</b>`;
         },
         extraCssText: 'text-align: left;',
       },
@@ -151,16 +210,32 @@ const ScatterChart = ({
       },
     };
 
-    chart.setOption(option);
+    try {
+      chart.setOption(option);
+    } catch (error) {
+      console.error('Error setting ECharts option:', error);
+      if (chart && !chart.isDisposed()) {
+        chart.dispose();
+      }
+      return undefined;
+    }
 
     const handleResize = () => {
-      chart.resize();
+      if (chart && !chart.isDisposed()) {
+        try {
+          chart.resize();
+        } catch (error) {
+          console.error('Error resizing chart:', error);
+        }
+      }
     };
 
     window.addEventListener('resize', handleResize);
 
     return () => {
-      chart.dispose();
+      if (chart && !chart.isDisposed()) {
+        chart.dispose();
+      }
       window.removeEventListener('resize', handleResize);
     };
   }, [formattedData, selectedYearData, predictionYear]);
