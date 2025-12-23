@@ -352,6 +352,7 @@ export const getScatterChartData = () => {
           return;
         }
       } catch (e) {
+        // Invalid cache, continue to fetch
       }
     }
 
@@ -377,6 +378,7 @@ export const getScatterChartData = () => {
         });
         localStorage.setItem(cacheKey, cacheValue);
       } catch (e) {
+        // localStorage might be full, ignore
       }
     } catch (error) {
       dispatch({
@@ -458,6 +460,7 @@ export const fetchAllObservedOutcomesData = (year) => {
               scatterPromise = Promise.resolve(cachedScatterChart);
             }
           } catch (e) {
+            // ignore cache parse errors
           }
         }
 
