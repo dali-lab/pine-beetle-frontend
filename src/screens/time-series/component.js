@@ -40,12 +40,19 @@ const TimeSeries = (props) => {
     fetchGraphData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fetch map data when in map view and mapYear changes
+  // Fetch graph data when dataMode changes and we're in graph view
+  useEffect(() => {
+    if (isGraphView) {
+      fetchGraphData();
+    }
+  }, [dataMode, isGraphView, fetchGraphData]);
+
+  // Fetch map data when in map view and mapYear or dataMode changes
   useEffect(() => {
     if (!isGraphView && mapYear) {
       fetchMapData(mapYear);
     }
-  }, [mapYear, isGraphView, fetchMapData]);
+  }, [mapYear, isGraphView, dataMode, fetchMapData]);
 
   const setMapView = () => {
     setChartMode(CHART_MODES.MAP);

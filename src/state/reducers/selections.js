@@ -94,7 +94,7 @@ const SelectionsReducer = (state = initialState, action) => {
         availablePredictionYears: state.availablePredictionYears,
         availablePredictionStates: state.availablePredictionStates,
         availablePredictionSublocations: state.availablePredictionSublocations,
-        dataMode: state.dataMode,
+        dataMode: initialState.dataMode, // Reset to default (COUNTY)
         chartMode: state.chartMode,
         startYear: defaultStartYear,
         endYear: defaultEndYear,

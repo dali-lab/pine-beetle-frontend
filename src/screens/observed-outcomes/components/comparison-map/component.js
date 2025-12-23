@@ -406,7 +406,7 @@ const ComparisonMap = (props) => {
       />
       <MapControls
         availableStates={availableStates}
-        availableYears={[]} // Filters hidden (hideFilters=true); year filtering handled by FilterBar component above
+        availableYears={[]}
         availableSublocations={availableSublocations}
         county={props.county}
         dataMode={dataMode}
@@ -414,7 +414,7 @@ const ComparisonMap = (props) => {
         rangerDistrict={props.rangerDistrict}
         selectedState={selectedState}
         setCounty={setCounty}
-        setPredictionYear={() => {}} // Filters hidden (hideFilters=true); year setting handled by FilterBar component above
+        setPredictionYear={() => {}}
         setRangerDistrict={setRangerDistrict}
         setState={setState}
         clearAllSelections={props.clearAllSelections}
