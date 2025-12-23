@@ -404,3 +404,119 @@ export const getScatterChartData = () => {
     }
   };
 };
+
+/**
+ * @description fetches both observed outcomes comparison data and scatter chart data in parallel
+ *              and avoids duplicate in-flight requests / unnecessary refetches
+ */
+export const fetchAllObservedOutcomesData = (year) => {
+  return async (dispatch, getState) => {
+    if (!year) {
+      return;
+    }
+
+    const state = getState();
+    const {
+      data: {
+        fetchingResultsComparisonData,
+        fetchingScatterChartData,
+        resultsComparison,
+        scatterChart,
+      },
+      selections: {
+        county,
+        dataMode,
+        rangerDistrict,
+        state: selectedState,
+      },
+    } = state;
+
+    // Skip if a fetch is already in progress
+    if (fetchingResultsComparisonData || fetchingScatterChartData) {
+      return;
+    }
+
+    // Skip if we already have both datasets cached
+    const hasMapData = resultsComparison && resultsComparison.length > 0;
+    const hasChartData = scatterChart && scatterChart.length > 0;
+    if (hasMapData && hasChartData) {
+      return;
+    }
+
+    const filters = {
+      state: selectedState,
+      county,
+      rangerDistrict,
+      year,
+    };
+
+    dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: true });
+    dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: true });
+
+    try {
+      // Try cache first for scatter chart (1h TTL)
+      const cacheKey = `scatterChart_${dataMode}`;
+      const cachedData = localStorage.getItem(cacheKey);
+      let scatterPromise;
+      if (cachedData) {
+        try {
+          const { data: cachedScatterChart, timestamp } = JSON.parse(cachedData);
+          const cacheAge = Date.now() - timestamp;
+          const oneHour = 60 * 60 * 1000;
+          if (cacheAge < oneHour && cachedScatterChart && cachedScatterChart.length > 0) {
+            dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: cachedScatterChart });
+            scatterPromise = Promise.resolve(cachedScatterChart);
+          }
+        } catch (e) {
+          // ignore cache parse errors
+        }
+      }
+
+      // If cache not used, fallback to API
+      if (!scatterPromise) {
+        scatterPromise = (dataMode === DATA_MODES.COUNTY
+          ? api.getCountyScatterChart()
+          : api.getRDScatterChart());
+      }
+
+      const [mapResponse, scatterResponse] = await Promise.all([
+        dataMode === DATA_MODES.COUNTY
+          ? api.getCountyResultsComparison(filters)
+          : api.getRDResultsComparison(filters),
+        scatterPromise,
+      ]);
+
+      const chartData = Array.isArray(scatterResponse)
+        ? scatterResponse
+        : scatterResponse?.data || [];
+
+      dispatch({ type: ActionTypes.SET_OBSERVED_OUTCOMES_DATA, payload: mapResponse });
+      dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: chartData });
+
+      // Cache scatter chart data for this dataMode
+      try {
+        const cacheValue = JSON.stringify({
+          data: chartData,
+          timestamp: Date.now(),
+        });
+        localStorage.setItem(cacheKey, cacheValue);
+      } catch (e) {
+        // ignore cache errors
+      }
+    } catch (error) {
+      dispatch({
+        type: ActionTypes.CLEAR_DATA_FETCH_ERROR,
+      });
+      dispatch({
+        type: ActionTypes.SET_DATA_FETCH_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch observed outcomes page data',
+        },
+      });
+    } finally {
+      dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: false });
+      dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: false });
+    }
+  };
+};

@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
-
-import { getScatterChartData } from '../../../../state/actions';
 import ScatterChart from './component';
 
 const mapStateToProps = (state) => {
   const {
     data: {
       scatterChart,
+      fetchingScatterChartData,
     },
     selections: {
       predictionYear,
@@ -19,6 +18,7 @@ const mapStateToProps = (state) => {
 
   return {
     data: scatterChart,
+    isLoading: fetchingScatterChartData,
     predictionYear,
     dataMode,
     selectedState,
@@ -27,15 +27,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getChartData: () => {
-      dispatch(getScatterChartData());
-    },
-  };
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(ScatterChart);
