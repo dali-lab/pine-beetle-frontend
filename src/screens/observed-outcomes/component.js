@@ -8,7 +8,7 @@ import './style.scss';
 
 const ObservedOutcomes = (props) => {
   const {
-    isLoading, predictionYear, hasData, fetchData, yearsLoaded, fetchAvailableYears,
+    isLoading, predictionYear, dataMode, fetchData, yearsLoaded, fetchAvailableYears,
   } = props;
 
   // Fetch available years on mount
@@ -16,12 +16,12 @@ const ObservedOutcomes = (props) => {
     fetchAvailableYears();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fetch data once years are loaded and we have a valid year
+  // Fetch data when year or dataMode changes
   useEffect(() => {
-    if (!hasData && yearsLoaded && predictionYear) {
+    if (yearsLoaded && predictionYear) {
       fetchData(predictionYear);
     }
-  }, [hasData, predictionYear, fetchData, yearsLoaded]);
+  }, [predictionYear, dataMode, fetchData, yearsLoaded]);
 
   return (
     <div className="observed-outcomes-page">

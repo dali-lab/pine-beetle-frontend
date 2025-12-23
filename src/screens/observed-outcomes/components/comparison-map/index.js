@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
       dataMode,
       state: selectedState,
       predictionYear: year,
+      availablePredictionYears,
       availablePredictionStates,
       availablePredictionSublocations,
     },
@@ -31,6 +32,7 @@ const mapStateToProps = (state) => {
     selectedState,
     year,
     isLoading: fetchingResultsComparisonData,
+    yearsLoaded: availablePredictionYears && availablePredictionYears.length > 0,
 
   };
 };

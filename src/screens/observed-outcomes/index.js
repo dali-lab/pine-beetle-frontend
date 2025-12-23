@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
     selections: {
       predictionYear,
       availablePredictionYears,
+      dataMode,
     },
   } = state;
 
@@ -24,6 +25,7 @@ const mapStateToProps = (state) => {
     hasData: (resultsComparison && resultsComparison.length > 0)
       && (scatterChart && scatterChart.length > 0),
     predictionYear,
+    dataMode,
     yearsLoaded: availablePredictionYears && availablePredictionYears.length > 0,
   };
 };

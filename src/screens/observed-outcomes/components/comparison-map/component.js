@@ -83,6 +83,7 @@ const ComparisonMap = (props) => {
     setState,
     year,
     isLoading,
+    yearsLoaded,
   } = props;
 
   const {
@@ -395,6 +396,8 @@ const ComparisonMap = (props) => {
     label: getShortLabel(threshold),
   }));
 
+  const shouldShowMessage = !isLoading && !data.length && year && year.toString().length === 4 && yearsLoaded;
+
   return (
     <div className="container flex-item-left observed-outcomes-map" id="map-container">
       <TogglesOverlay dataMode={dataMode} setDataMode={setDataMode} />
@@ -429,7 +432,7 @@ const ComparisonMap = (props) => {
         isDownloadingMap={isDownloadingMap}
         hideFilters
       />
-      {!isLoading && !data.length && (
+      {shouldShowMessage && (
         <div className="observed-outcomes-message">
           <p>
             {`Map for ${year} not yet available. Spot data for the previous year usually come online sometime in January or February of the following year.`}
