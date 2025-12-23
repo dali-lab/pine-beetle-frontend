@@ -20,13 +20,8 @@ const getCustomRegressionLine = () => {
 };
 
 const ScatterChart = ({
-  data, predictionYear, getChartData, dataMode, selectedState, county, rangerDistrict,
+  data, isLoading, predictionYear, dataMode, selectedState, county, rangerDistrict,
 }) => {
-  // Fetch data on mount and when filters change
-  useEffect(() => {
-    getChartData();
-  }, [dataMode, selectedState, county, rangerDistrict, getChartData]);
-
   const chartRef = useRef(null);
 
   const formattedData = useMemo(() => {

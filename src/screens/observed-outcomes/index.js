@@ -1,16 +1,15 @@
 import { connect } from 'react-redux';
 import ObservedOutcomes from './component';
-import {
-  getAvailableYears,
-  getObservedOutcomesData,
-  getScatterChartData,
-} from '../../state/actions';
+import { getAvailableYears } from '../../state/actions';
+import { fetchAllObservedOutcomesData } from '../../state/actions/data';
 
 const mapStateToProps = (state) => {
   const {
     data: {
       fetchingResultsComparisonData,
-      resultsComparisonData,
+      fetchingScatterChartData,
+      resultsComparison,
+      scatterChart,
     },
     selections: {
       predictionYear,
@@ -19,8 +18,11 @@ const mapStateToProps = (state) => {
   } = state;
 
   return {
-    isLoading: fetchingResultsComparisonData,
-    hasData: resultsComparisonData && resultsComparisonData.length > 0,
+    // loading while either dataset is being fetched
+    isLoading: fetchingResultsComparisonData || fetchingScatterChartData,
+    // consider page "has data" only when both datasets are present
+    hasData: (resultsComparison && resultsComparison.length > 0)
+      && (scatterChart && scatterChart.length > 0),
     predictionYear,
     yearsLoaded: availablePredictionYears && availablePredictionYears.length > 0,
   };
@@ -29,8 +31,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
   fetchAvailableYears: () => dispatch(getAvailableYears()),
   fetchData: (year) => {
-    dispatch(getObservedOutcomesData(year));
-    dispatch(getScatterChartData());
+    dispatch(fetchAllObservedOutcomesData(year));
   },
 });
 

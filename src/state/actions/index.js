@@ -38,6 +38,7 @@ import {
   getSparseData,
   getUnsummarizedData,
   runCustomPrediction,
+  fetchAllObservedOutcomesData,
 } from './data';
 
 import {
@@ -82,6 +83,7 @@ export {
   getPredictions,
   getObservedOutcomesData,
   getScatterChartData,
+  fetchAllObservedOutcomesData,
   getSparseData,
   getUnsummarizedData,
   getUserFromStorage,
