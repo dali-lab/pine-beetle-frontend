@@ -28,19 +28,21 @@ export const getStateAbbreviationFromStateName = (stateName) => {
 export const getMapboxRDNameFormat = (rangerDistrict) => rangerDistrict.match(/\((.*?)\)/)?.[1] ?? '';
 
 /**
- * @description splits string up by pascal case
- * adopted from: https://stackoverflow.com/questions/26188882/split-pascal-case-in-javascript-certain-case/26188910
- * @param {String} str string to separate
+ * Splits string up by pascal case
+ * @description Adopted from: https://stackoverflow.com/questions/26188882/split-pascal-case-in-javascript-certain-case/26188910
+ * @param {String} str - String to separate
+ * @returns {String} - Separated string with spaces between words
  */
 export const separatePascalCase = (str) => {
   return str
-  // Look for long acronyms and filter out the last letter
+    // Look for long acronyms and filter out the last letter
     .replace(/([A-Z]+)([A-Z][a-z])/g, ' $1 $2')
-  // Look for lower-case letters followed by upper-case letters
+    // Look for lower-case letters followed by upper-case letters
     .replace(/([a-z\d])([A-Z])/g, '$1 $2')
-  // Look for lower-case letters followed by numbers
+    // Look for lower-case letters followed by numbers
     .replace(/([a-zA-Z])(\d)/g, '$1 $2')
+    // Capitalize first letter
     .replace(/^./, (s) => s.toUpperCase())
-  // Remove any white space left around the word
+    // Remove any white space left around the word
     .trim();
 };

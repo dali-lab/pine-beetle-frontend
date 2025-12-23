@@ -1,6 +1,5 @@
-import React from 'react';
-import mapboxPrintPdf from 'mapbox-print-pdf';
 import mapboxgl from 'mapbox-gl';
+import mapboxPrintPdf from 'mapbox-print-pdf';
 import {
   DATA_MODES,
   MAP_SOURCE_NAME,
@@ -10,9 +9,75 @@ import {
   VECTOR_LAYER,
 } from '../constants';
 import { getMapboxRDNameFormat } from './abbreviation-mappings';
+import { logError, logWarning } from './logger';
+import { isMapRemoved, markMapAsRemoved } from './map-instance-tracker';
 
-// twice-curried function for generating click callback
-const createMapClickCallback = (states, sublocations, currentState, data, dataMode, propsCounty, setCounty, propsRangerDistrict, setRangerDistrict) => (e) => {
+// Map configuration constants
+const MAP_CONTAINER_ID = 'map';
+const MAP_STYLE_URL = 'mapbox://styles/pine-beetle-prediction/ckgrzijos0q5119paazko291z';
+const DEFAULT_CENTER = [-84.3880, 33.7490];
+const DEFAULT_ZOOM = 4.8;
+const MAX_ZOOM = 6;
+
+/**
+ * Escapes HTML special characters to prevent XSS attacks
+ * @param {string} text - Text to escape
+ * @returns {string} - Escaped text safe for HTML insertion
+ */
+const escapeHtml = (text) => {
+  if (!text) return '';
+  const htmlEscapes = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    '\'': '&#x27;',
+  };
+  return String(text).replace(/[&<>"']/g, (char) => htmlEscapes[char]);
+};
+
+// Hover tooltip positioning constants
+const HOVER_BOUNDARY_X = 300;
+const HOVER_BOUNDARY_Y = 200;
+const HOVER_TOOLTIP_OFFSET_X = 280;
+const HOVER_TOOLTIP_OFFSET_Y = 125;
+
+/**
+ * Configuration options for map click callback
+ * @typedef {Object} MapClickOptions
+ * @property {Array<string>} states - Available states
+ * @property {Array<string>} sublocations - Available sublocations (counties or ranger districts)
+ * @property {string} currentState - Currently selected state
+ * @property {Array<Object>} data - Prediction/trapping data
+ * @property {string} dataMode - Current data mode (COUNTY or RANGER_DISTRICT)
+ * @property {Array<string>} county - Currently selected county
+ * @property {Function} setCounty - County setter function
+ * @property {Array<string>} rangerDistrict - Currently selected ranger district
+ * @property {Function} setRangerDistrict - Ranger district setter function
+ * @property {Function} [setPredictionModal] - Optional modal setter function
+ * @property {boolean} [isMobile=false] - Whether on mobile device
+ */
+
+/**
+ * Creates a click callback for map interactions
+ * @param {MapClickOptions} options - Configuration options
+ * @returns {Function} Click event handler
+ */
+const createMapClickCallback = (options) => (e) => {
+  const {
+    states,
+    sublocations,
+    currentState,
+    data,
+    dataMode,
+    county: propsCounty,
+    setCounty,
+    rangerDistrict: propsRangerDistrict,
+    setRangerDistrict,
+    setPredictionModal,
+    isMobile = false,
+  } = options;
+
   if (!e?.features[0]?.properties) return;
 
   const {
@@ -31,24 +96,40 @@ const createMapClickCallback = (states, sublocations, currentState, data, dataMo
   // ensure clicked on valid state
   if (!states.includes(state) || !currentState) return;
 
-  // select county or RD depending on mode
+  // On mobile, always open modal when clicking a county (don't toggle selection)
+  if (isMobile && dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
+    // Find the prediction data for this county
+    const countyData = data.find((p) => p.county === county && p.state === state);
+    if (countyData) {
+      setCounty([county]);
+      if (setPredictionModal) setPredictionModal(true);
+    }
+    return;
+  }
+
+  // Desktop behavior: select county or RD depending on mode
   if (dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
-    if (propsCounty.length > 0) { // remove selection if user clicks selected county
+    if (propsCounty.length > 0) {
       setCounty([]);
+      if (setPredictionModal) setPredictionModal(false);
     } else {
       setCounty([county]);
+      if (setPredictionModal) setPredictionModal(true);
     }
   } else if (sublocations.includes(rangerDistrictToSet)) {
-    if (propsRangerDistrict.length > 0) { // remove selection if user clicks selected ranger district
+    if (propsRangerDistrict.length > 0) {
       setRangerDistrict([]);
+      if (setPredictionModal) setPredictionModal(false);
     } else {
       setRangerDistrict([rangerDistrictToSet]);
+      if (setPredictionModal) setPredictionModal(true);
     }
   }
 };
 
-// twice-curried function for generating hover callback
-const createHoverCallback = (map, rangerDistricts, mode, callback) => (e) => {
+const createHoverCallback = (map, rangerDistricts, mode, callback, isMobile = false) => (e) => {
+  if (isMobile) return;
+
   if (!map || !e || !map.isStyleLoaded()) return;
 
   const counties = map.getLayer(VECTOR_LAYER)
@@ -64,7 +145,6 @@ const createHoverCallback = (map, rangerDistricts, mode, callback) => (e) => {
       forest: rawForest,
     } = counties[0].properties;
 
-    // handles case where tileset has two spaces instead of one (this is a one-off), or is missing the word RD altogether (also one-off)
     const hoverRD = rawForest.replaceAll('  ', ' ');
 
     const location = mode === DATA_MODES.COUNTY
@@ -73,37 +153,106 @@ const createHoverCallback = (map, rangerDistricts, mode, callback) => (e) => {
         .find((rd) => getMapboxRDNameFormat(rd)?.includes(hoverRD));
 
     callback(hoverState, location, x, y, counties);
+  } else {
+    callback(null, null, null, null, []);
   }
 };
 
-const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, dataMode, mapClickCallback, setMapClickCallback, mapHoverCallback, setMapHoverCallback, setMap) => {
+// Track the current map instance to ensure proper cleanup
+let currentMapInstance = null;
+
+/**
+ * @typedef {Object} GenerateMapOptions
+ * @property {boolean} forceRegenerate - Whether to force map regeneration
+ * @property {Object|null} map - Existing map instance
+ * @property {string} dataMode - Current data mode (COUNTY or RANGER_DISTRICT)
+ * @property {Function} setMap - Setter for map instance
+ */
+
+/**
+ * Generates a new Mapbox map instance with proper cleanup of existing instances
+ * Event callbacks (click, hover) should be registered via useMapCallbacks hook
+ * @param {GenerateMapOptions} options - Map configuration options
+ */
+const generateMap = ({
+  forceRegenerate,
+  map,
+  dataMode,
+  setMap,
+}) => {
   if (map && !forceRegenerate) return;
 
+  // CRITICAL: Destroy existing map instance before creating a new one to prevent WebGL context leaks
+  // Clean up any existing map instance (from parameter or tracked instance)
+  const mapToCleanup = map || currentMapInstance;
+  if (mapToCleanup) {
+    try {
+      // Check if map is in a valid state before cleanup
+      // Verify the map has a container and hasn't been removed already
+      if (!isMapRemoved(mapToCleanup)) {
+        const hasGetContainer = mapToCleanup.getContainer && typeof mapToCleanup.getContainer === 'function';
+        const hasRemove = typeof mapToCleanup.remove === 'function';
+
+        if (hasGetContainer && hasRemove) {
+          let container = null;
+          try {
+            container = mapToCleanup.getContainer();
+          } catch (error) {
+            // getContainer failed, mark as removed and skip cleanup
+            markMapAsRemoved(mapToCleanup);
+          }
+
+          if (container && container.parentNode && !isMapRemoved(mapToCleanup)) {
+            try {
+              markMapAsRemoved(mapToCleanup);
+              mapToCleanup.remove();
+            } catch (error) {
+              markMapAsRemoved(mapToCleanup);
+              logWarning('Error removing map in generateMap', error, { function: 'generateMap' });
+            }
+          }
+        }
+      }
+    } catch (error) {
+      // Silently ignore errors - map may already be removed or in invalid state
+      // This is expected when maps are being rapidly created/destroyed
+    }
+    // Clear the tracked instance
+    if (mapToCleanup === currentMapInstance) {
+      currentMapInstance = null;
+    }
+  }
+
+  const existingMapContainer = document.getElementById(MAP_CONTAINER_ID);
+  if (existingMapContainer) {
+    const containerMap = existingMapContainer._mapboxgl_map
+                         || (existingMapContainer.firstChild && existingMapContainer.firstChild._mapboxgl_map);
+    if (containerMap && containerMap !== mapToCleanup && typeof containerMap.remove === 'function' && !isMapRemoved(containerMap)) {
+      try {
+        markMapAsRemoved(containerMap);
+        containerMap.remove();
+      } catch (error) {
+        logWarning('Error cleaning up container map instance', error, { function: 'generateMap' });
+      }
+    }
+  }
+
   const createdMap = new mapboxgl.Map({
-    container: 'map', // container id
-    style: 'mapbox://styles/pine-beetle-prediction/ckgrzijos0q5119paazko291z',
-    center: [-84.3880, 33.7490], // starting position
-    zoom: 4.8, // starting zoom
+    container: MAP_CONTAINER_ID,
+    style: MAP_STYLE_URL,
+    center: DEFAULT_CENTER,
+    zoom: DEFAULT_ZOOM,
+    maxZoom: MAX_ZOOM,
+    bearing: 0,
     options: {
       trackResize: true,
     },
   });
 
-  createdMap.addControl(new mapboxgl.NavigationControl());
-
-  const legendTagsToSet = thresholds.map((threshold, index) => {
-    const color = colors[index];
-
-    return (
-      <div key={color}>
-        <span className="legend-key" style={{ backgroundColor: color }} />
-        <span className="legend-tag">{threshold}</span>
-      </div>
-    );
-  });
-
-  // add legend tags
-  setLegendTags(legendTagsToSet);
+  createdMap.addControl(new mapboxgl.NavigationControl({
+    showCompass: true,
+    showZoom: true,
+  }));
 
   // add map source on load
   if (!createdMap._listeners.load) {
@@ -114,17 +263,12 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
     });
   }
 
-  // select county/RD when user clicks on it
-  if (!createdMap._listeners.click) {
-    setMapClickCallback(() => mapClickCallback);
-    createdMap.on('click', VECTOR_LAYER, mapClickCallback);
-  }
+  // NOTE: Click and hover callbacks are NOT registered here.
+  // They are managed by the useMapCallbacks hook in components,
+  // which handles dynamic updates when filters/data change.
 
-  if (createdMap._listeners.mousemove === undefined) {
-    setMapHoverCallback(() => mapHoverCallback);
-    createdMap.on('mousemove', mapHoverCallback);
-  }
-
+  // Track the new map instance
+  currentMapInstance = createdMap;
   setMap(createdMap);
 };
 
@@ -132,9 +276,10 @@ const generateMap = (forceRegenerate, map, thresholds, colors, setLegendTags, da
 // Creates and returns HTML with the title for the header
 // of the downloaded maps. This object is used by the mapbox-print-pdf library.
 const buildHeader = (mapTitle) => {
+  const safeTitle = escapeHtml(mapTitle);
   return (
     `<div id="map-header" style="text-align: center;">
-          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">${MAP_TITLES[mapTitle]}</h2>
+          <h2 style="letter-spacing: 1px;margin-top: 200px;margin-bottom: 50px;">${safeTitle}</h2>
         </div>`
   );
 };
@@ -149,15 +294,18 @@ const buildFooter = (titleDetails, thresholds, colors, mapTitle) => {
   const isHistoricalMap = mapTitle === MAP_TITLES.HISTORICAL;
   const isComparisonMap = mapTitle === MAP_TITLES.COMPARISON;
 
-  const title = `Southern Pine Beetle Outbreak ${isPredictionMap ? 'Prediction' : 'Spot'} Maps: ${titleDetails.selectedState} ${titleDetails.period}`;
+  const safeState = escapeHtml(titleDetails.selectedState);
+  const safePeriod = escapeHtml(titleDetails.period);
+  const title = `Southern Pine Beetle Outbreak ${isPredictionMap ? 'Prediction' : 'Spot'} Maps: ${safeState} ${safePeriod}`;
 
   // creates the color boxes and text fields for the legend in the footer
   const legendString = thresholds.reduce((acc, curr, index) => {
-    const layer = curr;
+    const safeLayer = escapeHtml(curr);
     const color = colors[index];
+    const safeColor = /^#[0-9A-Fa-f]{6}$|^[a-zA-Z]+$/.test(color) ? color : '#000000';
     const spanString = `
-          <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${color};display:
-          inline-block;border-radius: 20%;width: 20px;height: 20px;margin-right: 5px;margin-left: 5px;"></div><span>${layer}</span>`;
+          <div class="footer-legend-key" style="font-family: 'Open Sans', arial, serif;background: ${safeColor};display:
+          inline-block;border-radius: 20%;width: 20px;height: 20px;margin-right: 5px;margin-left: 5px;"></div><span>${safeLayer}</span>`;
     return acc.concat(spanString);
   }, '');
 
@@ -226,43 +374,35 @@ const downloadMap = (map, year, isDownloadingMap, setIsDownloadingMap, selectedS
       setIsDownloadingMap(false);
     })
     .catch((error) => {
-      console.error(error);
+      logError('Error downloading map', error, { function: 'downloadMap' });
+      setIsDownloadingMap(false);
     });
 };
 
 const zoomToSelectedState = (selectedState, map) => {
-  if (selectedState) {
-    const zoom = stateAbbrevToZoomLevel[selectedState] || [[-84.3880, 33.7490], 4.8];
+  if (!map) return;
 
-    map.flyTo({
-      center: zoom[0],
-      zoom: zoom[1],
-    });
-  } else {
-    map.flyTo({
-      center: [-84.3880, 33.7490],
-      zoom: 4.8,
-    });
-  }
+  const zoomConfig = selectedState && stateAbbrevToZoomLevel[selectedState]
+    ? stateAbbrevToZoomLevel[selectedState]
+    : [DEFAULT_CENTER, DEFAULT_ZOOM];
+
+  map.flyTo({
+    center: zoomConfig[0],
+    zoom: zoomConfig[1],
+  });
 };
 
 const mapboxHoverStyle = (x, y) => {
-  if (x < 300 && y < 200) {
-    return ({ left: `${x}px`, top: `${y}px` });
-  } else if (y < 200) {
-    return ({ left: `${x - 280}px`, top: `${y}px` });
-  } else if (x < 300) {
-    return ({ left: `${x}px`, top: `${y - 125}px` });
-  } else {
-    return ({ left: `${x - 280}px`, top: `${y - 125}px` });
-  }
+  const left = x < HOVER_BOUNDARY_X ? x : x - HOVER_TOOLTIP_OFFSET_X;
+  const top = y < HOVER_BOUNDARY_Y ? y : y - HOVER_TOOLTIP_OFFSET_Y;
+  return { left: `${left}px`, top: `${top}px` };
 };
 
 const isInvalidNumber = (num) => Number.isNaN(num) || num === null || num === undefined;
 
 export {
-  createMapClickCallback,
   createHoverCallback,
+  createMapClickCallback,
   downloadMap,
   generateMap,
   isInvalidNumber,

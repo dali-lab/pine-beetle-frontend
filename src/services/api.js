@@ -249,7 +249,7 @@ export async function rangerDistrictAggregateByRangerDistrict(filters = {}) {
 export async function runCustomPrediction(cleridst1, spotst1, spotst2, SPB, endobrev, modelVersion) {
   const params = {
     cleridst1,
-    endobrev: +endobrev, // note: this casts true to 1 and false to 0 if it is a boolean
+    endobrev: +endobrev,
     SPB,
     spotst1,
     spotst2,
@@ -388,8 +388,13 @@ export async function getRDResultsComparison(filters) {
   }
 }
 
-export async function getCountyScatterChart() {
-  const url = `${global.API_URL}/${COUNTY_SUBROUTE}/counties/scatter-chart`;
+export async function getCountyScatterChart(filters = {}) {
+  const params = toQueryParams({
+    ...filters,
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
+  });
+  const url = `${global.API_URL}/${COUNTY_SUBROUTE}/counties/scatter-chart${params ? `?${params}` : ''}`;
 
   try {
     const { data: { data } } = await axios.get(url);
@@ -400,8 +405,13 @@ export async function getCountyScatterChart() {
   }
 }
 
-export async function getRDScatterChart() {
-  const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/rangerDistricts/scatter-chart`;
+export async function getRDScatterChart(filters = {}) {
+  const params = toQueryParams({
+    ...filters,
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
+  });
+  const url = `${global.API_URL}/${RANGERDISTRICT_SUBROUTE}/rangerDistricts/scatter-chart${params ? `?${params}` : ''}`;
 
   try {
     const { data: { data } } = await axios.get(url);
@@ -409,5 +419,68 @@ export async function getRDScatterChart() {
   } catch (error) {
     console.log(error);
     throw error;
+  }
+}
+
+/**
+ * @description retrieves unsummarized trapping data from v3 endpoint
+ * @param {Object} filters optional filters (startYear, endYear, state, county, rangerDistrict, etc.)
+ * @returns {Promise<Array>} API response with unsummarized data
+ */
+export async function getUnsummarizedData(filters = {}) {
+  const params = toQueryParams({
+    ...filters,
+    county: filters.county && Array.isArray(filters.county) ? filters.county.join(',') : filters.county,
+    rangerDistrict: filters.rangerDistrict && Array.isArray(filters.rangerDistrict) ? filters.rangerDistrict.join(',') : filters.rangerDistrict,
+  });
+
+  const baseUrl = global.API_URL.endsWith('/') ? global.API_URL.slice(0, -1) : global.API_URL;
+  const endpoint = baseUrl.endsWith('/v3')
+    ? 'unsummarized-trapping'
+    : 'v3/unsummarized-trapping';
+  const url = `${baseUrl}/${endpoint}${params ? `?${params}` : ''}`;
+
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    const { data } = response;
+
+    let resultData = null;
+    if (data && data.status === 200 && data.type === 'SUCCESS' && Array.isArray(data.data)) {
+      resultData = data.data;
+    } else if (Array.isArray(data)) {
+      resultData = data;
+    } else if (data && data.data && Array.isArray(data.data)) {
+      resultData = data.data;
+    } else if (data && data.status && data.status !== 200) {
+      const errorMessage = data.error || data.message || `API returned status ${data.status}`;
+      throw new Error(errorMessage);
+    } else {
+      throw new Error('Unexpected response format from unsummarized-trapping endpoint');
+    }
+
+    return resultData;
+  } catch (error) {
+    if (error.response) {
+      const { status, data: errorData } = error.response;
+      const errorMessage = errorData?.error || errorData?.message || `HTTP ${status}: ${error.message}`;
+      console.error('Error fetching unsummarized trapping data:', {
+        url,
+        status,
+        error: errorMessage,
+        response: errorData,
+      });
+      throw new Error(errorMessage);
+    } else if (error.request) {
+      console.error('Error fetching unsummarized trapping data: No response received', { url });
+      throw new Error('No response from server. Please check your connection.');
+    } else {
+      console.error('Error fetching unsummarized trapping data:', error.message);
+      throw error;
+    }
   }
 }

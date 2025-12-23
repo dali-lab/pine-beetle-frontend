@@ -1,4 +1,5 @@
 // map of state abbreviations to their names
+import MAP_INIT_CONSTANTS from './map-constants';
 import stateAbbrevToStateName from './state-abbreviations.json';
 import stateAbbrevToStateId from './state-ids.json';
 import stateAbbrevToZoomLevel from './state-zoom-levels.json';
@@ -28,12 +29,17 @@ const ROUTES = {
   ABOUT: '/about',
   ADMIN: '/admin',
   BLOG: '/blog',
+  CONTACT: '/contact',
+  DATA: '/data',
+  DATA_TABLE: '/data-table',
+  DOWNLOAD_DATA: '/download-data',
+  EXPLAINERS: '/explainers',
   HOME: '/',
+  TIME_SERIES: '/time-series',
+  METHODOLOGY: '/methodology',
   RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
-  PREDICTIONS: '/predict-outbreak',
-  TRAPPING_DATA: '/historical-data',
-  RESULTS_COMPARISON: '/results-comparison',
+  OBSERVED_OUTCOMES: '/observed-outcomes',
 };
 
 const RESOURCE_ROUTES = {
@@ -84,7 +90,22 @@ const DATA_TYPE_EXTENSIONS = {
 const VIDEO_URL = 'https://drive.google.com/file/d/1lp0-8pCiAkaXqVclcxjjSx4RcBKGeH3M/preview';
 
 const getYearRange = (start, end) => {
-  return Array(end - start + 1).fill().map((_, idx) => start + idx);
+  // Handle edge cases where start or end might be undefined, null, or invalid
+  if (typeof start !== 'number' || typeof end !== 'number' || Number.isNaN(start) || Number.isNaN(end)) {
+    return [];
+  }
+
+  // Ensure start is not greater than end
+  if (start > end) {
+    return [];
+  }
+
+  const length = end - start + 1;
+  if (length <= 0) {
+    return [];
+  }
+
+  return Array(length).fill().map((_, idx) => start + idx);
 };
 
 const MAP_SOURCES = {
@@ -111,7 +132,8 @@ const VECTOR_LAYER = 'map-choropleth-layer';
 
 const MAP_TITLES = {
   PREDICTION: 'Probability of (Any) SPB Spots',
-  HISTORICAL: 'Average Number of Spots',
+  HISTORICAL: 'Observed Outcomes',
+  TIME_SERIES: 'Average Number of Spots',
   COMPARISON: 'Observed vs Predicted',
 };
 
@@ -120,9 +142,23 @@ export {
   DATA_MODES,
   DATA_TYPE_EXTENSIONS,
   DOWNLOAD_DATA_ROUTES,
-  getYearRange, LOCAL_STORAGE_KEYS, MAP_SOURCE_NAME, MAP_SOURCES, MAP_TITLES, MIN_WIDTH_THRESHOLD, RESOURCE_LOCAL_URLS, RESOURCE_REMOTE_URLS, RESOURCE_ROUTES, ROUTES,
-  SOURCE_LAYERS, STATE_VECTOR_LAYER, stateAbbrevToStateId,
+  getYearRange,
+  LOCAL_STORAGE_KEYS,
+  MAP_INIT_CONSTANTS,
+  MAP_SOURCE_NAME,
+  MAP_SOURCES,
+  MAP_TITLES,
+  MIN_WIDTH_THRESHOLD,
+  RESOURCE_LOCAL_URLS,
+  RESOURCE_REMOTE_URLS,
+  RESOURCE_ROUTES,
+  ROUTES,
+  SOURCE_LAYERS,
+  STATE_VECTOR_LAYER,
+  stateAbbrevToStateId,
   stateAbbrevToStateName,
   stateAbbrevToZoomLevel,
-  stateNameToAbbrev, VECTOR_LAYER, VIDEO_URL,
+  stateNameToAbbrev,
+  VECTOR_LAYER,
+  VIDEO_URL,
 };

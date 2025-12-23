@@ -1,0 +1,126 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
+#scatter-chart-bar {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: $white;
+    border-radius: 12px;
+    border: 2px solid $greyBlue300;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+
+    .scatter-chart-bar-selections {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+
+        #toggles-overlay {
+            position: static;
+        }
+    }
+
+    .scatter-chart-bar-year-selection {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+        flex: 0 0 auto;
+
+        .scatter-chart-bar-year-selection-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: $greyBlue900;
+            display: block;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+
+        .scatter-chart-bar-year-selection-options {
+            width: auto;
+            min-width: 120px;
+
+            .selection-container {
+                width: auto;
+            }
+
+            .selection-button {
+                width: 120px;
+                height: 2.5rem;
+                border-radius: 0.375rem;
+                border: 1px solid $greyBlue300;
+                background-color: $white;
+                font-size: 0.875rem;
+                transition: border-color 0.2s ease, box-shadow 0.2s ease;
+                color: $greyBlue900;
+                font-weight: 400;
+                box-sizing: border-box;
+
+                &:focus {
+                    outline: none !important;
+                    border-color: $greyBlue500;
+                    box-shadow: 0 0 0 3px rgba(201, 205, 217, 0.2);
+                    background-color: $white;
+                }
+
+                &:hover:not(:focus) {
+                    border-color: $greyBlue400;
+                }
+
+                &:active {
+                    background-color: $white;
+                }
+
+                &:-webkit-autofill {
+                    -webkit-box-shadow: 0 0 0 1000px white inset;
+                }
+            }
+        }
+    }
+
+    .scatter-chart-bar-toggles-section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        flex: 0 0 auto;
+        align-items: center;
+
+        #toggles-overlay {
+            position: static;
+        }
+    }
+
+    @media (max-width: $tablet) {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 1.25rem 0.25rem;
+
+        .scatter-chart-bar-selections {
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .scatter-chart-bar-year-selection {
+            flex: none;
+        }
+
+        .scatter-chart-bar-toggles-section {
+            align-self: center;
+
+            #toggles-overlay {
+                position: static !important;
+                left: auto !important;
+                transform: none !important;
+                width: auto !important;
+                max-width: none !important;
+            }
+        }
+    }
+}

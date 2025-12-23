@@ -10,7 +10,7 @@
     "start": "NODE_ENV=development webpack serve",
     "lint": "eslint src --cache",
     "ci:lint": "eslint src --rule 'react-hooks/exhaustive-deps: 0'",
-    "build": "npm clean; NODE_ENV=production webpack --color --progress; cp src/_redirects dist/_redirects",
+    "build": "rm -rf dist && NODE_ENV=production webpack --color --progress && cp src/_redirects dist/_redirects",
     "clean": "rimraf dist"
   },
   "devDependencies": {
@@ -55,6 +55,8 @@
     "echarts": "^5.6.0",
     "echarts-for-react": "^3.0.2",
     "echarts-stat": "^1.2.0",
+    "jszip": "^3.10.1",
+    "lucide-react": "^0.545.0",
     "mapbox-gl": "^2.11.1",
     "mapbox-print-pdf": "^0.4.3",
     "prop-types": "^15.8.1",
@@ -63,7 +65,6 @@
     "react-circular-progressbar": "^2.0.3",
     "react-dom": "^16.8.6",
     "react-ga": "^3.3.0",
-    "react-lottie": "^1.2.3",
     "react-modal": "^3.11.2",
     "react-read-more-read-less": "^1.0.7",
     "react-redux": "^7.0.2",

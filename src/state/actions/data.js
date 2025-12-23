@@ -1,14 +1,14 @@
-import { api } from '../../services';
 import { DATA_MODES } from '../../constants';
+import { api } from '../../services';
 
 export const ActionTypes = {
-  SET_PREDICTIONS: 'SET_PREDICTIONS', // predictions for single year
+  SET_PREDICTIONS: 'SET_PREDICTIONS',
   SET_SPARSE_DATA: 'SET_SPARSE_DATA',
-  SET_AGGREGATE_YEAR_DATA: 'SET_AGGREGATE_YEAR_DATA', // data grouped by year
-  SET_AGGREGATE_STATE_DATA: 'SET_AGGREGATE_STATE_DATA', // data grouped by state
-  SET_AGGREGATE_LOCATION_DATA: 'SET_AGGREGATE_LOCATION_DATA', // data grouped by county/RD
+  SET_AGGREGATE_YEAR_DATA: 'SET_AGGREGATE_YEAR_DATA',
+  SET_AGGREGATE_STATE_DATA: 'SET_AGGREGATE_STATE_DATA',
+  SET_AGGREGATE_LOCATION_DATA: 'SET_AGGREGATE_LOCATION_DATA',
   SET_CUSTOM_PREDICTION: 'SET_CUSTOM_PREDICTION',
-  SET_RESULTS_COMPARISON_DATA: 'SET_RESULTS_COMPARISON_DATA',
+  SET_OBSERVED_OUTCOMES_DATA: 'SET_OBSERVED_OUTCOMES_DATA',
   SET_SCATTER_CHART_DATA: 'SET_SCATTER_CHART_DATA',
 
   FETCHING_PREDICTIONS: 'FETCHING_PREDICTIONS',
@@ -17,7 +17,7 @@ export const ActionTypes = {
   FETCHING_AGGREGATE_STATE_DATA: 'FETCHING_AGGREGATE_STATE_DATA',
   FETCHING_AGGREGATE_LOCATION_DATA: 'FETCHING_AGGREGATE_LOCATION_DATA',
   FETCHING_CUSTOM_PREDICTION: 'FETCHING_CUSTOM_PREDICTION',
-  FETCHING_RESULTS_COMPARISON_DATA: 'FETCHING_RESULTS_COMPARISON_DATA',
+  FETCHING_OBSERVED_OUTCOMES_DATA: 'FETCHING_OBSERVED_OUTCOMES_DATA',
   FETCHING_SCATTER_CHART_DATA: 'FETCHING_SCATTER_CHART_DATA',
 
   SET_DATA_FETCH_ERROR: 'SET_DATA_FETCH_ERROR',
@@ -30,11 +30,43 @@ export const ActionTypes = {
 };
 
 /**
+ * @description builds filter object from selections state
+ * @param {Object} selections selections state from redux
+ * @param {Object} [overrides={}] optional overrides for filter values
+ * @returns {Object} filter object for API calls
+ */
+const buildFilters = (selections, overrides = {}) => {
+  const {
+    county,
+    endYear,
+    rangerDistrict,
+    startYear,
+    state,
+  } = selections;
+
+  // Extract year from overrides (used for single-year queries)
+  const { year, ...restOverrides } = overrides;
+
+  // If year is provided in overrides, use it for both startYear and endYear
+  const yearFilter = year
+    ? { startYear: year, endYear: year }
+    : { startYear: restOverrides.startYear || startYear, endYear: restOverrides.endYear || endYear };
+
+  return {
+    ...yearFilter,
+    state,
+    county,
+    rangerDistrict,
+    ...restOverrides,
+  };
+};
+
+/**
  * @description action creator that fetches data with predictions for given filter
  * @param {Number} year year to fetch predictions on
- * @param {Object} [overrideFilter={}] optional filter for startYear, endYear, state, etc.
+ * @param {Object} [overrideFilter={}] optional filter for state, etc.
  */
-export function getPredictions(startYear = new Date().getFullYear(), endYear = new Date().getFullYear(), overrideFilter = {}) {
+export function getPredictions(year = new Date().getFullYear(), overrideFilter = {}) {
   return async (dispatch, getState) => {
     const {
       county,
@@ -44,8 +76,7 @@ export function getPredictions(startYear = new Date().getFullYear(), endYear = n
     } = getState().selections;
 
     const filters = Object.entries({
-      startYear,
-      endYear,
+      year,
       state,
       county,
       rangerDistrict,
@@ -70,9 +101,7 @@ export function getPredictions(startYear = new Date().getFullYear(), endYear = n
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_PREDICTIONS, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_PREDICTIONS, payload: false });
     }
   };
 }
@@ -82,23 +111,8 @@ export function getPredictions(startYear = new Date().getFullYear(), endYear = n
  */
 export function getSparseData(overrideFilter = {}) {
   return async (dispatch, getState) => {
-    const {
-      county,
-      dataMode,
-      endYear,
-      rangerDistrict,
-      startYear,
-      state,
-    } = getState().selections;
-
-    const filters = {
-      startYear,
-      endYear,
-      state,
-      county,
-      rangerDistrict,
-      ...overrideFilter,
-    };
+    const { dataMode } = getState().selections;
+    const filters = buildFilters(getState().selections, overrideFilter);
 
     dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: true });
 
@@ -114,9 +128,33 @@ export function getSparseData(overrideFilter = {}) {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: false });
+    }
+  };
+}
+
+/**
+ * @description action creator for fetching unsummarized (raw) trapping data
+ */
+export function getUnsummarizedData(overrideFilter = {}) {
+  return async (dispatch, getState) => {
+    const filters = buildFilters(getState().selections, overrideFilter);
+
+    dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: true });
+
+    try {
+      const response = await api.getUnsummarizedData(filters);
+      dispatch({ type: ActionTypes.SET_SPARSE_DATA, payload: response });
+    } catch (error) {
+      dispatch({
+        type: ActionTypes.SET_DATA_FETCH_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch unsummarized data',
+        },
+      });
+    } finally {
+      dispatch({ type: ActionTypes.FETCHING_SPARSE_DATA, payload: false });
     }
   };
 }
@@ -126,23 +164,8 @@ export function getSparseData(overrideFilter = {}) {
  */
 export function getAggregateYearData(overrideFilter = {}) {
   return async (dispatch, getState) => {
-    const {
-      county,
-      dataMode,
-      endYear,
-      rangerDistrict,
-      startYear,
-      state,
-    } = getState().selections;
-
-    const filters = {
-      startYear,
-      endYear,
-      state,
-      county,
-      rangerDistrict,
-      ...overrideFilter,
-    };
+    const { dataMode } = getState().selections;
+    const filters = buildFilters(getState().selections, overrideFilter);
 
     dispatch({ type: ActionTypes.FETCHING_AGGREGATE_YEAR_DATA, payload: true });
 
@@ -158,9 +181,7 @@ export function getAggregateYearData(overrideFilter = {}) {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_AGGREGATE_YEAR_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_AGGREGATE_YEAR_DATA, payload: false });
     }
   };
 }
@@ -170,23 +191,8 @@ export function getAggregateYearData(overrideFilter = {}) {
  */
 export function getAggregateStateData(overrideFilter = {}) {
   return async (dispatch, getState) => {
-    const {
-      county,
-      dataMode,
-      endYear,
-      rangerDistrict,
-      startYear,
-      state,
-    } = getState().selections;
-
-    const filters = {
-      startYear,
-      endYear,
-      state,
-      county,
-      rangerDistrict,
-      ...overrideFilter,
-    };
+    const { dataMode } = getState().selections;
+    const filters = buildFilters(getState().selections, overrideFilter);
 
     dispatch({ type: ActionTypes.FETCHING_AGGREGATE_STATE_DATA, payload: true });
 
@@ -202,9 +208,7 @@ export function getAggregateStateData(overrideFilter = {}) {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_AGGREGATE_STATE_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_AGGREGATE_STATE_DATA, payload: false });
     }
   };
 }
@@ -214,28 +218,16 @@ export function getAggregateStateData(overrideFilter = {}) {
  */
 export function getAggregateLocationData(overrideFilter = {}) {
   return async (dispatch, getState) => {
-    const {
-      county,
-      dataMode,
-      endYear,
-      rangerDistrict,
-      startYear,
-      state,
-    } = getState().selections;
-
-    const filters = {
-      startYear,
-      endYear,
-      state,
-      county,
-      rangerDistrict,
-      ...overrideFilter,
-    };
+    const { dataMode } = getState().selections;
+    const filters = buildFilters(getState().selections, overrideFilter);
 
     dispatch({ type: ActionTypes.FETCHING_AGGREGATE_LOCATION_DATA, payload: true });
 
     try {
-      const response = await (dataMode === DATA_MODES.COUNTY ? api.countyAggregateByCounty(filters) : api.rangerDistrictAggregateByRangerDistrict(filters));
+      // Use getCountyData/getRangerDistrictData instead of aggregate endpoints
+      // because aggregate endpoints don't return year field, but full data does
+      const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyData(filters) : api.getRangerDistrictData(filters));
+
       dispatch({ type: ActionTypes.SET_AGGREGATE_LOCATION_DATA, payload: response });
     } catch (error) {
       dispatch({
@@ -246,9 +238,7 @@ export function getAggregateLocationData(overrideFilter = {}) {
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_AGGREGATE_LOCATION_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_AGGREGATE_LOCATION_DATA, payload: false });
     }
   };
 }
@@ -303,8 +293,12 @@ export const clearCustomPredictionError = () => {
   };
 };
 
-export const getResultsComparisonData = (year, overrideFilter = {}) => {
+export const getObservedOutcomesData = (year, overrideFilter = {}) => {
   return async (dispatch, getState) => {
+    if (!year) {
+      return;
+    }
+
     const {
       county,
       dataMode,
@@ -312,7 +306,7 @@ export const getResultsComparisonData = (year, overrideFilter = {}) => {
       state,
     } = getState().selections;
 
-    dispatch({ type: ActionTypes.FETCHING_RESULTS_COMPARISON_DATA, payload: true });
+    dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: true });
 
     const filters = {
       state,
@@ -324,7 +318,7 @@ export const getResultsComparisonData = (year, overrideFilter = {}) => {
 
     try {
       const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyResultsComparison(filters) : api.getRDResultsComparison(filters));
-      dispatch({ type: ActionTypes.SET_RESULTS_COMPARISON_DATA, payload: response });
+      dispatch({ type: ActionTypes.SET_OBSERVED_OUTCOMES_DATA, payload: response });
     } catch (error) {
       dispatch({
         type: ActionTypes.CLEAR_DATA_FETCH_ERROR,
@@ -333,13 +327,11 @@ export const getResultsComparisonData = (year, overrideFilter = {}) => {
         type: ActionTypes.SET_DATA_FETCH_ERROR,
         payload: {
           error,
-          text: 'Failed to fetch results comparison data',
+          text: 'Failed to fetch observed outcomes data',
         },
       });
     } finally {
-      setTimeout(() => {
-        dispatch({ type: ActionTypes.FETCHING_RESULTS_COMPARISON_DATA, payload: false });
-      }, 1000);
+      dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: false });
     }
   };
 };
@@ -350,11 +342,50 @@ export const getScatterChartData = () => {
       dataMode,
     } = getState().selections;
 
+    // Check localStorage cache first (based on dataMode only, like the old version)
+    const cacheKey = `scatterChart_${dataMode}`;
+    const cachedData = localStorage.getItem(cacheKey);
+    if (cachedData) {
+      try {
+        const { data: cachedScatterChart, timestamp } = JSON.parse(cachedData);
+        // Use cache if it's less than 1 hour old
+        const cacheAge = Date.now() - timestamp;
+        const oneHour = 60 * 60 * 1000;
+        if (cacheAge < oneHour && cachedScatterChart && cachedScatterChart.length > 0) {
+          dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: cachedScatterChart });
+          return;
+        }
+      } catch (e) {
+        // Invalid cache, continue to fetch
+      }
+    }
+
+    // Check if we already have data in Redux store for this dataMode
+    const { scatterChart } = getState().data;
+    if (scatterChart && scatterChart.length > 0) {
+      return;
+    }
+
     dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: true });
 
     try {
-      const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyScatterChart() : api.getRDScatterChart());
-      dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: response.data });
+      const response = await (dataMode === DATA_MODES.COUNTY
+        ? api.getCountyScatterChart()
+        : api.getRDScatterChart());
+
+      // API already returns the array (not wrapped in { data }), so normalize before dispatch/cache
+      const chartData = Array.isArray(response) ? response : response?.data || [];
+      dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: chartData });
+
+      try {
+        const cacheValue = JSON.stringify({
+          data: chartData,
+          timestamp: Date.now(),
+        });
+        localStorage.setItem(cacheKey, cacheValue);
+      } catch (e) {
+        // localStorage might be full, ignore
+      }
     } catch (error) {
       dispatch({
         type: ActionTypes.CLEAR_DATA_FETCH_ERROR,
@@ -370,6 +401,122 @@ export const getScatterChartData = () => {
       setTimeout(() => {
         dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: false });
       }, 1000);
+    }
+  };
+};
+
+/**
+ * @description fetches both observed outcomes comparison data and scatter chart data in parallel
+ *              and avoids duplicate in-flight requests / unnecessary refetches
+ */
+export const fetchAllObservedOutcomesData = (year) => {
+  return async (dispatch, getState) => {
+    if (!year) {
+      return;
+    }
+
+    const state = getState();
+    const {
+      data: {
+        fetchingResultsComparisonData,
+        fetchingScatterChartData,
+        resultsComparison,
+        scatterChart,
+      },
+      selections: {
+        county,
+        dataMode,
+        rangerDistrict,
+        state: selectedState,
+      },
+    } = state;
+
+    // Skip if a fetch is already in progress
+    if (fetchingResultsComparisonData || fetchingScatterChartData) {
+      return;
+    }
+
+    // Skip if we already have both datasets cached
+    const hasMapData = resultsComparison && resultsComparison.length > 0;
+    const hasChartData = scatterChart && scatterChart.length > 0;
+    if (hasMapData && hasChartData) {
+      return;
+    }
+
+    const filters = {
+      state: selectedState,
+      county,
+      rangerDistrict,
+      year,
+    };
+
+    dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: true });
+    dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: true });
+
+    try {
+      // Try cache first for scatter chart (1h TTL)
+      const cacheKey = `scatterChart_${dataMode}`;
+      const cachedData = localStorage.getItem(cacheKey);
+      let scatterPromise;
+      if (cachedData) {
+        try {
+          const { data: cachedScatterChart, timestamp } = JSON.parse(cachedData);
+          const cacheAge = Date.now() - timestamp;
+          const oneHour = 60 * 60 * 1000;
+          if (cacheAge < oneHour && cachedScatterChart && cachedScatterChart.length > 0) {
+            dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: cachedScatterChart });
+            scatterPromise = Promise.resolve(cachedScatterChart);
+          }
+        } catch (e) {
+          // ignore cache parse errors
+        }
+      }
+
+      // If cache not used, fallback to API
+      if (!scatterPromise) {
+        scatterPromise = (dataMode === DATA_MODES.COUNTY
+          ? api.getCountyScatterChart()
+          : api.getRDScatterChart());
+      }
+
+      const [mapResponse, scatterResponse] = await Promise.all([
+        dataMode === DATA_MODES.COUNTY
+          ? api.getCountyResultsComparison(filters)
+          : api.getRDResultsComparison(filters),
+        scatterPromise,
+      ]);
+
+      const chartData = Array.isArray(scatterResponse)
+        ? scatterResponse
+        : scatterResponse?.data || [];
+
+      dispatch({ type: ActionTypes.SET_OBSERVED_OUTCOMES_DATA, payload: mapResponse });
+      dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: chartData });
+
+      // Cache scatter chart data for this dataMode
+      try {
+        const cacheValue = JSON.stringify({
+          data: chartData,
+          timestamp: Date.now(),
+        });
+        localStorage.setItem(cacheKey, cacheValue);
+      } catch (e) {
+        // ignore cache errors
+      }
+    } catch (error) {
+      dispatch({
+        type: ActionTypes.CLEAR_DATA_FETCH_ERROR,
+      });
+      dispatch({
+        type: ActionTypes.SET_DATA_FETCH_ERROR,
+        payload: {
+          error,
+          text: 'Failed to fetch observed outcomes page data',
+        },
+      });
+    } finally {
+      dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: false });
+      dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: false });
     }
   };
 };

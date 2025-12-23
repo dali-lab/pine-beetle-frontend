@@ -1,15 +1,32 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
 .change-password-modal {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -75%);
-    max-width: 350px;
+    max-width: 21.875rem;
     width: 40vw;
-    padding: 30px;
+    padding: 1.875rem;
     border-radius: 20px;
     background-color: $white;
-    // TODO: replace box shadow with grayer background later
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+
+    @media (max-width: $tablet) {
+        width: 85vw;
+        max-width: 25rem;
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    @media (max-width: $mobile) {
+        width: 90vw;
+        max-width: none;
+        padding: 1.25rem;
+        border-radius: 12px;
+        transform: translate(-50%, -70%);
+    }
 
     #change-password-content-container {
         display: flex;
@@ -28,66 +45,124 @@
                 width: 100%;
 
                 #error-input {
-                    border: solid 2.5px $red500;
+                    border: 2px solid $red500 !important;
+                    background-color: rgba(255, 54, 78, 0.05) !important;
+
+                    &:focus {
+                        border-color: $red500 !important;
+                        box-shadow: 0 0 0 3px rgba(255, 54, 78, 0.1) !important;
+                    }
                 }
-                
+
                 input {
-                    width: calc(100% - 30px);
-                    height: 43px;
-                    border-radius: 8px;
-                    background-color: $greyBlue100;
-                    border: 0;
+                    width: calc(100% - 1.875rem);
+                    height: 2.6875rem;
+                    border-radius: 0.5rem;
+                    background-color: $greyBlue200;
+                    border: 1px solid $greyBlue300;
                     font-family: "Inter";
-                    padding-left: 15px;
-                    padding-right: 15px;
-                    margin-bottom: 10px;
+                    padding-left: 0.9375rem;
+                    padding-right: 0.9375rem;
+                    margin-bottom: 0.625rem;
+                    font-size: 1rem;
+                    color: $deepCharcoal;
+                    transition: all 0.2s ease;
+
+                    @media (max-width: $mobile) {
+                        width: calc(100% - 1.5rem);
+                        padding-left: 0.75rem;
+                        padding-right: 0.75rem;
+                        font-size: 0.9375rem;
+                        height: 2.5rem;
+                    }
+
+                    &:focus {
+                        outline: none;
+                        border-color: $brandPrimary;
+                        background-color: $white;
+                        box-shadow: 0 0 0 3px rgba(26, 77, 46, 0.1);
+                    }
+
+                    &::placeholder {
+                        color: $greyBlue500;
+                    }
                 }
             }
         }
 
         #error-success-container {
-            margin-top: 15px;
-            max-width: 300px;
+            margin-top: 1rem;
+            max-width: 18.75rem;
             margin-left: auto;
             margin-right: auto;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
 
             p {
-                font-weight: bold;
-                text-align: left;
-                line-height: 20px;
+                font-weight: 600;
+                text-align: center;
+                line-height: 1.5;
+                font-size: 0.875rem;
+                margin: 0;
             }
 
             #error {
                 color: $red500;
+                background-color: rgba(255, 54, 78, 0.1);
             }
 
             #success {
-                color: $blue500;
+                color: $blue800;
+                background-color: rgba(38, 86, 181, 0.1);
             }
         }
 
         button {
-            width: 93px;
-            margin: 14px 127px 0;
-            padding: 8px;
-            border-radius: 6px;
-            background-color: $greyBlue400;
+            width: 7.5rem;
+            margin: 1.25rem auto 0;
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.5rem;
+            background-color: $brandPrimary;
             border: 0;
             font-family: "Inter";
-        }
-
-        button:hover {
+            font-size: 1rem;
+            font-weight: 600;
+            color: $white;
+            transition: all 0.2s ease;
             cursor: pointer;
+            display: block;
+
+            @media (max-width: $mobile) {
+                width: 100%;
+                max-width: 12.5rem;
+                padding: 0.625rem 1rem;
+                font-size: 0.9375rem;
+            }
+
+            &:hover:not(:disabled) {
+                background-color: $brandSecondary;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+
+            &:active:not(:disabled) {
+                transform: translateY(0);
+            }
+
+            &:disabled {
+                background-color: $greyBlue300;
+                color: $greyBlue600;
+                cursor: not-allowed;
+                opacity: 0.6;
+            }
         }
     }
 }
 
-// remove unnecessary blue outline from modal (does not impact accessibility)
 .change-password-modal:focus {
     outline:0;
 }
 
-// https://stackoverflow.com/questions/58355628/animate-react-modal
 .ReactModal__Overlay {
     opacity: 0;
     transition: all 150ms ease-in-out;

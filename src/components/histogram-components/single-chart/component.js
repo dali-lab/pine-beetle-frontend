@@ -7,6 +7,28 @@ const SingleChart = ({
   frequency,
   data,
 }) => {
+  // Guard: ensure data is valid
+  if (!data || !Array.isArray(data)) {
+    return (
+      <div className={`single-chart-wrapper ${withBorder && 'with-border'}`}>
+        <div
+          style={{
+            height: 250,
+            width: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <p>No data available</p>
+        </div>
+        <p className="single-chart__text">
+          Frequency (n&nbsp;=&nbsp;{frequency || 0})
+        </p>
+      </div>
+    );
+  }
+
   const options = {
     grid: {
       top: 10,
@@ -55,17 +77,20 @@ const SingleChart = ({
         length: 3,
         lineStyle: { color: '#000', width: 1 },
       },
-      max: data.frequency,
+      max: data?.frequency || 0,
     },
     series: [
       {
         name: 'Frequency',
         type: 'bar',
-        data,
+        data: Array.isArray(data) ? data.filter((item) => item != null && !Number.isNaN(item)) : [],
         barWidth: '98%',
         barCategoryGap: '1%',
         itemStyle: {
           color: (params) => {
+            if (!params || !params.name) {
+              return '#86CCFF';
+            }
             const categoriesAbove50 = ['>249', '100-249', '50-99'];
             return categoriesAbove50.includes(params.name)
               ? '#FFC148'

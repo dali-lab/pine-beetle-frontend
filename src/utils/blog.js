@@ -1,29 +1,64 @@
-// Sort posts from the newest to the oldest
-const sortBlogPosts = (blogPosts) => blogPosts.sort((a, b) => {
-  const dateA = new Date(a.date_created);
-  const dateB = new Date(b.date_created);
-
-  return dateB - dateA;
-});
-
-// Get the latest blog post
-const getLatestBlogPost = (blogPosts) => {
-  if (!blogPosts || blogPosts.length === 0) {
-    return null; // Handle the empty array case
+/**
+ * Sorts blog posts from newest to oldest
+ * Uses timestamp caching for O(n log n) performance on large datasets
+ * @param {Array} blogPosts - Array of blog post objects
+ * @returns {Array} Sorted array of blog posts
+ */
+export const sortBlogPosts = (blogPosts) => {
+  if (!blogPosts || !Array.isArray(blogPosts)) {
+    return [];
   }
 
-  const sortedPosts = sortBlogPosts(blogPosts);
-  return sortedPosts[0];
+  // Cache timestamps to avoid creating Date objects during each comparison
+  const timestampCache = new Map();
+  const getTimestamp = (post) => {
+    if (!timestampCache.has(post)) {
+      timestampCache.set(post, new Date(post.date_created).getTime());
+    }
+    return timestampCache.get(post);
+  };
+
+  return [...blogPosts].sort((a, b) => getTimestamp(b) - getTimestamp(a));
 };
 
-// Return string with US date format
-const getDateToDisplay = (dateToParse) => {
+/**
+ * Gets the latest blog post - O(n) complexity
+ * @param {Array} blogPosts - Array of blog post objects
+ * @returns {Object|null} Latest blog post or null if empty
+ */
+export const getLatestBlogPost = (blogPosts) => {
+  if (!blogPosts || blogPosts.length === 0) {
+    return null;
+  }
+
+  return blogPosts.reduce((latest, post) => {
+    if (!latest) return post;
+    const latestDate = new Date(latest.date_created);
+    const postDate = new Date(post.date_created);
+    return postDate > latestDate ? post : latest;
+  }, null);
+};
+
+/**
+ * Formats date to US date format (MM/DD/YYYY)
+ * @param {string|Date} dateToParse - Date to format
+ * @returns {string} Formatted date string
+ */
+export const getDateToDisplay = (dateToParse) => {
   const date = new Date(dateToParse);
+  if (Number.isNaN(date.getTime())) {
+    return 'Invalid Date';
+  }
   return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 };
 
-// Return string with blog post creation and editing dates
-const formatPostDates = (created, updated) => {
+/**
+ * Formats blog post creation and update dates for display
+ * @param {string|Date} created - Creation date
+ * @param {string|Date} updated - Update date
+ * @returns {string} Formatted date string
+ */
+export const formatPostDates = (created, updated) => {
   const options = {
     year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit',
   };
@@ -38,22 +73,23 @@ const formatPostDates = (created, updated) => {
   return dateString;
 };
 
-// truncate text for the blog post preview on home page
-const truncateText = (text, maxLength) => {
+/**
+ * Truncates text for blog post preview, breaking at word boundaries
+ * @param {string} text - Text to truncate
+ * @param {number} maxLength - Maximum length before truncation
+ * @returns {string} Truncated text with ellipsis if needed
+ */
+export const truncateText = (text, maxLength) => {
   if (text.length <= maxLength) {
     return text;
   }
 
   // Find the last space within maxLength
-  const truncated = text.substr(0, maxLength);
+  const truncated = text.substring(0, maxLength);
   const lastSpaceIndex = truncated.lastIndexOf(' ');
   if (lastSpaceIndex > 0) {
-    return `${truncated.substr(0, lastSpaceIndex)}...`;
+    return `${truncated.substring(0, lastSpaceIndex)}...`;
   }
 
   return `${truncated}...`;
-};
-
-export {
-  sortBlogPosts, getDateToDisplay, getLatestBlogPost, formatPostDates, truncateText,
 };

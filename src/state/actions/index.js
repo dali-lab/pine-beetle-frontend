@@ -1,54 +1,58 @@
 import {
-  ActionTypes as userActionTypes,
   getUserFromStorage,
   login,
   signOut,
+  ActionTypes as userActionTypes,
 } from './user';
 
 import {
-  ActionTypes as selectionActionTypes,
   clearSelections,
   getAvailableStates,
   getAvailableSublocations,
   getAvailableYears,
+  ActionTypes as selectionActionTypes,
   setAllYears,
   setChartMode,
   setCounty,
+  setCountyFilter,
   setDataMode,
   setEndYear,
+  setPredictionModal,
   setPredictionYear,
   setRangerDistrict,
+  setRangerDistrictFilter,
   setStartYear,
   setState,
-  setPredictionModal,
 } from './selections';
 
 import {
-  ActionTypes as dataActionTypes,
   clearCustomPredictionError,
   clearData,
+  ActionTypes as dataActionTypes,
   getAggregateLocationData,
   getAggregateStateData,
   getAggregateYearData,
   getPredictions,
-  getSparseData,
+  getObservedOutcomesData,
   getScatterChartData,
+  getSparseData,
+  getUnsummarizedData,
   runCustomPrediction,
-  getResultsComparisonData,
+  fetchAllObservedOutcomesData,
 } from './data';
 
 import {
   ActionTypes as blogActionTypes,
   createBlogPost,
+  deleteBlogPost,
+  editBlogPost,
   getAllBlogPosts,
   getAllBlogPostsByAuthor,
-  editBlogPost,
-  deleteBlogPost,
 } from './blog';
 
 import {
-  ActionTypes as histogramActionTypes,
   getHistogram,
+  ActionTypes as histogramActionTypes,
 } from './histogram';
 
 const ActionTypes = {
@@ -77,21 +81,25 @@ export {
   getAvailableYears,
   getHistogram,
   getPredictions,
-  getResultsComparisonData,
-  getSparseData,
+  getObservedOutcomesData,
   getScatterChartData,
+  fetchAllObservedOutcomesData,
+  getSparseData,
+  getUnsummarizedData,
   getUserFromStorage,
   login,
   runCustomPrediction,
   setAllYears,
   setChartMode,
   setCounty,
+  setCountyFilter,
   setDataMode,
   setEndYear,
+  setPredictionModal,
   setPredictionYear,
   setRangerDistrict,
+  setRangerDistrictFilter,
   setStartYear,
   setState,
-  setPredictionModal,
   signOut,
 };

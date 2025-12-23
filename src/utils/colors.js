@@ -1,11 +1,13 @@
-/* eslint-disable prefer-destructuring */
-const colors = [
-  '#86CCFF',
-  '#FFC148',
-  '#FFA370',
-  '#FF525C',
-  '#CB4767',
-  '#6B1B38',
+/**
+ * Color palette for probability visualization
+ */
+export const colors = [
+  '#649AD3',
+  '#E6B951',
+  '#E89876',
+  '#D95557',
+  '#AC5E7D',
+  '#783F58',
 ];
 
 const colorNames = [
@@ -17,28 +19,26 @@ const colorNames = [
   'darkRed',
 ];
 
-const getFillColor = (fillProb) => {
-  let color, colorName;
-  if (fillProb <= 0.025) {
-    color = colors[0];
-    colorName = colorNames[0];
-  } else if (fillProb > 0.025 && fillProb <= 0.05) {
-    color = colors[1];
-    colorName = colorNames[1];
-  } else if (fillProb > 0.05 && fillProb <= 0.15) {
-    color = colors[2];
-    colorName = colorNames[2];
-  } else if (fillProb > 0.15 && fillProb <= 0.25) {
-    color = colors[3];
-    colorName = colorNames[3];
-  } else if (fillProb > 0.25 && fillProb <= 0.4) {
-    color = colors[4];
-    colorName = colorNames[4];
-  } else {
-    color = colors[5];
-    colorName = colorNames[5];
-  }
-  return { color, colorName };
-};
+// Probability thresholds for color assignment
+const COLOR_THRESHOLDS = [
+  { max: 0.025, index: 0 },
+  { max: 0.05, index: 1 },
+  { max: 0.15, index: 2 },
+  { max: 0.25, index: 3 },
+  { max: 0.4, index: 4 },
+  { max: Infinity, index: 5 },
+];
 
-export default getFillColor;
+/**
+ * Gets fill color and color name based on probability value
+ * @param {number} fillProb - Probability value (0-1)
+ * @returns {{ color: string, colorName: string }} Color hex code and name
+ */
+export const getFillColor = (fillProb) => {
+  const threshold = COLOR_THRESHOLDS.find((t) => fillProb <= t.max);
+  const index = threshold?.index ?? 5;
+  return {
+    color: colors[index],
+    colorName: colorNames[index],
+  };
+};

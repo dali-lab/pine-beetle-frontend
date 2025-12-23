@@ -5,30 +5,25 @@ import Home from './component';
 const mapStateToProps = (state) => {
   const {
     data: {
-      fetchingAggregateYearData,
-      fetchingAggregateStateData,
-      fetchingAggregateLocationData,
       fetchingPredictions,
-      fetchingSparseData,
+      predictions,
     },
   } = state;
 
-  const isLoading = fetchingAggregateYearData
-  || fetchingAggregateStateData
-  || fetchingAggregateLocationData
-  || fetchingPredictions
-  || fetchingSparseData;
+  // Home page only needs predictions data for the map
+  // Only show loading if we're fetching AND don't have data yet
+  const isLoading = fetchingPredictions && (!predictions || predictions.length === 0);
 
   return {
     isLoading,
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
   return {};
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Home);

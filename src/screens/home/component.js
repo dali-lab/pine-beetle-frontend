@@ -1,48 +1,21 @@
-import React, { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 
-import {
-  BlogPost,
-  HeroSection,
-  HistoricalData,
-  HowItWorks,
-  MiniMap,
-  PlayWithModel,
-  Video,
-} from './components';
-import { Loading, ScrollHint } from '../../components';
+import { Loader } from '../../components';
+import MapWithControls from './components';
 
 import './style.scss';
 
 const Home = (props) => {
   const { isLoading } = props;
 
-  const howItWorksRef = useRef(null);
-  const location = useLocation();
-
-  // scroll to the "How does it work?" section whenever a respective nav button is clicked
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    if (!isLoading && searchParams.get('scrollTo') === 'howItWorks' && howItWorksRef.current) {
-      setTimeout(() => howItWorksRef.current.scrollIntoView({ behavior: 'smooth' }), 200);
-    }
-  }, [location.search, isLoading]);
-
   return (
-    <div className="container">
-      <Loading visible={isLoading} />
-      <HeroSection />
-      <div className="home-content">
-        <MiniMap />
-        <BlogPost />
-        <PlayWithModel />
-        <div className="home-content-section">
-          <HistoricalData />
-          <Video />
-        </div>
+    <div className="map-page-wrapper">
+      <div className="container">
+        <Loader visible={isLoading} />
       </div>
-      <HowItWorks howItWorksRef={howItWorksRef} />
-      <ScrollHint />
+      <div className="fullscreen-map">
+        <MapWithControls />
+      </div>
     </div>
   );
 };

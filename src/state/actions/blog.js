@@ -37,8 +37,10 @@ export const getAllBlogPosts = () => {
     } catch (error) {
       dispatch({
         type: ActionTypes.API_ERROR,
-        payload: 'GET ALL BLOG POSTS',
-        error,
+        payload: {
+          action: 'GET ALL BLOG POSTS',
+          error,
+        },
       });
     }
   };

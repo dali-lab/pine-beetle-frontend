@@ -1,0 +1,139 @@
+@import '../../../../styles/breakpoints';
+@import '../../../../styles/colors';
+
+#predictions-output {
+  width: 100%;
+
+  #vl {
+    border-top: 1px solid $grey200;
+    height: auto;
+    padding-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  #predictions-generated-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: $headingColor;
+    text-align: center;
+    margin-bottom: 24px;
+
+    p {
+      margin: 0;
+      line-height: 1.5;
+    }
+  }
+
+  .predictions-generated {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 0;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    #prob-spots,
+    #prob-spots-disabled,
+    #prob-outbreak,
+    #prob-outbreak-disabled {
+      flex: 1;
+      padding: 24px 20px;
+      border-radius: 8px;
+      text-align: center;
+      border: 2px solid $grey200;
+
+      @media (max-width: 768px) {
+        padding: 20px 16px;
+      }
+    }
+
+    #prob-outbreak-disabled,
+    #prob-spots-disabled {
+      background-color: $grey100;
+      border-color: $grey200;
+    }
+
+    // Color classes for prediction cards based on prediction results
+    .color-fill-with-shadow {
+      &.blue {
+        background: #649AD3;
+        border-color: #4a7ba8;
+      }
+
+      &.yellow {
+        background: #E6B951;
+        border-color: #d4a842;
+      }
+
+      &.orange {
+        background: #E89876;
+        border-color: #d8855f;
+      }
+
+      &.brightRed {
+        background: #D95557;
+        border-color: #c43f41;
+      }
+
+      &.darkerRed {
+        background: #AC5E7D;
+        border-color: #8d4a66;
+      }
+
+      &.darkRed {
+        background: #783F58;
+        border-color: #5d2f43;
+      }
+
+      &.green {
+        background: $grey300;
+        border-color: $grey500;
+      }
+
+      // All text should be strong dark regardless of background color
+      #percent,
+      #prob-text {
+        color: $headingColor;
+        font-weight: 700;
+
+        p {
+          color: $headingColor;
+          font-weight: 700;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  #percent {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    color: $headingColor;
+    margin-bottom: 12px;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
+  }
+
+  #prob-text {
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+    color: $headingColor;
+    margin: 0;
+    font-weight: 700;
+
+    p {
+      color: $headingColor;
+      font-weight: 700;
+      margin: 0;
+    }
+  }
+}

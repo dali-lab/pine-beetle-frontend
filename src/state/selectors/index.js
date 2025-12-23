@@ -1,0 +1,17 @@
+export {
+  selectSparseData,
+  selectSublocationData,
+  selectFetchingSparseData,
+  selectFetchingAggregateLocationData,
+  selectIsDataTableLoading,
+  selectDataTableErrorText,
+  selectDataMode,
+  selectStartYear,
+  selectEndYear,
+  selectSelectedState,
+  selectCounty,
+  selectRangerDistrict,
+  selectAvailableHistoricalYears,
+  selectAvailableHistoricalStates,
+  selectAvailableHistoricalSublocations,
+} from './data-table';

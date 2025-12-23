@@ -1,0 +1,239 @@
+@import '../../styles/breakpoints';
+@import '../../styles/colors';
+
+.play-with-model-page {
+  min-height: auto;
+  background: $backgroundColor;
+  padding: 3rem 0;
+  margin-top: 4.375rem;
+
+  @media (max-width: $tablet) {
+    padding: 2rem 0;
+  }
+}
+
+.play-with-model-container {
+  max-width: 87.5rem;
+  margin: 0 auto;
+  padding: 0 10rem;
+
+  @media (max-width: $tablet) {
+    padding: 0 1.5rem;
+  }
+}
+
+.play-with-model-content {
+  // treść strony
+}
+
+.error-alert {
+  background: $red100;
+  border: 1px solid $red400;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 32px;
+
+  .error-text {
+    color: $red700;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.model-explorer-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  margin-top: 48px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (max-width: $tablet) {
+    gap: 40px;
+    margin-top: 32px;
+    max-width: 100%;
+  }
+}
+
+.location-section,
+.parameters-section,
+.results-section {
+  background: $white;
+  padding: 40px 32px;
+  border-bottom: 1px solid $grey200;
+  margin-bottom: 0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media (max-width: $tablet) {
+    padding: 32px 24px;
+  }
+}
+
+.play-model-header {
+  text-align: left;
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: $headingColor;
+    margin: 0;
+    letter-spacing: -0.5px;
+    line-height: 1.3;
+    flex: 1;
+    min-width: 200px;
+
+    @media (max-width: $tablet) {
+      font-size: 20px;
+    }
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+    color: $grey600;
+    margin: 0;
+    font-weight: 400;
+    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: right;
+    flex-shrink: 0;
+
+    @media (max-width: $tablet) {
+      text-align: left;
+      margin-top: 8px;
+    }
+  }
+
+  @media (max-width: $tablet) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+.selection-container,
+.parameters-container,
+.results-container {
+  position: relative;
+}
+
+.play-model-header,
+.selection-container,
+.parameters-container,
+.results-container {
+  .choice-input-wrapper {
+    .choice-input-button {
+      .choice-input-arrow {
+        transform: rotate(0deg);
+
+        &.open {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .model-explorer-layout {
+    gap: 32px;
+  }
+}
+
+@media (max-width: $tablet) {
+  .location-section,
+  .parameters-section,
+  .results-section {
+    padding: 20px;
+  }
+
+  .section-header {
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: 18px;
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .location-section,
+  .parameters-section,
+  .results-section {
+    padding: 16px;
+  }
+
+  .section-header {
+    margin-bottom: 16px;
+
+    h2 {
+      font-size: 16px;
+    }
+  }
+}
+
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.success {
+  border-color: $green500;
+  background: $green200;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: -0.5px;
+}
+
+p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: $textColor;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-contrast: high) {
+  .location-section,
+  .parameters-section,
+  .results-section {
+    border-width: 2px;
+    border-color: $headingColor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

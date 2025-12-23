@@ -44,6 +44,14 @@ const AddUser = ({ setUsers }) => {
         }]);
         setSuccess(true);
 
+        // Clear all input fields
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
+        setFirstName('');
+        setLastName('');
+        setError();
+
         // clear the success message
         setTimeout(() => {
           setSuccess(false);

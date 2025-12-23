@@ -5,13 +5,14 @@ import {
   getAggregateStateData,
   getAggregateLocationData,
   getAvailableStates,
+  getAvailableYears,
   getAllBlogPosts,
   getSparseData,
   getPredictions,
   getUserFromStorage,
   setChartMode,
   setDataMode,
-  getResultsComparisonData,
+  getObservedOutcomesData,
   getScatterChartData,
 } from '../state/actions';
 
@@ -53,8 +54,8 @@ const mapDispatchToProps = (dispatch) => {
     getSparseData: (overrideFilter) => {
       dispatch(getSparseData(overrideFilter));
     },
-    getResultsComparisonData: (year) => {
-      dispatch(getResultsComparisonData(year));
+    getObservedOutcomesData: (year) => {
+      dispatch(getObservedOutcomesData(year));
     },
     getPredictions: (startYear, endYear) => {
       dispatch(getPredictions(startYear, endYear));
@@ -65,11 +66,14 @@ const mapDispatchToProps = (dispatch) => {
     setChartMode: (mode) => {
       dispatch(setChartMode(mode));
     },
-    setDataMode: (mode) => {
-      dispatch(setDataMode(mode));
+    setDataMode: (mode, options) => {
+      dispatch(setDataMode(mode, options));
     },
     getScatterChartData: () => {
       dispatch(getScatterChartData());
+    },
+    getAvailableYears: () => {
+      dispatch(getAvailableYears());
     },
   };
 };

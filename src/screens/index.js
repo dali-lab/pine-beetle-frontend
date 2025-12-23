@@ -1,21 +1,33 @@
 import About from './about';
 import Admin from './admin';
 import Blog from './blog';
-import Resources from './resources';
-import TrappingData from './trapping-data';
+import Contact from './contact';
+import Data from './data';
+import DataTable from './data-table';
+import DownloadData from './download-data';
+import Explainers from './explainers';
 import Home from './home';
-import Prediction from './prediction';
+import Methodology from './methodology';
+import PlayWithModelScreen from './play-with-model';
+import Resources from './resources';
+import ObservedOutcomes from './observed-outcomes';
 import SingleBlogPost from './single-blog-post';
-import ResultsComparison from './results-comparison';
+import TimeSeries from './time-series';
 
 export {
   About,
   Admin,
   Blog,
-  Resources,
-  TrappingData,
+  Contact,
+  Data,
+  DataTable,
+  DownloadData,
+  Explainers,
   Home,
-  Prediction,
+  Methodology,
+  PlayWithModelScreen,
+  Resources,
+  ObservedOutcomes,
   SingleBlogPost,
-  ResultsComparison,
+  TimeSeries,
 };
