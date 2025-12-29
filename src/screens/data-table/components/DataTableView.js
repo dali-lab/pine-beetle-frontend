@@ -119,35 +119,37 @@ const DataTableView = memo(({
             </td>
           </tr>
         ) : (
-          paginatedData.map((item) => (
-            <tr key={item.id}>
-              <td>{formatYearDisplay(item.year, dataFormat)}</td>
-              <td className="text-left">{item.state}</td>
-              <td className="text-left">{item.county}</td>
-              {dataFormat === DATA_FORMATS.RAW ? (
-                <>
-                  <td>{item.trap || 'N/A'}</td>
-                  <td>{item.weekNumber !== null && item.weekNumber !== undefined ? item.weekNumber : 'N/A'}</td>
-                  <td>{item.spbCount !== undefined && item.spbCount !== null ? item.spbCount.toLocaleString() : 'N/A'}</td>
-                  <td>{item.cleridCount !== undefined && item.cleridCount !== null ? item.cleridCount.toLocaleString() : 'N/A'}</td>
-                  <td>
-                    {formatCollectionDate(item.collectionDate)}
-                  </td>
-                </>
-              ) : (
-                <>
-                  <td>{item.trapCount !== undefined ? item.trapCount.toLocaleString() : 'N/A'}</td>
-                  <td>{item.spbPer2Weeks !== undefined ? item.spbPer2Weeks.toLocaleString() : 'N/A'}</td>
-                  <td className="probability-cell">
-                    {item.probSpotsGT50 !== undefined ? `${(item.probSpotsGT50 * 100).toFixed(1)}%` : 'N/A'}
-                  </td>
-                  <td className="prediction-cell">
-                    {item.predSpotsorigUnits !== undefined ? item.predSpotsorigUnits.toFixed(1) : 'N/A'}
-                  </td>
-                </>
-              )}
-            </tr>
-          ))
+          paginatedData
+            .filter((item) => item && item.id)
+            .map((item, index) => (
+              <tr key={item.id || `row-${index}`}>
+                <td>{formatYearDisplay(item.year, dataFormat) || 'N/A'}</td>
+                <td className="text-left">{item.state || 'N/A'}</td>
+                <td className="text-left">{item.county || 'N/A'}</td>
+                {dataFormat === DATA_FORMATS.RAW ? (
+                  <>
+                    <td>{item.trap || 'N/A'}</td>
+                    <td>{item.weekNumber !== null && item.weekNumber !== undefined ? item.weekNumber : 'N/A'}</td>
+                    <td>{item.spbCount !== undefined && item.spbCount !== null ? item.spbCount.toLocaleString() : 'N/A'}</td>
+                    <td>{item.cleridCount !== undefined && item.cleridCount !== null ? item.cleridCount.toLocaleString() : 'N/A'}</td>
+                    <td>
+                      {item.collectionDate ? formatCollectionDate(item.collectionDate) : 'N/A'}
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td>{item.trapCount !== undefined && item.trapCount !== null ? item.trapCount.toLocaleString() : 'N/A'}</td>
+                    <td>{item.spbPer2Weeks !== undefined && item.spbPer2Weeks !== null ? item.spbPer2Weeks.toLocaleString() : 'N/A'}</td>
+                    <td className="probability-cell">
+                      {item.probSpotsGT50 !== undefined && item.probSpotsGT50 !== null ? `${(item.probSpotsGT50 * 100).toFixed(1)}%` : 'N/A'}
+                    </td>
+                    <td className="prediction-cell">
+                      {item.predSpotsorigUnits !== undefined && item.predSpotsorigUnits !== null ? item.predSpotsorigUnits.toFixed(1) : 'N/A'}
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))
         )}
       </tbody>
     </table>

@@ -221,7 +221,7 @@ const DataTableScreen = () => {
           <DataTableView
             dataFormat={dataFormat}
             dataMode={filters.dataMode}
-            paginatedData={paginatedData}
+            paginatedData={paginatedData.filter((item) => item && item.id)}
             sortField={sortField}
             sortDirection={sortDirection}
             handleSort={handleSort}
