@@ -8,6 +8,7 @@ import {
   setChartMode,
   setDataMode,
   setStartYear,
+  ActionTypes,
 } from '../../state/actions';
 
 import TimeSeries from './component';
@@ -25,6 +26,9 @@ const mapStateToProps = (state) => {
       availableHistoricalYears,
       endYear,
       predictionYear,
+      state: selectedState,
+      county,
+      rangerDistrict,
     },
     data: {
       fetchingAggregateYearData,
@@ -52,6 +56,9 @@ const mapStateToProps = (state) => {
     availableYears: availableHistoricalYears,
     endYear,
     mapYear,
+    selectedState,
+    county,
+    rangerDistrict,
   };
 };
 
@@ -63,6 +70,20 @@ const mapDispatchToProps = (dispatch) => ({
   fetchAvailableYears: () => dispatch(getAvailableYears()),
   fetchGraphData: () => dispatch(getAggregateYearData()),
   fetchMapData: (year) => dispatch(getAggregateLocationData({ year })),
+  clearFilters: () => {
+    dispatch({ type: ActionTypes.SET_STATE, payload: { state: '' } });
+    dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: [] } });
+    dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: [] } });
+  },
+  setStateFilter: (state) => {
+    dispatch({ type: ActionTypes.SET_STATE, payload: { state } });
+  },
+  setCountyFilter: (county) => {
+    dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: county === '' ? [] : county } });
+  },
+  setRangerDistrictFilter: (rangerDistrict) => {
+    dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: rangerDistrict === '' ? [] : rangerDistrict } });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimeSeries);

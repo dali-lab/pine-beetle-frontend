@@ -89,19 +89,29 @@ const ScatterChart = ({
     }
 
     // Guard: ensure chart was initialized successfully
-    if (!chart) {
+    if (!chart || chart.isDisposed()) {
       return undefined;
     }
 
     // Ensure all datasets have valid data
-    const allData = (formattedData && formattedData.length > 0) ? formattedData : [];
-    const selectedData = (selectedYearData && selectedYearData.length > 0) ? selectedYearData : [];
+    const allData = (formattedData && Array.isArray(formattedData) && formattedData.length > 0) ? formattedData : [];
+    const selectedData = (selectedYearData && Array.isArray(selectedYearData) && selectedYearData.length > 0) ? selectedYearData : [];
     const regressionData = getCustomRegressionLine();
+
+    // Ensure regressionData is valid
+    if (!regressionData || !Array.isArray(regressionData) || regressionData.length === 0) {
+      return undefined;
+    }
+
+    // Don't render if we have no data at all
+    if (allData.length === 0 && selectedData.length === 0) {
+      return undefined;
+    }
 
     const option = {
       dataset: [
-        { id: 'all', source: allData },
-        { id: 'selected', source: selectedData },
+        { id: 'all', source: allData.length > 0 ? allData : [] },
+        { id: 'selected', source: selectedData.length > 0 ? selectedData : [] },
         { id: 'manualRegression', source: regressionData },
       ],
       title: {
@@ -149,7 +159,7 @@ const ScatterChart = ({
         },
       },
       series: [
-        {
+        ...(allData.length > 0 ? [{
           name: 'All Years',
           type: 'scatter',
           datasetId: 'all',
@@ -164,15 +174,15 @@ const ScatterChart = ({
           emphasis: {
             disabled: true,
           },
-        },
-        {
+        }] : []),
+        ...(selectedData.length > 0 ? [{
           name: `Year ${predictionYear}`,
           type: 'scatter',
           datasetId: 'selected',
           encode: { x: 0, y: 1 },
           itemStyle: { color: '#cc0002' },
           symbolSize: 10,
-        },
+        }] : []),
         {
           name: 'Manual Regression',
           type: 'line',

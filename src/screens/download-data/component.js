@@ -26,7 +26,7 @@ const DownloadDataScreen = (props) => {
 
   // Load available data when component mounts or dataMode changes
   useEffect(() => {
-    dispatch(getAvailableYears({ isHistorical: true }));
+    dispatch(getAvailableYears());
     dispatch(getAvailableStates({ isHistorical: true }, { historical: true, prediction: false }));
   }, [dataMode, dispatch]);
 

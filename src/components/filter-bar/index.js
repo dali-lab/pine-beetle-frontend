@@ -52,28 +52,28 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  clearAllSelections: () => {
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  clearAllSelections: ownProps.onClearSelections || (() => {
     dispatch(clearSelections());
-  },
-  setPredictionYear: (year) => {
+  }),
+  setPredictionYear: ownProps.onSetPredictionYear || ((year) => {
     dispatch(setPredictionYear(year));
-  },
+  }),
   setStartYear: (year) => {
     dispatch(setStartYear(year));
   },
   setEndYear: (year) => {
     dispatch(setEndYear(year));
   },
-  setCounty: (county) => {
+  setCounty: ownProps.onSetCounty || ((county) => {
     dispatch(setCounty(county));
-  },
-  setRangerDistrict: (rangerDistrict) => {
+  }),
+  setRangerDistrict: ownProps.onSetRangerDistrict || ((rangerDistrict) => {
     dispatch(setRangerDistrict(rangerDistrict));
-  },
-  setState: (state) => {
+  }),
+  setState: ownProps.onSetState || ((state) => {
     dispatch(setState(state));
-  },
+  }),
   setDataMode: (mode) => {
     dispatch(setDataMode(mode));
   },

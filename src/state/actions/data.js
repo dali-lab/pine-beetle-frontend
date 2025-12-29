@@ -417,10 +417,7 @@ export const fetchAllObservedOutcomesData = (year) => {
         scatterChart,
       },
       selections: {
-        county,
         dataMode,
-        rangerDistrict,
-        state: selectedState,
       },
     } = state;
 
@@ -430,10 +427,8 @@ export const fetchAllObservedOutcomesData = (year) => {
 
     const hasChartData = scatterChart && scatterChart.length > 0;
 
+    // Fetch all data for the year - filtering is done visually on the frontend
     const filters = {
-      state: selectedState,
-      county,
-      rangerDistrict,
       year,
     };
 

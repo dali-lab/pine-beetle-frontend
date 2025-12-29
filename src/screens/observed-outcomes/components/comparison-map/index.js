@@ -1,6 +1,12 @@
 import { connect } from 'react-redux';
 import {
-  setCounty, setDataMode, setRangerDistrict, setState,
+  ActionTypes,
+  setCounty,
+  setCountyFilter,
+  setDataMode,
+  setRangerDistrict,
+  setRangerDistrictFilter,
+  setState,
 } from '../../../../state/actions';
 import ComparisonMap from './component';
 
@@ -42,14 +48,27 @@ const mapDispatchToProps = (dispatch) => {
     setCounty: (county) => {
       dispatch(setCounty(county));
     },
+    setCountyFilter: (county) => {
+      dispatch(setCountyFilter(county));
+    },
     setDataMode: (mode) => {
       dispatch(setDataMode(mode));
     },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));
     },
+    setRangerDistrictFilter: (rangerDistrict) => {
+      dispatch(setRangerDistrictFilter(rangerDistrict));
+    },
     setState: (state) => {
       dispatch(setState(state));
+    },
+    clearAllSelections: () => {
+      // Only reset filter selections without clearing data
+      // Reset state, county, and rangerDistrict to empty
+      dispatch({ type: ActionTypes.SET_STATE, payload: { state: '' } });
+      dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: [] } });
+      dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: [] } });
     },
   };
 };

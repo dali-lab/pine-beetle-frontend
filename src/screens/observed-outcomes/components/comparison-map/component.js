@@ -74,16 +74,19 @@ const ComparisonMap = (props) => {
   const {
     availableStates,
     availableSublocations,
+    county,
     data,
     dataMode,
+    rangerDistrict,
     selectedState,
     setCounty,
+    setCountyFilter,
     setDataMode,
     setRangerDistrict,
+    setRangerDistrictFilter,
     setState,
+    clearAllSelections,
     year,
-    isLoading,
-    yearsLoaded,
   } = props;
 
   const {
@@ -196,19 +199,36 @@ const ComparisonMap = (props) => {
 
     const { fillExpression, strokeExpression } = createBaseExpressions(dataMode);
 
-    comparisonData.forEach(({
-      county,
+    // Filter data based on selected state and county/rangerDistrict
+    const filteredData = comparisonData.filter((item) => {
+      // First filter by state if selected
+      if (selectedState && item.state !== selectedState) {
+        return false;
+      }
+      // Then filter by county/rangerDistrict if selected
+      if (dataMode === DATA_MODES.COUNTY) {
+        if (county && county.length > 0) {
+          return county.includes(item.county);
+        }
+      } else if (rangerDistrict && rangerDistrict.length > 0) {
+        return rangerDistrict.includes(item.rangerDistrict);
+      }
+      return true;
+    });
+
+    filteredData.forEach(({
+      county: countyName,
       probSpotsGT50: fillProb,
       sumSpots,
-      rangerDistrict,
-      state,
+      rangerDistrict: rdName,
+      state: stateName,
     }) => {
       const color = getFillColor(fillProb, sumSpots);
 
       const locationName = formatLocationForMapbox(dataMode, {
-        county,
-        rangerDistrict,
-        state,
+        county: countyName,
+        rangerDistrict: rdName,
+        state: stateName,
       });
 
       if (locationName) {
@@ -223,7 +243,7 @@ const ComparisonMap = (props) => {
     addDefaultExpressions(fillExpression, strokeExpression);
 
     addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
-  }, [map, dataMode]);
+  }, [map, dataMode, selectedState, county, rangerDistrict]);
 
   const mapInitializedRef = useRef(false);
   const lastDataModeRef = useRef(dataMode);
@@ -325,7 +345,7 @@ const ComparisonMap = (props) => {
     if (year.toString().length === 4 && data.length > 0) colorResults(data);
 
     zoomToSelectedState(selectedState, map);
-  }, [data, selectedState, map, dataMode, year, colorResults]);
+  }, [data, selectedState, county, rangerDistrict, map, dataMode, year, colorResults]);
 
   useEffect(() => {
     if (!initialFill && map && data.length > 0) {
@@ -401,8 +421,6 @@ const ComparisonMap = (props) => {
     label: getShortLabel(threshold),
   }));
 
-  const shouldShowMessage = !isLoading && !data.length && year && year.toString().length === 4 && yearsLoaded;
-
   return (
     <div className="container flex-item-left observed-outcomes-map" id="map-container">
       <TogglesOverlay dataMode={dataMode} setDataMode={setDataMode} />
@@ -413,16 +431,16 @@ const ComparisonMap = (props) => {
         availableStates={availableStates}
         availableYears={[]}
         availableSublocations={availableSublocations}
-        county={props.county}
+        county={county}
         dataMode={dataMode}
         predictionYear={year}
-        rangerDistrict={props.rangerDistrict}
+        rangerDistrict={rangerDistrict}
         selectedState={selectedState}
-        setCounty={setCounty}
+        setCounty={setCountyFilter}
         setPredictionYear={() => {}}
-        setRangerDistrict={setRangerDistrict}
+        setRangerDistrict={setRangerDistrictFilter}
         setState={setState}
-        clearAllSelections={props.clearAllSelections}
+        clearAllSelections={clearAllSelections}
         legendItems={legendItems}
         legendTitle="Results comparison"
         downloadCallback={() => downloadMap(
@@ -437,13 +455,6 @@ const ComparisonMap = (props) => {
         isDownloadingMap={isDownloadingMap}
         hideFilters
       />
-      {shouldShowMessage && (
-        <div className="observed-outcomes-message">
-          <p>
-            {`Map for ${year} not yet available. Spot data for the previous year usually come online sometime in January or February of the following year.`}
-          </p>
-        </div>
-      )}
     </div>
   );
 };

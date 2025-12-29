@@ -43,12 +43,18 @@ const HistoricalMap = (props) => {
   const {
     availableStates,
     availableSublocations,
+    county,
     dataMode,
     predictionYear,
+    rangerDistrict,
     selectedState,
     setCounty,
     setRangerDistrict,
     setState,
+    setCountyFilter,
+    setRangerDistrictFilter,
+    setStateFilter,
+    clearAllSelections,
     sublocationData: rawData,
   } = props;
 
@@ -114,14 +120,27 @@ const HistoricalMap = (props) => {
     const filteredData = d.filter((item) => {
       const itemYear = parseYearFromItem(item);
       if (itemYear === null) return false;
-      return itemYear === selectedYear;
+      if (itemYear !== selectedYear) return false;
+
+      // Apply visual filtering based on selected state, county, and rangerDistrict
+      if (selectedState && item.state !== selectedState) return false;
+
+      if (dataMode === DATA_MODES.COUNTY && county && county.length > 0) {
+        if (!county.includes(item.county)) return false;
+      }
+
+      if (dataMode === DATA_MODES.RANGER_DISTRICT && rangerDistrict && rangerDistrict.length > 0) {
+        if (!rangerDistrict.includes(item.rangerDistrict)) return false;
+      }
+
+      return true;
     });
 
     const trappingsByLocality = filteredData.reduce((acc, curr) => {
       const {
-        county,
-        rangerDistrict,
-        state,
+        county: itemCounty,
+        rangerDistrict: itemRangerDistrict,
+        state: itemState,
         sumSpotst0,
         spotst0,
         spots,
@@ -136,8 +155,8 @@ const HistoricalMap = (props) => {
         spotsValue = spots;
       }
 
-      const countyFormatName = county && state ? `${county} ${state}`.toUpperCase() : '';
-      const rangerDistrictFormatName = rangerDistrict ? getMapboxRDNameFormat(rangerDistrict)?.toUpperCase() : '';
+      const countyFormatName = itemCounty && itemState ? `${itemCounty} ${itemState}`.toUpperCase() : '';
+      const rangerDistrictFormatName = itemRangerDistrict ? getMapboxRDNameFormat(itemRangerDistrict)?.toUpperCase() : '';
 
       const localityDescription = dataMode === DATA_MODES.COUNTY ? countyFormatName : rangerDistrictFormatName;
 
@@ -266,7 +285,7 @@ const HistoricalMap = (props) => {
 
     zoomToSelectedState(selectedState, map);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rawData, selectedState, map, predictionYear]);
+  }, [rawData, selectedState, map, predictionYear, county, rangerDistrict]);
 
   useEffect(() => {
     if (!initialFill && map && rawData.length > 0) {
@@ -368,16 +387,16 @@ const HistoricalMap = (props) => {
         availableStates={availableStates}
         availableYears={[]}
         availableSublocations={availableSublocations}
-        county={props.county}
+        county={county}
         dataMode={dataMode}
         predictionYear={predictionYear}
-        rangerDistrict={props.rangerDistrict}
+        rangerDistrict={rangerDistrict}
         selectedState={selectedState}
-        setCounty={setCounty}
+        setCounty={setCountyFilter}
         setPredictionYear={() => {}}
-        setRangerDistrict={setRangerDistrict}
-        setState={setState}
-        clearAllSelections={props.clearAllSelections}
+        setRangerDistrict={setRangerDistrictFilter}
+        setState={setStateFilter}
+        clearAllSelections={clearAllSelections}
         legendItems={legendItems}
         legendTitle="Total Number of Spots"
         downloadCallback={() => downloadMap(
