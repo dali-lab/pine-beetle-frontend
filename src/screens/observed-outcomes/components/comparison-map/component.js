@@ -229,6 +229,11 @@ const ComparisonMap = (props) => {
   const lastDataModeRef = useRef(dataMode);
   const containerRetryCountRef = useRef(0);
 
+  // Reset refs on mount - fixes browser back/forward navigation
+  useEffect(() => {
+    mapInitializedRef.current = false;
+  }, []);
+
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
 

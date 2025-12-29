@@ -73,7 +73,6 @@ const PredictionMap = (props) => {
     clearAllSelections,
     year,
     predictionModal,
-    getPredictions,
   } = props;
 
   const {
@@ -107,26 +106,18 @@ const PredictionMap = (props) => {
   const isMountedRef = useRef(true);
   const styleRetryCountRef = useRef(0);
 
-  const hasCheckedEmptyDataRef = useRef(false);
-
+  // Cleanup effect for refs and timeouts
   useEffect(() => {
     isMountedRef.current = true;
     hasColoredRef.current = false;
 
-    if (!hasCheckedEmptyDataRef.current && data.length === 0 && year && year.toString().length === 4 && getPredictions) {
-      hasCheckedEmptyDataRef.current = true;
-      getPredictions(year);
-    }
-
     return () => {
       isMountedRef.current = false;
-      hasCheckedEmptyDataRef.current = false;
       if (colorPredictionsTimeoutRef.current) {
         clearTimeout(colorPredictionsTimeoutRef.current);
         colorPredictionsTimeoutRef.current = null;
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const createMapHoverCallback = useCallback((predictions, rangerDistricts, mode, state, availStates) => {
@@ -214,6 +205,11 @@ const PredictionMap = (props) => {
   const mapInitializedRef = useRef(false);
   const lastDataModeRef = useRef(dataMode);
   const initTimeoutRef = useRef(null);
+
+  // Reset refs on mount - fixes browser back/forward navigation
+  useEffect(() => {
+    mapInitializedRef.current = false;
+  }, []);
 
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;

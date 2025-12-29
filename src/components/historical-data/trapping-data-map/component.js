@@ -186,6 +186,11 @@ const HistoricalMap = (props) => {
   const initTimeoutRef = useRef(null);
   const containerRetryCountRef = useRef(0);
 
+  // Reset refs on mount - fixes browser back/forward navigation
+  useEffect(() => {
+    mapInitializedRef.current = false;
+  }, []);
+
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
 
@@ -251,6 +256,7 @@ const HistoricalMap = (props) => {
       }
       mapInitializedRef.current = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataMode]);
 
   useEffect(() => {
@@ -267,6 +273,7 @@ const HistoricalMap = (props) => {
       colorFill(rawData);
       setInitialFill(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialFill, map, rawData, setInitialFill]);
 
   const hoverCallback = useMemo(() => {
