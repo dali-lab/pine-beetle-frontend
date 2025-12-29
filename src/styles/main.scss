@@ -102,8 +102,10 @@ textarea {
 }
 
 .content {
-    flex: 1;
+    flex: 1 0 auto;
     background-color: $backgroundColor;
+    display: flex;
+    flex-direction: column;
 }
 
 .line {
