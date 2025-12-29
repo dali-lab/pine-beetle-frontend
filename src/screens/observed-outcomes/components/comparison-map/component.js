@@ -242,7 +242,7 @@ const ComparisonMap = (props) => {
 
     addDefaultExpressions(fillExpression, strokeExpression);
 
-    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
+    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode), dataMode);
   }, [map, dataMode, selectedState, county, rangerDistrict]);
 
   const mapInitializedRef = useRef(false);

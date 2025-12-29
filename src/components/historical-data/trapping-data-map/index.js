@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import StateMap from './component';
 
 import {
+  getAvailableSublocations,
   setCounty,
   setRangerDistrict,
   setState,
@@ -33,7 +34,7 @@ const mapStateToProps = (state) => {
     dataMode,
     startYear,
     endYear,
-    predictionYear: state.selections.predictionYear || endYear, // Map uses predictionYear, fallback to endYear
+    predictionYear: state.selections.predictionYear || endYear,
     rangerDistrict,
     selectedState,
     sublocationData,
@@ -59,11 +60,13 @@ const mapDispatchToProps = (dispatch) => {
     },
     setStateFilter: (state) => {
       dispatch({ type: ActionTypes.SET_STATE, payload: { state } });
+      dispatch(getAvailableSublocations(state, {}, { historical: true, prediction: false }));
     },
     clearAllSelections: () => {
       dispatch({ type: ActionTypes.SET_STATE, payload: { state: '' } });
       dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: [] } });
       dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: [] } });
+      dispatch(getAvailableSublocations('', {}, { historical: true, prediction: false }));
     },
   };
 };

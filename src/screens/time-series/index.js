@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import {
   clearSelections,
+  getAvailableSublocations,
   getAvailableYears,
   getAggregateYearData,
   getAggregateLocationData,
@@ -40,12 +41,10 @@ const mapStateToProps = (state) => {
   const hasGraphData = yearData && yearData.length > 0;
   const isGraphView = chartMode === 'graph';
 
-  // Show loader when fetching data
   const isLoading = isGraphView
     ? (fetchingAggregateYearData && !hasGraphData)
     : fetchingAggregateLocationData;
 
-  // Map view uses predictionYear, chart view uses endYear
   const mapYear = predictionYear || endYear;
 
   return {
@@ -74,9 +73,11 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: ActionTypes.SET_STATE, payload: { state: '' } });
     dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: [] } });
     dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: [] } });
+    dispatch(getAvailableSublocations('', {}, { historical: true, prediction: false }));
   },
   setStateFilter: (state) => {
     dispatch({ type: ActionTypes.SET_STATE, payload: { state } });
+    dispatch(getAvailableSublocations(state, {}, { historical: true, prediction: false }));
   },
   setCountyFilter: (county) => {
     dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: county === '' ? [] : county } });

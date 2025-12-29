@@ -197,7 +197,7 @@ const PredictionMap = (props) => {
 
     addDefaultExpressions(fillExpression, strokeExpression);
 
-    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
+    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode), dataMode);
 
     return true;
   }, [map, dataMode, county, rangerDistrict]);

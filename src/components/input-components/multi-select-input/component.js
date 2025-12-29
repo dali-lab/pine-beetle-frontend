@@ -22,6 +22,7 @@ const MultiSelectInput = (props) => {
   const ref = useRef();
   const [statusText, setStatusText] = useState('');
   const [isListOpen, setIsListOpen] = useState(false);
+  const previousOptionsChildrenRef = useRef(optionsChildren || []);
 
   useEffect(() => {
     const checkIfClickedOutside = (e) => {
@@ -38,9 +39,19 @@ const MultiSelectInput = (props) => {
   }, [isListOpen]);
 
   useEffect(() => {
+    const hadOptionsBefore = previousOptionsChildrenRef.current?.length > 0;
+    const hasOptionsNow = optionsChildren?.length > 0;
+
+    if (hasOptionsNow) {
+      previousOptionsChildrenRef.current = optionsChildren;
+    }
+
     if (valueChildren.length === 0 && valueParent) {
-      // When valueChildren is empty and parent is selected, it means all counties are selected
-      setStatusText(`${valueParent} (${optionsChildren.length} selected)`);
+      if (optionsChildren.length > 0) {
+        setStatusText(`${valueParent} (${optionsChildren.length} selected)`);
+      } else {
+        setStatusText(valueParent);
+      }
     } else if (valueChildren.length === 0) {
       setStatusText(CLEAR_TEXT);
     } else {
@@ -117,7 +128,7 @@ const MultiSelectInput = (props) => {
                   {valueParent === item ? <CheckboxChecked /> : <CheckboxEmpty />}
                 </div>
                 {item}
-                {valueParent === item && (
+                {valueParent === item && optionsChildren.length > 0 && (
                   <span className="location-list-item-select-status">(
                     {
                       valueChildren.length === 0

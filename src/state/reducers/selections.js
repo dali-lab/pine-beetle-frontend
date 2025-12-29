@@ -135,11 +135,7 @@ const SelectionsReducer = (state = initialState, action) => {
       }
 
     case ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION:
-      if (action.payload.length !== 0) {
-        return { ...state, availablePredictionSublocations: action.payload };
-      } else {
-        return state;
-      }
+      return { ...state, availablePredictionSublocations: action.payload };
 
     case ActionTypes.SET_PREDICTION_MODAL:
       return { ...state, predictionModal: action.payload };

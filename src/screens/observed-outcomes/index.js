@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ObservedOutcomes from './component';
-import { ActionTypes, getAvailableYears } from '../../state/actions';
+import { ActionTypes, getAvailableYears, getAvailableSublocations } from '../../state/actions';
 import { fetchAllObservedOutcomesData } from '../../state/actions/data';
 
 const mapStateToProps = (state) => {
@@ -19,9 +19,7 @@ const mapStateToProps = (state) => {
   } = state;
 
   return {
-    // loading while either dataset is being fetched
     isLoading: fetchingResultsComparisonData || fetchingScatterChartData,
-    // consider page "has data" only when both datasets are present
     hasData: (resultsComparison && resultsComparison.length > 0)
       && (scatterChart && scatterChart.length > 0),
     predictionYear,
@@ -35,14 +33,15 @@ const mapDispatchToProps = (dispatch) => ({
   fetchData: (year) => {
     dispatch(fetchAllObservedOutcomesData(year));
   },
-  // Filter-only versions (don't clear data or fetch new data)
   clearFilters: () => {
     dispatch({ type: ActionTypes.SET_STATE, payload: { state: '' } });
     dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: [] } });
     dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: [] } });
+    dispatch(getAvailableSublocations('', {}, { historical: false, prediction: true }));
   },
   setStateFilter: (state) => {
     dispatch({ type: ActionTypes.SET_STATE, payload: { state } });
+    dispatch(getAvailableSublocations(state, {}, { historical: false, prediction: true }));
   },
   setCountyFilter: (county) => {
     dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county } });

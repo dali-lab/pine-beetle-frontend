@@ -197,7 +197,7 @@ const HistoricalMap = (props) => {
 
     addDefaultExpressions(fillExpression, strokeExpression);
 
-    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
+    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode), dataMode);
   };
 
   const mapInitializedRef = useRef(false);
