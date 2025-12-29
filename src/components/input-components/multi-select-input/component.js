@@ -39,10 +39,7 @@ const MultiSelectInput = (props) => {
   }, [isListOpen]);
 
   useEffect(() => {
-    const hadOptionsBefore = previousOptionsChildrenRef.current?.length > 0;
-    const hasOptionsNow = optionsChildren?.length > 0;
-
-    if (hasOptionsNow) {
+    if (optionsChildren?.length > 0) {
       previousOptionsChildrenRef.current = optionsChildren;
     }
 
