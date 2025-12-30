@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import StateMap from './component';
 
 import {
+  ActionTypes,
+  getAggregateLocationData,
   getAvailableSublocations,
   setCounty,
   setRangerDistrict,
   setState,
-  ActionTypes,
 } from '../../../state/actions';
 
 const mapStateToProps = (state) => {
@@ -63,10 +64,19 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(getAvailableSublocations(state, {}, { historical: true, prediction: false }));
     },
     clearAllSelections: () => {
-      dispatch({ type: ActionTypes.SET_STATE, payload: { state: '' } });
-      dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: [] } });
-      dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: [] } });
-      dispatch(getAvailableSublocations('', {}, { historical: true, prediction: false }));
+      dispatch((thunkDispatch, getState) => {
+        const stateBeforeClear = getState();
+        const latestYear = stateBeforeClear.selections.availableHistoricalYears?.length > 0
+          ? stateBeforeClear.selections.availableHistoricalYears[stateBeforeClear.selections.availableHistoricalYears.length - 1]
+          : stateBeforeClear.selections.endYear;
+
+        thunkDispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+        thunkDispatch(getAvailableSublocations('', {}, { historical: true, prediction: false }));
+
+        if (latestYear) {
+          thunkDispatch(getAggregateLocationData({ year: latestYear }));
+        }
+      });
     },
   };
 };

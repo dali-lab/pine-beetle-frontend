@@ -226,7 +226,14 @@ export function getAggregateLocationData(overrideFilter = {}) {
       // because aggregate endpoints don't return year field, but full data does
       const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyData(filters) : api.getRangerDistrictData(filters));
 
-      dispatch({ type: ActionTypes.SET_AGGREGATE_LOCATION_DATA, payload: response });
+      // Extract year from filters (could be year, endYear, or predictionYear)
+      const year = filters.year || filters.endYear || filters.predictionYear || null;
+
+      dispatch({
+        type: ActionTypes.SET_AGGREGATE_LOCATION_DATA,
+        payload: response,
+        meta: { year },
+      });
     } catch (error) {
       dispatch({
         type: ActionTypes.SET_DATA_FETCH_ERROR,
@@ -477,7 +484,11 @@ export const fetchAllObservedOutcomesData = (year) => {
         ? scatterResponse
         : scatterResponse?.data || [];
 
-      dispatch({ type: ActionTypes.SET_OBSERVED_OUTCOMES_DATA, payload: mapResponse });
+      dispatch({
+        type: ActionTypes.SET_OBSERVED_OUTCOMES_DATA,
+        payload: mapResponse,
+        meta: { year },
+      });
 
       if (!hasChartData) {
         dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: chartData });

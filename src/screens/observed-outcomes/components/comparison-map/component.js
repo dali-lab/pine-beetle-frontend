@@ -90,8 +90,6 @@ const ComparisonMap = (props) => {
   const {
     map,
     setMap,
-    initialFill,
-    setInitialFill,
     hover: resultsHover,
     setHover: setResultsHover,
     isDownloadingMap,
@@ -187,10 +185,10 @@ const ComparisonMap = (props) => {
   }, [map, dataMode, setResultsHover]);
 
   const colorResults = useCallback((comparisonData) => {
-    if (!isMountedRef.current || !map) return;
+    if (!isMountedRef.current || !map) return false;
 
     if (!waitForStyleLoad(map, colorResults, [comparisonData], colorResultsTimeoutRef, isMountedRef, styleRetryCountRef)) {
-      return;
+      return false;
     }
 
     removeVectorLayer(map);
@@ -241,13 +239,14 @@ const ComparisonMap = (props) => {
     addDefaultExpressions(fillExpression, strokeExpression);
 
     addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode), dataMode);
+
+    return true;
   }, [map, dataMode, selectedState, county, rangerDistrict]);
 
   const mapInitializedRef = useRef(false);
   const lastDataModeRef = useRef(dataMode);
   const containerRetryCountRef = useRef(0);
 
-  // Reset refs on mount - fixes browser back/forward navigation
   useEffect(() => {
     mapInitializedRef.current = false;
   }, []);
@@ -339,18 +338,31 @@ const ComparisonMap = (props) => {
   }, [dataMode]);
 
   useEffect(() => {
-    if (!map) return;
-    if (year.toString().length === 4 && data.length > 0) colorResults(data);
-
-    zoomToSelectedState(selectedState, map);
-  }, [data, selectedState, county, rangerDistrict, map, dataMode, year, colorResults]);
-
-  useEffect(() => {
-    if (!initialFill && map && data.length > 0) {
-      colorResults(data);
-      setInitialFill(true);
+    if (!map || data.length === 0 || year.toString().length !== 4) {
+      return undefined;
     }
-  }, [initialFill, map, data, colorResults, setInitialFill]);
+
+    const attemptColoring = () => {
+      if (map.isStyleLoaded && map.isStyleLoaded()) {
+        const didColor = colorResults(data);
+        if (didColor) {
+          zoomToSelectedState(selectedState, map);
+        }
+      } else {
+        map.once('styledata', () => {
+          const didColor = colorResults(data);
+          if (didColor) {
+            zoomToSelectedState(selectedState, map);
+          }
+        });
+      }
+    };
+
+    const timer = setTimeout(attemptColoring, 50);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [data, selectedState, county, rangerDistrict, map, dataMode, year, colorResults]);
 
   const hoverCallback = useMemo(() => {
     if (!map || !data) return null;

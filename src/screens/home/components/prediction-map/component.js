@@ -206,7 +206,6 @@ const PredictionMap = (props) => {
   const lastDataModeRef = useRef(dataMode);
   const initTimeoutRef = useRef(null);
 
-  // Reset refs on mount - fixes browser back/forward navigation
   useEffect(() => {
     mapInitializedRef.current = false;
   }, []);
@@ -358,20 +357,24 @@ const PredictionMap = (props) => {
     label: `${threshold} (${getRiskLevel(index)})`,
   }));
 
+  const handleDownload = useCallback(() => {
+    downloadMap(
+      map,
+      year,
+      isDownloadingMap,
+      setIsDownloadingMap,
+      selectedState,
+      MAP_TITLES.PREDICTION,
+      { titleDetails: { selectedState, period: year }, thresholds, colors }
+    );
+  }, [map, year, isDownloadingMap, setIsDownloadingMap, selectedState]);
+
   return (
     <div className="container flex-item-left" id="map-container">
       <TogglesOverlay dataMode={dataMode} setDataMode={setDataMode} />
       <Map
         hover={predictionHover}
-        downloadCallback={() => downloadMap(
-          map,
-          year,
-          isDownloadingMap,
-          setIsDownloadingMap,
-          selectedState,
-          MAP_TITLES.PREDICTION,
-          { titleDetails: { selectedState, period: year }, thresholds, colors }
-        )}
+        downloadCallback={handleDownload}
         isDownloadingMap={isDownloadingMap}
       />
       <InfoTextBox />
@@ -391,15 +394,7 @@ const PredictionMap = (props) => {
         clearAllSelections={clearAllSelections}
         legendItems={legendItems}
         legendTitle="Outbreak Probability (%)"
-        downloadCallback={() => downloadMap(
-          map,
-          year,
-          isDownloadingMap,
-          setIsDownloadingMap,
-          selectedState,
-          MAP_TITLES.PREDICTION,
-          { titleDetails: { selectedState, period: year }, thresholds, colors }
-        )}
+        downloadCallback={handleDownload}
         isDownloadingMap={isDownloadingMap}
       />
       {predictionModal && data.length === 1 && (

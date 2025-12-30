@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
 import {
-  clearSelections,
   getAvailableSublocations,
   getAvailableYears,
   getAggregateYearData,
@@ -62,7 +61,23 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  clearAllSelections: () => dispatch(clearSelections({ skipDataFetch: true })),
+  clearAllSelections: () => {
+    dispatch((thunkDispatch, getState) => {
+      const stateBeforeClear = getState();
+      const { selections } = stateBeforeClear;
+      const latestYear = selections.availableHistoricalYears?.length > 0
+        ? selections.availableHistoricalYears[selections.availableHistoricalYears.length - 1]
+        : selections.endYear;
+      const { chartMode } = selections;
+
+      thunkDispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+      thunkDispatch(getAvailableSublocations('', {}, { historical: true, prediction: false }));
+
+      if (latestYear && chartMode === 'map') {
+        thunkDispatch(getAggregateLocationData({ year: latestYear }));
+      }
+    });
+  },
   setChartMode: (mode) => dispatch(setChartMode(mode)),
   setDataMode: (mode) => dispatch(setDataMode(mode)),
   setStartYear: (year) => dispatch(setStartYear(year)),
@@ -70,8 +85,21 @@ const mapDispatchToProps = (dispatch) => ({
   fetchGraphData: () => dispatch(getAggregateYearData()),
   fetchMapData: (year) => dispatch(getAggregateLocationData({ year })),
   clearFilters: () => {
-    dispatch(clearSelections({ skipDataFetch: true }));
-    dispatch(getAvailableSublocations('', {}, { historical: true, prediction: false }));
+    dispatch((thunkDispatch, getState) => {
+      const stateBeforeClear = getState();
+      const { selections } = stateBeforeClear;
+      const latestYear = selections.availableHistoricalYears?.length > 0
+        ? selections.availableHistoricalYears[selections.availableHistoricalYears.length - 1]
+        : selections.endYear;
+      const { chartMode } = selections;
+
+      thunkDispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+      thunkDispatch(getAvailableSublocations('', {}, { historical: true, prediction: false }));
+
+      if (latestYear && chartMode === 'map') {
+        thunkDispatch(getAggregateLocationData({ year: latestYear }));
+      }
+    });
   },
   setStateFilter: (state) => {
     dispatch({ type: ActionTypes.SET_STATE, payload: { state } });

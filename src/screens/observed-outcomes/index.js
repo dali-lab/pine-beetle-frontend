@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import ObservedOutcomes from './component';
 import {
   ActionTypes,
-  clearSelections,
   getAvailableYears,
   getAvailableSublocations,
 } from '../../state/actions';
@@ -39,8 +38,19 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(fetchAllObservedOutcomesData(year));
   },
   clearFilters: () => {
-    dispatch(clearSelections({ skipDataFetch: true }));
-    dispatch(getAvailableSublocations('', {}, { historical: false, prediction: true }));
+    dispatch((thunkDispatch, getState) => {
+      const stateBeforeClear = getState();
+      const latestYear = stateBeforeClear.selections.availablePredictionYears?.length > 0
+        ? Math.max(...stateBeforeClear.selections.availablePredictionYears)
+        : stateBeforeClear.selections.predictionYear;
+
+      thunkDispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+      thunkDispatch(getAvailableSublocations('', {}, { historical: false, prediction: true }));
+
+      if (latestYear) {
+        thunkDispatch(fetchAllObservedOutcomesData(latestYear));
+      }
+    });
   },
   setStateFilter: (state) => {
     dispatch({ type: ActionTypes.SET_STATE, payload: { state } });

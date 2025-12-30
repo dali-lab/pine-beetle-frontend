@@ -1,41 +1,42 @@
 import mapboxgl from 'mapbox-gl';
 import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
 } from 'react';
 import {
-  DATA_MODES,
-  MAP_INIT_CONSTANTS,
-  MAP_TITLES,
-  VECTOR_LAYER,
+    DATA_MODES,
+    MAP_INIT_CONSTANTS,
+    MAP_TITLES,
+    VECTOR_LAYER,
 } from '../../../constants';
 import { useMapCallbacks, useMapState, useRangerDistricts } from '../../../hooks';
 import {
-  createHoverCallback,
-  createMapClickCallback,
-  downloadMap,
-  generateMap,
-  getMapboxRDNameFormat,
-  getSourceLayer,
-  parseYearFromItem,
-  zoomToSelectedState,
+    createHoverCallback,
+    createMapClickCallback,
+    downloadMap,
+    generateMap,
+    getMapboxRDNameFormat,
+    getSourceLayer,
+    parseYearFromItem,
+    zoomToSelectedState,
 } from '../../../utils';
 import { logError, logWarning } from '../../../utils/logger';
 import { isInvalidNumber } from '../../../utils/map';
 import {
-  addDefaultExpressions,
-  addMapLayer,
-  createBaseExpressions,
-  removeVectorLayer,
+    addDefaultExpressions,
+    addMapLayer,
+    createBaseExpressions,
+    removeVectorLayer,
+    waitForStyleLoad,
 } from '../../../utils/map-coloring';
 import { isMapRemoved as checkMapRemoved, markMapAsRemoved as markMapRemoved } from '../../../utils/map-instance-tracker';
 import Map from '../../map';
 import MapControls from '../../map-controls/component';
 import {
-  colors,
-  thresholds,
+    colors,
+    thresholds,
 } from './constants';
 import './style.scss';
 
@@ -61,8 +62,6 @@ const HistoricalMap = (props) => {
   const {
     map,
     setMap,
-    initialFill,
-    setInitialFill,
     hover: trappingHover,
     setHover: setTrappingHover,
     isDownloadingMap,
@@ -70,6 +69,26 @@ const HistoricalMap = (props) => {
   } = useMapState();
 
   const allRangerDistricts = useRangerDistricts(dataMode);
+
+  const colorFillTimeoutRef = useRef(null);
+  const isMountedRef = useRef(true);
+  const styleRetryCountRef = useRef(0);
+  const containerCheckTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (colorFillTimeoutRef.current) {
+        clearTimeout(colorFillTimeoutRef.current);
+        colorFillTimeoutRef.current = null;
+      }
+      if (containerCheckTimeoutRef.current) {
+        clearTimeout(containerCheckTimeoutRef.current);
+        containerCheckTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   const createMapHoverCallback = useCallback((allData, rangerDistricts, mode, state, availStates) => {
     const callback = (hoverState, location, x, y, counties) => {
@@ -102,14 +121,11 @@ const HistoricalMap = (props) => {
     return createHoverCallback(map, rangerDistricts, dataMode, callback);
   }, [map, dataMode, setTrappingHover]);
 
-  const colorFill = (d) => {
-    if (!map) return;
+  const colorFill = useCallback((d) => {
+    if (!isMountedRef.current || !map) return false;
 
-    if (!map.isStyleLoaded()) {
-      setTimeout(() => {
-        colorFill(d);
-      }, 1000);
-      return;
+    if (!waitForStyleLoad(map, colorFill, [d], colorFillTimeoutRef, isMountedRef, styleRetryCountRef)) {
+      return false;
     }
 
     removeVectorLayer(map);
@@ -198,14 +214,15 @@ const HistoricalMap = (props) => {
     addDefaultExpressions(fillExpression, strokeExpression);
 
     addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode), dataMode);
-  };
+
+    return true;
+  }, [map, dataMode, selectedState, county, rangerDistrict, predictionYear]);
 
   const mapInitializedRef = useRef(false);
   const lastDataModeRef = useRef(dataMode);
   const initTimeoutRef = useRef(null);
   const containerRetryCountRef = useRef(0);
 
-  // Reset refs on mount - fixes browser back/forward navigation
   useEffect(() => {
     mapInitializedRef.current = false;
   }, []);
@@ -227,7 +244,13 @@ const HistoricalMap = (props) => {
     const currentMap = map;
 
     initTimeoutRef.current = setTimeout(() => {
+      initTimeoutRef.current = null;
+
+      if (!isMountedRef.current) return;
+
       const checkContainer = () => {
+        if (!isMountedRef.current) return;
+
         if (containerRetryCountRef.current >= MAP_INIT_CONSTANTS.MAX_CONTAINER_CHECK_RETRIES) {
           logError('Map container not found after maximum retries', null, { component: 'TrappingDataMap' });
           return;
@@ -244,10 +267,14 @@ const HistoricalMap = (props) => {
           });
           mapInitializedRef.current = true;
           lastDataModeRef.current = dataMode;
-          initTimeoutRef.current = null;
         } else {
           containerRetryCountRef.current += 1;
-          setTimeout(checkContainer, MAP_INIT_CONSTANTS.CONTAINER_CHECK_INTERVAL);
+          containerCheckTimeoutRef.current = setTimeout(() => {
+            containerCheckTimeoutRef.current = null;
+            if (isMountedRef.current) {
+              checkContainer();
+            }
+          }, MAP_INIT_CONSTANTS.CONTAINER_CHECK_INTERVAL);
         }
       };
       checkContainer();
@@ -258,6 +285,10 @@ const HistoricalMap = (props) => {
       if (initTimeoutRef.current) {
         clearTimeout(initTimeoutRef.current);
         initTimeoutRef.current = null;
+      }
+      if (containerCheckTimeoutRef.current) {
+        clearTimeout(containerCheckTimeoutRef.current);
+        containerCheckTimeoutRef.current = null;
       }
       if (map && typeof map.remove === 'function' && map.getContainer && !checkMapRemoved(map)) {
         try {
@@ -279,21 +310,32 @@ const HistoricalMap = (props) => {
   }, [dataMode]);
 
   useEffect(() => {
-    if (!map) return;
+    if (!map || rawData.length === 0 || predictionYear.toString().length !== 4) {
+      return undefined;
+    }
 
-    if (predictionYear.toString().length === 4) colorFill(rawData);
+    const attemptColoring = () => {
+      if (map.isStyleLoaded && map.isStyleLoaded()) {
+        const didColor = colorFill(rawData);
+        if (didColor) {
+          zoomToSelectedState(selectedState, map);
+        }
+      } else {
+        map.once('styledata', () => {
+          const didColor = colorFill(rawData);
+          if (didColor) {
+            zoomToSelectedState(selectedState, map);
+          }
+        });
+      }
+    };
 
-    zoomToSelectedState(selectedState, map);
+    const timer = setTimeout(attemptColoring, 50);
+    return () => {
+      clearTimeout(timer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rawData, selectedState, map, predictionYear, county, rangerDistrict]);
-
-  useEffect(() => {
-    if (!initialFill && map && rawData.length > 0) {
-      colorFill(rawData);
-      setInitialFill(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialFill, map, rawData, setInitialFill]);
 
   const hoverCallback = useMemo(() => {
     if (!map || !rawData) return null;
@@ -346,27 +388,6 @@ const HistoricalMap = (props) => {
       }
     }
   }, [rawData, map]);
-
-  useEffect(() => {
-    const handleDownloadClick = (event) => {
-      if (!event.target.matches('.download-button') && !event.target.matches('.download-button p')) return;
-      downloadMap(
-        map,
-        predictionYear,
-        isDownloadingMap,
-        setIsDownloadingMap,
-        selectedState,
-        MAP_TITLES.HISTORICAL,
-        { titleDetails: { selectedState, period: predictionYear }, thresholds, colors }
-      );
-    };
-
-    document.addEventListener('click', handleDownloadClick, false);
-
-    return () => {
-      document.removeEventListener('click', handleDownloadClick, false);
-    };
-  }, [map, predictionYear, isDownloadingMap, setIsDownloadingMap, selectedState]);
 
   const getRiskLevel = (index) => {
     const riskLevels = ['No Data', '0-9', '10-19', '20-49', '50-99', '100-249', '250+'];

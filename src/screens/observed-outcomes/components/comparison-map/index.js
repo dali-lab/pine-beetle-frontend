@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import {
-  clearSelections,
+  ActionTypes,
   getAvailableSublocations,
   setCounty,
   setCountyFilter,
@@ -9,6 +9,7 @@ import {
   setRangerDistrictFilter,
   setState,
 } from '../../../../state/actions';
+import { fetchAllObservedOutcomesData } from '../../../../state/actions/data';
 import ComparisonMap from './component';
 
 const mapStateToProps = (state) => {
@@ -65,8 +66,19 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(setState(state));
     },
     clearAllSelections: () => {
-      dispatch(clearSelections({ skipDataFetch: true }));
-      dispatch(getAvailableSublocations('', {}, { historical: false, prediction: true }));
+      dispatch((thunkDispatch, getState) => {
+        const stateBeforeClear = getState();
+        const latestYear = stateBeforeClear.selections.availablePredictionYears?.length > 0
+          ? Math.max(...stateBeforeClear.selections.availablePredictionYears)
+          : stateBeforeClear.selections.predictionYear;
+
+        thunkDispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+        thunkDispatch(getAvailableSublocations('', {}, { historical: false, prediction: true }));
+
+        if (latestYear) {
+          thunkDispatch(fetchAllObservedOutcomesData(latestYear));
+        }
+      });
     },
   };
 };
