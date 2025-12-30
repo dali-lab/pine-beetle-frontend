@@ -1,42 +1,42 @@
 import mapboxgl from 'mapbox-gl';
 import React, {
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
 } from 'react';
 import {
-    DATA_MODES,
-    MAP_INIT_CONSTANTS,
-    MAP_TITLES,
-    VECTOR_LAYER,
+  DATA_MODES,
+  MAP_INIT_CONSTANTS,
+  MAP_TITLES,
+  VECTOR_LAYER,
 } from '../../../constants';
 import { useMapCallbacks, useMapState, useRangerDistricts } from '../../../hooks';
 import {
-    createHoverCallback,
-    createMapClickCallback,
-    downloadMap,
-    generateMap,
-    getMapboxRDNameFormat,
-    getSourceLayer,
-    parseYearFromItem,
-    zoomToSelectedState,
+  createHoverCallback,
+  createMapClickCallback,
+  downloadMap,
+  generateMap,
+  getMapboxRDNameFormat,
+  getSourceLayer,
+  parseYearFromItem,
+  zoomToSelectedState,
 } from '../../../utils';
 import { logError, logWarning } from '../../../utils/logger';
 import { isInvalidNumber } from '../../../utils/map';
 import {
-    addDefaultExpressions,
-    addMapLayer,
-    createBaseExpressions,
-    removeVectorLayer,
-    waitForStyleLoad,
+  addDefaultExpressions,
+  addMapLayer,
+  createBaseExpressions,
+  removeVectorLayer,
+  waitForStyleLoad,
 } from '../../../utils/map-coloring';
 import { isMapRemoved as checkMapRemoved, markMapAsRemoved as markMapRemoved } from '../../../utils/map-instance-tracker';
 import Map from '../../map';
 import MapControls from '../../map-controls/component';
 import {
-    colors,
-    thresholds,
+  colors,
+  thresholds,
 } from './constants';
 import './style.scss';
 
