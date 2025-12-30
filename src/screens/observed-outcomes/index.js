@@ -1,6 +1,11 @@
 import { connect } from 'react-redux';
 import ObservedOutcomes from './component';
-import { ActionTypes, getAvailableYears, getAvailableSublocations } from '../../state/actions';
+import {
+  ActionTypes,
+  clearSelections,
+  getAvailableYears,
+  getAvailableSublocations,
+} from '../../state/actions';
 import { fetchAllObservedOutcomesData } from '../../state/actions/data';
 
 const mapStateToProps = (state) => {
@@ -34,9 +39,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(fetchAllObservedOutcomesData(year));
   },
   clearFilters: () => {
-    dispatch({ type: ActionTypes.SET_STATE, payload: { state: '' } });
-    dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: [] } });
-    dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: [] } });
+    dispatch(clearSelections({ skipDataFetch: true }));
     dispatch(getAvailableSublocations('', {}, { historical: false, prediction: true }));
   },
   setStateFilter: (state) => {

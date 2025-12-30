@@ -70,9 +70,7 @@ const mapDispatchToProps = (dispatch) => ({
   fetchGraphData: () => dispatch(getAggregateYearData()),
   fetchMapData: (year) => dispatch(getAggregateLocationData({ year })),
   clearFilters: () => {
-    dispatch({ type: ActionTypes.SET_STATE, payload: { state: '' } });
-    dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: [] } });
-    dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: [] } });
+    dispatch(clearSelections({ skipDataFetch: true }));
     dispatch(getAvailableSublocations('', {}, { historical: true, prediction: false }));
   },
   setStateFilter: (state) => {

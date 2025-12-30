@@ -79,10 +79,8 @@ const ComparisonMap = (props) => {
     dataMode,
     rangerDistrict,
     selectedState,
-    setCounty,
     setCountyFilter,
     setDataMode,
-    setRangerDistrict,
     setRangerDistrictFilter,
     setState,
     clearAllSelections,
@@ -367,12 +365,13 @@ const ComparisonMap = (props) => {
       currentState: selectedState,
       data,
       dataMode,
-      county: props.county,
-      setCounty,
-      rangerDistrict: props.rangerDistrict,
-      setRangerDistrict,
+      county: props.county || [],
+      setCounty: setCountyFilter,
+      rangerDistrict: props.rangerDistrict || [],
+      setRangerDistrict: setRangerDistrictFilter,
+      useFilterToggle: true,
     });
-  }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict]);
+  }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCountyFilter, setRangerDistrictFilter]);
 
   const stateClickCallback = useCallback((e) => {
     const { abbrev } = e?.features[0]?.properties || {};

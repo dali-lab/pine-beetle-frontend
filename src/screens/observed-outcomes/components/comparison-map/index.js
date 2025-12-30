@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import {
-  ActionTypes,
+  clearSelections,
   getAvailableSublocations,
   setCounty,
   setCountyFilter,
@@ -65,9 +65,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(setState(state));
     },
     clearAllSelections: () => {
-      dispatch({ type: ActionTypes.SET_STATE, payload: { state: '' } });
-      dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: [] } });
-      dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: [] } });
+      dispatch(clearSelections({ skipDataFetch: true }));
       dispatch(getAvailableSublocations('', {}, { historical: false, prediction: true }));
     },
   };

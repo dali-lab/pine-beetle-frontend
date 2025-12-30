@@ -56,6 +56,7 @@ const HOVER_TOOLTIP_OFFSET_Y = 125;
  * @property {Function} setRangerDistrict - Ranger district setter function
  * @property {Function} [setPredictionModal] - Optional modal setter function
  * @property {boolean} [isMobile=false] - Whether on mobile device
+ * @property {boolean} [useFilterToggle=false] - Whether to use toggle behavior (add/remove from array) instead of replace
  */
 
 /**
@@ -76,6 +77,7 @@ const createMapClickCallback = (options) => (e) => {
     setRangerDistrict,
     setPredictionModal,
     isMobile = false,
+    useFilterToggle = false,
   } = options;
 
   if (!e?.features[0]?.properties) return;
@@ -109,7 +111,14 @@ const createMapClickCallback = (options) => (e) => {
 
   // Desktop behavior: select county or RD depending on mode
   if (dataMode === DATA_MODES.COUNTY && sublocations.includes(county)) {
-    if (propsCounty.length > 0) {
+    if (useFilterToggle) {
+      const isAlreadySelected = propsCounty.includes(county);
+      if (isAlreadySelected) {
+        setCounty(propsCounty.filter((c) => c !== county));
+      } else {
+        setCounty([...propsCounty, county]);
+      }
+    } else if (propsCounty.length > 0) {
       setCounty([]);
       if (setPredictionModal) setPredictionModal(false);
     } else {
@@ -117,7 +126,14 @@ const createMapClickCallback = (options) => (e) => {
       if (setPredictionModal) setPredictionModal(true);
     }
   } else if (sublocations.includes(rangerDistrictToSet)) {
-    if (propsRangerDistrict.length > 0) {
+    if (useFilterToggle) {
+      const isAlreadySelected = propsRangerDistrict.includes(rangerDistrictToSet);
+      if (isAlreadySelected) {
+        setRangerDistrict(propsRangerDistrict.filter((rd) => rd !== rangerDistrictToSet));
+      } else {
+        setRangerDistrict([...propsRangerDistrict, rangerDistrictToSet]);
+      }
+    } else if (propsRangerDistrict.length > 0) {
       setRangerDistrict([]);
       if (setPredictionModal) setPredictionModal(false);
     } else {
