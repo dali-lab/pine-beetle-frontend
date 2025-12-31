@@ -104,11 +104,10 @@ const App = (props) => {
     const isResultsPage = pathname === '/observed-outcomes';
 
     // Home page needs predictions and sparse data for the map
-    // Fetch years, predictions, and available states immediately
+    // First fetch available years to ensure predictionYear is valid (e.g., 2024 not 2025)
+    // The reducer will auto-correct predictionYear, which triggers the other useEffect to fetch predictions
     if (isHomePage) {
       getAvailableYears();
-      getPredictions(predictionYear);
-      getAvailableStates({ predictionYear });
     }
 
     // Blog pages need blog posts
@@ -125,7 +124,6 @@ const App = (props) => {
     getAggregateStateData,
     getAggregateYearData,
     getAllBlogPosts,
-    getAvailableStates,
     getAvailableYears,
     getPredictions,
     getSparseData,
