@@ -1,7 +1,15 @@
 import { connect } from 'react-redux';
 import {
-  setCounty, setDataMode, setRangerDistrict, setState,
+  ActionTypes,
+  getAvailableSublocations,
+  setCounty,
+  setCountyFilter,
+  setDataMode,
+  setRangerDistrict,
+  setRangerDistrictFilter,
+  setState,
 } from '../../../../state/actions';
+import { fetchAllObservedOutcomesData } from '../../../../state/actions/data';
 import ComparisonMap from './component';
 
 const mapStateToProps = (state) => {
@@ -12,6 +20,7 @@ const mapStateToProps = (state) => {
       dataMode,
       state: selectedState,
       predictionYear: year,
+      availablePredictionYears,
       availablePredictionStates,
       availablePredictionSublocations,
     },
@@ -31,6 +40,7 @@ const mapStateToProps = (state) => {
     selectedState,
     year,
     isLoading: fetchingResultsComparisonData,
+    yearsLoaded: availablePredictionYears && availablePredictionYears.length > 0,
 
   };
 };
@@ -40,14 +50,35 @@ const mapDispatchToProps = (dispatch) => {
     setCounty: (county) => {
       dispatch(setCounty(county));
     },
+    setCountyFilter: (county) => {
+      dispatch(setCountyFilter(county));
+    },
     setDataMode: (mode) => {
       dispatch(setDataMode(mode));
     },
     setRangerDistrict: (rangerDistrict) => {
       dispatch(setRangerDistrict(rangerDistrict));
     },
+    setRangerDistrictFilter: (rangerDistrict) => {
+      dispatch(setRangerDistrictFilter(rangerDistrict));
+    },
     setState: (state) => {
       dispatch(setState(state));
+    },
+    clearAllSelections: () => {
+      dispatch((thunkDispatch, getState) => {
+        const stateBeforeClear = getState();
+        const latestYear = stateBeforeClear.selections.availablePredictionYears?.length > 0
+          ? Math.max(...stateBeforeClear.selections.availablePredictionYears)
+          : stateBeforeClear.selections.predictionYear;
+
+        thunkDispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+        thunkDispatch(getAvailableSublocations('', {}, { historical: false, prediction: true }));
+
+        if (latestYear) {
+          thunkDispatch(fetchAllObservedOutcomesData(latestYear));
+        }
+      });
     },
   };
 };

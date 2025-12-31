@@ -28,6 +28,13 @@ const TimeSeries = (props) => {
     fetchGraphData,
     fetchMapData,
     mapYear,
+    selectedState,
+    county,
+    rangerDistrict,
+    clearFilters,
+    setStateFilter,
+    setCountyFilter,
+    setRangerDistrictFilter,
   } = props;
 
   const isGraphView = chartMode === CHART_MODES.GRAPH;
@@ -40,12 +47,19 @@ const TimeSeries = (props) => {
     fetchGraphData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fetch map data when in map view and mapYear changes
+  // Fetch graph data when dataMode or location filters change and we're in graph view
+  useEffect(() => {
+    if (isGraphView) {
+      fetchGraphData();
+    }
+  }, [dataMode, isGraphView, fetchGraphData, selectedState, county, rangerDistrict]);
+
+  // Fetch map data when in map view and mapYear or dataMode changes
   useEffect(() => {
     if (!isGraphView && mapYear) {
       fetchMapData(mapYear);
     }
-  }, [mapYear, isGraphView, fetchMapData]);
+  }, [mapYear, isGraphView, dataMode, fetchMapData]);
 
   const setMapView = () => {
     setChartMode(CHART_MODES.MAP);
@@ -72,7 +86,14 @@ const TimeSeries = (props) => {
         </div>
         <div className="time-series-content">
           <div className="container">
-            <FilterBar useHistoricalData title="Filter Historical Data" />
+            <FilterBar
+              useHistoricalData
+              title="Filter Historical Data"
+              onClearSelections={clearFilters}
+              onSetState={setStateFilter}
+              onSetCounty={setCountyFilter}
+              onSetRangerDistrict={setRangerDistrictFilter}
+            />
           </div>
           <div id="view-selections" className="container">
             <div id="toggles-overlay-h">

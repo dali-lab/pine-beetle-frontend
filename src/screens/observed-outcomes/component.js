@@ -8,7 +8,16 @@ import './style.scss';
 
 const ObservedOutcomes = (props) => {
   const {
-    isLoading, predictionYear, hasData, fetchData, yearsLoaded, fetchAvailableYears,
+    isLoading,
+    predictionYear,
+    dataMode,
+    fetchData,
+    yearsLoaded,
+    fetchAvailableYears,
+    clearFilters,
+    setStateFilter,
+    setCountyFilter,
+    setRangerDistrictFilter,
   } = props;
 
   // Fetch available years on mount
@@ -16,12 +25,12 @@ const ObservedOutcomes = (props) => {
     fetchAvailableYears();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fetch data once years are loaded and we have a valid year
+  // Fetch data when year or dataMode changes (state filtering is done visually)
   useEffect(() => {
-    if (!hasData && yearsLoaded && predictionYear) {
+    if (yearsLoaded && predictionYear) {
       fetchData(predictionYear);
     }
-  }, [hasData, predictionYear, fetchData, yearsLoaded]);
+  }, [predictionYear, dataMode, fetchData, yearsLoaded]);
 
   return (
     <div className="observed-outcomes-page">
@@ -30,7 +39,12 @@ const ObservedOutcomes = (props) => {
         <OverviewText />
         <div className="observed-outcomes-content">
           <div className="container">
-            <FilterBar />
+            <FilterBar
+              onClearSelections={clearFilters}
+              onSetState={setStateFilter}
+              onSetCounty={setCountyFilter}
+              onSetRangerDistrict={setRangerDistrictFilter}
+            />
           </div>
           <ComparisonMap />
           <div className="container">

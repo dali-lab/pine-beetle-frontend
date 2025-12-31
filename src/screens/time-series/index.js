@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 
 import {
-  clearSelections,
+  getAvailableSublocations,
   getAvailableYears,
   getAggregateYearData,
   getAggregateLocationData,
   setChartMode,
   setDataMode,
   setStartYear,
+  ActionTypes,
 } from '../../state/actions';
 
 import TimeSeries from './component';
@@ -25,6 +26,9 @@ const mapStateToProps = (state) => {
       availableHistoricalYears,
       endYear,
       predictionYear,
+      state: selectedState,
+      county,
+      rangerDistrict,
     },
     data: {
       fetchingAggregateYearData,
@@ -36,12 +40,10 @@ const mapStateToProps = (state) => {
   const hasGraphData = yearData && yearData.length > 0;
   const isGraphView = chartMode === 'graph';
 
-  // Show loader when fetching data
   const isLoading = isGraphView
     ? (fetchingAggregateYearData && !hasGraphData)
     : fetchingAggregateLocationData;
 
-  // Map view uses predictionYear, chart view uses endYear
   const mapYear = predictionYear || endYear;
 
   return {
@@ -52,17 +54,63 @@ const mapStateToProps = (state) => {
     availableYears: availableHistoricalYears,
     endYear,
     mapYear,
+    selectedState,
+    county,
+    rangerDistrict,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  clearAllSelections: () => dispatch(clearSelections({ skipDataFetch: true })),
+  clearAllSelections: () => {
+    dispatch((thunkDispatch, getState) => {
+      const stateBeforeClear = getState();
+      const { selections } = stateBeforeClear;
+      const latestYear = selections.availableHistoricalYears?.length > 0
+        ? selections.availableHistoricalYears[selections.availableHistoricalYears.length - 1]
+        : selections.endYear;
+      const { chartMode } = selections;
+
+      thunkDispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+      thunkDispatch(getAvailableSublocations('', {}, { historical: true, prediction: false }));
+
+      if (latestYear && chartMode === 'map') {
+        thunkDispatch(getAggregateLocationData({ year: latestYear }));
+      }
+    });
+  },
   setChartMode: (mode) => dispatch(setChartMode(mode)),
   setDataMode: (mode) => dispatch(setDataMode(mode)),
   setStartYear: (year) => dispatch(setStartYear(year)),
   fetchAvailableYears: () => dispatch(getAvailableYears()),
   fetchGraphData: () => dispatch(getAggregateYearData()),
   fetchMapData: (year) => dispatch(getAggregateLocationData({ year })),
+  clearFilters: () => {
+    dispatch((thunkDispatch, getState) => {
+      const stateBeforeClear = getState();
+      const { selections } = stateBeforeClear;
+      const latestYear = selections.availableHistoricalYears?.length > 0
+        ? selections.availableHistoricalYears[selections.availableHistoricalYears.length - 1]
+        : selections.endYear;
+      const { chartMode } = selections;
+
+      thunkDispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+      thunkDispatch(getAvailableSublocations('', {}, { historical: true, prediction: false }));
+
+      if (latestYear && chartMode === 'map') {
+        thunkDispatch(getAggregateLocationData({ year: latestYear }));
+      }
+    });
+  },
+  setStateFilter: (state) => {
+    dispatch({ type: ActionTypes.SET_STATE, payload: { state } });
+    dispatch(getAvailableSublocations(state, {}, { historical: true, prediction: false }));
+  },
+  setCountyFilter: (county) => {
+    dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county: county === '' ? [] : county } });
+  },
+  setRangerDistrictFilter: (rangerDistrict) => {
+    dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict: rangerDistrict === '' ? [] : rangerDistrict } });
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimeSeries);

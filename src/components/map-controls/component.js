@@ -4,6 +4,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { logWarning } from '../../utils/logger';
 import FilterOverlay from '../filter-overlay';
 import LegendOverlay from '../legend-overlay';
 import { DownloadIcon, FiltersIcon, LegendIcon } from './Icons';
@@ -104,7 +105,7 @@ const MapControls = (props) => {
 
   const handleDownloadClick = useCallback(() => {
     if (!downloadCallback) {
-      console.warn('MapControls: downloadCallback is not provided');
+      logWarning('MapControls: downloadCallback is not provided', null, { component: 'MapControls' });
       return;
     }
 

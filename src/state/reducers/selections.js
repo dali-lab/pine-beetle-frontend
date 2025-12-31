@@ -25,12 +25,10 @@ const SelectionsReducer = (state = initialState, action) => {
     case ActionTypes.SET_PREDICTION_YEAR: {
       const castedYear = parseInt(action.payload.year, 10);
 
-      // try choosing latest possible year
       const defaultYear = state.availablePredictionYears.length
         ? state.availablePredictionYears.slice(-1)
         : initialState.predictionYear;
 
-      // guards against null, undefined, ''
       const predictionYear = Number.isNaN(castedYear)
         ? defaultYear
         : castedYear;
@@ -67,7 +65,6 @@ const SelectionsReducer = (state = initialState, action) => {
       };
 
     case ActionTypes.CLEAR_SELECTIONS: {
-      // Reset start and end year to defaults (oldest and latest)
       const defaultStartYear = state.availableHistoricalYears.length > 0
         ? state.availableHistoricalYears[0]
         : '';
@@ -75,7 +72,6 @@ const SelectionsReducer = (state = initialState, action) => {
         ? state.availableHistoricalYears[state.availableHistoricalYears.length - 1]
         : '';
 
-      // Reset prediction year to latest available year, or current year if none available
       const defaultPredictionYear = state.availablePredictionYears.length > 0
         ? Math.max(...state.availablePredictionYears)
         : initialState.predictionYear;
@@ -94,7 +90,7 @@ const SelectionsReducer = (state = initialState, action) => {
         availablePredictionYears: state.availablePredictionYears,
         availablePredictionStates: state.availablePredictionStates,
         availablePredictionSublocations: state.availablePredictionSublocations,
-        dataMode: state.dataMode,
+        dataMode: initialState.dataMode,
         chartMode: state.chartMode,
         startYear: defaultStartYear,
         endYear: defaultEndYear,
@@ -106,16 +102,13 @@ const SelectionsReducer = (state = initialState, action) => {
 
     case ActionTypes.SET_AVAILABLE_YEARS_HISTORICAL: {
       const years = action.payload;
-      // Sort years to ensure oldest is first and newest is last
       const sortedYears = [...years].sort((a, b) => a - b);
-      // Set default start year to oldest (first) and end year to latest (last)
       const defaultStartYear = sortedYears.length > 0 ? sortedYears[0] : '';
       const defaultEndYear = sortedYears.length > 0 ? sortedYears[sortedYears.length - 1] : '';
 
       return {
         ...state,
         availableHistoricalYears: sortedYears,
-        // Set defaults if current values are empty/falsy
         startYear: state.startYear || defaultStartYear,
         endYear: state.endYear || defaultEndYear,
       };
@@ -142,11 +135,7 @@ const SelectionsReducer = (state = initialState, action) => {
       }
 
     case ActionTypes.SET_AVAILABLE_SUBLOCATIONS_PREDICTION:
-      if (action.payload.length !== 0) {
-        return { ...state, availablePredictionSublocations: action.payload };
-      } else {
-        return state;
-      }
+      return { ...state, availablePredictionSublocations: action.payload };
 
     case ActionTypes.SET_PREDICTION_MODAL:
       return { ...state, predictionModal: action.payload };

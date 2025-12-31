@@ -4,7 +4,6 @@ import PredictionMap from './component';
 
 import {
   clearSelections,
-  getPredictions,
   setCounty,
   setCountyFilter,
   setDataMode,
@@ -75,9 +74,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     clearAllSelections: () => {
       dispatch(clearSelections());
-    },
-    getPredictions: (year) => {
-      dispatch(getPredictions(year));
     },
   };
 };

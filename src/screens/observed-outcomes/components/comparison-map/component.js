@@ -74,22 +74,22 @@ const ComparisonMap = (props) => {
   const {
     availableStates,
     availableSublocations,
+    county,
     data,
     dataMode,
+    rangerDistrict,
     selectedState,
-    setCounty,
+    setCountyFilter,
     setDataMode,
-    setRangerDistrict,
+    setRangerDistrictFilter,
     setState,
+    clearAllSelections,
     year,
-    isLoading,
   } = props;
 
   const {
     map,
     setMap,
-    initialFill,
-    setInitialFill,
     hover: resultsHover,
     setHover: setResultsHover,
     isDownloadingMap,
@@ -185,29 +185,46 @@ const ComparisonMap = (props) => {
   }, [map, dataMode, setResultsHover]);
 
   const colorResults = useCallback((comparisonData) => {
-    if (!isMountedRef.current || !map) return;
+    if (!isMountedRef.current || !map) return false;
 
     if (!waitForStyleLoad(map, colorResults, [comparisonData], colorResultsTimeoutRef, isMountedRef, styleRetryCountRef)) {
-      return;
+      return false;
     }
 
     removeVectorLayer(map);
 
     const { fillExpression, strokeExpression } = createBaseExpressions(dataMode);
 
-    comparisonData.forEach(({
-      county,
+    // Filter data based on selected state and county/rangerDistrict
+    const filteredData = comparisonData.filter((item) => {
+      // First filter by state if selected
+      if (selectedState && item.state !== selectedState) {
+        return false;
+      }
+      // Then filter by county/rangerDistrict if selected
+      if (dataMode === DATA_MODES.COUNTY) {
+        if (county && county.length > 0) {
+          return county.includes(item.county);
+        }
+      } else if (rangerDistrict && rangerDistrict.length > 0) {
+        return rangerDistrict.includes(item.rangerDistrict);
+      }
+      return true;
+    });
+
+    filteredData.forEach(({
+      county: countyName,
       probSpotsGT50: fillProb,
       sumSpots,
-      rangerDistrict,
-      state,
+      rangerDistrict: rdName,
+      state: stateName,
     }) => {
       const color = getFillColor(fillProb, sumSpots);
 
       const locationName = formatLocationForMapbox(dataMode, {
-        county,
-        rangerDistrict,
-        state,
+        county: countyName,
+        rangerDistrict: rdName,
+        state: stateName,
       });
 
       if (locationName) {
@@ -221,12 +238,18 @@ const ComparisonMap = (props) => {
 
     addDefaultExpressions(fillExpression, strokeExpression);
 
-    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
-  }, [map, dataMode]);
+    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode), dataMode);
+
+    return true;
+  }, [map, dataMode, selectedState, county, rangerDistrict]);
 
   const mapInitializedRef = useRef(false);
   const lastDataModeRef = useRef(dataMode);
   const containerRetryCountRef = useRef(0);
+
+  useEffect(() => {
+    mapInitializedRef.current = false;
+  }, []);
 
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
@@ -315,18 +338,31 @@ const ComparisonMap = (props) => {
   }, [dataMode]);
 
   useEffect(() => {
-    if (!map) return;
-    if (year.toString().length === 4 && data.length > 0) colorResults(data);
-
-    zoomToSelectedState(selectedState, map);
-  }, [data, selectedState, map, dataMode, year, colorResults]);
-
-  useEffect(() => {
-    if (!initialFill && map && data.length > 0) {
-      colorResults(data);
-      setInitialFill(true);
+    if (!map || data.length === 0 || year.toString().length !== 4) {
+      return undefined;
     }
-  }, [initialFill, map, data, colorResults, setInitialFill]);
+
+    const attemptColoring = () => {
+      if (map.isStyleLoaded && map.isStyleLoaded()) {
+        const didColor = colorResults(data);
+        if (didColor) {
+          zoomToSelectedState(selectedState, map);
+        }
+      } else {
+        map.once('styledata', () => {
+          const didColor = colorResults(data);
+          if (didColor) {
+            zoomToSelectedState(selectedState, map);
+          }
+        });
+      }
+    };
+
+    const timer = setTimeout(attemptColoring, 50);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [data, selectedState, county, rangerDistrict, map, dataMode, year, colorResults]);
 
   const hoverCallback = useMemo(() => {
     if (!map || !data) return null;
@@ -341,12 +377,13 @@ const ComparisonMap = (props) => {
       currentState: selectedState,
       data,
       dataMode,
-      county: props.county,
-      setCounty,
-      rangerDistrict: props.rangerDistrict,
-      setRangerDistrict,
+      county: props.county || [],
+      setCounty: setCountyFilter,
+      rangerDistrict: props.rangerDistrict || [],
+      setRangerDistrict: setRangerDistrictFilter,
+      useFilterToggle: true,
     });
-  }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCounty, setRangerDistrict]);
+  }, [map, availableStates, availableSublocations, selectedState, data, dataMode, props.county, props.rangerDistrict, setCountyFilter, setRangerDistrictFilter]);
 
   const stateClickCallback = useCallback((e) => {
     const { abbrev } = e?.features[0]?.properties || {};
@@ -403,18 +440,18 @@ const ComparisonMap = (props) => {
       />
       <MapControls
         availableStates={availableStates}
-        availableYears={[]} // Results comparison doesn't have years filter
+        availableYears={[]}
         availableSublocations={availableSublocations}
-        county={props.county}
+        county={county}
         dataMode={dataMode}
         predictionYear={year}
-        rangerDistrict={props.rangerDistrict}
+        rangerDistrict={rangerDistrict}
         selectedState={selectedState}
-        setCounty={setCounty}
-        setPredictionYear={() => {}} // No year setting for results comparison
-        setRangerDistrict={setRangerDistrict}
+        setCounty={setCountyFilter}
+        setPredictionYear={() => {}}
+        setRangerDistrict={setRangerDistrictFilter}
         setState={setState}
-        clearAllSelections={props.clearAllSelections}
+        clearAllSelections={clearAllSelections}
         legendItems={legendItems}
         legendTitle="Results comparison"
         downloadCallback={() => downloadMap(
@@ -429,13 +466,6 @@ const ComparisonMap = (props) => {
         isDownloadingMap={isDownloadingMap}
         hideFilters
       />
-      {!isLoading && !data.length && (
-        <div className="observed-outcomes-message">
-          <p>
-            {`Map for ${year} not yet available. Spot data for the previous year usually come online sometime in January or February of the following year.`}
-          </p>
-        </div>
-      )}
     </div>
   );
 };

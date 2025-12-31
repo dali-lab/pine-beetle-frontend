@@ -39,12 +39,12 @@ const useDataTableData = (filters, dataFormat, dataMode) => {
   );
 
   const fetchAvailableYears = useCallback(
-    (filterParams) => dispatch(getAvailableYears(filterParams)),
+    () => dispatch(getAvailableYears()),
     [dispatch]
   );
 
   useEffect(() => {
-    fetchAvailableYears({ isHistorical: true });
+    fetchAvailableYears();
     fetchAvailableStates({ isHistorical: true });
   }, [dataMode, fetchAvailableYears, fetchAvailableStates]);
 

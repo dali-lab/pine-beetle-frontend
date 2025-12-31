@@ -44,10 +44,8 @@ const buildFilters = (selections, overrides = {}) => {
     state,
   } = selections;
 
-  // Extract year from overrides (used for single-year queries)
   const { year, ...restOverrides } = overrides;
 
-  // If year is provided in overrides, use it for both startYear and endYear
   const yearFilter = year
     ? { startYear: year, endYear: year }
     : { startYear: restOverrides.startYear || startYear, endYear: restOverrides.endYear || endYear };
@@ -228,7 +226,14 @@ export function getAggregateLocationData(overrideFilter = {}) {
       // because aggregate endpoints don't return year field, but full data does
       const response = await (dataMode === DATA_MODES.COUNTY ? api.getCountyData(filters) : api.getRangerDistrictData(filters));
 
-      dispatch({ type: ActionTypes.SET_AGGREGATE_LOCATION_DATA, payload: response });
+      // Extract year from filters (could be year, endYear, or predictionYear)
+      const year = filters.year || filters.endYear || filters.predictionYear || null;
+
+      dispatch({
+        type: ActionTypes.SET_AGGREGATE_LOCATION_DATA,
+        payload: response,
+        meta: { year },
+      });
     } catch (error) {
       dispatch({
         type: ActionTypes.SET_DATA_FETCH_ERROR,
@@ -342,13 +347,11 @@ export const getScatterChartData = () => {
       dataMode,
     } = getState().selections;
 
-    // Check localStorage cache first (based on dataMode only, like the old version)
     const cacheKey = `scatterChart_${dataMode}`;
     const cachedData = localStorage.getItem(cacheKey);
     if (cachedData) {
       try {
         const { data: cachedScatterChart, timestamp } = JSON.parse(cachedData);
-        // Use cache if it's less than 1 hour old
         const cacheAge = Date.now() - timestamp;
         const oneHour = 60 * 60 * 1000;
         if (cacheAge < oneHour && cachedScatterChart && cachedScatterChart.length > 0) {
@@ -360,7 +363,6 @@ export const getScatterChartData = () => {
       }
     }
 
-    // Check if we already have data in Redux store for this dataMode
     const { scatterChart } = getState().data;
     if (scatterChart && scatterChart.length > 0) {
       return;
@@ -373,7 +375,6 @@ export const getScatterChartData = () => {
         ? api.getCountyScatterChart()
         : api.getRDScatterChart());
 
-      // API already returns the array (not wrapped in { data }), so normalize before dispatch/cache
       const chartData = Array.isArray(response) ? response : response?.data || [];
       dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: chartData });
 
@@ -420,63 +421,56 @@ export const fetchAllObservedOutcomesData = (year) => {
       data: {
         fetchingResultsComparisonData,
         fetchingScatterChartData,
-        resultsComparison,
         scatterChart,
       },
       selections: {
-        county,
         dataMode,
-        rangerDistrict,
-        state: selectedState,
       },
     } = state;
 
-    // Skip if a fetch is already in progress
     if (fetchingResultsComparisonData || fetchingScatterChartData) {
       return;
     }
 
-    // Skip if we already have both datasets cached
-    const hasMapData = resultsComparison && resultsComparison.length > 0;
     const hasChartData = scatterChart && scatterChart.length > 0;
-    if (hasMapData && hasChartData) {
-      return;
-    }
 
+    // Fetch all data for the year - filtering is done visually on the frontend
     const filters = {
-      state: selectedState,
-      county,
-      rangerDistrict,
       year,
     };
 
     dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: true });
-    dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: true });
+
+    if (!hasChartData) {
+      dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: true });
+    }
 
     try {
-      // Try cache first for scatter chart (1h TTL)
-      const cacheKey = `scatterChart_${dataMode}`;
-      const cachedData = localStorage.getItem(cacheKey);
       let scatterPromise;
-      if (cachedData) {
-        try {
-          const { data: cachedScatterChart, timestamp } = JSON.parse(cachedData);
-          const cacheAge = Date.now() - timestamp;
-          const oneHour = 60 * 60 * 1000;
-          if (cacheAge < oneHour && cachedScatterChart && cachedScatterChart.length > 0) {
-            dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: cachedScatterChart });
-            scatterPromise = Promise.resolve(cachedScatterChart);
+      if (hasChartData) {
+        scatterPromise = Promise.resolve(scatterChart);
+      } else {
+        const cacheKey = `scatterChart_${dataMode}`;
+        const cachedData = localStorage.getItem(cacheKey);
+        if (cachedData) {
+          try {
+            const { data: cachedScatterChart, timestamp } = JSON.parse(cachedData);
+            const cacheAge = Date.now() - timestamp;
+            const oneHour = 60 * 60 * 1000;
+            if (cacheAge < oneHour && cachedScatterChart && cachedScatterChart.length > 0) {
+              dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: cachedScatterChart });
+              scatterPromise = Promise.resolve(cachedScatterChart);
+            }
+          } catch (e) {
+            // ignore cache parse errors
           }
-        } catch (e) {
-          // ignore cache parse errors
         }
-      }
 
-      // If cache not used, fallback to API
-      if (!scatterPromise) {
-        scatterPromise = (dataMode === DATA_MODES.COUNTY
-          ? api.getCountyScatterChart()
-          : api.getRDScatterChart());
+        if (!scatterPromise) {
+          scatterPromise = (dataMode === DATA_MODES.COUNTY
+            ? api.getCountyScatterChart()
+            : api.getRDScatterChart());
+        }
       }
 
       const [mapResponse, scatterResponse] = await Promise.all([
@@ -490,18 +484,27 @@ export const fetchAllObservedOutcomesData = (year) => {
         ? scatterResponse
         : scatterResponse?.data || [];
 
-      dispatch({ type: ActionTypes.SET_OBSERVED_OUTCOMES_DATA, payload: mapResponse });
-      dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: chartData });
+      dispatch({
+        type: ActionTypes.SET_OBSERVED_OUTCOMES_DATA,
+        payload: mapResponse,
+        meta: { year },
+      });
 
-      // Cache scatter chart data for this dataMode
-      try {
-        const cacheValue = JSON.stringify({
-          data: chartData,
-          timestamp: Date.now(),
-        });
-        localStorage.setItem(cacheKey, cacheValue);
-      } catch (e) {
-        // ignore cache errors
+      if (!hasChartData) {
+        dispatch({ type: ActionTypes.SET_SCATTER_CHART_DATA, payload: chartData });
+      }
+
+      if (!hasChartData) {
+        try {
+          const cacheKey = `scatterChart_${dataMode}`;
+          const cacheValue = JSON.stringify({
+            data: chartData,
+            timestamp: Date.now(),
+          });
+          localStorage.setItem(cacheKey, cacheValue);
+        } catch (e) {
+          // ignore cache errors
+        }
       }
     } catch (error) {
       dispatch({
@@ -516,7 +519,9 @@ export const fetchAllObservedOutcomesData = (year) => {
       });
     } finally {
       dispatch({ type: ActionTypes.FETCHING_OBSERVED_OUTCOMES_DATA, payload: false });
-      dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: false });
+      if (!hasChartData) {
+        dispatch({ type: ActionTypes.FETCHING_SCATTER_CHART_DATA, payload: false });
+      }
     }
   };
 };

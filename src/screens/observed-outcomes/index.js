@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 import ObservedOutcomes from './component';
-import { getAvailableYears } from '../../state/actions';
+import {
+  ActionTypes,
+  getAvailableYears,
+  getAvailableSublocations,
+} from '../../state/actions';
 import { fetchAllObservedOutcomesData } from '../../state/actions/data';
 
 const mapStateToProps = (state) => {
@@ -14,16 +18,16 @@ const mapStateToProps = (state) => {
     selections: {
       predictionYear,
       availablePredictionYears,
+      dataMode,
     },
   } = state;
 
   return {
-    // loading while either dataset is being fetched
     isLoading: fetchingResultsComparisonData || fetchingScatterChartData,
-    // consider page "has data" only when both datasets are present
     hasData: (resultsComparison && resultsComparison.length > 0)
       && (scatterChart && scatterChart.length > 0),
     predictionYear,
+    dataMode,
     yearsLoaded: availablePredictionYears && availablePredictionYears.length > 0,
   };
 };
@@ -32,6 +36,31 @@ const mapDispatchToProps = (dispatch) => ({
   fetchAvailableYears: () => dispatch(getAvailableYears()),
   fetchData: (year) => {
     dispatch(fetchAllObservedOutcomesData(year));
+  },
+  clearFilters: () => {
+    dispatch((thunkDispatch, getState) => {
+      const stateBeforeClear = getState();
+      const latestYear = stateBeforeClear.selections.availablePredictionYears?.length > 0
+        ? Math.max(...stateBeforeClear.selections.availablePredictionYears)
+        : stateBeforeClear.selections.predictionYear;
+
+      thunkDispatch({ type: ActionTypes.CLEAR_SELECTIONS });
+      thunkDispatch(getAvailableSublocations('', {}, { historical: false, prediction: true }));
+
+      if (latestYear) {
+        thunkDispatch(fetchAllObservedOutcomesData(latestYear));
+      }
+    });
+  },
+  setStateFilter: (state) => {
+    dispatch({ type: ActionTypes.SET_STATE, payload: { state } });
+    dispatch(getAvailableSublocations(state, {}, { historical: false, prediction: true }));
+  },
+  setCountyFilter: (county) => {
+    dispatch({ type: ActionTypes.SET_COUNTY_FILTER, payload: { county } });
+  },
+  setRangerDistrictFilter: (rangerDistrict) => {
+    dispatch({ type: ActionTypes.SET_RANGER_DISTRICT_FILTER, payload: { rangerDistrict } });
   },
 });
 

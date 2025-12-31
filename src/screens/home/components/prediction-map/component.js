@@ -73,7 +73,6 @@ const PredictionMap = (props) => {
     clearAllSelections,
     year,
     predictionModal,
-    getPredictions,
   } = props;
 
   const {
@@ -107,26 +106,18 @@ const PredictionMap = (props) => {
   const isMountedRef = useRef(true);
   const styleRetryCountRef = useRef(0);
 
-  const hasCheckedEmptyDataRef = useRef(false);
-
+  // Cleanup effect for refs and timeouts
   useEffect(() => {
     isMountedRef.current = true;
     hasColoredRef.current = false;
 
-    if (!hasCheckedEmptyDataRef.current && data.length === 0 && year && year.toString().length === 4 && getPredictions) {
-      hasCheckedEmptyDataRef.current = true;
-      getPredictions(year);
-    }
-
     return () => {
       isMountedRef.current = false;
-      hasCheckedEmptyDataRef.current = false;
       if (colorPredictionsTimeoutRef.current) {
         clearTimeout(colorPredictionsTimeoutRef.current);
         colorPredictionsTimeoutRef.current = null;
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const createMapHoverCallback = useCallback((predictions, rangerDistricts, mode, state, availStates) => {
@@ -206,7 +197,7 @@ const PredictionMap = (props) => {
 
     addDefaultExpressions(fillExpression, strokeExpression);
 
-    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode));
+    addMapLayer(map, fillExpression, strokeExpression, getSourceLayer(dataMode), dataMode);
 
     return true;
   }, [map, dataMode, county, rangerDistrict]);
@@ -214,6 +205,10 @@ const PredictionMap = (props) => {
   const mapInitializedRef = useRef(false);
   const lastDataModeRef = useRef(dataMode);
   const initTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    mapInitializedRef.current = false;
+  }, []);
 
   useEffect(() => {
     const shouldRegenerate = !map || lastDataModeRef.current !== dataMode;
@@ -362,20 +357,24 @@ const PredictionMap = (props) => {
     label: `${threshold} (${getRiskLevel(index)})`,
   }));
 
+  const handleDownload = useCallback(() => {
+    downloadMap(
+      map,
+      year,
+      isDownloadingMap,
+      setIsDownloadingMap,
+      selectedState,
+      MAP_TITLES.PREDICTION,
+      { titleDetails: { selectedState, period: year }, thresholds, colors }
+    );
+  }, [map, year, isDownloadingMap, setIsDownloadingMap, selectedState]);
+
   return (
     <div className="container flex-item-left" id="map-container">
       <TogglesOverlay dataMode={dataMode} setDataMode={setDataMode} />
       <Map
         hover={predictionHover}
-        downloadCallback={() => downloadMap(
-          map,
-          year,
-          isDownloadingMap,
-          setIsDownloadingMap,
-          selectedState,
-          MAP_TITLES.PREDICTION,
-          { titleDetails: { selectedState, period: year }, thresholds, colors }
-        )}
+        downloadCallback={handleDownload}
         isDownloadingMap={isDownloadingMap}
       />
       <InfoTextBox />
@@ -395,15 +394,7 @@ const PredictionMap = (props) => {
         clearAllSelections={clearAllSelections}
         legendItems={legendItems}
         legendTitle="Outbreak Probability (%)"
-        downloadCallback={() => downloadMap(
-          map,
-          year,
-          isDownloadingMap,
-          setIsDownloadingMap,
-          selectedState,
-          MAP_TITLES.PREDICTION,
-          { titleDetails: { selectedState, period: year }, thresholds, colors }
-        )}
+        downloadCallback={handleDownload}
         isDownloadingMap={isDownloadingMap}
       />
       {predictionModal && data.length === 1 && (

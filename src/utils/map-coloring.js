@@ -1,4 +1,6 @@
-import { DATA_MODES, MAP_SOURCE_NAME, VECTOR_LAYER } from '../constants';
+import {
+  DATA_MODES, MAP_SOURCE_NAME, MAP_SOURCES, VECTOR_LAYER,
+} from '../constants';
 import MAP_INIT_CONSTANTS from '../constants/map-constants';
 import { isMapRemoved } from './map-instance-tracker';
 import { logError } from './logger';
@@ -112,14 +114,44 @@ export const addDefaultExpressions = (fillExpression, strokeExpression) => {
 };
 
 /**
+ * Ensures the map source exists, adding it if necessary
+ * This fixes race conditions where coloring runs before the 'load' event adds the source
+ * @param {Object} map - Mapbox map instance
+ * @param {string} dataMode - Current data mode (COUNTY or RANGER_DISTRICT)
+ * @returns {boolean} True if source exists or was successfully added
+ */
+const ensureSourceExists = (map, dataMode) => {
+  if (!map || isMapRemoved(map)) return false;
+
+  try {
+    if (!map.getSource(MAP_SOURCE_NAME)) {
+      const sourceConfig = dataMode === DATA_MODES.COUNTY
+        ? MAP_SOURCES.COUNTY
+        : MAP_SOURCES.RANGER_DISTRICT;
+      map.addSource(MAP_SOURCE_NAME, sourceConfig);
+    }
+    return true;
+  } catch (error) {
+    logError('Failed to ensure map source exists', error, { function: 'ensureSourceExists' });
+    return false;
+  }
+};
+
+/**
  * Adds a layer to the map if the expression is valid
+ * Ensures the source exists before adding the layer to prevent race conditions
  * @param {Object} map - Mapbox map instance
  * @param {Array} fillExpression - Fill expression array
  * @param {Array} strokeExpression - Stroke expression array
  * @param {string} sourceLayer - Source layer name
+ * @param {string} dataMode - Current data mode (COUNTY or RANGER_DISTRICT)
  */
-export const addMapLayer = (map, fillExpression, strokeExpression, sourceLayer) => {
+export const addMapLayer = (map, fillExpression, strokeExpression, sourceLayer, dataMode) => {
   if (fillExpression.length > 3) {
+    if (!ensureSourceExists(map, dataMode)) {
+      return;
+    }
+
     map.addLayer({
       id: VECTOR_LAYER,
       type: 'fill',

@@ -103,10 +103,6 @@ const AvgProbChart = (props) => {
       ],
     };
 
-    const updatedChartOptions = {
-      ...avgProbChartOptions,
-    };
-
     const yearRange = getYearRange(startYear, endYear);
     if (yearRange.length === 0) {
       return;
@@ -124,12 +120,24 @@ const AvgProbChart = (props) => {
     const maxValue = Math.max(
       ...updatedAvgProbChartData.datasets[0].data.filter((v) => v !== null && v !== undefined)
     );
-    if (!Number.isNaN(maxValue) && maxValue > 0) {
-      updatedChartOptions.scales.yAxes[0].ticks.max = maxValue;
-    }
 
     setAvgProbChartData(updatedAvgProbChartData);
-    setAvgProbChartOptions(updatedChartOptions);
+
+    if (!Number.isNaN(maxValue) && maxValue > 0) {
+      setAvgProbChartOptions((prevOptions) => ({
+        ...prevOptions,
+        scales: {
+          ...prevOptions.scales,
+          yAxes: [{
+            ...prevOptions.scales.yAxes[0],
+            ticks: {
+              ...prevOptions.scales.yAxes[0].ticks,
+              max: maxValue,
+            },
+          }],
+        },
+      }));
+    }
   }, [yearData, startYear, endYear]);
 
   return <Line data={avgProbChartData} height={400} options={avgProbChartOptions} />;
