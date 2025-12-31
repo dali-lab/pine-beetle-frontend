@@ -85,6 +85,7 @@ const ComparisonMap = (props) => {
     setState,
     clearAllSelections,
     year,
+    isLoading,
   } = props;
 
   const {
@@ -438,6 +439,13 @@ const ComparisonMap = (props) => {
       <MapComponent
         hover={resultsHover}
       />
+      {!isLoading && !data.length && (
+        <div className="observed-outcomes-message">
+          <p>
+            {`Map for ${year} not yet available. Spot data for the previous year usually come online sometime in January or February of the following year.`}
+          </p>
+        </div>
+      )}
       <MapControls
         availableStates={availableStates}
         availableYears={[]}
