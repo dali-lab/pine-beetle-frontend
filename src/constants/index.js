@@ -40,6 +40,10 @@ const ROUTES = {
   RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
   OBSERVED_OUTCOMES: '/observed-outcomes',
+  MAPS: '/maps',
+  MAPS_TREE_DENSITY: '/maps/tree-density',
+  MAPS_FRAGMENTATION: '/maps/fragmentation',
+  MAPS_MIN_WINTER_TEMP: '/maps/minimum-winter-temperature',
 };
 
 const RESOURCE_ROUTES = {

@@ -18,6 +18,7 @@ const Header = () => {
   const aboutDropdown = useDropdown(false);
   const historicalDataDropdown = useDropdown(false);
   const explainersDropdown = useDropdown(false);
+  const mapsDropdown = useDropdown(false);
 
   const closeAllDropdownsRef = useRef(() => {});
 
@@ -26,6 +27,7 @@ const Header = () => {
       aboutDropdown.closeDropdown();
       historicalDataDropdown.closeDropdown();
       explainersDropdown.closeDropdown();
+      mapsDropdown.closeDropdown();
     };
   });
 
@@ -71,20 +73,30 @@ const Header = () => {
   const handleAboutMouseEnter = useCallback(() => {
     historicalDataDropdown.closeDropdown();
     explainersDropdown.closeDropdown();
+    mapsDropdown.closeDropdown();
     aboutDropdown.handleMouseEnter();
-  }, [aboutDropdown, historicalDataDropdown, explainersDropdown]);
+  }, [aboutDropdown, historicalDataDropdown, explainersDropdown, mapsDropdown]);
 
   const handleHistoricalDataMouseEnter = useCallback(() => {
     aboutDropdown.closeDropdown();
     explainersDropdown.closeDropdown();
+    mapsDropdown.closeDropdown();
     historicalDataDropdown.handleMouseEnter();
-  }, [aboutDropdown, historicalDataDropdown, explainersDropdown]);
+  }, [aboutDropdown, historicalDataDropdown, explainersDropdown, mapsDropdown]);
 
   const handleExplainersMouseEnter = useCallback(() => {
     aboutDropdown.closeDropdown();
     historicalDataDropdown.closeDropdown();
+    mapsDropdown.closeDropdown();
     explainersDropdown.handleMouseEnter();
-  }, [aboutDropdown, historicalDataDropdown, explainersDropdown]);
+  }, [aboutDropdown, historicalDataDropdown, mapsDropdown, explainersDropdown]);
+
+  const handleMapsMouseEnter = useCallback(() => {
+    aboutDropdown.closeDropdown();
+    historicalDataDropdown.closeDropdown();
+    explainersDropdown.closeDropdown();
+    mapsDropdown.handleMouseEnter();
+  }, [aboutDropdown, historicalDataDropdown, explainersDropdown, mapsDropdown]);
 
   const isActiveRoute = useCallback((routes) => {
     if (Array.isArray(routes)) {
@@ -124,7 +136,63 @@ const Header = () => {
               Observed Outcomes
             </Link>
 
-            {/* 3. Historical Data Dropdown */}
+            {/* 3. Maps Dropdown */}
+            <div
+              className="nav-dropdown"
+              ref={mapsDropdown.buttonRef}
+              onMouseLeave={mapsDropdown.handleMouseLeave}
+              onMouseEnter={handleMapsMouseEnter}
+            >
+              <Link
+                to={ROUTES.MAPS}
+                className={`nav-item dropdown-trigger ${isActiveRoute([ROUTES.MAPS, ROUTES.MAPS_TREE_DENSITY, ROUTES.MAPS_FRAGMENTATION, ROUTES.MAPS_MIN_WINTER_TEMP]) ? 'active' : ''}`}
+                onClick={mapsDropdown.closeDropdown}
+                aria-expanded={mapsDropdown.isOpen}
+                aria-haspopup="true"
+              >
+                Maps
+                <svg className="dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </Link>
+
+              <div
+                className={`dropdown-menu-maps ${mapsDropdown.isOpen ? 'show' : ''}`}
+                onMouseEnter={mapsDropdown.handleDropdownMouseEnter}
+                onMouseLeave={mapsDropdown.handleDropdownMouseLeave}
+                style={{
+                  top: `${mapsDropdown.position.top}px`,
+                  left: `${mapsDropdown.position.left}px`,
+                }}
+              >
+                <Link
+                  to={ROUTES.MAPS_TREE_DENSITY}
+                  className={`dropdown-item ${isActiveRoute(ROUTES.MAPS_TREE_DENSITY) ? 'active' : ''}`}
+                  onClick={mapsDropdown.closeDropdown}
+                  role="menuitem"
+                >
+                  Tree Density
+                </Link>
+                <Link
+                  to={ROUTES.MAPS_FRAGMENTATION}
+                  className={`dropdown-item ${isActiveRoute(ROUTES.MAPS_FRAGMENTATION) ? 'active' : ''}`}
+                  onClick={mapsDropdown.closeDropdown}
+                  role="menuitem"
+                >
+                  Fragmentation
+                </Link>
+                <Link
+                  to={ROUTES.MAPS_MIN_WINTER_TEMP}
+                  className={`dropdown-item ${isActiveRoute(ROUTES.MAPS_MIN_WINTER_TEMP) ? 'active' : ''}`}
+                  onClick={mapsDropdown.closeDropdown}
+                  role="menuitem"
+                >
+                  Minimum Winter Temperature
+                </Link>
+              </div>
+            </div>
+
+            {/* 4. Historical Data Dropdown */}
             <div
               className="nav-dropdown"
               ref={historicalDataDropdown.buttonRef}
@@ -180,7 +248,7 @@ const Header = () => {
               </div>
             </div>
 
-            {/* 4. Explainers and Other Details Dropdown */}
+            {/* 5. Explainers and Other Details Dropdown */}
             <div
               className="nav-dropdown"
               ref={explainersDropdown.buttonRef}
@@ -246,7 +314,7 @@ const Header = () => {
               </div>
             </div>
 
-            {/* 5. Blog */}
+            {/* 6. Blog */}
             <Link
               to={ROUTES.BLOG}
               className={`nav-item ${isActiveRoute(ROUTES.BLOG) ? 'active' : ''}`}
@@ -254,7 +322,7 @@ const Header = () => {
               Blog
             </Link>
 
-            {/* 6. About Menu */}
+            {/* 7. About Menu */}
             <div
               className="nav-dropdown"
               ref={aboutDropdown.buttonRef}
@@ -368,6 +436,37 @@ const Header = () => {
           >
             Observed Outcomes
           </Link>
+
+          <div className="mobile-nav-section">
+            <Link
+              to={ROUTES.MAPS}
+              className="mobile-nav-label"
+              onClick={handleMobileMenuClose}
+            >
+              Maps
+            </Link>
+            <Link
+              to={ROUTES.MAPS_TREE_DENSITY}
+              className="mobile-nav-sublink"
+              onClick={handleMobileMenuClose}
+            >
+              Tree Density
+            </Link>
+            <Link
+              to={ROUTES.MAPS_FRAGMENTATION}
+              className="mobile-nav-sublink"
+              onClick={handleMobileMenuClose}
+            >
+              Fragmentation
+            </Link>
+            <Link
+              to={ROUTES.MAPS_MIN_WINTER_TEMP}
+              className="mobile-nav-sublink"
+              onClick={handleMobileMenuClose}
+            >
+              Minimum Winter Temperature
+            </Link>
+          </div>
 
           <div className="mobile-nav-section">
             <Link

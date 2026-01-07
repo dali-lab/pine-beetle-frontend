@@ -8,6 +8,7 @@ import Histogram from './histogram-components/histogram';
 import LegendOverlay from './legend-overlay';
 import Loader from './loader';
 import Map from './map';
+import ScrollableTextBox from './scrollable-text-box';
 import Tabs from './tabs';
 
 export {
@@ -21,5 +22,6 @@ export {
   LegendOverlay,
   Loader,
   Map,
+  ScrollableTextBox,
   Tabs,
 };
