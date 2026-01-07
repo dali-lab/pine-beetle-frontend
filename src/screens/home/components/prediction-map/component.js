@@ -268,27 +268,71 @@ const PredictionMap = (props) => {
       return undefined;
     }
 
-    const attemptColoring = () => {
-      if (map.isStyleLoaded && map.isStyleLoaded()) {
-        const didColor = colorPredictions(data, true);
-        if (didColor) {
-          hasColoredRef.current = true;
-          zoomToSelectedState(selectedState, map);
-        }
-      } else {
-        map.once('styledata', () => {
-          const didColor = colorPredictions(data, true);
-          if (didColor) {
-            hasColoredRef.current = true;
-            zoomToSelectedState(selectedState, map);
-          }
-        });
+    let loadListener = null;
+    let styleListener = null;
+    let timer = null;
+
+    const performColoring = () => {
+      if (!map || !isMountedRef.current || data.length === 0) return;
+
+      const didColor = colorPredictions(data, true);
+      if (didColor) {
+        hasColoredRef.current = true;
+        zoomToSelectedState(selectedState, map);
       }
     };
 
-    const timer = setTimeout(attemptColoring, 50);
+    const attemptColoring = () => {
+      if (!map || !isMountedRef.current) return;
+
+      const isStyleReady = map.isStyleLoaded && map.isStyleLoaded();
+
+      if (isStyleReady) {
+        performColoring();
+      } else if (!styleListener) {
+        styleListener = performColoring;
+        map.once('styledata', styleListener);
+      }
+    };
+
+    if (!loadListener) {
+      loadListener = () => {
+        if (isMountedRef.current && data.length > 0) {
+          setTimeout(() => {
+            if (isMountedRef.current && map && map.isStyleLoaded && map.isStyleLoaded()) {
+              performColoring();
+            }
+          }, 10);
+        }
+      };
+
+      if (map.loaded) {
+        attemptColoring();
+      } else {
+        map.once('load', loadListener);
+      }
+    }
+
+    timer = setTimeout(attemptColoring, 50);
+
     return () => {
-      clearTimeout(timer);
+      if (timer) {
+        clearTimeout(timer);
+      }
+      if (loadListener && map && typeof map.off === 'function') {
+        try {
+          map.off('load', loadListener);
+        } catch (e) {
+          // Ignore errors when removing listener
+        }
+      }
+      if (styleListener && map && typeof map.off === 'function') {
+        try {
+          map.off('styledata', styleListener);
+        } catch (e) {
+          // Ignore errors when removing listener
+        }
+      }
     };
   }, [map, data, year, selectedState, county, rangerDistrict, colorPredictions]);
 
