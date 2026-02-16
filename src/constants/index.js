@@ -9,6 +9,7 @@ const MIN_WIDTH_THRESHOLD = 725;
 const stateNameToAbbrev = Object.fromEntries(Object.entries(stateAbbrevToStateName).map(([k, v]) => [v, k]));
 
 const LOCAL_STORAGE_KEYS = {
+  ANONYMOUS_ID: 'DALI_PB_ANONYMOUS_ID',
   AUTH_TOKEN: 'DALI_PB_AUTH_TOKEN',
   CHART_MODE: 'DALI_PB_CHART_MODE',
   DATA_MODE: 'DALI_PB_DATA_MODE',

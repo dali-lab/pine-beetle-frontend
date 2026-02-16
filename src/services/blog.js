@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import {
+  getAnonymousId,
   getAuthTokenFromStorage,
   getUserIdFromStorage,
 } from '../utils';
@@ -102,16 +103,22 @@ export const deleteBlogPost = async (id) => {
 
 export const getBlogPostLikes = async (postId) => {
   const url = `${global.API_URL}/${SUBROUTE}/${postId}/likes`;
+  const token = getAuthTokenFromStorage();
+  const config = {};
+
+  if (token) {
+    config.headers = { authorization: `Bearer ${token}` };
+  } else {
+    config.params = { anonymousId: getAnonymousId() };
+  }
 
   try {
-    const { data: response } = await axios.get(url);
+    const { data: response } = await axios.get(url, config);
     const { data } = response || {};
-    const likes = data?.likes || [];
 
     return {
-      likes,
-      count: data?.count ?? likes.length ?? 0,
-      userHasLiked: data?.userHasLiked ?? data?.liked ?? false,
+      count: data?.count ?? 0,
+      userHasLiked: data?.userHasLiked ?? false,
     };
   } catch (error) {
     console.error(error);
@@ -123,22 +130,22 @@ export const toggleBlogPostLike = async (postId) => {
   const url = `${global.API_URL}/${SUBROUTE}/${postId}/likes`;
   const token = getAuthTokenFromStorage();
 
+  const headers = {};
+  let body = {};
+
+  if (token) {
+    headers.authorization = `Bearer ${token}`;
+  } else {
+    body = { anonymousId: getAnonymousId() };
+  }
+
   try {
-    const { data: response } = await axios.post(
-      url,
-      {},
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data: response } = await axios.post(url, body, { headers });
     const { data } = response || {};
 
     return {
       liked: data?.liked ?? false,
       count: data?.count ?? 0,
-      userHasLiked: data?.liked ?? false, // alias for UI compatibility
     };
   } catch (error) {
     console.error(error);
@@ -160,20 +167,22 @@ export const getBlogPostComments = async (postId, params = {}) => {
   }
 };
 
-export const createBlogPostComment = async (postId, content) => {
+export const createBlogPostComment = async (postId, content, author) => {
   const url = `${global.API_URL}/${SUBROUTE}/${postId}/comments`;
   const token = getAuthTokenFromStorage();
+  const config = {};
+
+  if (token) {
+    config.headers = { authorization: `Bearer ${token}` };
+  }
+
+  const body = { content };
+  if (author) {
+    body.author = author;
+  }
 
   try {
-    const { data: response } = await axios.post(
-      url,
-      { content },
-      {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const { data: response } = await axios.post(url, body, config);
     const { data } = response || {};
 
     return data;

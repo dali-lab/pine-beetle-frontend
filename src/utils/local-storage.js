@@ -87,3 +87,20 @@ export const getChartModeFromStorage = getLocal(LOCAL_STORAGE_KEYS.CHART_MODE);
  * @param {String} chartMode chart mode to set
  */
 export const setChartModeInStorage = setLocal(LOCAL_STORAGE_KEYS.CHART_MODE);
+
+const getAnonymousIdFromStorage = getLocal(LOCAL_STORAGE_KEYS.ANONYMOUS_ID);
+const setAnonymousIdInStorage = setLocal(LOCAL_STORAGE_KEYS.ANONYMOUS_ID);
+
+/**
+ * @description retrieves anonymous ID from local storage, creating one if it doesn't exist
+ * @returns {String} anonymous UUID
+ */
+export const getAnonymousId = () => {
+  const existing = getAnonymousIdFromStorage();
+  if (existing) return existing;
+
+  const hex = Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, '0')).join('');
+  const id = `${hex.slice(0, 8)}-${hex.slice(8, 12)}-4${hex.slice(13, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
+  setAnonymousIdInStorage(id);
+  return id;
+};

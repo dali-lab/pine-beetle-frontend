@@ -6,6 +6,7 @@ import {
 } from './abbreviation-mappings';
 
 import {
+  getAnonymousId,
   getAuthTokenFromStorage,
   getChartModeFromStorage,
   getDataModeFromStorage,
@@ -65,6 +66,7 @@ export {
   formatCollectionDate,
   formatPostDates,
   generateMap,
+  getAnonymousId,
   getAuthTokenFromStorage,
   getChartModeFromStorage,
   getDataModeFromStorage,
