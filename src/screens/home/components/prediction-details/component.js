@@ -21,6 +21,7 @@ const PredictionDetails = (props) => {
     onClose,
     isOpen,
     probSpotsGT50,
+    histogramFrequency,
   } = props;
 
   if (!data || data.length === 0) {
@@ -132,7 +133,7 @@ const PredictionDetails = (props) => {
           </div>
           <div className="prediction-histogram-section">
             <h3 className="prediction-histogram-title">
-              Predicted vs. Observed Outcomes for All Data, 1987-2025 (n=3,964)
+              Predicted vs. Observed Outcomes for All Data (n={histogramFrequency ?? '—'})
             </h3>
             <div className="prediction-histogram-scroll-container">
               <Histogram probSpotsGT50={probSpotsGT50} />

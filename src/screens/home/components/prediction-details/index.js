@@ -22,6 +22,7 @@ const mapStateToProps = (state) => {
     data: predictions,
     isOpen: predictionModal,
     probSpotsGT50,
+    histogramFrequency: state.histogram?.frequency,
   };
 };
 
