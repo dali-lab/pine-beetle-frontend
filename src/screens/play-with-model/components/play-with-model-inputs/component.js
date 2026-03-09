@@ -5,8 +5,6 @@ import { ChoiceInput } from '../../../../components/input-components';
 
 import './style.scss';
 
-const MODEL_VERSION_FIRST_YEAR = 2025;
-
 const PlayWithModelInputs = (props) => {
   const {
     modelInputs,
@@ -62,24 +60,14 @@ const PlayWithModelInputs = (props) => {
   };
 
   const filterModelVersionInputs = (modelVersion) => {
-    const inputsForVersion = MODEL_VERSION_INPUTS[modelVersion] ?? MODEL_VERSION_INPUTS[defaultModelVersion];
     const filteredInputsInformation = Object.entries(INPUT_INFORMATION).filter((entry) => {
-      return inputsForVersion.includes(entry[0]);
+      return MODEL_VERSION_INPUTS[modelVersion || defaultModelVersion].includes(entry[0]);
     });
 
     return Object.fromEntries(filteredInputsInformation);
   };
 
   const inputInformation = filterModelVersionInputs(modelInputs.modelVersion);
-
-  const modelVersionOptions = [
-    2018,
-    2024,
-    ...Array.from(
-      { length: Math.max(0, new Date().getFullYear() - MODEL_VERSION_FIRST_YEAR + 1) },
-      (_, i) => MODEL_VERSION_FIRST_YEAR + i
-    ),
-  ];
 
   const selectionInput = (isTrueFalseSelection, value, setValue) => {
     if (!isTrueFalseSelection) {
@@ -89,7 +77,7 @@ const PlayWithModelInputs = (props) => {
             type="number"
             min="0"
             onChange={(e) => setValue(e.target.value)}
-            value={value}
+            value={value === undefined || value === null || Number.isNaN(value) ? '' : value}
           />
         </form>
       );
@@ -157,7 +145,7 @@ const PlayWithModelInputs = (props) => {
           <span>Pick model version</span>
           <ChoiceInput
             id="modelVersion"
-            options={modelVersionOptions}
+            options={[2018, 2024, 2025]}
             value={modelInputs.modelVersion}
             setValue={createValueSetter('modelVersion')}
             firstOptionText="Year"
