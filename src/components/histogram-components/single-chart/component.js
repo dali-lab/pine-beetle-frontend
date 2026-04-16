@@ -77,7 +77,7 @@ const SingleChart = ({
         length: 3,
         lineStyle: { color: '#000', width: 1 },
       },
-      max: data?.frequency || 0,
+      max: Number.isFinite(frequency) && frequency > 0 ? frequency : undefined,
     },
     series: [
       {
