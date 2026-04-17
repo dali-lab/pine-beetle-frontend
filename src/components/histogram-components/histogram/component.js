@@ -5,15 +5,19 @@ import SingleChart from '../single-chart/component';
 import './style.scss';
 
 const updateWithBorder = (array, probSpotsGT50) => {
-  const arrayUpdated = array.map((item) => {
-    const rangeArray = item.range.split('-');
-
-    if (probSpotsGT50 >= rangeArray[0] && probSpotsGT50 < rangeArray[1]) {
+  if (probSpotsGT50 == null || Number.isNaN(Number(probSpotsGT50))) {
+    return array;
+  }
+  const p = Number(probSpotsGT50);
+  return array.map((item) => {
+    const [minStr, maxStr] = item.range.split('-');
+    const min = parseFloat(minStr);
+    const max = parseFloat(maxStr);
+    if (p > min && p <= max) {
       return { ...item, withBorder: true };
-    } else return item;
+    }
+    return item;
   });
-
-  return arrayUpdated;
 };
 
 const Histogram = ({ histogramData, getHistogram, probSpotsGT50 }) => {
