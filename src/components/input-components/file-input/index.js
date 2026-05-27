@@ -40,6 +40,13 @@ const PreviewSummary = ({
     return acc;
   }, {});
 
+  const willDelete = preview.willDelete || 0;
+  const canConfirm = preview.accepted > 0 || willDelete > 0;
+  const confirmParts = [];
+  if (preview.accepted > 0) confirmParts.push(`${preview.accepted} add`);
+  if (willDelete > 0) confirmParts.push(`${willDelete} delete`);
+  const confirmLabel = confirmParts.length ? `Confirm Upload (${confirmParts.join(' · ')})` : 'Confirm Upload';
+
   return (
     <div className="upload-preview-container">
       <h3>Preview</h3>
@@ -86,15 +93,21 @@ const PreviewSummary = ({
         </details>
       )}
 
+      {willDelete > 0 && (
+        <p className="upload-preview-delete-note">
+          {willDelete} existing {willDelete === 1 ? 'survey' : 'surveys'} will be removed and replaced.
+        </p>
+      )}
+
       <div className="upload-preview-actions">
         <button type="button" onClick={onCancel} disabled={isUploading}>Cancel</button>
         <button
           type="button"
           className="upload-preview-confirm"
           onClick={onConfirm}
-          disabled={isUploading || preview.accepted === 0}
+          disabled={isUploading || !canConfirm}
         >
-          {isUploading ? 'Uploading…' : `Confirm Upload (${preview.accepted})`}
+          {isUploading ? 'Uploading…' : confirmLabel}
         </button>
       </div>
     </div>

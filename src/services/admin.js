@@ -37,8 +37,44 @@ export const previewCountySpotCsv = (file) => postCsv(`${SUBROUTES.SPOT_DATA_COU
 export const uploadRangerDistrictSpotCsv = (file) => postCsv(SUBROUTES.SPOT_DATA_RD, file);
 export const previewRangerDistrictSpotCsv = (file) => postCsv(`${SUBROUTES.SPOT_DATA_RD}/preview`, file);
 
-export const uploadSurvey123UnsummarizedCsv = (file) => postCsv(SUBROUTES.SURVEY123, file);
 export const previewSurvey123UnsummarizedCsv = (file) => postCsv(`${SUBROUTES.SURVEY123}/preview`, file);
+
+const sleep = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
+
+const getSurvey123UploadStatus = async (uploadId) => {
+  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SURVEY123}/status?uploadId=${encodeURIComponent(uploadId)}`;
+  const token = getAuthTokenFromStorage();
+  const { data: { data } } = await axios.get(url, {
+    headers: { authorization: `Bearer ${token}` },
+  });
+  return data; // { status, message, result }
+};
+
+/**
+ * @description uploads a Survey123 CSV. The endpoint returns 202 + uploadId and
+ * processes in the background, so we poll the status endpoint and only resolve
+ * once processing finishes (or reject if it failed). This keeps the UI honest
+ * ("uploading" until truly done) and lets the caller refresh history once.
+ */
+export const uploadSurvey123UnsummarizedCsv = async (file) => {
+  const { uploadId } = await postCsv(SUBROUTES.SURVEY123, file);
+  if (!uploadId) return { uploadId: null };
+
+  const intervalMs = 2000;
+  const timeoutMs = 60000;
+  const start = Date.now();
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    // eslint-disable-next-line no-await-in-loop
+    const status = await getSurvey123UploadStatus(uploadId);
+    if (status?.status === 'success') return status.result || { uploadId };
+    if (status?.status === 'error') throw new Error(status.message || 'Upload failed');
+    if (Date.now() - start > timeoutMs) return { uploadId, pending: true };
+    // eslint-disable-next-line no-await-in-loop
+    await sleep(intervalMs);
+  }
+};
 
 /**
  * @description lists upload audit entries (paginated)

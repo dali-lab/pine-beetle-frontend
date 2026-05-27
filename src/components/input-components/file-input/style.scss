@@ -144,6 +144,13 @@ input[type=file] {
     color: $statusDanger;
 }
 
+.upload-preview-delete-note {
+    margin: 0.5rem 0 0;
+    font-size: 0.8125rem;
+    color: $statusWarning;
+    font-weight: 600;
+}
+
 .upload-preview-actions {
     display: flex;
     gap: 0.5rem;

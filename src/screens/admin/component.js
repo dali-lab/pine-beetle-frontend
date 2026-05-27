@@ -44,12 +44,11 @@ const Admin = (props) => {
 
   const tabRefs = useRef([]);
 
-  // Refresh the upload history after a successful upload. County / ranger-district
-  // uploads write their audit row synchronously (immediate bump catches them);
-  // Survey123 processes in the background, so a short delayed bump catches that row.
+  // Refresh the upload history after an upload completes. The upload service
+  // resolves only once the audit row exists (sync for county/RD; polled to
+  // completion for Survey123), so a single bump is enough — no timers.
   const handleUploadComplete = () => {
     setHistoryRefreshKey((k) => k + 1);
-    setTimeout(() => setHistoryRefreshKey((k) => k + 1), 4000);
   };
 
   const onTabKeyDown = (e, index) => {
