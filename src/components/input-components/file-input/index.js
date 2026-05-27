@@ -106,6 +106,7 @@ const FileInput = (props) => {
     guideURL,
     component,
     onResetFiles,
+    onUploadComplete,
     fileFormat = '.csv',
   } = props;
 
@@ -160,6 +161,7 @@ const FileInput = (props) => {
       const acceptedLine = preview ? ` ${preview.accepted} accepted, ${preview.rejected.length} rejected.` : '';
       setSuccessMessage({ [component.id]: `Successfully uploaded file.${acceptedLine}` });
       setTimeout(clearSuccessMessage, 1000 * 7);
+      if (onUploadComplete) onUploadComplete();
     } catch (err) {
       const { data, status } = err?.response || {};
       const strippedError = (data?.error || '').toString().replace('Error: ', '');
@@ -206,8 +208,8 @@ const FileInput = (props) => {
 
   if (preview) {
     return (
-      <div id={component.id} key={component.id}>
-        <p>{component.name}</p>
+      <div id={component.id} className="upload-item" key={component.id}>
+        <p className="upload-item-name">{component.name}</p>
         <p id="file-selected">{component.file?.name}</p>
         <PreviewSummary
           preview={preview}
@@ -220,38 +222,40 @@ const FileInput = (props) => {
   }
 
   return (
-    <div id={component.id} key={component.id}>
-      <p>{component.name}</p>
-      <p id="file-selected">
-        {component.file ? component.file.name : ''}
-      </p>
-      {component.file && component.uploadFile ? (
-        <button
-          id="upload-button"
-          className="custom-file-upload"
-          type="button"
-          onClick={handlePreview}
-          disabled={isPreviewing}
-        >
-          {/* eslint-disable-next-line no-nested-ternary */}
-          {isPreviewing ? 'Checking…' : (component.previewFile ? 'Preview' : 'Upload File')}
-        </button>
-      ) : (
-        <>
-          {successMessage[component.id] && (
+    <div id={component.id} className="upload-item" key={component.id}>
+      <div className="upload-item-row">
+        <div className="upload-item-info">
+          <p className="upload-item-name">{component.name}</p>
+          {component.file && <p id="file-selected">{component.file.name}</p>}
+          {!component.file && successMessage[component.id] && (
             <p id="success-message">{successMessage[component.id]}</p>
           )}
-          <label htmlFor={`file-upload-${component.id}`} className="custom-file-upload">
-            <input
-              id={`file-upload-${component.id}`}
-              type="file"
-              accept={fileFormat}
-              onChange={(e) => component.selectFile(e.target.files[0]) && clearSuccessMessage()}
-            />
-            Select File
-          </label>
-        </>
-      )}
+        </div>
+        <div className="upload-item-action">
+          {component.file && component.uploadFile ? (
+            <button
+              id="upload-button"
+              className="custom-file-upload"
+              type="button"
+              onClick={handlePreview}
+              disabled={isPreviewing}
+            >
+              {/* eslint-disable-next-line no-nested-ternary */}
+              {isPreviewing ? 'Checking…' : (component.previewFile ? 'Preview' : 'Upload File')}
+            </button>
+          ) : (
+            <label htmlFor={`file-upload-${component.id}`} className="custom-file-upload">
+              <input
+                id={`file-upload-${component.id}`}
+                type="file"
+                accept={fileFormat}
+                onChange={(e) => component.selectFile(e.target.files[0]) && clearSuccessMessage()}
+              />
+              Select File
+            </label>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

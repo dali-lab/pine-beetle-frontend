@@ -11,7 +11,7 @@ import {
 } from '../../../../services/admin';
 
 const FileUpload = (props) => {
-  const { guideURL } = props;
+  const { guideURL, onUploadComplete } = props;
 
   const [countySpotFile, setCountySpotFile] = useState();
   const [rdSpotFile, setRdSpotFile] = useState();
@@ -41,17 +41,17 @@ const FileUpload = (props) => {
   }];
 
   return (
-    <>
+    <div className="admin-upload-list">
       {componentsToRender.map((component) => (
         <FileInput
           component={component}
           onResetFiles={() => component.selectFile()}
+          onUploadComplete={onUploadComplete}
           guideURL={guideURL}
           key={component.id}
-
         />
       ))}
-    </>
+    </div>
   );
 };
 

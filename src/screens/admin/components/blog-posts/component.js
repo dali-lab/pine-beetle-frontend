@@ -69,7 +69,7 @@ const BlogPosts = (props) => {
 
   return (
     <div className="blog-posts-container">
-      <div className="blog-posts-title">Your blog posts</div>
+      <h2 className="blog-posts-title">Your blog posts</h2>
       {sortedBlogPosts.length > 0
         ? sortedBlogPosts.map(
           (post) => <BlogPost post={post} onClickEdit={() => openEditForm(post)} onDelete={() => openDeleteModal(post)} key={post.id} />

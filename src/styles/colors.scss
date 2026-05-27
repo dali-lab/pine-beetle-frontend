@@ -62,6 +62,15 @@ $blue400: #B4DBFF;
 $blue500: #86CCFF;
 $blue800: #2656B5;
 
+// Status / semantic (upload audit, validation, alerts)
+// Foreground colors meet WCAG AA on white and on their paired light bg.
+$statusSuccess: #146C43;
+$statusSuccessBg: #E7F4EC;
+$statusWarning: #8A4B00;
+$statusWarningBg: #FFF1DD;
+$statusDanger: #B02A1B;
+$statusDangerBg: #FBE7E4;
+
 // Typography
 $textColor: $deepCharcoal;
 $headingColor: $deepCharcoal;

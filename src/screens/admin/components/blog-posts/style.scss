@@ -134,11 +134,11 @@
         }
 
         &:first-child {
-            background-color: $brandPrimary;
+            background-color: $brandSecondary;
             color: $white;
 
             &:hover:not(:disabled) {
-                background-color: $brandSecondary;
+                background-color: $brandPrimary;
                 transform: translateY(-1px);
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
             }
