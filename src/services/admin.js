@@ -14,84 +14,62 @@ const SUBROUTES = {
   SPOT_DATA_RD: 'summarized-rangerdistrict/spots/upload',
   SURVEY123: 'survey123/upload',
   HISTOGRAM: 'histogram',
+  UPLOAD_AUDIT: 'upload-audit',
+};
+
+const postCsv = async (path, file) => {
+  const url = `${global.AUTOMATION_API_URL}/${path}`;
+  const token = getAuthTokenFromStorage();
+  const formData = new FormData();
+  formData.append('csv', file);
+  const { data: { data } } = await axios.post(url, formData, {
+    headers: {
+      authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data;
+};
+
+export const uploadCountySpotCsv = (file) => postCsv(SUBROUTES.SPOT_DATA_COUNTY, file);
+export const previewCountySpotCsv = (file) => postCsv(`${SUBROUTES.SPOT_DATA_COUNTY}/preview`, file);
+
+export const uploadRangerDistrictSpotCsv = (file) => postCsv(SUBROUTES.SPOT_DATA_RD, file);
+export const previewRangerDistrictSpotCsv = (file) => postCsv(`${SUBROUTES.SPOT_DATA_RD}/preview`, file);
+
+export const uploadSurvey123UnsummarizedCsv = (file) => postCsv(SUBROUTES.SURVEY123, file);
+export const previewSurvey123UnsummarizedCsv = (file) => postCsv(`${SUBROUTES.SURVEY123}/preview`, file);
+
+/**
+ * @description lists upload audit entries (paginated)
+ */
+export const getUploadHistory = async ({
+  page = 1,
+  limit = 50,
+  status,
+  source,
+} = {}) => {
+  const params = toQueryParams({
+    page, limit, status, source,
+  });
+  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.UPLOAD_AUDIT}?${params}`;
+  const token = getAuthTokenFromStorage();
+  const { data: { data } } = await axios.get(url, {
+    headers: { authorization: `Bearer ${token}` },
+  });
+  return data;
 };
 
 /**
- * @description uploads spot data county csv
- * @param {File} file csv to upload
- * @returns {Promise<Object>} API response
+ * @description fetches a single audit entry (with full skipped/rejected lists)
  */
-export const uploadCountySpotCsv = async (file) => {
-  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SPOT_DATA_COUNTY}`;
+export const getUploadAudit = async (uploadId) => {
+  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.UPLOAD_AUDIT}/${uploadId}`;
   const token = getAuthTokenFromStorage();
-
-  const formData = new FormData();
-  formData.append('csv', file);
-
-  try {
-    const { data: { data } } = await axios.post(url, formData, {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-/**
- * @description uploads spot data ranger district csv
- * @param {File} file csv to upload
- * @returns {Promise<Object>} API response
- */
-export const uploadRangerDistrictSpotCsv = async (file) => {
-  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SPOT_DATA_RD}`;
-  const token = getAuthTokenFromStorage();
-
-  const formData = new FormData();
-  formData.append('csv', file);
-
-  try {
-    const { data: { data } } = await axios.post(url, formData, {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-/**
- * @description uploads survey123 unsummarized csv
- * @param {File} file csv to upload
- * @returns {Promise<Object>} API response
- */
-export const uploadSurvey123UnsummarizedCsv = async (file) => {
-  const url = `${global.AUTOMATION_API_URL}/${SUBROUTES.SURVEY123}`;
-  const token = getAuthTokenFromStorage();
-
-  const formData = new FormData();
-  formData.append('csv', file);
-
-  try {
-    const { data: { data } } = await axios.post(url, formData, {
-      headers: {
-        authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+  const { data: { data } } = await axios.get(url, {
+    headers: { authorization: `Bearer ${token}` },
+  });
+  return data;
 };
 
 /**

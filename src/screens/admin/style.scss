@@ -384,3 +384,75 @@
         }
     }
 }
+
+
+.upload-history-section {
+    width: 100%;
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 16px;
+    background: $cleanWhite;
+    border-radius: 8px;
+}
+
+#upload-history-container {
+    h3 {
+        margin: 0 0 12px;
+    }
+
+    .upload-history-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+
+        select, button {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid $greyBlue400;
+            background: $white;
+            cursor: pointer;
+        }
+    }
+
+    .upload-history-error {
+        color: #dc3545;
+    }
+
+    .upload-history-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+
+        th, td {
+            text-align: left;
+            padding: 6px 8px;
+            border-bottom: 1px solid $greyBlue300;
+            vertical-align: top;
+        }
+
+        th {
+            background: $greyBlue200;
+            font-weight: 600;
+        }
+
+        button {
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid $greyBlue400;
+            background: $white;
+            cursor: pointer;
+        }
+    }
+
+    .upload-history-detail {
+        background: $greyBlue100;
+        font-size: 13px;
+
+        ul {
+            max-height: 240px;
+            overflow-y: auto;
+            font-family: 'Menlo', 'Monaco', monospace;
+        }
+    }
+}

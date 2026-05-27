@@ -47,6 +47,97 @@ input[type=file] {
     margin-top: -5px !important;
 }
 
+.upload-preview-container {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid $greyBlue400;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.6);
+
+    h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+    }
+
+    details {
+        margin-top: 8px;
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+        }
+    }
+
+    .upload-preview-list,
+    .upload-preview-detail {
+        margin: 6px 0 0;
+        padding-left: 18px;
+        font-size: 13px;
+    }
+
+    .upload-preview-detail {
+        max-height: 180px;
+        overflow-y: auto;
+        font-family: 'Menlo', 'Monaco', monospace;
+    }
+}
+
+.upload-preview-counts {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.upload-preview-count {
+    flex: 1;
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    background: $greyBlue400;
+
+    .upload-preview-count-value {
+        display: block;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .upload-preview-count-label {
+        display: block;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+}
+
+.upload-preview-count-accepted { background: #d4edda; }
+.upload-preview-count-skipped { background: #e2e3e5; }
+.upload-preview-count-rejected { background: #f8d7da; }
+
+.upload-preview-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+
+    button {
+        flex: 1;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        background: $greyBlue400;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .upload-preview-confirm {
+        background: $blue500;
+        color: $white;
+    }
+}
+
 #uploading-error-container {
     h3 {
         color: $red500;

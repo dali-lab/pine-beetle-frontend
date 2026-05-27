@@ -6,6 +6,7 @@ import {
   ChangePassword,
   FileUpload,
   Login,
+  UploadHistory,
   UserSection,
 } from './components';
 
@@ -112,6 +113,9 @@ const Admin = (props) => {
               </div>
               )}
             </div>
+          </div>
+          <div className="upload-history-section">
+            <UploadHistory />
           </div>
           <div className="blog-container">
             <AddBlogPost />

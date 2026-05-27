@@ -4,6 +4,7 @@ import BlogPosts from './blog-posts';
 import ChangePassword from './change-password';
 import FileUpload from './file-upload';
 import Login from './login';
+import UploadHistory from './upload-history';
 import Users from './users';
 import UserSection from './user-section';
 
@@ -14,6 +15,7 @@ export {
   ChangePassword,
   FileUpload,
   Login,
+  UploadHistory,
   Users,
   UserSection,
 };
