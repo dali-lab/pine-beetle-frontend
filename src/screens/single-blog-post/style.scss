@@ -124,8 +124,8 @@
     }
 
     &.liked {
-        background: $brandPrimary;
-        border-color: $brandPrimary;
+        background: $brandSecondary;
+        border-color: $brandSecondary;
         color: $cleanWhite;
     }
 
@@ -337,7 +337,7 @@
 }
 
 .submit-comment-button {
-    background: $brandPrimary;
+    background: $brandSecondary;
     color: $cleanWhite;
     border: none;
     border-radius: 8px;
@@ -348,7 +348,7 @@
     transition: all 0.2s ease;
 
     &:hover {
-        background: $brandSecondary;
+        background: $brandPrimary;
         transform: translateY(-0.0625rem);
         box-shadow: 0 0.25rem 0.75rem rgba(26, 77, 46, 0.3);
     }

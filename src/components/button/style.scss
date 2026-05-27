@@ -10,11 +10,11 @@
 
     &-primary {
         color: $white;
-        background-color: $brandPrimary;
+        background-color: $brandSecondary;
         transition: all 0.2s ease;
 
         &:hover {
-            background-color: $brandSecondary;
+            background-color: $brandPrimary;
         }
     }
 

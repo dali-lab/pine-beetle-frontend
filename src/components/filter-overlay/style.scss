@@ -97,7 +97,7 @@
 
 /* Filter Buttons */
 .filter-overlay-action-button {
-  background: $brandPrimary;
+  background: $brandSecondary;
   color: $cleanWhite;
   border: none;
   border-radius: 6px;
@@ -110,7 +110,7 @@
   letter-spacing: 0.03125rem;
 
   &:hover:not(:disabled) {
-    background: $brandSecondary;
+    background: $brandPrimary;
     transform: translateY(-0.0625rem);
   }
   &:disabled {
