@@ -12,14 +12,15 @@
     width: 100%;
     max-width: 64rem;
     margin: 0 auto;
+    // top padding must clear the fixed site header (~4.5rem tall + breathing room)
     padding: 7.5rem 1.5rem 4rem;
 
     @media (max-width: $tablet) {
-        padding: 5.5rem 1rem 3rem;
+        padding: 6.5rem 1rem 3rem;
     }
 
     @media (max-width: $mobile) {
-        padding: 4rem 0.75rem 2rem;
+        padding: 6.5rem 0.75rem 2rem;
     }
 }
 

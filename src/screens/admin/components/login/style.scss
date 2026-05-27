@@ -103,9 +103,14 @@
         }
 
         #forgot-password {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 0.625rem auto 0;
+            padding: 0;
+            text-align: right;
             font-size: 0.875rem;
             color: $brandPrimary;
-            margin-top: 0.625rem;
             background-color: transparent;
             border: 0;
             text-decoration: underline;
@@ -114,6 +119,10 @@
 
             &:hover {
                 color: $brandSecondary;
+            }
+
+            @media (max-width: $tablet) {
+                max-width: 100%;
             }
         }
 
