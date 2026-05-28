@@ -68,7 +68,11 @@ export const uploadSurvey123UnsummarizedCsv = async (file) => {
   while (true) {
     // eslint-disable-next-line no-await-in-loop
     const status = await getSurvey123UploadStatus(uploadId);
-    if (status?.status === 'success') return status.result || { uploadId };
+    // 'success' and 'partial' are both terminal — partial means some rows were
+    // accepted and some rejected; the caller inspects status.result for details.
+    if (status?.status === 'success' || status?.status === 'partial') {
+      return status.result || { uploadId };
+    }
     if (status?.status === 'error') throw new Error(status.message || 'Upload failed');
     if (Date.now() - start > timeoutMs) return { uploadId, pending: true };
     // eslint-disable-next-line no-await-in-loop
