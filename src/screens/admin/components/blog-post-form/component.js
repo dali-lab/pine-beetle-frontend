@@ -70,9 +70,9 @@ const BlogPostForm = (props) => {
 
   return (
     <div className="add-blog-post-container">
-      <div className="blog-posts-form-title">
+      <h2 className="blog-posts-form-title">
         {formTitle}
-      </div>
+      </h2>
       <form>
         <label htmlFor="title" className="input-label">
           Title

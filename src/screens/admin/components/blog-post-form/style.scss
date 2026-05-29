@@ -4,12 +4,12 @@
 .blog-form-button {
     width: 7.125rem;
     margin: 1.25rem auto 0;
-    padding: 0.625rem 1.25rem;
+    padding: 0.5rem 1.25rem;
     border-radius: 0.5rem;
-    background-color: $brandPrimary;
-    font-size: 1.125rem;
-    font-weight: 600;
-    line-height: 1.8;
+    background-color: $brandSecondary;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.2;
     color: $white;
     border: none;
     transition: all 0.2s ease;
@@ -25,7 +25,7 @@
     }
 
     &:hover:not(:disabled) {
-        background-color: $brandSecondary;
+        background-color: $brandPrimary;
         transform: translateY(-1px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
@@ -154,17 +154,6 @@
     @media (min-width: $tablet) {
         flex-direction: row;
         align-items: flex-start;
-    }
-
-    label {
-        font-size: 0.875rem;
-        padding: 0.5rem;
-        border-radius: 0.5rem;
-
-        @media (max-width: $mobile) {
-            font-size: 0.8125rem;
-            padding: 0.4375rem;
-        }
     }
 }
 

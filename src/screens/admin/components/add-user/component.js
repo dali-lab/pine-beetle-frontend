@@ -65,7 +65,7 @@ const AddUser = ({ setUsers }) => {
 
   return (
     <>
-      <p id="sign-up-title">Add a new user</p>
+      <h3 id="sign-up-title">Add a new user</h3>
       <div id="input-fields">
         {success && (
           <p id="success-message">Successfully added user</p>

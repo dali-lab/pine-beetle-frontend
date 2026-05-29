@@ -28,7 +28,7 @@
     .single-button {
         padding: 0.625rem 1.25rem;
         border-radius: 0.5rem;
-        background-color: $brandPrimary;
+        background-color: $brandSecondary;
         color: $white;
         font-size: 1rem;
         font-weight: 600;
@@ -37,7 +37,7 @@
         cursor: pointer;
 
         &:hover:not(:disabled) {
-            background-color: $brandSecondary;
+            background-color: $brandPrimary;
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }

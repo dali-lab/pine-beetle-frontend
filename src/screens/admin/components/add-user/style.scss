@@ -2,14 +2,14 @@
 @import '../../../../styles/colors';
 
 #sign-up-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: $headingColor;
-    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $greyBlue800;
+    margin: 0 0 0.875rem;
 
     @media (max-width: $mobile) {
-        font-size: 1.125rem;
-        margin-bottom: 1rem;
+        font-size: 0.9375rem;
+        margin-bottom: 0.75rem;
     }
 }
 
@@ -115,12 +115,12 @@
 #add-user-button {
     width: 7.125rem;
     margin: 1.25rem auto 0;
-    padding: 0.625rem 1.25rem;
+    padding: 0.5rem 1.25rem;
     border-radius: 0.5rem;
-    background-color: $brandPrimary;
-    font-size: 1.125rem;
-    font-weight: 600;
-    line-height: 1.8;
+    background-color: $brandSecondary;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.2;
     color: $white;
     border: none;
     transition: all 0.2s ease;
@@ -130,13 +130,13 @@
     @media (max-width: $mobile) {
         width: 100%;
         max-width: 12.5rem;
-        padding: 0.625rem 0.875rem;
+        padding: 0.5rem 0.875rem;
         font-size: 0.9375rem;
         margin: 1rem auto 0;
     }
 
     &:hover:not(:disabled) {
-        background-color: $brandSecondary;
+        background-color: $brandPrimary;
         transform: translateY(-1px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }

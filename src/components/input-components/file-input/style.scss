@@ -10,22 +10,46 @@ input[type=file] {
     display: none;
 }
 
+// Secondary button (white + grey border) — base for "Select File".
 .custom-file-upload {
-    display: inline-block;
-    padding: 6px 15px 5px;
-    border-radius: 6px;
-    background-color: $greyBlue400;
-    font-size: 18px;
-    line-height: 1.8;
-    color: $black;
-    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.25rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 8px;
+    border: 1px solid $greyBlue400;
+    background-color: $white;
+    color: $greyBlue900;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-top: 0.5rem;
     cursor: pointer;
-    border: 0;
     font-family: 'Inter';
+    transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+
+    &:hover {
+        background-color: $greyBlue100;
+        border-color: $greyBlue500;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 }
 
+// Primary button (sage green, matching the app's action buttons).
 #upload-button {
-    background-color: $blue500;
+    border-color: $brandSecondary;
+    background-color: $brandSecondary;
+    color: $white;
+
+    &:hover {
+        background-color: $brandPrimary;
+        border-color: $brandPrimary;
+    }
 }
 
 .uploading-message-container {
@@ -43,8 +67,121 @@ input[type=file] {
 }
 
 #success-message {
-    color: $blue500;
+    color: $statusSuccess;
+    font-weight: 600;
     margin-top: -5px !important;
+}
+
+.upload-preview-container {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border: 1px solid $greyBlue300;
+    border-radius: 10px;
+    background: $white;
+
+    h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1rem;
+    }
+
+    details {
+        margin-top: 0.5rem;
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+        }
+    }
+
+    .upload-preview-list,
+    .upload-preview-detail {
+        margin: 0.375rem 0 0;
+        padding-left: 1.125rem;
+        font-size: 0.8125rem;
+        line-height: 1.6;
+    }
+}
+
+.upload-preview-counts {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.upload-preview-count {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 8px;
+    text-align: center;
+    background: $greyBlue200;
+
+    .upload-preview-count-value {
+        display: block;
+        font-size: 1.375rem;
+        font-weight: 700;
+    }
+
+    .upload-preview-count-label {
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+    }
+}
+
+.upload-preview-count-accepted {
+    background: $statusSuccessBg;
+    color: $statusSuccess;
+}
+
+.upload-preview-count-skipped {
+    background: $greyBlue200;
+    color: $greyBlue800;
+}
+
+.upload-preview-count-rejected {
+    background: $statusDangerBg;
+    color: $statusDanger;
+}
+
+.upload-preview-delete-note {
+    margin: 0.5rem 0 0;
+    font-size: 0.8125rem;
+    color: $statusWarning;
+    font-weight: 600;
+}
+
+.upload-preview-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+
+    button {
+        flex: 1;
+        min-height: 2.75rem;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid $greyBlue400;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        background: $white;
+    }
+
+    button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .upload-preview-confirm {
+        border-color: $brandSecondary;
+        background: $brandSecondary;
+        color: $white;
+
+        &:hover:not(:disabled) {
+            background: $brandPrimary;
+            border-color: $brandPrimary;
+        }
+    }
 }
 
 #uploading-error-container {
@@ -54,21 +191,22 @@ input[type=file] {
     }
 
     button {
-        width: 100px;
-        border: none;
-        padding: 10px;
-        background-color: $greyBlue400;
-        font-size: 14px;
+        min-height: 2.75rem;
+        padding: 0.5rem 1rem;
+        border: 1px solid $greyBlue400;
+        background-color: $white;
+        font-size: 0.9375rem;
         font-weight: 600;
-        color: $greyBlue800;
+        color: $greyBlue900;
         border-radius: 8px;
-        margin-top: 20px;
+        margin: 1.25rem auto 0;
         display: block;
-        margin-left: auto;
-        margin-right: auto;
+        cursor: pointer;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
     }
 
     button:hover {
-        cursor: pointer;
+        background-color: $greyBlue100;
+        border-color: $greyBlue500;
     }
 }

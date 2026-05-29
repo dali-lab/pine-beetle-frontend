@@ -1,386 +1,607 @@
 @import '../../styles/breakpoints';
 @import '../../styles/colors';
 
-    #auth-container {
+// =========================================================================
+// Admin dashboard — single-page card grid.
+// The page is the only scroll container: no fixed heights, no nested overflow.
+// =========================================================================
+
+#auth-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     width: 100%;
-    padding: 0;
-
-    h1 {
-        margin-top: 11.875rem;
-        margin-bottom: 0.625rem;
-        font-size: 2rem;
-        text-align: center;
-
-        @media (max-width: $tablet) {
-            margin-top: 7.5rem;
-            font-size: 1.75rem;
-        }
-
-        @media (max-width: $mobile) {
-            margin-top: 3.75rem;
-            margin-bottom: 0.75rem;
-            font-size: 1.5rem;
-            padding: 0 0.5rem;
-        }
-    }
-
-    #auth-header {
-        text-align: center;
-        width: 100%;
-        max-width: 800px;
-        padding: 0 1rem;
-
-        @media (max-width: $mobile) {
-            padding: 0 0.5rem;
-        }
-
-        p {
-            font-size: 1rem;
-            text-align: center;
-            color: $greyBlue800;
-            margin: 0.5rem 0;
-
-            @media (max-width: $mobile) {
-                font-size: 0.875rem;
-                margin: 0.375rem 0;
-                line-height: 1.5;
-            }
-        }
-
-        #header-options {
-            display: flex;
-            margin-top: 0.625rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-
-            @media (max-width: $mobile) {
-                flex-direction: column;
-                gap: 0.625rem;
-                margin-top: 0.75rem;
-            }
-
-            p {
-                color: $greyBlue900;
-                text-decoration: underline;
-            }
-
-            p:hover {
-                cursor: pointer;
-            }
-
-            #sign-out {
-                margin-right: 1.875rem;
-
-                @media (max-width: $mobile) {
-                    margin-right: 0;
-                }
-            }
-        }
-    }
-
-    #dashboard-container {
-        max-width: 87.5rem;
-        margin: 0.9375rem auto 6.25rem auto;
-        padding: 0;
-        border-radius: 26px;
-        box-shadow: 0 35px 90px -10px rgba(0, 0, 0, 0.06);
-        background-color: $white;
-        width: 100%;
-
-        @media (max-width: $tablet) {
-            margin: 0.9375rem auto 3.75rem auto;
-            border-radius: 20px;
-        }
-
-        @media (max-width: $mobile) {
-            margin: 0.5rem auto 2rem auto;
-            border-radius: 12px;
-        }
-
-        #dashboard {
-            display: flex;
-            height: 85vh;
-
-            @media (max-width: $tablet) {
-                flex-direction: column;
-                height: auto;
-                gap: 1.5rem;
-            }
-
-            @media (max-width: $mobile) {
-                gap: 1rem;
-            }
-
-            #upload-container {
-                flex: 1 1 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                overflow: auto;
-
-                @media (max-width: $tablet) {
-                    overflow: visible;
-                }
-
-                div {
-                    padding: 1.4375rem;
-                    border-radius: 22px;
-                    background-color: $greyBlue100;
-                    flex: 1 1 auto;
-
-                    @media (max-width: $tablet) {
-                        padding: 1.125rem;
-                        border-radius: 16px;
-                    }
-
-                    @media (max-width: $mobile) {
-                        padding: 0.875rem;
-                        border-radius: 10px;
-                    }
-                }
-
-                *+* {
-                    margin-top: 0.9375rem;
-
-                    @media (max-width: $mobile) {
-                        margin-top: 0.625rem;
-                    }
-                }
-            }
-
-            #user-container {
-                flex: 1 1 auto;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                overflow: auto;
-                margin-left: 1.25rem;
-
-                @media (max-width: $tablet) {
-                    margin-left: 0;
-                    overflow: visible;
-                }
-
-                #users-container {
-                    min-height: 10.625rem;
-
-                    @media (max-width: $tablet) {
-                        min-height: auto;
-                    }
-                }
-
-                #users-container,
-                #add-users {
-                    flex: 1 1 auto;
-                    padding: 1.4375rem;
-                    border-radius: 22px;
-                    background-color: $greyBlue100;
-
-                    @media (max-width: $tablet) {
-                        padding: 1.125rem;
-                        border-radius: 16px;
-                    }
-
-                    @media (max-width: $mobile) {
-                        padding: 0.875rem;
-                        border-radius: 10px;
-                    }
-                }
-
-                #add-users {
-                    margin-top: 0.9375rem;
-
-                    @media (max-width: $mobile) {
-                        margin-top: 0.625rem;
-                    }
-                }
-            }
-        }
-
-        .dashboard-buttons-container {
-            display: flex;
-            justify-content: space-around;
-            margin: 2.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-
-            @media (max-width: $tablet) {
-                margin: 1.875rem 1.25rem;
-                flex-direction: column;
-                align-items: center;
-            }
-
-            @media (max-width: $mobile) {
-                margin: 1rem 0.5rem;
-                gap: 0.875rem;
-            }
-
-            .button {
-                flex: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                @media (max-width: $tablet) {
-                    width: 100%;
-                    max-width: 25rem;
-                }
-            }
-
-            #rerun-button,
-            #update-histogram-button {
-                margin: 1.25rem 2.5rem;
-                padding: 0.5rem 2.125rem 0.4375rem 2.1875rem;
-                border-radius: 6px;
-                background-color: $greyBlue900;
-                font-size: 1.125rem;
-                font-weight: 600;
-                line-height: 1.8;
-                color: $white;
-                white-space: nowrap;
-
-                @media (max-width: $tablet) {
-                    margin: 0;
-                    width: 100%;
-                    padding: 0.625rem 1.5rem;
-                    font-size: 1rem;
-                }
-
-                @media (max-width: $mobile) {
-                    padding: 0.5rem 1.25rem;
-                    font-size: 0.875rem;
-                }
-            }
-
-            #model-error-container,
-            #histogram-error-container {
-                color: $red500;
-                display: flex;
-                justify-content: center;
-                font-weight: 700;
-                margin-top: 0.5rem;
-                text-align: center;
-                width: 100%;
-
-                @media (max-width: $mobile) {
-                    font-size: 0.8125rem;
-                    flex-direction: column;
-                    align-items: center;
-                    margin-top: 0.625rem;
-                    padding: 0 0.5rem;
-                }
-
-                .error-mark {
-                    width: 1.875rem;
-                    height: 1.875rem;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 100%;
-                    flex: 0 0 auto;
-                    background-color: $red500;
-                    color: $white;
-                    margin-right: 0.625rem;
-
-                    @media (max-width: $mobile) {
-                        width: 1.375rem;
-                        height: 1.375rem;
-                        margin-right: 0;
-                        margin-bottom: 0.375rem;
-                    }
-                }
-
-                p {
-                    @media (max-width: $mobile) {
-                        margin: 0;
-                        line-height: 1.4;
-                    }
-                }
-            }
-        }
-
-    }
-}
-
-.blog-container {
-    display: flex;
-    gap: 3rem;
-    margin-top: 2rem;
+    max-width: 64rem;
+    margin: 0 auto;
+    // top padding must clear the fixed site header (~4.5rem tall + breathing room)
+    padding: 7.5rem 1.5rem 4rem;
 
     @media (max-width: $tablet) {
-        flex-direction: column;
-        gap: 2rem;
-        margin-top: 1.5rem;
+        padding: 6.5rem 1rem 3rem;
     }
 
     @media (max-width: $mobile) {
-        gap: 1.25rem;
-        margin-top: 1rem;
+        padding: 6.5rem 0.75rem 2rem;
     }
+}
+
+// ---- Global focus visibility (WCAG 2.4.7) ----
+#auth-container :focus-visible {
+    outline: 3px solid $blue800;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+// ---- Screen-reader-only utility ----
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+// ---- Top bar ----
+.admin-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    h1 {
+        font-size: 1.875rem;
+        margin: 0;
+
+        @media (max-width: $mobile) {
+            font-size: 1.5rem;
+        }
+    }
+
+    .admin-greeting {
+        margin: 0.25rem 0 0;
+        color: $greyBlue700;
+        font-size: 1rem;
+    }
+}
+
+.admin-topbar-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.admin-link-button {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem; // 44px tap target (WCAG 2.5.5)
+    padding: 0.5rem 0.875rem;
+    border: 1px solid $greyBlue400;
+    border-radius: 8px;
+    background: $white;
+    color: $greyBlue900;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        background: $greyBlue100;
+        border-color: $greyBlue500;
+    }
+}
+
+// ---- Tabs (domain separation: Data / Users / Blog) ----
+.admin-tabs {
+    display: flex;
+    gap: 0.25rem;
+    border-bottom: 1px solid $greyBlue300;
+    margin-bottom: 1.5rem;
+    overflow-x: visible;
+}
+
+.admin-tab {
+    appearance: none;
+    border: none;
+    background: none;
+    padding: 0.75rem 1.25rem;
+    min-height: 2.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $greyBlue700;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -1px; // overlap the tablist border
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+        color: $greyBlue900;
+    }
+
+    &.admin-tab--active {
+        color: $brandPrimary;
+        border-bottom-color: $brandPrimary;
+    }
+}
+
+// ---- Card stack (single column; the page is the only scroll container) ----
+.admin-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    @media (max-width: $tablet) {
+        gap: 1.25rem;
+    }
+}
+
+.admin-card {
+    background: $cleanWhite;
+    border: 1px solid $greyBlue300;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+
+    @media (max-width: $mobile) {
+        padding: 1.125rem;
+        border-radius: 12px;
+    }
+}
+
+.admin-card-head {
+    margin-bottom: 1.25rem;
+
+    h2 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.3;
+        color: $headingColor;
+        margin: 0;
+    }
+}
+
+// ---- Shared heading scale (keeps every card/sub-section consistent) ----
+// Card title = h2 (1.25rem / 700); sub-section title = h3 (1rem / 600).
+.admin-card .blog-posts-form-title,
+.admin-blog-stack .blog-posts-form-title,
+.admin-blog-stack .blog-posts-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: $headingColor;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    border: none;
+}
+
+.admin-card-note {
+    margin: 0.375rem 0 0;
+    font-size: 0.875rem;
+    color: $greyBlue700;
+    line-height: 1.5;
+
+    a {
+        color: $blue800;
+        text-decoration: underline;
+    }
+}
+
+// ---- Shared primary button ----
+.admin-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background: $brandSecondary;
+    color: $white;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover:not(:disabled) {
+        background: $brandPrimary;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+// ---- Pipeline actions ----
+.admin-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admin-action {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    @media (max-width: $mobile) {
+        width: 100%;
+
+        .admin-button {
+            width: 100%;
+        }
+    }
+}
+
+.admin-action-error {
+    margin: 0;
+    color: $statusDanger;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+// ---- Data uploads (flat rows inside the Data Uploads card; no nested boxes) ----
+.admin-upload-list {
+    display: flex;
+    flex-direction: column;
+}
+
+// List-item padding + dividers only inside the Data Uploads list (not blog).
+.admin-upload-list .upload-item {
+    padding: 1rem 0;
+
+    & + & {
+        border-top: 1px solid $greyBlue200;
+    }
+
+    &:first-child {
+        padding-top: 0;
+    }
+}
+
+.upload-item {
+    .upload-item-name {
+        margin: 0;
+        font-weight: 600;
+    }
+
+    #file-selected {
+        margin: 0.25rem 0 0;
+        font-size: 0.875rem;
+        color: $greyBlue700;
+        white-space: normal;
+        overflow: visible;
+        overflow-wrap: anywhere;
+    }
+}
+
+.upload-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.upload-item-info {
+    min-width: 0;
+}
+
+.upload-item-action {
+    flex-shrink: 0;
+
+    .custom-file-upload {
+        margin-top: 0;
+    }
+}
+
+// ---- User section (flat sub-sections inside the Users card; no nested boxes) ----
+#user-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#add-users {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid $greyBlue200;
+}
+
+// ---- Blog (the two containers ARE the cards — stacked full width) ----
+// Note: scoped name to avoid clashing with the public blog page's global
+// `.blog-container` (which adds 0 10rem padding).
+.admin-blog-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .add-blog-post-container,
 .blog-posts-container {
-    flex: 1 1 auto;
-    padding: 2rem;
-    border-radius: 1.375rem;
-    background-color: $greyBlue100;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: $cleanWhite;
     border: 1px solid $greyBlue300;
-    margin-top: 2rem;
-
-    @media (max-width: $tablet) {
-        width: 100%;
-        padding: 1.5rem;
-        margin-top: 0;
-        border-radius: 1rem;
-    }
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 
     @media (max-width: $mobile) {
-        padding: 1rem;
-        border-radius: 0.625rem;
+        padding: 1.125rem;
+        border-radius: 12px;
     }
 }
 
-.blog-posts-container {
-    overflow-y: auto;
-    max-height: 37.5rem;
-    min-height: 25rem;
-
-    @media (max-width: $tablet) {
-        margin-left: 0;
-        max-height: none;
-        min-height: auto;
+// ---- Upload history ----
+#upload-history-container {
+    .upload-history-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
     }
 
-    @media (max-width: $mobile) {
-        max-height: 31.25rem;
+    .upload-history-intro {
+        margin: 0;
+        font-size: 0.875rem;
+        color: $greyBlue700;
+        flex: 1 1 16rem;
     }
 
-    &::-webkit-scrollbar {
-        width: 8px;
+    .upload-history-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
 
-        @media (max-width: $mobile) {
-            width: 6px;
+    .upload-history-filter {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+
+        .upload-history-filter-label {
+            color: $greyBlue700;
+        }
+
+        .choice-input-wrapper {
+            min-width: 9rem;
         }
     }
 
-    &::-webkit-scrollbar-track {
+    .upload-history-error {
+        color: $statusDanger;
+        font-weight: 600;
+    }
+
+    .upload-history-empty {
+        padding: 1.5rem;
+        text-align: center;
+        color: $greyBlue700;
+    }
+}
+
+// Keep the timestamp on one line.
+.upload-history-table {
+    th:first-child,
+    td:first-child {
+        white-space: nowrap;
+    }
+}
+
+// Numeric count columns (Accepted / Skipped / Rejected) — header and value
+// both centered so each number sits directly under its name.
+.upload-history-table {
+    .count-col {
+        text-align: center;
+        width: 5.5rem;
+    }
+
+    .count {
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .count--accepted { color: $statusSuccess; }
+    .count--skipped { color: $statusWarning; }
+    .count--rejected { color: $statusDanger; }
+    .count--zero { color: $greyBlue500; }
+}
+
+// On the mobile stacked layout, align values to the right next to their
+// data-label (consistent with the other stacked cells).
+@media (max-width: $tablet) {
+    .upload-history-table .count-col {
+        text-align: right;
+        width: auto;
+    }
+}
+
+// Details row action — light ghost button with an expand chevron.
+.upload-history-actions {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.upload-history-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.upload-history-page-info {
+    font-size: 0.875rem;
+    color: $greyBlue700;
+}
+
+.upload-history-details {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.25rem;
+    border: none;
+    background: none;
+    color: $greyBlue800;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover {
+        color: $greyBlue900;
+        text-decoration: underline;
+    }
+
+    .chevron {
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 5px solid currentColor;
+        transition: transform 0.15s ease;
+    }
+
+    &[aria-expanded='true'] .chevron {
+        transform: rotate(180deg);
+    }
+}
+
+.upload-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+
+    caption {
+        text-align: left;
+        margin-bottom: 0.5rem;
+        color: $greyBlue700;
+        font-size: 0.8125rem;
+    }
+
+    th,
+    td {
+        text-align: left;
+        padding: 0.625rem 0.75rem;
+        border-bottom: 1px solid $greyBlue300;
+        vertical-align: middle;
+    }
+
+    // expanded details block stays top-aligned for its multi-line content
+    .upload-history-detail {
+        vertical-align: top;
+    }
+
+    thead th {
         background: $greyBlue200;
-        border-radius: 4px;
+        font-weight: 600;
+        white-space: nowrap;
     }
 
-    &::-webkit-scrollbar-thumb {
-        background: $greyBlue400;
-        border-radius: 4px;
+    tbody tr:hover {
+        background: $greyBlue100;
+    }
 
-        &:hover {
-            background: $greyBlue500;
+    // Responsive: stack each row into a labelled block on narrow screens —
+    // avoids horizontal scrolling inside the card.
+    @media (max-width: $tablet) {
+        thead {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
+
+        tbody tr {
+            display: block;
+            margin-bottom: 0.75rem;
+            border: 1px solid $greyBlue300;
+            border-radius: 10px;
+            padding: 0.5rem 0.75rem;
+        }
+
+        td {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.375rem 0;
+            border-bottom: none;
+            text-align: right;
+
+            &::before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-align: left;
+                color: $greyBlue700;
+            }
+        }
+    }
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+
+    &::before {
+        content: '';
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    &.status-badge--success {
+        color: $statusSuccess;
+        background: $statusSuccessBg;
+    }
+
+    &.status-badge--partial {
+        color: $statusWarning;
+        background: $statusWarningBg;
+    }
+
+    &.status-badge--failed {
+        color: $statusDanger;
+        background: $statusDangerBg;
+    }
+}
+
+.upload-history-detail {
+    background: $greyBlue100;
+
+    details {
+        margin: 0.5rem 0;
+
+        summary {
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0.25rem 0;
+        }
+    }
+
+    ul {
+        margin: 0.5rem 0 0;
+        padding-left: 1.25rem;
+        font-size: 0.8125rem;
+        line-height: 1.6;
     }
 }

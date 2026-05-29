@@ -27,7 +27,7 @@ const Users = ({ users, setUsers, activeUser }) => {
 
   return (
     <>
-      <p id="users-title">Users</p>
+      <h3 id="users-title">Existing users</h3>
       {users.map((user) => {
         const isActiveUser = activeUser.email === user.email;
         return (
