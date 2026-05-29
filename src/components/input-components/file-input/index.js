@@ -171,8 +171,14 @@ const FileInput = (props) => {
       await component.uploadFile(component.file);
       component.selectFile();
       setPreview(null);
-      const acceptedLine = preview ? ` ${preview.accepted} accepted, ${preview.rejected.length} rejected.` : '';
-      setSuccessMessage({ [component.id]: `Successfully uploaded file.${acceptedLine}` });
+      const accepted = preview?.accepted ?? 0;
+      const rejectedLen = preview?.rejected?.length ?? 0;
+      // When zero rows were accepted, calling this a "success" misleads the
+      // user — switch the lead to surface that nothing was written.
+      const message = accepted === 0
+        ? `No rows accepted. ${rejectedLen} rejected — check details below.`
+        : `Successfully uploaded file. ${accepted} accepted, ${rejectedLen} rejected.`;
+      setSuccessMessage({ [component.id]: message });
       setTimeout(clearSuccessMessage, 1000 * 7);
       if (onUploadComplete) onUploadComplete();
     } catch (err) {

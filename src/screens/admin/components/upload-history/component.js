@@ -12,6 +12,7 @@ const SOURCE_LABELS = {
 };
 
 const STATUS_LABELS = {
+  processing: 'Processing',
   success: 'Success',
   partial: 'Partial',
   failed: 'Failed',
@@ -164,7 +165,12 @@ const UploadHistory = ({ refreshKey }) => {
                           )}
                           {expandedDetail.rejected?.length > 0 && (
                             <details open>
-                              <summary>{expandedDetail.rejected.length} rejected — action needed</summary>
+                              <summary>{expandedDetail.rejectedRows || expandedDetail.rejected.length} rejected — action needed</summary>
+                              {expandedDetail.truncated?.rejected && (
+                                <p className="upload-history-truncated-note">
+                                  Showing first {expandedDetail.rejected.length} of {expandedDetail.rejectedRows} — older entries truncated to keep the audit doc small.
+                                </p>
+                              )}
                               <ul>
                                 {expandedDetail.rejected.slice(0, 200).map((r) => (
                                   <li key={`${r.identifier}-${r.reason}-${r.field || ''}-${r.rowNumber}`}>{r.identifier} — {r.reason}{r.field ? ` (${r.field})` : ''}</li>
@@ -175,7 +181,12 @@ const UploadHistory = ({ refreshKey }) => {
                           )}
                           {expandedDetail.skipped?.length > 0 && (
                             <details>
-                              <summary>{expandedDetail.skipped.length} skipped — informational</summary>
+                              <summary>{expandedDetail.skippedRows || expandedDetail.skipped.length} skipped — informational</summary>
+                              {expandedDetail.truncated?.skipped && (
+                                <p className="upload-history-truncated-note">
+                                  Showing first {expandedDetail.skipped.length} of {expandedDetail.skippedRows} — older entries truncated to keep the audit doc small.
+                                </p>
+                              )}
                               <ul>
                                 {expandedDetail.skipped.slice(0, 200).map((r) => (
                                   <li key={`${r.identifier}-${r.reason}-${r.rowNumber}`}>{r.identifier} — {r.reason}</li>
