@@ -12,7 +12,7 @@
 //      can relabel the bytes is here, in code.
 export default async (request) => {
   const url = new URL(request.url);
-  const upstream = `https://tiles.arcgis.com${url.pathname.replace(/^\/arcgis-tiles/, '')}${url.search}`;
+  const upstream = `https://tiles.arcgis.com${url.pathname.replace(/^\/map-tiles/, '')}${url.search}`;
 
   const res = await fetch(upstream);
 
@@ -27,4 +27,6 @@ export default async (request) => {
   return new Response(res.body, { status: res.status, headers });
 };
 
-export const config = { path: '/arcgis-tiles/*' };
+// Path deliberately avoids the substring "arcgis": blocker filter lists match on
+// URL substrings, so /arcgis-tiles/* would be blocked even on our own domain.
+export const config = { path: '/map-tiles/*' };

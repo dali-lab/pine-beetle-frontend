@@ -8,13 +8,17 @@
 import { logWarning } from './logger';
 
 // In production, ArcGIS is reached through same-origin proxy paths (see
-// src/_redirects) so ad/tracker blockers and privacy browsers — which block
-// requests to arcgis.com — don't hide the maps. In local dev there is no proxy,
-// so we call arcgis.com directly.
+// src/_redirects and netlify/edge-functions) so ad/tracker blockers and privacy
+// browsers — which block requests to arcgis.com — don't hide the maps. In local
+// dev there is no proxy, so we call arcgis.com directly.
+//
+// The proxy paths must NOT contain the substring "arcgis": blocker filter lists
+// match on URL substrings, not just hostnames, so /arcgis-tiles/* would still be
+// blocked even on our own domain. Neutral names (/map-*) slip past those rules.
 const USE_PROXY = process.env.NODE_ENV === 'production';
 const RESOLVE_TIMEOUT_MS = 8000;
 
-const ARCGIS_PORTAL = USE_PROXY ? '/arcgis-portal' : 'https://www.arcgis.com';
+const ARCGIS_PORTAL = USE_PROXY ? '/map-portal' : 'https://www.arcgis.com';
 
 // Same-origin base for proxied tile URLs. Mapbox loads raster tiles inside a
 // web worker, where a relative URL would resolve against the worker script's
@@ -24,8 +28,8 @@ const ORIGIN = typeof window !== 'undefined' ? window.location.origin : '';
 // Rewrite an absolute ArcGIS host in a service url to its same-origin proxy URL.
 const toProxyPath = (url) => (USE_PROXY
   ? ORIGIN + url
-    .replace('https://tiles.arcgis.com', '/arcgis-tiles')
-    .replace('https://www.arcgis.com', '/arcgis-portal')
+    .replace('https://tiles.arcgis.com', '/map-tiles')
+    .replace('https://www.arcgis.com', '/map-portal')
   : url);
 
 /**

@@ -4,5 +4,5 @@
 # Netlify header rules do NOT apply to proxied responses, so an edge function
 # proxies the tiles and rewrites the content type. See netlify/edge-functions/.
 [[edge_functions]]
-  path = "/arcgis-tiles/*"
+  path = "/map-tiles/*"
   function = "arcgis-tiles"
