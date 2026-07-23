@@ -12,10 +12,17 @@ const ARCGIS_PORTAL = 'https://www.arcgis.com';
 /**
  * Resolves an ArcGIS Online item id to a mapbox-gl raster tile template and bounds.
  * @param {string} itemId - ArcGIS Online portal item id (a hosted tile Map Service)
- * @returns {Promise<{ tileUrl: string, bounds: ?[[number, number], [number, number]] }|null>}
+ * @returns {Promise<{
+ *            tileUrl: string,
+ *            bounds: ?[[number, number], [number, number]],
+ *            title: ?string,
+ *            snippet: ?string,
+ *            modified: ?number,
+ *          }|null>}
  *          tileUrl is an XYZ template ready for a mapbox raster source; bounds is the
- *          item extent as [[west, south], [east, north]] (lng/lat) or null if absent.
- *          Returns null when the item cannot be resolved.
+ *          item extent as [[west, south], [east, north]] (lng/lat) or null if absent;
+ *          title/snippet are the item's metadata and modified is its last-updated epoch
+ *          (ms). Returns null when the item cannot be resolved.
  */
 export const resolveArcgisTileLayer = async (itemId) => {
   if (!itemId) return null;
@@ -41,7 +48,13 @@ export const resolveArcgisTileLayer = async (itemId) => {
       ? item.extent
       : null;
 
-    return { tileUrl, bounds };
+    return {
+      tileUrl,
+      bounds,
+      title: item.title || null,
+      snippet: item.snippet || null,
+      modified: typeof item.modified === 'number' ? item.modified : null,
+    };
   } catch (error) {
     logWarning('Error resolving ArcGIS tile layer', error, { function: 'resolveArcgisTileLayer', itemId });
     return null;
