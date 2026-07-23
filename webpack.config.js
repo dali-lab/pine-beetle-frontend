@@ -16,7 +16,15 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 
 module.exports = {
   mode: env,
-  output: { publicPath: '/' },
+  output: {
+    publicPath: '/',
+    // Content-hash the entry bundle in production so every deploy produces a new
+    // filename. Without this the bundle is always "main.js", the injected
+    // index.html is byte-identical across deploys, and browsers/CDNs keep
+    // serving a stale bundle no matter how hard the user refreshes. (Code-split
+    // chunks are already hashed via the default chunkFilename.)
+    filename: env === 'production' ? '[name].[contenthash].js' : '[name].js',
+  },
   entry: ['./src'], // this is where our app lives
   devtool: env === 'development' ? 'eval-source-map' : undefined, // this enables debugging with source in chrome devtools
   module: {
@@ -81,7 +89,10 @@ module.exports = {
   },
   plugins: [
     new ESLintPlugin({ cache: true }),
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      // Hash the extracted CSS too, for the same cache-busting reason as the JS.
+      filename: env === 'production' ? '[name].[contenthash].css' : '[name].css',
+    }),
     new HtmlWebpackPlugin({
       template: './src/index.html',
       filename: './index.html',
