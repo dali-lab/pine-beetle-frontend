@@ -126,6 +126,13 @@ const ArcgisRasterMap = ({
           ...(resolved.maxzoom != null ? { maxZoom: resolved.maxzoom } : {}),
         });
       }
+
+      // Force a resize once the layer is set up. On the first page load the map
+      // can be created before its container has settled its (100%-based) width,
+      // so mapbox initializes with the wrong canvas size and never requests the
+      // viewport's tiles — the raster only appears after some later resize (e.g.
+      // reopening the page). Resizing here makes it render on the first load.
+      map.resize();
     };
 
     // Add the layer as soon as the style is ready. We key off style readiness
