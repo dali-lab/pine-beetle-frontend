@@ -3,7 +3,8 @@ import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
 
-import Loader from '../loader';
+// Loader import disabled together with the loading overlay (see render below).
+// import Loader from '../loader';
 import { logError } from '../../utils/logger';
 import { MAP_STYLE_URL } from '../../utils/map';
 import { resolveArcgisTileLayer } from '../../utils/arcgis';
@@ -187,11 +188,14 @@ const ArcgisRasterMap = ({
       <div className="arcgis-raster-map__frame">
         <div ref={containerRef} className="arcgis-raster-map__canvas" aria-label={title} />
 
+        {/* Loading spinner disabled: it re-triggered on every content change and
+            lingered (up to the ready fallback), which was worse UX than just
+            showing the basemap while tiles stream in. Re-enable if needed.
         {status === STATUS.LOADING && (
           <div className="arcgis-raster-map__overlay">
             <Loader inline message="Loading map…" />
           </div>
-        )}
+        )} */}
 
         {status === STATUS.ERROR && (
           <div className="arcgis-raster-map__overlay arcgis-raster-map__overlay--error">
