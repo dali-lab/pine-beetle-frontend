@@ -3,8 +3,6 @@ import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
 
-// Loader import disabled together with the loading overlay (see render below).
-// import Loader from '../loader';
 import { logError } from '../../utils/logger';
 import { MAP_STYLE_URL } from '../../utils/map';
 import { resolveArcgisTileLayer } from '../../utils/arcgis';
@@ -15,8 +13,6 @@ import './style.scss';
 const SOURCE_ID = 'arcgis-raster-source';
 const LAYER_ID = 'arcgis-raster-layer';
 
-const STATUS = { LOADING: 'loading', READY: 'ready', ERROR: 'error' };
-
 // Snippets that are clearly placeholders and should not be shown to end users.
 const PLACEHOLDER_SNIPPETS = new Set(['', 'test', 'test test']);
 
@@ -24,6 +20,10 @@ const PLACEHOLDER_SNIPPETS = new Set(['', 'test', 'test test']);
  * Renders an ArcGIS Online hosted tile layer as a mapbox-gl raster layer.
  * The layer is referenced by its portal item id and resolved to a live tile
  * service at runtime, so republishing the service in ArcGIS updates the view.
+ *
+ * There is intentionally no loading spinner: it re-triggered on every content
+ * change and lingered, which was worse UX than just showing the basemap while
+ * the raster tiles stream in.
  *
  * @param {Object} props
  * @param {string} props.itemId - ArcGIS Online portal item id (hosted tile Map Service)
@@ -36,14 +36,14 @@ const ArcgisRasterMap = ({
   errorMessage = 'This map is temporarily unavailable. Please try again later.',
 }) => {
   const containerRef = useRef(null);
-  const [status, setStatus] = useState(STATUS.LOADING);
+  const [hasError, setHasError] = useState(false);
   const [meta, setMeta] = useState(null);
 
   useEffect(() => {
     if (!containerRef.current || !itemId) return undefined;
 
     mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
-    setStatus(STATUS.LOADING);
+    setHasError(false);
     setMeta(null);
 
     const map = new mapboxgl.Map({
@@ -69,42 +69,16 @@ const ArcgisRasterMap = ({
       : null;
     if (resizeObserver && containerRef.current) resizeObserver.observe(containerRef.current);
 
-    // Hide the spinner as soon as the raster is usable. We must NOT wait for
-    // isSourceLoaded(): a raster whose extent is smaller than the viewport has
-    // permanent 404 tiles (ocean / outside coverage), so the source never
-    // reports "fully loaded" and the spinner would hang forever. Instead we go
-    // ready on the first tile event for our source.
-    //
-    // The timeout is armed here at mount (not after style/resolve) so the
-    // spinner ALWAYS clears — even if the style never loads, the item can't be
-    // resolved, or every tile fails. It is the guaranteed backstop.
-    let readyFallback;
-    const markReady = () => {
-      if (cancelled) return;
-      clearTimeout(readyFallback);
-      setStatus(STATUS.READY);
-    };
-    readyFallback = setTimeout(markReady, 8000);
-
-    const onSourceData = (e) => {
-      if (e.sourceId !== SOURCE_ID) return;
-      if (e.tile || map.isSourceLoaded(SOURCE_ID)) {
-        map.off('sourcedata', onSourceData);
-        markReady();
-      }
-    };
-
     const addArcgisLayer = async () => {
       const resolved = await resolveArcgisTileLayer(itemId);
       if (cancelled || isMapRemoved(map)) return;
 
       if (!resolved) {
-        setStatus(STATUS.ERROR);
+        setHasError(true);
         return;
       }
 
       setMeta(resolved);
-      map.on('sourcedata', onSourceData);
 
       if (!map.getSource(SOURCE_ID)) {
         map.addSource(SOURCE_ID, {
@@ -163,7 +137,6 @@ const ArcgisRasterMap = ({
 
     return () => {
       cancelled = true;
-      if (readyFallback) clearTimeout(readyFallback);
       if (resizeObserver) resizeObserver.disconnect();
       if (map && typeof map.remove === 'function' && !isMapRemoved(map)) {
         try {
@@ -199,16 +172,7 @@ const ArcgisRasterMap = ({
       <div className="arcgis-raster-map__frame">
         <div ref={containerRef} className="arcgis-raster-map__canvas" aria-label={title} />
 
-        {/* Loading spinner disabled: it re-triggered on every content change and
-            lingered (up to the ready fallback), which was worse UX than just
-            showing the basemap while tiles stream in. Re-enable if needed.
-        {status === STATUS.LOADING && (
-          <div className="arcgis-raster-map__overlay">
-            <Loader inline message="Loading map…" />
-          </div>
-        )} */}
-
-        {status === STATUS.ERROR && (
+        {hasError && (
           <div className="arcgis-raster-map__overlay arcgis-raster-map__overlay--error">
             <p>{errorMessage}</p>
           </div>
