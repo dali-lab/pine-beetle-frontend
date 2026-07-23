@@ -1,3 +1,4 @@
+import ArcgisRasterMap from './arcgis-raster-map';
 import Button from './button';
 import DownloadData from './download-data';
 import FilterBar from './filter-bar';
@@ -12,6 +13,7 @@ import ScrollableTextBox from './scrollable-text-box';
 import Tabs from './tabs';
 
 export {
+  ArcgisRasterMap,
   Button,
   DownloadData,
   FilterBar,

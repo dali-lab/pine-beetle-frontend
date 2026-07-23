@@ -422,6 +422,7 @@ export {
   downloadMap,
   generateMap,
   isInvalidNumber,
+  MAP_STYLE_URL,
   mapboxHoverStyle,
   zoomToSelectedState,
 };

@@ -1,8 +1,9 @@
 import React from 'react';
-import './style.scss';
 
-// Placeholder URL - to be updated with actual ArcGIS Online embed URL
-const IFRAME_URL = '';
+import { ArcgisRasterMap } from '../../../components';
+import { ARCGIS_MAP_ITEMS } from '../../../constants';
+
+import './style.scss';
 
 const FragmentationMap = () => {
   return (
@@ -11,13 +12,8 @@ const FragmentationMap = () => {
         <div className="page-header">
           <h1>Fragmentation</h1>
         </div>
-        <div className="iframe-container">
-          <iframe
-            src={IFRAME_URL}
-            title="Fragmentation Map"
-            allowFullScreen
-            className="map-iframe"
-          />
+        <div className="map-embed-container">
+          <ArcgisRasterMap itemId={ARCGIS_MAP_ITEMS.FRAGMENTATION} title="Fragmentation Map" />
         </div>
       </div>
     </div>
