@@ -57,6 +57,18 @@ const ArcgisRasterMap = ({
 
     let cancelled = false;
 
+    // On the first page load the map can be created before the stylesheet has
+    // applied its fixed container height, so the GL canvas is 0-sized and never
+    // requests any tiles — the raster only appears after some later resize (e.g.
+    // reopening the page). Watch the container and resize whenever it changes so
+    // the map always ends up with the right dimensions.
+    const resizeObserver = typeof ResizeObserver !== 'undefined'
+      ? new ResizeObserver(() => {
+        if (!cancelled && !isMapRemoved(map)) map.resize();
+      })
+      : null;
+    if (resizeObserver && containerRef.current) resizeObserver.observe(containerRef.current);
+
     // Hide the spinner as soon as the raster is usable. We must NOT wait for
     // isSourceLoaded(): a raster whose extent is smaller than the viewport has
     // permanent 404 tiles (ocean / outside coverage), so the source never
@@ -112,6 +124,11 @@ const ArcgisRasterMap = ({
         map.addLayer({ id: LAYER_ID, type: 'raster', source: SOURCE_ID });
       }
 
+      // Sync the canvas to the container's real size BEFORE fitting bounds, so
+      // fitBounds computes the zoom against correct dimensions (otherwise the
+      // view can land at the wrong zoom and show nothing).
+      map.resize();
+
       // Keep the map from zooming out past the data's lowest tile level — below
       // it every tile 404s and the raster vanishes, leaving only the basemap.
       if (resolved.minzoom != null) {
@@ -127,13 +144,6 @@ const ArcgisRasterMap = ({
           ...(resolved.maxzoom != null ? { maxZoom: resolved.maxzoom } : {}),
         });
       }
-
-      // Force a resize once the layer is set up. On the first page load the map
-      // can be created before its container has settled its (100%-based) width,
-      // so mapbox initializes with the wrong canvas size and never requests the
-      // viewport's tiles — the raster only appears after some later resize (e.g.
-      // reopening the page). Resizing here makes it render on the first load.
-      map.resize();
     };
 
     // Add the layer as soon as the style is ready. We key off style readiness
@@ -154,6 +164,7 @@ const ArcgisRasterMap = ({
     return () => {
       cancelled = true;
       if (readyFallback) clearTimeout(readyFallback);
+      if (resizeObserver) resizeObserver.disconnect();
       if (map && typeof map.remove === 'function' && !isMapRemoved(map)) {
         try {
           markMapAsRemoved(map);
