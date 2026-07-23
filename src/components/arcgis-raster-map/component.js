@@ -55,19 +55,23 @@ const ArcgisRasterMap = ({
     map.addControl(new mapboxgl.NavigationControl({ showCompass: true, showZoom: true }));
 
     let cancelled = false;
-    let readyFallback = null;
 
     // Hide the spinner as soon as the raster is usable. We must NOT wait for
     // isSourceLoaded(): a raster whose extent is smaller than the viewport has
     // permanent 404 tiles (ocean / outside coverage), so the source never
     // reports "fully loaded" and the spinner would hang forever. Instead we go
-    // ready on the first tile event for our source, with a timeout fallback so
-    // it can never get stuck even if every tile fails.
+    // ready on the first tile event for our source.
+    //
+    // The timeout is armed here at mount (not after style/resolve) so the
+    // spinner ALWAYS clears — even if the style never loads, the item can't be
+    // resolved, or every tile fails. It is the guaranteed backstop.
+    let readyFallback;
     const markReady = () => {
       if (cancelled) return;
-      if (readyFallback) clearTimeout(readyFallback);
+      clearTimeout(readyFallback);
       setStatus(STATUS.READY);
     };
+    readyFallback = setTimeout(markReady, 8000);
 
     const onSourceData = (e) => {
       if (e.sourceId !== SOURCE_ID) return;
@@ -88,11 +92,6 @@ const ArcgisRasterMap = ({
 
       setMeta(resolved);
       map.on('sourcedata', onSourceData);
-      // Safety net: never let the spinner outlive a slow/failing tile fetch.
-      readyFallback = setTimeout(() => {
-        map.off('sourcedata', onSourceData);
-        markReady();
-      }, 8000);
 
       if (!map.getSource(SOURCE_ID)) {
         map.addSource(SOURCE_ID, {
