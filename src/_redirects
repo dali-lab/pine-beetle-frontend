@@ -1,1 +1,7 @@
+# Proxy ArcGIS Online through our own domain so ad/tracker blockers and
+# privacy browsers (which block requests to arcgis.com) don't hide the maps.
+# These must come before the SPA catch-all below.
+/arcgis-tiles/*    https://tiles.arcgis.com/:splat    200
+/arcgis-portal/*   https://www.arcgis.com/:splat      200
+
 /*    /index.html   200

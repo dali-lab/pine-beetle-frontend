@@ -7,7 +7,21 @@
  */
 import { logWarning } from './logger';
 
-const ARCGIS_PORTAL = 'https://www.arcgis.com';
+// In production, ArcGIS is reached through same-origin proxy paths (see
+// src/_redirects) so ad/tracker blockers and privacy browsers — which block
+// requests to arcgis.com — don't hide the maps. In local dev there is no proxy,
+// so we call arcgis.com directly.
+const USE_PROXY = process.env.NODE_ENV === 'production';
+const RESOLVE_TIMEOUT_MS = 8000;
+
+const ARCGIS_PORTAL = USE_PROXY ? '/arcgis-portal' : 'https://www.arcgis.com';
+
+// Rewrite an absolute ArcGIS host in a service url to its same-origin proxy path.
+const toProxyPath = (url) => (USE_PROXY
+  ? url
+    .replace('https://tiles.arcgis.com', '/arcgis-tiles')
+    .replace('https://www.arcgis.com', '/arcgis-portal')
+  : url);
 
 /**
  * Resolves an ArcGIS Online item id to a mapbox-gl raster tile template and bounds.
@@ -27,8 +41,16 @@ const ARCGIS_PORTAL = 'https://www.arcgis.com';
 export const resolveArcgisTileLayer = async (itemId) => {
   if (!itemId) return null;
 
+  // Fail fast if the request is blocked or hangs, so the UI can show an error
+  // instead of an indefinitely blank map.
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), RESOLVE_TIMEOUT_MS);
+
   try {
-    const response = await fetch(`${ARCGIS_PORTAL}/sharing/rest/content/items/${itemId}?f=json`);
+    const response = await fetch(
+      `${ARCGIS_PORTAL}/sharing/rest/content/items/${itemId}?f=json`,
+      { signal: controller.signal }
+    );
     if (!response.ok) {
       logWarning('ArcGIS item request failed', { status: response.status }, { function: 'resolveArcgisTileLayer', itemId });
       return null;
@@ -40,8 +62,9 @@ export const resolveArcgisTileLayer = async (itemId) => {
       return null;
     }
 
-    // item.url points at the MapServer/ImageServer endpoint of the hosted tile service.
-    const tileUrl = `${item.url.replace(/\/$/, '')}/tile/{z}/{y}/{x}`;
+    // item.url points at the MapServer/ImageServer endpoint of the hosted tile
+    // service; route it through the same-origin proxy so it isn't blocked.
+    const tileUrl = `${toProxyPath(item.url).replace(/\/$/, '')}/tile/{z}/{y}/{x}`;
 
     // extent is [[xmin, ymin], [xmax, ymax]] in lng/lat -> mapbox bounds [[w, s], [e, n]].
     const bounds = Array.isArray(item.extent) && item.extent.length === 2
@@ -58,6 +81,8 @@ export const resolveArcgisTileLayer = async (itemId) => {
   } catch (error) {
     logWarning('Error resolving ArcGIS tile layer', error, { function: 'resolveArcgisTileLayer', itemId });
     return null;
+  } finally {
+    clearTimeout(timeout);
   }
 };
 
