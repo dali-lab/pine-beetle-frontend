@@ -70,73 +70,94 @@ const ArcgisRasterMap = ({
     if (resizeObserver && containerRef.current) resizeObserver.observe(containerRef.current);
 
     const addArcgisLayer = async () => {
-      const resolved = await resolveArcgisTileLayer(itemId);
-      if (cancelled || isMapRemoved(map)) return;
+      try {
+        const resolved = await resolveArcgisTileLayer(itemId);
+        if (cancelled || isMapRemoved(map)) return;
 
-      if (!resolved) {
+        if (!resolved) {
+          setHasError(true);
+          return;
+        }
+
+        if (!map.getSource(SOURCE_ID)) {
+          map.addSource(SOURCE_ID, {
+            type: 'raster',
+            tiles: [resolved.tileUrl],
+            tileSize: 256,
+            attribution: 'Esri',
+            // The service only caches tiles within this zoom window; setting
+            // maxzoom makes mapbox overzoom (scale) the deepest tiles instead of
+            // requesting non-existent ones (which 404 and render nothing).
+            ...(resolved.minzoom != null ? { minzoom: resolved.minzoom } : {}),
+            ...(resolved.maxzoom != null ? { maxzoom: resolved.maxzoom } : {}),
+          });
+        }
+
+        if (!map.getLayer(LAYER_ID)) {
+          map.addLayer({ id: LAYER_ID, type: 'raster', source: SOURCE_ID });
+        }
+
+        // Sync the canvas to the container's real size BEFORE fitting bounds, so
+        // fitBounds computes the zoom against correct dimensions (otherwise the
+        // view can land at the wrong zoom and show nothing).
+        map.resize();
+
+        // Keep the map from zooming out past the data's lowest tile level — below
+        // it every tile 404s and the raster vanishes, leaving only the basemap.
+        if (resolved.minzoom != null) {
+          map.setMinZoom(resolved.minzoom);
+        }
+
+        if (resolved.bounds) {
+          // Never fit tighter/looser than the tiled range: clamp so the initial
+          // view always lands where tiles exist.
+          map.fitBounds(resolved.bounds, {
+            padding: 20,
+            duration: 0,
+            ...(resolved.maxzoom != null ? { maxZoom: resolved.maxzoom } : {}),
+          });
+        }
+
+        // Only expose the metadata once the raster layer is configured
+        // successfully, so the caption never implies that a failed map loaded.
+        setMeta(resolved);
+        setHasError(false);
+      } catch (error) {
+        if (cancelled || isMapRemoved(map)) return;
+
+        logError('Error adding ArcGIS map layer', error, {
+          component: 'ArcgisRasterMap',
+          itemId,
+        });
+        setMeta(null);
         setHasError(true);
-        return;
-      }
-
-      setMeta(resolved);
-
-      if (!map.getSource(SOURCE_ID)) {
-        map.addSource(SOURCE_ID, {
-          type: 'raster',
-          tiles: [resolved.tileUrl],
-          tileSize: 256,
-          attribution: 'Esri',
-          // The service only caches tiles within this zoom window; setting
-          // maxzoom makes mapbox overzoom (scale) the deepest tiles instead of
-          // requesting non-existent ones (which 404 and render nothing).
-          ...(resolved.minzoom != null ? { minzoom: resolved.minzoom } : {}),
-          ...(resolved.maxzoom != null ? { maxzoom: resolved.maxzoom } : {}),
-        });
-      }
-
-      if (!map.getLayer(LAYER_ID)) {
-        map.addLayer({ id: LAYER_ID, type: 'raster', source: SOURCE_ID });
-      }
-
-      // Sync the canvas to the container's real size BEFORE fitting bounds, so
-      // fitBounds computes the zoom against correct dimensions (otherwise the
-      // view can land at the wrong zoom and show nothing).
-      map.resize();
-
-      // Keep the map from zooming out past the data's lowest tile level — below
-      // it every tile 404s and the raster vanishes, leaving only the basemap.
-      if (resolved.minzoom != null) {
-        map.setMinZoom(resolved.minzoom);
-      }
-
-      if (resolved.bounds) {
-        // Never fit tighter/looser than the tiled range: clamp so the initial
-        // view always lands where tiles exist.
-        map.fitBounds(resolved.bounds, {
-          padding: 20,
-          duration: 0,
-          ...(resolved.maxzoom != null ? { maxZoom: resolved.maxzoom } : {}),
-        });
       }
     };
 
-    // Add the layer as soon as the style is ready. We key off style readiness
-    // rather than the map's 'load' event because 'load' waits for the render
-    // loop, which browsers throttle while the tab is backgrounded — the style,
-    // and therefore our layer, would otherwise never get added.
-    if (map.isStyleLoaded()) {
+    // Start exactly once as soon as Mapbox has initialized the style. Do not
+    // gate this on isStyleLoaded(): that method also waits for every basemap
+    // source, so the initial style event can be missed permanently in slower
+    // browsers (especially Firefox) and the ArcGIS request never starts.
+    let layerSetupStarted = false;
+    const startArcgisLayerSetup = () => {
+      if (layerSetupStarted || cancelled || isMapRemoved(map)) return;
+
+      layerSetupStarted = true;
       addArcgisLayer();
-    } else {
-      const onStyleData = () => {
-        if (!map.isStyleLoaded()) return;
-        map.off('styledata', onStyleData);
-        addArcgisLayer();
-      };
-      map.on('styledata', onStyleData);
+    };
+
+    map.once('style.load', startArcgisLayerSetup);
+
+    // Register the listener before the fast-path check so a style finishing
+    // between the two operations cannot start setup twice or be missed.
+    if (map.isStyleLoaded()) {
+      map.off('style.load', startArcgisLayerSetup);
+      startArcgisLayerSetup();
     }
 
     return () => {
       cancelled = true;
+      map.off('style.load', startArcgisLayerSetup);
       if (resizeObserver) resizeObserver.disconnect();
       if (map && typeof map.remove === 'function' && !isMapRemoved(map)) {
         try {
