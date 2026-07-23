@@ -160,14 +160,14 @@ export const getBlogPostComments = async (postId, params = {}) => {
   }
 };
 
-export const createBlogPostComment = async (postId, content) => {
+export const createBlogPostComment = async (postId, content, author) => {
   const url = `${global.API_URL}/${SUBROUTE}/${postId}/comments`;
   const token = getAuthTokenFromStorage();
 
   try {
     const { data: response } = await axios.post(
       url,
-      { content },
+      { content, author },
       {
         headers: {
           authorization: `Bearer ${token}`,

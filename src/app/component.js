@@ -17,6 +17,10 @@ import {
   DownloadData,
   Explainers,
   Home,
+  Maps,
+  MapsTreeDensity,
+  MapsFragmentation,
+  MapsMinWinterTemp,
   Methodology,
   PlayWithModelScreen,
   Resources,
@@ -172,6 +176,10 @@ const App = (props) => {
           <Route path={ROUTES.PLAY_WITH_MODEL} component={PlayWithModelScreen} />
           <Route path={ROUTES.RESOURCES} component={Resources} />
           <Route path={ROUTES.OBSERVED_OUTCOMES} component={ObservedOutcomes} />
+          <Route exact path={ROUTES.MAPS} component={Maps} />
+          <Route path={ROUTES.MAPS_TREE_DENSITY} component={MapsTreeDensity} />
+          <Route path={ROUTES.MAPS_FRAGMENTATION} component={MapsFragmentation} />
+          <Route path={ROUTES.MAPS_MIN_WINTER_TEMP} component={MapsMinWinterTemp} />
           {Object.entries(RESOURCE_ROUTES).map(([TYPE, ROUTE]) => (
             <Route
               key={ROUTE}

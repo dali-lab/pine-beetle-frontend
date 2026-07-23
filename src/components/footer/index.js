@@ -21,7 +21,9 @@ const Footer = () => (
       {/* Middle: Navigation Links */}
       <div id="footer-nav">
         <Link to={ROUTES.ABOUT} className="footer-nav-link">About</Link>
+        <span className="footer-nav-separator">•</span>
         <Link to={ROUTES.RESOURCES} className="footer-nav-link">Resources</Link>
+        <span className="footer-nav-separator">•</span>
         <Link to={ROUTES.CONTACT} className="footer-nav-link">Contact</Link>
       </div>
 

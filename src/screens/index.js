@@ -7,6 +7,10 @@ import DataTable from './data-table';
 import DownloadData from './download-data';
 import Explainers from './explainers';
 import Home from './home';
+import Maps from './maps';
+import MapsTreeDensity from './maps/tree-density';
+import MapsFragmentation from './maps/fragmentation';
+import MapsMinWinterTemp from './maps/minimum-winter-temperature';
 import Methodology from './methodology';
 import PlayWithModelScreen from './play-with-model';
 import Resources from './resources';
@@ -24,6 +28,10 @@ export {
   DownloadData,
   Explainers,
   Home,
+  Maps,
+  MapsTreeDensity,
+  MapsFragmentation,
+  MapsMinWinterTemp,
   Methodology,
   PlayWithModelScreen,
   Resources,

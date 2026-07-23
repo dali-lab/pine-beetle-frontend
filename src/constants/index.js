@@ -40,6 +40,10 @@ const ROUTES = {
   RESOURCES: '/resources',
   PLAY_WITH_MODEL: '/play-with-model',
   OBSERVED_OUTCOMES: '/observed-outcomes',
+  MAPS: '/maps',
+  MAPS_TREE_DENSITY: '/maps/tree-density',
+  MAPS_FRAGMENTATION: '/maps/fragmentation',
+  MAPS_MIN_WINTER_TEMP: '/maps/minimum-winter-temperature',
 };
 
 const RESOURCE_ROUTES = {
@@ -137,7 +141,17 @@ const MAP_TITLES = {
   COMPARISON: 'Observed vs Predicted',
 };
 
+// ArcGIS Online item ids for the Maps section. Content is managed in ArcGIS
+// Online; republishing an item's service surfaces new tiles in the app.
+// Single source of truth — resolved to a tile URL at runtime (see utils/arcgis.js).
+const ARCGIS_MAP_ITEMS = {
+  FRAGMENTATION: '2a9a5a50f9f447c6bfde29e588c01022',
+  TREE_DENSITY: '', // fill when client provides the item id
+  MIN_WINTER_TEMP: '', // animated time series — needs time-enabled handling, not a static raster
+};
+
 export {
+  ARCGIS_MAP_ITEMS,
   CHART_MODES,
   DATA_MODES,
   DATA_TYPE_EXTENSIONS,

@@ -113,9 +113,11 @@
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.375rem;
     font-size: 0.875rem;
     font-weight: 500;
+    line-height: 1;
 
     &:hover {
         border-color: $brandPrimary;
@@ -129,13 +131,21 @@
         color: $cleanWhite;
     }
 
-    .like-text {
-        font-size: 0.875rem;
-        font-weight: 500;
+    .like-icon {
+        display: inline-flex;
+        align-items: center;
+        font-size: 1rem;
+        line-height: 1;
     }
 
-    .like-count {
+    .like-number {
         font-weight: 600;
+        line-height: 1;
+    }
+
+    .like-label {
+        font-weight: 500;
+        line-height: 1;
     }
 }
 

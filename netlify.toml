@@ -1,0 +1,8 @@
+# ArcGIS hosted tile services return PNG tiles mislabeled as
+# application/octet-stream with x-content-type-options: nosniff, so Firefox-based
+# browsers (Zen, Firefox) refuse to decode them and the raster never appears.
+# Netlify header rules do NOT apply to proxied responses, so an edge function
+# proxies the tiles and rewrites the content type. See netlify/edge-functions/.
+[[edge_functions]]
+  path = "/map-tiles/*"
+  function = "arcgis-tiles"
