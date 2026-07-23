@@ -55,14 +55,26 @@ const ArcgisRasterMap = ({
     map.addControl(new mapboxgl.NavigationControl({ showCompass: true, showZoom: true }));
 
     let cancelled = false;
+    let readyFallback = null;
 
-    // Mark the map ready once our raster source has finished its initial load.
-    // Tiles outside the layer's extent return 404 — that is expected and still
-    // leaves the source "loaded", so this fires normally.
+    // Hide the spinner as soon as the raster is usable. We must NOT wait for
+    // isSourceLoaded(): a raster whose extent is smaller than the viewport has
+    // permanent 404 tiles (ocean / outside coverage), so the source never
+    // reports "fully loaded" and the spinner would hang forever. Instead we go
+    // ready on the first tile event for our source, with a timeout fallback so
+    // it can never get stuck even if every tile fails.
+    const markReady = () => {
+      if (cancelled) return;
+      if (readyFallback) clearTimeout(readyFallback);
+      setStatus(STATUS.READY);
+    };
+
     const onSourceData = (e) => {
-      if (e.sourceId !== SOURCE_ID || !map.isSourceLoaded(SOURCE_ID)) return;
-      map.off('sourcedata', onSourceData);
-      if (!cancelled) setStatus(STATUS.READY);
+      if (e.sourceId !== SOURCE_ID) return;
+      if (e.tile || map.isSourceLoaded(SOURCE_ID)) {
+        map.off('sourcedata', onSourceData);
+        markReady();
+      }
     };
 
     const addArcgisLayer = async () => {
@@ -76,6 +88,11 @@ const ArcgisRasterMap = ({
 
       setMeta(resolved);
       map.on('sourcedata', onSourceData);
+      // Safety net: never let the spinner outlive a slow/failing tile fetch.
+      readyFallback = setTimeout(() => {
+        map.off('sourcedata', onSourceData);
+        markReady();
+      }, 8000);
 
       if (!map.getSource(SOURCE_ID)) {
         map.addSource(SOURCE_ID, {
@@ -112,6 +129,7 @@ const ArcgisRasterMap = ({
 
     return () => {
       cancelled = true;
+      if (readyFallback) clearTimeout(readyFallback);
       if (map && typeof map.remove === 'function' && !isMapRemoved(map)) {
         try {
           markMapAsRemoved(map);
