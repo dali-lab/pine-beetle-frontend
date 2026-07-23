@@ -16,9 +16,14 @@ const RESOLVE_TIMEOUT_MS = 8000;
 
 const ARCGIS_PORTAL = USE_PROXY ? '/arcgis-portal' : 'https://www.arcgis.com';
 
-// Rewrite an absolute ArcGIS host in a service url to its same-origin proxy path.
+// Same-origin base for proxied tile URLs. Mapbox loads raster tiles inside a
+// web worker, where a relative URL would resolve against the worker script's
+// base rather than the page — so the tile template MUST be absolute.
+const ORIGIN = typeof window !== 'undefined' ? window.location.origin : '';
+
+// Rewrite an absolute ArcGIS host in a service url to its same-origin proxy URL.
 const toProxyPath = (url) => (USE_PROXY
-  ? url
+  ? ORIGIN + url
     .replace('https://tiles.arcgis.com', '/arcgis-tiles')
     .replace('https://www.arcgis.com', '/arcgis-portal')
   : url);
