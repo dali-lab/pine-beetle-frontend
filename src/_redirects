@@ -1,7 +1,8 @@
 # Proxy ArcGIS Online through our own domain so ad/tracker blockers and
 # privacy browsers (which block requests to arcgis.com) don't hide the maps.
-# These must come before the SPA catch-all below.
-/arcgis-tiles/*    https://tiles.arcgis.com/:splat    200
+# These must come before the SPA catch-all below. The tile path is handled by
+# an edge function (netlify/edge-functions/arcgis-tiles.js) that also rewrites
+# the mislabeled content type; only the portal (item JSON) is a plain proxy.
 /arcgis-portal/*   https://www.arcgis.com/:splat      200
 
 /*    /index.html   200

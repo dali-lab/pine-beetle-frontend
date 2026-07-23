@@ -1,0 +1,30 @@
+// Proxies ArcGIS Online hosted tile requests through our own domain.
+//
+// Two problems this solves that a static _redirects proxy cannot:
+//   1. Ad/tracker blockers and privacy browsers (Zen, Firefox strict, uBlock)
+//      block requests to arcgis.com outright. Routing through our origin hides
+//      the upstream host, so the tiles load everywhere.
+//   2. ArcGIS serves the PNG tile bytes mislabeled as `application/octet-stream`
+//      with `x-content-type-options: nosniff`. Chrome decodes anyway
+//      (createImageBitmap ignores the type), but Firefox/Zen honor nosniff and
+//      refuse to render a non-image MIME — leaving a blank raster. Netlify does
+//      NOT apply custom header rules to proxied responses, so the only place we
+//      can relabel the bytes is here, in code.
+export default async (request) => {
+  const url = new URL(request.url);
+  const upstream = `https://tiles.arcgis.com${url.pathname.replace(/^\/arcgis-tiles/, '')}${url.search}`;
+
+  const res = await fetch(upstream);
+
+  // Tiles outside the data extent legitimately 404 — mapbox skips them, so pass
+  // those through untouched and only relabel real image responses.
+  if (!res.ok) return res;
+
+  const headers = new Headers(res.headers);
+  headers.set('content-type', 'image/png');
+  headers.delete('x-content-type-options'); // drop nosniff so Firefox/Zen decode it
+
+  return new Response(res.body, { status: res.status, headers });
+};
+
+export const config = { path: '/arcgis-tiles/*' };
