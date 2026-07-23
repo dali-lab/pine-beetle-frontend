@@ -99,6 +99,11 @@ const ArcgisRasterMap = ({
           tiles: [resolved.tileUrl],
           tileSize: 256,
           attribution: 'Esri',
+          // The service only caches tiles within this zoom window; setting
+          // maxzoom makes mapbox overzoom (scale) the deepest tiles instead of
+          // requesting non-existent ones (which 404 and render nothing).
+          ...(resolved.minzoom != null ? { minzoom: resolved.minzoom } : {}),
+          ...(resolved.maxzoom != null ? { maxzoom: resolved.maxzoom } : {}),
         });
       }
 
@@ -106,8 +111,20 @@ const ArcgisRasterMap = ({
         map.addLayer({ id: LAYER_ID, type: 'raster', source: SOURCE_ID });
       }
 
+      // Keep the map from zooming out past the data's lowest tile level — below
+      // it every tile 404s and the raster vanishes, leaving only the basemap.
+      if (resolved.minzoom != null) {
+        map.setMinZoom(resolved.minzoom);
+      }
+
       if (resolved.bounds) {
-        map.fitBounds(resolved.bounds, { padding: 20, duration: 0 });
+        // Never fit tighter/looser than the tiled range: clamp so the initial
+        // view always lands where tiles exist.
+        map.fitBounds(resolved.bounds, {
+          padding: 20,
+          duration: 0,
+          ...(resolved.maxzoom != null ? { maxZoom: resolved.maxzoom } : {}),
+        });
       }
     };
 

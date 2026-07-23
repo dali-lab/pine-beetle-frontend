@@ -18,6 +18,16 @@ import { logWarning } from './logger';
 const USE_PROXY = process.env.NODE_ENV === 'production';
 const RESOLVE_TIMEOUT_MS = 8000;
 
+// Scale denominator at zoom 0 in the ArcGIS Online / Web Mercator tiling scheme.
+// A hosted tile service advertises LODs 0-23 but usually only caches a sub-range;
+// its minScale/maxScale mark the zoom window that actually has tiles. Requesting
+// outside it returns 404 and the raster shows nothing, so we derive min/max zoom
+// from the scales and clamp the map to them.
+const TILING_SCHEME_SCALE_Z0 = 591657527.591555;
+const scaleToZoom = (scale) => (typeof scale === 'number' && scale > 0
+  ? Math.round(Math.log2(TILING_SCHEME_SCALE_Z0 / scale))
+  : null);
+
 const ARCGIS_PORTAL = USE_PROXY ? '/map-portal' : 'https://www.arcgis.com';
 
 // Same-origin base for proxied tile URLs. Mapbox loads raster tiles inside a
@@ -38,14 +48,17 @@ const toProxyPath = (url) => (USE_PROXY
  * @returns {Promise<{
  *            tileUrl: string,
  *            bounds: ?[[number, number], [number, number]],
+ *            minzoom: ?number,
+ *            maxzoom: ?number,
  *            title: ?string,
  *            snippet: ?string,
  *            modified: ?number,
  *          }|null>}
  *          tileUrl is an XYZ template ready for a mapbox raster source; bounds is the
  *          item extent as [[west, south], [east, north]] (lng/lat) or null if absent;
- *          title/snippet are the item's metadata and modified is its last-updated epoch
- *          (ms). Returns null when the item cannot be resolved.
+ *          minzoom/maxzoom are the zoom levels the service actually has tiles for
+ *          (null if unknown); title/snippet are the item's metadata and modified is
+ *          its last-updated epoch (ms). Returns null when the item cannot be resolved.
  */
 export const resolveArcgisTileLayer = async (itemId) => {
   if (!itemId) return null;
@@ -73,16 +86,35 @@ export const resolveArcgisTileLayer = async (itemId) => {
 
     // item.url points at the MapServer/ImageServer endpoint of the hosted tile
     // service; route it through the same-origin proxy so it isn't blocked.
-    const tileUrl = `${toProxyPath(item.url).replace(/\/$/, '')}/tile/{z}/{y}/{x}`;
+    const serviceUrl = toProxyPath(item.url).replace(/\/$/, '');
+    const tileUrl = `${serviceUrl}/tile/{z}/{y}/{x}`;
 
     // extent is [[xmin, ymin], [xmax, ymax]] in lng/lat -> mapbox bounds [[w, s], [e, n]].
     const bounds = Array.isArray(item.extent) && item.extent.length === 2
       ? item.extent
       : null;
 
+    // Read the service metadata to learn the zoom window that actually has tiles.
+    // minScale = most zoomed-out level (mapbox minzoom), maxScale = most zoomed-in
+    // (mapbox maxzoom). Non-fatal: fall back to mapbox defaults if unavailable.
+    let minzoom = null;
+    let maxzoom = null;
+    try {
+      const metaRes = await fetch(`${serviceUrl}?f=json`, { signal: controller.signal });
+      if (metaRes.ok) {
+        const meta = await metaRes.json();
+        minzoom = scaleToZoom(meta.minScale);
+        maxzoom = scaleToZoom(meta.maxScale);
+      }
+    } catch (metaError) {
+      logWarning('Could not read ArcGIS service zoom range', metaError, { function: 'resolveArcgisTileLayer', itemId });
+    }
+
     return {
       tileUrl,
       bounds,
+      minzoom,
+      maxzoom,
       title: item.title || null,
       snippet: item.snippet || null,
       modified: typeof item.modified === 'number' ? item.modified : null,

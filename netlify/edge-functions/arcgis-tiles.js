@@ -16,9 +16,12 @@ export default async (request) => {
 
   const res = await fetch(upstream);
 
-  // Tiles outside the data extent legitimately 404 — mapbox skips them, so pass
-  // those through untouched and only relabel real image responses.
-  if (!res.ok) return res;
+  // Only relabel the mislabeled PNG tiles (served as application/octet-stream).
+  // Tiles outside the data extent legitimately 404 (mapbox skips them), and
+  // metadata requests like ?f=json come back as application/json — both must
+  // pass through untouched.
+  const type = res.headers.get('content-type') || '';
+  if (!res.ok || !type.includes('octet-stream')) return res;
 
   const headers = new Headers(res.headers);
   headers.set('content-type', 'image/png');
